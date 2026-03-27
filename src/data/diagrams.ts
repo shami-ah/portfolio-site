@@ -3,24 +3,25 @@ export const diagrams: Record<string, string> = {
     A[Git Diff] --> B[File Parser]
     B --> C[Codebase Index]
     C --> D{Incremental\\nUpdate 60ms}
-    D --> E[Pass 0\\nPre-flight]
-    E --> F[Pass 1\\nLayer Analysis]
-    F --> G[Pass 2\\nCross-file Tracing]
-    G --> H[Pass 3\\nPattern Scan\\n113 patterns]
-    H --> I[Pass 4\\nSelf-Validation]
-    I --> J{AI Agent\\nMode?}
-    J -->|Yes| K[LLM Reasoning\\nClaude / Codex / Gemini]
-    J -->|No| L[Findings Report]
-    K --> L
-    L --> M[Self-Learning\\nFeedback Loop]
-    M --> C
+    D --> E[Pass 0-2\\nPre-flight\\nLayer Analysis\\nCross-file Tracing]
+    E --> F[Pass 3\\nPattern Scan\\n154 patterns]
+    F --> G[Pass 3.5\\nTaint Tracking\\nTest Coverage\\nDep Vulns]
+    G --> H[Pass 4\\nSelf-Validation\\n+ PR Risk Score]
+    H --> I{AI Agent\\nMode?}
+    I -->|Yes| J[LLM Reasoning\\nClaude / Codex / Gemini]
+    I -->|No| K[Findings + Risk Score]
+    J --> K
+    K --> L[Self-Learning\\nFeedback Loop]
+    L --> C
 
     style A fill:#1e293b,stroke:#3b82f6,color:#93c5fd
     style C fill:#1e293b,stroke:#3b82f6,color:#93c5fd
-    style H fill:#1e293b,stroke:#3b82f6,color:#93c5fd
-    style K fill:#1e293b,stroke:#3b82f6,color:#93c5fd
-    style L fill:#1e293b,stroke:#22c55e,color:#86efac
-    style M fill:#1e293b,stroke:#eab308,color:#fde047`,
+    style F fill:#1e293b,stroke:#3b82f6,color:#93c5fd
+    style G fill:#1e293b,stroke:#ef4444,color:#fca5a5
+    style H fill:#1e293b,stroke:#eab308,color:#fde047
+    style J fill:#1e293b,stroke:#3b82f6,color:#93c5fd
+    style K fill:#1e293b,stroke:#22c55e,color:#86efac
+    style L fill:#1e293b,stroke:#eab308,color:#fde047`,
 
   openevent: `flowchart TD
     A[Client Email\\nGmail / Outlook / IMAP] --> B[Thread Dedup\\n& Ingestion]

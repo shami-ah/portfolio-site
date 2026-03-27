@@ -4,10 +4,10 @@ import { FadeUp } from "./motion";
 
 const upcoming = [
   {
-    title: "CodeLens v0.2",
+    title: "CodeLens v0.3",
     description:
-      "Tree-sitter AST integration for semantic analysis, npm publish (npx codelens review), VS Code extension",
-    status: "In Progress",
+      "Tree-sitter AST integration for true semantic analysis, VS Code extension, and pattern marketplace for community-contributed rules",
+    status: "Next Up",
   },
   {
     title: "AI Agent Orchestrator",
@@ -45,7 +45,7 @@ export function BuildingNext(): React.ReactElement {
                   <h3 className="font-bold">{item.title}</h3>
                   <span
                     className={`px-2 py-0.5 text-xs font-mono rounded ${
-                      item.status === "In Progress"
+                      item.status === "Next Up"
                         ? "bg-green-500/10 text-green-400 border border-green-500/20"
                         : item.status === "Designing"
                           ? "bg-yellow-500/10 text-yellow-400 border border-yellow-500/20"
