@@ -14,38 +14,37 @@ const roles: Role[] = [
   {
     title: "Lead AI Developer",
     company: "More Life Hospitality GmbH",
-    period: "Sep 2025 - Present",
+    period: "Sep 2025 \u2013 Present",
     points: [
-      "Leading AI architecture and full-stack development for OpenEvent, an AI-powered event management SaaS platform",
-      "Designed and built agentic workflows: email-to-task automation, human-in-the-loop approval systems, and declarative workflow engine",
-      "Architected the end-to-end data model and AI orchestration layer (Supabase Edge Functions + OpenAI + pgvector)",
-      "Built React UI: Task Inbox, Workflow Runner, Approval Flows, Marketing Hub, and Admin Dashboard",
-      "Implemented Stripe billing, calendar integrations (Google/Outlook), RLS policies, and CI/CD pipelines",
+      "Building OpenEvent, an AI-powered event management SaaS handling real client workloads",
+      "Designed the full agentic pipeline: emails come in, AI classifies them, humans approve actions, workflows execute automatically",
+      "Architected the data model and AI orchestration layer on Supabase Edge Functions with OpenAI and pgvector",
+      "Shipped the React frontend: Task Inbox, Workflow Runner, Approval Flows, Marketing Hub, Admin Dashboard",
+      "Integrated Stripe billing, Google/Outlook calendars, row-level security, and CI/CD with GitHub Actions",
     ],
-    stack:
-      "React, TypeScript, Supabase, OpenAI, pgvector, Stripe, GitHub Actions, Docker",
+    stack: "React, TypeScript, Supabase, OpenAI, pgvector, Stripe, Docker",
   },
   {
     title: "Director of IT & R&D",
     company: "Rouelite Techno Pvt. Ltd.",
-    period: "2022 - 2024",
+    period: "2022 \u2013 2024",
     points: [
-      "Built a custom CRM that reduced solar project lifecycle from 14 days to 5 days through workflow automation",
-      "Managed R&D for AI integration, cutting manual data entry by 70% across operations",
-      "Led a cross-functional agile team of 6, delivering quarterly releases with CI/CD pipelines",
-      "Architected internal tools with React + Supabase, replacing 3 legacy spreadsheet-based processes",
+      "Built a CRM from scratch that cut the solar project lifecycle from 14 days to 5",
+      "Introduced AI into daily operations, reducing manual data entry by 70%",
+      "Ran an agile team of 6 engineers, shipping quarterly releases",
+      "Replaced 3 legacy spreadsheet processes with React + Supabase internal tools",
     ],
     stack: "React, Supabase, PostgreSQL, Tailwind CSS",
   },
   {
-    title: "Freelance AI Consultant & Agency Lead",
-    company: "Fiverr & Upwork",
-    period: "2019 - Present",
+    title: "Freelance AI Consultant",
+    company: "Fiverr, Upwork & Wadware House",
+    period: "2019 \u2013 Present",
     points: [
-      "Delivered 250+ projects across prompt engineering, chatbot automation, RAG systems, and analytics dashboards",
-      "Maintained a 98% client satisfaction rate with repeat business from 40+ long-term clients",
-      "AI Evaluator (Outlier, RWS, Translated): 500+ RLHF/SFT evaluation sessions on frontier models",
-      "Founded Wadware House (2025) \u2014 a boutique AI automation agency handling end-to-end project delivery",
+      "Shipped 250+ projects: prompt engineering, chatbot automation, RAG systems, analytics dashboards",
+      "98% client satisfaction with 40+ returning long-term clients",
+      "500+ RLHF/SFT evaluation sessions on frontier models (Outlier, RWS, Translated)",
+      "Founded Wadware House in 2025 as a boutique AI automation agency",
     ],
   },
 ];
@@ -59,20 +58,18 @@ export function Experience(): React.ReactElement {
             Experience
           </p>
           <h2 className="text-3xl md:text-4xl font-bold mb-16">
-            Where I&apos;ve built
+            Where I&apos;ve shipped
             <span className="text-muted"> production systems.</span>
           </h2>
         </FadeUp>
 
         <div className="relative">
-          {/* Timeline line */}
           <div className="absolute left-0 md:left-8 top-0 bottom-0 w-px bg-card-border" />
 
           <div className="space-y-12">
             {roles.map((role, i) => (
               <FadeUp key={role.company} delay={i * 0.1}>
                 <div className="relative pl-8 md:pl-20">
-                  {/* Timeline dot */}
                   <div className="absolute left-0 md:left-8 top-2 w-3 h-3 -translate-x-[5px] rounded-full bg-accent border-2 border-background" />
 
                   <div className="p-6 rounded-xl bg-card border border-card-border hover:border-accent/20 transition-all duration-300">
@@ -92,8 +89,8 @@ export function Experience(): React.ReactElement {
                           key={point.slice(0, 40)}
                           className="text-sm text-muted leading-relaxed flex gap-2"
                         >
-                          <span className="text-accent mt-1 shrink-0">
-                            &bull;
+                          <span className="text-accent/60 mt-1 shrink-0 text-xs">
+                            &#9654;
                           </span>
                           {point}
                         </li>
@@ -105,7 +102,7 @@ export function Experience(): React.ReactElement {
                         {role.stack.split(", ").map((tech) => (
                           <span
                             key={tech}
-                            className="px-2.5 py-1 text-xs font-mono bg-accent/5 text-accent/80 rounded-md border border-accent/10"
+                            className="px-2.5 py-1 text-xs font-mono bg-accent/5 text-accent/70 rounded-md border border-accent/10"
                           >
                             {tech}
                           </span>

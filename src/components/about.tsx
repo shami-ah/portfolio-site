@@ -3,10 +3,10 @@
 import { FadeUp, SlideIn } from "./motion";
 
 const stats = [
-  { value: "250+", label: "Projects Delivered" },
-  { value: "5+", label: "Years Experience" },
+  { value: "250+", label: "Projects Shipped" },
+  { value: "5+", label: "Years Building" },
   { value: "98%", label: "Client Satisfaction" },
-  { value: "<1s", label: "CodeLens Review Speed" },
+  { value: "<1s", label: "CodeLens Reviews" },
 ];
 
 export function About(): React.ReactElement {
@@ -15,12 +15,12 @@ export function About(): React.ReactElement {
       <div className="max-w-6xl mx-auto px-6">
         <FadeUp>
           <p className="text-sm font-mono text-accent mb-4 uppercase tracking-wider">
-            About Me
+            About
           </p>
           <h2 className="text-3xl md:text-4xl font-bold mb-12">
-            The production gap is real.
+            Most AI projects break in production.
             <br />
-            <span className="text-muted">I close it.</span>
+            <span className="text-muted">I make sure mine don&apos;t.</span>
           </h2>
         </FadeUp>
 
@@ -28,28 +28,28 @@ export function About(): React.ReactElement {
           <SlideIn direction="left">
             <div className="space-y-5 text-muted leading-relaxed">
               <p>
-                Most AI projects fail in production. They work in demos but
-                break at scale &mdash; hallucinations go unchecked, workflows
-                lack human oversight, and the &ldquo;AI layer&rdquo; is just an
-                API wrapper.
+                The gap between an AI demo and a production system is enormous.
+                Hallucinations slip through, there&apos;s no human oversight, and
+                the whole thing is held together by a single API call. I&apos;ve
+                spent five years closing that gap.
               </p>
               <p>
-                My work sits at the intersection of{" "}
+                I work where{" "}
                 <span className="text-foreground font-medium">
                   AI orchestration
                 </span>{" "}
-                and{" "}
+                meets{" "}
                 <span className="text-foreground font-medium">
                   systems engineering
                 </span>
-                . I design multi-agent architectures with human-in-the-loop
-                approval, build declarative workflow engines that chain LLM
-                reasoning with real-world actions, and ship full-stack products
-                from database schema to polished UI.
+                : multi-agent architectures with human approval gates, workflow
+                engines that connect LLM reasoning to real actions like calendar
+                bookings and invoices, and full-stack products shipped from schema
+                design to polished UI.
               </p>
               <p className="text-foreground font-medium italic border-l-2 border-accent pl-4">
-                Architect the system first, then let AI agents handle the
-                repetitive work under human oversight.
+                Design the system first. Then let AI agents handle the repetitive
+                work while humans stay in control.
               </p>
             </div>
           </SlideIn>

@@ -5,7 +5,7 @@ import { FadeUp } from "./motion";
 
 export function Hero(): React.ReactElement {
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
       {/* Gradient orbs */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute -top-40 -right-40 w-96 h-96 bg-accent/5 rounded-full blur-3xl" />
@@ -24,34 +24,31 @@ export function Hero(): React.ReactElement {
 
       <div className="relative max-w-4xl mx-auto px-6 text-center">
         <FadeUp>
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent/10 border border-accent/20 text-accent text-sm font-mono mb-8">
-            <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
-            Available for work
-          </div>
-        </FadeUp>
-
-        <FadeUp delay={0.05}>
-          <p className="text-lg md:text-xl font-mono text-accent mb-4 tracking-wide">
+          <p className="text-lg md:text-xl font-mono text-accent mb-3 tracking-wide">
             Ahtesham Ahmad
           </p>
         </FadeUp>
 
+        <FadeUp delay={0.05}>
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-green-500/10 border border-green-500/20 text-green-400 text-xs font-mono mb-8">
+            <span className="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse" />
+            Open to opportunities
+          </div>
+        </FadeUp>
+
         <FadeUp delay={0.1}>
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight leading-[1.15] mb-6">
-            I architect AI systems
+            I build AI systems that
             <br className="hidden sm:block" />
-            <span className="text-accent"> that run businesses</span>
-            <br className="hidden sm:block" />
-            <span> autonomously.</span>
+            <span className="text-accent"> run businesses</span> on their own.
           </h1>
         </FadeUp>
 
         <FadeUp delay={0.2}>
           <p className="text-base md:text-lg text-muted max-w-2xl mx-auto mb-10 leading-relaxed px-4">
-            Full-stack AI engineer &amp; automation architect with 5+ years and 250+
-            delivered projects. I build production SaaS, open-source developer
-            tools, and end-to-end autonomous systems. Architecture to
-            deployment, zero handoffs.
+            5+ years shipping production AI. From email-to-task pipelines and
+            multi-agent orchestration to open-source code review
+            tools, I handle the full stack so you don&apos;t need a team.
           </p>
         </FadeUp>
 
@@ -61,7 +58,7 @@ export function Hero(): React.ReactElement {
               href="#projects"
               className="px-8 py-3 bg-accent text-white font-medium rounded-lg hover:bg-accent/90 transition-all duration-200 hover:shadow-lg hover:shadow-accent/20"
             >
-              View My Work
+              See Case Studies
             </a>
             <a
               href="#contact"
@@ -75,8 +72,8 @@ export function Hero(): React.ReactElement {
         {/* Architecture flow */}
         <FadeUp delay={0.5}>
           <div className="mt-16 p-4 rounded-xl bg-card/50 border border-card-border backdrop-blur-sm">
-            <p className="text-xs font-mono text-muted mb-2 uppercase tracking-wider">
-              My Architecture Pattern
+            <p className="text-xs font-mono text-muted mb-3 uppercase tracking-wider">
+              How I architect every system
             </p>
             <motion.div
               className="flex flex-wrap items-center justify-center gap-x-1 gap-y-2 text-xs font-mono px-2"
@@ -86,18 +83,20 @@ export function Hero(): React.ReactElement {
               viewport={{ once: true }}
             >
               {[
-                "Input Sources",
-                "AI Classification",
-                "Agent Orchestrator",
-                "Human Review",
-                "Execution",
-                "Observability",
+                "Ingest",
+                "Classify",
+                "Orchestrate",
+                "Review",
+                "Execute",
+                "Observe",
               ].map((step, i) => (
                 <span key={step} className="flex items-center gap-1">
                   <span className="px-2 py-1 sm:px-3 sm:py-1.5 bg-accent/10 text-accent border border-accent/20 rounded-md text-[10px] sm:text-xs whitespace-nowrap">
                     {step}
                   </span>
-                  {i < 5 && <span className="text-muted">&rarr;</span>}
+                  {i < 5 && (
+                    <span className="text-muted/50">&rarr;</span>
+                  )}
                 </span>
               ))}
             </motion.div>
