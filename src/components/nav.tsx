@@ -37,7 +37,7 @@ export function Nav(): React.ReactElement {
           href="#"
           className="font-mono text-sm font-bold tracking-wider text-accent"
         >
-          AA.
+          Ahtesham Ahmad
         </a>
 
         {/* Desktop */}

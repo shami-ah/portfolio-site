@@ -130,11 +130,11 @@ function ProjectCard({ project }: { project: Project }): React.ReactElement {
       layout
       className={`rounded-xl border transition-all duration-300 overflow-hidden ${
         project.featured
-          ? "bg-card border-accent/20 hover:border-accent/40 col-span-full"
+          ? "bg-card border-accent/20 hover:border-accent/40 md:col-span-full"
           : "bg-card border-card-border hover:border-accent/20"
       }`}
     >
-      <div className="p-6 md:p-8">
+      <div className="p-5 sm:p-6 md:p-8">
         <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4 mb-4">
           <div>
             <div className="flex items-center gap-3 mb-2">

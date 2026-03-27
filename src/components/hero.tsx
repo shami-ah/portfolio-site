@@ -30,22 +30,28 @@ export function Hero(): React.ReactElement {
           </div>
         </FadeUp>
 
+        <FadeUp delay={0.05}>
+          <p className="text-lg md:text-xl font-mono text-accent mb-4 tracking-wide">
+            Ahtesham Ahmad
+          </p>
+        </FadeUp>
+
         <FadeUp delay={0.1}>
-          <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-[1.1] mb-6">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight leading-[1.15] mb-6">
             I architect AI systems
-            <br />
-            <span className="text-accent">that run businesses</span>
-            <br />
-            autonomously.
+            <br className="hidden sm:block" />
+            <span className="text-accent"> that run businesses</span>
+            <br className="hidden sm:block" />
+            <span> autonomously.</span>
           </h1>
         </FadeUp>
 
         <FadeUp delay={0.2}>
-          <p className="text-lg md:text-xl text-muted max-w-2xl mx-auto mb-10 leading-relaxed">
-            Full-stack AI engineer & automation architect. 250+ delivered
-            projects, production SaaS serving real users, and open-source
-            developer tools. End-to-end: architecture to deployment, zero
-            handoffs.
+          <p className="text-base md:text-lg text-muted max-w-2xl mx-auto mb-10 leading-relaxed px-4">
+            Full-stack AI engineer &amp; automation architect with 5+ years and 250+
+            delivered projects. I build production SaaS, open-source developer
+            tools, and end-to-end autonomous systems. Architecture to
+            deployment, zero handoffs.
           </p>
         </FadeUp>
 
@@ -73,7 +79,7 @@ export function Hero(): React.ReactElement {
               My Architecture Pattern
             </p>
             <motion.div
-              className="flex flex-wrap items-center justify-center gap-2 text-xs font-mono"
+              className="flex flex-wrap items-center justify-center gap-x-1 gap-y-2 text-xs font-mono px-2"
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               transition={{ duration: 1, delay: 0.8 }}
@@ -87,11 +93,11 @@ export function Hero(): React.ReactElement {
                 "Execution",
                 "Observability",
               ].map((step, i) => (
-                <span key={step} className="flex items-center gap-2">
-                  <span className="px-3 py-1.5 bg-accent/10 text-accent border border-accent/20 rounded-md">
+                <span key={step} className="flex items-center gap-1">
+                  <span className="px-2 py-1 sm:px-3 sm:py-1.5 bg-accent/10 text-accent border border-accent/20 rounded-md text-[10px] sm:text-xs whitespace-nowrap">
                     {step}
                   </span>
-                  {i < 5 && <span className="text-muted hidden sm:inline">&rarr;</span>}
+                  {i < 5 && <span className="text-muted">&rarr;</span>}
                 </span>
               ))}
             </motion.div>
