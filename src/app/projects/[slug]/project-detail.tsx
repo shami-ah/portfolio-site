@@ -1,7 +1,9 @@
 "use client";
 
 import { type ProjectData } from "@/data/projects";
+import { diagrams } from "@/data/diagrams";
 import { FadeUp, SlideIn } from "@/components/motion";
+import { ArchitectureDiagram } from "@/components/architecture-diagram";
 import { motion } from "framer-motion";
 
 export function ProjectDetail({
@@ -109,33 +111,42 @@ export function ProjectDetail({
         </div>
       </section>
 
-      {/* Architecture */}
+      {/* Architecture Diagram */}
       <section className="py-16 px-6 bg-card/30">
-        <div className="max-w-4xl mx-auto">
-          <FadeUp>
-            <p className="text-xs font-mono text-accent mb-6 uppercase tracking-wider">
-              System Architecture
-            </p>
-          </FadeUp>
-          <div className="flex flex-wrap items-center gap-2 font-mono text-sm">
-            {project.architecture.map((step, i) => (
-              <motion.span
-                key={step}
-                className="flex items-center gap-2"
-                initial={{ opacity: 0, y: 10 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.08 }}
-              >
-                <span className="px-3 py-2 bg-card border border-card-border rounded-lg text-accent text-xs whitespace-nowrap">
-                  {step}
-                </span>
-                {i < project.architecture.length - 1 && (
-                  <span className="text-muted/40">&rarr;</span>
-                )}
-              </motion.span>
-            ))}
-          </div>
+        <div className="max-w-5xl mx-auto">
+          {diagrams[project.slug] ? (
+            <ArchitectureDiagram
+              chart={diagrams[project.slug]}
+              title="System Architecture"
+            />
+          ) : (
+            <>
+              <FadeUp>
+                <p className="text-xs font-mono text-accent mb-6 uppercase tracking-wider">
+                  System Architecture
+                </p>
+              </FadeUp>
+              <div className="flex flex-wrap items-center gap-2 font-mono text-sm">
+                {project.architecture.map((step, i) => (
+                  <motion.span
+                    key={step}
+                    className="flex items-center gap-2"
+                    initial={{ opacity: 0, y: 10 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: i * 0.08 }}
+                  >
+                    <span className="px-3 py-2 bg-card border border-card-border rounded-lg text-accent text-xs whitespace-nowrap">
+                      {step}
+                    </span>
+                    {i < project.architecture.length - 1 && (
+                      <span className="text-muted/40">&rarr;</span>
+                    )}
+                  </motion.span>
+                ))}
+              </div>
+            </>
+          )}
         </div>
       </section>
 
