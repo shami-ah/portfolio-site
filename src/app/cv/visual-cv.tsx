@@ -156,6 +156,12 @@ export function VisualCV(): React.ReactElement {
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.4 }}
                 >AI Automation Architect</motion.p>
+                <motion.p
+                  className="text-sm text-zinc-500 mt-4 max-w-md leading-relaxed"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.45 }}
+                >5+ years shipping production AI systems — from multi-agent orchestration and RAG pipelines to full-stack SaaS. I design architectures where AI agents classify, execute, and learn while humans stay in control.</motion.p>
               </div>
               <motion.div
                 className="text-sm text-zinc-500 space-y-1.5 font-mono"
@@ -165,6 +171,7 @@ export function VisualCV(): React.ReactElement {
               >
                 <p>iamshami1996@gmail.com</p>
                 <p className="text-blue-400">github.com/shami-ah</p>
+                <p className="text-blue-400">linkedin.com/in/ahtesham</p>
                 <p className="text-blue-400">portfolio-site-alpha.pages.dev</p>
                 <p>Islamabad, PK · Remote</p>
               </motion.div>
@@ -228,17 +235,20 @@ export function VisualCV(): React.ReactElement {
                   "Architected AI orchestration: email → classification → task extraction → workflow execution → auto-approval",
                   "Built Supabase Edge Functions for LLM calls, entity extraction, and workflow triggers",
                   "Designed multi-agent system with planner/worker/validator pattern + human-in-the-loop approval",
+                  "Shipped React frontend: Task Inbox, Workflow Runner, Approval Flows, Marketing Hub, Admin Dashboard",
                   "React + TypeScript + Supabase + Stripe + Claude API + GitHub Actions",
                 ]} />
-                <TimelineRole title="Director IT & R&D" company="Rouelite" period="2022 — 2024" location="Remote" items={[
+                <TimelineRole title="Director IT & R&D" company="Rouelite Techno Pvt. Ltd." period="2022 — 2024" location="Remote" items={[
                   "Led 10-person team building custom CRM and business automation",
                   "Designed system architecture serving 500+ daily users",
+                  "Introduced AI into daily operations, reducing manual data entry by 70%",
+                  "Replaced 3 legacy spreadsheet processes with React + Supabase internal tools",
                   "Implemented agile workflows reducing delivery cycles by 40%",
                 ]} />
                 <TimelineRole title="AI Engineer & Full-Stack Dev" company="Freelance · Upwork / Fiverr" period="2019 — Present" location="Remote · Global" items={[
-                  "250+ projects — RAG pipelines, prompt engineering, AI workflows",
-                  "100% Job Success on Upwork · Worked with Outlier, Translated, RWS",
-                  "LLM evaluation, RLHF, SFT research across international teams",
+                  "250+ projects — RAG pipelines, prompt engineering, AI workflows, analytics dashboards",
+                  "100% Job Success on Upwork · 40+ returning long-term clients",
+                  "500+ RLHF/SFT evaluation sessions on frontier models (Outlier, RWS, Translated)",
                 ]} />
               </Section>
 
@@ -247,6 +257,8 @@ export function VisualCV(): React.ReactElement {
                 <ProjectCard name="CodeLens" tag="Open Source" tagColor={ACCENT} description="154-pattern AI code review engine with security taint tracking, PR risk scoring, and code explanation. Zero deps, <1s reviews." link="github.com/shami-ah/codelens" />
                 <ProjectCard name="OpenEvent" tag="Production SaaS" tagColor={AMBER} description="AI-powered event management processing real revenue. Multi-agent orchestration: email → entity extraction → workflow → auto-approval." />
                 <ProjectCard name="Command Center" tag="Developer Tool" tagColor="#10b981" description="Unified dev interface with Claude API, Google Gemini, Supabase, Gmail/Calendar integration. PWA with push notifications." link="github.com/shami-ah/shami-command-center" />
+                <ProjectCard name="Gluten-Free Deals & Dining" tag="Cross-Platform" tagColor="#8b5cf6" description="React Native + Next.js app. LLM-generated 200+ search queries, concurrent scraping from 40+ retailers, GPS restaurant finder, AI recipe generation." />
+                <ProjectCard name="RAG Pipeline" tag="AI Infrastructure" tagColor="#ec4899" description="Domain-specific Q&A system with Pinecone vector search, LangChain chunking, GPT-4 answer generation. Sub-second retrieval from thousands of document chunks." link="github.com/shami-ah/rag-gpt-pinecone" />
               </Section>
 
               {/* Education */}
@@ -284,6 +296,12 @@ export function VisualCV(): React.ReactElement {
                 ))}
               </Section>
 
+              <Section title="Process" icon="▹">
+                {["Architecture-First Development", "Team Leadership (3-10 people)", "Client-Facing Comms & SOWs", "Code Review Systems (CodeLens)"].map((s, i) => (
+                  <SkillBar key={s} name={s} level={90 - i * 5} delay={i * 0.05} />
+                ))}
+              </Section>
+
               {/* Certifications */}
               <Section title="Certifications" icon="🎓">
                 <div className="space-y-2 text-xs">
@@ -296,7 +314,7 @@ export function VisualCV(): React.ReactElement {
               {/* Languages */}
               <Section title="Languages" icon="🌐">
                 <div className="flex gap-2 flex-wrap">
-                  {[{ l: "English", v: "Professional" }, { l: "German", v: "Basic" }, { l: "Urdu", v: "Native" }].map((lang) => (
+                  {[{ l: "English", v: "Professional" }, { l: "Urdu", v: "Native" }, { l: "Pashtu", v: "Native" }, { l: "Sindhi", v: "Conversational" }, { l: "Arabic", v: "Conversational" }].map((lang) => (
                     <span key={lang.l} className="text-xs px-2.5 py-1 rounded-md bg-zinc-800/80 text-zinc-400 border border-zinc-700/50">{lang.l} · {lang.v}</span>
                   ))}
                 </div>
@@ -338,7 +356,7 @@ export function VisualCV(): React.ReactElement {
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
           >
-            <p className="text-xs text-zinc-600 font-mono">Built with Next.js + Framer Motion · 2026</p>
+<p className="text-xs text-zinc-600 font-mono">&nbsp;</p>
           </motion.footer>
         </div>
       </div>
@@ -350,7 +368,7 @@ export function VisualCV(): React.ReactElement {
             <div>
               <h1 className="text-2xl font-bold">Ahtesham Ahmad</h1>
               <p className="text-sm font-medium" style={{ color: ACCENT }}>AI Automation Architect</p>
-              <p className="text-xs text-zinc-500 mt-1 max-w-sm">I build AI systems that run businesses — designing production architectures where agents classify, orchestrate, execute, and learn.</p>
+              <p className="text-xs text-zinc-500 mt-1 max-w-sm">5+ years shipping production AI — multi-agent orchestration, RAG pipelines, and full-stack SaaS. I design architectures where agents classify, execute, and learn while humans stay in control.</p>
             </div>
             <div className="text-right text-[10px] text-zinc-500 space-y-0.5">
               <p>iamshami1996@gmail.com</p>
@@ -367,14 +385,16 @@ export function VisualCV(): React.ReactElement {
         <div className="px-10 py-4 grid grid-cols-[1fr_200px] gap-6 text-[11px]">
           <div className="space-y-3">
             <PrintSection title="Experience">
-              <PrintRole title="Lead AI Developer" co="MORE LIFE Hospitality GmbH" period="Sep 2025 — Present" items={["AI orchestration: email → classification → task → workflow → auto-approval", "Supabase Edge Functions, Stripe, Claude API, GitHub Actions", "Multi-agent: planner/worker/validator + human-in-the-loop"]} />
-              <PrintRole title="Director IT & R&D" co="Rouelite" period="2022 — 2024" items={["Led 10-person team, custom CRM, 500+ daily users", "Agile workflows, 40% faster delivery cycles"]} />
-              <PrintRole title="AI Engineer & Full-Stack" co="Freelance (Upwork/Fiverr)" period="2019 — Present" items={["250+ projects, 100% Job Success, Outlier/Translated/RWS", "RAG pipelines, prompt engineering, LLM evaluation"]} />
+              <PrintRole title="Lead AI Developer" co="MORE LIFE Hospitality GmbH" period="Sep 2025 — Present" items={["AI orchestration: email → classification → task → workflow → auto-approval", "Supabase Edge Functions, Stripe, Claude API, GitHub Actions", "Multi-agent: planner/worker/validator + human-in-the-loop", "Shipped frontend: Task Inbox, Workflow Runner, Marketing Hub, Admin Dashboard"]} />
+              <PrintRole title="Director IT & R&D" co="Rouelite Techno Pvt. Ltd." period="2022 — 2024" items={["Led 10-person team, custom CRM, 500+ daily users", "AI integration reduced manual data entry by 70%", "Replaced 3 legacy spreadsheets with React + Supabase tools", "Agile workflows, 40% faster delivery cycles"]} />
+              <PrintRole title="AI Engineer & Full-Stack" co="Freelance (Upwork/Fiverr)" period="2019 — Present" items={["250+ projects, 100% Job Success, 40+ returning clients", "500+ RLHF/SFT evaluation sessions (Outlier, RWS, Translated)", "RAG pipelines, prompt engineering, analytics dashboards"]} />
             </PrintSection>
             <PrintSection title="Key Projects">
               <p><strong>CodeLens</strong> (Open Source) — 154-pattern AI code review, taint tracking, PR risk scoring. Zero deps. github.com/shami-ah/codelens</p>
               <p><strong>OpenEvent</strong> (Production SaaS) — AI event management, multi-agent orchestration, Stripe payments</p>
               <p><strong>Command Center</strong> — Unified dev interface, Claude API + Gemini + Supabase + Gmail/Calendar</p>
+              <p><strong>Gluten-Free Deals</strong> (Cross-Platform) — React Native + Next.js, LLM scraping from 40+ retailers, GPS restaurant finder</p>
+              <p><strong>RAG Pipeline</strong> (AI Infra) — Pinecone + LangChain + GPT-4, sub-second retrieval from thousands of chunks</p>
             </PrintSection>
             <PrintSection title="Education">
               <p><strong>B.Eng Electrical & Electronics</strong> — Sukkur IBA University (2017-2020, Grade A)</p>
@@ -385,8 +405,9 @@ export function VisualCV(): React.ReactElement {
             <PrintSection title="AI & ML"><p>Claude API, OpenAI, LangChain, RAG, Multi-Agent, Prompt Engineering, RLHF, Taint Analysis</p></PrintSection>
             <PrintSection title="Full Stack"><p>TypeScript, React, Next.js, Node.js, Python, Supabase, PostgreSQL, Tailwind</p></PrintSection>
             <PrintSection title="Infrastructure"><p>GitHub Actions, Docker, Cloudflare, Stripe, Playwright, n8n</p></PrintSection>
+            <PrintSection title="Process"><p>Architecture-first dev, team leadership (3-10), client comms & SOWs, CodeLens code review</p></PrintSection>
             <PrintSection title="Certs"><p>Gen AI & LLMs (IBM) · PM (Google) · Gen AI for PMs (PMI)</p></PrintSection>
-            <PrintSection title="Languages"><p>English (Professional) · German (Basic) · Urdu (Native)</p></PrintSection>
+            <PrintSection title="Languages"><p>English (Professional) · Urdu (Native) · Pashtu (Native) · Sindhi (Conversational) · Arabic (Conversational)</p></PrintSection>
             <PrintSection title="Building Next"><p>CodeLens v0.3 (AST) · AI Agent Orchestrator · LLM Observability</p></PrintSection>
           </div>
         </div>
