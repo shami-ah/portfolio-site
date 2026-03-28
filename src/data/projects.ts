@@ -20,27 +20,27 @@ export const projects: ProjectData[] = [
   {
     slug: "codelens",
     title: "CodeLens",
-    subtitle: "Universal AI Code Review System (v0.2)",
+    subtitle: "Universal AI Code Review System (v0.2.1)",
     type: "Open Source",
-    impact: "154 patterns, security taint tracking, PR risk scoring, and code explanation. Reviews in under 1 second, entirely on your machine.",
+    impact: "242 patterns across 9 stacks, tested against real open-source repos. Reviews in under 1 second, entirely on your machine. Guardian mode prevents bugs before they're written.",
     problem:
       "Commercial code review tools are slow, cloud-dependent, expensive, and do either pattern matching or AI reasoning. Never both. Teams need fast, private, accurate reviews that also catch security vulnerabilities, missing test coverage, and risky PRs without sending code to third-party servers.",
     solution:
-      "A hybrid review engine combining 154 deterministic patterns with AI reasoning in a multi-pass pipeline. v0.2 added security taint tracking (source-to-sink analysis with CWE/OWASP mapping), PR risk scoring (weighted 1-10 across 8 factors), a code explanation command powered by the codebase index, test coverage gap detection, and dependency vulnerability scanning against 42+ known vulns. It builds a persistent codebase index on first run, then does incremental updates in 60ms.",
+      "A hybrid review engine combining 242 deterministic patterns across 9 stacks with AI reasoning in a multi-pass pipeline. v0.2.1 expanded from 4 to 9 stacks (adding Next.js, FastAPI, Rails, Laravel, Spring Boot), each tested against real open-source repos (vercel/next.js, discourse/discourse, monicahq/monica, spring-petclinic). Guardian mode prevents bugs at generation time by loading critical patterns into AI agent context. Security taint tracking, PR risk scoring, self-learning FP suppression, and zero runtime dependencies.",
     architecture: [
       "Git Diff",
       "AST-aware File Parser",
       "Persistent Index (call graph + schema graph + type graph + column registry)",
       "Incremental Update (60ms)",
       "Pass 0-2: Pre-flight, Layer Analysis, Cross-file Tracing",
-      "Pass 3: Pattern Scan (154 patterns)",
+      "Pass 3: Pattern Scan (242 patterns, 9 stacks)",
       "Pass 3.5: Taint Tracking + Test Coverage + Dep Vulns",
       "Pass 4: Self-Validation + PR Risk Score",
       "AI Reasoning Layer (Claude / Codex / Gemini)",
       "Self-Learning Feedback Loop",
     ],
     features: [
-      "154 patterns across 4 stacks with OWASP Top 10 and CWE mapping",
+      "242 patterns across 9 stacks (TS, Python, Go, Java, Ruby, PHP, Next.js, FastAPI, Spring Boot) with OWASP/CWE mapping",
       "Security taint tracking: traces user input through API to DB to output, flags unsanitized paths",
       "PR Risk Score: weighted 1-10 rating across 8 factors (auth changes, schema mods, missing tests, etc.)",
       "Code explanation: codelens explain <file> shows callers, callees, data flow, and risk analysis using the index",
@@ -48,9 +48,11 @@ export const projects: ProjectData[] = [
       "Dependency vulnerability scanning against 42+ known CVEs",
       "Persistent codebase index with 62K+ edges in the call graph",
       "Self-learning noise filter using TF-IDF similarity, zero external dependencies",
+      "Guardian mode: shift-left prevention — loads patterns into AI agent context to prevent bugs during code generation",
+      "Guard command: fast incremental check for editor hooks and CI/CD pre-commit gates",
       "Dual mode: Terminal for instant checks, AI Agent mode for deep reasoning",
       "Adapters for Claude Code, Codex CLI, Gemini, and Cursor",
-      "npm-publish ready: npx codelens review",
+      "All new modules tested against real repos: vercel/next.js, discourse/discourse, monicahq/monica, spring-petclinic, tiangolo/fastapi-template",
     ],
     techDecisions: [
       {
@@ -76,7 +78,7 @@ export const projects: ProjectData[] = [
     ],
     stack: ["TypeScript", "Regex Parsers", "Persistent JSON Index", "GitHub Actions", "Claude Code Adapter", "npm"],
     results: [
-      "154 patterns (up from 113 in v0.1)",
+      "242 patterns across 9 stacks, tested against 5 real open-source repos",
       "First index: 4.0s on a 1,622-file production codebase",
       "Incremental update: 60ms",
       "7-file review: 780ms",
