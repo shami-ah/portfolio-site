@@ -21,7 +21,7 @@ export const projects: ProjectData[] = [
     slug: "codelens",
     title: "CodeLens",
     subtitle: "Universal AI Code Review System (v0.2.1)",
-    type: "Open Source",
+    type: "AI Dev Tool",
     impact: "242 patterns across 9 stacks, tested against real open-source repos. Reviews in under 1 second, entirely on your machine. Guardian mode prevents bugs before they're written.",
     problem:
       "Commercial code review tools are slow, cloud-dependent, expensive, and do either pattern matching or AI reasoning. Never both. Teams need fast, private, accurate reviews that also catch security vulnerabilities, missing test coverage, and risky PRs without sending code to third-party servers.",
