@@ -86,7 +86,7 @@ export const projects: ProjectData[] = [
       "Multi-repo benchmarks: TypeScript, Next.js, Django",
       "MIT licensed, 100% local, zero cloud dependencies",
     ],
-    github: "https://github.com/shami-ah/codelens",
+    // github: "https://github.com/shami-ah/codelens", // Private — evaluating commercial release
     featured: true,
   },
   {
