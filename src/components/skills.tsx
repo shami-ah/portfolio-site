@@ -32,7 +32,7 @@ const skillGroups: SkillGroup[] = [
   {
     title: "Infrastructure",
     items: [
-      "GitHub Actions CI/CD, Docker, branch deploys",
+      "GitHub Actions CI/CD, Docker Compose, containerized dev environments",
       "Sentry, Grafana, structured logging",
       "n8n workflow automation, cron scheduling",
       "Cloudflare, Vercel, Supabase hosting",

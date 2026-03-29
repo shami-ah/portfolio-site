@@ -115,4 +115,39 @@ export const diagrams: Record<string, string> = {
     style B fill:#1e293b,stroke:#3b82f6,color:#93c5fd
     style G fill:#1e293b,stroke:#3b82f6,color:#93c5fd
     style I fill:#1e293b,stroke:#22c55e,color:#86efac`,
+
+  "dev-env": `flowchart TD
+    A[iTerm2 / SSH / Phone] --> B[dev alias]
+    B --> C[Docker Container]
+
+    subgraph Container ["Dev Container (Ubuntu 22.04)"]
+      D[zsh + p10k]
+      E[Node 24 + pnpm + TS]
+      F[Claude Code + Skills]
+      G[gh + supabase + vercel]
+      H[Playwright + Chromium]
+    end
+
+    C --> D & E & F & G & H
+
+    subgraph Volumes ["Volume Mounts (Host)"]
+      I[~/Work/ Code]
+      J[~/.claude/ Config]
+      K[~/.ssh/ Keys]
+      L[~/.env.secrets]
+    end
+
+    I & J & K & L -.-> Container
+
+    subgraph Services ["Companion Services"]
+      M[PostgreSQL 15]
+      N[Redis 7]
+    end
+
+    Container <--> M & N
+
+    style C fill:#1e293b,stroke:#3b82f6,color:#93c5fd
+    style Container fill:#0f172a,stroke:#3b82f6,color:#93c5fd
+    style Volumes fill:#0f172a,stroke:#eab308,color:#fde047
+    style Services fill:#0f172a,stroke:#22c55e,color:#86efac`,
 };
