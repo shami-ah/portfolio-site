@@ -20,27 +20,27 @@ export const projects: ProjectData[] = [
   {
     slug: "codelens",
     title: "CodeLens",
-    subtitle: "Universal AI Code Review System (v0.3.0)",
+    subtitle: "Universal AI Code Review System (v0.3.1)",
     type: "AI Dev Tool",
-    impact: "253 patterns across 9 stacks, tested against real open-source repos. Reviews in under 1 second, entirely on your machine. Guardian mode prevents bugs before they're written.",
+    impact: "272 patterns across 9 stacks, tested against real open-source repos. Reviews in under 1 second, entirely on your machine. Guardian mode prevents bugs before they're written.",
     problem:
       "Commercial code review tools are slow, cloud-dependent, expensive, and do either pattern matching or AI reasoning. Never both. Teams need fast, private, accurate reviews that also catch security vulnerabilities, missing test coverage, and risky PRs without sending code to third-party servers.",
     solution:
-      "A hybrid review engine combining 253 deterministic patterns across 9 stacks with AI reasoning in a multi-pass pipeline. v0.3.0 auto-detects AI agents (Claude Code, Cursor, Windsurf, Copilot, Codex) and injects guardian rules automatically — zero manual config. Tested against real open-source repos (vercel/next.js, discourse/discourse, monicahq/monica, spring-petclinic). Security taint tracking, PR risk scoring, self-learning FP suppression, and zero runtime dependencies.",
+      "A hybrid review engine combining 272 deterministic patterns across 9 stacks with AI reasoning in a multi-pass pipeline. v0.3.0 auto-detects AI agents (Claude Code, Cursor, Windsurf, Copilot, Codex) and injects guardian rules automatically — zero manual config. Tested against real open-source repos (vercel/next.js, discourse/discourse, monicahq/monica, spring-petclinic). Security taint tracking, PR risk scoring, self-learning FP suppression, and zero runtime dependencies.",
     architecture: [
       "Git Diff",
       "AST-aware File Parser",
       "Persistent Index (call graph + schema graph + type graph + column registry)",
       "Incremental Update (60ms)",
       "Pass 0-2: Pre-flight, Layer Analysis, Cross-file Tracing",
-      "Pass 3: Pattern Scan (253 patterns, 9 stacks) + AI Agent Auto-Detection",
+      "Pass 3: Pattern Scan (272 patterns, 9 stacks) + AI Agent Auto-Detection",
       "Pass 3.5: Taint Tracking + Test Coverage + Dep Vulns",
       "Pass 4: Self-Validation + PR Risk Score",
       "AI Reasoning Layer (Claude / Codex / Gemini)",
       "Self-Learning Feedback Loop",
     ],
     features: [
-      "253 patterns across 9 stacks (TS, Python, Go, Java, Ruby, PHP, Next.js, FastAPI, Spring Boot) with OWASP/CWE mapping",
+      "272 patterns across 9 stacks (TS, Python, Go, Java, Ruby, PHP, Next.js, FastAPI, Spring Boot) with OWASP/CWE mapping",
       "Security taint tracking: traces user input through API to DB to output, flags unsanitized paths",
       "PR Risk Score: weighted 1-10 rating across 8 factors (auth changes, schema mods, missing tests, etc.)",
       "Code explanation: codelens explain <file> shows callers, callees, data flow, and risk analysis using the index",
@@ -84,7 +84,7 @@ export const projects: ProjectData[] = [
     ],
     stack: ["TypeScript", "Docker", "esbuild", "Regex Parsers", "Persistent JSON Index", "GitHub Actions", "Claude Code Adapter", "GHCR"],
     results: [
-      "253 patterns across 9 stacks, tested against 5 real open-source repos",
+      "272 patterns across 9 stacks, tested against 5 real open-source repos",
       "First index: 4.0s on a 1,622-file production codebase",
       "Incremental update: 60ms",
       "7-file review: 780ms",

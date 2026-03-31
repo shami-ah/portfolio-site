@@ -4,7 +4,7 @@ export const diagrams: Record<string, string> = {
     B --> C[Codebase Index]
     C --> D{Incremental\\nUpdate 60ms}
     D --> E[Pass 0-2\\nPre-flight\\nLayer Analysis\\nCross-file Tracing]
-    E --> F[Pass 3\\nPattern Scan\\n253 patterns]
+    E --> F[Pass 3\\nPattern Scan\\n272 patterns]
     F --> G[Pass 3.5\\nTaint Tracking\\nTest Coverage\\nDep Vulns]
     G --> H[Pass 4\\nSelf-Validation\\n+ PR Risk Score]
     H --> I{AI Agent\\nMode?}

@@ -4,7 +4,7 @@ import { FadeUp } from "./motion";
 
 const upcoming = [
   {
-    title: "CodeLens v0.3",
+    title: "CodeLens v0.4",
     description:
       "Tree-sitter AST integration for true semantic analysis, VS Code extension, and pattern marketplace for community-contributed rules",
     status: "Next Up",

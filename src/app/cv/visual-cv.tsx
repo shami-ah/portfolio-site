@@ -211,7 +211,7 @@ export function VisualCV(): React.ReactElement {
               { n: 250, s: "+", l: "Projects Delivered" },
               { n: 5, s: "+", l: "Years Experience" },
               { n: 100, s: "%", l: "Upwork Job Success" },
-              { n: 154, s: "", l: "CodeLens Patterns" },
+              { n: 272, s: "", l: "CodeLens Patterns" },
             ].map((stat, i) => (
               <motion.div
                 key={stat.l}
@@ -254,7 +254,7 @@ export function VisualCV(): React.ReactElement {
 
               {/* Key Projects */}
               <Section title="Key Projects" icon="◆">
-                <ProjectCard name="CodeLens" tag="AI Dev Tool" tagColor={ACCENT} description="242-pattern AI code review engine across 9 stacks. Security taint tracking, PR risk scoring, guardian mode. Zero deps, <1s reviews." />
+                <ProjectCard name="CodeLens" tag="AI Dev Tool" tagColor={ACCENT} description="272-pattern AI code review engine across 9 stacks. Security taint tracking, PR risk scoring, guardian mode. Zero deps, <1s reviews." />
                 <ProjectCard name="OpenEvent" tag="Production SaaS" tagColor={AMBER} description="AI-powered event management processing real revenue. Multi-agent orchestration: email → entity extraction → workflow → auto-approval." />
                 <ProjectCard name="Command Center" tag="Developer Tool" tagColor="#10b981" description="Unified dev interface with Claude API, Google Gemini, Supabase, Gmail/Calendar integration. PWA with push notifications." link="github.com/shami-ah/shami-command-center" />
                 <ProjectCard name="Gluten-Free Deals & Dining" tag="Cross-Platform" tagColor="#8b5cf6" description="React Native + Next.js app. LLM-generated 200+ search queries, concurrent scraping from 40+ retailers, GPS restaurant finder, AI recipe generation." />
@@ -324,7 +324,7 @@ export function VisualCV(): React.ReactElement {
               <Section title="Building Next" icon="🚀">
                 <div className="space-y-2">
                   {[
-                    { icon: "🔬", name: "CodeLens v0.3", status: "Next", color: ACCENT },
+                    { icon: "🔬", name: "CodeLens v0.4", status: "Next", color: ACCENT },
                     { icon: "🤖", name: "AI Agent Orchestrator", status: "Designing", color: AMBER },
                     { icon: "📊", name: "LLM Observability", status: "Planned", color: "#10b981" },
                   ].map((item, i) => (
@@ -390,7 +390,7 @@ export function VisualCV(): React.ReactElement {
               <PrintRole title="AI Engineer & Full-Stack" co="Freelance (Upwork/Fiverr)" period="2019 — Present" items={["250+ projects, 100% Job Success, 40+ returning clients", "500+ RLHF/SFT evaluation sessions (Outlier, RWS, Translated)", "RAG pipelines, prompt engineering, analytics dashboards"]} />
             </PrintSection>
             <PrintSection title="Key Projects">
-              <p><strong>CodeLens</strong> (AI Dev Tool) — 242-pattern AI code review across 9 stacks. Taint tracking, PR risk scoring, guardian mode. Zero deps.</p>
+              <p><strong>CodeLens</strong> (AI Dev Tool) — 272-pattern AI code review across 9 stacks. Taint tracking, PR risk scoring, guardian mode. Zero deps.</p>
               <p><strong>OpenEvent</strong> (Production SaaS) — AI event management, multi-agent orchestration, Stripe payments</p>
               <p><strong>Command Center</strong> — Unified dev interface, Claude API + Gemini + Supabase + Gmail/Calendar</p>
               <p><strong>Gluten-Free Deals</strong> (Cross-Platform) — React Native + Next.js, LLM scraping from 40+ retailers, GPS restaurant finder</p>
@@ -401,14 +401,14 @@ export function VisualCV(): React.ReactElement {
             </PrintSection>
           </div>
           <div className="space-y-3 border-l border-zinc-200 pl-4">
-            <PrintSection title="Stats"><p>250+ Projects · 5+ Years · 100% Job Success · 154 Patterns</p></PrintSection>
+            <PrintSection title="Stats"><p>250+ Projects · 5+ Years · 100% Job Success · 272 Patterns</p></PrintSection>
             <PrintSection title="AI & ML"><p>Claude API, OpenAI, LangChain, RAG, Multi-Agent, Prompt Engineering, RLHF, Taint Analysis</p></PrintSection>
             <PrintSection title="Full Stack"><p>TypeScript, React, Next.js, Node.js, Python, Supabase, PostgreSQL, Tailwind</p></PrintSection>
             <PrintSection title="Infrastructure"><p>GitHub Actions, Docker, Cloudflare, Stripe, Playwright, n8n</p></PrintSection>
             <PrintSection title="Process"><p>Architecture-first dev, team leadership (3-10), client comms & SOWs, CodeLens code review</p></PrintSection>
             <PrintSection title="Certs"><p>Gen AI & LLMs (IBM) · PM (Google) · Gen AI for PMs (PMI)</p></PrintSection>
             <PrintSection title="Languages"><p>English (Professional) · Urdu (Native) · Pashtu (Native) · Sindhi (Conversational) · Arabic (Conversational)</p></PrintSection>
-            <PrintSection title="Building Next"><p>CodeLens v0.3 (AST) · AI Agent Orchestrator · LLM Observability</p></PrintSection>
+            <PrintSection title="Building Next"><p>CodeLens v0.4 (AST) · AI Agent Orchestrator · LLM Observability</p></PrintSection>
           </div>
         </div>
       </div>
