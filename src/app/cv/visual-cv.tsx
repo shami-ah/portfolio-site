@@ -365,22 +365,22 @@ export function VisualCV(): React.ReactElement {
       </div>
 
       {/* Print version — light theme, same layout as screen */}
-      <div className={`${preview ? "block" : "hidden"} print:block max-w-none mx-auto`} style={{ background: "#fafaf8", color: "#1a1a2e", maxWidth: preview ? "794px" : "none" }}>
-        <div style={{ padding: "40px 36px" }}>
+      <div className={`${preview ? "block" : "hidden"} print:block max-w-none mx-auto overflow-hidden`} style={{ background: "#fafaf8", color: "#1a1a2e", maxWidth: preview ? "794px" : "none" }}>
+        <div className="print-content" style={{ padding: "24px 28px", transformOrigin: "top left" }}>
 
           {/* Header */}
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: "20px" }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: "14px" }}>
             <div>
-              <p className="font-mono text-[10px] uppercase" style={{ letterSpacing: "4px", color: "#aaa", marginBottom: "6px" }}>Curriculum Vitae</p>
-              <h1 className="text-[48px] font-bold" style={{ letterSpacing: "-1px", lineHeight: 1, color: "#1a1a2e" }}>
+              <p className="font-mono text-[8px] uppercase" style={{ letterSpacing: "3px", color: "#aaa", marginBottom: "4px" }}>Curriculum Vitae</p>
+              <h1 className="text-[36px] font-bold" style={{ letterSpacing: "-1px", lineHeight: 1, color: "#1a1a2e" }}>
                 Ahtesham<br/><span style={{ color: "#4a6fa5" }}>Ahmad</span>
               </h1>
-              <p className="text-[16px] font-light" style={{ color: "#888", marginTop: "6px" }}>AI Automation Architect</p>
-              <p className="text-[12px]" style={{ color: "#777", marginTop: "10px", maxWidth: "400px", lineHeight: 1.6 }}>
+              <p className="text-[13px] font-light" style={{ color: "#888", marginTop: "4px" }}>AI Automation Architect</p>
+              <p className="text-[10px]" style={{ color: "#777", marginTop: "6px", maxWidth: "360px", lineHeight: 1.55 }}>
                 5+ years shipping production AI systems, from multi-agent orchestration and RAG pipelines to full-stack SaaS. I design architectures where AI agents classify, execute, and learn while humans stay in control.
               </p>
             </div>
-            <div className="font-mono text-[11px]" style={{ color: "#999", textAlign: "right", lineHeight: 1.8 }}>
+            <div className="font-mono text-[9px]" style={{ color: "#999", textAlign: "right", lineHeight: 1.7 }}>
               iamshami1996@gmail.com<br/>
               <span style={{ color: "#4a6fa5" }}>github.com/shami-ah</span><br/>
               <span style={{ color: "#4a6fa5" }}>linkedin.com/in/ahtesham</span><br/>
@@ -390,41 +390,41 @@ export function VisualCV(): React.ReactElement {
           </div>
 
           {/* Flow Nodes */}
-          <div style={{ display: "flex", alignItems: "center", gap: "6px", flexWrap: "wrap", marginTop: "20px" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "5px", flexWrap: "wrap" }}>
             {flowSteps.map((step, i) => (
-              <span key={step} style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-                <span className="font-mono text-[11px] font-medium" style={{ padding: "5px 14px", borderRadius: "6px", border: "1px solid #d0d0d0", color: "#4a6fa5", background: "#f0f0ec" }}>{step}</span>
-                {i < flowSteps.length - 1 && <span style={{ color: "#ccc", fontSize: "11px" }}>→</span>}
+              <span key={step} style={{ display: "flex", alignItems: "center", gap: "5px" }}>
+                <span className="font-mono text-[9px] font-medium" style={{ padding: "3px 10px", borderRadius: "5px", border: "1px solid #d0d0d0", color: "#4a6fa5", background: "#f0f0ec" }}>{step}</span>
+                {i < flowSteps.length - 1 && <span style={{ color: "#ccc", fontSize: "9px" }}>→</span>}
               </span>
             ))}
           </div>
 
           {/* Divider */}
-          <div style={{ height: "1px", background: "linear-gradient(90deg, transparent, #4a6fa5, transparent)", margin: "20px 0" }} />
+          <div style={{ height: "1px", background: "linear-gradient(90deg, transparent, #4a6fa5, transparent)", margin: "12px 0" }} />
 
           {/* Stats */}
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "12px", marginBottom: "28px" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "10px", marginBottom: "16px" }}>
             {[
               { n: "250+", l: "Projects Delivered" },
               { n: "5+", l: "Years Experience" },
               { n: "100%", l: "Upwork Job Success" },
               { n: "272", l: "CodeLens Patterns", amber: true },
             ].map((stat) => (
-              <div key={stat.l} style={{ padding: "14px", borderRadius: "10px", border: "1px solid #e8e8e4", background: "#f5f5f1", textAlign: "center" }}>
-                <p className="font-mono text-[26px] font-bold" style={{ color: stat.amber ? "#b8860b" : "#4a6fa5" }}>{stat.n}</p>
-                <p className="text-[9px] uppercase" style={{ letterSpacing: "1.5px", color: "#aaa", marginTop: "2px" }}>{stat.l}</p>
+              <div key={stat.l} style={{ padding: "10px", borderRadius: "8px", border: "1px solid #e8e8e4", background: "#f5f5f1", textAlign: "center" }}>
+                <p className="font-mono text-[20px] font-bold" style={{ color: stat.amber ? "#b8860b" : "#4a6fa5" }}>{stat.n}</p>
+                <p className="text-[7px] uppercase" style={{ letterSpacing: "1.5px", color: "#aaa", marginTop: "1px" }}>{stat.l}</p>
               </div>
             ))}
           </div>
 
           {/* Two Column Layout */}
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 260px", gap: "28px" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 220px", gap: "20px" }}>
 
             {/* LEFT: Experience + Projects + Education */}
             <div>
 
               {/* Experience */}
-              <p className="font-mono text-[10px] uppercase" style={{ letterSpacing: "3px", color: "#aaa", marginBottom: "12px" }}>
+              <p className="font-mono text-[9px] uppercase" style={{ letterSpacing: "3px", color: "#aaa", marginBottom: "8px" }}>
                 <span style={{ color: "#4a6fa5" }}>▸</span> Experience
               </p>
 
@@ -449,21 +449,21 @@ export function VisualCV(): React.ReactElement {
                   "500+ RLHF/SFT evaluation sessions on frontier models (Outlier, RWS, Translated)",
                 ]},
               ].map((role) => (
-                <div key={role.title} style={{ display: "flex", gap: "12px", marginBottom: "16px" }}>
-                  <div style={{ display: "flex", flexDirection: "column", alignItems: "center", paddingTop: "3px" }}>
-                    <div style={{ width: "10px", height: "10px", borderRadius: "50%", border: "2px solid #4a6fa5", background: role.active ? "rgba(74,111,165,0.15)" : "#fafaf8" }} />
-                    <div style={{ flex: 1, width: "1px", background: "#e0e0dc", marginTop: "4px" }} />
+                <div key={role.title} style={{ display: "flex", gap: "10px", marginBottom: "10px" }}>
+                  <div style={{ display: "flex", flexDirection: "column", alignItems: "center", paddingTop: "2px" }}>
+                    <div style={{ width: "8px", height: "8px", borderRadius: "50%", border: "2px solid #4a6fa5", background: role.active ? "rgba(74,111,165,0.15)" : "#fafaf8" }} />
+                    <div style={{ flex: 1, width: "1px", background: "#e0e0dc", marginTop: "3px" }} />
                   </div>
                   <div style={{ flex: 1 }}>
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
-                      <p className="text-[13px] font-semibold">{role.title}</p>
-                      <p className="font-mono text-[10px]" style={{ color: "#aaa" }}>{role.period}</p>
+                      <p className="text-[11px] font-semibold">{role.title}</p>
+                      <p className="font-mono text-[8px]" style={{ color: "#aaa" }}>{role.period}</p>
                     </div>
-                    <p className="text-[11px]" style={{ color: "#999" }}>{role.company} · {role.location}</p>
-                    <ul style={{ listStyle: "none", marginTop: "6px" }}>
+                    <p className="text-[9px]" style={{ color: "#999" }}>{role.company} · {role.location}</p>
+                    <ul style={{ listStyle: "none", marginTop: "4px" }}>
                       {role.items.map((item, j) => (
-                        <li key={j} className="text-[11px]" style={{ color: "#666", lineHeight: 1.5, paddingLeft: "12px", position: "relative", marginBottom: "2px" }}>
-                          <span style={{ position: "absolute", left: 0, color: "rgba(74,111,165,0.4)", fontSize: "9px" }}>▸</span>
+                        <li key={j} className="text-[9px]" style={{ color: "#666", lineHeight: 1.45, paddingLeft: "10px", position: "relative", marginBottom: "1px" }}>
+                          <span style={{ position: "absolute", left: 0, color: "rgba(74,111,165,0.4)", fontSize: "7px" }}>▸</span>
                           {item}
                         </li>
                       ))}
@@ -473,7 +473,7 @@ export function VisualCV(): React.ReactElement {
               ))}
 
               {/* Projects */}
-              <p className="font-mono text-[10px] uppercase" style={{ letterSpacing: "3px", color: "#aaa", marginBottom: "12px", marginTop: "20px" }}>
+              <p className="font-mono text-[9px] uppercase" style={{ letterSpacing: "3px", color: "#aaa", marginBottom: "8px", marginTop: "12px" }}>
                 <span style={{ color: "#4a6fa5" }}>◆</span> Key Projects
               </p>
 
@@ -484,25 +484,25 @@ export function VisualCV(): React.ReactElement {
                 { name: "Gluten-Free Deals & Dining", tag: "Cross-Platform", tagColor: "#8b5cf6", desc: "React Native + Next.js app. LLM-generated 200+ search queries, concurrent scraping from 40+ retailers, GPS restaurant finder, AI recipe generation." },
                 { name: "RAG Pipeline", tag: "AI Infrastructure", tagColor: "#ec4899", desc: "Domain-specific Q&A system with Pinecone vector search, LangChain chunking, GPT-4 answer generation. Sub-second retrieval from thousands of document chunks." },
               ].map((p) => (
-                <div key={p.name} style={{ padding: "12px", borderRadius: "8px", border: "1px solid #e8e8e4", background: "#f5f5f1", marginBottom: "8px" }}>
-                  <div style={{ display: "flex", alignItems: "baseline", gap: "8px", marginBottom: "2px" }}>
-                    <span className="text-[12px] font-semibold">{p.name}</span>
-                    <span className="font-mono text-[9px]" style={{ padding: "2px 8px", borderRadius: "20px", color: p.tagColor, border: `1px solid ${p.tagColor}40` }}>{p.tag}</span>
+                <div key={p.name} style={{ padding: "8px 10px", borderRadius: "6px", border: "1px solid #e8e8e4", background: "#f5f5f1", marginBottom: "5px" }}>
+                  <div style={{ display: "flex", alignItems: "baseline", gap: "6px", marginBottom: "1px" }}>
+                    <span className="text-[10px] font-semibold">{p.name}</span>
+                    <span className="font-mono text-[7px]" style={{ padding: "1px 6px", borderRadius: "20px", color: p.tagColor, border: `1px solid ${p.tagColor}40` }}>{p.tag}</span>
                   </div>
-                  <p className="text-[11px]" style={{ color: "#777", lineHeight: 1.5 }}>{p.desc}</p>
+                  <p className="text-[9px]" style={{ color: "#777", lineHeight: 1.45 }}>{p.desc}</p>
                 </div>
               ))}
 
               {/* Education */}
-              <p className="font-mono text-[10px] uppercase" style={{ letterSpacing: "3px", color: "#aaa", marginBottom: "12px", marginTop: "20px" }}>
+              <p className="font-mono text-[9px] uppercase" style={{ letterSpacing: "3px", color: "#aaa", marginBottom: "6px", marginTop: "10px" }}>
                 <span style={{ color: "#4a6fa5" }}>◈</span> Education
               </p>
-              <div style={{ padding: "12px", borderRadius: "8px", border: "1px solid #e8e8e4", background: "#f5f5f1", display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
+              <div style={{ padding: "8px 10px", borderRadius: "6px", border: "1px solid #e8e8e4", background: "#f5f5f1", display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
                 <div>
-                  <p className="text-[12px] font-semibold">B.Eng — Electrical & Electronics Engineering</p>
-                  <p className="text-[11px]" style={{ color: "#999" }}>Sukkur IBA University</p>
+                  <p className="text-[10px] font-semibold">B.Eng — Electrical & Electronics Engineering</p>
+                  <p className="text-[9px]" style={{ color: "#999" }}>Sukkur IBA University</p>
                 </div>
-                <p className="font-mono text-[10px]" style={{ color: "#aaa" }}>2017 — 2020 · Grade A</p>
+                <p className="font-mono text-[8px]" style={{ color: "#aaa" }}>2017 — 2020 · Grade A</p>
               </div>
             </div>
 
@@ -510,7 +510,7 @@ export function VisualCV(): React.ReactElement {
             <div>
 
               {/* AI & ML */}
-              <p className="font-mono text-[10px] uppercase" style={{ letterSpacing: "3px", color: "#aaa", marginBottom: "12px" }}>
+              <p className="font-mono text-[8px] uppercase" style={{ letterSpacing: "2px", color: "#aaa", marginBottom: "6px" }}>
                 <span style={{ color: "#4a6fa5" }}>⚡</span> AI & ML
               </p>
               {[
@@ -522,18 +522,18 @@ export function VisualCV(): React.ReactElement {
                 { name: "Taint Analysis", level: 65 },
               ].map((s) => (
                 <div key={s.name}>
-                  <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "4px" }}>
-                    <span className="text-[11px]" style={{ color: "#555" }}>{s.name}</span>
-                    <span className="font-mono text-[9px]" style={{ color: "#bbb" }}>{s.level}%</span>
+                  <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "2px" }}>
+                    <span className="text-[9px]" style={{ color: "#555" }}>{s.name}</span>
+                    <span className="font-mono text-[7px]" style={{ color: "#bbb" }}>{s.level}%</span>
                   </div>
-                  <div style={{ height: "4px", background: "#eee", borderRadius: "2px", marginBottom: "8px" }}>
+                  <div style={{ height: "3px", background: "#eee", borderRadius: "2px", marginBottom: "5px" }}>
                     <div style={{ height: "100%", width: `${s.level}%`, background: "#4a6fa5", borderRadius: "2px" }} />
                   </div>
                 </div>
               ))}
 
               {/* Full Stack */}
-              <p className="font-mono text-[10px] uppercase" style={{ letterSpacing: "3px", color: "#aaa", marginBottom: "12px", marginTop: "16px" }}>
+              <p className="font-mono text-[10px] uppercase" style={{ letterSpacing: "2px", color: "#aaa", marginBottom: "6px", marginTop: "10px" }}>
                 <span style={{ color: "#4a6fa5" }}>⚙</span> Full Stack
               </p>
               {[
@@ -544,18 +544,18 @@ export function VisualCV(): React.ReactElement {
                 { name: "Tailwind / Framer", level: 76 },
               ].map((s) => (
                 <div key={s.name}>
-                  <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "4px" }}>
-                    <span className="text-[11px]" style={{ color: "#555" }}>{s.name}</span>
-                    <span className="font-mono text-[9px]" style={{ color: "#bbb" }}>{s.level}%</span>
+                  <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "2px" }}>
+                    <span className="text-[9px]" style={{ color: "#555" }}>{s.name}</span>
+                    <span className="font-mono text-[7px]" style={{ color: "#bbb" }}>{s.level}%</span>
                   </div>
-                  <div style={{ height: "4px", background: "#eee", borderRadius: "2px", marginBottom: "8px" }}>
+                  <div style={{ height: "3px", background: "#eee", borderRadius: "2px", marginBottom: "5px" }}>
                     <div style={{ height: "100%", width: `${s.level}%`, background: "#4a6fa5", borderRadius: "2px" }} />
                   </div>
                 </div>
               ))}
 
               {/* Infrastructure */}
-              <p className="font-mono text-[10px] uppercase" style={{ letterSpacing: "3px", color: "#aaa", marginBottom: "12px", marginTop: "16px" }}>
+              <p className="font-mono text-[10px] uppercase" style={{ letterSpacing: "2px", color: "#aaa", marginBottom: "6px", marginTop: "10px" }}>
                 <span style={{ color: "#4a6fa5" }}>☁</span> Infrastructure
               </p>
               {[
@@ -565,18 +565,18 @@ export function VisualCV(): React.ReactElement {
                 { name: "Playwright / n8n", level: 73 },
               ].map((s) => (
                 <div key={s.name}>
-                  <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "4px" }}>
-                    <span className="text-[11px]" style={{ color: "#555" }}>{s.name}</span>
-                    <span className="font-mono text-[9px]" style={{ color: "#bbb" }}>{s.level}%</span>
+                  <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "2px" }}>
+                    <span className="text-[9px]" style={{ color: "#555" }}>{s.name}</span>
+                    <span className="font-mono text-[7px]" style={{ color: "#bbb" }}>{s.level}%</span>
                   </div>
-                  <div style={{ height: "4px", background: "#eee", borderRadius: "2px", marginBottom: "8px" }}>
+                  <div style={{ height: "3px", background: "#eee", borderRadius: "2px", marginBottom: "5px" }}>
                     <div style={{ height: "100%", width: `${s.level}%`, background: "#4a6fa5", borderRadius: "2px" }} />
                   </div>
                 </div>
               ))}
 
               {/* Process */}
-              <p className="font-mono text-[10px] uppercase" style={{ letterSpacing: "3px", color: "#aaa", marginBottom: "12px", marginTop: "16px" }}>
+              <p className="font-mono text-[10px] uppercase" style={{ letterSpacing: "2px", color: "#aaa", marginBottom: "6px", marginTop: "10px" }}>
                 <span style={{ color: "#4a6fa5" }}>▹</span> Process
               </p>
               {[
@@ -586,36 +586,36 @@ export function VisualCV(): React.ReactElement {
                 { name: "Code Review Systems (CodeLens)", level: 75 },
               ].map((s) => (
                 <div key={s.name}>
-                  <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "4px" }}>
-                    <span className="text-[11px]" style={{ color: "#555" }}>{s.name}</span>
-                    <span className="font-mono text-[9px]" style={{ color: "#bbb" }}>{s.level}%</span>
+                  <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "2px" }}>
+                    <span className="text-[9px]" style={{ color: "#555" }}>{s.name}</span>
+                    <span className="font-mono text-[7px]" style={{ color: "#bbb" }}>{s.level}%</span>
                   </div>
-                  <div style={{ height: "4px", background: "#eee", borderRadius: "2px", marginBottom: "8px" }}>
+                  <div style={{ height: "3px", background: "#eee", borderRadius: "2px", marginBottom: "5px" }}>
                     <div style={{ height: "100%", width: `${s.level}%`, background: "#4a6fa5", borderRadius: "2px" }} />
                   </div>
                 </div>
               ))}
 
               {/* Certifications */}
-              <p className="font-mono text-[10px] uppercase" style={{ letterSpacing: "3px", color: "#aaa", marginBottom: "12px", marginTop: "16px" }}>
+              <p className="font-mono text-[10px] uppercase" style={{ letterSpacing: "2px", color: "#aaa", marginBottom: "6px", marginTop: "10px" }}>
                 <span style={{ color: "#4a6fa5" }}>🎓</span> Certifications
               </p>
               {["Generative AI & LLMs — IBM", "Project Management — Google", "Gen AI for PMs — PMI"].map((cert) => (
-                <p key={cert} className="text-[11px]" style={{ color: "#888", paddingLeft: "10px", borderLeft: "2px solid #e8e8e4", marginBottom: "6px", lineHeight: 1.5 }}>{cert}</p>
+                <p key={cert} className="text-[9px]" style={{ color: "#888", paddingLeft: "8px", borderLeft: "2px solid #e8e8e4", marginBottom: "4px", lineHeight: 1.4 }}>{cert}</p>
               ))}
 
               {/* Languages */}
-              <p className="font-mono text-[10px] uppercase" style={{ letterSpacing: "3px", color: "#aaa", marginBottom: "12px", marginTop: "16px" }}>
+              <p className="font-mono text-[10px] uppercase" style={{ letterSpacing: "2px", color: "#aaa", marginBottom: "6px", marginTop: "10px" }}>
                 <span style={{ color: "#4a6fa5" }}>🌐</span> Languages
               </p>
               <div style={{ display: "flex", gap: "6px", flexWrap: "wrap" }}>
                 {["English · Professional", "Urdu · Native", "Pashtu · Native", "Sindhi · Conversational", "Arabic · Conversational"].map((lang) => (
-                  <span key={lang} className="text-[10px]" style={{ padding: "4px 10px", borderRadius: "6px", background: "#f0f0ec", color: "#888", border: "1px solid #e4e4e0" }}>{lang}</span>
+                  <span key={lang} className="text-[8px]" style={{ padding: "2px 7px", borderRadius: "4px", background: "#f0f0ec", color: "#888", border: "1px solid #e4e4e0" }}>{lang}</span>
                 ))}
               </div>
 
               {/* Building Next */}
-              <p className="font-mono text-[10px] uppercase" style={{ letterSpacing: "3px", color: "#aaa", marginBottom: "12px", marginTop: "16px" }}>
+              <p className="font-mono text-[10px] uppercase" style={{ letterSpacing: "2px", color: "#aaa", marginBottom: "6px", marginTop: "10px" }}>
                 <span style={{ color: "#4a6fa5" }}>🚀</span> Building Next
               </p>
               {[
@@ -623,10 +623,10 @@ export function VisualCV(): React.ReactElement {
                 { icon: "🤖", name: "AI Agent Orchestrator", status: "Designing", statusColor: "#b8860b" },
                 { icon: "📊", name: "LLM Observability", status: "Planned", statusColor: "#10b981" },
               ].map((item) => (
-                <div key={item.name} style={{ display: "flex", alignItems: "center", gap: "8px", padding: "8px", borderRadius: "8px", background: "#f5f5f1", border: "1px solid #e8e8e4", marginBottom: "6px" }}>
-                  <span style={{ fontSize: "14px" }}>{item.icon}</span>
-                  <span className="text-[11px] font-medium" style={{ color: "#555", flex: 1 }}>{item.name}</span>
-                  <span className="font-mono text-[9px]" style={{ padding: "2px 8px", borderRadius: "20px", color: item.statusColor, border: `1px solid ${item.statusColor}40` }}>{item.status}</span>
+                <div key={item.name} style={{ display: "flex", alignItems: "center", gap: "6px", padding: "5px 7px", borderRadius: "6px", background: "#f5f5f1", border: "1px solid #e8e8e4", marginBottom: "4px" }}>
+                  <span style={{ fontSize: "11px" }}>{item.icon}</span>
+                  <span className="text-[9px] font-medium" style={{ color: "#555", flex: 1 }}>{item.name}</span>
+                  <span className="font-mono text-[7px]" style={{ padding: "1px 6px", borderRadius: "20px", color: item.statusColor, border: `1px solid ${item.statusColor}40` }}>{item.status}</span>
                 </div>
               ))}
 
