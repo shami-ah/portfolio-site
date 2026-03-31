@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 
 const ACCENT = "#3b82f6";
 const AMBER = "#f59e0b";
@@ -102,6 +103,8 @@ function TimelineDot({ active }: { active?: boolean }) {
 
 export function VisualCV(): React.ReactElement {
   const handleDownload = () => window.print();
+  const searchParams = useSearchParams();
+  const preview = searchParams.get("preview") === "true";
 
   const flowSteps = ["Ingest", "Classify", "Orchestrate", "Review", "Execute", "Observe"];
 
@@ -122,7 +125,7 @@ export function VisualCV(): React.ReactElement {
       </div>
 
       {/* Screen version - dark, animated */}
-      <div className="print:hidden min-h-screen bg-[#09090b] text-white overflow-hidden">
+      <div className={`print:hidden min-h-screen bg-[#09090b] text-white overflow-hidden ${preview ? "hidden" : ""}`}>
         {/* Background effects */}
         <div className="fixed inset-0 pointer-events-none">
           <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-500/5 rounded-full blur-3xl" />
@@ -361,54 +364,273 @@ export function VisualCV(): React.ReactElement {
         </div>
       </div>
 
-      {/* Print version - clean, white, professional */}
-      <div className="hidden print:block bg-white text-zinc-900 max-w-none">
-        <div className="px-10 pt-8 pb-4 border-b-2" style={{ borderColor: ACCENT }}>
-          <div className="flex justify-between items-start">
+      {/* Print version — light theme, same layout as screen */}
+      <div className={`${preview ? "block" : "hidden"} print:block max-w-none mx-auto`} style={{ background: "#fafaf8", color: "#1a1a2e", maxWidth: preview ? "794px" : "none" }}>
+        <div style={{ padding: "40px 36px" }}>
+
+          {/* Header */}
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: "20px" }}>
             <div>
-              <h1 className="text-2xl font-bold">Ahtesham Ahmad</h1>
-              <p className="text-sm font-medium" style={{ color: ACCENT }}>AI Automation Architect</p>
-              <p className="text-xs text-zinc-500 mt-1 max-w-sm">5+ years shipping production AI — multi-agent orchestration, RAG pipelines, and full-stack SaaS. I design architectures where agents classify, execute, and learn while humans stay in control.</p>
+              <p className="font-mono text-[10px] uppercase" style={{ letterSpacing: "4px", color: "#aaa", marginBottom: "6px" }}>Curriculum Vitae</p>
+              <h1 className="text-[48px] font-bold" style={{ letterSpacing: "-1px", lineHeight: 1, color: "#1a1a2e" }}>
+                Ahtesham<br/><span style={{ color: "#4a6fa5" }}>Ahmad</span>
+              </h1>
+              <p className="text-[16px] font-light" style={{ color: "#888", marginTop: "6px" }}>AI Automation Architect</p>
+              <p className="text-[12px]" style={{ color: "#777", marginTop: "10px", maxWidth: "400px", lineHeight: 1.6 }}>
+                5+ years shipping production AI systems, from multi-agent orchestration and RAG pipelines to full-stack SaaS. I design architectures where AI agents classify, execute, and learn while humans stay in control.
+              </p>
             </div>
-            <div className="text-right text-[10px] text-zinc-500 space-y-0.5">
-              <p>iamshami1996@gmail.com</p>
-              <p>github.com/shami-ah</p>
-              <p>portfolio-site-alpha.pages.dev</p>
-              <p>linkedin.com/in/ahtesham</p>
-              <p>Islamabad, PK · Remote</p>
+            <div className="font-mono text-[11px]" style={{ color: "#999", textAlign: "right", lineHeight: 1.8 }}>
+              iamshami1996@gmail.com<br/>
+              <span style={{ color: "#4a6fa5" }}>github.com/shami-ah</span><br/>
+              <span style={{ color: "#4a6fa5" }}>linkedin.com/in/ahtesham</span><br/>
+              <span style={{ color: "#4a6fa5" }}>portfolio-site-alpha.pages.dev</span><br/>
+              Islamabad, PK · Remote
             </div>
           </div>
-          <div className="mt-3 flex gap-1 text-[9px] font-mono">
-            {flowSteps.map((s, i) => (<span key={s}><span className="px-1.5 py-0.5 rounded text-white" style={{ background: ACCENT }}>{s}</span>{i < 5 ? " → " : ""}</span>))}
+
+          {/* Flow Nodes */}
+          <div style={{ display: "flex", alignItems: "center", gap: "6px", flexWrap: "wrap", marginTop: "20px" }}>
+            {flowSteps.map((step, i) => (
+              <span key={step} style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+                <span className="font-mono text-[11px] font-medium" style={{ padding: "5px 14px", borderRadius: "6px", border: "1px solid #d0d0d0", color: "#4a6fa5", background: "#f0f0ec" }}>{step}</span>
+                {i < flowSteps.length - 1 && <span style={{ color: "#ccc", fontSize: "11px" }}>→</span>}
+              </span>
+            ))}
           </div>
-        </div>
-        <div className="px-10 py-4 grid grid-cols-[1fr_200px] gap-6 text-[11px]">
-          <div className="space-y-3">
-            <PrintSection title="Experience">
-              <PrintRole title="Lead AI Developer" co="MORE LIFE Hospitality GmbH" period="Sep 2025 — Present" items={["AI orchestration: email → classification → task → workflow → auto-approval", "Supabase Edge Functions, Stripe, Claude API, GitHub Actions", "Multi-agent: planner/worker/validator + human-in-the-loop", "Shipped frontend: Task Inbox, Workflow Runner, Marketing Hub, Admin Dashboard"]} />
-              <PrintRole title="Director IT & R&D" co="Rouelite Techno Pvt. Ltd." period="2022 — 2024" items={["Led 10-person team, custom CRM, 500+ daily users", "AI integration reduced manual data entry by 70%", "Replaced 3 legacy spreadsheets with React + Supabase tools", "Agile workflows, 40% faster delivery cycles"]} />
-              <PrintRole title="AI Engineer & Full-Stack" co="Freelance (Upwork/Fiverr)" period="2019 — Present" items={["250+ projects, 100% Job Success, 40+ returning clients", "500+ RLHF/SFT evaluation sessions (Outlier, RWS, Translated)", "RAG pipelines, prompt engineering, analytics dashboards"]} />
-            </PrintSection>
-            <PrintSection title="Key Projects">
-              <p><strong>CodeLens</strong> (AI Dev Tool) — 272-pattern AI code review across 9 stacks. Taint tracking, PR risk scoring, guardian mode. Zero deps.</p>
-              <p><strong>OpenEvent</strong> (Production SaaS) — AI event management, multi-agent orchestration, Stripe payments</p>
-              <p><strong>Command Center</strong> — Unified dev interface, Claude API + Gemini + Supabase + Gmail/Calendar</p>
-              <p><strong>Gluten-Free Deals</strong> (Cross-Platform) — React Native + Next.js, LLM scraping from 40+ retailers, GPS restaurant finder</p>
-              <p><strong>RAG Pipeline</strong> (AI Infra) — Pinecone + LangChain + GPT-4, sub-second retrieval from thousands of chunks</p>
-            </PrintSection>
-            <PrintSection title="Education">
-              <p><strong>B.Eng Electrical & Electronics</strong> — Sukkur IBA University (2017-2020, Grade A)</p>
-            </PrintSection>
+
+          {/* Divider */}
+          <div style={{ height: "1px", background: "linear-gradient(90deg, transparent, #4a6fa5, transparent)", margin: "20px 0" }} />
+
+          {/* Stats */}
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "12px", marginBottom: "28px" }}>
+            {[
+              { n: "250+", l: "Projects Delivered" },
+              { n: "5+", l: "Years Experience" },
+              { n: "100%", l: "Upwork Job Success" },
+              { n: "272", l: "CodeLens Patterns", amber: true },
+            ].map((stat) => (
+              <div key={stat.l} style={{ padding: "14px", borderRadius: "10px", border: "1px solid #e8e8e4", background: "#f5f5f1", textAlign: "center" }}>
+                <p className="font-mono text-[26px] font-bold" style={{ color: stat.amber ? "#b8860b" : "#4a6fa5" }}>{stat.n}</p>
+                <p className="text-[9px] uppercase" style={{ letterSpacing: "1.5px", color: "#aaa", marginTop: "2px" }}>{stat.l}</p>
+              </div>
+            ))}
           </div>
-          <div className="space-y-3 border-l border-zinc-200 pl-4">
-            <PrintSection title="Stats"><p>250+ Projects · 5+ Years · 100% Job Success · 272 Patterns</p></PrintSection>
-            <PrintSection title="AI & ML"><p>Claude API, OpenAI, LangChain, RAG, Multi-Agent, Prompt Engineering, RLHF, Taint Analysis</p></PrintSection>
-            <PrintSection title="Full Stack"><p>TypeScript, React, Next.js, Node.js, Python, Supabase, PostgreSQL, Tailwind</p></PrintSection>
-            <PrintSection title="Infrastructure"><p>GitHub Actions, Docker, Cloudflare, Stripe, Playwright, n8n</p></PrintSection>
-            <PrintSection title="Process"><p>Architecture-first dev, team leadership (3-10), client comms & SOWs, CodeLens code review</p></PrintSection>
-            <PrintSection title="Certs"><p>Gen AI & LLMs (IBM) · PM (Google) · Gen AI for PMs (PMI)</p></PrintSection>
-            <PrintSection title="Languages"><p>English (Professional) · Urdu (Native) · Pashtu (Native) · Sindhi (Conversational) · Arabic (Conversational)</p></PrintSection>
-            <PrintSection title="Building Next"><p>CodeLens v0.4 (AST) · AI Agent Orchestrator · LLM Observability</p></PrintSection>
+
+          {/* Two Column Layout */}
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 260px", gap: "28px" }}>
+
+            {/* LEFT: Experience + Projects + Education */}
+            <div>
+
+              {/* Experience */}
+              <p className="font-mono text-[10px] uppercase" style={{ letterSpacing: "3px", color: "#aaa", marginBottom: "12px" }}>
+                <span style={{ color: "#4a6fa5" }}>▸</span> Experience
+              </p>
+
+              {[
+                { title: "Lead AI Developer", company: "MORE LIFE Hospitality GmbH", location: "Zurich · Remote", period: "Sep 2025 — Present", active: true, items: [
+                  "Architected AI orchestration: email → classification → task extraction → workflow execution → auto-approval",
+                  "Built Supabase Edge Functions for LLM calls, entity extraction, and workflow triggers",
+                  "Designed multi-agent system with planner/worker/validator pattern + human-in-the-loop approval",
+                  "Shipped React frontend: Task Inbox, Workflow Runner, Approval Flows, Marketing Hub, Admin Dashboard",
+                  "React + TypeScript + Supabase + Stripe + Claude API + GitHub Actions",
+                ]},
+                { title: "Director IT & R&D", company: "Rouelite Techno Pvt. Ltd.", location: "Remote", period: "2022 — 2024", items: [
+                  "Led 10-person team building custom CRM and business automation",
+                  "Designed system architecture serving 500+ daily users",
+                  "Introduced AI into daily operations, reducing manual data entry by 70%",
+                  "Replaced 3 legacy spreadsheet processes with React + Supabase internal tools",
+                  "Implemented agile workflows reducing delivery cycles by 40%",
+                ]},
+                { title: "AI Engineer & Full-Stack Dev", company: "Freelance · Upwork / Fiverr", location: "Remote · Global", period: "2019 — Present", items: [
+                  "250+ projects — RAG pipelines, prompt engineering, AI workflows, analytics dashboards",
+                  "100% Job Success on Upwork · 40+ returning long-term clients",
+                  "500+ RLHF/SFT evaluation sessions on frontier models (Outlier, RWS, Translated)",
+                ]},
+              ].map((role) => (
+                <div key={role.title} style={{ display: "flex", gap: "12px", marginBottom: "16px" }}>
+                  <div style={{ display: "flex", flexDirection: "column", alignItems: "center", paddingTop: "3px" }}>
+                    <div style={{ width: "10px", height: "10px", borderRadius: "50%", border: "2px solid #4a6fa5", background: role.active ? "rgba(74,111,165,0.15)" : "#fafaf8" }} />
+                    <div style={{ flex: 1, width: "1px", background: "#e0e0dc", marginTop: "4px" }} />
+                  </div>
+                  <div style={{ flex: 1 }}>
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
+                      <p className="text-[13px] font-semibold">{role.title}</p>
+                      <p className="font-mono text-[10px]" style={{ color: "#aaa" }}>{role.period}</p>
+                    </div>
+                    <p className="text-[11px]" style={{ color: "#999" }}>{role.company} · {role.location}</p>
+                    <ul style={{ listStyle: "none", marginTop: "6px" }}>
+                      {role.items.map((item, j) => (
+                        <li key={j} className="text-[11px]" style={{ color: "#666", lineHeight: 1.5, paddingLeft: "12px", position: "relative", marginBottom: "2px" }}>
+                          <span style={{ position: "absolute", left: 0, color: "rgba(74,111,165,0.4)", fontSize: "9px" }}>▸</span>
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              ))}
+
+              {/* Projects */}
+              <p className="font-mono text-[10px] uppercase" style={{ letterSpacing: "3px", color: "#aaa", marginBottom: "12px", marginTop: "20px" }}>
+                <span style={{ color: "#4a6fa5" }}>◆</span> Key Projects
+              </p>
+
+              {[
+                { name: "CodeLens", tag: "AI Dev Tool", tagColor: "#4a6fa5", desc: "272-pattern AI code review engine across 9 stacks. Security taint tracking, PR risk scoring, guardian mode. Zero deps, <1s reviews." },
+                { name: "OpenEvent", tag: "Production SaaS", tagColor: "#b8860b", desc: "AI-powered event management processing real revenue. Multi-agent orchestration: email → entity extraction → workflow → auto-approval." },
+                { name: "Command Center", tag: "Developer Tool", tagColor: "#10b981", desc: "Unified dev interface with Claude API, Google Gemini, Supabase, Gmail/Calendar integration. PWA with push notifications." },
+                { name: "Gluten-Free Deals & Dining", tag: "Cross-Platform", tagColor: "#8b5cf6", desc: "React Native + Next.js app. LLM-generated 200+ search queries, concurrent scraping from 40+ retailers, GPS restaurant finder, AI recipe generation." },
+                { name: "RAG Pipeline", tag: "AI Infrastructure", tagColor: "#ec4899", desc: "Domain-specific Q&A system with Pinecone vector search, LangChain chunking, GPT-4 answer generation. Sub-second retrieval from thousands of document chunks." },
+              ].map((p) => (
+                <div key={p.name} style={{ padding: "12px", borderRadius: "8px", border: "1px solid #e8e8e4", background: "#f5f5f1", marginBottom: "8px" }}>
+                  <div style={{ display: "flex", alignItems: "baseline", gap: "8px", marginBottom: "2px" }}>
+                    <span className="text-[12px] font-semibold">{p.name}</span>
+                    <span className="font-mono text-[9px]" style={{ padding: "2px 8px", borderRadius: "20px", color: p.tagColor, border: `1px solid ${p.tagColor}40` }}>{p.tag}</span>
+                  </div>
+                  <p className="text-[11px]" style={{ color: "#777", lineHeight: 1.5 }}>{p.desc}</p>
+                </div>
+              ))}
+
+              {/* Education */}
+              <p className="font-mono text-[10px] uppercase" style={{ letterSpacing: "3px", color: "#aaa", marginBottom: "12px", marginTop: "20px" }}>
+                <span style={{ color: "#4a6fa5" }}>◈</span> Education
+              </p>
+              <div style={{ padding: "12px", borderRadius: "8px", border: "1px solid #e8e8e4", background: "#f5f5f1", display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
+                <div>
+                  <p className="text-[12px] font-semibold">B.Eng — Electrical & Electronics Engineering</p>
+                  <p className="text-[11px]" style={{ color: "#999" }}>Sukkur IBA University</p>
+                </div>
+                <p className="font-mono text-[10px]" style={{ color: "#aaa" }}>2017 — 2020 · Grade A</p>
+              </div>
+            </div>
+
+            {/* RIGHT: Skills + Certs + Languages + Building Next */}
+            <div>
+
+              {/* AI & ML */}
+              <p className="font-mono text-[10px] uppercase" style={{ letterSpacing: "3px", color: "#aaa", marginBottom: "12px" }}>
+                <span style={{ color: "#4a6fa5" }}>⚡</span> AI & ML
+              </p>
+              {[
+                { name: "Claude API", level: 90 },
+                { name: "OpenAI / LangChain", level: 85 },
+                { name: "RAG Pipelines", level: 80 },
+                { name: "Multi-Agent Systems", level: 75 },
+                { name: "Prompt Engineering", level: 70 },
+                { name: "Taint Analysis", level: 65 },
+              ].map((s) => (
+                <div key={s.name}>
+                  <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "4px" }}>
+                    <span className="text-[11px]" style={{ color: "#555" }}>{s.name}</span>
+                    <span className="font-mono text-[9px]" style={{ color: "#bbb" }}>{s.level}%</span>
+                  </div>
+                  <div style={{ height: "4px", background: "#eee", borderRadius: "2px", marginBottom: "8px" }}>
+                    <div style={{ height: "100%", width: `${s.level}%`, background: "#4a6fa5", borderRadius: "2px" }} />
+                  </div>
+                </div>
+              ))}
+
+              {/* Full Stack */}
+              <p className="font-mono text-[10px] uppercase" style={{ letterSpacing: "3px", color: "#aaa", marginBottom: "12px", marginTop: "16px" }}>
+                <span style={{ color: "#4a6fa5" }}>⚙</span> Full Stack
+              </p>
+              {[
+                { name: "TypeScript / React", level: 92 },
+                { name: "Next.js", level: 88 },
+                { name: "Supabase / PostgreSQL", level: 84 },
+                { name: "Node.js / Python", level: 80 },
+                { name: "Tailwind / Framer", level: 76 },
+              ].map((s) => (
+                <div key={s.name}>
+                  <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "4px" }}>
+                    <span className="text-[11px]" style={{ color: "#555" }}>{s.name}</span>
+                    <span className="font-mono text-[9px]" style={{ color: "#bbb" }}>{s.level}%</span>
+                  </div>
+                  <div style={{ height: "4px", background: "#eee", borderRadius: "2px", marginBottom: "8px" }}>
+                    <div style={{ height: "100%", width: `${s.level}%`, background: "#4a6fa5", borderRadius: "2px" }} />
+                  </div>
+                </div>
+              ))}
+
+              {/* Infrastructure */}
+              <p className="font-mono text-[10px] uppercase" style={{ letterSpacing: "3px", color: "#aaa", marginBottom: "12px", marginTop: "16px" }}>
+                <span style={{ color: "#4a6fa5" }}>☁</span> Infrastructure
+              </p>
+              {[
+                { name: "GitHub Actions / CI", level: 88 },
+                { name: "Docker / Cloudflare", level: 83 },
+                { name: "Stripe Integration", level: 78 },
+                { name: "Playwright / n8n", level: 73 },
+              ].map((s) => (
+                <div key={s.name}>
+                  <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "4px" }}>
+                    <span className="text-[11px]" style={{ color: "#555" }}>{s.name}</span>
+                    <span className="font-mono text-[9px]" style={{ color: "#bbb" }}>{s.level}%</span>
+                  </div>
+                  <div style={{ height: "4px", background: "#eee", borderRadius: "2px", marginBottom: "8px" }}>
+                    <div style={{ height: "100%", width: `${s.level}%`, background: "#4a6fa5", borderRadius: "2px" }} />
+                  </div>
+                </div>
+              ))}
+
+              {/* Process */}
+              <p className="font-mono text-[10px] uppercase" style={{ letterSpacing: "3px", color: "#aaa", marginBottom: "12px", marginTop: "16px" }}>
+                <span style={{ color: "#4a6fa5" }}>▹</span> Process
+              </p>
+              {[
+                { name: "Architecture-First Development", level: 90 },
+                { name: "Team Leadership (3-10 people)", level: 85 },
+                { name: "Client-Facing Comms & SOWs", level: 80 },
+                { name: "Code Review Systems (CodeLens)", level: 75 },
+              ].map((s) => (
+                <div key={s.name}>
+                  <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "4px" }}>
+                    <span className="text-[11px]" style={{ color: "#555" }}>{s.name}</span>
+                    <span className="font-mono text-[9px]" style={{ color: "#bbb" }}>{s.level}%</span>
+                  </div>
+                  <div style={{ height: "4px", background: "#eee", borderRadius: "2px", marginBottom: "8px" }}>
+                    <div style={{ height: "100%", width: `${s.level}%`, background: "#4a6fa5", borderRadius: "2px" }} />
+                  </div>
+                </div>
+              ))}
+
+              {/* Certifications */}
+              <p className="font-mono text-[10px] uppercase" style={{ letterSpacing: "3px", color: "#aaa", marginBottom: "12px", marginTop: "16px" }}>
+                <span style={{ color: "#4a6fa5" }}>🎓</span> Certifications
+              </p>
+              {["Generative AI & LLMs — IBM", "Project Management — Google", "Gen AI for PMs — PMI"].map((cert) => (
+                <p key={cert} className="text-[11px]" style={{ color: "#888", paddingLeft: "10px", borderLeft: "2px solid #e8e8e4", marginBottom: "6px", lineHeight: 1.5 }}>{cert}</p>
+              ))}
+
+              {/* Languages */}
+              <p className="font-mono text-[10px] uppercase" style={{ letterSpacing: "3px", color: "#aaa", marginBottom: "12px", marginTop: "16px" }}>
+                <span style={{ color: "#4a6fa5" }}>🌐</span> Languages
+              </p>
+              <div style={{ display: "flex", gap: "6px", flexWrap: "wrap" }}>
+                {["English · Professional", "Urdu · Native", "Pashtu · Native", "Sindhi · Conversational", "Arabic · Conversational"].map((lang) => (
+                  <span key={lang} className="text-[10px]" style={{ padding: "4px 10px", borderRadius: "6px", background: "#f0f0ec", color: "#888", border: "1px solid #e4e4e0" }}>{lang}</span>
+                ))}
+              </div>
+
+              {/* Building Next */}
+              <p className="font-mono text-[10px] uppercase" style={{ letterSpacing: "3px", color: "#aaa", marginBottom: "12px", marginTop: "16px" }}>
+                <span style={{ color: "#4a6fa5" }}>🚀</span> Building Next
+              </p>
+              {[
+                { icon: "🔬", name: "CodeLens v0.4", status: "Next", statusColor: "#4a6fa5" },
+                { icon: "🤖", name: "AI Agent Orchestrator", status: "Designing", statusColor: "#b8860b" },
+                { icon: "📊", name: "LLM Observability", status: "Planned", statusColor: "#10b981" },
+              ].map((item) => (
+                <div key={item.name} style={{ display: "flex", alignItems: "center", gap: "8px", padding: "8px", borderRadius: "8px", background: "#f5f5f1", border: "1px solid #e8e8e4", marginBottom: "6px" }}>
+                  <span style={{ fontSize: "14px" }}>{item.icon}</span>
+                  <span className="text-[11px] font-medium" style={{ color: "#555", flex: 1 }}>{item.name}</span>
+                  <span className="font-mono text-[9px]" style={{ padding: "2px 8px", borderRadius: "20px", color: item.statusColor, border: `1px solid ${item.statusColor}40` }}>{item.status}</span>
+                </div>
+              ))}
+
+            </div>
           </div>
         </div>
       </div>
@@ -416,7 +638,7 @@ export function VisualCV(): React.ReactElement {
       <style jsx global>{`
         @media print {
           @page { size: A4; margin: 0; }
-          body { background: white !important; color: #18181b !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+          body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
           .print\\:hidden { display: none !important; }
           .print\\:block { display: block !important; }
         }
@@ -482,19 +704,28 @@ function ProjectCard({ name, tag, tagColor, description, link }: { name: string;
 
 function PrintSection({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <div>
-      <h3 className="text-[10px] font-bold uppercase tracking-wider pb-0.5 mb-1 border-b" style={{ color: ACCENT, borderColor: `${ACCENT}30` }}>{title}</h3>
-      <div className="space-y-0.5 text-[10px] text-zinc-600">{children}</div>
+    <div className="mb-3">
+      <h3 className="text-[9px] font-bold uppercase tracking-[0.15em] pb-1 mb-1.5" style={{ color: "#1a1a2e", borderBottom: "1.5px solid #1a1a2e" }}>{title}</h3>
+      <div className="space-y-0.5 text-[10px]" style={{ color: "#4a5568" }}>{children}</div>
     </div>
   );
 }
 
 function PrintRole({ title, co, period, items }: { title: string; co: string; period: string; items: string[] }) {
   return (
-    <div className="mb-1.5">
-      <div className="flex justify-between"><span className="font-semibold">{title}</span><span className="text-zinc-400">{period}</span></div>
-      <p className="text-zinc-500">{co}</p>
-      <ul className="mt-0.5">{items.map((item, i) => (<li key={i} className="pl-2 relative before:content-['▸'] before:absolute before:left-0 before:text-zinc-300">{item}</li>))}</ul>
+    <div className="mb-2">
+      <div className="flex justify-between items-baseline">
+        <span className="font-semibold text-[10.5px]" style={{ color: "#1a1a2e" }}>{title}</span>
+        <span className="font-mono text-[8px]" style={{ color: "#a0aec0" }}>{period}</span>
+      </div>
+      <p className="text-[9px]" style={{ color: "#94a3b8" }}>{co}</p>
+      <ul className="mt-0.5 space-y-0.5">
+        {items.map((item, i) => (
+          <li key={i} className="text-[9.5px] pl-2.5 relative before:content-['▸'] before:absolute before:left-0 before:text-[8px]" style={{ color: "#4a5568" }}>
+            {item}
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { VisualCV } from "./visual-cv";
 
 export const metadata: Metadata = {
@@ -7,5 +8,9 @@ export const metadata: Metadata = {
 };
 
 export default function CVPage(): React.ReactElement {
-  return <VisualCV />;
+  return (
+    <Suspense>
+      <VisualCV />
+    </Suspense>
+  );
 }
