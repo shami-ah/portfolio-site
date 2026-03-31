@@ -614,21 +614,13 @@ export function VisualCV(): React.ReactElement {
                 ))}
               </div>
 
-              {/* Building Next */}
-              <p className="font-mono text-[10px] uppercase" style={{ letterSpacing: "2px", color: "#aaa", marginBottom: "6px", marginTop: "10px" }}>
+              {/* Building Next — compact single row */}
+              <p className="font-mono text-[8px] uppercase" style={{ letterSpacing: "2px", color: "#aaa", marginBottom: "4px", marginTop: "8px" }}>
                 <span style={{ color: "#4a6fa5" }}>🚀</span> Building Next
               </p>
-              {[
-                { icon: "🔬", name: "CodeLens v0.4", status: "Next", statusColor: "#4a6fa5" },
-                { icon: "🤖", name: "AI Agent Orchestrator", status: "Designing", statusColor: "#b8860b" },
-                { icon: "📊", name: "LLM Observability", status: "Planned", statusColor: "#10b981" },
-              ].map((item) => (
-                <div key={item.name} style={{ display: "flex", alignItems: "center", gap: "6px", padding: "5px 7px", borderRadius: "6px", background: "#f5f5f1", border: "1px solid #e8e8e4", marginBottom: "4px" }}>
-                  <span style={{ fontSize: "11px" }}>{item.icon}</span>
-                  <span className="text-[9px] font-medium" style={{ color: "#555", flex: 1 }}>{item.name}</span>
-                  <span className="font-mono text-[7px]" style={{ padding: "1px 6px", borderRadius: "20px", color: item.statusColor, border: `1px solid ${item.statusColor}40` }}>{item.status}</span>
-                </div>
-              ))}
+              <p className="text-[8px]" style={{ color: "#888", lineHeight: 1.5 }}>
+                CodeLens v0.4 · AI Agent Orchestrator · LLM Observability
+              </p>
 
             </div>
           </div>
