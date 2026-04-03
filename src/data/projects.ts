@@ -20,13 +20,13 @@ export const projects: ProjectData[] = [
   {
     slug: "codelens",
     title: "CodeLens",
-    subtitle: "Universal AI Code Review System (v0.3.1)",
+    subtitle: "Universal AI Code Review System (v0.3.2)",
     type: "AI Dev Tool",
-    impact: "272 patterns across 9 stacks, tested against real open-source repos. Reviews in under 1 second, entirely on your machine. Guardian mode prevents bugs before they're written.",
+    impact: "275 patterns across 9 stacks, tested against real open-source repos. Reviews in under 1 second, entirely on your machine. Guardian mode prevents bugs before they're written.",
     problem:
       "Commercial code review tools are slow, cloud-dependent, expensive, and do either pattern matching or AI reasoning. Never both. Teams need fast, private, accurate reviews that also catch security vulnerabilities, missing test coverage, and risky PRs without sending code to third-party servers.",
     solution:
-      "A hybrid review engine combining 272 deterministic patterns across 9 stacks with AI reasoning in a multi-pass pipeline. v0.3.0 auto-detects AI agents (Claude Code, Cursor, Windsurf, Copilot, Codex) and injects guardian rules automatically — zero manual config. Tested against real open-source repos (vercel/next.js, discourse/discourse, monicahq/monica, spring-petclinic). Security taint tracking, PR risk scoring, self-learning FP suppression, and zero runtime dependencies.",
+      "A hybrid review engine combining 275 deterministic patterns across 9 stacks with AI reasoning in a multi-pass pipeline. v0.3.0 auto-detects AI agents (Claude Code, Cursor, Windsurf, Copilot, Codex) and injects guardian rules automatically — zero manual config. Tested against real open-source repos (vercel/next.js, discourse/discourse, monicahq/monica, spring-petclinic). Security taint tracking, PR risk scoring, self-learning FP suppression, and zero runtime dependencies. v0.3.2 adds 3 new react-supabase-ts patterns from production gap analysis: hardcoded .limit(N) without paginated drain, mock-data-in-production hooks, missing Sentry in edge function catch blocks.",
     architecture: [
       "Git Diff",
       "AST-aware File Parser",
@@ -40,7 +40,7 @@ export const projects: ProjectData[] = [
       "Self-Learning Feedback Loop",
     ],
     features: [
-      "272 patterns across 9 stacks (TS, Python, Go, Java, Ruby, PHP, Next.js, FastAPI, Spring Boot) with OWASP/CWE mapping",
+      "275 patterns across 9 stacks (TS, Python, Go, Java, Ruby, PHP, Next.js, FastAPI, Spring Boot) with OWASP/CWE mapping",
       "Security taint tracking: traces user input through API to DB to output, flags unsanitized paths",
       "PR Risk Score: weighted 1-10 rating across 8 factors (auth changes, schema mods, missing tests, etc.)",
       "Code explanation: codelens explain <file> shows callers, callees, data flow, and risk analysis using the index",
@@ -48,7 +48,7 @@ export const projects: ProjectData[] = [
       "Dependency vulnerability scanning against 42+ known CVEs",
       "Persistent codebase index with 62K+ edges in the call graph",
       "Self-learning noise filter using TF-IDF similarity, zero external dependencies",
-      "Guardian mode: shift-left prevention — loads patterns into AI agent context to prevent bugs during code generation",
+      "Guardian mode: shift-left prevention — loads patterns into AI agent context to prevent bugs during code generation. Patterns updated from real PR gap analysis (Greptile vs CodeLens) to close blind spots.",
       "Guard command: fast incremental check for editor hooks and CI/CD pre-commit gates",
       "Dual mode: Terminal for instant checks, AI Agent mode for deep reasoning",
       "Auto AI agent integration: codelens setup detects Claude Code, Cursor, Windsurf, Copilot, and Codex — injects guardian/review rules automatically",
@@ -84,7 +84,7 @@ export const projects: ProjectData[] = [
     ],
     stack: ["TypeScript", "Docker", "esbuild", "Regex Parsers", "Persistent JSON Index", "GitHub Actions", "Claude Code Adapter", "GHCR"],
     results: [
-      "272 patterns across 9 stacks, tested against 5 real open-source repos",
+      "275 patterns across 9 stacks, tested against 5 real open-source repos",
       "First index: 4.0s on a 1,622-file production codebase",
       "Incremental update: 60ms",
       "7-file review: 780ms",
@@ -404,6 +404,63 @@ export const projects: ProjectData[] = [
       "Mac restore recovery: Docker Desktop install + clone + setup.sh = fully operational",
     ],
     github: "https://github.com/shami-ah/dev-env",
+  },
+  {
+    slug: "gogaa-cli",
+    title: "Gogaa CLI",
+    subtitle: "AI Coding Agent — Any Model, Any Provider",
+    type: "Developer Tool / CLI",
+    featured: true,
+    impact: "Production-grade AI coding agent built from scratch in TypeScript. 17 tools, 11 providers, full agentic loop with streaming — Claude Code parity at a fraction of the cost via MiniMax M2.7 (~90% cheaper than Sonnet).",
+    problem:
+      "Claude Code locks you into Anthropic. Cursor locks you into a GUI. When a model is down, rate-limited, or too expensive for a task, there's no fallback — you're stuck. Teams running intensive agentic sessions hit $100+/month per developer with no way to route cheaper models for simpler tasks.",
+    solution:
+      "A TypeScript CLI agent that works with any LLM provider through a unified streaming interface. One tool, 11 providers — Anthropic, OpenAI, MiniMax, Groq, Google, DeepSeek, Mistral, xAI, OpenRouter, Together, Ollama. Auto-discovers the best available model. MiniMax M2.7 delivers near-Sonnet coding quality at ~90% lower cost. Anthropic tool search (defer_loading) cuts context token usage by ~85% on large tool sets.",
+    architecture: [
+      "Provider Manager (11 providers, unified streaming interface)",
+      "Tool Registry (17 tools — file, bash, grep, glob, web, memory, agent, semantic search)",
+      "Agentic Loop (streaming, tool calls, stuck detection, auto-retry)",
+      "Context Manager (js-tiktoken, semantic compaction at 85%)",
+      "Anthropic Tool Search (BM25 deferred loading for 10+ tool sets)",
+      "Session Layer (WAL persistence, save/resume)",
+      "Self-Learning Engine (tool reliability, error patterns, model performance)",
+      "React Ink TUI (streaming, permission prompts, status bar, markdown renderer)",
+    ],
+    features: [
+      "11 LLM providers with unified streaming: Anthropic, OpenAI, MiniMax, Groq, Google, DeepSeek, Mistral, xAI, OpenRouter, Together, Ollama",
+      "MiniMax M2.7 integration: OpenAI-compatible API, 1M context, ~90% cheaper than Claude Sonnet, beats Sonnet 4.5 on SWE-bench Multilingual",
+      "Anthropic tool search: auto-injects BM25 deferred loading when tool count >10, reducing context by ~85% (45k+ tokens saved per request in a 17-tool session)",
+      "17 built-in tools: file-read/write/edit, bash, grep, glob, web-search, web-fetch, image-read, PDF-read, sub-agent, memory (save/list/recall), compare, semantic search, project index",
+      "React Ink TUI: streaming output, numbered permission prompts, collapsible tool summaries, running timer, cost per exchange",
+      "Bash sandboxing: destructive command denylist + path allowlist + audit log to ~/.gogaa/audit/",
+      "Session persistence with WAL crash recovery — resume any conversation by ID",
+      "Self-learning engine: tracks tool reliability and error patterns, improves tool descriptions over time",
+      "Cost budget enforcement: configurable $ cap, warns at 80%, stops at 100%",
+      "Plan mode: read-only tool restriction for safe exploration before committing",
+    ],
+    techDecisions: [
+      {
+        title: "MiniMax over OpenRouter for cost optimization",
+        description: "MiniMax M2.7 has a direct API (not aggregated), 1M context window, OpenAI-compatible endpoint, and consistently outperforms Claude Sonnet 4.5 on SWE-bench Multilingual. At ~$0.30/$1.20 per 1M tokens vs Sonnet's $3/$15, it's the best cost-quality tradeoff for agentic coding sessions.",
+      },
+      {
+        title: "Anthropic tool search (defer_loading) for context efficiency",
+        description: "Loading all 17 tool definitions upfront consumes ~10-15k context tokens before any work starts. The Anthropic BM25 tool search tool defers non-core tools (web, memory, agent, compare) and loads only the 3-5 relevant ones per request. At 17 tools, this saves ~45k tokens per session over a typical agentic run.",
+      },
+      {
+        title: "React Ink over raw ANSI for TUI",
+        description: "React Ink provides a component model for terminal UI — the same mental model as web React, but rendering to stdout. State updates re-render only the changed components. Streaming output, permission prompts, and background job status all work as independent stateful components without manual cursor management.",
+      },
+    ],
+    stack: ["TypeScript", "Node.js", "React Ink", "Anthropic SDK", "OpenAI SDK", "js-tiktoken", "MiniMax", "Groq", "Google Gemini"],
+    results: [
+      "17 tools, 11 providers, 28 slash commands — Claude Code feature parity in a single open-source binary",
+      "MiniMax M2.7 cuts per-session cost by ~90% vs Anthropic Sonnet with no quality regression on coding tasks",
+      "Anthropic tool search reduces context token usage by ~85% on large tool sets (17-tool session: ~45k tokens saved per request)",
+      "All 29 tests passing, 8 security audit findings resolved, full bash sandboxing + audit log",
+      "Session persistence with WAL crash recovery — zero lost work across model switches or network failures",
+    ],
+    github: "https://github.com/shami-ah/gogaa-ts",
   },
 ];
 
