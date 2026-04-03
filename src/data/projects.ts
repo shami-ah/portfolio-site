@@ -479,7 +479,7 @@ export const projects: ProjectData[] = [
       "29 tests passing, 8 security audit findings resolved, full bash sandboxing with per-session audit logs",
       "Zero work lost across crashes, model switches, and reboots via WAL session persistence",
     ],
-    github: "https://github.com/shami-ah/gogaa-ts",
+    // github: "https://github.com/shami-ah/gogaa-ts", // Private — will add when public
   },
 ];
 
