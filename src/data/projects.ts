@@ -20,55 +20,61 @@ export const projects: ProjectData[] = [
   {
     slug: "codelens",
     title: "CodeLens",
-    subtitle: "Universal AI Code Review System (v0.3.2)",
+    subtitle: "Universal AI Code Review System (v0.3.2, 293 patterns)",
     type: "AI Dev Tool",
-    impact: "I spent months cataloguing every category of production bug I kept seeing — missing auth guards, silent N+1 queries, race conditions, taint paths that reach SQL. The result is 275 hand-crafted patterns across 9 stacks that run in under one second, entirely on your machine. No cloud. No latency. Code never leaves the repo.",
+    impact: "I spent months cataloguing every category of production bug I kept seeing across client projects: missing auth guards, silent N+1 queries, race conditions, taint paths that reach SQL. The result is 293 hand-crafted patterns across 9 stacks that run in under one second, entirely on your machine. No cloud. No latency. Code never leaves the repo.",
     problem:
-      "Every code review tool I used made the same tradeoff: fast but shallow (regex linters), or deep but slow and cloud-dependent (AI-only tools that send your code to a third party). Neither caught the bugs that actually ship — the ones that look fine in isolation but break when a schema changes, when user input flows through three layers unvalidated, or when a test suite silently diverges from the live code. And none of them could talk to the AI coding assistant sitting next to them and say: don't generate that pattern.",
+      "Every code review tool I evaluated made the same tradeoff. Fast but shallow (regex linters), or deep but slow and cloud-dependent (AI tools that send your code to a third party). Neither caught the bugs that actually ship: the ones that look fine in isolation but break when a schema changes, when user input flows through three layers unvalidated, or when a test suite silently diverges from the live code. And none of them could talk to the AI coding assistant sitting next to them and say: don't generate that pattern.",
     solution:
-      "A hybrid review engine that runs 275 deterministic patterns first, builds a persistent codebase index (call graph, schema graph, column registry, type graph), then layers AI reasoning on top for deep cross-file analysis. The pattern library took months to build — each rule is hand-crafted against real failure cases, mapped to OWASP/CWE, and validated against real production repos: vercel/next.js, discourse/discourse, monicahq/monica, spring-petclinic. The feature I'm most proud of is Guardian mode — it injects the full pattern library directly into Claude Code, Cursor, Windsurf, Copilot, and Codex, shifting bug prevention to before the code is even written. I run it on every project I touch. v0.3.2 adds patterns discovered from real PR gap analysis comparing Greptile findings vs CodeLens findings on production code.",
+      "A hybrid review engine that runs 293 deterministic patterns first, builds a persistent codebase index (call graph, schema graph, column registry, type graph), then layers AI reasoning on top for deep cross-file analysis. The pattern library took months to build. Each rule is hand-crafted against real failure cases, mapped to OWASP/CWE, and validated against real production repos: vercel/next.js, discourse/discourse, monicahq/monica, spring-petclinic. The feature I'm most proud of is Guardian mode. It injects the full pattern library directly into Claude Code, Cursor, Windsurf, Copilot, and Codex, shifting bug prevention to before the code is even written. I run it on every project I touch. The pattern library grows continuously through a Glean pipeline that extracts generalizable findings from real production PRs and imports them as new detection rules.",
     architecture: [
       "Git Diff",
       "AST-aware File Parser",
       "Persistent Index (call graph + schema graph + type graph + column registry)",
       "Incremental Update (60ms)",
       "Pass 0-2: Pre-flight, Layer Analysis, Cross-file Tracing",
-      "Pass 3: Pattern Scan (275 patterns, 9 stacks) + AI Agent Auto-Detection",
+      "Pass 3: Pattern Scan (293 patterns, 9 stacks) + AI Agent Auto-Detection",
       "Pass 3.5: Taint Tracking + Test Coverage + Dep Vulns",
       "Pass 4: Self-Validation + PR Risk Score",
       "AI Reasoning Layer (Claude / Codex / Gemini)",
       "Self-Learning Feedback Loop",
+      "Glean Pipeline (extracts novel patterns from production PR reviews)",
     ],
     features: [
-      "275 hand-crafted patterns across 9 stacks (TypeScript, Python, Go, Java, Ruby, PHP, Next.js, FastAPI, Spring Boot) — every rule maps to a real production failure mode, tagged with OWASP/CWE",
-      "Guardian mode: injects pattern rules into Claude Code, Cursor, Windsurf, Copilot, and Codex at the prompt level — bugs are prevented during generation, not just caught after",
-      "Security taint tracking: 222-line source-to-sink tracer that follows user input through API handlers, business logic, and DB calls — flags unsanitized paths to SQL, exec, and innerHTML with CWE mapping",
+      "293 hand-crafted patterns across 9 stacks (TypeScript, Python, Go, Java, Ruby, PHP, Next.js, FastAPI, Spring Boot). Every rule maps to a real production failure mode, tagged with OWASP/CWE",
+      "Guardian mode injects pattern rules into Claude Code, Cursor, Windsurf, Copilot, and Codex at the prompt level. Bugs are prevented during generation, not just caught after",
+      "Security taint tracking: a 222-line source-to-sink tracer that follows user input through API handlers, business logic, and DB calls. Flags unsanitized paths to SQL, exec, and innerHTML with CWE mapping",
       "PR Risk Score: weighted 1-10 rating across 8 factors (auth changes, schema mods, missing tests, dependency changes, error handler removal, API surface, config edits, file count)",
-      "Persistent codebase index: call graph, schema graph, column registry, and type graph stored in .code-review/ — 62K+ edges on a real production codebase, rebuilt incrementally in 60ms",
-      "Self-learning noise filter: tracks which findings developers act on vs dismiss, uses TF-IDF similarity to auto-suppress patterns that are consistently ignored in this codebase — fully local, no cloud ML",
-      "Code explanation command: codelens explain <file> uses the call graph to show callers, callees, data flow, and risk surface — useful when onboarding to an unfamiliar codebase",
-      "Test coverage gap detection: flags code changes with no corresponding test updates in the same PR",
+      "Persistent codebase index: call graph, schema graph, column registry, and type graph stored in .code-review/. 62K+ edges on a real production codebase, rebuilt incrementally in 60ms",
+      "Self-learning noise filter tracks which findings developers act on vs dismiss, uses TF-IDF similarity to auto-suppress patterns that are consistently ignored in this codebase. Fully local, no cloud ML",
+      "Code explanation command: codelens explain <file> uses the call graph to show callers, callees, data flow, and risk surface. Useful when onboarding to an unfamiliar codebase",
+      "Glean pipeline: processes real production PR reviews, extracts generalizable bug patterns, deduplicates against the existing library, and produces import-ready pattern candidates. 500+ PRs processed to date",
+      "Test coverage gap detection flags code changes with no corresponding test updates in the same PR",
       "Dependency vulnerability scanning against 42+ known CVEs across npm, pip, and Maven ecosystems",
-      "Docker distribution: docker run --rm -v $(pwd):/project ghcr.io/shami-ah/codelens review — zero setup, no Node.js required, source code obfuscated in the image",
-      "Auto-publish pipeline: push to main triggers GitHub Actions → multi-arch build (ARM + x86) → publishes to GHCR automatically",
-      "Tested against real open-source repos: vercel/next.js, discourse/discourse, monicahq/monica, spring-petclinic, tiangolo/fastapi-template — not toy inputs",
+      "Docker distribution: docker run --rm -v $(pwd):/project ghcr.io/shami-ah/codelens review. Zero setup, no Node.js required, source code obfuscated in the image",
+      "Auto-publish pipeline: push to main triggers GitHub Actions, builds multi-arch images (ARM + x86), and publishes to GHCR automatically",
+      "Tested against real open-source repos: vercel/next.js, discourse/discourse, monicahq/monica, spring-petclinic, tiangolo/fastapi-template",
     ],
     techDecisions: [
       {
-        title: "Zero runtime dependencies — the whole tool is a single 351KB file",
-        description: "Tools like SonarQube require a Java runtime, a running server, and a database. That's a 20-minute setup and a dependency you manage forever. I wanted something you could drop into any CI pipeline or editor hook in seconds. Custom regex-based parsers instead of AST frameworks, esbuild to bundle everything at release. The entire tool ships as one minified file that runs anywhere Node runs.",
+        title: "Zero runtime dependencies: the whole tool is a single 351KB file",
+        description: "SonarQube requires a Java runtime, a running server, and a database. That's a 20-minute setup and a dependency you manage forever. I wanted something you could drop into any CI pipeline or editor hook in seconds. Custom regex-based parsers instead of AST frameworks, esbuild to bundle everything at release. The entire tool ships as one minified file that runs anywhere Node runs.",
       },
       {
         title: "Persistent codebase index over re-parsing on every run",
-        description: "The first run on a 1,622-file codebase takes 4 seconds to build the full call graph, schema graph, and column registry. Every run after that is incremental — 60ms to update only the changed files. This made it viable as a pre-commit hook and as a live editor integration. Without the index, cross-file analysis (does this column actually exist? does this function reach a dangerous sink?) would be impossible at that speed.",
+        description: "The first run on a 1,622-file codebase takes 4 seconds to build the full call graph, schema graph, and column registry. Every run after that is incremental: 60ms to update only the changed files. This made it viable as a pre-commit hook and as a live editor integration. Without the index, cross-file analysis (does this column actually exist? does this function reach a dangerous sink?) would be impossible at that speed.",
       },
       {
         title: "Hand-crafted patterns over generated or imported rule sets",
-        description: "I considered using ESLint rule sets or importing from existing linters. But existing rule sets cover style and syntax — they don't model production failure modes. The patterns in CodeLens come from real bugs: missing .limit() on Supabase queries that silently cap at 1000 rows, React hooks placed after conditional returns, edge function catch blocks that swallow errors without alerting, N+1 queries in ORM loops. Each one I've seen cause a real problem. That specificity is what makes the signal-to-noise ratio high enough to trust.",
+        description: "I considered using ESLint rule sets or importing from existing linters. But existing rule sets cover style and syntax. They don't model production failure modes. The patterns in CodeLens come from real bugs: missing .limit() on Supabase queries that silently cap at 1000 rows, React hooks placed after conditional returns, edge function catch blocks that swallow errors without alerting, SQL column shadowing in JOINs that silently resolves to the wrong table's value. Each one I've seen cause a real problem. That specificity is what makes the signal-to-noise ratio high enough to trust.",
+      },
+      {
+        title: "Glean pipeline: the pattern library grows from real production code",
+        description: "Static rule sets go stale. I built a pipeline called Glean that processes real PR reviews from production codebases, extracts generalizable bug patterns, and deduplicates them against the existing library. Over 500 PRs from a production SaaS with 40+ edge functions, Stripe Connect, and Supabase have been processed. The pipeline has added 78 patterns to the react-supabase-ts module alone. Each new project I review makes the tool better for every project after it.",
       },
       {
         title: "Guardian mode as a shift-left layer inside AI agents",
-        description: "The insight was that the best time to catch a bug isn't after the code is written — it's before. AI coding assistants like Claude Code and Cursor accept system-level instructions. CodeLens setup detects which agent you're using and injects the full pattern library into its context. The agent now knows: don't use dangerouslySetInnerHTML without DOMPurify, always destructure { data, error } from Supabase, never put hooks after a conditional return. Bugs are prevented at the source.",
+        description: "The insight was that the best time to catch a bug isn't after the code is written. It's before. AI coding assistants like Claude Code and Cursor accept system-level instructions. CodeLens setup detects which agent you're using and injects the full pattern library into its context. The agent now knows: don't use dangerouslySetInnerHTML without DOMPurify, always destructure { data, error } from Supabase, never put hooks after a conditional return. Bugs are prevented at the source.",
       },
       {
         title: "Source-to-sink taint tracking for real security coverage",
@@ -76,21 +82,22 @@ export const projects: ProjectData[] = [
       },
       {
         title: "Docker distribution with source obfuscation",
-        description: "The pattern library is the core IP. A multi-stage Docker build compiles TypeScript and runs esbuild to produce a single minified bundle — the final image ships only the opaque 351KB file, no source code, no node_modules. Anyone can use the tool via GHCR without access to the source. This made it possible to share with clients and beta testers while evaluating a commercial release.",
+        description: "The pattern library is the core IP. A multi-stage Docker build compiles TypeScript and runs esbuild to produce a single minified bundle. The final image ships only the opaque 351KB file, no source code, no node_modules. Anyone can use the tool via GHCR without access to the source. This made it possible to share with clients and beta testers while evaluating a commercial release.",
       },
     ],
     stack: ["TypeScript", "Docker", "esbuild", "Regex Parsers", "Persistent JSON Index", "GitHub Actions", "Claude Code Adapter", "GHCR"],
     results: [
-      "275 patterns across 9 stacks — every rule validated against real production repos, not toy inputs",
+      "293 patterns across 9 stacks, every rule validated against real production repos",
       "First index build: 4.0s on a 1,622-file production codebase with 62K+ call graph edges",
-      "Incremental updates: 60ms — fast enough for pre-commit hooks and editor integrations",
+      "Incremental updates: 60ms, fast enough for pre-commit hooks and editor integrations",
       "7-file PR review: 780ms end-to-end",
       "Full 456-file PR: 12 seconds with cross-file taint tracing and risk score",
       "Guardian mode active in production: prevents bug categories at generation time, not just review time",
-      "Zero runtime dependencies — single 351KB file, runs in any CI pipeline without setup",
-      "Docker image auto-published to GHCR on every push — one-command usage, source obfuscated",
+      "Zero runtime dependencies: single 351KB file, runs in any CI pipeline without setup",
+      "Docker image auto-published to GHCR on every push, one-command usage, source obfuscated",
+      "Glean pipeline has processed 500+ production PRs, extracting 78 novel patterns into the react-supabase-ts module",
     ],
-    // github: "https://github.com/shami-ah/codelens", // Private — evaluating commercial release
+    // github: "https://github.com/shami-ah/codelens", // Private, evaluating commercial release
     featured: true,
   },
   {
@@ -170,7 +177,7 @@ export const projects: ProjectData[] = [
       "Calendar integration showing availability, scheduling, and conflict detection",
       "Dual AI triage: Anthropic Claude for complex reasoning, Gemini for fast classification",
       "Task board with project grouping, deadlines, and status tracking",
-      "Supabase Realtime for live sync across devices — changes appear instantly",
+      "Supabase Realtime for live sync across devices, with changes appearing instantly",
       "AI-generated email responses with one-click send or edit",
       "Progressive Web App: installable on desktop and mobile, works offline, push notifications",
       "Slack and Telegram integration for notification routing",
@@ -207,7 +214,7 @@ export const projects: ProjectData[] = [
     problem:
       "Gluten-free consumers waste hours searching for deals across scattered retailer sites, have no easy way to find nearby safe restaurants, and lack reliable recipe sources. Existing apps cover one aspect (deals OR restaurants) but never all three in one place.",
     solution:
-      "A cross-platform app that uses LLMs to auto-generate 200+ search queries, aggregates deals via concurrent scraping with deduplication, finds nearby GF restaurants using GPS, and generates personalized recipes on demand. The LLM query generator is the key innovation — it turns 'gluten-free deals' into 200+ targeted queries covering specific brands, retailers, and product categories.",
+      "A cross-platform app that uses LLMs to auto-generate 200+ search queries, aggregates deals via concurrent scraping with deduplication, finds nearby GF restaurants using GPS, and generates personalized recipes on demand. The LLM query generator is the key innovation: it turns 'gluten-free deals' into 200+ targeted queries covering specific brands, retailers, and product categories.",
     architecture: [
       "LLM Query Generator (200+ targeted queries)",
       "Concurrent Scraping (SerpAPI + Tavily)",
@@ -218,12 +225,12 @@ export const projects: ProjectData[] = [
       "Cross-platform UI (React Native + Next.js)",
     ],
     features: [
-      "LLM-generated 200+ search queries covering 40+ retailers and 30+ brands — not hardcoded, generated fresh per category",
+      "LLM-generated 200+ search queries covering 40+ retailers and 30+ brands, not hardcoded but generated fresh per category",
       "Concurrent scraping via SerpAPI + Tavily with deduplication, relevance scoring, and freshness filtering",
       "GPS-based restaurant finder with Google Maps integration, ratings, and allergy-safe filtering",
       "AI recipe generation with ingredients, nutrition facts, substitution tips, and dietary compliance",
       "Unified experience across Web, iOS, and Android via React Native + Next.js shared codebase",
-      "Real-time deal updates via Firebase Firestore listeners — no manual refresh needed",
+      "Real-time deal updates via Firebase Firestore listeners, no manual refresh needed",
     ],
     techDecisions: [
       {
@@ -242,7 +249,7 @@ export const projects: ProjectData[] = [
     stack: ["React Native", "Next.js", "Python", "OpenAI", "Firebase", "Google Maps", "SerpAPI", "Tavily"],
     results: [
       "Aggregates deals from 40+ retailers in real time",
-      "200+ AI-generated search queries per category — covers brands no hardcoded system would catch",
+      "200+ AI-generated search queries per category, covering brands no hardcoded system would catch",
       "Cross-platform: Web, iOS, and Android from shared codebase",
       "Modular microservices enabling weekly feature rollouts",
     ],
@@ -254,9 +261,9 @@ export const projects: ProjectData[] = [
     type: "AI Infrastructure",
     impact: "Scalable knowledge retrieval from unstructured documents with context-aware LLM responses. Sub-second retrieval from thousands of document chunks.",
     problem:
-      "Organizations have critical knowledge locked in PDFs, docs, and internal wikis. Keyword search fails on natural language questions — employees search for 'how do I process a refund?' and get nothing because the doc title is 'Payment Operations SOP'. Staff waste hours searching instead of getting answers.",
+      "Organizations have critical knowledge locked in PDFs, docs, and internal wikis. Keyword search fails on natural language questions. Employees search for 'how do I process a refund?' and get nothing because the doc title is 'Payment Operations SOP'. Staff waste hours searching instead of getting answers.",
     solution:
-      "A Retrieval-Augmented Generation pipeline that chunks documents with context-preserving overlap, generates embeddings via Hugging Face transformers, stores them in Pinecone for vector similarity search, and retrieves the most relevant context before passing it to GPT-4 for answer generation. The pipeline handles document updates incrementally — no full re-indexing needed.",
+      "A Retrieval-Augmented Generation pipeline that chunks documents with context-preserving overlap, generates embeddings via Hugging Face transformers, stores them in Pinecone for vector similarity search, and retrieves the most relevant context before passing it to GPT-4 for answer generation. The pipeline handles document updates incrementally, no full re-indexing needed.",
     architecture: [
       "Document Ingestion (PDF, docs, wiki)",
       "Chunking & Preprocessing (overlap-aware)",
@@ -286,7 +293,7 @@ export const projects: ProjectData[] = [
       },
       {
         title: "Source citations in answers",
-        description: "Every generated answer includes references to the source chunks. Users can verify answers against the original document — builds trust and catches hallucinations.",
+        description: "Every generated answer includes references to the source chunks. Users can verify answers against the original document, which builds trust and catches hallucinations.",
       },
     ],
     stack: ["Python", "Pinecone", "OpenAI GPT-4", "LangChain", "Hugging Face", "Streamlit"],
@@ -343,7 +350,7 @@ export const projects: ProjectData[] = [
     stack: ["Python", "BLIP-2", "OpenAI GPT-4", "Hugging Face", "LangChain", "Streamlit"],
     results: [
       "Handles natural language questions about arbitrary images with multi-step reasoning",
-      "Domain-specific accuracy via RAG enrichment — not just generic image captioning",
+      "Domain-specific accuracy via RAG enrichment, not just generic image captioning",
       "Applicable to accessibility, education, quality inspection, and image-based customer service",
       "Evaluated on general and domain-specific image-question datasets",
     ],
@@ -358,7 +365,7 @@ export const projects: ProjectData[] = [
     problem:
       "Developer environments are fragile. Different Node versions, missing CLIs, OS-specific quirks, and hours of setup when onboarding new team members or restoring a machine. The 'works on my machine' problem persists even in 2026.",
     solution:
-      "A Docker-based portable development environment that packages the entire toolchain — Node.js, Python, Deno, 10+ developer CLIs, shell configuration, Playwright for E2E testing, and database services — into a reproducible container. Volume mounts keep code and configuration on the host while the container provides identical tooling across Mac, Linux, and VPS environments.",
+      "A Docker-based portable development environment that packages the entire toolchain (Node.js, Python, Deno, 10+ developer CLIs, shell configuration, Playwright for E2E testing, and database services) into a reproducible container. Volume mounts keep code and configuration on the host while the container provides identical tooling across Mac, Linux, and VPS environments.",
     architecture: [
       "Dockerfile (multi-layer, architecture-aware ARM/x86)",
       "Docker Compose (dev + Postgres + Redis)",
@@ -371,13 +378,13 @@ export const projects: ProjectData[] = [
     ],
     features: [
       "Architecture-aware builds: runs natively on Apple Silicon (ARM) and x86 Linux without modification",
-      "Full shell environment: zsh, oh-my-zsh, Powerlevel10k, autosuggestions, syntax highlighting — identical feel to native terminal",
+      "Full shell environment: zsh, oh-my-zsh, Powerlevel10k, autosuggestions, syntax highlighting. Identical feel to native terminal",
       "Claude Code integration: skills, rules, memory, and project-level config all work inside the container",
       "Multi-account GitHub: switch between personal and client identities with one command",
       "Playwright with Chromium: headless browser for mockup generation and E2E testing inside the container",
       "Database services: Postgres 15 and Redis 7 as companion containers on a shared network",
       "Secrets never baked into images: API keys mounted read-only at runtime from host",
-      "One-command onboarding: clone, setup.sh, start.sh — new developer productive in 10 minutes",
+      "One-command onboarding: clone, setup.sh, start.sh. New developer productive in 10 minutes",
     ],
     techDecisions: [
       {
@@ -405,18 +412,18 @@ export const projects: ProjectData[] = [
   {
     slug: "gogaa-cli",
     title: "Gogaa CLI",
-    subtitle: "AI Coding Agent — Any Model, Any Provider",
+    subtitle: "AI Coding Agent: Any Model, Any Provider",
     type: "Developer Tool / CLI",
     featured: true,
-    impact: "I got tired of paying $100+/month per developer for a single AI coding assistant with no fallback when it went down or got too expensive. So I built my own — from scratch. A full Claude Code alternative in TypeScript: 11 providers, smart model routing, React Ink TUI, 17 tools, 28 commands, and a self-learning engine. MiniMax M2.7 cuts cost by ~90% with no regression on coding benchmarks.",
+    impact: "I got tired of paying $100+/month per developer for a single AI coding assistant with no fallback when it went down or got too expensive. So I built my own from scratch. A full Claude Code alternative in TypeScript: 11 providers, smart model routing, React Ink TUI, 17 tools, 28 commands, and a self-learning engine. MiniMax M2.7 cuts cost by ~90% with no regression on coding benchmarks.",
     problem:
-      "Claude Code is powerful but locked to Anthropic. If the API goes down, you stop working. If you hit rate limits, you stop working. If the task is simple and Sonnet is overkill, you still pay Sonnet prices. Cursor locks you into a GUI — no terminal, no SSH, no headless server usage. Every AI coding tool I found made you choose: deep integration or provider freedom. Nobody had built something with both. And nobody had solved the fundamental cost problem: agentic sessions burn through context fast, and the industry default is to just pass all tools and all history to the model every turn.",
+      "Claude Code is powerful but locked to Anthropic. If the API goes down, you stop working. If you hit rate limits, you stop working. If the task is simple and Sonnet is overkill, you still pay Sonnet prices. Cursor locks you into a GUI with no terminal, no SSH, no headless server usage. Every AI coding tool I found made you choose: deep integration or provider freedom. Nobody had built something with both. And nobody had solved the fundamental cost problem: agentic sessions burn through context fast, and the industry default is to just pass all tools and all history to the model every turn.",
     solution:
-      "A TypeScript CLI agent where the provider is a variable, not a constant. 11 providers — Anthropic, OpenAI, MiniMax, Groq, Google, DeepSeek, Mistral, xAI, OpenRouter, Together, Ollama — behind one unified streaming interface. Auto-discovers what's available from environment variables at startup. A smart router analyzes each prompt and picks the right model: code tasks go to fast models, deep reasoning tasks go to Opus-class models, simple queries go to free tier. The two biggest engineering bets were the 5-strategy JSON arg parser (real models return malformed tool arguments constantly — a naive JSON.parse fails ~30% of the time) and WAL session persistence (crash mid-session, resume exactly where you left off). Built across 9 focused sessions, each tackling one system layer: UI, engine reliability, context intelligence, provider abstraction, production safety.",
+      "A TypeScript CLI agent where the provider is a variable, not a constant. 11 providers (Anthropic, OpenAI, MiniMax, Groq, Google, DeepSeek, Mistral, xAI, OpenRouter, Together, Ollama) behind one unified streaming interface. Auto-discovers what's available from environment variables at startup. A smart router analyzes each prompt and picks the right model: code tasks go to fast models, deep reasoning tasks go to Opus-class models, simple queries go to free tier. The two biggest engineering bets were the 5-strategy JSON arg parser (real models return malformed tool arguments constantly, and a naive JSON.parse fails ~30% of the time) and WAL session persistence (crash mid-session, resume exactly where you left off). Built across 9 focused sessions, each tackling one system layer: UI, engine reliability, context intelligence, provider abstraction, production safety.",
     architecture: [
       "Provider Manager (11 providers, unified streaming, per-model context limits)",
       "Smart Router (auto-routes prompts to best available model by task type)",
-      "Tool Registry (17 tools — file, bash, grep, glob, web, memory, agent, compare, semantic search)",
+      "Tool Registry (17 tools: file, bash, grep, glob, web, memory, agent, compare, semantic search)",
       "5-Strategy JSON Arg Parser (handles malformed model output, ~95% success vs ~70% naive)",
       "Agentic Loop (streaming tool calls, stuck detection, error recovery hints, auto-retry)",
       "Anthropic Tool Search (BM25 deferred loading, core tools always-on, rest on demand)",
@@ -426,60 +433,60 @@ export const projects: ProjectData[] = [
       "React Ink TUI (Claude Code-matching banner, streaming, permission prompts, markdown, status bar)",
     ],
     features: [
-      "11 LLM providers with unified streaming — Anthropic, OpenAI, MiniMax, Groq, Google, DeepSeek, Mistral, xAI, OpenRouter, Together, Ollama — auto-discovered from env vars at startup, zero config",
-      "Smart auto-routing: each prompt is classified and routed to the best available model (code → fast model, reasoning → deep model, simple → free model) — provider switches are transparent to the user",
-      "MiniMax M2.7: OpenAI-compatible direct API, 1M context window, ~90% cheaper than Claude Sonnet, outperforms Sonnet 4.5 on SWE-bench Multilingual — the best cost-quality tradeoff I've found for agentic coding",
-      "Anthropic tool search: BM25 deferred loading auto-enabled above 10 tools — core tools (file, bash, grep, glob) always loaded, 11 secondary tools discovered on demand, ~85% context reduction (~45k tokens saved per session)",
+      "11 LLM providers with unified streaming: Anthropic, OpenAI, MiniMax, Groq, Google, DeepSeek, Mistral, xAI, OpenRouter, Together, Ollama. Auto-discovered from env vars at startup, zero config",
+      "Smart auto-routing classifies each prompt and routes to the best available model. Code tasks go to fast models, reasoning tasks go to deep models, simple queries go to free tier. Provider switches are transparent to the user",
+      "MiniMax M2.7: OpenAI-compatible direct API, 1M context window, ~90% cheaper than Claude Sonnet, outperforms Sonnet 4.5 on SWE-bench Multilingual. The best cost-quality tradeoff I've found for agentic coding",
+      "Anthropic tool search: BM25 deferred loading auto-enabled above 10 tools. Core tools (file, bash, grep, glob) always loaded, 11 secondary tools discovered on demand, ~85% context reduction (~45k tokens saved per session)",
       "17 built-in tools: file-read/write/edit, bash, grep, glob, web-search, web-fetch, image-read, PDF-read, sub-agent (with per-task model override), memory (save/list/recall), compare, semantic search, project index",
-      "Sub-agent system: spawn a specialized sub-agent with its own model selection, context, and tool scope — the parent agent continues without blocking",
+      "Sub-agent system spawns a specialized sub-agent with its own model selection, context, and tool scope. The parent agent continues without blocking",
       "React Ink TUI: Claude Code-matching block-art banner, streaming output with blinking cursor, numbered permission prompts, collapsible tool summaries, running timer with token cost per exchange",
-      "Live status bar: SHAMI › path › branch~dirty | context% › $cost › time — updates in real time during streaming, visible at a glance",
-      "Git integration: /git status/diff/log, /commit with auto-drafted message, /pr — create commits and PRs from the chat interface",
-      "Task management: /tasks add/done — persistent task board that survives session resets and model switches",
+      "Live status bar shows path, branch, context percentage, cost, and time. Updates in real time during streaming",
+      "Git integration: /git status/diff/log, /commit with auto-drafted message, /pr to create commits and PRs from the chat interface",
+      "Task management: /tasks add/done. Persistent task board that survives session resets and model switches",
       "28 slash commands: /model, /models, /route, /compare, /plan, /tasks, /git, /commit, /pr, /mcp, /plugins, /hooks, /rules, /sessions, /resume, /login, /logout, /index, /voice, /theme, /jobs, /allowall, /tokens, /status, /clear, /exit and more",
-      "Plugin system: external tools loaded from ~/.gogaa/plugins/ — each plugin registers tools and lifecycle hooks into the registry at startup",
+      "Plugin system loads external tools from ~/.gogaa/plugins/. Each plugin registers tools and lifecycle hooks into the registry at startup",
       "MCP support: connect any Model Context Protocol server, tools appear dynamically in the registry without restarting",
-      "5-strategy JSON arg parser: progressive fallback parsing (strict → trim → unescape → partial reconstruct → fallback object) for malformed model output — ~95% success vs ~70% with naive JSON.parse on real agentic runs",
+      "5-strategy JSON arg parser: progressive fallback parsing (strict, trim, unescape, partial reconstruct, fallback object) for malformed model output. ~95% success vs ~70% with naive JSON.parse on real agentic runs",
       "Bash sandboxing: destructive command denylist, path allowlist, and full audit log written to ~/.gogaa/audit/{session}.jsonl per session",
-      "WAL session persistence: write-ahead log written incrementally as messages are added — crash mid-session, resume by ID with zero lost work, works across model switches and reboots",
-      "Self-learning engine: tracks tool reliability, error patterns, and model performance across sessions — auto-improves tool descriptions and routing heuristics over time without manual updates",
+      "WAL session persistence: write-ahead log written incrementally as messages are added. Crash mid-session, resume by ID with zero lost work. Works across model switches and reboots",
+      "Self-learning engine tracks tool reliability, error patterns, and model performance across sessions. Auto-improves tool descriptions and routing heuristics over time without manual updates",
       "Cost budget enforcement: configurable $ cap per session, warns at 80%, hard stops at 100% to prevent runaway agentic loops",
-      "Plan mode: all tools switch to read-only — safe exploration of a codebase before committing to changes",
-      "Voice input: /voice transcribes spoken prompts via Groq Whisper or OpenAI Whisper — useful in hands-busy contexts",
+      "Plan mode switches all tools to read-only for safe exploration of a codebase before committing to changes",
+      "Voice input: /voice transcribes spoken prompts via Groq Whisper or OpenAI Whisper. Useful in hands-busy contexts",
       "Context compaction: js-tiktoken for exact token counting per model (not approximations), semantic summarization via the active model when context window hits 85%",
     ],
     techDecisions: [
       {
-        title: "5-strategy JSON arg parser — the problem nobody talks about",
-        description: "Every blog post about building an AI agent assumes models return valid JSON. In practice, especially with streaming, they don't — truncated strings, double-escaped characters, extra whitespace around the JSON block, or partial objects that cut off mid-key. A single JSON.parse throws and the tool call is lost. I built a parser that tries five progressively looser strategies and injects an error recovery hint into the tool result when it partially recovers — so the model knows what happened and can retry correctly. This brought tool call success from ~70% to ~95% on real agentic sessions. It's not glamorous, but it's the difference between a reliable agent and one that randomly fails.",
+        title: "5-strategy JSON arg parser: the problem nobody talks about",
+        description: "Every blog post about building an AI agent assumes models return valid JSON. In practice, especially with streaming, they don't. Truncated strings, double-escaped characters, extra whitespace around the JSON block, partial objects that cut off mid-key. A single JSON.parse throws and the tool call is lost. I built a parser that tries five progressively looser strategies and injects an error recovery hint into the tool result when it partially recovers, so the model knows what happened and can retry correctly. This brought tool call success from ~70% to ~95% on real agentic sessions. It's not glamorous, but it's the difference between a reliable agent and one that randomly fails.",
       },
       {
         title: "Direct MiniMax integration over aggregators like OpenRouter",
-        description: "OpenRouter is convenient but it adds a routing layer, markup on top of the base price, and a dependency on a third party's uptime. MiniMax M2.7 has a direct API endpoint, uses the same OpenAI-compatible format, costs ~90% less than Claude Sonnet, and outperforms it on SWE-bench Multilingual. The integration was trivial — one new provider entry. The cost and latency benefits are permanent. I made this available to anyone running Gogaa with a MINIMAX_API_KEY.",
+        description: "OpenRouter is convenient but it adds a routing layer, markup on top of the base price, and a dependency on a third party's uptime. MiniMax M2.7 has a direct API endpoint, uses the same OpenAI-compatible format, costs ~90% less than Claude Sonnet, and outperforms it on SWE-bench Multilingual. The integration was trivial: one new provider entry. The cost and latency benefits are permanent. I made this available to anyone running Gogaa with a MINIMAX_API_KEY.",
       },
       {
-        title: "Anthropic tool search (defer_loading) — 45k tokens saved per session",
-        description: "Loading all 17 tool definitions upfront burns 10–15k context tokens before the model does any work. Anthropic's BM25 tool search lets you mark tools as deferred — the model retrieves only the 3–5 relevant ones per request. Core tools (file-read/write/edit, bash, grep, glob) are always present because they're needed in nearly every turn. The other 11 are deferred and fetched on demand. Over a typical 3-hour agentic session, this saves ~45k tokens — about $0.67 at Sonnet pricing, but more importantly it keeps the context window clear for actual conversation and code.",
+        title: "Anthropic tool search (defer_loading): 45k tokens saved per session",
+        description: "Loading all 17 tool definitions upfront burns 10-15k context tokens before the model does any work. Anthropic's BM25 tool search lets you mark tools as deferred. The model retrieves only the 3-5 relevant ones per request. Core tools (file-read/write/edit, bash, grep, glob) are always present because they're needed in nearly every turn. The other 11 are deferred and fetched on demand. Over a typical 3-hour agentic session, this saves ~45k tokens. About $0.67 at Sonnet pricing, but more importantly it keeps the context window clear for actual conversation and code.",
       },
       {
-        title: "React Ink for the TUI — components, not escape codes",
-        description: "My first version used raw ANSI escape codes. Every UI change required recalculating cursor positions, buffering output to prevent flicker, and writing manual diff logic for partial re-renders. It was fragile and every new feature made it worse. Switching to React Ink gave me a proper component model — the streaming output, permission prompt, status bar, and background job list are all independent stateful components. React handles the diff and re-render. Adding a new UI element is a new component. The code is readable. This is the right way to build terminal UIs.",
+        title: "React Ink for the TUI: components, not escape codes",
+        description: "My first version used raw ANSI escape codes. Every UI change required recalculating cursor positions, buffering output to prevent flicker, and writing manual diff logic for partial re-renders. It was fragile and every new feature made it worse. Switching to React Ink gave me a proper component model. The streaming output, permission prompt, status bar, and background job list are all independent stateful components. React handles the diff and re-render. Adding a new UI element is a new component, the code is readable, and this is the right way to build terminal UIs.",
       },
       {
-        title: "WAL session persistence — resume anywhere, lose nothing",
-        description: "Serializing a session in one shot at the end means any crash loses everything. A write-ahead log appends each new message immediately as it arrives. The last valid state is always on disk. Resume by ID reconstructs the exact conversation state — model, tools, history, cost so far — without replaying anything. This works across model switches, reboots, network failures, and even switching from Claude to MiniMax mid-session. For long agentic tasks, this is not optional.",
+        title: "WAL session persistence: resume anywhere, lose nothing",
+        description: "Serializing a session in one shot at the end means any crash loses everything. A write-ahead log appends each new message immediately as it arrives. The last valid state is always on disk. Resume by ID reconstructs the exact conversation state (model, tools, history, cost so far) without replaying anything. This works across model switches, reboots, network failures, and even switching from Claude to MiniMax mid-session. For long agentic tasks, this is not optional.",
       },
     ],
     stack: ["TypeScript", "Node.js", "React Ink", "Anthropic SDK", "OpenAI SDK", "js-tiktoken", "MiniMax", "Groq", "Google Gemini", "Ollama"],
     results: [
-      "Full Claude Code feature parity built from scratch — 17 tools, 28 commands, 11 providers, React Ink TUI",
+      "Full Claude Code feature parity built from scratch: 17 tools, 28 commands, 11 providers, React Ink TUI",
       "~90% cost reduction vs Anthropic Sonnet via MiniMax M2.7 with no regression on SWE-bench coding benchmarks",
-      "~85% context overhead reduction via Anthropic tool search — 45k+ tokens saved per agentic session",
-      "Tool call success rate: ~70% → ~95% via 5-strategy JSON arg parser on real malformed model output",
+      "~85% context overhead reduction via Anthropic tool search, 45k+ tokens saved per agentic session",
+      "Tool call success rate: ~70% to ~95% via 5-strategy JSON arg parser on real malformed model output",
       "29 tests passing, 8 security audit findings resolved, full bash sandboxing with per-session audit logs",
       "Zero work lost across crashes, model switches, and reboots via WAL session persistence",
     ],
-    // github: "https://github.com/shami-ah/gogaa-ts", // Private — will add when public
+    // github: "https://github.com/shami-ah/gogaa-ts", // Private, will add when public
   },
 ];
 
