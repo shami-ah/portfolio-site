@@ -361,7 +361,7 @@ export const projects: ProjectData[] = [
     title: "Portable Dev Environment",
     subtitle: "Containerized Full-Stack Developer Workspace",
     type: "Developer Infrastructure",
-    impact: "One-command developer onboarding with an optimized AI-assisted workflow. New team members go from zero to productive in 10 minutes. Claude Code context is engineered to load only what each project needs, cutting token costs by 84%.",
+    impact: "One-command developer onboarding with an optimized AI-assisted workflow. New team members go from zero to productive in 10 minutes. Claude Code context is engineered using WISC (Write, Isolate, Select, Compress) to load only what each project needs, cutting token costs by 84%.",
     problem:
       "Developer environments are fragile. Different Node versions, missing CLIs, OS-specific quirks, and hours of setup when onboarding new team members or restoring a machine. But in 2026, the environment problem has a new dimension: AI tooling. Claude Code loads every agent, rule, command, and plugin into context on every conversation, whether you need them or not. A well-configured setup with 5 agents, 10 commands, 23 plugins, and 7 rules was burning 35-40K tokens before a single prompt. That is real money on a paid tier and wasted context window for every session.",
     solution:
@@ -400,8 +400,8 @@ export const projects: ProjectData[] = [
         description: "Claude Code's .claude.json is copied at container entry rather than live-mounted. Prevents file corruption when the host process writes simultaneously.",
       },
       {
-        title: "Context engineering: skills over commands, slim agents, path-scoped rules",
-        description: "Claude Code loads commands and agent definitions fully into every conversation. Skills only load their one-line description, with the full body deferred until invocation. Converting 8 commands to skills and compressing 5 agents from 58KB to 5KB (removing generic CS advice the model already knows, keeping only stack-specific rules) cut the always-loaded context from 72KB to 11.7KB. Path-scoped rules with paths: frontmatter only load when matching files are opened. The session-start hook injects project memory conditionally based on the working directory. All capabilities remain available, just loaded on-demand.",
+        title: "WISC context engineering: Write, Isolate, Select, Compress",
+        description: "I developed a four-principle framework for managing AI agent context that I call WISC. Write: persist decisions to files (CLAUDE.md, memory), not just conversation, so every session starts informed. Isolate: one task per conversation, subagents for research, worktrees for parallel branches, never cross-contaminate context. Select: path-scoped rules only load when matching files are opened, project hooks inject context only inside known project directories, skills load their body only on invoke. Compress: agent definitions stripped from 58KB to 5KB by removing generic advice the model already knows, 8 commands converted to lazy-loaded skills, rules trimmed to essentials. The result: 72KB always-loaded context down to 11.7KB, all capabilities preserved. This same methodology drove the intent-based lazy context system in Gogaa CLI, where a greeting loads 24 tokens instead of 3,909. WISC is not a tool, it is a design discipline for anyone building with AI agents.",
       },
     ],
     stack: ["Docker", "Docker Compose", "Ubuntu", "Node.js", "Playwright", "PostgreSQL", "Redis", "zsh"],
@@ -410,7 +410,7 @@ export const projects: ProjectData[] = [
       "15+ CLI tools, 3 languages, 2 database services in one docker compose up",
       "Identical environment across Mac, Linux VPS, and phone-based SSH development",
       "Mac restore recovery: Docker Desktop install + clone + setup.sh = fully operational",
-      "Claude Code context optimization: 72KB always-loaded down to 11.7KB (84% reduction), zero capability loss. Skills load on-demand, agents compressed 87%, rules path-scoped, session hook project-aware",
+      "WISC context engineering: 72KB always-loaded down to 11.7KB (84% reduction), zero capability loss. Write decisions to files, Isolate tasks per conversation, Select context by path and intent, Compress agent definitions and rules. Same methodology applied in Gogaa CLI achieved 99.4% reduction for simple prompts",
     ],
     github: "https://github.com/shami-ah/dev-env",
   },
@@ -459,6 +459,7 @@ export const projects: ProjectData[] = [
       "Plan mode switches all tools to read-only for safe exploration of a codebase before committing to changes",
       "Voice input: /voice transcribes spoken prompts via Groq Whisper or OpenAI Whisper. Useful in hands-busy contexts",
       "Context compaction: js-tiktoken for exact token counting per model (not approximations), semantic summarization via the active model when context window hits 85%",
+      "Intent-based lazy context: an intent classifier analyzes each prompt and categorizes it as chat, question, search, code, memory, skill, or full. Only the relevant system prompt sections, tool definitions, and rules are loaded for that category. A greeting loads 24 tokens of context instead of 3,909. A code task loads tool definitions and project rules but skips memory and skill catalogs. /context full overrides the classifier when you need everything. Combined with tool search, this means most turns carry only the context they actually need",
     ],
     techDecisions: [
       {
@@ -481,6 +482,10 @@ export const projects: ProjectData[] = [
         title: "WAL session persistence: resume anywhere, lose nothing",
         description: "Serializing a session in one shot at the end means any crash loses everything. A write-ahead log appends each new message immediately as it arrives. The last valid state is always on disk. Resume by ID reconstructs the exact conversation state (model, tools, history, cost so far) without replaying anything. This works across model switches, reboots, network failures, and even switching from Claude to MiniMax mid-session. For long agentic tasks, this is not optional.",
       },
+      {
+        title: "Intent-based lazy context: don't load what you won't use",
+        description: "The default approach in AI CLI tools is to dump everything into the system prompt on every turn: all tool definitions, all rules, all project context. This works until your setup grows. With 17 tools, 28 commands, project rules, and memory, the system prompt alone was nearly 4K tokens before the user typed anything. I built an intent classifier that runs before the LLM call. It categorizes the prompt (chat, code, search, memory, skill) and loads only the matching context slices. A simple greeting now costs 24 tokens of context instead of 3,909. Code tasks load tool definitions and project rules but skip the skill catalog and memory index. The classifier is fast (regex + keyword scoring, no LLM call) and has a /context full escape hatch when you genuinely need everything. This is the same principle behind Anthropic's tool search, applied to the entire system prompt.",
+      },
     ],
     stack: ["TypeScript", "Node.js", "React Ink", "Anthropic SDK", "OpenAI SDK", "js-tiktoken", "MiniMax", "Groq", "Google Gemini", "Ollama"],
     results: [
@@ -490,6 +495,7 @@ export const projects: ProjectData[] = [
       "Tool call success rate: ~70% to ~95% via 5-strategy JSON arg parser on real malformed model output",
       "29 tests passing, 8 security audit findings resolved, full bash sandboxing with per-session audit logs",
       "Zero work lost across crashes, model switches, and reboots via WAL session persistence",
+      "Intent-based lazy context: 3,909 → 24 tokens for simple prompts (99.4% reduction), code prompts load only relevant slices. System prompt scales with intent, not with total capability count",
     ],
     // github: "https://github.com/shami-ah/gogaa-ts", // Private, will add when public
   },
