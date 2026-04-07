@@ -361,11 +361,11 @@ export const projects: ProjectData[] = [
     title: "Portable Dev Environment",
     subtitle: "Containerized Full-Stack Developer Workspace",
     type: "Developer Infrastructure",
-    impact: "One-command developer onboarding. New team members go from zero to productive in 10 minutes instead of hours of manual setup.",
+    impact: "One-command developer onboarding with an optimized AI-assisted workflow. New team members go from zero to productive in 10 minutes. Claude Code context is engineered to load only what each project needs, cutting token costs by 84%.",
     problem:
-      "Developer environments are fragile. Different Node versions, missing CLIs, OS-specific quirks, and hours of setup when onboarding new team members or restoring a machine. The 'works on my machine' problem persists even in 2026.",
+      "Developer environments are fragile. Different Node versions, missing CLIs, OS-specific quirks, and hours of setup when onboarding new team members or restoring a machine. But in 2026, the environment problem has a new dimension: AI tooling. Claude Code loads every agent, rule, command, and plugin into context on every conversation, whether you need them or not. A well-configured setup with 5 agents, 10 commands, 23 plugins, and 7 rules was burning 35-40K tokens before a single prompt. That is real money on a paid tier and wasted context window for every session.",
     solution:
-      "A Docker-based portable development environment that packages the entire toolchain (Node.js, Python, Deno, 10+ developer CLIs, shell configuration, Playwright for E2E testing, and database services) into a reproducible container. Volume mounts keep code and configuration on the host while the container provides identical tooling across Mac, Linux, and VPS environments.",
+      "A Docker-based portable development environment that packages the entire toolchain (Node.js, Python, Deno, 10+ developer CLIs, shell configuration, Playwright for E2E testing, and database services) into a reproducible container. Volume mounts keep code and configuration on the host while the container provides identical tooling across Mac, Linux, and VPS environments. On top of that, a context-engineered Claude Code configuration: commands converted to lazy-loaded skills (body loads on invoke, not at startup), agent definitions compressed from 58KB to 5KB by removing generic advice the model already knows and keeping only stack-specific rules, path-scoped rules that only load when matching files are opened, and a project-aware session hook that injects context only when inside a known project directory. Every capability remains available, nothing was removed, but the default token footprint dropped from 72KB to 11.7KB.",
     architecture: [
       "Dockerfile (multi-layer, architecture-aware ARM/x86)",
       "Docker Compose (dev + Postgres + Redis)",
@@ -379,7 +379,7 @@ export const projects: ProjectData[] = [
     features: [
       "Architecture-aware builds: runs natively on Apple Silicon (ARM) and x86 Linux without modification",
       "Full shell environment: zsh, oh-my-zsh, Powerlevel10k, autosuggestions, syntax highlighting. Identical feel to native terminal",
-      "Claude Code integration: skills, rules, memory, and project-level config all work inside the container",
+      "Claude Code integration: 44 skills, 5 agents, path-scoped rules, project-level memory, and auto-pilot intent routing all work inside the container. Context-engineered for lazy loading: skill bodies load on invoke, rules load on file match, session hook injects project context only when inside a known project directory",
       "Multi-account GitHub: switch between personal and client identities with one command",
       "Playwright with Chromium: headless browser for mockup generation and E2E testing inside the container",
       "Database services: Postgres 15 and Redis 7 as companion containers on a shared network",
@@ -399,6 +399,10 @@ export const projects: ProjectData[] = [
         title: "Copy auth files instead of mounting",
         description: "Claude Code's .claude.json is copied at container entry rather than live-mounted. Prevents file corruption when the host process writes simultaneously.",
       },
+      {
+        title: "Context engineering: skills over commands, slim agents, path-scoped rules",
+        description: "Claude Code loads commands and agent definitions fully into every conversation. Skills only load their one-line description, with the full body deferred until invocation. Converting 8 commands to skills and compressing 5 agents from 58KB to 5KB (removing generic CS advice the model already knows, keeping only stack-specific rules) cut the always-loaded context from 72KB to 11.7KB. Path-scoped rules with paths: frontmatter only load when matching files are opened. The session-start hook injects project memory conditionally based on the working directory. All capabilities remain available, just loaded on-demand.",
+      },
     ],
     stack: ["Docker", "Docker Compose", "Ubuntu", "Node.js", "Playwright", "PostgreSQL", "Redis", "zsh"],
     results: [
@@ -406,6 +410,7 @@ export const projects: ProjectData[] = [
       "15+ CLI tools, 3 languages, 2 database services in one docker compose up",
       "Identical environment across Mac, Linux VPS, and phone-based SSH development",
       "Mac restore recovery: Docker Desktop install + clone + setup.sh = fully operational",
+      "Claude Code context optimization: 72KB always-loaded down to 11.7KB (84% reduction), zero capability loss. Skills load on-demand, agents compressed 87%, rules path-scoped, session hook project-aware",
     ],
     github: "https://github.com/shami-ah/dev-env",
   },

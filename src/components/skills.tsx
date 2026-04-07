@@ -41,7 +41,7 @@ const skillGroups: SkillGroup[] = [
   {
     title: "Process",
     items: [
-      "Architecture-first development with Claude Code",
+      "Architecture-first development with Claude Code, context-engineered for efficiency",
       "Team leadership: cross-functional, 3 to 8 people",
       "Client-facing: requirements, SOWs, stakeholder comms",
       "Built my own code review system (CodeLens)",

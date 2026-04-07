@@ -44,7 +44,7 @@ const roles: Role[] = [
       "Shipped 250+ projects: prompt engineering, chatbot automation, RAG systems, analytics dashboards",
       "98% client satisfaction with 40+ returning long-term clients",
       "500+ RLHF/SFT evaluation sessions on frontier models (Outlier, RWS, Translated)",
-      "Founded Wadware House in 2025 as a boutique AI automation agency",
+      "Founded Wadware House in 2025 as an AI automation agency",
     ],
   },
 ];
