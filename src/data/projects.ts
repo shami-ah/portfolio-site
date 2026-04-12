@@ -20,20 +20,20 @@ export const projects: ProjectData[] = [
   {
     slug: "codelens",
     title: "CodeLens",
-    subtitle: "Universal AI Code Review System (v0.3.2, 293 patterns)",
+    subtitle: "Universal AI Code Review System (v0.3.3, 305 patterns)",
     type: "AI Dev Tool",
-    impact: "I spent months cataloguing every category of production bug I kept seeing across client projects: missing auth guards, silent N+1 queries, race conditions, taint paths that reach SQL. The result is 293 hand-crafted patterns across 9 stacks that run in under one second, entirely on your machine. No cloud. No latency. Code never leaves the repo.",
+    impact: "I spent months cataloguing every category of production bug I kept seeing across client projects: missing auth guards, silent N+1 queries, race conditions, taint paths that reach SQL. The result is 305 hand-crafted patterns across 9 stacks that run in under one second, entirely on your machine. No cloud. No latency. Code never leaves the repo.",
     problem:
       "Every code review tool I evaluated made the same tradeoff. Fast but shallow (regex linters), or deep but slow and cloud-dependent (AI tools that send your code to a third party). Neither caught the bugs that actually ship: the ones that look fine in isolation but break when a schema changes, when user input flows through three layers unvalidated, or when a test suite silently diverges from the live code. And none of them could talk to the AI coding assistant sitting next to them and say: don't generate that pattern.",
     solution:
-      "A hybrid review engine that runs 293 deterministic patterns first, builds a persistent codebase index (call graph, schema graph, column registry, type graph), then layers AI reasoning on top for deep cross-file analysis. The pattern library took months to build. Each rule is hand-crafted against real failure cases, mapped to OWASP/CWE, and validated against real production repos: vercel/next.js, discourse/discourse, monicahq/monica, spring-petclinic. The feature I'm most proud of is Guardian mode. It injects the full pattern library directly into Claude Code, Cursor, Windsurf, Copilot, and Codex, shifting bug prevention to before the code is even written. I run it on every project I touch. The pattern library grows continuously through a Glean pipeline that extracts generalizable findings from real production PRs and imports them as new detection rules.",
+      "A hybrid review engine that runs 305 deterministic patterns first, builds a persistent codebase index (call graph, schema graph, column registry, type graph), then layers AI reasoning on top for deep cross-file analysis. The pattern library took months to build. Each rule is hand-crafted against real failure cases, mapped to OWASP/CWE, and validated against real production repos: vercel/next.js, discourse/discourse, monicahq/monica, spring-petclinic. The feature I'm most proud of is Guardian mode. It injects the full pattern library directly into Claude Code, Cursor, Windsurf, Copilot, and Codex, shifting bug prevention to before the code is even written. I run it on every project I touch. The pattern library grows continuously through a Glean pipeline that extracts generalizable findings from real production PRs and imports them as new detection rules.",
     architecture: [
       "Git Diff",
       "AST-aware File Parser",
       "Persistent Index (call graph + schema graph + type graph + column registry)",
       "Incremental Update (60ms)",
       "Pass 0-2: Pre-flight, Layer Analysis, Cross-file Tracing",
-      "Pass 3: Pattern Scan (293 patterns, 9 stacks) + AI Agent Auto-Detection",
+      "Pass 3: Pattern Scan (305 patterns, 9 stacks) + AI Agent Auto-Detection",
       "Pass 3.5: Taint Tracking + Test Coverage + Dep Vulns",
       "Pass 4: Self-Validation + PR Risk Score",
       "AI Reasoning Layer (Claude / Codex / Gemini)",
@@ -41,7 +41,7 @@ export const projects: ProjectData[] = [
       "Glean Pipeline (extracts novel patterns from production PR reviews)",
     ],
     features: [
-      "293 hand-crafted patterns across 9 stacks (TypeScript, Python, Go, Java, Ruby, PHP, Next.js, FastAPI, Spring Boot). Every rule maps to a real production failure mode, tagged with OWASP/CWE",
+      "305 hand-crafted patterns across 9 stacks (TypeScript, Python, Go, Java, Ruby, PHP, Next.js, FastAPI, Spring Boot). Every rule maps to a real production failure mode, tagged with OWASP/CWE",
       "Guardian mode injects pattern rules into Claude Code, Cursor, Windsurf, Copilot, and Codex at the prompt level. Bugs are prevented during generation, not just caught after",
       "Security taint tracking: a 222-line source-to-sink tracer that follows user input through API handlers, business logic, and DB calls. Flags unsanitized paths to SQL, exec, and innerHTML with CWE mapping",
       "PR Risk Score: weighted 1-10 rating across 8 factors (auth changes, schema mods, missing tests, dependency changes, error handler removal, API surface, config edits, file count)",
@@ -70,7 +70,7 @@ export const projects: ProjectData[] = [
       },
       {
         title: "Glean pipeline: the pattern library grows from real production code",
-        description: "Static rule sets go stale. I built a pipeline called Glean that processes real PR reviews from production codebases, extracts generalizable bug patterns, and deduplicates them against the existing library. Over 500 PRs from a production SaaS with 40+ edge functions, Stripe Connect, and Supabase have been processed. The pipeline has added 78 patterns to the react-supabase-ts module alone. Each new project I review makes the tool better for every project after it.",
+        description: "Static rule sets go stale. I built a pipeline called Glean that processes real PR reviews from production codebases, extracts generalizable bug patterns, and deduplicates them against the existing library. Over 500 PRs from a production SaaS with 40+ edge functions, Stripe Connect, and Supabase have been processed. The pipeline has added 90 patterns to the react-supabase-ts module alone. Each new project I review makes the tool better for every project after it.",
       },
       {
         title: "Guardian mode as a shift-left layer inside AI agents",
@@ -87,7 +87,7 @@ export const projects: ProjectData[] = [
     ],
     stack: ["TypeScript", "Docker", "esbuild", "Regex Parsers", "Persistent JSON Index", "GitHub Actions", "Claude Code Adapter", "GHCR"],
     results: [
-      "293 patterns across 9 stacks, every rule validated against real production repos",
+      "305 patterns across 9 stacks, every rule validated against real production repos",
       "First index build: 4.0s on a 1,622-file production codebase with 62K+ call graph edges",
       "Incremental updates: 60ms, fast enough for pre-commit hooks and editor integrations",
       "7-file PR review: 780ms end-to-end",
@@ -95,7 +95,7 @@ export const projects: ProjectData[] = [
       "Guardian mode active in production: prevents bug categories at generation time, not just review time",
       "Zero runtime dependencies: single 351KB file, runs in any CI pipeline without setup",
       "Docker image auto-published to GHCR on every push, one-command usage, source obfuscated",
-      "Glean pipeline has processed 500+ production PRs, extracting 78 novel patterns into the react-supabase-ts module",
+      "Glean pipeline has processed 600+ production PRs, extracting 90 novel patterns into the react-supabase-ts module",
     ],
     // github: "https://github.com/shami-ah/codelens", // Private, evaluating commercial release
     featured: true,
