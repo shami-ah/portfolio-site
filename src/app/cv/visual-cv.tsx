@@ -261,7 +261,7 @@ export function VisualCV(): React.ReactElement {
                 <ProjectCard name="OpenEvent" tag="Production SaaS" tagColor={AMBER} description="AI-powered event management processing real revenue. Multi-agent orchestration: email → entity extraction → workflow → auto-approval." />
                 <ProjectCard name="Command Center" tag="Developer Tool" tagColor="#10b981" description="Unified dev interface with Claude API, Google Gemini, Supabase, Gmail/Calendar integration. PWA with push notifications." link="github.com/shami-ah/shami-command-center" />
                 <ProjectCard name="Gluten-Free Deals & Dining" tag="Cross-Platform" tagColor="#8b5cf6" description="React Native + Next.js app. LLM-generated 200+ search queries, concurrent scraping from 40+ retailers, GPS restaurant finder, AI recipe generation." />
-                <ProjectCard name="RAG Pipeline" tag="AI Infrastructure" tagColor="#ec4899" description="Domain-specific Q&A system with Pinecone vector search, LangChain chunking, GPT-4 answer generation. Sub-second retrieval from thousands of document chunks." link="github.com/shami-ah/rag-gpt-pinecone" />
+                <ProjectCard name="AI Agent System" tag="Multi-Agent" tagColor="#ec4899" description="5 purpose-built AI agents with tool-calling: job search, research, code review, proposals, freelance automation. Groq + Tavily + GitHub API. Deployed on HuggingFace Spaces." link="shami96-deep-agent.hf.space" />
               </Section>
 
               {/* Education */}
@@ -328,7 +328,7 @@ export function VisualCV(): React.ReactElement {
                 <div className="space-y-2">
                   {[
                     { icon: "🔬", name: "CodeLens v0.4", status: "Next", color: ACCENT },
-                    { icon: "🤖", name: "AI Agent Orchestrator", status: "Designing", color: AMBER },
+                    { icon: "🤖", name: "AI Agent System", status: "Shipped", color: "#10b981" },
                     { icon: "📊", name: "LLM Observability", status: "Planned", color: "#10b981" },
                   ].map((item, i) => (
                     <motion.div
@@ -482,7 +482,7 @@ export function VisualCV(): React.ReactElement {
                 { name: "OpenEvent", tag: "Production SaaS", tagColor: "#b8860b", desc: "AI-powered event management processing real revenue. Multi-agent orchestration: email → entity extraction → workflow → auto-approval." },
                 { name: "Command Center", tag: "Developer Tool", tagColor: "#10b981", desc: "Unified dev interface with Claude API, Google Gemini, Supabase, Gmail/Calendar integration. PWA with push notifications." },
                 { name: "Gluten-Free Deals & Dining", tag: "Cross-Platform", tagColor: "#8b5cf6", desc: "React Native + Next.js app. LLM-generated 200+ search queries, concurrent scraping from 40+ retailers, GPS restaurant finder, AI recipe generation." },
-                { name: "RAG Pipeline", tag: "AI Infrastructure", tagColor: "#ec4899", desc: "Domain-specific Q&A system with Pinecone vector search, LangChain chunking, GPT-4 answer generation. Sub-second retrieval from thousands of document chunks." },
+                { name: "AI Agent System", tag: "Multi-Agent", tagColor: "#ec4899", desc: "5 purpose-built AI agents with tool-calling: job search, research, code review, proposals, freelance automation. Groq + Tavily + GitHub API on HuggingFace Spaces." },
               ].map((p) => (
                 <div key={p.name} style={{ padding: "8px 10px", borderRadius: "6px", border: "1px solid #e8e8e4", background: "#f5f5f1", marginBottom: "5px" }}>
                   <div style={{ display: "flex", alignItems: "baseline", gap: "6px", marginBottom: "1px" }}>
@@ -619,7 +619,7 @@ export function VisualCV(): React.ReactElement {
                 <span style={{ color: "#4a6fa5" }}>🚀</span> Building Next
               </p>
               <p className="text-[8px]" style={{ color: "#888", lineHeight: 1.5 }}>
-                CodeLens v0.4 · AI Agent Orchestrator · LLM Observability
+                CodeLens v0.4 · AI Agent System (Shipped) · LLM Observability
               </p>
 
             </div>

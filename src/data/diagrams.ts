@@ -150,4 +150,32 @@ export const diagrams: Record<string, string> = {
     style Container fill:#0f172a,stroke:#3b82f6,color:#93c5fd
     style Volumes fill:#0f172a,stroke:#eab308,color:#fde047
     style Services fill:#0f172a,stroke:#22c55e,color:#86efac`,
+
+  "agent-system": `flowchart TD
+    A[Client Request] --> B[FastAPI Server]
+
+    B --> C1[Job Search\\nAgent]
+    B --> C2[Research\\nAgent]
+    B --> C3[Code Review\\nAgent]
+    B --> C4[Upwork Proposal\\nAgent]
+    B --> C5[n8n Webhook\\nAgent]
+
+    subgraph Tools ["Shared Tool Layer"]
+      T1[Tavily\\nWeb Search]
+      T2[URL Fetcher]
+      T3[GitHub\\nPR Diff]
+    end
+
+    C1 & C2 & C3 & C4 & C5 --> Tools
+
+    Tools --> E1[Groq API\\nLLM Inference]
+    Tools --> E2[Tavily API\\nSearch]
+    Tools --> E3[GitHub API\\nPR Data]
+
+    E1 --> F[Agent Response\\n+ Tool Call Log]
+
+    style B fill:#1e293b,stroke:#3b82f6,color:#93c5fd
+    style Tools fill:#0f172a,stroke:#eab308,color:#fde047
+    style E1 fill:#1e293b,stroke:#3b82f6,color:#93c5fd
+    style F fill:#1e293b,stroke:#22c55e,color:#86efac`,
 };

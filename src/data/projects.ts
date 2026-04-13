@@ -515,6 +515,76 @@ export const projects: ProjectData[] = [
     ],
     github: "https://github.com/shami-ah/gogaa-ts",
   },
+  {
+    slug: "agent-system",
+    title: "AI Agent System",
+    subtitle:
+      "Multi-agent platform with 5 purpose-built AI agents for job search, research, code review, proposals, and freelance automation",
+    type: "AI Agents",
+    impact:
+      "5 autonomous agents with tool-calling, deployed on HuggingFace Spaces — $0/month",
+    featured: true,
+    problem:
+      "Shami needed AI that could actually DO things — not just chat. Searching jobs, researching tech, reviewing PRs, drafting proposals, and handling freelance messages each require different tools and domain knowledge. Running multiple separate tools or doing it manually was slow.",
+    solution:
+      "Built a multi-agent system where each agent has a specific purpose, custom tools (web search, URL fetching, GitHub API), and tailored prompts. Agents plan, call tools, and synthesize — they're real agents, not chatbots. Deployed on HuggingFace Spaces with a portfolio-ready web UI.",
+    architecture: [
+      "FastAPI server with 5 agent endpoints, each backed by a purpose-built agent definition",
+      "Custom tool-calling engine: parses Groq tool_calls, executes async tool functions, feeds results back",
+      "Shared tool layer (Tavily web search, URL fetcher, GitHub PR diff) reused across agents",
+      "Agent definitions: system prompt + tool selection + output format per use case",
+      "Portfolio-ready dark UI with agent selector, real-time tool call indicators",
+    ],
+    features: [
+      "Job Search Agent — searches multiple boards, evaluates fit, drafts cover letters",
+      "Research Agent — multi-source research with cross-referenced structured reports",
+      "Code Review Agent — fetches GitHub PR diffs, analyzes bugs/security/types",
+      "Upwork Proposal Agent — reads job postings, matches skills, drafts tailored proposals",
+      "n8n Webhook Agent — receives freelance messages, analyzes, drafts replies",
+    ],
+    techDecisions: [
+      {
+        title: "Groq for inference",
+        description:
+          "Free tier, fast (300 tokens/sec), native tool-calling support — no inference cost",
+      },
+      {
+        title: "Tool-calling over chain-of-thought",
+        description:
+          "Agents use real function calls (web_search, github_pr_diff) instead of generating code. More reliable, structured, auditable.",
+      },
+      {
+        title: "HuggingFace Spaces over AWS/Vercel",
+        description:
+          "16GB RAM free tier, no request timeout limit, Docker support — perfect for long-running agent tasks",
+      },
+      {
+        title: "Agent-per-purpose over general assistant",
+        description:
+          "Each agent has a focused system prompt and curated tool set. A job search agent doesn't need code review tools — scoping prevents confusion and hallucination.",
+      },
+    ],
+    stack: [
+      "Python",
+      "FastAPI",
+      "Groq",
+      "Tavily",
+      "GitHub API",
+      "HuggingFace Spaces",
+      "Docker",
+      "TypeScript",
+      "Next.js",
+    ],
+    results: [
+      "5 autonomous agents deployed and operational",
+      "Tool-calling engine: agents execute 1-8 tool calls per request automatically",
+      "$0/month hosting — Groq free tier + HF Spaces free tier",
+      "API-first: every agent callable from n8n, command center PWA, or any HTTP client",
+      "Portfolio-ready UI showcasing real AI agent capabilities",
+    ],
+    live: "https://shami96-deep-agent.hf.space",
+    github: "https://huggingface.co/spaces/Shami96/deep-agent",
+  },
 ];
 
 export function getProject(slug: string): ProjectData | undefined {
