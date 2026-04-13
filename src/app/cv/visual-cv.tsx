@@ -214,7 +214,7 @@ export function VisualCV(): React.ReactElement {
               { n: 250, s: "+", l: "Projects Delivered" },
               { n: 5, s: "+", l: "Years Experience" },
               { n: 100, s: "%", l: "Upwork Job Success" },
-              { n: 272, s: "", l: "CodeLens Patterns" },
+              { n: 305, s: "", l: "CodeLens Patterns" },
             ].map((stat, i) => (
               <motion.div
                 key={stat.l}
@@ -257,7 +257,7 @@ export function VisualCV(): React.ReactElement {
 
               {/* Key Projects */}
               <Section title="Key Projects" icon="◆">
-                <ProjectCard name="CodeLens" tag="AI Dev Tool" tagColor={ACCENT} description="272-pattern AI code review engine across 9 stacks. Security taint tracking, PR risk scoring, guardian mode. Zero deps, <1s reviews." />
+                <ProjectCard name="CodeLens" tag="AI Dev Tool" tagColor={ACCENT} description="305-pattern AI code review engine across 9 stacks. Security taint tracking, PR risk scoring, guardian mode. Zero deps, <1s reviews." />
                 <ProjectCard name="OpenEvent" tag="Production SaaS" tagColor={AMBER} description="AI-powered event management processing real revenue. Multi-agent orchestration: email → entity extraction → workflow → auto-approval." />
                 <ProjectCard name="Command Center" tag="Developer Tool" tagColor="#10b981" description="Unified dev interface with Claude API, Google Gemini, Supabase, Gmail/Calendar integration. PWA with push notifications." link="github.com/shami-ah/shami-command-center" />
                 <ProjectCard name="Gluten-Free Deals & Dining" tag="Cross-Platform" tagColor="#8b5cf6" description="React Native + Next.js app. LLM-generated 200+ search queries, concurrent scraping from 40+ retailers, GPS restaurant finder, AI recipe generation." />
@@ -327,7 +327,7 @@ export function VisualCV(): React.ReactElement {
               <Section title="Building Next" icon="🚀">
                 <div className="space-y-2">
                   {[
-                    { icon: "🔬", name: "CodeLens v0.4", status: "Next", color: ACCENT },
+                    { icon: "🔬", name: "CodeLens v0.3.3", status: "Next", color: ACCENT },
                     { icon: "🤖", name: "AI Agent System", status: "Shipped", color: "#10b981" },
                     { icon: "📊", name: "LLM Observability", status: "Planned", color: "#10b981" },
                   ].map((item, i) => (
@@ -408,7 +408,7 @@ export function VisualCV(): React.ReactElement {
               { n: "250+", l: "Projects Delivered" },
               { n: "5+", l: "Years Experience" },
               { n: "100%", l: "Upwork Job Success" },
-              { n: "272", l: "CodeLens Patterns", amber: true },
+              { n: "305", l: "CodeLens Patterns", amber: true },
             ].map((stat) => (
               <div key={stat.l} style={{ padding: "10px", borderRadius: "8px", border: "1px solid #e8e8e4", background: "#f5f5f1", textAlign: "center" }}>
                 <p className="font-mono text-[20px] font-bold" style={{ color: stat.amber ? "#b8860b" : "#4a6fa5" }}>{stat.n}</p>
@@ -478,7 +478,7 @@ export function VisualCV(): React.ReactElement {
               </p>
 
               {[
-                { name: "CodeLens", tag: "AI Dev Tool", tagColor: "#4a6fa5", desc: "272-pattern AI code review engine across 9 stacks. Security taint tracking, PR risk scoring, guardian mode. Zero deps, <1s reviews." },
+                { name: "CodeLens", tag: "AI Dev Tool", tagColor: "#4a6fa5", desc: "305-pattern AI code review engine across 9 stacks. Security taint tracking, PR risk scoring, guardian mode. Zero deps, <1s reviews." },
                 { name: "OpenEvent", tag: "Production SaaS", tagColor: "#b8860b", desc: "AI-powered event management processing real revenue. Multi-agent orchestration: email → entity extraction → workflow → auto-approval." },
                 { name: "Command Center", tag: "Developer Tool", tagColor: "#10b981", desc: "Unified dev interface with Claude API, Google Gemini, Supabase, Gmail/Calendar integration. PWA with push notifications." },
                 { name: "Gluten-Free Deals & Dining", tag: "Cross-Platform", tagColor: "#8b5cf6", desc: "React Native + Next.js app. LLM-generated 200+ search queries, concurrent scraping from 40+ retailers, GPS restaurant finder, AI recipe generation." },
@@ -619,7 +619,7 @@ export function VisualCV(): React.ReactElement {
                 <span style={{ color: "#4a6fa5" }}>🚀</span> Building Next
               </p>
               <p className="text-[8px]" style={{ color: "#888", lineHeight: 1.5 }}>
-                CodeLens v0.4 · AI Agent System (Shipped) · LLM Observability
+                CodeLens v0.3.3 · AI Agent System (Shipped) · LLM Observability
               </p>
 
             </div>

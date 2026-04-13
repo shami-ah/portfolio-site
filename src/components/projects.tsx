@@ -80,6 +80,12 @@ export function Projects(): React.ReactElement {
                   <span className="px-2 py-0.5 text-[10px] font-mono text-muted/60 bg-card-hover rounded border border-card-border">
                     {project.type}
                   </span>
+                  {project.live && !project.github && (
+                    <span className="flex items-center gap-1 text-[10px] font-mono text-green-400/60">
+                      <span className="w-1.5 h-1.5 rounded-full bg-green-400/60" />
+                      Live
+                    </span>
+                  )}
                   {project.github && (
                     <svg
                       width="14"

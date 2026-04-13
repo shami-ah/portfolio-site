@@ -583,7 +583,6 @@ export const projects: ProjectData[] = [
       "Portfolio-ready UI showcasing real AI agent capabilities",
     ],
     live: "https://shami96-deep-agent.hf.space",
-    github: "https://huggingface.co/spaces/Shami96/deep-agent",
   },
 ];
 
