@@ -66,7 +66,7 @@ export function Hero(): React.ReactElement {
               rel="noopener noreferrer"
               className="px-8 py-3 bg-green-500/10 border border-green-500/30 text-green-400 font-medium rounded-lg hover:bg-green-500/20 hover:border-green-500/50 transition-all duration-200"
             >
-              Book a 30-min Call
+              Book a 15-min Call
             </a>
             <a
               href="#contact"
