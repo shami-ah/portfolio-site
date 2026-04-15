@@ -16,7 +16,7 @@ const roles: Role[] = [
     company: "More Life Hospitality GmbH",
     period: "Sep 2025 \u2013 Present",
     points: [
-      "Building OpenEvent, an AI-powered event management SaaS handling real client workloads",
+      "Building OpenEvent, live with 100+ clients across 150+ events — saves each team ~1.5 hours/day of manual email processing",
       "Designed the full agentic pipeline: emails come in, AI classifies them, humans approve actions, workflows execute automatically",
       "Architected the data model and AI orchestration layer on Supabase Edge Functions with OpenAI and pgvector",
       "Shipped the React frontend: Task Inbox, Workflow Runner, Approval Flows, Marketing Hub, Admin Dashboard",

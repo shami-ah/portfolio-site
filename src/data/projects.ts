@@ -105,7 +105,7 @@ export const projects: ProjectData[] = [
     title: "OpenEvent",
     subtitle: "AI-Powered Event Management Platform",
     type: "Production SaaS",
-    impact: "Automated 80% of manual event coordination, cutting team response time from hours to minutes.",
+    impact: "Live with 100+ clients across 150+ events. Saves each team ~1.5 hours/day of manual email processing — AI classifies, proposes, and executes while humans stay in control.",
     problem:
       "Event management companies drown in emails, manual booking, and scattered spreadsheets. Staff spend hours triaging requests, copying data between systems, and chasing approvals. The work is repetitive but requires judgment that simple automation can't handle.",
     solution:
