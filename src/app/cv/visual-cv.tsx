@@ -172,7 +172,7 @@ export function VisualCV(): React.ReactElement {
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.5 }}
               >
-                <p>iamshami1996@gmail.com</p>
+                <p>shami8024@gmail.com</p>
                 <p className="text-blue-400">github.com/shami-ah</p>
                 <p className="text-blue-400">linkedin.com/in/ahtesham</p>
                 <p className="text-blue-400">portfolio-site-4nb.pages.dev</p>
@@ -382,7 +382,7 @@ export function VisualCV(): React.ReactElement {
               </p>
             </div>
             <div className="font-mono text-[9px]" style={{ color: "#999", textAlign: "right", lineHeight: 1.7 }}>
-              iamshami1996@gmail.com<br/>
+              shami8024@gmail.com<br/>
               <span style={{ color: "#4a6fa5" }}>github.com/shami-ah</span><br/>
               <span style={{ color: "#4a6fa5" }}>linkedin.com/in/ahtesham</span><br/>
               <span style={{ color: "#4a6fa5" }}>portfolio-site-4nb.pages.dev</span><br/>
