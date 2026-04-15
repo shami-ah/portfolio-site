@@ -385,7 +385,7 @@ export function VisualCV(): React.ReactElement {
               iamshami1996@gmail.com<br/>
               <span style={{ color: "#4a6fa5" }}>github.com/shami-ah</span><br/>
               <span style={{ color: "#4a6fa5" }}>linkedin.com/in/ahtesham</span><br/>
-              <span style={{ color: "#4a6fa5" }}>portfolio-site-alpha.pages.dev</span><br/>
+              <span style={{ color: "#4a6fa5" }}>portfolio-site-4nb.pages.dev</span><br/>
               Islamabad, PK · Remote
             </div>
           </div>
@@ -409,7 +409,7 @@ export function VisualCV(): React.ReactElement {
               { n: "250+", l: "Projects Delivered" },
               { n: "5+", l: "Years Experience" },
               { n: "100%", l: "Upwork Job Success" },
-              { n: "305", l: "CodeLens Patterns", amber: true },
+              { n: "1418", l: "Gogaa Tests Passing", amber: true },
             ].map((stat) => (
               <div key={stat.l} style={{ padding: "10px", borderRadius: "8px", border: "1px solid #e8e8e4", background: "#f5f5f1", textAlign: "center" }}>
                 <p className="font-mono text-[20px] font-bold" style={{ color: stat.amber ? "#b8860b" : "#4a6fa5" }}>{stat.n}</p>
@@ -479,6 +479,7 @@ export function VisualCV(): React.ReactElement {
               </p>
 
               {[
+                { name: "Gogaa CLI", tag: "Dev Tool · CLI", tagColor: "#4a6fa5", desc: "Claude Code alternative — 11 providers, Aider parity, 1418 tests. Repo map, SEARCH/REPLACE, watch mode, plugin marketplace, parallel agents." },
                 { name: "CodeLens", tag: "AI Dev Tool", tagColor: "#4a6fa5", desc: "305-pattern AI code review engine across 9 stacks. Security taint tracking, PR risk scoring, guardian mode. Zero deps, <1s reviews." },
                 { name: "OpenEvent", tag: "Production SaaS", tagColor: "#b8860b", desc: "AI-powered event management processing real revenue. Multi-agent orchestration: email → entity extraction → workflow → auto-approval." },
                 { name: "Command Center", tag: "Developer Tool", tagColor: "#10b981", desc: "Unified dev interface with Claude API, Google Gemini, Supabase, Gmail/Calendar integration. PWA with push notifications." },
