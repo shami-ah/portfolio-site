@@ -4,21 +4,21 @@ import { FadeUp } from "./motion";
 
 const upcoming = [
   {
-    title: "CodeLens v0.4",
+    title: "Gogaa Architect Mode",
     description:
-      "Tree-sitter AST integration for true semantic analysis, VS Code extension, and pattern marketplace for community-contributed rules",
+      "Two-model split for complex tasks: a strong model plans and writes specs, a fast model executes edits. Cuts cost and improves quality on hard problems. No other open-source CLI has this.",
     status: "Next Up",
   },
   {
-    title: "AI Agent Orchestrator",
+    title: "Spec-to-Code Traceability",
     description:
-      "Open-source framework for managing multi-agent workflows with planner/worker/validator pattern and human-in-the-loop gates",
+      "Link requirements to the code that implements them. Which functions cover RQ-12? What breaks if this spec changes? The missing connective tissue in every agentic coding stack — nobody has built it yet.",
     status: "Designing",
   },
   {
-    title: "LLM Observability Dashboard",
+    title: "CodeLens v0.4",
     description:
-      "Self-hosted prompt tracking, token usage, latency monitoring, hallucination detection, and feedback loop analytics",
+      "Tree-sitter AST integration for true semantic analysis beyond regex — blast radius, call graph navigation, and VS Code extension with inline diagnostics.",
     status: "Planned",
   },
 ];
