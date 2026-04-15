@@ -151,6 +151,41 @@ export const diagrams: Record<string, string> = {
     style Volumes fill:#0f172a,stroke:#eab308,color:#fde047
     style Services fill:#0f172a,stroke:#22c55e,color:#86efac`,
 
+  "gogaa-cli": `flowchart TD
+    A[User Prompt] --> B[Intent Classifier\\nchat / code / search / memory]
+    B --> C[Context Assembler\\ntier-aware repo map + rules]
+    C --> D[Provider Manager\\n11 providers · auto-fallback]
+    D --> E[Agentic Loop\\nstreaming tool calls]
+
+    E --> F1[File Tools\\nread / write / edit / patch]
+    E --> F2[Bash · Grep · Glob\\nLSP go-to-def find-refs]
+    E --> F3[Web · Memory\\nSub-agent · MCP]
+
+    F1 & F2 & F3 --> G{Mutation?}
+    G -->|Yes| H[Auto-Lint + Test\\nAider-style repair prompt]
+    G -->|No| I[Response]
+    H --> I
+
+    I --> J[Git Layer\\nLLM commit · attribution · SEARCH/REPLACE]
+    J --> K[Session WAL\\ncrash recovery · resume by ID]
+
+    subgraph Context ["Context Budget — per model tier"]
+      C1[Small · 300 tok flat map]
+      C2[Medium · 800 tok exports]
+      C3[Large · 2000 tok symbol tree]
+    end
+
+    C -.-> Context
+
+    style A fill:#1e293b,stroke:#3b82f6,color:#93c5fd
+    style D fill:#1e293b,stroke:#3b82f6,color:#93c5fd
+    style E fill:#1e293b,stroke:#3b82f6,color:#93c5fd
+    style G fill:#1e293b,stroke:#eab308,color:#fde047
+    style H fill:#1e293b,stroke:#ef4444,color:#fca5a5
+    style J fill:#1e293b,stroke:#22c55e,color:#86efac
+    style K fill:#1e293b,stroke:#22c55e,color:#86efac
+    style Context fill:#0f172a,stroke:#3b82f6,color:#93c5fd`,
+
   "agent-system": `flowchart TD
     A[Client Request] --> B[FastAPI Server]
 

@@ -175,7 +175,7 @@ export function VisualCV(): React.ReactElement {
                 <p>iamshami1996@gmail.com</p>
                 <p className="text-blue-400">github.com/shami-ah</p>
                 <p className="text-blue-400">linkedin.com/in/ahtesham</p>
-                <p className="text-blue-400">portfolio-site-alpha.pages.dev</p>
+                <p className="text-blue-400">portfolio-site-4nb.pages.dev</p>
                 <p>Islamabad, PK · Remote</p>
               </motion.div>
             </div>
@@ -214,7 +214,7 @@ export function VisualCV(): React.ReactElement {
               { n: 250, s: "+", l: "Projects Delivered" },
               { n: 5, s: "+", l: "Years Experience" },
               { n: 100, s: "%", l: "Upwork Job Success" },
-              { n: 305, s: "", l: "CodeLens Patterns" },
+              { n: 1418, s: "", l: "Gogaa Tests Passing" },
             ].map((stat, i) => (
               <motion.div
                 key={stat.l}
@@ -257,6 +257,7 @@ export function VisualCV(): React.ReactElement {
 
               {/* Key Projects */}
               <Section title="Key Projects" icon="◆">
+                <ProjectCard name="Gogaa CLI" tag="Dev Tool · CLI" tagColor={ACCENT} description="Claude Code alternative — 11 providers, Aider parity, 1418 tests. Repo map, SEARCH/REPLACE, watch mode, plugin marketplace, parallel agents. Built it because nothing else had everything." />
                 <ProjectCard name="CodeLens" tag="AI Dev Tool" tagColor={ACCENT} description="305-pattern AI code review engine across 9 stacks. Security taint tracking, PR risk scoring, guardian mode. Zero deps, <1s reviews." />
                 <ProjectCard name="OpenEvent" tag="Production SaaS" tagColor={AMBER} description="AI-powered event management processing real revenue. Multi-agent orchestration: email → entity extraction → workflow → auto-approval." />
                 <ProjectCard name="Command Center" tag="Developer Tool" tagColor="#10b981" description="Unified dev interface with Claude API, Google Gemini, Supabase, Gmail/Calendar integration. PWA with push notifications." link="github.com/shami-ah/shami-command-center" />
@@ -300,8 +301,8 @@ export function VisualCV(): React.ReactElement {
               </Section>
 
               <Section title="Process" icon="▹">
-                {["Architecture-First Development", "Team Leadership (3-10 people)", "Client-Facing Comms & SOWs", "Code Review Systems (CodeLens)"].map((s, i) => (
-                  <SkillBar key={s} name={s} level={90 - i * 5} delay={i * 0.05} />
+                {["Architecture-First Development", "Team Leadership (3-10 people)", "Client-Facing Comms & SOWs", "CodeLens — 305-pattern review engine", "Gogaa — Claude Code alternative"].map((s, i) => (
+                  <SkillBar key={s} name={s} level={90 - i * 4} delay={i * 0.05} />
                 ))}
               </Section>
 

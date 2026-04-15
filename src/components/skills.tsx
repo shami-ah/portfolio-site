@@ -44,7 +44,8 @@ const skillGroups: SkillGroup[] = [
       "Architecture-first development with Claude Code, context-engineered for efficiency",
       "Team leadership: cross-functional, 3 to 8 people",
       "Client-facing: requirements, SOWs, stakeholder comms",
-      "Built my own code review system (CodeLens)",
+      "Built CodeLens — code review engine (305 patterns, 9 stacks)",
+      "Built gogaa — Claude Code alternative (1418 tests, Aider parity, 11 providers)",
     ],
   },
 ];
