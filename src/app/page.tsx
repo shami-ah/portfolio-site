@@ -5,6 +5,7 @@ import { Experience } from "@/components/experience";
 import { Projects } from "@/components/projects";
 import { Skills } from "@/components/skills";
 import { BuildingNext } from "@/components/building-next";
+import { Testimonials } from "@/components/testimonials";
 import { Contact } from "@/components/contact";
 import { Footer } from "@/components/footer";
 
@@ -18,6 +19,7 @@ export default function Home(): React.ReactElement {
       <Projects />
       <Skills />
       <BuildingNext />
+      <Testimonials />
       <Contact />
       <Footer />
     </main>

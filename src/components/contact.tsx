@@ -67,18 +67,26 @@ export function Contact(): React.ReactElement {
           <p className="text-sm font-mono text-accent mb-4 uppercase tracking-wider">
             Contact
           </p>
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-green-500/10 border border-green-500/20 text-green-400 text-xs font-mono mb-6">
+            <span className="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse" />
+            Available — full-time remote &amp; 90-day engagements
+          </div>
           <h2 className="text-3xl md:text-4xl font-bold mb-6">
             Let&apos;s build something
             <span className="text-accent"> real.</span>
           </h2>
-          <p className="text-muted max-w-xl mx-auto mb-12 leading-relaxed">
-            Looking for an AI automation architect who ships production systems,
-            not prototypes? I&apos;d love to hear about your project.
+          <p className="text-muted max-w-xl mx-auto mb-3 leading-relaxed">
+            I design the system architecture, build the AI layer, and ship the
+            full product — no hand-holding required. If you need an AI automation
+            engineer who owns the outcome, reach out.
+          </p>
+          <p className="text-xs font-mono text-muted/50 mb-10">
+            Response time: &lt;24h
           </p>
         </FadeUp>
 
         <FadeUp delay={0.2}>
-          <div className="flex flex-wrap items-center justify-center gap-3 mb-12">
+          <div className="flex flex-wrap items-center justify-center gap-3 mb-8">
             {links.map((link) => (
               <a
                 key={link.label}

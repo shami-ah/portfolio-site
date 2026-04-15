@@ -1,7 +1,6 @@
 "use client";
 
-import { FadeUp, StaggerContainer } from "./motion";
-import { motion } from "framer-motion";
+import { FadeUp } from "./motion";
 
 interface SkillGroup {
   title: string;
@@ -12,48 +11,55 @@ const skillGroups: SkillGroup[] = [
   {
     title: "AI & Agents",
     items: [
-      "Multi-agent orchestration with human approval gates",
-      "OpenAI (GPT-4o, o1), Claude (Opus, Sonnet)",
-      "RAG pipelines: pgvector, Pinecone, LangChain",
-      "RLHF/SFT evaluation on frontier models",
-      "Prompt engineering and template management",
+      "Multi-agent orchestration",
+      "Human approval gates",
+      "OpenAI GPT-4o, o1",
+      "Claude Opus, Sonnet",
+      "RAG pipelines",
+      "pgvector, Pinecone",
+      "LangChain",
+      "RLHF / SFT evaluation",
+      "Prompt engineering",
     ],
   },
   {
     title: "Full Stack",
     items: [
-      "React, Next.js, React Native (Expo)",
-      "Supabase: Postgres, Edge Functions, RLS, Realtime",
-      "TypeScript, Python, Deno, FastAPI",
-      "Stripe, Google Calendar, Gmail, Maps APIs",
-      "PostgreSQL, Redis, Firebase, pgvector",
+      "React, Next.js",
+      "React Native (Expo)",
+      "TypeScript, Python",
+      "FastAPI, Deno",
+      "Supabase (Postgres, Edge, RLS)",
+      "Stripe",
+      "Google Calendar & Gmail APIs",
+      "Redis, Firebase, pgvector",
     ],
   },
   {
     title: "Infrastructure",
     items: [
-      "GitHub Actions CI/CD, Docker, containerized dev envs",
-      "Sentry, Grafana, structured logging",
-      "n8n workflow automation, cron scheduling",
-      "Cloudflare, Vercel, Supabase hosting",
+      "GitHub Actions CI/CD",
+      "Docker Compose",
+      "Containerized dev envs",
+      "Sentry, Grafana",
+      "Structured logging",
+      "n8n automation",
+      "Cloudflare, Vercel",
     ],
   },
   {
     title: "Process",
     items: [
-      "Architect-first: spec before code, agents for execution",
-      "Team lead: 3-8 engineers, cross-functional delivery",
-      "Client-facing: requirements, SOWs, stakeholder alignment",
-      "CodeLens: 305-pattern AI code review (9 stacks)",
-      "Gogaa CLI: open-source AI coding agent (1418 tests, 11 providers)",
+      "Architect-first",
+      "Spec before code",
+      "Team lead (3-8 eng)",
+      "Cross-functional delivery",
+      "SOWs & stakeholder alignment",
+      "CodeLens (305 patterns, 9 stacks)",
+      "Gogaa CLI (1418 tests, 11 providers)",
     ],
   },
 ];
-
-const itemVariant = {
-  hidden: { opacity: 0, y: 10 },
-  visible: { opacity: 1, y: 0 },
-};
 
 export function Skills(): React.ReactElement {
   return (
@@ -79,19 +85,16 @@ export function Skills(): React.ReactElement {
                 <h3 className="font-bold text-sm mb-4 text-accent">
                   {group.title}
                 </h3>
-                <StaggerContainer>
-                  <ul className="space-y-2.5">
-                    {group.items.map((item) => (
-                      <motion.li
-                        key={item}
-                        variants={itemVariant}
-                        className="text-xs text-muted leading-relaxed"
-                      >
-                        {item}
-                      </motion.li>
-                    ))}
-                  </ul>
-                </StaggerContainer>
+                <div className="flex flex-wrap gap-1.5">
+                  {group.items.map((item) => (
+                    <span
+                      key={item}
+                      className="px-2 py-1 text-[10px] font-mono bg-accent/5 text-accent/80 rounded border border-accent/10"
+                    >
+                      {item}
+                    </span>
+                  ))}
+                </div>
               </div>
             </FadeUp>
           ))}
