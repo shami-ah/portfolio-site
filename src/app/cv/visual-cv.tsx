@@ -328,9 +328,9 @@ export function VisualCV(): React.ReactElement {
               <Section title="Building Next" icon="🚀">
                 <div className="space-y-2">
                   {[
-                    { icon: "🔬", name: "CodeLens v0.5.8", status: "Next", color: ACCENT },
-                    { icon: "🤖", name: "AI Agent System", status: "Shipped", color: "#10b981" },
-                    { icon: "📊", name: "LLM Observability", status: "Planned", color: "#10b981" },
+                    { icon: "🏗️", name: "Gogaa Architect Mode", status: "Next", color: ACCENT },
+                    { icon: "🔗", name: "Spec-to-Code Traceability", status: "Designing", color: AMBER },
+                    { icon: "🌳", name: "CodeLens v0.4 (AST)", status: "Planned", color: "#10b981" },
                   ].map((item, i) => (
                     <motion.div
                       key={item.name}
@@ -620,7 +620,7 @@ export function VisualCV(): React.ReactElement {
                 <span style={{ color: "#4a6fa5" }}>🚀</span> Building Next
               </p>
               <p className="text-[8px]" style={{ color: "#888", lineHeight: 1.5 }}>
-                CodeLens v0.5.8 · AI Agent System (Shipped) · LLM Observability
+                Gogaa Architect Mode (Next) · Spec-to-Code Traceability · CodeLens v0.4
               </p>
 
             </div>
