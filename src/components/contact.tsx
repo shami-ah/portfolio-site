@@ -85,6 +85,24 @@ export function Contact(): React.ReactElement {
           </p>
         </FadeUp>
 
+        <FadeUp delay={0.15}>
+          <a
+            href="https://calendly.com/shami8024/intro"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-3 px-8 py-4 mb-8 rounded-xl bg-accent text-white font-medium hover:bg-accent/90 transition-all duration-200 hover:shadow-lg hover:shadow-accent/20 group"
+          >
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+              <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+              <line x1="16" y1="2" x2="16" y2="6" />
+              <line x1="8" y1="2" x2="8" y2="6" />
+              <line x1="3" y1="10" x2="21" y2="10" />
+            </svg>
+            Book a free 15-min intro call
+            <span className="text-white/60 text-sm font-normal group-hover:text-white/80 transition-colors">→</span>
+          </a>
+        </FadeUp>
+
         <FadeUp delay={0.2}>
           <div className="flex flex-wrap items-center justify-center gap-3 mb-8">
             {links.map((link) => (

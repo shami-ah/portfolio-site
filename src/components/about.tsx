@@ -1,12 +1,36 @@
 "use client";
 
+import { useEffect, useRef, useState } from "react";
+import { useInView } from "framer-motion";
 import { FadeUp, SlideIn } from "./motion";
 
+function CountUp({ to, suffix = "", prefix = "" }: { to: number; suffix?: string; prefix?: string }): React.ReactElement {
+  const ref = useRef<HTMLSpanElement>(null);
+  const isInView = useInView(ref, { once: true });
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    if (!isInView) return;
+    const duration = 1400;
+    const start = Date.now();
+    const tick = () => {
+      const elapsed = Date.now() - start;
+      const progress = Math.min(elapsed / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      setCount(Math.round(eased * to));
+      if (progress < 1) requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  }, [isInView, to]);
+
+  return <span ref={ref}>{prefix}{count}{suffix}</span>;
+}
+
 const stats = [
-  { value: "250+", label: "Projects Shipped" },
-  { value: "5+", label: "Years Building" },
-  { value: "1418", label: "Gogaa Tests Passing" },
-  { value: "<1s", label: "CodeLens Reviews" },
+  { counter: <CountUp to={250} suffix="+" />, label: "Projects Shipped" },
+  { counter: <CountUp to={5} suffix="+" />, label: "Years Building" },
+  { counter: <CountUp to={1418} />, label: "Gogaa Tests Passing" },
+  { counter: <span>&lt;1s</span>, label: "CodeLens Reviews" },
 ];
 
 export function About(): React.ReactElement {
@@ -64,7 +88,7 @@ export function About(): React.ReactElement {
                   className="p-6 rounded-xl bg-card border border-card-border hover:border-accent/30 transition-all duration-300 group"
                 >
                   <p className="text-3xl font-bold text-accent group-hover:scale-105 transition-transform">
-                    {stat.value}
+                    {stat.counter}
                   </p>
                   <p className="text-sm text-muted mt-1">{stat.label}</p>
                 </div>

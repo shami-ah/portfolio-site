@@ -61,11 +61,29 @@ export function Hero(): React.ReactElement {
               See Case Studies
             </a>
             <a
+              href="https://calendly.com/shami8024/intro"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-8 py-3 bg-green-500/10 border border-green-500/30 text-green-400 font-medium rounded-lg hover:bg-green-500/20 hover:border-green-500/50 transition-all duration-200"
+            >
+              Book a 15-min Call
+            </a>
+            <a
               href="#contact"
               className="px-8 py-3 border border-card-border text-foreground rounded-lg hover:bg-card hover:border-muted/30 transition-all duration-200"
             >
               Get in Touch
             </a>
+          </div>
+        </FadeUp>
+
+        <FadeUp delay={0.4}>
+          <div className="flex items-center justify-center gap-2 mt-4">
+            <span className="w-1.5 h-1.5 bg-accent rounded-full animate-pulse" />
+            <p className="text-xs font-mono text-muted/60">
+              Currently building:{" "}
+              <span className="text-accent/80">Gogaa v0.9.2 — parallel panes live streaming</span>
+            </p>
           </div>
         </FadeUp>
 
