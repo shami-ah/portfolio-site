@@ -213,7 +213,7 @@ export function VisualCV(): React.ReactElement {
             {[
               { n: 250, s: "+", l: "Projects Delivered" },
               { n: 5, s: "+", l: "Years Experience" },
-              { n: 100, s: "%", l: "Upwork Job Success" },
+              { n: 100, s: "%", l: "Client Satisfaction" },
               { n: 1418, s: "", l: "Gogaa Tests Passing" },
             ].map((stat, i) => (
               <motion.div
@@ -248,9 +248,9 @@ export function VisualCV(): React.ReactElement {
                   "Replaced 3 legacy spreadsheet processes with React + Supabase internal tools",
                   "Implemented agile workflows reducing delivery cycles by 40%",
                 ]} />
-                <TimelineRole title="AI Engineer & Full-Stack Dev" company="Freelance · Upwork / Fiverr" period="2019 — Present" location="Remote · Global" items={[
+                <TimelineRole title="AI Engineering Consultant" company="Wadware House · Global Clients" period="2019 — Present" location="Remote · Global" items={[
                   "250+ projects — RAG pipelines, prompt engineering, AI workflows, analytics dashboards",
-                  "100% Job Success on Upwork · 40+ returning long-term clients",
+                  "40+ long-term client relationships, 100% satisfaction rate",
                   "500+ RLHF/SFT evaluation sessions on frontier models (Outlier, RWS, Translated)",
                 ]} />
               </Section>
@@ -367,10 +367,10 @@ export function VisualCV(): React.ReactElement {
 
       {/* Print version — light theme, same layout as screen */}
       <div className={`${preview ? "block" : "hidden"} print:block max-w-none mx-auto overflow-hidden`} style={{ background: "#fafaf8", color: "#1a1a2e", maxWidth: preview ? "794px" : "none" }}>
-        <div className="print-content" style={{ padding: "24px 28px", transformOrigin: "top left" }}>
+        <div className="print-content" style={{ padding: "14px 24px", transformOrigin: "top left" }}>
 
           {/* Header */}
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: "14px" }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: "7px" }}>
             <div>
               <p className="font-mono text-[8px] uppercase" style={{ letterSpacing: "3px", color: "#aaa", marginBottom: "4px" }}>Curriculum Vitae</p>
               <h1 className="text-[36px] font-bold" style={{ letterSpacing: "-1px", lineHeight: 1, color: "#1a1a2e" }}>
@@ -401,14 +401,14 @@ export function VisualCV(): React.ReactElement {
           </div>
 
           {/* Divider */}
-          <div style={{ height: "1px", background: "linear-gradient(90deg, transparent, #4a6fa5, transparent)", margin: "12px 0" }} />
+          <div style={{ height: "1px", background: "linear-gradient(90deg, transparent, #4a6fa5, transparent)", margin: "7px 0" }} />
 
           {/* Stats */}
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "10px", marginBottom: "16px" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "10px", marginBottom: "7px" }}>
             {[
               { n: "250+", l: "Projects Delivered" },
               { n: "5+", l: "Years Experience" },
-              { n: "100%", l: "Upwork Job Success" },
+              { n: "100%", l: "Client Satisfaction" },
               { n: "1418", l: "Gogaa Tests Passing", amber: true },
             ].map((stat) => (
               <div key={stat.l} style={{ padding: "10px", borderRadius: "8px", border: "1px solid #e8e8e4", background: "#f5f5f1", textAlign: "center" }}>
@@ -444,13 +444,13 @@ export function VisualCV(): React.ReactElement {
                   "Replaced 3 legacy spreadsheet processes with React + Supabase internal tools",
                   "Implemented agile workflows reducing delivery cycles by 40%",
                 ]},
-                { title: "AI Engineer & Full-Stack Dev", company: "Freelance · Upwork / Fiverr", location: "Remote · Global", period: "2019 — Present", items: [
+                { title: "AI Engineering Consultant", company: "Wadware House · Global Clients", location: "Remote · Global", period: "2019 — Present", items: [
                   "250+ projects — RAG pipelines, prompt engineering, AI workflows, analytics dashboards",
-                  "100% Job Success on Upwork · 40+ returning long-term clients",
+                  "40+ long-term client relationships, 100% satisfaction rate",
                   "500+ RLHF/SFT evaluation sessions on frontier models (Outlier, RWS, Translated)",
                 ]},
               ].map((role) => (
-                <div key={role.title} style={{ display: "flex", gap: "10px", marginBottom: "10px" }}>
+                <div key={role.title} style={{ display: "flex", gap: "10px", marginBottom: "7px" }}>
                   <div style={{ display: "flex", flexDirection: "column", alignItems: "center", paddingTop: "2px" }}>
                     <div style={{ width: "8px", height: "8px", borderRadius: "50%", border: "2px solid #4a6fa5", background: role.active ? "rgba(74,111,165,0.15)" : "#fafaf8" }} />
                     <div style={{ flex: 1, width: "1px", background: "#e0e0dc", marginTop: "3px" }} />
@@ -474,7 +474,7 @@ export function VisualCV(): React.ReactElement {
               ))}
 
               {/* Projects */}
-              <p className="font-mono text-[9px] uppercase" style={{ letterSpacing: "3px", color: "#aaa", marginBottom: "8px", marginTop: "12px" }}>
+              <p className="font-mono text-[9px] uppercase" style={{ letterSpacing: "3px", color: "#aaa", marginBottom: "8px", marginTop: "7px" }}>
                 <span style={{ color: "#4a6fa5" }}>◆</span> Key Projects
               </p>
 
@@ -486,7 +486,7 @@ export function VisualCV(): React.ReactElement {
                 { name: "Gluten-Free Deals & Dining", tag: "Cross-Platform", tagColor: "#8b5cf6", desc: "React Native + Next.js app. LLM-generated 200+ search queries, concurrent scraping from 40+ retailers, GPS restaurant finder, AI recipe generation." },
                 { name: "AI Agent System", tag: "Multi-Agent", tagColor: "#ec4899", desc: "5 purpose-built AI agents with tool-calling: job search, research, code review, proposals, freelance automation. Groq + Tavily + GitHub API on HuggingFace Spaces." },
               ].map((p) => (
-                <div key={p.name} style={{ padding: "8px 10px", borderRadius: "6px", border: "1px solid #e8e8e4", background: "#f5f5f1", marginBottom: "5px" }}>
+                <div key={p.name} style={{ padding: "8px 10px", borderRadius: "6px", border: "1px solid #e8e8e4", background: "#f5f5f1", marginBottom: "3px" }}>
                   <div style={{ display: "flex", alignItems: "baseline", gap: "6px", marginBottom: "1px" }}>
                     <span className="text-[10px] font-semibold">{p.name}</span>
                     <span className="font-mono text-[7px]" style={{ padding: "1px 6px", borderRadius: "20px", color: p.tagColor, border: `1px solid ${p.tagColor}40` }}>{p.tag}</span>
@@ -496,7 +496,7 @@ export function VisualCV(): React.ReactElement {
               ))}
 
               {/* Education */}
-              <p className="font-mono text-[9px] uppercase" style={{ letterSpacing: "3px", color: "#aaa", marginBottom: "6px", marginTop: "10px" }}>
+              <p className="font-mono text-[9px] uppercase" style={{ letterSpacing: "3px", color: "#aaa", marginBottom: "6px", marginTop: "6px" }}>
                 <span style={{ color: "#4a6fa5" }}>◈</span> Education
               </p>
               <div style={{ padding: "8px 10px", borderRadius: "6px", border: "1px solid #e8e8e4", background: "#f5f5f1", display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>

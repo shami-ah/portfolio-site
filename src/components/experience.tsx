@@ -37,14 +37,14 @@ const roles: Role[] = [
     stack: "React, Supabase, PostgreSQL, Tailwind CSS",
   },
   {
-    title: "Freelance AI Consultant",
-    company: "Fiverr, Upwork & Wadware House",
+    title: "AI Engineering Consultant",
+    company: "Wadware House · Global Clients",
     period: "2019 \u2013 Present",
     points: [
-      "Shipped 250+ projects: prompt engineering, chatbot automation, RAG systems, analytics dashboards",
-      "98% client satisfaction with 40+ returning long-term clients",
+      "250+ production projects globally: RAG systems, AI workflows, automation, analytics dashboards",
+      "40+ long-term client relationships, 100% satisfaction rate",
       "500+ RLHF/SFT evaluation sessions on frontier models (Outlier, RWS, Translated)",
-      "Founded Wadware House in 2025 as an AI automation agency",
+      "Wadware House: AI automation agency for businesses needing scoped project engagements",
     ],
   },
 ];
