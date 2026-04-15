@@ -5,7 +5,7 @@ import { FadeUp, SlideIn } from "./motion";
 const stats = [
   { value: "250+", label: "Projects Shipped" },
   { value: "5+", label: "Years Building" },
-  { value: "98%", label: "Client Satisfaction" },
+  { value: "1418", label: "Gogaa Tests Passing" },
   { value: "<1s", label: "CodeLens Reviews" },
 ];
 
@@ -46,6 +46,12 @@ export function About(): React.ReactElement {
                 engines that connect LLM reasoning to real actions like calendar
                 bookings and invoices, and full-stack products shipped from schema
                 design to polished UI.
+              </p>
+              <p>
+                Most engineers are consumers of AI tooling. I&apos;m also a producer of it. When the tools I needed
+                didn&apos;t exist — a code review engine that catches production bugs commercial tools miss, an AI
+                coding agent that combines every gap in one open-source CLI — I built them. That&apos;s a different
+                relationship with the technology than someone who just uses it.
               </p>
               <p className="text-foreground font-medium italic border-l-2 border-accent pl-4">
                 Design the system first. Then let AI agents handle the repetitive

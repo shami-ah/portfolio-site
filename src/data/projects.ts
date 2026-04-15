@@ -130,16 +130,16 @@ export const projects: ProjectData[] = [
     ],
     techDecisions: [
       {
-        title: "Supabase Edge Functions for AI",
-        description: "LLM calls, entity extraction, and workflow triggers run on Deno-based edge functions. Fast cold starts, built-in auth, and direct database access.",
+        title: "Human-in-the-loop by default, not as an afterthought",
+        description: "The tempting version of this product is full automation: email arrives, AI books the calendar, sends the invoice, done. We deliberately didn't build that. Event coordination involves ambiguity — a client saying 'sometime next week' needs judgment, not a slot-filling algorithm. The right boundary is: AI handles extraction, classification, and proposal; humans approve before anything touches money or commitments. This made the system trustworthy enough for clients to actually use it in production, where fully automated alternatives had failed them before.",
       },
       {
         title: "pgvector over external vector DB",
-        description: "Kept vector search inside Postgres to avoid another service dependency. Simpler ops, single source of truth, good enough performance for our scale.",
+        description: "Keeping vector search inside Postgres eliminates an entire class of operational problems: no separate service to provision, no sync lag between your relational data and your embeddings, no additional cost layer. At our scale the query performance is indistinguishable from a dedicated vector DB, and every query can join across relational and vector data in a single round trip.",
       },
       {
-        title: "Declarative workflows over code",
-        description: "JSON/YAML workflow definitions instead of hardcoded logic. Non-engineers can modify workflows. Supports conditionals, parallel execution, and human review gates.",
+        title: "Declarative workflow engine over hardcoded logic",
+        description: "Early versions had workflow steps written directly in TypeScript. Adding a new approval step meant a code change, a PR, a deploy. Moving to JSON/YAML definitions made workflows data, not code. A non-engineer can now add a conditional step, change the approval order, or add a new integration node without touching the codebase. The engine handles conditionals, parallel branches, and human gates. This turned out to be the feature that made the system extensible across different client types.",
       },
     ],
     stack: ["React", "TypeScript", "Supabase", "OpenAI", "pgvector", "Stripe", "Docker", "GitHub Actions"],
@@ -420,11 +420,11 @@ export const projects: ProjectData[] = [
     subtitle: "AI Coding Agent: Any Model, Any Provider (v0.9.1)",
     type: "Developer Tool / CLI",
     featured: true,
-    impact: "I got tired of paying $100+/month per developer for a single AI coding assistant with no fallback when it went down or got too expensive. So I built my own from scratch — and kept building until it matched or exceeded the commercial tools. A full Claude Code and Aider alternative in TypeScript: 11 providers, smart model routing, React Ink TUI, 24+ tools, 95+ commands, Aider-parity git workflow, repo map, SEARCH/REPLACE edits, watch mode, plugin marketplace, parallel agents, scheduled triggers, and 1418 passing tests. MiniMax M2.7 cuts cost by ~90% with no regression on coding benchmarks.",
+    impact: "I mapped the entire agentic coding ecosystem — Claude Code, Aider, Cursor, OpenCode, Codex — and found that every tool made you choose. Provider freedom or deep integration. Polished TUI or serious git workflow. MCP support or SEARCH/REPLACE edits. Nobody had all of it. So I built the thing that was missing: a full AI coding agent where the provider is a variable, the git workflow is Aider-level, the UI is CC-level, and nothing is locked down. 11 providers, 1418 passing tests, plugin marketplace, parallel agents, watch mode, scheduled triggers. The only open-source CLI that closes every gap simultaneously.",
     problem:
       "Claude Code is powerful but locked to Anthropic. If the API goes down, you stop working. If you hit rate limits, you stop working. If the task is simple and Sonnet is overkill, you still pay Sonnet prices. Cursor locks you into a GUI with no terminal, no SSH, no headless server usage. Aider is excellent for git workflow and repo understanding, but its TUI is spartan, it has no plugin system, no parallel agents, and no MCP support. Every AI coding tool I found made you choose: deep integration or provider freedom, polish or workflow quality. Nobody had built something with all of it.",
     solution:
-      "A TypeScript CLI agent where the provider is a variable, not a constant. 11 providers behind one unified streaming interface with automatic fallback: if your primary model hits rate limits, gogaa switches to the next in the chain without dropping the conversation. v0.9 reached full Aider parity — stealing the four things Aider does better than everyone: a tier-aware repo map (300/800/2000 token budgets per model size), SEARCH/REPLACE edit blocks with a file-patch tool, LLM-generated commit messages in Aider's exact format, and watch mode where comments like // AI! trigger an agentic session on file save. On top of that: a CC-style plugin marketplace TUI, scheduled/cron triggers, web session viewer, branch checkpoints, parallel agent panes, and a full git attribution system with model identity in Co-authored-by trailers. The two foundational engineering bets from v0.3 still hold: the 5-strategy JSON arg parser (~95% tool call success) and WAL session persistence (resume exactly where you left off across crashes and reboots).",
+      "A TypeScript CLI where the provider is a variable, not a constant. 11 providers behind one unified streaming interface with automatic fallback — if your primary model hits rate limits or goes down, gogaa switches to the next without dropping the conversation. v0.9 closed the final gap with Aider by implementing the four architectural decisions that make it the best open-source coding agent: a tier-aware repo map (compact 300-token flat list for small models, 800 tokens with exports for medium, full 2000-token symbol tree for large), SEARCH/REPLACE edit blocks that surgically modify specific lines without rewriting whole files, LLM-generated commit messages from staged diffs rather than heuristics, and watch mode that triggers an agentic session the moment you save a file with an // AI! comment. On top of that: a CC-style plugin marketplace TUI, scheduled/cron triggers, web session viewer, branch checkpoints, and parallel agent panes. The two foundational bets from early versions still hold: a 5-strategy JSON arg parser that brought tool call success from ~70% to ~95%, and WAL session persistence so a crash mid-task loses nothing.",
     architecture: [
       "Provider Manager (11 providers, unified streaming, automatic fallback chain on 429/500/timeout)",
       "Smart Router (auto-routes prompts to best available model by task type)",
