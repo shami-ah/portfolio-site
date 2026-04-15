@@ -20,7 +20,7 @@ export const projects: ProjectData[] = [
   {
     slug: "codelens",
     title: "CodeLens",
-    subtitle: "Universal AI Code Review System (v0.5.8, 305 patterns)",
+    subtitle: "Universal AI Code Review System (v0.3.3, 305 patterns)",
     type: "AI Dev Tool",
     impact: "I spent months cataloguing every category of production bug I kept seeing across client projects: missing auth guards, silent N+1 queries, race conditions, taint paths that reach SQL. The result is 305 hand-crafted patterns across 9 stacks that run in under one second, entirely on your machine. No cloud. No latency. Code never leaves the repo.",
     problem:

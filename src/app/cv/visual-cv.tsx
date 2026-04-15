@@ -164,7 +164,7 @@ export function VisualCV(): React.ReactElement {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.45 }}
-                >5+ years shipping production AI systems — from multi-agent orchestration and RAG pipelines to full-stack SaaS. I design architectures where AI agents classify, execute, and learn while humans stay in control.</motion.p>
+                >5+ years shipping production AI systems — from multi-agent orchestration and RAG pipelines to full-stack SaaS. I design architectures where AI agents classify, execute, and learn while humans stay in control. Open to senior AI engineering roles in the Gulf region or remote.</motion.p>
               </div>
               <motion.div
                 className="text-sm text-zinc-500 space-y-1.5 font-mono"
