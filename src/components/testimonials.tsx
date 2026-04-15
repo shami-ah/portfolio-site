@@ -10,16 +10,28 @@ interface Testimonial {
   platform?: "upwork" | "linkedin" | "direct";
 }
 
-// Paste real quotes here — pull from Upwork reviews or ask clients directly.
-// Leave this array empty and the section won't render.
 const testimonials: Testimonial[] = [
-  // {
-  //   quote: "Paste the exact Upwork review text here.",
-  //   name: "Client Name",
-  //   role: "Role / Company Type",
-  //   company: "Company Name",
-  //   platform: "upwork",
-  // },
+  {
+    quote: "Ahtesham was extremely helpful, great developer and communication skills. Will hire again.",
+    name: "Felix S.",
+    role: "Founder, More Life Hospitality GmbH",
+    company: "Upwork client — then offered full-time",
+    platform: "upwork",
+  },
+  {
+    quote: "A serious and helpful guy. If you're looking for a technical and competent engineer and project manager who knows how to deal with specific and in-depth topics to monitor your teams and your projects, he's well-placed to do it.",
+    name: "Mouad B.",
+    role: "Project Manager",
+    company: "France",
+    platform: "direct",
+  },
+  {
+    quote: "I had a great experience working with Ahtesham on the creation of a Basic META AI Course. They were highly professional, delivered high-quality content, and adhered to the project timeline.",
+    name: "Upwork Client",
+    role: "Course Director",
+    company: "META AI Workshop",
+    platform: "upwork",
+  },
 ];
 
 const platformLabel: Record<string, string> = {
