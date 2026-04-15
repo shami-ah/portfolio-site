@@ -32,7 +32,7 @@ const skillGroups: SkillGroup[] = [
   {
     title: "Infrastructure",
     items: [
-      "GitHub Actions CI/CD, Docker Compose, containerized dev environments",
+      "GitHub Actions CI/CD, Docker, containerized dev envs",
       "Sentry, Grafana, structured logging",
       "n8n workflow automation, cron scheduling",
       "Cloudflare, Vercel, Supabase hosting",
@@ -41,11 +41,11 @@ const skillGroups: SkillGroup[] = [
   {
     title: "Process",
     items: [
-      "Architecture-first development with Claude Code, context-engineered for efficiency",
-      "Team leadership: cross-functional, 3 to 8 people",
-      "Client-facing: requirements, SOWs, stakeholder comms",
-      "Built CodeLens — code review engine (305 patterns, 9 stacks)",
-      "Built gogaa — Claude Code alternative (1418 tests, Aider parity, 11 providers)",
+      "Architect-first: spec before code, agents for execution",
+      "Team lead: 3-8 engineers, cross-functional delivery",
+      "Client-facing: requirements, SOWs, stakeholder alignment",
+      "CodeLens: 305-pattern AI code review (9 stacks)",
+      "Gogaa CLI: open-source AI coding agent (1418 tests, 11 providers)",
     ],
   },
 ];

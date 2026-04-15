@@ -47,15 +47,11 @@ export function About(): React.ReactElement {
                 bookings and invoices, and full-stack products shipped from schema
                 design to polished UI.
               </p>
-              <p>
-                Most engineers are consumers of AI tooling. I&apos;m also a producer of it. When the tools I needed
-                didn&apos;t exist — a code review engine that catches production bugs commercial tools miss, an AI
-                coding agent that combines every gap in one open-source CLI — I built them. That&apos;s a different
-                relationship with the technology than someone who just uses it.
-              </p>
-              <p className="text-foreground font-medium italic border-l-2 border-accent pl-4">
-                Design the system first. Then let AI agents handle the repetitive
-                work while humans stay in control.
+              <p className="text-foreground font-medium border-l-2 border-accent pl-4">
+                Most engineers are consumers of AI tooling. I&apos;m also a builder of it — when the tools
+                I needed didn&apos;t exist, I built them. A code review engine that catches bugs commercial
+                tools miss. An open-source coding agent that closes every gap simultaneously.
+                That&apos;s a different relationship with the technology.
               </p>
             </div>
           </SlideIn>

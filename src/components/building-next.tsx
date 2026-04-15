@@ -10,15 +10,15 @@ const upcoming = [
     status: "Next Up",
   },
   {
-    title: "Spec-to-Code Traceability",
+    title: "OpenEvent Adaptive Approval Engine",
     description:
-      "Link requirements to the code that implements them. Which functions cover RQ-12? What breaks if this spec changes? The missing connective tissue in every agentic coding stack — nobody has built it yet.",
+      "The system tracks which action types are approved, edited, or rejected over time. As patterns emerge, trust thresholds adjust automatically — human review load drops week-over-week without removing the human from the loop. Progressive trust, not blind automation.",
     status: "Designing",
   },
   {
-    title: "CodeLens v0.4",
+    title: "Gogaa Remote Session Viewer",
     description:
-      "Tree-sitter AST integration for true semantic analysis beyond regex — blast radius, call graph navigation, and VS Code extension with inline diagnostics.",
+      "Watch and control any gogaa agent session from a browser or phone, over LAN or tunnel. Real-time streaming of tool calls, diffs, and cost. The same agent running on your dev machine — accessible from anywhere.",
     status: "Planned",
   },
 ];

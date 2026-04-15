@@ -46,9 +46,9 @@ export function Hero(): React.ReactElement {
 
         <FadeUp delay={0.2}>
           <p className="text-base md:text-lg text-muted max-w-2xl mx-auto mb-10 leading-relaxed px-4">
-            5+ years shipping production AI. From email-to-task pipelines and
-            multi-agent orchestration to open-source code review
-            tools, I handle the full stack so you don&apos;t need a team.
+            5+ years shipping production AI. Multi-agent architectures with
+            human approval gates, full-stack products that hold up under real
+            load, and the open-source tooling to build them right.
           </p>
         </FadeUp>
 

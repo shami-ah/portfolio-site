@@ -44,7 +44,7 @@ export function Projects(): React.ReactElement {
                   {project.title}
                 </h3>
                 <p className="text-sm text-muted mb-4">{project.subtitle}</p>
-                <p className="text-sm text-muted/80 leading-relaxed mb-5">
+                <p className="text-sm text-muted/80 leading-relaxed mb-5 line-clamp-4">
                   {project.impact}
                 </p>
 
@@ -102,7 +102,7 @@ export function Projects(): React.ReactElement {
                 <h3 className="font-bold mb-1 group-hover:text-accent transition-colors">
                   {project.title}
                 </h3>
-                <p className="text-xs text-muted leading-relaxed">
+                <p className="text-xs text-muted leading-relaxed line-clamp-3">
                   {project.impact}
                 </p>
               </a>
