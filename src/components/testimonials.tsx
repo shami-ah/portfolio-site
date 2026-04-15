@@ -13,7 +13,7 @@ interface Testimonial {
 const testimonials: Testimonial[] = [
   {
     quote: "Ahtesham was extremely helpful, great developer and communication skills. Will hire again.",
-    name: "Felix S.",
+    name: "River Soellner",
     role: "Founder, More Life Hospitality GmbH",
     company: "Upwork client — then offered full-time",
     platform: "upwork",
