@@ -87,7 +87,7 @@ export function Contact(): React.ReactElement {
 
         <FadeUp delay={0.15}>
           <a
-            href="https://calendly.com/shami8024/intro"
+            href="https://calendly.com/shami8024/30min"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-3 px-8 py-4 mb-8 rounded-xl bg-accent text-white font-medium hover:bg-accent/90 transition-all duration-200 hover:shadow-lg hover:shadow-accent/20 group"
@@ -98,7 +98,7 @@ export function Contact(): React.ReactElement {
               <line x1="8" y1="2" x2="8" y2="6" />
               <line x1="3" y1="10" x2="21" y2="10" />
             </svg>
-            Book a free 15-min intro call
+            Book a free 30-min intro call
             <span className="text-white/60 text-sm font-normal group-hover:text-white/80 transition-colors">→</span>
           </a>
         </FadeUp>
