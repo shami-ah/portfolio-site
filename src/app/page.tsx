@@ -18,6 +18,7 @@ import { AgentBar } from "@/components/agent-bar";
 import { ShortcutsOverlay } from "@/components/shortcuts-overlay";
 import { Cursor } from "@/components/cursor";
 import { ExplorationHud } from "@/components/exploration-hud";
+import { CursorPresence } from "@/components/cursor-presence";
 
 export default function Home(): React.ReactElement {
   return (
@@ -43,6 +44,7 @@ export default function Home(): React.ReactElement {
       <AgentBar />
       <ShortcutsOverlay />
       <ExplorationHud />
+      <CursorPresence />
       <Cursor />
     </main>
   );

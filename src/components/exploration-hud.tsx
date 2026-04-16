@@ -71,8 +71,8 @@ export function ExplorationHud(): React.ReactElement | null {
 
   return (
     <>
-      {/* HUD dot/pill bottom-left */}
-      <div className="fixed bottom-5 left-5 z-40 pointer-events-auto">
+      {/* HUD dot/pill bottom-right (above command palette launcher) */}
+      <div className="fixed bottom-16 md:bottom-20 right-3 md:right-5 z-40 pointer-events-auto">
         <motion.div
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
@@ -178,7 +178,7 @@ export function ExplorationHud(): React.ReactElement | null {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 8, scale: 0.95 }}
             transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-            className="fixed bottom-20 left-5 z-40 max-w-xs pointer-events-auto"
+            className="fixed bottom-28 md:bottom-32 right-3 md:right-5 z-40 max-w-xs pointer-events-auto"
           >
             <div className="p-4 rounded-xl bg-card/95 backdrop-blur-md border border-accent/30 shadow-xl shadow-accent/20 relative">
               <p className="text-xs md:text-sm mb-2.5 leading-relaxed">

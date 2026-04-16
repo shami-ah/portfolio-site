@@ -4,6 +4,9 @@ import { type ProjectData } from "@/data/projects";
 import { diagrams } from "@/data/diagrams";
 import { FadeUp, SlideIn } from "@/components/motion";
 import { ArchitectureDiagram } from "@/components/architecture-diagram";
+import { DecisionTree } from "@/components/decision-tree";
+import { SplitCompare } from "@/components/split-compare";
+import { GogaaSandbox } from "@/components/gogaa-sandbox";
 import { motion } from "framer-motion";
 
 export function ProjectDetail({
@@ -85,6 +88,15 @@ export function ProjectDetail({
         </div>
       </section>
 
+      {/* Decision tree — interactive */}
+      {project.decision && (
+        <section className="px-6">
+          <div className="max-w-4xl mx-auto">
+            <DecisionTree decision={project.decision} />
+          </div>
+        </section>
+      )}
+
       {/* The Problem */}
       <section className="py-16 px-6 bg-card/30">
         <div className="max-w-4xl mx-auto">
@@ -98,6 +110,24 @@ export function ProjectDetail({
           </SlideIn>
         </div>
       </section>
+
+      {/* Split compare — collapsible */}
+      {project.vs && (
+        <section className="px-6">
+          <div className="max-w-4xl mx-auto">
+            <SplitCompare mine={project.vs.mine} standard={project.vs.standard} />
+          </div>
+        </section>
+      )}
+
+      {/* Gogaa sandbox — only on gogaa-cli */}
+      {project.slug === "gogaa-cli" && (
+        <section className="py-12 px-6">
+          <div className="max-w-4xl mx-auto">
+            <GogaaSandbox />
+          </div>
+        </section>
+      )}
 
       {/* The Solution */}
       <section className="py-16 px-6">

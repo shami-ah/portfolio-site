@@ -14,6 +14,22 @@ export interface ProjectData {
   github?: string;
   live?: string;
   featured?: boolean;
+  /** Decision tree: visitor picks what they'd do before seeing the real answer */
+  decision?: {
+    scenario: string;
+    question: string;
+    options: string[];
+    /** Index into options[] — the "industry standard" answer people usually pick */
+    commonChoice: number;
+    /** Index into options[] — what Shami actually picked (can match common) */
+    myChoice: number;
+    reasoning: string;
+  };
+  /** Split comparison: my approach vs the standard approach */
+  vs?: {
+    mine: { title: string; bullets: string[] };
+    standard: { title: string; bullets: string[] };
+  };
 }
 
 export const projects: ProjectData[] = [
@@ -99,6 +115,41 @@ export const projects: ProjectData[] = [
     ],
     // github: "https://github.com/shami-ah/codelens", // Private, evaluating commercial release
     featured: true,
+    decision: {
+      scenario: "You've seen 3 production bugs this month that slipped past SonarQube + ESLint + Claude Code review. They involve user input reaching DB queries unvalidated across 4 files.",
+      question: "What do you build?",
+      options: [
+        "Write more ESLint rules for the team",
+        "Pay for a commercial AI review SaaS",
+        "Build a custom review engine with cross-file taint tracking",
+      ],
+      commonChoice: 1,
+      myChoice: 2,
+      reasoning:
+        "ESLint stays single-file. Commercial SaaS sends your code to a third party and still misses schema/cross-file bugs. I built a hybrid engine: 305 hand-crafted patterns + persistent call graph + source-to-sink taint tracer. Runs fully local, zero deps, <1s reviews. Now active in production.",
+    },
+    vs: {
+      mine: {
+        title: "CodeLens",
+        bullets: [
+          "305 hand-crafted patterns validated against real failures",
+          "Persistent codebase index, 60ms incremental updates",
+          "Source-to-sink taint tracking across files with CWE mapping",
+          "Zero deps, runs anywhere Node runs, 351KB single file",
+          "Guardian mode injects rules into Claude Code / Cursor / Copilot",
+        ],
+      },
+      standard: {
+        title: "SonarQube / commercial SaaS",
+        bullets: [
+          "Generic style rules not mapped to production failures",
+          "Java runtime, server, database, 20-minute setup",
+          "Single-file analysis, no cross-file tracing",
+          "Cloud-dependent, your code leaves the repo",
+          "No integration with AI coding assistants",
+        ],
+      },
+    },
   },
   {
     slug: "openevent",
@@ -151,6 +202,41 @@ export const projects: ProjectData[] = [
     ],
     live: "https://openevent.io",
     featured: true,
+    decision: {
+      scenario: "An event company gets 100+ ambiguous client emails a day: 'book us sometime next week', 'add catering for 15 people', 'change the deposit'. They want AI to handle it.",
+      question: "How do you design the system?",
+      options: [
+        "Full automation: AI reads, decides, executes",
+        "AI drafts action, human approves before execution",
+        "Classification only, humans do the rest manually",
+      ],
+      commonChoice: 0,
+      myChoice: 1,
+      reasoning:
+        "Full automation fails the first time AI misreads 'sometime next week' and books the wrong slot. Event coordination involves ambiguity that needs judgment. I designed the system so AI handles extraction, classification, and proposal — but humans approve before anything touches money or commitments. That trust boundary is why clients actually use it.",
+    },
+    vs: {
+      mine: {
+        title: "OpenEvent architecture",
+        bullets: [
+          "AI classifies intent, extracts entities, proposes action",
+          "Human approves with one click before execution fires",
+          "Workflow engine is JSON/YAML (non-eng can add steps)",
+          "pgvector inside Postgres — no separate vector DB",
+          "Full audit log + auto-approval rule learning",
+        ],
+      },
+      standard: {
+        title: "Full-automation AI agent",
+        bullets: [
+          "AI reads email, decides, executes with no human gate",
+          "Breaks on ambiguous input, fast trust erosion",
+          "Workflow hardcoded in TS, every change = code change",
+          "External vector DB, extra sync + cost layer",
+          "No audit trail when AI makes wrong call",
+        ],
+      },
+    },
   },
   {
     slug: "command-center",
@@ -519,6 +605,41 @@ export const projects: ProjectData[] = [
       "Parallel agent panes, branch checkpoints, web session viewer, and 22 themes. Features no other open-source CLI has simultaneously",
     ],
     // github link private until npm publish
+    decision: {
+      scenario: "Claude Code is locked to Anthropic. If the API goes down or rate-limits hit, you stop working. Aider has better git workflow but a spartan TUI and no MCP. Every tool makes you choose.",
+      question: "What would you build?",
+      options: [
+        "Fork Claude Code and add provider support",
+        "Build a thin wrapper over Aider with better UI",
+        "Build a new CLI where the provider is a variable, git workflow is Aider-level, UI is CC-level",
+      ],
+      commonChoice: 0,
+      myChoice: 2,
+      reasoning:
+        "Forking means inheriting Anthropic-specific assumptions. Wrapping Aider means fighting its architecture. I built gogaa from scratch so every major subsystem (provider, TUI, git, tools, session) is first-class and swappable. 11 providers with auto-fallback, full Aider parity, CC-style TUI, plugin marketplace, 1,418 tests.",
+    },
+    vs: {
+      mine: {
+        title: "Gogaa CLI",
+        bullets: [
+          "11 providers, unified streaming, auto-fallback on rate-limits",
+          "Full Aider parity: repo map, SEARCH/REPLACE, watch mode, LLM commits",
+          "React Ink TUI with 22 themes, plugin marketplace",
+          "Parallel agent panes + scheduled triggers + MCP support",
+          "WAL session persistence (crash = zero lost work)",
+        ],
+      },
+      standard: {
+        title: "Claude Code / Aider alone",
+        bullets: [
+          "Locked to one vendor (Claude) or one UX (Aider)",
+          "No cross-tool feature parity",
+          "Aider's TUI is raw, no plugins",
+          "Claude Code has no SEARCH/REPLACE or repo map",
+          "Stop working when your provider hits rate limits",
+        ],
+      },
+    },
   },
   {
     slug: "agent-system",

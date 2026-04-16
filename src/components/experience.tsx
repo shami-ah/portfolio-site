@@ -2,6 +2,7 @@
 
 import { FadeUp } from "./motion";
 import { useStatus } from "@/lib/use-status";
+import { TimeMachine } from "./time-machine";
 
 interface Role {
   title: string;
@@ -60,10 +61,14 @@ export function Experience(): React.ReactElement {
           <p className="text-sm font-mono text-accent mb-4 uppercase tracking-wider">
             Experience
           </p>
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-10 md:mb-16 leading-tight">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-10 md:mb-12 leading-tight">
             Where I&apos;ve shipped
             <span className="text-muted"> production systems.</span>
           </h2>
+        </FadeUp>
+
+        <FadeUp delay={0.1}>
+          <TimeMachine />
         </FadeUp>
 
         <div className="relative">

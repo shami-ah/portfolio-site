@@ -12,8 +12,8 @@ export function Cursor(): React.ReactElement | null {
 
   const x = useMotionValue(-200);
   const y = useMotionValue(-200);
-  const sx = useSpring(x, { damping: 28, stiffness: 420, mass: 0.4 });
-  const sy = useSpring(y, { damping: 28, stiffness: 420, mass: 0.4 });
+  const sx = useSpring(x, { damping: 20, stiffness: 1200, mass: 0.2 });
+  const sy = useSpring(y, { damping: 20, stiffness: 1200, mass: 0.2 });
 
   // Only enable on devices with fine pointer + hover
   useEffect(() => {

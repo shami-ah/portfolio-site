@@ -99,6 +99,22 @@ const commands: AgentCommand[] = [
     },
   },
   {
+    keyword: "build",
+    intent: "feature_walkthrough",
+    confidence: 0.93,
+    steps: [
+      { name: "classify_intent", detail: "label: feature_walkthrough · conf 0.93", ms: 32 },
+      { name: "route_to_tool", detail: "→ navigate", ms: 5 },
+      { name: "execute", detail: "target: /build", ms: 35 },
+    ],
+    response: "Launching 6-step feature build walkthrough. Architect → spec → scaffold → review → ship.",
+    action: () => {
+      setTimeout(() => {
+        window.location.href = "/build";
+      }, 450);
+    },
+  },
+  {
     keyword: "chat",
     intent: "conversational_query",
     confidence: 0.95,
@@ -188,7 +204,7 @@ export function AgentBar(): React.ReactElement {
       return;
     }
     const bootComplete = sessionStorage.getItem("boot-complete");
-    const delay = bootComplete ? 10000 : 14000;
+    const delay = bootComplete ? 2500 : 5500;
     const t = setTimeout(() => {
       setPhase("dormant");
     }, delay);
@@ -352,7 +368,7 @@ export function AgentBar(): React.ReactElement {
                 type="text"
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
-                placeholder="type · hire · call · projects · tour · chat · cv"
+                placeholder="type · hire · call · projects · tour · build · chat"
                 className="flex-1 min-w-0 bg-transparent outline-none font-mono text-xs md:text-sm placeholder:text-muted/40 text-foreground"
               />
               <kbd className="hidden md:inline text-[10px] font-mono text-muted/50 border border-card-border px-1.5 py-0.5 rounded">

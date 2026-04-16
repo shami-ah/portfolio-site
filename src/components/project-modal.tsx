@@ -409,6 +409,17 @@ export function ProjectModal({
                       Try live
                     </a>
                   )}
+                  {project.featured && (
+                    <a
+                      href={`/story/${project.slug}`}
+                      className="inline-flex items-center gap-1.5 px-3 md:px-4 py-2 text-xs md:text-sm border border-accent/30 bg-accent/10 text-accent rounded-lg hover:bg-accent/20 hover:border-accent/50 transition-all duration-200"
+                    >
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+                      </svg>
+                      Story mode
+                    </a>
+                  )}
                   <a
                     href={`/projects/${project.slug}`}
                     className="inline-flex items-center gap-2 px-4 md:px-5 py-2 text-xs md:text-sm bg-accent text-white font-medium rounded-lg hover:bg-accent/90 transition-all duration-200 hover:shadow-lg hover:shadow-accent/20 group"
