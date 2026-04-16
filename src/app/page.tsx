@@ -13,8 +13,7 @@ import { TerminalBoot } from "@/components/terminal-boot";
 import { CommandPalette } from "@/components/command-palette";
 import { ScrollProgress } from "@/components/scroll-progress";
 import { HueShift } from "@/components/hue-shift";
-import { EasterEggs } from "@/components/easter-eggs";
-import { DiscoveryToast } from "@/components/discovery-toast";
+import { AgentBar } from "@/components/agent-bar";
 
 export default function Home(): React.ReactElement {
   return (
@@ -22,7 +21,6 @@ export default function Home(): React.ReactElement {
       <TerminalBoot />
       <ScrollProgress />
       <HueShift />
-      <EasterEggs />
       <Nav />
       <div className="relative z-10">
         <Hero />
@@ -37,7 +35,7 @@ export default function Home(): React.ReactElement {
       </div>
       <Footer />
       <CommandPalette />
-      <DiscoveryToast />
+      <AgentBar />
     </main>
   );
 }
