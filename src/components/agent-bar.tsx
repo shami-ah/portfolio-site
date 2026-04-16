@@ -373,7 +373,7 @@ export function AgentBar(): React.ReactElement {
       className="fixed left-1/2 bottom-3 md:bottom-5 -translate-x-1/2 z-40 w-[calc(100vw-1.5rem)] md:w-[calc(100%-2.5rem)] max-w-[640px] pointer-events-none"
     >
       <AnimatePresence mode="wait">
-        {/* DORMANT: input + always-visible labeled command chips */}
+        {/* DORMANT: slim single-row input bar */}
         {phase === "dormant" && (
           <motion.div
             key="dormant"
@@ -383,82 +383,53 @@ export function AgentBar(): React.ReactElement {
             transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
             className="pointer-events-auto"
           >
-            <div className="relative overflow-hidden rounded-xl bg-card/95 backdrop-blur-md border border-accent/30 shadow-2xl shadow-accent/10">
-              {/* Header row */}
-              <div className="flex items-center gap-2 px-3 md:px-4 py-2 border-b border-accent/10 bg-background/20">
-                <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse shrink-0" />
-                <p className="text-[10px] font-mono uppercase tracking-[0.25em] text-accent/80">
-                  ai agent · ready
-                </p>
-                <p className="text-[10px] font-mono text-muted/40 ml-auto hidden sm:block">
-                  click a chip or type
-                </p>
-                <button
-                  type="button"
-                  onClick={dismiss}
-                  aria-label="Dismiss"
-                  className="text-muted/40 hover:text-foreground shrink-0 ml-2"
-                >
-                  <svg
-                    width="12"
-                    height="12"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <line x1="18" y1="6" x2="6" y2="18" />
-                    <line x1="6" y1="6" x2="18" y2="18" />
-                  </svg>
-                </button>
-              </div>
-
-              {/* Input */}
-              <form
-                onSubmit={onSubmit}
-                className="flex items-center gap-2 px-3 md:px-4 py-2.5 border-b border-card-border/60"
+            <form
+              onSubmit={onSubmit}
+              className="group relative overflow-hidden rounded-xl bg-card/90 backdrop-blur-md border border-accent/30 shadow-2xl shadow-accent/10 flex items-center gap-2 px-3 md:px-4 py-2.5"
+            >
+              <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse shrink-0" />
+              <span className="text-accent font-mono text-xs md:text-sm shrink-0">❯</span>
+              <span className="text-muted/50 font-mono text-xs md:text-sm shrink-0 hidden sm:inline">
+                agent ·
+              </span>
+              <input
+                ref={inputRef}
+                type="text"
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                placeholder="type · hire · call · projects · tour · build · chat · cv"
+                className="flex-1 min-w-0 bg-transparent outline-none font-mono text-xs md:text-sm placeholder:text-muted/40 text-foreground"
+              />
+              <kbd className="hidden md:inline text-[10px] font-mono text-muted/50 border border-card-border px-1.5 py-0.5 rounded">
+                /
+              </kbd>
+              <button
+                type="button"
+                onClick={dismiss}
+                aria-label="Dismiss"
+                className="text-muted/40 hover:text-foreground shrink-0 ml-1"
               >
-                <span className="text-accent font-mono text-xs md:text-sm shrink-0">❯</span>
-                <input
-                  ref={inputRef}
-                  type="text"
-                  value={input}
-                  onChange={(e) => setInput(e.target.value)}
-                  placeholder="ask me anything about my work…"
-                  className="flex-1 min-w-0 bg-transparent outline-none text-xs md:text-sm placeholder:text-muted/40 text-foreground"
-                />
-                <kbd className="hidden md:inline text-[10px] font-mono text-muted/50 border border-card-border px-1.5 py-0.5 rounded">
-                  /
-                </kbd>
-              </form>
-
-              {/* Labeled command chips */}
-              <div className="flex flex-wrap gap-1.5 px-3 md:px-4 py-2.5">
-                {commands
-                  .filter((c) => c.label)
-                  .map((cmd) => (
-                    <button
-                      key={cmd.keyword}
-                      type="button"
-                      onClick={() => runCommand(cmd)}
-                      className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-[11px] md:text-xs bg-accent/5 border border-accent/15 text-foreground/90 hover:bg-accent/15 hover:border-accent/40 hover:text-accent transition-all whitespace-nowrap"
-                    >
-                      {cmd.icon && <span className="text-sm leading-none">{cmd.icon}</span>}
-                      <span>{cmd.label}</span>
-                    </button>
-                  ))}
-              </div>
-
-              {/* Subtle glowing sweep */}
+                <svg
+                  width="12"
+                  height="12"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <line x1="18" y1="6" x2="6" y2="18" />
+                  <line x1="6" y1="6" x2="18" y2="18" />
+                </svg>
+              </button>
               <motion.div
                 aria-hidden
                 className="absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-accent/0 via-accent/10 to-accent/0 pointer-events-none"
                 animate={{ x: ["-100%", "400%"] }}
-                transition={{ duration: 6, repeat: Infinity, ease: "linear" }}
+                transition={{ duration: 5, repeat: Infinity, ease: "linear" }}
               />
-            </div>
+            </form>
           </motion.div>
         )}
 
