@@ -1,6 +1,7 @@
 "use client";
 
 import { FadeUp } from "./motion";
+import { useStatus } from "@/lib/use-status";
 
 interface Role {
   title: string;
@@ -10,13 +11,13 @@ interface Role {
   stack?: string;
 }
 
-const roles: Role[] = [
+const getRoles = (oe: { clients: number; events: number; hoursSavedPerDay: number }): Role[] => [
   {
     title: "Lead AI Developer",
     company: "More Life Hospitality GmbH",
     period: "Sep 2025 \u2013 Present",
     points: [
-      "Building OpenEvent, live with 100+ clients across 150+ events. Saves each team roughly 1.5 hours a day of manual email processing",
+      `Building OpenEvent, live with ${oe.clients}+ clients across ${oe.events}+ events. Saves each team roughly ${oe.hoursSavedPerDay} hours a day of manual email processing`,
       "Designed the full agentic pipeline: emails come in, AI classifies them, humans approve actions, workflows execute automatically",
       "Architected the data model and AI orchestration layer on Supabase Edge Functions with OpenAI and pgvector",
       "Shipped the React frontend: Task Inbox, Workflow Runner, Approval Flows, Marketing Hub, Admin Dashboard",
@@ -50,6 +51,8 @@ const roles: Role[] = [
 ];
 
 export function Experience(): React.ReactElement {
+  const { status } = useStatus();
+  const roles = getRoles(status.openevent);
   return (
     <section id="experience" className="py-20 md:py-32 bg-card/30">
       <div className="max-w-6xl mx-auto px-5 md:px-6">

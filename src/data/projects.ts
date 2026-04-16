@@ -204,7 +204,7 @@ export const projects: ProjectData[] = [
       "PWA installable on desktop and mobile with offline support",
       "Used daily as the primary personal productivity system",
     ],
-    github: "https://github.com/shami-ah/shami-command-center",
+    // github link private for now
   },
   {
     slug: "gluten-free",
@@ -413,7 +413,7 @@ export const projects: ProjectData[] = [
       "Mac restore recovery: Docker Desktop install + clone + setup.sh = fully operational",
       "WISC context engineering: 72KB always-loaded down to 11.7KB (84% reduction), zero capability loss. Write decisions to files, Isolate tasks per conversation, Select context by path and intent, Compress agent definitions and rules. Same methodology applied in Gogaa CLI achieved 99.4% reduction for simple prompts",
     ],
-    github: "https://github.com/shami-ah/dev-env",
+    // github link private for now
   },
   {
     slug: "gogaa-cli",
@@ -518,7 +518,7 @@ export const projects: ProjectData[] = [
       "Intent-based lazy context: 3,909 → 24 tokens for simple prompts (99.4% reduction)",
       "Parallel agent panes, branch checkpoints, web session viewer, and 22 themes. Features no other open-source CLI has simultaneously",
     ],
-    github: "https://github.com/shami-ah/gogaa-ts",
+    // github link private until npm publish
   },
   {
     slug: "agent-system",

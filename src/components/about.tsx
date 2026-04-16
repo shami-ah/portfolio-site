@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useInView } from "framer-motion";
 import { FadeUp, SlideIn } from "./motion";
+import { useStatus } from "@/lib/use-status";
 
 function CountUp({ to, suffix = "", prefix = "" }: { to: number; suffix?: string; prefix?: string }): React.ReactElement {
   const ref = useRef<HTMLSpanElement>(null);
@@ -26,14 +27,14 @@ function CountUp({ to, suffix = "", prefix = "" }: { to: number; suffix?: string
   return <span ref={ref}>{prefix}{count}{suffix}</span>;
 }
 
-const stats = [
-  { counter: <CountUp to={250} suffix="+" />, label: "Projects Shipped" },
-  { counter: <CountUp to={5} suffix="+" />, label: "Years Building" },
-  { counter: <CountUp to={1418} />, label: "Gogaa Tests Passing" },
-  { counter: <span>&lt;1s</span>, label: "CodeLens Reviews" },
-];
-
 export function About(): React.ReactElement {
+  const { status } = useStatus();
+  const stats = [
+    { counter: <CountUp to={status.portfolio.projects} suffix="+" />, label: "Projects Shipped" },
+    { counter: <CountUp to={status.portfolio.yearsBuilding} suffix="+" />, label: "Years Building" },
+    { counter: <CountUp to={status.gogaa.tests} />, label: "Gogaa Tests Passing" },
+    { counter: <span>&lt;1s</span>, label: "CodeLens Reviews" },
+  ];
   return (
     <section id="about" className="py-20 md:py-32">
       <div className="max-w-6xl mx-auto px-5 md:px-6">

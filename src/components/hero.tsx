@@ -3,6 +3,7 @@
 import { useEffect, useState, useRef } from "react";
 import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
 import { Magnetic } from "./magnetic";
+import { useStatus } from "@/lib/use-status";
 
 const taglines = [
   {
@@ -55,6 +56,7 @@ function WordReveal({
 }
 
 export function Hero(): React.ReactElement {
+  const { status } = useStatus();
   const [ready, setReady] = useState(false);
   const [tagIdx, setTagIdx] = useState(0);
   const heroRef = useRef<HTMLElement>(null);
@@ -243,7 +245,7 @@ export function Hero(): React.ReactElement {
           <p className="text-[10px] md:text-xs font-mono text-muted/60 truncate">
             Currently building:{" "}
             <span className="text-accent/80">
-              Gogaa v0.9.2: parallel panes streaming
+              {status.currentlyBuilding.label}: {status.currentlyBuilding.detail}
             </span>
           </p>
         </motion.div>

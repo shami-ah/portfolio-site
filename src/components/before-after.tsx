@@ -1,8 +1,14 @@
 "use client";
 
 import { FadeUp } from "./motion";
+import { useStatus } from "@/lib/use-status";
 
 export function BeforeAfter(): React.ReactElement {
+  const { status } = useStatus();
+  const oe = status.openevent;
+  const mins = Math.round(oe.hoursSavedPerDay * 60);
+  const afterMins = 15;
+  const savedPercent = Math.round(((mins - afterMins) / mins) * 100);
   return (
     <section className="py-20 md:py-32">
       <div className="max-w-6xl mx-auto px-5 md:px-6">
@@ -32,7 +38,8 @@ export function BeforeAfter(): React.ReactElement {
               </div>
 
               <p className="text-4xl md:text-5xl font-bold text-muted mb-2 font-mono">
-                ~1.5<span className="text-muted/40 text-2xl">hrs</span>
+                ~{oe.hoursSavedPerDay}
+                <span className="text-muted/40 text-2xl">hrs</span>
               </p>
               <p className="text-sm text-muted/70 mb-6">
                 per team member, per day<br />
@@ -109,9 +116,9 @@ export function BeforeAfter(): React.ReactElement {
         <FadeUp delay={0.25}>
           <div className="mt-6 md:mt-8 grid grid-cols-3 gap-3 md:gap-5">
             {[
-              { n: "100+", l: "active clients" },
-              { n: "150+", l: "events run" },
-              { n: "83%", l: "time saved" },
+              { n: `${oe.clients}+`, l: "active clients" },
+              { n: `${oe.events}+`, l: "events run" },
+              { n: `${savedPercent}%`, l: "time saved" },
             ].map((s) => (
               <div
                 key={s.l}
