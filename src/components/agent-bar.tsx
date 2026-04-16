@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { AgentContent, type ContentType } from "./agent-content";
 
 /* ------------------------------------------------------------------ */
 /*  Commands — each is a full "agent trace" the user can trigger      */
@@ -24,6 +25,9 @@ interface AgentCommand {
   steps: AgentStep[];
   response: string;
   action?: () => void;
+  /** When set, after the response the agent opens a content panel with this
+   *  type instead of (or in addition to) firing the action. */
+  content?: ContentType;
 }
 
 function scrollTo(id: string): void {
@@ -154,11 +158,80 @@ const commands: AgentCommand[] = [
     confidence: 0.91,
     steps: [
       { name: "classify_intent", detail: "label: browse_projects · conf 0.91", ms: 35 },
-      { name: "route_to_tool", detail: "→ scroll_to_section", ms: 5 },
-      { name: "execute", detail: "target: #projects", ms: 110 },
+      { name: "route_to_tool", detail: "→ render_content(projects)", ms: 5 },
+      { name: "execute", detail: "9 projects · compact grid", ms: 40 },
     ],
-    response: "9 case studies below. Click any card for architecture + results.",
-    action: () => scrollTo("projects"),
+    response: "Here are all 9 case studies. Click any to open the full detail page.",
+    content: "projects",
+  },
+  {
+    keyword: "skills",
+    label: "See my stack",
+    icon: "🧠",
+    intent: "browse_skills",
+    confidence: 0.93,
+    steps: [
+      { name: "classify_intent", detail: "label: browse_skills · conf 0.93", ms: 28 },
+      { name: "route_to_tool", detail: "→ render_content(skills)", ms: 5 },
+      { name: "execute", detail: "4 categories · 27 items", ms: 30 },
+    ],
+    response: "The stack, organized: AI & Agents, Full Stack, Infrastructure, Process.",
+    content: "skills",
+  },
+  {
+    keyword: "testimonials",
+    label: "What clients say",
+    icon: "⭐",
+    intent: "browse_testimonials",
+    confidence: 0.94,
+    steps: [
+      { name: "classify_intent", detail: "label: browse_testimonials · conf 0.94", ms: 26 },
+      { name: "route_to_tool", detail: "→ render_content(testimonials)", ms: 4 },
+      { name: "execute", detail: "3 quotes · verified", ms: 22 },
+    ],
+    response: "Three real client quotes — Upwork, Fiverr, and a full-time offer.",
+    content: "testimonials",
+  },
+  {
+    keyword: "experience",
+    label: "My experience",
+    icon: "⚡",
+    intent: "browse_experience",
+    confidence: 0.92,
+    steps: [
+      { name: "classify_intent", detail: "label: browse_experience · conf 0.92", ms: 30 },
+      { name: "route_to_tool", detail: "→ render_content(experience)", ms: 5 },
+      { name: "execute", detail: "3 roles · 5 years", ms: 25 },
+    ],
+    response: "Lead AI Developer at More Life, Director at Rouelite, consultant since 2019.",
+    content: "experience",
+  },
+  {
+    keyword: "about",
+    label: "About me",
+    icon: "ℹ",
+    intent: "browse_about",
+    confidence: 0.9,
+    steps: [
+      { name: "classify_intent", detail: "label: browse_about · conf 0.9", ms: 24 },
+      { name: "route_to_tool", detail: "→ render_content(about)", ms: 4 },
+    ],
+    response: "The short version: I'm both a consumer AND a builder of AI tooling.",
+    content: "about",
+  },
+  {
+    keyword: "openevent",
+    label: "OpenEvent metrics",
+    icon: "📊",
+    intent: "openevent_proof",
+    confidence: 0.96,
+    steps: [
+      { name: "classify_intent", detail: "label: openevent_proof · conf 0.96", ms: 28 },
+      { name: "route_to_tool", detail: "→ render_content(openevent)", ms: 4 },
+      { name: "execute", detail: "before/after + stats", ms: 30 },
+    ],
+    response: "100+ clients, 150+ events, 83% time saved. See the before/after.",
+    content: "openevent",
   },
   {
     keyword: "boot",
@@ -213,7 +286,7 @@ const commands: AgentCommand[] = [
 /*  State machine                                                     */
 /* ------------------------------------------------------------------ */
 
-type Phase = "hidden" | "dormant" | "processing" | "responding";
+type Phase = "hidden" | "dormant" | "processing" | "responding" | "content";
 
 export function AgentBar(): React.ReactElement {
   const [phase, setPhase] = useState<Phase>("hidden");
@@ -223,6 +296,7 @@ export function AgentBar(): React.ReactElement {
   const [shownSteps, setShownSteps] = useState(0);
   const [showResponse, setShowResponse] = useState(false);
   const [dismissed, setDismissed] = useState(false);
+  const [activeContent, setActiveContent] = useState<ContentType | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
   /* Auto-reveal after settle */
@@ -291,9 +365,23 @@ export function AgentBar(): React.ReactElement {
     return () => clearTimeout(t);
   }, [phase, activeCmd, shownSteps]);
 
-  /* After response, execute action + fade back to dormant */
+  /* After response: if content — open panel. Otherwise fire action + fade. */
   useEffect(() => {
     if (phase !== "responding" || !activeCmd) return;
+
+    if (activeCmd.content) {
+      // Open content panel instead of fading back
+      const t = setTimeout(() => {
+        setActiveContent(activeCmd.content!);
+        setPhase("content");
+        setActiveCmd(null);
+        setShownSteps(0);
+        setShowResponse(false);
+        setInput("");
+      }, 600);
+      return () => clearTimeout(t);
+    }
+
     const actionTimer = setTimeout(() => {
       activeCmd.action?.();
     }, 300);
@@ -367,10 +455,13 @@ export function AgentBar(): React.ReactElement {
 
   const totalMs = activeCmd?.steps.reduce((s, x) => s + x.ms, 0) ?? 0;
 
+  const wideContent = phase === "content";
   return (
     <div
       aria-live="polite"
-      className="fixed left-1/2 bottom-3 md:bottom-5 -translate-x-1/2 z-40 w-[calc(100vw-1.5rem)] md:w-[calc(100%-2.5rem)] max-w-[640px] pointer-events-none"
+      className={`fixed left-1/2 bottom-3 md:bottom-5 -translate-x-1/2 z-40 w-[calc(100vw-1.5rem)] pointer-events-none transition-[max-width] duration-500 ${
+        wideContent ? "max-w-[900px]" : "max-w-[640px]"
+      }`}
     >
       <AnimatePresence mode="wait">
         {/* DORMANT: input + always-visible labeled command chips */}
@@ -542,6 +633,33 @@ export function AgentBar(): React.ReactElement {
                 )}
               </AnimatePresence>
             </div>
+          </motion.div>
+        )}
+
+        {/* CONTENT: inline panel showing section content */}
+        {phase === "content" && activeContent && (
+          <motion.div
+            key={`content-${activeContent}`}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.25 }}
+            className="pointer-events-auto"
+          >
+            <AgentContent
+              type={activeContent}
+              onClose={() => {
+                setActiveContent(null);
+                setPhase("dormant");
+              }}
+              onNavigate={(id) => {
+                document
+                  .getElementById(id)
+                  ?.scrollIntoView({ behavior: "smooth", block: "start" });
+                setActiveContent(null);
+                setPhase("dormant");
+              }}
+            />
           </motion.div>
         )}
       </AnimatePresence>
