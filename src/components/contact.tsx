@@ -69,7 +69,7 @@ export function Contact(): React.ReactElement {
           </p>
           <div className="inline-flex items-center gap-2 px-3 md:px-4 py-1 md:py-1.5 rounded-full bg-green-500/10 border border-green-500/20 text-green-400 text-[10px] md:text-xs font-mono mb-5 md:mb-6">
             <span className="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse shrink-0" />
-            <span className="truncate">Available — full-time &amp; 90-day engagements</span>
+            <span className="truncate">Available for full-time &amp; 90-day engagements</span>
           </div>
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 md:mb-6 leading-tight">
             Let&apos;s build something
@@ -77,7 +77,7 @@ export function Contact(): React.ReactElement {
           </h2>
           <p className="text-sm md:text-base text-muted max-w-xl mx-auto mb-3 leading-relaxed">
             I design the system architecture, build the AI layer, and ship the
-            full product — no hand-holding required. If you need an AI automation
+            full product. No hand-holding required. If you need an AI automation
             engineer who owns the outcome, reach out.
           </p>
           <p className="text-[10px] md:text-xs font-mono text-muted/50 mb-8 md:mb-10">

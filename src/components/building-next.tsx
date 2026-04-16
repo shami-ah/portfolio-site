@@ -12,13 +12,13 @@ const upcoming = [
   {
     title: "OpenEvent Adaptive Approval Engine",
     description:
-      "The system tracks which action types are approved, edited, or rejected over time. As patterns emerge, trust thresholds adjust automatically — human review load drops week-over-week without removing the human from the loop. Progressive trust, not blind automation.",
+      "The system tracks which action types are approved, edited, or rejected over time. As patterns emerge, trust thresholds adjust automatically. Human review load drops week-over-week without removing the human from the loop. Progressive trust, not blind automation.",
     status: "Designing",
   },
   {
     title: "Gogaa Remote Session Viewer",
     description:
-      "Watch and control any gogaa agent session from a browser or phone, over LAN or tunnel. Real-time streaming of tool calls, diffs, and cost. The same agent running on your dev machine — accessible from anywhere.",
+      "Watch and control any gogaa agent session from a browser or phone, over LAN or tunnel. Real-time streaming of tool calls, diffs, and cost. The same agent running on your dev machine, accessible from anywhere.",
     status: "Planned",
   },
 ];

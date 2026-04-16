@@ -82,7 +82,7 @@ export function Hero(): React.ReactElement {
             <span className="w-1.5 h-1.5 bg-accent rounded-full animate-pulse shrink-0" />
             <p className="text-[10px] md:text-xs font-mono text-muted/60 truncate">
               Currently building:{" "}
-              <span className="text-accent/80">Gogaa v0.9.2 — parallel panes streaming</span>
+              <span className="text-accent/80">Gogaa v0.9.2: parallel panes streaming</span>
             </p>
           </div>
         </FadeUp>

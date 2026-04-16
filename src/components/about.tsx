@@ -72,10 +72,10 @@ export function About(): React.ReactElement {
                 design to polished UI.
               </p>
               <p className="text-foreground font-medium border-l-2 border-accent pl-4">
-                Most engineers are consumers of AI tooling. I&apos;m also a builder of it — when the tools
-                I needed didn&apos;t exist, I built them. A code review engine that catches bugs commercial
-                tools miss. An open-source coding agent that closes every gap simultaneously.
-                That&apos;s a different relationship with the technology.
+                Most engineers are consumers of AI tooling. I&apos;m also a builder of it. When
+                the tools I needed didn&apos;t exist, I built them. A code review engine that catches
+                bugs commercial tools miss. An open-source coding agent that closes every gap
+                simultaneously. That&apos;s a different relationship with the technology.
               </p>
             </div>
           </SlideIn>
@@ -101,7 +101,7 @@ export function About(): React.ReactElement {
         <FadeUp delay={0.2}>
           <div className="p-4 md:p-5 rounded-xl bg-card/50 border border-card-border">
             <p className="text-[10px] md:text-xs font-mono text-muted mb-3 md:mb-4 uppercase tracking-wider">
-              My actual dev workflow — every day
+              My actual dev workflow, every day
             </p>
             <div className="flex flex-wrap items-center gap-1.5 md:gap-2">
               {[

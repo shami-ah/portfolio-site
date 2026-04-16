@@ -105,7 +105,7 @@ export const projects: ProjectData[] = [
     title: "OpenEvent",
     subtitle: "AI-Powered Event Management Platform",
     type: "Production SaaS",
-    impact: "Live with 100+ clients across 150+ events. Saves each team ~1.5 hours/day of manual email processing — AI classifies, proposes, and executes while humans stay in control.",
+    impact: "Live with 100+ clients across 150+ events. Saves each team roughly 1.5 hours a day of manual email processing. AI classifies, proposes, and executes while humans stay in control.",
     problem:
       "Event management companies drown in emails, manual booking, and scattered spreadsheets. Staff spend hours triaging requests, copying data between systems, and chasing approvals. The work is repetitive but requires judgment that simple automation can't handle.",
     solution:
@@ -131,7 +131,7 @@ export const projects: ProjectData[] = [
     techDecisions: [
       {
         title: "Human-in-the-loop by default, not as an afterthought",
-        description: "The tempting version of this product is full automation: email arrives, AI books the calendar, sends the invoice, done. We deliberately didn't build that. Event coordination involves ambiguity — a client saying 'sometime next week' needs judgment, not a slot-filling algorithm. The right boundary is: AI handles extraction, classification, and proposal; humans approve before anything touches money or commitments. This made the system trustworthy enough for clients to actually use it in production, where fully automated alternatives had failed them before.",
+        description: "The tempting version of this product is full automation: email arrives, AI books the calendar, sends the invoice, done. We deliberately didn't build that. Event coordination involves ambiguity. A client saying 'sometime next week' needs judgment, not a slot-filling algorithm. The right boundary is: AI handles extraction, classification, and proposal; humans approve before anything touches money or commitments. This made the system trustworthy enough for clients to actually use it in production, where fully automated alternatives had failed them before.",
       },
       {
         title: "pgvector over external vector DB",
@@ -420,24 +420,24 @@ export const projects: ProjectData[] = [
     subtitle: "AI Coding Agent: Any Model, Any Provider (v0.9.1)",
     type: "Developer Tool / CLI",
     featured: true,
-    impact: "I mapped the entire agentic coding ecosystem — Claude Code, Aider, Cursor, OpenCode, Codex — and found that every tool made you choose. Provider freedom or deep integration. Polished TUI or serious git workflow. MCP support or SEARCH/REPLACE edits. Nobody had all of it. So I built the thing that was missing: a full AI coding agent where the provider is a variable, the git workflow is Aider-level, the UI is CC-level, and nothing is locked down. 11 providers, 1418 passing tests, plugin marketplace, parallel agents, watch mode, scheduled triggers. The only open-source CLI that closes every gap simultaneously.",
+    impact: "I mapped the entire agentic coding ecosystem (Claude Code, Aider, Cursor, OpenCode, Codex) and found that every tool made you choose. Provider freedom or deep integration. Polished TUI or serious git workflow. MCP support or SEARCH/REPLACE edits. Nobody had all of it. So I built the thing that was missing: a full AI coding agent where the provider is a variable, the git workflow is Aider-level, the UI is CC-level, and nothing is locked down. 11 providers, 1418 passing tests, plugin marketplace, parallel agents, watch mode, scheduled triggers. The only open-source CLI that closes every gap simultaneously.",
     problem:
       "Claude Code is powerful but locked to Anthropic. If the API goes down, you stop working. If you hit rate limits, you stop working. If the task is simple and Sonnet is overkill, you still pay Sonnet prices. Cursor locks you into a GUI with no terminal, no SSH, no headless server usage. Aider is excellent for git workflow and repo understanding, but its TUI is spartan, it has no plugin system, no parallel agents, and no MCP support. Every AI coding tool I found made you choose: deep integration or provider freedom, polish or workflow quality. Nobody had built something with all of it.",
     solution:
-      "A TypeScript CLI where the provider is a variable, not a constant. 11 providers behind one unified streaming interface with automatic fallback — if your primary model hits rate limits or goes down, gogaa switches to the next without dropping the conversation. v0.9 closed the final gap with Aider by implementing the four architectural decisions that make it the best open-source coding agent: a tier-aware repo map (compact 300-token flat list for small models, 800 tokens with exports for medium, full 2000-token symbol tree for large), SEARCH/REPLACE edit blocks that surgically modify specific lines without rewriting whole files, LLM-generated commit messages from staged diffs rather than heuristics, and watch mode that triggers an agentic session the moment you save a file with an // AI! comment. On top of that: a CC-style plugin marketplace TUI, scheduled/cron triggers, web session viewer, branch checkpoints, and parallel agent panes. The two foundational bets from early versions still hold: a 5-strategy JSON arg parser that brought tool call success from ~70% to ~95%, and WAL session persistence so a crash mid-task loses nothing.",
+      "A TypeScript CLI where the provider is a variable, not a constant. 11 providers behind one unified streaming interface with automatic fallback. If your primary model hits rate limits or goes down, gogaa switches to the next without dropping the conversation. v0.9 closed the final gap with Aider by implementing the four architectural decisions that make it the best open-source coding agent: a tier-aware repo map (compact 300-token flat list for small models, 800 tokens with exports for medium, full 2000-token symbol tree for large), SEARCH/REPLACE edit blocks that surgically modify specific lines without rewriting whole files, LLM-generated commit messages from staged diffs rather than heuristics, and watch mode that triggers an agentic session the moment you save a file with an // AI! comment. On top of that: a CC-style plugin marketplace TUI, scheduled/cron triggers, web session viewer, branch checkpoints, and parallel agent panes. The two foundational bets from early versions still hold: a 5-strategy JSON arg parser that brought tool call success from ~70% to ~95%, and WAL session persistence so a crash mid-task loses nothing.",
     architecture: [
       "Provider Manager (11 providers, unified streaming, automatic fallback chain on 429/500/timeout)",
       "Smart Router (auto-routes prompts to best available model by task type)",
       "Tool Registry (24+ tools: file, bash, grep, glob, web, memory, agent, compare, semantic search, LSP, file-patch)",
       "Repo Map Engine (tier-aware: 300 tokens flat list for small models, 800 tokens with exports, 2000 tokens full symbol tree for large models)",
-      "SEARCH/REPLACE Parser (Aider-exact edit blocks — file-patch tool applies them with conflict detection)",
+      "SEARCH/REPLACE Parser (Aider-exact edit blocks, applied via file-patch tool with conflict detection)",
       "Watch Mode (fs.watch recursive, // AI! triggers code session, // AI? triggers ask session on file save)",
-      "LSP Manager (lazy-start language servers for TS, Python, Go, Rust — go-to-def, find-refs, diagnostics)",
+      "LSP Manager (lazy-start language servers for TS, Python, Go, Rust: go-to-def, find-refs, diagnostics)",
       "5-Strategy JSON Arg Parser (handles malformed model output, ~95% success vs ~70% naive)",
       "Agentic Loop (streaming tool calls, stuck detection, auto-retry, auto-verify after mutations)",
-      "Auto-Lint/Test Loop (runs linter + tests after edits, injects Aider-style repair prompt on failure — opt-in)",
+      "Auto-Lint/Test Loop (runs linter + tests after edits, injects Aider-style repair prompt on failure, opt-in)",
       "Git Layer (LLM commit messages, attribution trailers with model identity, per-file dirty snapshots, granularity modes)",
-      "Plugin Marketplace TUI (CC-style tabbed UI: Discover / Installed / Marketplaces / Errors — type to search, Space to install)",
+      "Plugin Marketplace TUI (CC-style tabbed UI: Discover / Installed / Marketplaces / Errors. Type to search, Space to install)",
       "Scheduler (cron/interval/daily triggers, auto-starts at TUI launch, /schedule commands)",
       "Parallel Agent Panes (spawn N concurrent agent sessions, live output in split panes)",
       "Branch + Checkpoint System (save/restore session state, fork at any turn)",
@@ -465,11 +465,11 @@ export const projects: ProjectData[] = [
       "Self-learning engine tracks tool reliability, error patterns, and model performance across sessions. Auto-improves tool descriptions and routing heuristics over time without manual updates",
       "Cost budget enforcement: configurable $ cap per session, warns at 80%, hard stops at 100% to prevent runaway agentic loops",
       "Mode policy system: /mode plan (read-only), /mode review (read + compare), /mode ask (read + bash), /mode code (unrestricted), /mode debug (unrestricted + verbose). Each mode has its own tool allowlist enforced at the engine level",
-      "Auto-lint/test loop: after every file mutation, automatically runs configured verification commands (linter, tests). On failure, injects a repair prompt into the agentic loop for automatic fix — self-healing edits without user intervention",
+      "Auto-lint/test loop: after every file mutation, automatically runs configured verification commands (linter, tests). On failure, injects a repair prompt into the agentic loop for automatic fix. Self-healing edits without user intervention",
       "Headless CI mode: gogaa --headless -y --json runs the full agent loop without a TUI, outputs structured JSON with success/content/toolCalls/modifiedFiles/errors, and exits with semantic codes (0=success, 3=tool failure, 4=verification failed). Ships with a GitHub Action for auto-fixing PRs",
       "LSP integration: connects to language servers (TypeScript, Python, Go, Rust) via JSON-RPC/stdio. The agent can call goto-definition, find-references, diagnostics, and hover instead of grepping. Lazy-starts servers on first request, auto-detects from file extension",
       "Virtual FS overlay: file-read/write/edit route through an in-memory overlay when active. Changes never touch disk until /vfs-commit. Conflict detection on commit (refuses if file changed on disk since staging). /vfs-diff shows unified diffs of all pending changes",
-      "PageRank-scored repo map: extracts symbols from source files, builds a call graph from references, runs PageRank to rank by importance. Shows what functions call what, ordered by relevance — better context than flat file listings",
+      "PageRank-scored repo map: extracts symbols from source files, builds a call graph from references, runs PageRank to rank by importance. Shows what functions call what, ordered by relevance. Better context than flat file listings",
       "Trajectory replay: /trajectory reads the audit JSONL log and formats it into a numbered decision tree with tool names, args, results, timing, and permission decisions. Debug agent behavior after the fact",
       "Cloud handoff: /handoff starts a local HTTP server with SSE, serves an embedded web viewer. Open the URL on your phone or another browser to see the live session. One-time auth token shown in terminal",
       "Workflow files: drop a markdown file in .gogaa/workflows/ and it becomes a slash command. Frontmatter for description/aliases/usage, body is the prompt template with {{args}} interpolation. Zero code needed to add custom workflows",
@@ -505,17 +505,17 @@ export const projects: ProjectData[] = [
     ],
     stack: ["TypeScript", "Node.js", "React Ink", "Anthropic SDK", "OpenAI SDK", "js-tiktoken", "LSP Protocol", "MiniMax", "Groq", "Google Gemini", "Ollama"],
     results: [
-      "v0.9.1: 1,418 passing tests, 0 failures — full regression suite across all features",
-      "Full Aider parity shipped in v0.9.0: repo map, SEARCH/REPLACE edit blocks, LLM commit messages, watch mode — the four features that make Aider the best open-source coding agent, now in one CLI with better TUI and MCP support",
-      "CC-style plugin marketplace TUI in v0.9.1: tabbed Discover/Installed/Marketplaces/Errors UI with keyboard nav, search, and install — same UX pattern as Claude Code's /plugin command",
-      "Scheduled triggers: cron, interval, and daily@HH:MM syntax — the only open-source AI coding agent with built-in task scheduling",
+      "v0.9.1: 1,418 passing tests, 0 failures. Full regression suite across all features",
+      "Full Aider parity shipped in v0.9.0: repo map, SEARCH/REPLACE edit blocks, LLM commit messages, watch mode. The four features that make Aider the best open-source coding agent, now in one CLI with better TUI and MCP support",
+      "CC-style plugin marketplace TUI in v0.9.1: tabbed Discover/Installed/Marketplaces/Errors UI with keyboard nav, search, and install. Same UX pattern as Claude Code's /plugin command",
+      "Scheduled triggers: cron, interval, and daily@HH:MM syntax. The only open-source AI coding agent with built-in task scheduling",
       "~90% cost reduction vs Anthropic Sonnet via MiniMax M2.7 with no regression on SWE-bench coding benchmarks",
       "~85% context overhead reduction via Anthropic tool search + tier-aware repo map budgets",
       "Tool call success rate: ~70% to ~95% via 5-strategy JSON arg parser on real malformed model output",
-      "Tier-aware context budgets: small models get a compact 300-token flat repo map, medium get exports, large get full symbol tree — no one-size-fits-all context overhead",
+      "Tier-aware context budgets: small models get a compact 300-token flat repo map, medium get exports, large get full symbol tree. No one-size-fits-all context overhead",
       "Zero work lost across crashes, model switches, and reboots via WAL session persistence",
       "Intent-based lazy context: 3,909 → 24 tokens for simple prompts (99.4% reduction)",
-      "Parallel agent panes, branch checkpoints, web session viewer, and 22 themes — features no other open-source CLI has simultaneously",
+      "Parallel agent panes, branch checkpoints, web session viewer, and 22 themes. Features no other open-source CLI has simultaneously",
     ],
     github: "https://github.com/shami-ah/gogaa-ts",
   },
@@ -526,12 +526,12 @@ export const projects: ProjectData[] = [
       "Multi-agent platform with 5 purpose-built AI agents for job search, research, code review, proposals, and freelance automation",
     type: "AI Agents",
     impact:
-      "5 autonomous agents with tool-calling, deployed on HuggingFace Spaces — $0/month",
+      "5 autonomous agents with tool-calling, deployed on HuggingFace Spaces. $0/month operating cost.",
     featured: true,
     problem:
-      "Shami needed AI that could actually DO things — not just chat. Searching jobs, researching tech, reviewing PRs, drafting proposals, and handling freelance messages each require different tools and domain knowledge. Running multiple separate tools or doing it manually was slow.",
+      "I needed AI that could actually DO things, not just chat. Searching jobs, researching tech, reviewing PRs, drafting proposals, and handling freelance messages each require different tools and domain knowledge. Running multiple separate tools or doing it manually was slow.",
     solution:
-      "Built a multi-agent system where each agent has a specific purpose, custom tools (web search, URL fetching, GitHub API), and tailored prompts. Agents plan, call tools, and synthesize — they're real agents, not chatbots. Deployed on HuggingFace Spaces with a portfolio-ready web UI.",
+      "Built a multi-agent system where each agent has a specific purpose, custom tools (web search, URL fetching, GitHub API), and tailored prompts. Agents plan, call tools, and synthesize results. These are real agents, not chatbots. Deployed on HuggingFace Spaces with a portfolio-ready web UI.",
     architecture: [
       "FastAPI server with 5 agent endpoints, each backed by a purpose-built agent definition",
       "Custom tool-calling engine: parses Groq tool_calls, executes async tool functions, feeds results back",
@@ -540,17 +540,17 @@ export const projects: ProjectData[] = [
       "Portfolio-ready dark UI with agent selector, real-time tool call indicators",
     ],
     features: [
-      "Job Search Agent — searches multiple boards, evaluates fit, drafts cover letters",
-      "Research Agent — multi-source research with cross-referenced structured reports",
-      "Code Review Agent — fetches GitHub PR diffs, analyzes bugs/security/types",
-      "Upwork Proposal Agent — reads job postings, matches skills, drafts tailored proposals",
-      "n8n Webhook Agent — receives freelance messages, analyzes, drafts replies",
+      "Job Search Agent: searches multiple boards, evaluates fit, drafts cover letters",
+      "Research Agent: multi-source research with cross-referenced structured reports",
+      "Code Review Agent: fetches GitHub PR diffs, analyzes bugs/security/types",
+      "Upwork Proposal Agent: reads job postings, matches skills, drafts tailored proposals",
+      "n8n Webhook Agent: receives freelance messages, analyzes, drafts replies",
     ],
     techDecisions: [
       {
         title: "Groq for inference",
         description:
-          "Free tier, fast (300 tokens/sec), native tool-calling support — no inference cost",
+          "Free tier, fast (300 tokens/sec), native tool-calling support, zero inference cost.",
       },
       {
         title: "Tool-calling over chain-of-thought",
@@ -560,12 +560,12 @@ export const projects: ProjectData[] = [
       {
         title: "HuggingFace Spaces over AWS/Vercel",
         description:
-          "16GB RAM free tier, no request timeout limit, Docker support — perfect for long-running agent tasks",
+          "16GB RAM free tier, no request timeout limit, Docker support. Perfect for long-running agent tasks.",
       },
       {
         title: "Agent-per-purpose over general assistant",
         description:
-          "Each agent has a focused system prompt and curated tool set. A job search agent doesn't need code review tools — scoping prevents confusion and hallucination.",
+          "Each agent has a focused system prompt and curated tool set. A job search agent doesn't need code review tools. Scoping prevents confusion and hallucination.",
       },
     ],
     stack: [
@@ -582,7 +582,7 @@ export const projects: ProjectData[] = [
     results: [
       "5 autonomous agents deployed and operational",
       "Tool-calling engine: agents execute 1-8 tool calls per request automatically",
-      "$0/month hosting — Groq free tier + HF Spaces free tier",
+      "$0/month hosting on Groq free tier + HF Spaces free tier",
       "API-first: every agent callable from n8n, command center PWA, or any HTTP client",
       "Portfolio-ready UI showcasing real AI agent capabilities",
     ],

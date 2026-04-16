@@ -169,7 +169,7 @@ export const diagrams: Record<string, string> = {
     I --> J[Git Layer\\nLLM commit · attribution · SEARCH/REPLACE]
     J --> K[Session WAL\\ncrash recovery · resume by ID]
 
-    subgraph Context ["Context Budget — per model tier"]
+    subgraph Context ["Context Budget · per model tier"]
       C1[Small · 300 tok flat map]
       C2[Medium · 800 tok exports]
       C3[Large · 2000 tok symbol tree]

@@ -164,7 +164,7 @@ export function VisualCV(): React.ReactElement {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.45 }}
-                >5+ years shipping production AI systems — from multi-agent orchestration and RAG pipelines to full-stack SaaS. I design architectures where AI agents classify, execute, and learn while humans stay in control. Open to senior AI engineering roles in the Gulf region or remote.</motion.p>
+                >5+ years shipping production AI systems. From multi-agent orchestration and RAG pipelines to full-stack SaaS. I design architectures where AI agents classify, execute, and learn while humans stay in control. Open to senior AI engineering roles in the Gulf region or remote.</motion.p>
               </div>
               <motion.div
                 className="text-sm text-zinc-500 space-y-1.5 font-mono"
@@ -234,22 +234,22 @@ export function VisualCV(): React.ReactElement {
             <div className="space-y-12">
               {/* Experience */}
               <Section title="Experience" icon="▸">
-                <TimelineRole active title="Lead AI Developer" company="MORE LIFE Hospitality GmbH" period="Sep 2025 — Present" location="Zurich · Remote" items={[
+                <TimelineRole active title="Lead AI Developer" company="MORE LIFE Hospitality GmbH" period="Sep 2025 – Present" location="Zurich · Remote" items={[
                   "Architected AI orchestration: email → classification → task extraction → workflow execution → auto-approval",
                   "Built Supabase Edge Functions for LLM calls, entity extraction, and workflow triggers",
                   "Designed multi-agent system with planner/worker/validator pattern + human-in-the-loop approval",
                   "Shipped React frontend: Task Inbox, Workflow Runner, Approval Flows, Marketing Hub, Admin Dashboard",
                   "React + TypeScript + Supabase + Stripe + Claude API + GitHub Actions",
                 ]} />
-                <TimelineRole title="Director IT & R&D" company="Rouelite Techno Pvt. Ltd." period="2022 — 2024" location="Remote" items={[
+                <TimelineRole title="Director IT & R&D" company="Rouelite Techno Pvt. Ltd." period="2022 – 2024" location="Remote" items={[
                   "Led 10-person team building custom CRM and business automation",
                   "Designed system architecture serving 500+ daily users",
                   "Introduced AI into daily operations, reducing manual data entry by 70%",
                   "Replaced 3 legacy spreadsheet processes with React + Supabase internal tools",
                   "Implemented agile workflows reducing delivery cycles by 40%",
                 ]} />
-                <TimelineRole title="AI Engineering Consultant" company="Wadware House · Global Clients" period="2019 — Present" location="Remote · Global" items={[
-                  "250+ projects — RAG pipelines, prompt engineering, AI workflows, analytics dashboards",
+                <TimelineRole title="AI Engineering Consultant" company="Wadware House · Global Clients" period="2019 – Present" location="Remote · Global" items={[
+                  "250+ projects: RAG pipelines, prompt engineering, AI workflows, analytics dashboards",
                   "40+ long-term client relationships, 100% satisfaction rate",
                   "500+ RLHF/SFT evaluation sessions on frontier models (Outlier, RWS, Translated)",
                 ]} />
@@ -257,9 +257,9 @@ export function VisualCV(): React.ReactElement {
 
               {/* Key Projects */}
               <Section title="Key Projects" icon="◆">
-                <ProjectCard name="Gogaa CLI" tag="Dev Tool · CLI" tagColor={ACCENT} description="Claude Code alternative — 11 providers, Aider parity, 1418 tests. Repo map, SEARCH/REPLACE, watch mode, plugin marketplace, parallel agents. Built it because nothing else had everything." />
+                <ProjectCard name="Gogaa CLI" tag="Dev Tool · CLI" tagColor={ACCENT} description="Claude Code alternative: 11 providers, Aider parity, 1418 tests. Repo map, SEARCH/REPLACE, watch mode, plugin marketplace, parallel agents. Built it because nothing else had everything." />
                 <ProjectCard name="CodeLens" tag="AI Dev Tool" tagColor={ACCENT} description="305-pattern AI code review engine across 9 stacks. Security taint tracking, PR risk scoring, guardian mode. Zero deps, <1s reviews." />
-                <ProjectCard name="OpenEvent" tag="Production SaaS" tagColor={AMBER} description="Live with 100+ clients across 150+ events — saves each team ~1.5 hrs/day of manual email processing. Multi-agent orchestration: email → entity extraction → workflow → auto-approval." />
+                <ProjectCard name="OpenEvent" tag="Production SaaS" tagColor={AMBER} description="Live with 100+ clients across 150+ events. Saves each team ~1.5 hrs/day of manual email processing. Multi-agent orchestration: email → entity extraction → workflow → auto-approval." />
                 <ProjectCard name="Command Center" tag="Developer Tool" tagColor="#10b981" description="Unified dev interface with Claude API, Google Gemini, Supabase, Gmail/Calendar integration. PWA with push notifications." link="github.com/shami-ah/shami-command-center" />
                 <ProjectCard name="Gluten-Free Deals & Dining" tag="Cross-Platform" tagColor="#8b5cf6" description="React Native + Next.js app. LLM-generated 200+ search queries, concurrent scraping from 40+ retailers, GPS restaurant finder, AI recipe generation." />
                 <ProjectCard name="AI Agent System" tag="Multi-Agent" tagColor="#ec4899" description="5 purpose-built AI agents with tool-calling: job search, research, code review, proposals, freelance automation. Groq + Tavily + GitHub API. Deployed on HuggingFace Spaces." link="shami96-deep-agent.hf.space" />
@@ -270,10 +270,10 @@ export function VisualCV(): React.ReactElement {
                 <motion.div className="p-4 rounded-lg border border-zinc-800 bg-zinc-900/30" initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}>
                   <div className="flex justify-between items-baseline">
                     <div>
-                      <p className="font-semibold text-sm">B.Eng — Electrical & Electronics Engineering</p>
+                      <p className="font-semibold text-sm">B.Eng in Electrical & Electronics Engineering</p>
                       <p className="text-xs text-zinc-500">Sukkur IBA University</p>
                     </div>
-                    <p className="text-xs text-zinc-600 font-mono">2017 — 2020 · Grade A</p>
+                    <p className="text-xs text-zinc-600 font-mono">2017 – 2020 · Grade A</p>
                   </div>
                 </motion.div>
               </Section>
@@ -301,7 +301,7 @@ export function VisualCV(): React.ReactElement {
               </Section>
 
               <Section title="Process" icon="▹">
-                {["Architecture-First Development", "Team Leadership (3-10 people)", "Client-Facing Comms & SOWs", "CodeLens — 305-pattern review engine", "Gogaa — Claude Code alternative"].map((s, i) => (
+                {["Architecture-First Development", "Team Leadership (3-10 people)", "Client-Facing Comms & SOWs", "CodeLens: 305-pattern review engine", "Gogaa: Claude Code alternative"].map((s, i) => (
                   <SkillBar key={s} name={s} level={90 - i * 4} delay={i * 0.05} />
                 ))}
               </Section>
@@ -309,7 +309,7 @@ export function VisualCV(): React.ReactElement {
               {/* Certifications */}
               <Section title="Certifications" icon="🎓">
                 <div className="space-y-2 text-xs">
-                  {["Generative AI & LLMs — IBM", "Project Management — Google", "Gen AI for PMs — PMI"].map((cert, i) => (
+                  {["Generative AI & LLMs · IBM", "Project Management · Google", "Gen AI for PMs · PMI"].map((cert, i) => (
                     <motion.p key={cert} className="text-zinc-400 pl-3 border-l border-zinc-800" initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }}>{cert}</motion.p>
                   ))}
                 </div>
@@ -430,22 +430,22 @@ export function VisualCV(): React.ReactElement {
               </p>
 
               {[
-                { title: "Lead AI Developer", company: "MORE LIFE Hospitality GmbH", location: "Zurich · Remote", period: "Sep 2025 — Present", active: true, items: [
+                { title: "Lead AI Developer", company: "MORE LIFE Hospitality GmbH", location: "Zurich · Remote", period: "Sep 2025 – Present", active: true, items: [
                   "Architected AI orchestration: email → classification → task extraction → workflow execution → auto-approval",
                   "Built Supabase Edge Functions for LLM calls, entity extraction, and workflow triggers",
                   "Designed multi-agent system with planner/worker/validator pattern + human-in-the-loop approval",
                   "Shipped React frontend: Task Inbox, Workflow Runner, Approval Flows, Marketing Hub, Admin Dashboard",
                   "React + TypeScript + Supabase + Stripe + Claude API + GitHub Actions",
                 ]},
-                { title: "Director IT & R&D", company: "Rouelite Techno Pvt. Ltd.", location: "Remote", period: "2022 — 2024", items: [
+                { title: "Director IT & R&D", company: "Rouelite Techno Pvt. Ltd.", location: "Remote", period: "2022 – 2024", items: [
                   "Led 10-person team building custom CRM and business automation",
                   "Designed system architecture serving 500+ daily users",
                   "Introduced AI into daily operations, reducing manual data entry by 70%",
                   "Replaced 3 legacy spreadsheet processes with React + Supabase internal tools",
                   "Implemented agile workflows reducing delivery cycles by 40%",
                 ]},
-                { title: "AI Engineering Consultant", company: "Wadware House · Global Clients", location: "Remote · Global", period: "2019 — Present", items: [
-                  "250+ projects — RAG pipelines, prompt engineering, AI workflows, analytics dashboards",
+                { title: "AI Engineering Consultant", company: "Wadware House · Global Clients", location: "Remote · Global", period: "2019 – Present", items: [
+                  "250+ projects: RAG pipelines, prompt engineering, AI workflows, analytics dashboards",
                   "40+ long-term client relationships, 100% satisfaction rate",
                   "500+ RLHF/SFT evaluation sessions on frontier models (Outlier, RWS, Translated)",
                 ]},
@@ -479,9 +479,9 @@ export function VisualCV(): React.ReactElement {
               </p>
 
               {[
-                { name: "Gogaa CLI", tag: "Dev Tool · CLI", tagColor: "#4a6fa5", desc: "Claude Code alternative — 11 providers, Aider parity, 1418 tests. Repo map, SEARCH/REPLACE, watch mode, plugin marketplace, parallel agents." },
+                { name: "Gogaa CLI", tag: "Dev Tool · CLI", tagColor: "#4a6fa5", desc: "Claude Code alternative: 11 providers, Aider parity, 1418 tests. Repo map, SEARCH/REPLACE, watch mode, plugin marketplace, parallel agents." },
                 { name: "CodeLens", tag: "AI Dev Tool", tagColor: "#4a6fa5", desc: "305-pattern AI code review engine across 9 stacks. Security taint tracking, PR risk scoring, guardian mode. Zero deps, <1s reviews." },
-                { name: "OpenEvent", tag: "Production SaaS", tagColor: "#b8860b", desc: "Live with 100+ clients across 150+ events — saves each team ~1.5 hrs/day of manual email processing. Multi-agent orchestration: email → entity extraction → workflow → auto-approval." },
+                { name: "OpenEvent", tag: "Production SaaS", tagColor: "#b8860b", desc: "Live with 100+ clients across 150+ events. Saves each team ~1.5 hrs/day of manual email processing. Multi-agent orchestration: email → entity extraction → workflow → auto-approval." },
                 { name: "Command Center", tag: "Developer Tool", tagColor: "#10b981", desc: "Unified dev interface with Claude API, Google Gemini, Supabase, Gmail/Calendar integration. PWA with push notifications." },
                 { name: "Gluten-Free Deals & Dining", tag: "Cross-Platform", tagColor: "#8b5cf6", desc: "React Native + Next.js app. LLM-generated 200+ search queries, concurrent scraping from 40+ retailers, GPS restaurant finder, AI recipe generation." },
                 { name: "AI Agent System", tag: "Multi-Agent", tagColor: "#ec4899", desc: "5 purpose-built AI agents with tool-calling: job search, research, code review, proposals, freelance automation. Groq + Tavily + GitHub API on HuggingFace Spaces." },
@@ -501,10 +501,10 @@ export function VisualCV(): React.ReactElement {
               </p>
               <div style={{ padding: "8px 10px", borderRadius: "6px", border: "1px solid #e8e8e4", background: "#f5f5f1", display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
                 <div>
-                  <p className="text-[10px] font-semibold">B.Eng — Electrical & Electronics Engineering</p>
+                  <p className="text-[10px] font-semibold">B.Eng in Electrical & Electronics Engineering</p>
                   <p className="text-[9px]" style={{ color: "#999" }}>Sukkur IBA University</p>
                 </div>
-                <p className="font-mono text-[8px]" style={{ color: "#aaa" }}>2017 — 2020 · Grade A</p>
+                <p className="font-mono text-[8px]" style={{ color: "#aaa" }}>2017 – 2020 · Grade A</p>
               </div>
             </div>
 
@@ -602,7 +602,7 @@ export function VisualCV(): React.ReactElement {
               <p className="font-mono text-[10px] uppercase" style={{ letterSpacing: "2px", color: "#aaa", marginBottom: "6px", marginTop: "10px" }}>
                 <span style={{ color: "#4a6fa5" }}>🎓</span> Certifications
               </p>
-              {["Generative AI & LLMs — IBM", "Project Management — Google", "Gen AI for PMs — PMI"].map((cert) => (
+              {["Generative AI & LLMs · IBM", "Project Management · Google", "Gen AI for PMs · PMI"].map((cert) => (
                 <p key={cert} className="text-[9px]" style={{ color: "#888", paddingLeft: "8px", borderLeft: "2px solid #e8e8e4", marginBottom: "4px", lineHeight: 1.4 }}>{cert}</p>
               ))}
 
