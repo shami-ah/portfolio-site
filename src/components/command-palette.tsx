@@ -271,22 +271,6 @@ export function CommandPalette(): React.ReactElement {
 
   return (
     <>
-      {/* Floating launcher — right side */}
-      <button
-        type="button"
-        onClick={() => setOpen(true)}
-        aria-label="Open command palette"
-        className="fixed bottom-3 md:bottom-5 right-3 md:right-5 z-40 inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-card/90 backdrop-blur-md border border-card-border hover:border-accent/40 text-[10px] md:text-[11px] font-mono text-muted hover:text-accent transition-all shadow-lg shadow-background/40"
-      >
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          <circle cx="11" cy="11" r="8" />
-          <line x1="21" y1="21" x2="16.65" y2="16.65" />
-        </svg>
-        <span className="hidden sm:inline">search</span>
-        <kbd className="hidden md:inline px-1.5 py-0.5 text-[9px] border border-card-border rounded bg-background/60">
-          ⌘K
-        </kbd>
-      </button>
 
       <AnimatePresence>
         {open && (

@@ -123,16 +123,6 @@ export function Hero(): React.ReactElement {
       />
 
       <div className="relative w-full max-w-4xl mx-auto px-5 md:px-6 text-center">
-        {/* Name */}
-        <motion.p
-          initial={{ opacity: 0, y: -8 }}
-          animate={ready ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-          className="text-base md:text-xl font-mono text-accent mb-3 tracking-wide"
-        >
-          Ahtesham Ahmad
-        </motion.p>
-
         {/* Availability pill */}
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}

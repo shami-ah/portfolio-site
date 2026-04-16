@@ -1,4 +1,4 @@
-import { Nav } from "@/components/nav";
+import { TopBar } from "@/components/top-bar";
 import { Hero } from "@/components/hero";
 import { ContextSwitcher } from "@/components/context-switcher";
 import { About } from "@/components/about";
@@ -25,7 +25,7 @@ export default function Home(): React.ReactElement {
       <TerminalBoot />
       <ScrollProgress />
       <HueShift />
-      <Nav />
+      <TopBar />
       <div className="relative z-10">
         <Hero />
         <ContextSwitcher />
