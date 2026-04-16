@@ -81,19 +81,43 @@ export function About(): React.ReactElement {
             </div>
           </SlideIn>
 
-          {/* Dramatic number — the display moment */}
+          {/* Right column: photo + dramatic number */}
           <SlideIn direction="right">
-            <div className="relative">
-              <p className="font-bold tabular-nums leading-[0.85] tracking-tighter bg-gradient-to-br from-foreground to-muted/50 bg-clip-text text-transparent text-[100px] sm:text-[140px] md:text-[160px] lg:text-[200px]">
-                <CountUp to={status.portfolio.projects} suffix="" />
-                <span className="text-accent">+</span>
-              </p>
-              <p className="text-xs md:text-sm font-mono text-muted/70 uppercase tracking-[0.2em] mt-2">
-                production projects shipped
-              </p>
-              <p className="text-[10px] md:text-xs text-muted/50 mt-1">
-                2019 → now · 40+ returning clients · 100% satisfaction
-              </p>
+            <div className="relative flex flex-col gap-6 md:gap-8">
+              {/* Portrait */}
+              <div className="relative w-full max-w-[220px] md:max-w-[260px] mx-auto md:mx-0">
+                {/* Accent glow behind */}
+                <div className="absolute -inset-4 bg-gradient-to-br from-accent/20 via-purple-500/10 to-transparent rounded-full blur-2xl pointer-events-none" />
+                <div className="relative aspect-square rounded-2xl overflow-hidden border border-accent/20 shadow-2xl shadow-accent/10">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src="/ahtesham.jpg"
+                    alt="Ahtesham Ahmad"
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-background/40 via-transparent to-transparent pointer-events-none" />
+                </div>
+                <div className="absolute -bottom-3 -right-3 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-card border border-accent/30 shadow-lg">
+                  <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
+                  <span className="text-[10px] font-mono text-muted">
+                    Islamabad · remote
+                  </span>
+                </div>
+              </div>
+
+              {/* Dramatic number */}
+              <div className="relative">
+                <p className="font-bold tabular-nums leading-[0.85] tracking-tighter bg-gradient-to-br from-foreground to-muted/50 bg-clip-text text-transparent text-[80px] sm:text-[110px] md:text-[120px] lg:text-[150px]">
+                  <CountUp to={status.portfolio.projects} suffix="" />
+                  <span className="text-accent">+</span>
+                </p>
+                <p className="text-xs md:text-sm font-mono text-muted/70 uppercase tracking-[0.2em] mt-1">
+                  production projects shipped
+                </p>
+                <p className="text-[10px] md:text-xs text-muted/50 mt-1">
+                  2019 → now · 40+ returning clients · 100% satisfaction
+                </p>
+              </div>
             </div>
           </SlideIn>
         </div>

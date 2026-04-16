@@ -43,15 +43,16 @@ export function ProjectMockup({
 }
 
 /* ---------------------------- CodeLens ------------------------------- */
+/* Real output captured from: codelens review ./dashboard.tsx           */
 
 function CodeLensBody(): React.ReactElement {
   const lines: { text: string; color: string; delay: number }[] = [
     { text: "❯ codelens review .", color: "text-accent", delay: 0 },
-    { text: "✓ 305 patterns loaded · 9 stacks", color: "text-green-400", delay: 0.15 },
-    { text: "✓ Persistent index ready · 60ms incremental", color: "text-green-400", delay: 0.3 },
-    { text: "✓ Cross-file tracing complete", color: "text-green-400", delay: 0.45 },
-    { text: "", color: "", delay: 0.55 },
-    { text: "⚠  3 findings across 2 files", color: "text-amber-400", delay: 0.65 },
+    { text: "Stack: typescript · Layers: components", color: "text-muted/60", delay: 0.15 },
+    { text: "Patterns Checked: 123 · Review time: 113ms", color: "text-muted/60", delay: 0.3 },
+    { text: "", color: "", delay: 0.4 },
+    { text: "Verdict: REQUEST CHANGES", color: "text-amber-400", delay: 0.5 },
+    { text: "2 critical · 4 warning · 2 info", color: "text-amber-300/80", delay: 0.6 },
   ];
   return (
     <div className="space-y-0.5">
@@ -68,18 +69,25 @@ function CodeLensBody(): React.ReactElement {
         </motion.p>
       ))}
 
-      {/* Finding card */}
+      {/* Finding card — real CWE from actual run */}
       <motion.div
         initial={{ opacity: 0, y: 4 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-40px" }}
-        transition={{ duration: 0.35, delay: 0.85 }}
-        className="mt-3 pl-2 border-l-2 border-amber-500/60 text-[10px] md:text-[11px]"
+        transition={{ duration: 0.35, delay: 0.75 }}
+        className="mt-3 pl-2 border-l-2 border-red-500/60 text-[10px] md:text-[11px]"
       >
-        <p className="text-amber-300">auth.ts:47 · HIGH</p>
-        <p className="text-muted/70">source: req.body.email</p>
-        <p className="text-muted/70">→ sink: db.raw(&quot;SELECT...&quot;)</p>
-        <p className="text-muted/50">CWE-89 · SQL injection via taint flow</p>
+        <p className="text-red-300">
+          dashboard.tsx:19 · HIGH{" "}
+          <span className="text-muted/50 ml-1">[U14]</span>
+        </p>
+        <p className="text-muted/70">
+          &lt;div dangerouslySetInnerHTML=&#123;...&#125; /&gt;
+        </p>
+        <p className="text-muted/50">CWE-79 · XSS · OWASP A05</p>
+        <p className="text-muted/60 mt-1 italic">
+          → Use DOMPurify.sanitize() before inserting HTML
+        </p>
       </motion.div>
 
       {/* Risk score */}
@@ -87,24 +95,24 @@ function CodeLensBody(): React.ReactElement {
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         viewport={{ once: true, margin: "-40px" }}
-        transition={{ duration: 0.4, delay: 1.1 }}
+        transition={{ duration: 0.4, delay: 1.0 }}
         className="mt-4 pt-3 border-t border-card-border"
       >
         <div className="flex items-center justify-between mb-1.5">
           <span className="text-muted/70 text-[10px]">PR Risk Score</span>
-          <span className="text-amber-300 font-bold">7.2 / 10</span>
+          <span className="text-amber-300 font-bold">5 / 10</span>
         </div>
         <div className="h-1.5 bg-background/50 rounded-full overflow-hidden">
           <motion.div
             initial={{ width: 0 }}
-            whileInView={{ width: "72%" }}
+            whileInView={{ width: "50%" }}
             viewport={{ once: true, margin: "-40px" }}
-            transition={{ duration: 1.2, delay: 1.3, ease: "easeOut" }}
+            transition={{ duration: 1.2, delay: 1.2, ease: "easeOut" }}
             className="h-full bg-gradient-to-r from-amber-500 to-red-500/80"
           />
         </div>
         <p className="text-[9px] text-muted/50 mt-2">
-          auth changes · schema mods · missing tests
+          critical findings +2 · warnings +1 · low test coverage +1.5
         </p>
       </motion.div>
     </div>
@@ -112,14 +120,15 @@ function CodeLensBody(): React.ReactElement {
 }
 
 /* ------------------------------ Gogaa -------------------------------- */
+/* Real trace from ~/.gogaa/audit session c1ff8f3e — dev-env setup task */
 
 function GogaaBody(): React.ReactElement {
   const steps = [
-    { name: "read_file", detail: "src/auth/middleware.ts", ms: 127, delay: 0.15 },
-    { name: "grep", detail: '"jwt" in src/', ms: 42, delay: 0.35 },
-    { name: "llm_plan", detail: "sonnet-4.6 · 412 tok", ms: 2100, delay: 0.55 },
-    { name: "search_replace", detail: "middleware.ts · 2 blocks", ms: 31, delay: 0.8 },
-    { name: "auto_verify", detail: "lint + tests · 187 passed", ms: 4320, delay: 1.0 },
+    { name: "glob", detail: "**/Dockerfile*", ms: 1426, delay: 0.15 },
+    { name: "file-read", detail: "dev-env/docker-compose.yml", ms: 817, delay: 0.35 },
+    { name: "file-read", detail: "dev-env/README.md", ms: 603, delay: 0.55 },
+    { name: "bash", detail: "ls dev-env/configs/", ms: 422, delay: 0.75 },
+    { name: "file-write", detail: "configs/.zshrc · 44 lines", ms: 938, delay: 0.95 },
   ];
   return (
     <div className="space-y-0.5">
@@ -130,7 +139,7 @@ function GogaaBody(): React.ReactElement {
         transition={{ duration: 0.3 }}
         className="text-foreground/90"
       >
-        <span className="text-accent">❯</span> add jwt refresh-token rotation
+        <span className="text-accent">❯</span> set up my dev container configs
       </motion.p>
 
       <motion.p
@@ -140,7 +149,7 @@ function GogaaBody(): React.ReactElement {
         transition={{ duration: 0.3, delay: 0.1 }}
         className="text-muted/70 pl-4"
       >
-        intent: code_task · conf 0.94
+        model: claude-sonnet-4 · intent: code_task
       </motion.p>
 
       <div className="mt-3 space-y-1">
@@ -148,7 +157,7 @@ function GogaaBody(): React.ReactElement {
           const isLast = i === steps.length - 1;
           return (
             <motion.div
-              key={s.name}
+              key={s.name + i}
               initial={{ opacity: 0, x: -4 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true, margin: "-40px" }}
@@ -173,12 +182,12 @@ function GogaaBody(): React.ReactElement {
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         viewport={{ once: true, margin: "-40px" }}
-        transition={{ duration: 0.4, delay: 1.2 }}
+        transition={{ duration: 0.4, delay: 1.15 }}
         className="mt-4 pt-3 border-t border-card-border flex items-center justify-between text-[10px]"
       >
-        <span className="text-muted/60">11 providers · auto-fallback</span>
+        <span className="text-muted/60">77,482 tokens · 72.9s session</span>
         <span className="text-muted/60">
-          cost <span className="text-accent/80">$0.021</span>
+          cost <span className="text-accent/80">$0.305</span>
         </span>
       </motion.div>
     </div>
