@@ -325,7 +325,7 @@ export function AgentBar(): React.ReactElement {
   return (
     <div
       aria-live="polite"
-      className="fixed left-1/2 bottom-5 -translate-x-1/2 z-40 w-[calc(100%-2.5rem)] max-w-[640px] pointer-events-none"
+      className="fixed left-1/2 bottom-3 md:bottom-5 -translate-x-1/2 z-40 w-[calc(100vw-1.5rem)] md:w-[calc(100%-2.5rem)] max-w-[640px] pointer-events-none"
     >
       <AnimatePresence mode="wait">
         {/* DORMANT: slim input-ready bar */}

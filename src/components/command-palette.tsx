@@ -262,22 +262,6 @@ export function CommandPalette(): React.ReactElement {
 
   return (
     <>
-      {/* Floating launcher button (mobile + as a visible hint) */}
-      <button
-        type="button"
-        onClick={() => setOpen(true)}
-        className="fixed bottom-5 right-5 z-40 inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-card/90 backdrop-blur-sm border border-accent/30 text-[11px] font-mono text-muted hover:text-accent hover:border-accent/50 transition-all duration-200 shadow-lg shadow-background/40"
-        aria-label="Open command palette"
-      >
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          <circle cx="11" cy="11" r="8" />
-          <line x1="21" y1="21" x2="16.65" y2="16.65" />
-        </svg>
-        <span className="hidden sm:inline">Jump to…</span>
-        <kbd className="hidden md:inline px-1.5 py-0.5 text-[9px] border border-card-border rounded bg-background/60">
-          ⌘K
-        </kbd>
-      </button>
 
       <AnimatePresence>
         {open && (

@@ -123,17 +123,28 @@ export function VisualCV(): React.ReactElement {
   return (
     <>
       {/* Floating controls */}
-      <div className="print:hidden fixed top-4 right-4 z-50 flex gap-2">
+      <div className="print:hidden fixed top-4 right-4 z-50 flex flex-wrap gap-2 justify-end max-w-[calc(100vw-2rem)]">
+        <motion.a
+          href="/chat"
+          className="px-3 md:px-4 py-2 bg-accent/15 hover:bg-accent/25 text-accent rounded-lg text-xs md:text-sm font-medium backdrop-blur-sm border border-accent/30 inline-flex items-center gap-1.5 shadow-lg shadow-accent/10"
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+        >
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+          </svg>
+          Chat
+        </motion.a>
         <motion.button
           onClick={handleDownload}
-          className="px-4 py-2 bg-blue-500/90 hover:bg-blue-500 text-white rounded-lg text-sm font-medium backdrop-blur-sm border border-blue-400/30 flex items-center gap-2 shadow-lg shadow-blue-500/20"
+          className="px-3 md:px-4 py-2 bg-blue-500/90 hover:bg-blue-500 text-white rounded-lg text-xs md:text-sm font-medium backdrop-blur-sm border border-blue-400/30 flex items-center gap-1.5 shadow-lg shadow-blue-500/20"
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
         >
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><polyline points="14 2 14 8 20 8" /><line x1="12" y1="18" x2="12" y2="12" /><polyline points="9 15 12 18 15 15" /></svg>
           PDF
         </motion.button>
-        <a href="/" className="px-4 py-2 bg-zinc-800/90 hover:bg-zinc-700 text-white rounded-lg text-sm font-medium backdrop-blur-sm border border-zinc-700/50">← Back</a>
+        <a href="/" className="px-3 md:px-4 py-2 bg-zinc-800/90 hover:bg-zinc-700 text-white rounded-lg text-xs md:text-sm font-medium backdrop-blur-sm border border-zinc-700/50">← Back</a>
       </div>
 
       {/* Screen version - dark, animated */}
