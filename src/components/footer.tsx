@@ -39,8 +39,7 @@ export function Footer(): React.ReactElement {
         {/* Divider + meta row */}
         <div className="mt-12 md:mt-16 pt-6 border-t border-card-border flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <p className="text-[11px] font-mono text-muted/40">
-            © {new Date().getFullYear()} Ahtesham Ahmad · built with Next.js,
-            deployed on Cloudflare
+            © {new Date().getFullYear()} Ahtesham Ahmad
           </p>
           <div className="flex items-center gap-5">
             <a
