@@ -63,26 +63,26 @@ const skillGroups: SkillGroup[] = [
 
 export function Skills(): React.ReactElement {
   return (
-    <section id="skills" className="py-24 md:py-32 bg-card/30">
-      <div className="max-w-6xl mx-auto px-6">
+    <section id="skills" className="py-20 md:py-32 bg-card/30">
+      <div className="max-w-6xl mx-auto px-5 md:px-6">
         <FadeUp>
           <p className="text-sm font-mono text-accent mb-4 uppercase tracking-wider">
             Stack
           </p>
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 md:mb-4 leading-tight">
             What I work with every week.
           </h2>
-          <p className="text-muted mb-16 max-w-lg">
+          <p className="text-sm md:text-base text-muted mb-10 md:mb-16 max-w-lg">
             Not a tool inventory. These are the patterns and technologies behind
             the systems I ship.
           </p>
         </FadeUp>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5">
           {skillGroups.map((group, i) => (
             <FadeUp key={group.title} delay={i * 0.08}>
-              <div className="h-full p-5 rounded-xl bg-card border border-card-border hover:border-accent/20 transition-all duration-300">
-                <h3 className="font-bold text-sm mb-4 text-accent">
+              <div className="h-full p-4 md:p-5 rounded-xl bg-card border border-card-border hover:border-accent/20 transition-all duration-300">
+                <h3 className="font-bold text-sm mb-3 md:mb-4 text-accent">
                   {group.title}
                 </h3>
                 <div className="flex flex-wrap gap-1.5">
@@ -102,11 +102,11 @@ export function Skills(): React.ReactElement {
 
         {/* Market context */}
         <FadeUp delay={0.3}>
-          <div className="mt-16 p-6 md:p-8 rounded-xl bg-gradient-to-r from-accent/5 to-blue-500/5 border border-accent/10">
-            <p className="text-xs font-mono text-accent mb-3 uppercase tracking-wider">
+          <div className="mt-10 md:mt-16 p-5 md:p-8 rounded-xl bg-gradient-to-r from-accent/5 to-blue-500/5 border border-accent/10">
+            <p className="text-[10px] md:text-xs font-mono text-accent mb-2 md:mb-3 uppercase tracking-wider">
               Why this matters in 2026
             </p>
-            <p className="text-sm text-muted leading-relaxed max-w-3xl">
+            <p className="text-xs md:text-sm text-muted leading-relaxed max-w-3xl">
               Senior AI engineer demand is surging while entry-level roles
               flatten. Companies don&apos;t need more people who write
               code. They need people who{" "}

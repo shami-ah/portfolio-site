@@ -35,22 +35,22 @@ const stats = [
 
 export function About(): React.ReactElement {
   return (
-    <section id="about" className="py-24 md:py-32">
-      <div className="max-w-6xl mx-auto px-6">
+    <section id="about" className="py-20 md:py-32">
+      <div className="max-w-6xl mx-auto px-5 md:px-6">
         <FadeUp>
           <p className="text-sm font-mono text-accent mb-4 uppercase tracking-wider">
             About
           </p>
-          <h2 className="text-3xl md:text-4xl font-bold mb-12">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-10 md:mb-12 leading-tight">
             Most AI projects break in production.
             <br />
             <span className="text-muted">I make sure mine don&apos;t.</span>
           </h2>
         </FadeUp>
 
-        <div className="grid md:grid-cols-2 gap-12 mb-12">
+        <div className="grid md:grid-cols-2 gap-10 md:gap-12 mb-10 md:mb-12">
           <SlideIn direction="left">
-            <div className="space-y-5 text-muted leading-relaxed">
+            <div className="space-y-4 md:space-y-5 text-sm md:text-base text-muted leading-relaxed">
               <p>
                 The gap between an AI demo and a production system is enormous.
                 Hallucinations slip through, there&apos;s no human oversight, and
@@ -81,16 +81,16 @@ export function About(): React.ReactElement {
           </SlideIn>
 
           <SlideIn direction="right">
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-2 gap-3 md:gap-4">
               {stats.map((stat) => (
                 <div
                   key={stat.label}
-                  className="p-6 rounded-xl bg-card border border-card-border hover:border-accent/30 transition-all duration-300 group"
+                  className="p-4 md:p-6 rounded-xl bg-card border border-card-border hover:border-accent/30 transition-all duration-300 group"
                 >
-                  <p className="text-3xl font-bold text-accent group-hover:scale-105 transition-transform">
+                  <p className="text-2xl md:text-3xl font-bold text-accent group-hover:scale-105 transition-transform">
                     {stat.counter}
                   </p>
-                  <p className="text-sm text-muted mt-1">{stat.label}</p>
+                  <p className="text-xs md:text-sm text-muted mt-1">{stat.label}</p>
                 </div>
               ))}
             </div>
@@ -99,11 +99,11 @@ export function About(): React.ReactElement {
 
         {/* Dev workflow strip */}
         <FadeUp delay={0.2}>
-          <div className="p-5 rounded-xl bg-card/50 border border-card-border">
-            <p className="text-xs font-mono text-muted mb-4 uppercase tracking-wider">
+          <div className="p-4 md:p-5 rounded-xl bg-card/50 border border-card-border">
+            <p className="text-[10px] md:text-xs font-mono text-muted mb-3 md:mb-4 uppercase tracking-wider">
               My actual dev workflow — every day
             </p>
-            <div className="flex flex-wrap items-center gap-2">
+            <div className="flex flex-wrap items-center gap-1.5 md:gap-2">
               {[
                 "Phone + Tailscale",
                 "Docker Container",
@@ -112,8 +112,8 @@ export function About(): React.ReactElement {
                 "GitHub Actions",
                 "Deploy",
               ].map((step, i, arr) => (
-                <span key={step} className="flex items-center gap-2">
-                  <span className="px-3 py-1.5 text-xs font-mono bg-accent/10 text-accent border border-accent/20 rounded-md whitespace-nowrap">
+                <span key={step} className="flex items-center gap-1.5 md:gap-2">
+                  <span className="px-2 md:px-3 py-1 md:py-1.5 text-[10px] md:text-xs font-mono bg-accent/10 text-accent border border-accent/20 rounded-md whitespace-nowrap">
                     {step}
                   </span>
                   {i < arr.length - 1 && (
