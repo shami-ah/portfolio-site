@@ -5,11 +5,28 @@ import { motion } from "framer-motion";
 
 export function TopBar(): React.ReactElement {
   const [scrolled, setScrolled] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
 
   useEffect(() => {
     const onScroll = (): void => setScrolled(window.scrollY > 40);
     window.addEventListener("scroll", onScroll);
     return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  // Watch for data-modal-open on <body> and hide the top bar while any
+  // modal is open, so the modal has the whole viewport to itself.
+  useEffect(() => {
+    if (typeof document === "undefined") return;
+    const sync = (): void => {
+      setModalOpen(document.body.getAttribute("data-modal-open") === "true");
+    };
+    sync();
+    const obs = new MutationObserver(sync);
+    obs.observe(document.body, {
+      attributes: true,
+      attributeFilter: ["data-modal-open"],
+    });
+    return () => obs.disconnect();
   }, []);
 
   const openSearch = (): void => {
@@ -24,12 +41,16 @@ export function TopBar(): React.ReactElement {
 
   return (
     <>
-      {/* Signature name — top-left corner, always visible */}
+      {/* Signature name — top-left corner, hides when modal open */}
       <motion.a
         href="/"
         initial={{ opacity: 0, y: -10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+        animate={{
+          opacity: modalOpen ? 0 : 1,
+          y: modalOpen ? -20 : 0,
+          pointerEvents: modalOpen ? "none" : "auto",
+        }}
+        transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
         className={`fixed top-0 left-0 z-40 px-4 md:px-6 py-3 md:py-4 transition-all duration-300 ${
           scrolled ? "bg-background/70 backdrop-blur-md" : ""
         }`}
@@ -45,11 +66,15 @@ export function TopBar(): React.ReactElement {
         </p>
       </motion.a>
 
-      {/* Actions — top-right */}
+      {/* Actions — top-right · hides when modal open */}
       <motion.div
         initial={{ opacity: 0, y: -10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+        animate={{
+          opacity: modalOpen ? 0 : 1,
+          y: modalOpen ? -20 : 0,
+          pointerEvents: modalOpen ? "none" : "auto",
+        }}
+        transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
         className="fixed top-0 right-0 z-40 px-3 md:px-6 py-3 md:py-4 flex items-center gap-2 md:gap-3"
       >
         {/* Search — clear, inviting, labeled */}

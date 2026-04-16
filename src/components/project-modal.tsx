@@ -88,9 +88,11 @@ export function ProjectModal({
       if (e.key === "ArrowLeft" && onNavigate) onNavigate(-1);
     };
     document.body.style.overflow = "hidden";
+    document.body.setAttribute("data-modal-open", "true");
     window.addEventListener("keydown", onKey);
     return () => {
       document.body.style.overflow = "";
+      document.body.removeAttribute("data-modal-open");
       window.removeEventListener("keydown", onKey);
     };
   }, [project, onClose, onNavigate]);
