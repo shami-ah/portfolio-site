@@ -85,12 +85,12 @@ export function Nav(): React.ReactElement {
             </svg>
           </button>
 
-          {/* Take the tour — prominent */}
+          {/* Career walkthrough — prominent */}
           <a
             href="/journey"
             className="inline-flex items-center gap-1.5 text-sm px-4 py-2 bg-accent/10 text-accent border border-accent/30 rounded-lg hover:bg-accent/20 hover:border-accent/50 hover:shadow-lg hover:shadow-accent/10 transition-all duration-200 font-medium group"
           >
-            Take the tour
+            Walk my career
             <span className="transition-transform group-hover:translate-x-0.5">
               →
             </span>
@@ -144,7 +144,7 @@ export function Nav(): React.ReactElement {
                 onClick={() => setMobileOpen(false)}
                 className="inline-flex items-center gap-1.5 text-sm px-4 py-2 bg-accent/10 text-accent border border-accent/30 rounded-lg font-medium"
               >
-                Take the tour →
+                Walk my career →
               </a>
               <button
                 type="button"

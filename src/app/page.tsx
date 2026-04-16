@@ -17,7 +17,6 @@ import { HueShift } from "@/components/hue-shift";
 import { AgentBar } from "@/components/agent-bar";
 import { ShortcutsOverlay } from "@/components/shortcuts-overlay";
 import { Cursor } from "@/components/cursor";
-import { ExplorationHud } from "@/components/exploration-hud";
 import { CursorPresence } from "@/components/cursor-presence";
 
 export default function Home(): React.ReactElement {
@@ -43,7 +42,6 @@ export default function Home(): React.ReactElement {
       <CommandPalette />
       <AgentBar />
       <ShortcutsOverlay />
-      <ExplorationHud />
       <CursorPresence />
       <Cursor />
     </main>

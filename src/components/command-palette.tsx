@@ -122,7 +122,7 @@ export function CommandPalette(): React.ReactElement {
       },
       {
         id: "journey",
-        label: "Take the interactive tour",
+        label: "Walk through my career visually",
         hint: "Timeline · day in the life · parallel systems",
         group: "Resources",
         action: () => {
@@ -131,8 +131,8 @@ export function CommandPalette(): React.ReactElement {
       },
       {
         id: "build",
-        label: "Build a feature with me",
-        hint: "6-step walkthrough: architect → spec → scaffold → review → ship",
+        label: "Watch me ship a real feature",
+        hint: "6 steps: architect → spec → scaffold → review → ship",
         group: "Resources",
         action: () => {
           window.location.href = "/build";

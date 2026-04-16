@@ -11,16 +11,7 @@ interface Ghost {
   targetY: number;
 }
 
-const names = [
-  "Berlin",
-  "Dubai",
-  "Singapore",
-  "NYC",
-  "Amsterdam",
-  "Lisbon",
-  "Tokyo",
-  "Riyadh",
-];
+const names = ["Berlin", "Dubai", "Singapore", "NYC", "Amsterdam", "Lisbon", "Tokyo", "Riyadh"];
 const colors = ["#3b82f6", "#10b981", "#f59e0b", "#a855f7", "#ec4899"];
 
 function rand(min: number, max: number): number {
@@ -46,12 +37,16 @@ export function CursorPresence(): React.ReactElement | null {
     if (typeof window === "undefined") return;
     const mq = window.matchMedia("(hover: hover) and (pointer: fine)");
     setCanEnable(mq.matches);
+
+    // Toggle via custom event (from agent bar / command palette)
+    const handler = (): void => setOn((v) => !v);
+    window.addEventListener("toggle-presence", handler);
+    return () => window.removeEventListener("toggle-presence", handler);
   }, []);
 
   useEffect(() => {
     if (!on) return;
     setGhosts(Array.from({ length: 3 }, (_, i) => makeGhost(i)));
-    // Re-target each ghost periodically
     const t = setInterval(() => {
       setGhosts((gs) =>
         gs.map((g) => ({
@@ -64,33 +59,27 @@ export function CursorPresence(): React.ReactElement | null {
     return () => clearInterval(t);
   }, [on]);
 
-  if (!canEnable) return null;
+  if (!canEnable || !on) return null;
 
   return (
     <>
-      {/* Toggle pill */}
-      <button
-        type="button"
-        onClick={() => setOn((v) => !v)}
-        className={`fixed top-1/2 -translate-y-1/2 right-3 md:right-5 z-30 inline-flex items-center gap-2 px-3 py-2 rounded-lg backdrop-blur-md transition-all text-[10px] font-mono ${
-          on
-            ? "bg-accent/15 border border-accent/40 text-accent shadow-lg shadow-accent/20"
-            : "bg-card/80 border border-card-border text-muted/60 hover:text-accent hover:border-accent/30"
-        }`}
-        aria-label="Toggle visitor presence"
-      >
-        <span
-          className={`w-1.5 h-1.5 rounded-full ${on ? "bg-accent animate-pulse" : "bg-muted/40"}`}
-        />
-        <span className="hidden md:inline">
-          {on ? "presence on" : "presence"}
-        </span>
-      </button>
+      {/* Small on-indicator top-right (next to nav) */}
+      <div className="fixed top-20 right-5 z-30 pointer-events-auto">
+        <button
+          type="button"
+          onClick={() => setOn(false)}
+          className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-accent/15 border border-accent/40 text-accent text-[10px] font-mono backdrop-blur-md shadow-lg shadow-accent/20 hover:bg-accent/25 transition-all"
+          title="Turn off presence"
+        >
+          <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
+          presence on · click to stop
+        </button>
+      </div>
 
-      {/* Ghost cursors */}
       <AnimatePresence>
-        {on &&
-          ghosts.map((g) => <GhostCursor key={g.id} ghost={g} />)}
+        {ghosts.map((g) => (
+          <GhostCursor key={g.id} ghost={g} />
+        ))}
       </AnimatePresence>
     </>
   );
@@ -115,19 +104,8 @@ function GhostCursor({ ghost }: { ghost: Ghost }): React.ReactElement {
       style={{ x: sx, y: sy }}
       className="fixed top-0 left-0 z-20 pointer-events-none"
     >
-      <svg
-        width="16"
-        height="16"
-        viewBox="0 0 16 16"
-        className="drop-shadow-md"
-        style={{ color: ghost.color }}
-      >
-        <path
-          d="M2 2 L14 8 L8 10 L6 14 Z"
-          fill="currentColor"
-          stroke="rgba(0,0,0,0.3)"
-          strokeWidth="0.6"
-        />
+      <svg width="16" height="16" viewBox="0 0 16 16" className="drop-shadow-md" style={{ color: ghost.color }}>
+        <path d="M2 2 L14 8 L8 10 L6 14 Z" fill="currentColor" stroke="rgba(0,0,0,0.3)" strokeWidth="0.6" />
       </svg>
       <div
         className="absolute left-5 top-3 px-1.5 py-0.5 rounded text-[9px] font-mono whitespace-nowrap"

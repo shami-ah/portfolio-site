@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 interface YearContext {
@@ -68,9 +68,11 @@ const contexts: YearContext[] = [
 
 export function TimeMachine(): React.ReactElement {
   const [idx, setIdx] = useState(contexts.length - 1);
+  const [userInteracted, setUserInteracted] = useState(false);
+  const [dragging, setDragging] = useState(false);
+  const trackRef = useRef<HTMLDivElement>(null);
 
   // Auto-advance once when mounted (on first view)
-  const [userInteracted, setUserInteracted] = useState(false);
   useEffect(() => {
     if (userInteracted) return;
     const total = contexts.length;
@@ -86,6 +88,34 @@ export function TimeMachine(): React.ReactElement {
     }, 700);
     return () => clearInterval(t);
   }, [userInteracted]);
+
+  // Update idx from pointer X on the track
+  const updateFromPointer = (clientX: number): void => {
+    const el = trackRef.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    const ratio = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
+    const next = Math.min(contexts.length - 1, Math.floor(ratio * contexts.length));
+    if (next !== idx) setIdx(next);
+  };
+
+  // Drag lifecycle
+  useEffect(() => {
+    if (!dragging) return;
+    const onMove = (e: PointerEvent): void => {
+      e.preventDefault();
+      updateFromPointer(e.clientX);
+    };
+    const onUp = (): void => setDragging(false);
+    window.addEventListener("pointermove", onMove);
+    window.addEventListener("pointerup", onUp);
+    window.addEventListener("pointercancel", onUp);
+    return () => {
+      window.removeEventListener("pointermove", onMove);
+      window.removeEventListener("pointerup", onUp);
+      window.removeEventListener("pointercancel", onUp);
+    };
+  }, [dragging, idx]);
 
   const ctx = contexts[idx];
 
@@ -127,23 +157,46 @@ export function TimeMachine(): React.ReactElement {
         })}
       </div>
 
-      {/* Track */}
+      {/* Draggable track */}
       <div
+        ref={trackRef}
         role="slider"
         aria-valuemin={contexts[0].year}
         aria-valuemax={contexts[contexts.length - 1].year}
         aria-valuenow={ctx.year}
-        className="relative h-1 bg-card-border rounded-full mb-6"
+        tabIndex={0}
+        onPointerDown={(e) => {
+          e.preventDefault();
+          setUserInteracted(true);
+          setDragging(true);
+          updateFromPointer(e.clientX);
+          (e.target as HTMLElement).setPointerCapture?.(e.pointerId);
+        }}
+        onKeyDown={(e) => {
+          if (e.key === "ArrowLeft") {
+            setUserInteracted(true);
+            setIdx((i) => Math.max(0, i - 1));
+          } else if (e.key === "ArrowRight") {
+            setUserInteracted(true);
+            setIdx((i) => Math.min(contexts.length - 1, i + 1));
+          }
+        }}
+        className={`relative h-8 mb-6 touch-none cursor-grab ${
+          dragging ? "cursor-grabbing" : ""
+        }`}
+        style={{ touchAction: "none" }}
       >
+        {/* Visual track */}
+        <div className="absolute top-1/2 -translate-y-1/2 left-0 right-0 h-1 bg-card-border rounded-full pointer-events-none" />
         <motion.div
-          className="absolute top-0 left-0 h-full bg-gradient-to-r from-accent to-accent/70 rounded-full"
+          className="absolute top-1/2 -translate-y-1/2 left-0 h-1 bg-gradient-to-r from-accent to-accent/70 rounded-full pointer-events-none"
           animate={{ width: `${((idx + 0.5) / contexts.length) * 100}%` }}
-          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: dragging ? 0 : 0.4, ease: [0.22, 1, 0.36, 1] }}
         />
         <motion.div
-          animate={{ left: `calc(${((idx + 0.5) / contexts.length) * 100}% - 8px)` }}
-          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-          className="absolute top-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-accent shadow-lg shadow-accent/40 ring-4 ring-background"
+          animate={{ left: `calc(${((idx + 0.5) / contexts.length) * 100}% - 10px)` }}
+          transition={{ duration: dragging ? 0 : 0.4, ease: [0.22, 1, 0.36, 1] }}
+          className="absolute top-1/2 -translate-y-1/2 w-5 h-5 rounded-full bg-accent shadow-lg shadow-accent/40 ring-4 ring-background pointer-events-none"
         />
       </div>
 
