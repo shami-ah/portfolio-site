@@ -20,7 +20,12 @@ export function TerminalBoot(): React.ReactElement | null {
   useEffect(() => {
     if (typeof window === "undefined") return;
     const seen = sessionStorage.getItem("boot-seen");
-    if (seen) return;
+    if (seen) {
+      // Already booted this session — mark complete so hero starts immediately
+      sessionStorage.setItem("boot-complete", "1");
+      window.dispatchEvent(new CustomEvent("boot-complete"));
+      return;
+    }
     setVisible(true);
     sessionStorage.setItem("boot-seen", "1");
   }, []);
@@ -28,12 +33,16 @@ export function TerminalBoot(): React.ReactElement | null {
   useEffect(() => {
     if (!visible) return;
     if (currentLine >= bootLines.length) {
-      const dismiss = setTimeout(() => setVisible(false), 650);
+      const dismiss = setTimeout(() => {
+        setVisible(false);
+        sessionStorage.setItem("boot-complete", "1");
+        window.dispatchEvent(new CustomEvent("boot-complete"));
+      }, 300);
       return () => clearTimeout(dismiss);
     }
     const line = bootLines[currentLine].text;
     if (currentChar < line.length) {
-      const speed = currentLine === 0 ? 24 : 14;
+      const speed = currentLine === 0 ? 12 : 7;
       const timer = setTimeout(() => setCurrentChar((c) => c + 1), speed);
       return () => clearTimeout(timer);
     }
@@ -41,7 +50,7 @@ export function TerminalBoot(): React.ReactElement | null {
       setTypedLines((prev) => [...prev, line]);
       setCurrentLine((c) => c + 1);
       setCurrentChar(0);
-    }, currentLine === 0 ? 250 : 150);
+    }, currentLine === 0 ? 120 : 70);
     return () => clearTimeout(nextTimer);
   }, [visible, currentLine, currentChar]);
 
@@ -111,7 +120,11 @@ export function TerminalBoot(): React.ReactElement | null {
           {/* Skip hint */}
           <button
             type="button"
-            onClick={() => setVisible(false)}
+            onClick={() => {
+              setVisible(false);
+              sessionStorage.setItem("boot-complete", "1");
+              window.dispatchEvent(new CustomEvent("boot-complete"));
+            }}
             className="absolute bottom-6 right-6 text-[10px] font-mono text-muted/40 hover:text-muted transition-colors"
           >
             skip →

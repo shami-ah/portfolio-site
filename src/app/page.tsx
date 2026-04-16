@@ -11,11 +11,13 @@ import { Contact } from "@/components/contact";
 import { Footer } from "@/components/footer";
 import { TerminalBoot } from "@/components/terminal-boot";
 import { CommandPalette } from "@/components/command-palette";
+import { ScrollProgress } from "@/components/scroll-progress";
 
 export default function Home(): React.ReactElement {
   return (
     <main>
       <TerminalBoot />
+      <ScrollProgress />
       <Nav />
       <Hero />
       <About />

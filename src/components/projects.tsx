@@ -1,6 +1,12 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import {
+  motion,
+  useMotionValue,
+  useSpring,
+  useTransform,
+} from "framer-motion";
 import { projects, type ProjectData } from "@/data/projects";
 import { FadeUp } from "./motion";
 import { ProjectModal } from "./project-modal";
@@ -16,17 +22,61 @@ function ProjectCard({
   index?: number;
   onOpen: (p: ProjectData) => void;
 }): React.ReactElement {
+  const ref = useRef<HTMLButtonElement>(null);
+  const rx = useMotionValue(0);
+  const ry = useMotionValue(0);
+  const rotateX = useSpring(rx, { stiffness: 200, damping: 20 });
+  const rotateY = useSpring(ry, { stiffness: 200, damping: 20 });
+  const glowX = useMotionValue(50);
+  const glowY = useMotionValue(50);
+  const glowBg = useTransform<number, string>(
+    [glowX, glowY],
+    ([x, y]) =>
+      `radial-gradient(600px circle at ${x}% ${y}%, rgba(59,130,246,0.08), transparent 40%)`,
+  );
+
+  const onMouseMove = (e: React.MouseEvent<HTMLButtonElement>): void => {
+    const rect = ref.current?.getBoundingClientRect();
+    if (!rect) return;
+    const px = (e.clientX - rect.left) / rect.width;
+    const py = (e.clientY - rect.top) / rect.height;
+    ry.set((px - 0.5) * 10);
+    rx.set((0.5 - py) * 10);
+    glowX.set(px * 100);
+    glowY.set(py * 100);
+  };
+  const onMouseLeave = (): void => {
+    rx.set(0);
+    ry.set(0);
+  };
+
   return (
     <FadeUp delay={index * 0.05}>
-      <button
+      <motion.button
+        ref={ref}
         type="button"
         onClick={() => onOpen(project)}
-        className={`group w-full h-full text-left rounded-xl bg-card border transition-all duration-300 overflow-hidden relative ${
+        onMouseMove={onMouseMove}
+        onMouseLeave={onMouseLeave}
+        style={{
+          rotateX,
+          rotateY,
+          transformPerspective: 1200,
+          transformStyle: "preserve-3d",
+        }}
+        whileTap={{ scale: 0.99 }}
+        className={`group w-full h-full text-left rounded-xl bg-card border transition-[border-color,box-shadow] duration-300 overflow-hidden relative ${
           featured
             ? "p-5 md:p-6 border-accent/15 hover:border-accent/50"
             : "p-4 md:p-5 border-card-border hover:border-accent/30"
-        } hover:shadow-lg hover:shadow-accent/5 hover:-translate-y-0.5`}
+        } hover:shadow-xl hover:shadow-accent/10`}
       >
+        {/* Cursor-following glow */}
+        <motion.div
+          style={{ background: glowBg }}
+          className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+        />
+
         {/* Glow line on hover */}
         <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-accent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
@@ -93,7 +143,7 @@ function ProjectCard({
             </span>
           )}
         </div>
-      </button>
+      </motion.button>
     </FadeUp>
   );
 }
