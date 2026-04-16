@@ -12,22 +12,28 @@ import { Footer } from "@/components/footer";
 import { TerminalBoot } from "@/components/terminal-boot";
 import { CommandPalette } from "@/components/command-palette";
 import { ScrollProgress } from "@/components/scroll-progress";
+import { HueShift } from "@/components/hue-shift";
+import { EasterEggs } from "@/components/easter-eggs";
 
 export default function Home(): React.ReactElement {
   return (
     <main>
       <TerminalBoot />
       <ScrollProgress />
+      <HueShift />
+      <EasterEggs />
       <Nav />
-      <Hero />
-      <About />
-      <Experience />
-      <BeforeAfter />
-      <Projects />
-      <Skills />
-      <BuildingNext />
-      <Testimonials />
-      <Contact />
+      <div className="relative z-10">
+        <Hero />
+        <About />
+        <Experience />
+        <BeforeAfter />
+        <Projects />
+        <Skills />
+        <BuildingNext />
+        <Testimonials />
+        <Contact />
+      </div>
       <Footer />
       <CommandPalette />
     </main>

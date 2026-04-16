@@ -112,6 +112,15 @@ export function CommandPalette(): React.ReactElement {
           window.open("https://github.com/shami-ah", "_blank", "noopener,noreferrer"),
       },
       {
+        id: "journey",
+        label: "Take the interactive tour",
+        hint: "Timeline · day in the life · parallel systems",
+        group: "Resources",
+        action: () => {
+          window.location.href = "/journey";
+        },
+      },
+      {
         id: "cv",
         label: "View CV / Resume",
         hint: "Interactive + printable",
@@ -127,6 +136,17 @@ export function CommandPalette(): React.ReactElement {
         group: "Resources",
         action: () => {
           window.location.href = "/cv?print=1";
+        },
+      },
+      {
+        id: "replay",
+        label: "Replay intro sequence",
+        hint: "Re-run the boot animation",
+        group: "Resources",
+        action: () => {
+          sessionStorage.removeItem("boot-seen");
+          sessionStorage.removeItem("boot-complete");
+          window.location.reload();
         },
       },
     ],

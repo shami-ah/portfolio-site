@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useRef } from "react";
 import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
+import { Magnetic } from "./magnetic";
 
 const taglines = [
   {
@@ -207,11 +208,8 @@ export function Hero(): React.ReactElement {
                 "border border-card-border text-foreground hover:bg-card hover:border-muted/30",
             },
           ].map((cta, i) => (
-            <motion.a
+            <motion.div
               key={cta.label}
-              href={cta.href}
-              target={cta.external ? "_blank" : undefined}
-              rel={cta.external ? "noopener noreferrer" : undefined}
               initial={{ opacity: 0, y: 10 }}
               animate={ready ? { opacity: 1, y: 0 } : {}}
               transition={{
@@ -219,12 +217,18 @@ export function Hero(): React.ReactElement {
                 delay: 2.1 + i * 0.1,
                 ease: [0.22, 1, 0.36, 1],
               }}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              className={`px-6 md:px-8 py-3 font-medium rounded-lg transition-all duration-200 text-sm md:text-base ${cta.className}`}
             >
-              {cta.label}
-            </motion.a>
+              <Magnetic strength={0.25}>
+                <a
+                  href={cta.href}
+                  target={cta.external ? "_blank" : undefined}
+                  rel={cta.external ? "noopener noreferrer" : undefined}
+                  className={`block px-6 md:px-8 py-3 font-medium rounded-lg transition-all duration-200 text-sm md:text-base ${cta.className}`}
+                >
+                  {cta.label}
+                </a>
+              </Magnetic>
+            </motion.div>
           ))}
         </motion.div>
 
