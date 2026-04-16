@@ -24,10 +24,11 @@
   --font-mono: var(--font-mono);
 }
 
+/* overflow-x: clip hides overflow without creating a scroll context,
+   so `position: sticky` still works in descendants (journey page). */
 html,
 body {
-  overflow-x: hidden;
-  max-width: 100vw;
+  overflow-x: clip;
 }
 
 body {

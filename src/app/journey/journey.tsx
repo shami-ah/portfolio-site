@@ -1,7 +1,14 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { motion, useScroll, useTransform, useSpring } from "framer-motion";
+import {
+  motion,
+  useScroll,
+  useTransform,
+  useSpring,
+  useMotionValue,
+  useMotionValueEvent,
+} from "framer-motion";
 
 interface Milestone {
   year: string;
@@ -138,28 +145,37 @@ const toneClasses: Record<
 export function Journey(): React.ReactElement {
   const containerRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
-  const [trackWidth, setTrackWidth] = useState(0);
+  const maxOffsetRef = useRef(0);
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end end"],
   });
 
-  // Translate the horizontal track based on vertical scroll progress.
-  const x = useTransform(
-    scrollYProgress,
-    [0, 1],
-    [0, -Math.max(trackWidth - (typeof window !== "undefined" ? window.innerWidth : 1200), 0)],
-  );
+  // Manually-driven motion value; updated on scroll + resize.
+  const x = useMotionValue(0);
   const smoothX = useSpring(x, { stiffness: 80, damping: 24, mass: 0.5 });
 
+  const recomputeOffset = (): void => {
+    if (!trackRef.current) return;
+    const width = trackRef.current.scrollWidth;
+    const vw = window.innerWidth;
+    maxOffsetRef.current = Math.max(0, width - vw);
+  };
+
+  useMotionValueEvent(scrollYProgress, "change", (v) => {
+    x.set(-v * maxOffsetRef.current);
+  });
+
   useEffect(() => {
-    const onResize = (): void => {
-      if (trackRef.current) setTrackWidth(trackRef.current.scrollWidth);
+    recomputeOffset();
+    window.addEventListener("resize", recomputeOffset);
+    // Recompute once fonts/images have loaded
+    const t = setTimeout(recomputeOffset, 300);
+    return () => {
+      window.removeEventListener("resize", recomputeOffset);
+      clearTimeout(t);
     };
-    onResize();
-    window.addEventListener("resize", onResize);
-    return () => window.removeEventListener("resize", onResize);
   }, []);
 
   return (
