@@ -10,6 +10,14 @@ import {
 import { projects, type ProjectData } from "@/data/projects";
 import { FadeUp } from "./motion";
 import { ProjectModal } from "./project-modal";
+import { ProjectShowcase } from "./project-showcase";
+import type { MockupKind } from "./project-mockup";
+
+const SHOWCASE_SLUGS: { slug: string; mockup: MockupKind }[] = [
+  { slug: "openevent", mockup: "openevent" },
+  { slug: "codelens", mockup: "codelens" },
+  { slug: "gogaa-cli", mockup: "gogaa" },
+];
 
 function ProjectCard({
   project,
@@ -151,8 +159,12 @@ function ProjectCard({
 export function Projects(): React.ReactElement {
   const [activeProject, setActiveProject] = useState<ProjectData | null>(null);
 
-  const featured = projects.filter((p) => p.featured);
-  const others = projects.filter((p) => !p.featured);
+  const showcasePairs = SHOWCASE_SLUGS.map(({ slug, mockup }) => ({
+    project: projects.find((p) => p.slug === slug),
+    mockup,
+  })).filter((x): x is { project: ProjectData; mockup: MockupKind } => !!x.project);
+  const showcaseSlugs = new Set(SHOWCASE_SLUGS.map((s) => s.slug));
+  const others = projects.filter((p) => !showcaseSlugs.has(p.slug));
 
   // Gallery navigation
   const navigate = useCallback(
@@ -201,13 +213,14 @@ export function Projects(): React.ReactElement {
           </p>
         </FadeUp>
 
-        {/* Featured projects */}
-        <div className="grid md:grid-cols-2 gap-4 md:gap-6 mb-4 md:mb-6">
-          {featured.map((project, i) => (
-            <ProjectCard
+        {/* Showcase — flagship projects with stylized mockups */}
+        <div className="space-y-16 md:space-y-24 mb-16 md:mb-24">
+          {showcasePairs.map(({ project, mockup }, i) => (
+            <ProjectShowcase
               key={project.slug}
               project={project}
-              featured
+              mockup={mockup}
+              flip={i % 2 === 1}
               index={i}
               onOpen={setActiveProject}
             />
@@ -215,15 +228,22 @@ export function Projects(): React.ReactElement {
         </div>
 
         {/* Other projects */}
-        <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4">
-          {others.map((project, i) => (
-            <ProjectCard
-              key={project.slug}
-              project={project}
-              index={i}
-              onOpen={setActiveProject}
-            />
-          ))}
+        <div className="pt-6 md:pt-10 border-t border-card-border/50">
+          <FadeUp>
+            <p className="text-xs font-mono text-muted/60 uppercase tracking-wider mb-5 md:mb-6">
+              more experiments &amp; tools
+            </p>
+          </FadeUp>
+          <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4">
+            {others.map((project, i) => (
+              <ProjectCard
+                key={project.slug}
+                project={project}
+                index={i}
+                onOpen={setActiveProject}
+              />
+            ))}
+          </div>
         </div>
       </div>
 

@@ -40,6 +40,30 @@ const platformLabel: Record<string, string> = {
   direct: "",
 };
 
+const avatarPalette: { bg: string; ring: string; text: string }[] = [
+  { bg: "bg-gradient-to-br from-accent/80 to-blue-500/80", ring: "ring-accent/30", text: "text-white" },
+  { bg: "bg-gradient-to-br from-emerald-400/80 to-emerald-600/80", ring: "ring-emerald-500/30", text: "text-white" },
+  { bg: "bg-gradient-to-br from-amber-400/80 to-orange-500/80", ring: "ring-amber-500/30", text: "text-white" },
+  { bg: "bg-gradient-to-br from-purple-400/80 to-pink-500/80", ring: "ring-purple-500/30", text: "text-white" },
+];
+
+function Avatar({ name, index }: { name: string; index: number }): React.ReactElement {
+  const initials = name
+    .split(/\s+/)
+    .slice(0, 2)
+    .map((w) => w[0])
+    .join("")
+    .toUpperCase();
+  const palette = avatarPalette[index % avatarPalette.length];
+  return (
+    <div
+      className={`shrink-0 w-10 h-10 md:w-11 md:h-11 rounded-full ${palette.bg} ${palette.text} ring-2 ${palette.ring} flex items-center justify-center text-xs md:text-sm font-bold tracking-tight`}
+    >
+      {initials}
+    </div>
+  );
+}
+
 export function Testimonials(): React.ReactElement | null {
   if (testimonials.length === 0) return null;
 
@@ -65,8 +89,9 @@ export function Testimonials(): React.ReactElement | null {
                 <p className="text-xs md:text-sm text-muted leading-relaxed flex-1 mb-4 md:mb-6">
                   {t.quote}
                 </p>
-                <div className="flex items-center justify-between gap-3 pt-3 md:pt-4 border-t border-card-border">
-                  <div className="min-w-0">
+                <div className="flex items-center gap-3 pt-3 md:pt-4 border-t border-card-border">
+                  <Avatar name={t.name} index={i} />
+                  <div className="min-w-0 flex-1">
                     <p className="text-xs md:text-sm font-semibold truncate">{t.name}</p>
                     <p className="text-[11px] md:text-xs text-muted truncate">
                       {t.role}

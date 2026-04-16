@@ -29,8 +29,7 @@ function CountUp({ to, suffix = "", prefix = "" }: { to: number; suffix?: string
 
 export function About(): React.ReactElement {
   const { status } = useStatus();
-  const stats = [
-    { counter: <CountUp to={status.portfolio.projects} suffix="+" />, label: "Projects Shipped" },
+  const smallStats = [
     { counter: <CountUp to={status.portfolio.yearsBuilding} suffix="+" />, label: "Years Building" },
     { counter: <CountUp to={status.gogaa.tests} />, label: "Gogaa Tests Passing" },
     { counter: <span>&lt;1s</span>, label: "CodeLens Reviews" },
@@ -49,7 +48,8 @@ export function About(): React.ReactElement {
           </h2>
         </FadeUp>
 
-        <div className="grid md:grid-cols-2 gap-10 md:gap-12 mb-10 md:mb-12">
+        {/* Editorial split: narrative left, dramatic stat right */}
+        <div className="grid md:grid-cols-[1.3fr_1fr] gap-10 md:gap-16 items-center mb-14 md:mb-20">
           <SlideIn direction="left">
             <div className="space-y-4 md:space-y-5 text-sm md:text-base text-muted leading-relaxed">
               <p>
@@ -81,23 +81,39 @@ export function About(): React.ReactElement {
             </div>
           </SlideIn>
 
+          {/* Dramatic number — the display moment */}
           <SlideIn direction="right">
-            <div className="grid grid-cols-2 gap-3 md:gap-4">
-              {stats.map((stat) => (
-                <div
-                  key={stat.label}
-                  className="p-4 md:p-6 rounded-xl bg-card border border-card-border hover:border-accent/30 transition-all duration-300 group"
-                >
-                  <p className="text-2xl md:text-3xl font-bold text-accent group-hover:scale-105 transition-transform">
-                    {stat.counter}
-                  </p>
-                  <p className="text-xs md:text-sm text-muted mt-1">{stat.label}</p>
-                </div>
-              ))}
+            <div className="relative">
+              <p className="font-bold tabular-nums leading-[0.85] tracking-tighter bg-gradient-to-br from-foreground to-muted/50 bg-clip-text text-transparent text-[100px] sm:text-[140px] md:text-[160px] lg:text-[200px]">
+                <CountUp to={status.portfolio.projects} suffix="" />
+                <span className="text-accent">+</span>
+              </p>
+              <p className="text-xs md:text-sm font-mono text-muted/70 uppercase tracking-[0.2em] mt-2">
+                production projects shipped
+              </p>
+              <p className="text-[10px] md:text-xs text-muted/50 mt-1">
+                2019 → now · 40+ returning clients · 100% satisfaction
+              </p>
             </div>
           </SlideIn>
         </div>
 
+        {/* Supporting stats row — small, ground for the big number */}
+        <div className="grid grid-cols-3 gap-3 md:gap-5">
+          {smallStats.map((stat) => (
+            <div
+              key={stat.label}
+              className="p-4 md:p-5 rounded-xl bg-card/60 border border-card-border text-center md:text-left"
+            >
+              <p className="text-2xl md:text-3xl font-bold text-foreground font-mono">
+                {stat.counter}
+              </p>
+              <p className="text-[10px] md:text-xs text-muted mt-1 uppercase tracking-wider">
+                {stat.label}
+              </p>
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   );
