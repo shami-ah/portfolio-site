@@ -100,11 +100,11 @@ export function About(): React.ReactElement {
 
         {/* Dev workflow strip */}
         <FadeUp delay={0.2}>
-          <div className="p-4 md:p-5 rounded-xl bg-card/50 border border-card-border">
-            <p className="text-[10px] md:text-xs font-mono text-muted mb-3 md:mb-4 uppercase tracking-wider">
+          <div className="p-4 md:p-6 rounded-xl bg-card/50 border border-card-border text-center">
+            <p className="text-[10px] md:text-xs font-mono text-muted mb-4 md:mb-5 uppercase tracking-wider">
               My actual dev workflow, every day
             </p>
-            <div className="flex flex-wrap items-center gap-1.5 md:gap-2">
+            <div className="flex flex-wrap items-center justify-center gap-1.5 md:gap-2">
               {[
                 "Phone + Tailscale",
                 "Docker Container",

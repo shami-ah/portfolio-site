@@ -172,56 +172,21 @@ export function Hero(): React.ReactElement {
           load, and the open-source tooling to build them right.
         </motion.p>
 
-        {/* CTAs */}
+        {/* Single CTA: just go see the work */}
         <motion.div
-          initial={{ opacity: 0 }}
-          animate={ready ? { opacity: 1 } : {}}
-          transition={{ duration: 0.3, delay: 2.0 }}
-          className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3 max-w-md sm:max-w-none mx-auto"
+          initial={{ opacity: 0, y: 10 }}
+          animate={ready ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.5, delay: 2.1, ease: [0.22, 1, 0.36, 1] }}
+          className="flex justify-center"
         >
-          {[
-            {
-              href: "#projects",
-              label: "See Case Studies",
-              className:
-                "bg-accent text-white hover:bg-accent/90 hover:shadow-lg hover:shadow-accent/20",
-            },
-            {
-              href: "https://calendly.com/shami8024/30min",
-              label: "Book a 15-min Call",
-              external: true,
-              className:
-                "bg-green-500/10 border border-green-500/30 text-green-400 hover:bg-green-500/20 hover:border-green-500/50",
-            },
-            {
-              href: "#contact",
-              label: "Get in Touch",
-              className:
-                "border border-card-border text-foreground hover:bg-card hover:border-muted/30",
-            },
-          ].map((cta, i) => (
-            <motion.div
-              key={cta.label}
-              initial={{ opacity: 0, y: 10 }}
-              animate={ready ? { opacity: 1, y: 0 } : {}}
-              transition={{
-                duration: 0.5,
-                delay: 2.1 + i * 0.1,
-                ease: [0.22, 1, 0.36, 1],
-              }}
+          <Magnetic strength={0.25}>
+            <a
+              href="#projects"
+              className="block px-7 md:px-9 py-3 md:py-3.5 bg-accent text-white font-medium rounded-lg hover:bg-accent/90 hover:shadow-lg hover:shadow-accent/20 transition-all duration-200 text-sm md:text-base"
             >
-              <Magnetic strength={0.25}>
-                <a
-                  href={cta.href}
-                  target={cta.external ? "_blank" : undefined}
-                  rel={cta.external ? "noopener noreferrer" : undefined}
-                  className={`block px-6 md:px-8 py-3 font-medium rounded-lg transition-all duration-200 text-sm md:text-base ${cta.className}`}
-                >
-                  {cta.label}
-                </a>
-              </Magnetic>
-            </motion.div>
-          ))}
+              See the work ↓
+            </a>
+          </Magnetic>
         </motion.div>
 
         {/* Currently building ticker */}

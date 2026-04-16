@@ -113,14 +113,14 @@ export function TopBar(): React.ReactElement {
             <polyline points="14 7 21 7 21 14" />
           </svg>
           <span className="hidden sm:inline text-xs md:text-sm whitespace-nowrap">
-            Walk my career
+            How I work
           </span>
-          <span className="sm:hidden text-xs">Tour</span>
+          <span className="sm:hidden text-xs">How</span>
 
           {/* Hint tooltip */}
           <span className="absolute top-full right-0 mt-2 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap">
             <span className="inline-block text-[10px] font-mono text-muted/80 bg-card/95 backdrop-blur-md border border-card-border rounded-md px-2 py-1.5 shadow-lg">
-              interactive 6-chapter career timeline
+              my principles, daily workflow &amp; dev stack
             </span>
           </span>
         </a>

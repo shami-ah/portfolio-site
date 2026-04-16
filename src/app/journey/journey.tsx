@@ -1,233 +1,196 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import {
-  motion,
-  useScroll,
-  useTransform,
-  useSpring,
-  useMotionValue,
-  useMotionValueEvent,
-} from "framer-motion";
+import { motion } from "framer-motion";
 
-interface Milestone {
-  year: string;
-  month?: string;
-  title: string;
-  description: string;
+/* ------------------------------------------------------------------ */
+/*  Content — intentionally NOT duplicated from the main portfolio.   */
+/*  This page is the "how" behind the "what" on the home page.        */
+/* ------------------------------------------------------------------ */
+
+interface Principle {
   tag: string;
-  tone: "accent" | "emerald" | "amber" | "purple" | "pink";
+  headline: string;
+  body: string;
+  example: string;
 }
 
-const milestones: Milestone[] = [
+const principles: Principle[] = [
   {
-    year: "2019",
-    title: "First production ML",
-    description:
-      "Started shipping for real clients on Upwork & Fiverr. Learned: building demos is easy, production breaks differently.",
-    tag: "origin",
-    tone: "accent",
+    tag: "01 · default",
+    headline: "Human-in-the-loop, always.",
+    body: "If an AI action touches money, commitments, or trust, a human approves it first. Full automation fails the first time the model misreads context.",
+    example:
+      "OpenEvent won't send an invoice until a human clicks approve. That single boundary is why 100+ clients stayed after the AI misfired.",
   },
   {
-    year: "2021",
-    title: "Prompt engineering era",
-    description:
-      "500+ RLHF/SFT evaluation sessions on frontier models at Outlier, RWS, Translated. Ringside seat to how models actually behave.",
-    tag: "model evaluation",
-    tone: "purple",
+    tag: "02 · sequence",
+    headline: "Architect first. Code second.",
+    body: "Every feature gets an architecture doc before a single line of code. The spec is checked into the repo, then the agent scaffolds from it.",
+    example:
+      "Thread summarization feature: 1 day of architecture doc, 2 hours of scaffolding, 0 rewrites. If the spec is right, the code falls out.",
   },
   {
-    year: "2022",
-    month: "Jan",
-    title: "Director of IT & R&D",
-    description:
-      "Led a 10-person team at Rouelite Techno. Designed a CRM serving 500+ daily users. First time owning architecture end-to-end.",
-    tag: "leadership",
-    tone: "amber",
+    tag: "03 · trust-boundary",
+    headline: "Strict at boundaries. Loose inside.",
+    body: "All validation happens at system edges (user input, external APIs, webhook payloads). Internally, I trust the types and the invariants.",
+    example:
+      "Stripe webhooks have dual-secret verification + replay protection at the boundary. Business logic downstream assumes the payload is clean.",
   },
   {
-    year: "2024",
-    title: "Tool-builder year",
-    description:
-      "Started CodeLens because no commercial AI reviewer caught what I saw in real PRs. 305 patterns, 9 stacks, built from real production failures.",
-    tag: "codelens v0.1",
-    tone: "accent",
+    tag: "04 · tools",
+    headline: "Consumer AND producer of tooling.",
+    body: "When the tool I need doesn't exist, I build it. CodeLens, gogaa, a custom dev container — each started as a personal frustration that became infrastructure.",
+    example:
+      "No commercial AI reviewer caught the bugs I saw in real PRs. So I built 305 hand-crafted patterns across 9 stacks. Now every PR runs through it.",
   },
   {
-    year: "2025",
-    month: "Sep",
-    title: "Lead AI Developer, More Life Hospitality",
-    description:
-      "Upwork gig → full-time offer. Architected OpenEvent: email → classify → approve → execute. Live with 100+ clients today.",
-    tag: "openevent launch",
-    tone: "emerald",
+    tag: "05 · focus",
+    headline: "One task per session.",
+    body: "Context is sacred. I spawn a fresh agent session for each task, with scoped rules and a dedicated memory. Cross-contamination is the enemy.",
+    example:
+      "Reviewing an Openevent PR? That session only has OE's CLAUDE.md loaded. Drafting a gogaa feature? Different session, different memory.",
   },
   {
-    year: "2026",
-    month: "Apr",
-    title: "Gogaa v0.9.1 — Aider parity shipped",
-    description:
-      "11 providers, 1,418 tests, repo map, SEARCH/REPLACE, watch mode, plugin marketplace. The open-source coding agent I wanted to use.",
-    tag: "now",
-    tone: "pink",
+    tag: "06 · output",
+    headline: "Deploy behind feature flags.",
+    body: "Shipped code is off by default. I turn it on for 10% first, watch Sentry for 24h, then roll globally. No big-bang releases.",
+    example:
+      "Every OpenEvent feature ships dark. A bad migration caught in staging means one hour of rollback, not a week of bug fires.",
   },
 ];
 
-const dayInLife: { time: string; title: string; note: string }[] = [
+const day: { time: string; title: string; note: string; tag: string }[] = [
   {
     time: "07:00",
-    title: "Morning review",
-    note: "Read overnight CodeLens reports on client repos. Triage what matters.",
+    title: "Overnight review",
+    note: "CodeLens reports on every repo I touched yesterday. Triage what matters. File issues for what doesn't.",
+    tag: "input",
   },
   {
     time: "08:00",
-    title: "Architect in gogaa",
-    note: "New feature goes through spec → plan → code in the CLI. One task per session.",
+    title: "Gogaa architect session",
+    note: "One feature. Open spec file. Use gogaa /architect to sketch. Save the diagram to memory. No code yet.",
+    tag: "spec",
   },
   {
     time: "10:00",
-    title: "OpenEvent sprint",
-    note: "Workflow engine work. Schema changes, edge function, RLS, Stripe webhook.",
+    title: "Spec → scaffold",
+    note: "Gogaa reads spec + patterns. Produces a SEARCH/REPLACE diff. I review block by block. ~90% accepted first pass.",
+    tag: "build",
   },
   {
     time: "13:00",
-    title: "PR review",
-    note: "Claude Code + CodeLens in parallel. Merge only after both pass.",
+    title: "Review hour",
+    note: "Claude Code + CodeLens in parallel on every PR. Merge only after both pass. Guardian mode prevents half the bug classes upstream.",
+    tag: "review",
   },
   {
     time: "15:00",
     title: "Deep work",
-    note: "Either tool-building (gogaa, CodeLens) or research. No meetings.",
+    note: "Either: tool-building (gogaa, CodeLens), or hard research. No meetings, no Slack. Timer at 90 minutes.",
+    tag: "deep",
   },
   {
     time: "18:00",
-    title: "Retro",
-    note: "Write what I learned to memory. Commit. Ship.",
+    title: "Retro + memory",
+    note: "Write down what I learned. Update CLAUDE.md. Save feedback to agent memory. Commit. Ship.",
+    tag: "close",
   },
 ];
 
-const toneClasses: Record<
-  Milestone["tone"],
-  { border: string; dot: string; tag: string; bg: string }
-> = {
-  accent: {
-    border: "border-accent/40",
-    dot: "bg-accent",
-    tag: "text-accent border-accent/30 bg-accent/10",
-    bg: "from-accent/5",
+interface ToolStop {
+  icon: string;
+  label: string;
+  why: string;
+}
+
+const devStack: ToolStop[] = [
+  {
+    icon: "📱",
+    label: "Phone + Tailscale",
+    why: "My dev environment follows me. SSH into my Mac from anywhere, private mesh network, no port forwarding.",
   },
-  emerald: {
-    border: "border-emerald-500/40",
-    dot: "bg-emerald-400",
-    tag: "text-emerald-400 border-emerald-500/30 bg-emerald-500/10",
-    bg: "from-emerald-500/5",
+  {
+    icon: "🐳",
+    label: "Docker container",
+    why: "Reproducible isolated env. Same container on Mac, Linux VPS, phone-SSH. Zero 'works on my machine'.",
   },
-  amber: {
-    border: "border-amber-500/40",
-    dot: "bg-amber-400",
-    tag: "text-amber-400 border-amber-500/30 bg-amber-500/10",
-    bg: "from-amber-500/5",
+  {
+    icon: "🤖",
+    label: "Claude Code + gogaa",
+    why: "Two agents, different strengths. CC for complex tasks, gogaa when I need 11 providers or Aider-grade git flow.",
   },
-  purple: {
-    border: "border-purple-500/40",
-    dot: "bg-purple-400",
-    tag: "text-purple-400 border-purple-500/30 bg-purple-500/10",
-    bg: "from-purple-500/5",
+  {
+    icon: "🛡",
+    label: "CodeLens guardian",
+    why: "Injects 305 patterns into Claude Code / Cursor / Copilot's context. Bugs are prevented at generation, not review.",
   },
-  pink: {
-    border: "border-pink-500/40",
-    dot: "bg-pink-400",
-    tag: "text-pink-400 border-pink-500/30 bg-pink-500/10",
-    bg: "from-pink-500/5",
+  {
+    icon: "⚙",
+    label: "GitHub Actions",
+    why: "Every PR: build, lint, CodeLens review, auto-migration to staging. Green CI is the only path to main.",
   },
-};
+  {
+    icon: "🚀",
+    label: "Feature-flag deploy",
+    why: "Ship dark. 10% → watch → 100%. Sentry + Grafana dashboards open during rollout.",
+  },
+];
 
 export function Journey(): React.ReactElement {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const trackRef = useRef<HTMLDivElement>(null);
-  const maxOffsetRef = useRef(0);
-
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end end"],
-  });
-
-  // Manually-driven motion value; updated on scroll + resize.
-  const x = useMotionValue(0);
-  const smoothX = useSpring(x, { stiffness: 80, damping: 24, mass: 0.5 });
-
-  const recomputeOffset = (): void => {
-    if (!trackRef.current) return;
-    const width = trackRef.current.scrollWidth;
-    const vw = window.innerWidth;
-    maxOffsetRef.current = Math.max(0, width - vw);
-  };
-
-  useMotionValueEvent(scrollYProgress, "change", (v) => {
-    x.set(-v * maxOffsetRef.current);
-  });
-
-  useEffect(() => {
-    recomputeOffset();
-    window.addEventListener("resize", recomputeOffset);
-    // Recompute once fonts/images have loaded
-    const t = setTimeout(recomputeOffset, 300);
-    return () => {
-      window.removeEventListener("resize", recomputeOffset);
-      clearTimeout(t);
-    };
-  }, []);
-
   return (
-    <main className="relative">
-      {/* Top controls */}
-      <div className="fixed top-5 left-5 z-50 flex items-center gap-3">
-        <a
-          href="/"
-          className="inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-card/80 backdrop-blur-md border border-card-border hover:border-accent/40 transition-all text-xs font-mono text-muted hover:text-foreground"
-        >
-          <svg
-            width="14"
-            height="14"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            <line x1="19" y1="12" x2="5" y2="12" />
-            <polyline points="12 19 5 12 12 5" />
-          </svg>
-          back to portfolio
-        </a>
-      </div>
-      <div className="fixed top-5 right-5 z-50">
-        <p className="text-[10px] font-mono text-muted/60 bg-card/80 backdrop-blur-md border border-card-border px-3 py-2 rounded-lg">
-          scroll to explore →
-        </p>
-      </div>
-
-      {/* Scroll progress */}
-      <motion.div
-        style={{ scaleX: scrollYProgress }}
-        className="fixed top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-accent via-purple-500 to-emerald-400 z-50 origin-left"
+    <main className="relative min-h-screen">
+      {/* Ambient */}
+      <div
+        aria-hidden
+        className="fixed inset-0 pointer-events-none opacity-[0.04]"
+        style={{
+          backgroundImage:
+            "linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)",
+          backgroundSize: "80px 80px",
+        }}
       />
+      <div className="fixed -top-40 -right-40 w-[36rem] h-[36rem] bg-accent/[0.06] rounded-full blur-3xl pointer-events-none" />
+      <div className="fixed -bottom-40 -left-40 w-[36rem] h-[36rem] bg-purple-500/[0.04] rounded-full blur-3xl pointer-events-none" />
 
-      {/* Ambient backdrop */}
-      <div className="fixed inset-0 pointer-events-none">
-        <div
-          className="absolute inset-0 opacity-[0.04]"
-          style={{
-            backgroundImage:
-              "linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)",
-            backgroundSize: "80px 80px",
-          }}
-        />
-      </div>
+      {/* Top bar */}
+      <header className="fixed top-0 left-0 right-0 z-40 bg-background/60 backdrop-blur-xl border-b border-card-border">
+        <div className="max-w-5xl mx-auto px-5 md:px-6 py-3 flex items-center justify-between">
+          <a
+            href="/"
+            className="inline-flex items-center gap-2 text-xs font-mono text-muted hover:text-accent transition-colors"
+          >
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <line x1="19" y1="12" x2="5" y2="12" />
+              <polyline points="12 19 5 12 12 5" />
+            </svg>
+            back to portfolio
+          </a>
+          <p className="text-[10px] md:text-xs font-mono text-muted/70 text-center truncate hidden sm:block">
+            <span className="text-accent">how I work</span> · behind the systems
+          </p>
+          <a
+            href="https://calendly.com/shami8024/30min"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-[10px] md:text-xs font-mono px-3 py-1.5 rounded-md bg-accent/10 text-accent border border-accent/30 hover:bg-accent/20 transition-all"
+          >
+            book a call →
+          </a>
+        </div>
+      </header>
 
-      {/* Intro section */}
-      <section className="min-h-screen flex items-center justify-center px-6 relative">
+      {/* Intro */}
+      <section className="min-h-[80vh] flex items-center justify-center px-5 md:px-6 pt-24 pb-12">
         <div className="max-w-3xl mx-auto text-center">
           <motion.p
             initial={{ opacity: 0 }}
@@ -235,31 +198,35 @@ export function Journey(): React.ReactElement {
             transition={{ duration: 0.8 }}
             className="text-sm font-mono text-accent mb-4 uppercase tracking-[0.3em]"
           >
-            an interactive tour
+            not the resume. not the projects.
           </motion.p>
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.15 }}
-            className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-[1.1] mb-6"
+            transition={{ duration: 0.8, delay: 0.1 }}
+            className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-[1.05] mb-6"
           >
-            Five years of
-            <br />
-            <span className="text-accent">shipping production AI.</span>
+            The
+            <span className="text-accent"> principles </span>
+            and the
+            <span className="text-accent"> day-to-day </span>
+            behind every system I ship.
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.35 }}
+            transition={{ duration: 0.8, delay: 0.3 }}
             className="text-sm md:text-lg text-muted leading-relaxed max-w-xl mx-auto"
           >
-            Keep scrolling. A horizontal timeline will move beneath you. Every
-            card is a real moment that shaped how I build.
+            The home page shows what I&apos;ve built. This page shows the
+            thinking that made it ship. Six principles. A real day. The tools
+            I reach for.
           </motion.p>
+
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 1, delay: 0.6 }}
+            transition={{ duration: 1, delay: 0.7 }}
             className="mt-12 flex flex-col items-center gap-2"
           >
             <motion.div
@@ -276,116 +243,139 @@ export function Journey(): React.ReactElement {
         </div>
       </section>
 
-      {/* Horizontal scroll timeline */}
-      <section
-        ref={containerRef}
-        className="relative"
-        style={{ height: `${milestones.length * 100}vh` }}
-      >
-        <div className="sticky top-0 h-screen overflow-hidden flex items-center">
-          <div className="absolute left-0 right-0 top-1/2 -translate-y-1/2 h-px bg-gradient-to-r from-transparent via-accent/20 to-transparent pointer-events-none" />
+      {/* PRINCIPLES — the unique content */}
+      <section className="py-20 md:py-28 px-5 md:px-6 relative">
+        <div className="max-w-5xl mx-auto">
+          <div className="mb-12 md:mb-16 text-center">
+            <p className="text-sm font-mono text-accent mb-4 uppercase tracking-[0.3em]">
+              six principles
+            </p>
+            <h2 className="text-3xl md:text-5xl font-bold leading-tight">
+              The rules I actually follow.
+            </h2>
+          </div>
 
-          <motion.div
-            ref={trackRef}
-            style={{ x: smoothX }}
-            className="flex items-center gap-8 md:gap-16 pl-[10vw] pr-[10vw] will-change-transform"
-          >
-            {milestones.map((m, i) => {
-              const t = toneClasses[m.tone];
-              return (
-                <div
-                  key={m.year + m.title}
-                  className="shrink-0 w-[80vw] md:w-[500px] lg:w-[560px]"
-                >
-                  {/* Node on timeline */}
-                  <div className="flex items-center gap-4 mb-6">
-                    <span
-                      className={`w-4 h-4 rounded-full ${t.dot} ring-4 ring-background relative`}
-                    >
-                      <span className={`absolute inset-0 rounded-full ${t.dot} animate-ping opacity-50`} />
-                    </span>
-                    <span className="flex-1 h-px bg-gradient-to-r from-card-border to-transparent" />
-                    <span className="font-mono text-xs text-muted/40 tabular-nums">
-                      {String(i + 1).padStart(2, "0")} / {String(milestones.length).padStart(2, "0")}
-                    </span>
-                  </div>
+          <div className="grid md:grid-cols-2 gap-4 md:gap-5">
+            {principles.map((p, i) => (
+              <motion.div
+                key={p.tag}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-80px" }}
+                transition={{ duration: 0.5, delay: i * 0.06, ease: [0.22, 1, 0.36, 1] }}
+                className="group p-6 md:p-7 rounded-2xl bg-card/60 border border-card-border hover:border-accent/30 transition-all duration-500 relative overflow-hidden"
+              >
+                <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-accent/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
 
-                  {/* Card */}
-                  <div
-                    className={`relative p-6 md:p-8 rounded-2xl bg-gradient-to-br ${t.bg} via-card to-card border ${t.border} shadow-2xl overflow-hidden`}
-                  >
-                    <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-current to-transparent opacity-30 text-accent" />
-
-                    <div className="flex items-center gap-3 mb-5">
-                      <p className="text-4xl md:text-5xl font-bold font-mono text-foreground/90 tracking-tight">
-                        {m.year}
-                      </p>
-                      {m.month && (
-                        <p className="text-sm font-mono text-muted/60 mt-3">
-                          {m.month}
-                        </p>
-                      )}
-                      <span
-                        className={`ml-auto px-2.5 py-1 text-[10px] font-mono rounded border ${t.tag}`}
-                      >
-                        {m.tag}
-                      </span>
-                    </div>
-                    <h2 className="text-xl md:text-2xl font-bold mb-3 leading-tight">
-                      {m.title}
-                    </h2>
-                    <p className="text-sm md:text-base text-muted leading-relaxed">
-                      {m.description}
-                    </p>
-                  </div>
+                <p className="text-[10px] font-mono uppercase tracking-[0.25em] text-accent/70 mb-3">
+                  {p.tag}
+                </p>
+                <h3 className="text-lg md:text-xl font-bold mb-3 leading-tight">
+                  {p.headline}
+                </h3>
+                <p className="text-xs md:text-sm text-muted leading-relaxed mb-4">
+                  {p.body}
+                </p>
+                <div className="pt-3 border-t border-card-border">
+                  <p className="text-[10px] font-mono uppercase tracking-[0.2em] text-muted/50 mb-1.5">
+                    real example
+                  </p>
+                  <p className="text-xs text-foreground/80 leading-relaxed">
+                    {p.example}
+                  </p>
                 </div>
-              );
-            })}
-          </motion.div>
-
-          {/* Bottom hint */}
-          <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-2 text-[10px] font-mono text-muted/40">
-            <span>←</span>
-            <span>scroll vertically to pan through time</span>
-            <span>→</span>
+              </motion.div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* Day in the life */}
-      <section className="py-24 md:py-32 relative">
-        <div className="max-w-6xl mx-auto px-5 md:px-6">
-          <div className="text-center mb-16">
+      {/* DAY IN THE LIFE */}
+      <section className="py-20 md:py-28 px-5 md:px-6 bg-card/20 relative">
+        <div className="max-w-5xl mx-auto">
+          <div className="mb-12 md:mb-16 text-center">
             <p className="text-sm font-mono text-accent mb-4 uppercase tracking-[0.3em]">
               a typical day
             </p>
             <h2 className="text-3xl md:text-5xl font-bold mb-4 leading-tight">
-              Six windows into how I work.
+              07:00 to 18:00 · exactly this.
             </h2>
             <p className="text-sm md:text-base text-muted max-w-xl mx-auto">
-              Deep work, not meetings. Architecture first, code second.
+              Deep work over meetings. Architecture over reaction. Memory over rework.
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
-            {dayInLife.map((d, i) => (
+          <div className="relative">
+            {/* Vertical line */}
+            <div className="absolute left-[27px] md:left-[60px] top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-accent/20 to-transparent" />
+
+            <div className="space-y-6 md:space-y-8">
+              {day.map((d, i) => (
+                <motion.div
+                  key={d.time}
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true, margin: "-60px" }}
+                  transition={{ duration: 0.5, delay: i * 0.08 }}
+                  className="relative pl-16 md:pl-32"
+                >
+                  {/* Time label */}
+                  <div className="absolute left-0 top-0 w-14 md:w-[110px] text-left">
+                    <p className="text-sm md:text-base font-mono font-bold text-accent/90 tabular-nums">
+                      {d.time}
+                    </p>
+                    <p className="text-[9px] md:text-[10px] font-mono text-muted/40 uppercase tracking-widest mt-0.5">
+                      {d.tag}
+                    </p>
+                  </div>
+                  {/* Dot */}
+                  <div className="absolute left-[22px] md:left-[55px] top-2 w-3 h-3 rounded-full bg-accent ring-4 ring-background" />
+                  {/* Content */}
+                  <div className="p-4 md:p-5 rounded-xl bg-card border border-card-border hover:border-accent/30 transition-colors">
+                    <h3 className="text-base md:text-lg font-bold mb-1.5">
+                      {d.title}
+                    </h3>
+                    <p className="text-xs md:text-sm text-muted leading-relaxed">
+                      {d.note}
+                    </p>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* DEV STACK */}
+      <section className="py-20 md:py-28 px-5 md:px-6 relative">
+        <div className="max-w-5xl mx-auto">
+          <div className="mb-12 md:mb-16 text-center">
+            <p className="text-sm font-mono text-accent mb-4 uppercase tracking-[0.3em]">
+              the stack I actually reach for
+            </p>
+            <h2 className="text-3xl md:text-5xl font-bold leading-tight">
+              Every tool earns its place.
+            </h2>
+          </div>
+
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
+            {devStack.map((t, i) => (
               <motion.div
-                key={d.time}
+                key={t.label}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-80px" }}
-                transition={{ duration: 0.5, delay: i * 0.08 }}
-                className="group relative p-6 md:p-7 rounded-xl bg-card border border-card-border hover:border-accent/30 transition-all duration-500 overflow-hidden"
+                viewport={{ once: true, margin: "-60px" }}
+                transition={{ duration: 0.5, delay: i * 0.06 }}
+                className="p-5 md:p-6 rounded-xl bg-card/60 border border-card-border hover:border-accent/30 transition-colors"
               >
-                <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-accent/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-                <p className="text-3xl md:text-4xl font-mono font-bold text-accent/80 mb-3 tabular-nums">
-                  {d.time}
-                </p>
-                <h3 className="text-base md:text-lg font-bold mb-2">
-                  {d.title}
-                </h3>
+                <div className="flex items-center gap-2 mb-3">
+                  <span className="text-2xl" aria-hidden>
+                    {t.icon}
+                  </span>
+                  <p className="text-sm md:text-base font-bold">{t.label}</p>
+                </div>
                 <p className="text-xs md:text-sm text-muted leading-relaxed">
-                  {d.note}
+                  {t.why}
                 </p>
               </motion.div>
             ))}
@@ -393,82 +383,17 @@ export function Journey(): React.ReactElement {
         </div>
       </section>
 
-      {/* What runs in parallel */}
-      <section className="py-24 md:py-32 relative">
-        <div className="max-w-5xl mx-auto px-5 md:px-6">
-          <div className="text-center mb-16">
-            <p className="text-sm font-mono text-accent mb-4 uppercase tracking-[0.3em]">
-              what runs at the same time
-            </p>
-            <h2 className="text-3xl md:text-5xl font-bold mb-4 leading-tight">
-              Parallel systems, one operator.
-            </h2>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-5">
-            {[
-              {
-                title: "OpenEvent",
-                subtitle: "production SaaS",
-                status: "live",
-                detail: "100+ clients · 150+ events · AI triage + human approval",
-                tone: "emerald",
-              },
-              {
-                title: "CodeLens",
-                subtitle: "AI review engine",
-                status: "private beta",
-                detail: "305 patterns · 9 stacks · Guardian mode active across AI tools",
-                tone: "accent",
-              },
-              {
-                title: "Gogaa CLI",
-                subtitle: "open-source coding agent",
-                status: "v0.9.1",
-                detail: "11 providers · 1,418 tests · Aider parity + plugin marketplace",
-                tone: "pink",
-              },
-            ].map((p, i) => {
-              const t = toneClasses[p.tone as Milestone["tone"]];
-              return (
-                <motion.div
-                  key={p.title}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-80px" }}
-                  transition={{ duration: 0.5, delay: i * 0.1 }}
-                  className={`relative p-6 rounded-xl bg-gradient-to-br ${t.bg} via-card to-card border ${t.border} overflow-hidden`}
-                >
-                  <span
-                    className={`absolute top-4 right-4 px-2 py-0.5 text-[9px] font-mono rounded border ${t.tag}`}
-                  >
-                    {p.status}
-                  </span>
-                  <h3 className="text-xl font-bold mb-1">{p.title}</h3>
-                  <p className="text-xs font-mono text-muted/60 uppercase tracking-wider mb-4">
-                    {p.subtitle}
-                  </p>
-                  <p className="text-sm text-muted leading-relaxed">
-                    {p.detail}
-                  </p>
-                </motion.div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
       {/* CTA */}
-      <section className="py-24 md:py-32 relative">
-        <div className="max-w-3xl mx-auto px-5 md:px-6 text-center">
+      <section className="py-24 md:py-32 px-5 md:px-6 relative">
+        <div className="max-w-3xl mx-auto text-center">
           <h2 className="text-3xl md:text-5xl font-bold mb-6 leading-tight">
-            Still here?
+            If the principles fit
             <br />
-            <span className="text-accent">Let&apos;s talk.</span>
+            <span className="text-accent">let&apos;s build something.</span>
           </h2>
           <p className="text-sm md:text-base text-muted mb-10 max-w-lg mx-auto leading-relaxed">
-            If this walk through resonated, you probably have a system that
-            could use the same kind of thinking. Reach out.
+            This is how I work with every client and every repo. If that
+            sounds like what you need, book a 15-minute intro call.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
             <a
@@ -477,13 +402,13 @@ export function Journey(): React.ReactElement {
               rel="noopener noreferrer"
               className="px-6 py-3 bg-accent text-white font-medium rounded-lg hover:bg-accent/90 hover:shadow-lg hover:shadow-accent/20 transition-all"
             >
-              Book a 15-min call
+              Book a 15-min call →
             </a>
             <a
-              href="/#contact"
+              href="/#projects"
               className="px-6 py-3 border border-card-border text-foreground rounded-lg hover:bg-card hover:border-muted/30 transition-all"
             >
-              See contact options
+              See the projects
             </a>
           </div>
         </div>
