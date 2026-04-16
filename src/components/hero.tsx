@@ -4,6 +4,7 @@ import { useEffect, useState, useRef } from "react";
 import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
 import { Magnetic } from "./magnetic";
 import { useStatus } from "@/lib/use-status";
+import { HeroFlow } from "./hero-flow";
 
 const taglines = [
   {
@@ -205,47 +206,17 @@ export function Hero(): React.ReactElement {
           </p>
         </motion.div>
 
-        {/* Architecture flow */}
+        {/* Architecture flow — live animated pipeline */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={ready ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8, delay: 3.0, ease: [0.22, 1, 0.36, 1] }}
-          className="mt-10 md:mt-16 p-3 md:p-4 rounded-xl bg-card/50 border border-card-border backdrop-blur-sm"
+          className="mt-10 md:mt-16 p-4 md:p-5 rounded-xl bg-card/50 border border-card-border backdrop-blur-sm"
         >
-          <p className="text-[10px] md:text-xs font-mono text-muted mb-2.5 md:mb-3 uppercase tracking-wider">
-            How I architect every system
+          <p className="text-[10px] md:text-xs font-mono text-muted mb-4 md:mb-5 uppercase tracking-wider">
+            How I architect every system · live
           </p>
-          <div className="flex flex-wrap items-center justify-center gap-x-1 gap-y-1.5 md:gap-y-2 font-mono">
-            {[
-              "Ingest",
-              "Classify",
-              "Orchestrate",
-              "Review",
-              "Execute",
-              "Observe",
-            ].map((step, i) => (
-              <motion.span
-                key={step}
-                initial={{ opacity: 0, scale: 0.85 }}
-                animate={ready ? { opacity: 1, scale: 1 } : {}}
-                transition={{
-                  duration: 0.45,
-                  delay: 3.3 + i * 0.09,
-                  ease: [0.22, 1, 0.36, 1],
-                }}
-                className="flex items-center gap-1"
-              >
-                <span className="px-2 py-1 md:px-3 md:py-1.5 bg-accent/10 text-accent border border-accent/20 rounded-md text-[9px] md:text-xs whitespace-nowrap">
-                  {step}
-                </span>
-                {i < 5 && (
-                  <span className="text-muted/50 text-[10px] md:text-xs">
-                    &rarr;
-                  </span>
-                )}
-              </motion.span>
-            ))}
-          </div>
+          <HeroFlow />
         </motion.div>
       </div>
 

@@ -120,74 +120,80 @@ function CodeLensBody(): React.ReactElement {
 }
 
 /* ------------------------------ Gogaa -------------------------------- */
-/* Real trace from ~/.gogaa/audit session c1ff8f3e — dev-env setup task */
+/* Real welcome banner rendered by Banner.tsx in ~/gogaa-ts/src/ui       */
 
 function GogaaBody(): React.ReactElement {
-  const steps = [
-    { name: "glob", detail: "**/Dockerfile*", ms: 1426, delay: 0.15 },
-    { name: "file-read", detail: "dev-env/docker-compose.yml", ms: 817, delay: 0.35 },
-    { name: "file-read", detail: "dev-env/README.md", ms: 603, delay: 0.55 },
-    { name: "bash", detail: "ls dev-env/configs/", ms: 422, delay: 0.75 },
-    { name: "file-write", detail: "configs/.zshrc · 44 lines", ms: 938, delay: 0.95 },
-  ];
   return (
-    <div className="space-y-0.5">
-      <motion.p
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: true, margin: "-40px" }}
-        transition={{ duration: 0.3 }}
-        className="text-foreground/90"
-      >
-        <span className="text-accent">❯</span> set up my dev container configs
-      </motion.p>
-
-      <motion.p
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: true, margin: "-40px" }}
-        transition={{ duration: 0.3, delay: 0.1 }}
-        className="text-muted/70 pl-4"
-      >
-        model: claude-sonnet-4 · intent: code_task
-      </motion.p>
-
-      <div className="mt-3 space-y-1">
-        {steps.map((s, i) => {
-          const isLast = i === steps.length - 1;
-          return (
-            <motion.div
-              key={s.name + i}
-              initial={{ opacity: 0, x: -4 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, margin: "-40px" }}
-              transition={{ duration: 0.3, delay: s.delay }}
-              className="flex items-baseline gap-2"
-            >
-              <span className="text-muted/40">{isLast ? "└─" : "├─"}</span>
-              <span className="text-foreground/80">{s.name}</span>
-              <span className="text-muted/50 text-[10px] flex-1 truncate">
-                {s.detail}
-              </span>
-              <span className="text-green-400">✓</span>
-              <span className="text-muted/40 text-[9px] tabular-nums">
-                {s.ms}ms
-              </span>
-            </motion.div>
-          );
-        })}
-      </div>
-
+    <div className="space-y-0">
+      {/* Block-art logo + title row */}
       <motion.div
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         viewport={{ once: true, margin: "-40px" }}
-        transition={{ duration: 0.4, delay: 1.15 }}
-        className="mt-4 pt-3 border-t border-card-border flex items-center justify-between text-[10px]"
+        transition={{ duration: 0.4 }}
+        className="flex gap-3 items-start"
       >
-        <span className="text-muted/60">77,482 tokens · 72.9s session</span>
-        <span className="text-muted/60">
-          cost <span className="text-accent/80">$0.305</span>
+        {/* 3-row Unicode block logo — copied exactly from gogaa source */}
+        <pre className="text-white font-mono leading-[1.1] text-[14px] md:text-[16px] select-none">
+{` ▐▛███▜▌
+▝▜█████▛▘
+  ▘▘ ▝▝`}
+        </pre>
+
+        <div className="flex flex-col pt-0.5">
+          <p className="text-foreground">
+            <span className="font-bold">Gogaa</span>{" "}
+            <span className="text-muted/60">v0.10.0</span>
+          </p>
+          <p className="text-muted/60">claude-sonnet-4 · Anthropic</p>
+          <p className="text-muted/60">~/gogaa-ts (main)</p>
+        </div>
+      </motion.div>
+
+      {/* Identity + tagline block */}
+      <motion.div
+        initial={{ opacity: 0, y: 4 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-40px" }}
+        transition={{ duration: 0.4, delay: 0.2 }}
+        className="mt-4 pl-1"
+      >
+        <p className="text-muted/60">
+          Message from shami&apos;s workspace:
+        </p>
+        <p className="text-foreground">
+          Engr Ahtesham{" "}
+          <span className="text-muted/60">
+            — Build fast · ship clean · automate all
+          </span>
+        </p>
+      </motion.div>
+
+      {/* Prompt */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true, margin: "-40px" }}
+        transition={{ duration: 0.3, delay: 0.45 }}
+        className="mt-5 pt-3 border-t border-card-border flex items-center gap-2"
+      >
+        <span className="text-accent">❯</span>
+        <span className="text-muted/40">Type a message or press ? for help</span>
+        <span className="inline-block w-[7px] h-[14px] bg-accent/80 ml-0.5 translate-y-[2px] animate-pulse" />
+      </motion.div>
+
+      {/* Status footer */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true, margin: "-40px" }}
+        transition={{ duration: 0.4, delay: 0.6 }}
+        className="mt-3 flex items-center justify-between text-[9px]"
+      >
+        <span className="text-muted/50">11 providers · auto-fallback</span>
+        <span className="text-green-400/70 inline-flex items-center gap-1">
+          <span className="w-1 h-1 rounded-full bg-green-400 animate-pulse" />
+          1,418 tests passing
         </span>
       </motion.div>
     </div>
@@ -195,75 +201,114 @@ function GogaaBody(): React.ReactElement {
 }
 
 /* ---------------------------- OpenEvent ------------------------------ */
+/* Rebuilt from real UI screenshots of app.openevent.io — inbox + AI    */
+/* actions on an email thread (Created Site Visit, Updated Calendar,    */
+/* Updated CRM, Created event LEAD).                                    */
 
 function OpenEventBody(): React.ReactElement {
   return (
-    <div className="space-y-2">
+    <div className="font-sans">
+      {/* Inbox header */}
       <motion.div
         initial={{ opacity: 0, y: 4 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-40px" }}
         transition={{ duration: 0.35, delay: 0.1 }}
-        className="flex items-center justify-between text-[10px]"
+        className="flex items-center justify-between text-[10px] mb-3 pb-2 border-b border-card-border"
       >
-        <span className="text-muted/70">▾ Inbox</span>
-        <span className="text-accent/80 font-mono">14 new</span>
+        <span className="text-foreground/80 font-semibold text-[11px]">
+          Event Requests
+        </span>
+        <span className="text-accent/80 text-[10px]">5 threads</span>
       </motion.div>
 
-      {/* Thread preview */}
+      {/* Top thread */}
       <motion.div
-        initial={{ opacity: 0, y: 6 }}
-        whileInView={{ opacity: 1, y: 0 }}
+        initial={{ opacity: 0, x: -4 }}
+        whileInView={{ opacity: 1, x: 0 }}
         viewport={{ once: true, margin: "-40px" }}
-        transition={{ duration: 0.4, delay: 0.25 }}
-        className="rounded-lg border border-card-border bg-background/40 p-3"
+        transition={{ duration: 0.35, delay: 0.25 }}
+        className="flex items-start gap-2.5 py-2 px-2 rounded bg-accent/5 border-l-2 border-accent mb-3"
       >
-        <div className="flex items-center justify-between mb-1">
-          <span className="text-foreground/90 text-[11px] font-sans">
-            Maria — Coffee meeting next week?
-          </span>
-          <span className="text-[9px] text-muted/50">2m ago</span>
+        <div className="w-7 h-7 rounded-full bg-gradient-to-br from-accent/80 to-purple-500/80 flex items-center justify-center text-[10px] text-white font-bold shrink-0">
+          SJ
         </div>
-        <p className="text-[10px] text-muted/70 font-sans truncate">
-          Hi, wondering if we could meet sometime next week for coffee...
-        </p>
-
-        {/* AI classification row */}
-        <div className="mt-2 pt-2 border-t border-card-border flex items-center gap-2 text-[9px]">
-          <span className="px-1.5 py-0.5 rounded bg-accent/15 text-accent border border-accent/30">
-            booking_request
-          </span>
-          <span className="text-muted/60">confidence 94%</span>
-        </div>
-      </motion.div>
-
-      {/* AI proposal */}
-      <motion.div
-        initial={{ opacity: 0, y: 6 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-40px" }}
-        transition={{ duration: 0.45, delay: 0.5 }}
-        className="rounded-lg border border-amber-500/30 bg-amber-500/5 p-3"
-      >
-        <div className="flex items-center gap-1.5 mb-2">
-          <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
-          <p className="text-[9px] uppercase tracking-widest text-amber-400">
-            ai proposal · awaiting approval
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center justify-between gap-2">
+            <p className="text-[11px] font-semibold text-foreground truncate">
+              Sarah Johnson
+            </p>
+            <p className="text-[9px] text-muted/50 shrink-0">11:42 AM</p>
+          </div>
+          <p className="text-[10px] text-muted truncate">
+            Corporate Conference · 150 Guests · March 15
           </p>
         </div>
-        <p className="text-[11px] text-foreground/90 font-sans leading-relaxed mb-3">
-          Book <span className="text-accent">Tue, Apr 22 · 10:00 AM</span>{" "}
-          — 1 hour coffee at usual spot. Send confirmation to Maria.
+      </motion.div>
+
+      {/* AI actions — the yellow/amber action chain from the real UI */}
+      <div className="space-y-1.5">
+        {[
+          { text: "Created a Site Visit", detail: "Mar 1, 14:00", delay: 0.4 },
+          { text: "Updated Event on Calendar", detail: "Main Hall · 9:00", delay: 0.55 },
+          { text: "Updated CRM", detail: "added billing address", delay: 0.7 },
+          { text: "Created event “LEAD” on calendar", detail: "TechCorp Inc.", delay: 0.85 },
+        ].map((a) => (
+          <motion.div
+            key={a.text}
+            initial={{ opacity: 0, x: -6 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, margin: "-40px" }}
+            transition={{ duration: 0.35, delay: a.delay, ease: [0.22, 1, 0.36, 1] }}
+            className="flex items-center gap-2 rounded-md bg-amber-500/15 border border-amber-500/25 px-2.5 py-1.5"
+          >
+            <svg
+              width="10"
+              height="10"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="3"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="text-amber-400 shrink-0"
+            >
+              <polyline points="20 6 9 17 4 12" />
+            </svg>
+            <p className="text-[10.5px] text-foreground/95 font-medium flex-1 truncate">
+              {a.text}
+            </p>
+            <span className="text-[9px] text-muted/60 truncate max-w-[40%]">
+              {a.detail}
+            </span>
+          </motion.div>
+        ))}
+      </div>
+
+      {/* Side insight card */}
+      <motion.div
+        initial={{ opacity: 0, y: 6 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-40px" }}
+        transition={{ duration: 0.4, delay: 1.0 }}
+        className="mt-3 p-2.5 rounded-md border border-red-500/30 bg-red-500/[0.06]"
+      >
+        <div className="flex items-center gap-1.5 mb-1">
+          <span className="w-1 h-1 rounded-full bg-red-400" />
+          <p className="text-[9px] uppercase tracking-widest text-red-300 font-semibold">
+            date conflict detected
+          </p>
+        </div>
+        <p className="text-[10px] text-muted/80">
+          Conflicts with <span className="text-foreground">Chen Wedding</span>{" "}
+          (CHF 25,000)
         </p>
-        <div className="flex items-center gap-2">
-          <span className="flex-1 text-center text-[10px] py-1.5 rounded bg-green-500/15 text-green-400 border border-green-500/30">
-            approve
+        <div className="flex gap-1.5 mt-2">
+          <span className="flex-1 text-center text-[9px] py-1 rounded bg-accent/15 text-accent border border-accent/30">
+            Accept New
           </span>
-          <span className="text-center text-[10px] py-1.5 px-3 rounded border border-card-border text-muted">
-            edit
-          </span>
-          <span className="text-center text-[10px] py-1.5 px-3 rounded border border-card-border text-muted">
-            skip
+          <span className="flex-1 text-center text-[9px] py-1 rounded border border-card-border text-muted">
+            Keep Existing
           </span>
         </div>
       </motion.div>
@@ -272,10 +317,10 @@ function OpenEventBody(): React.ReactElement {
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         viewport={{ once: true, margin: "-40px" }}
-        transition={{ duration: 0.4, delay: 0.8 }}
-        className="text-[9px] text-muted/50 text-center pt-1"
+        transition={{ duration: 0.4, delay: 1.2 }}
+        className="text-[9px] text-muted/50 text-center pt-2 mt-2 border-t border-card-border"
       >
-        100+ clients · 150+ events · 1.5 hrs saved / day / team
+        100+ clients · 150+ events · every AI action needs human approval
       </motion.p>
     </div>
   );

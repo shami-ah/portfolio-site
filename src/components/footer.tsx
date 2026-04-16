@@ -5,8 +5,8 @@ export function Footer(): React.ReactElement {
       <div className="absolute -top-40 left-1/2 -translate-x-1/2 w-[40rem] h-[40rem] bg-accent/[0.05] rounded-full blur-3xl pointer-events-none" />
 
       <div className="relative max-w-6xl mx-auto px-5 md:px-6 py-16 md:py-20">
-        {/* Signature display */}
-        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-8 md:gap-12">
+        {/* Signature display + portrait */}
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-10 md:gap-16">
           <div className="min-w-0">
             <p className="text-[10px] md:text-xs font-mono text-accent uppercase tracking-[0.3em] mb-2">
               Engr.
@@ -21,26 +21,18 @@ export function Footer(): React.ReactElement {
             </p>
           </div>
 
-          {/* Status block */}
-          <div className="flex flex-col gap-3 md:text-right shrink-0">
-            <div className="inline-flex items-center gap-2 self-start md:self-end text-xs font-mono">
-              <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
-              <span className="text-green-400">open to opportunities</span>
+          {/* Portrait on the right */}
+          <div className="relative shrink-0 self-start md:self-auto">
+            <div className="absolute -inset-5 bg-gradient-to-br from-accent/20 via-purple-500/10 to-transparent rounded-full blur-2xl pointer-events-none" />
+            <div className="relative w-[140px] h-[140px] md:w-[200px] md:h-[200px] rounded-2xl overflow-hidden border border-accent/25 shadow-2xl shadow-accent/15">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/ahtesham.jpg"
+                alt="Ahtesham Ahmad"
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-background/40 via-transparent to-transparent pointer-events-none" />
             </div>
-            <a
-              href="mailto:shami8024@gmail.com"
-              className="text-sm md:text-base text-foreground hover:text-accent transition-colors"
-            >
-              shami8024@gmail.com
-            </a>
-            <a
-              href="https://calendly.com/shami8024/30min"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-sm text-accent hover:underline underline-offset-4"
-            >
-              book a 15-min call →
-            </a>
           </div>
         </div>
 

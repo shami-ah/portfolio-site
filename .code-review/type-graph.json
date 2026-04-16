@@ -1,0 +1,261 @@
+{
+  "nodes": [
+    {
+      "id": "src/app/chat/chat.tsx::Message::interface",
+      "file": "src/app/chat/chat.tsx",
+      "name": "Message",
+      "kind": "interface",
+      "line": 7,
+      "exported": false
+    },
+    {
+      "id": "src/app/journey/journey.tsx::Principle::interface",
+      "file": "src/app/journey/journey.tsx",
+      "name": "Principle",
+      "kind": "interface",
+      "line": 11,
+      "exported": false
+    },
+    {
+      "id": "src/app/journey/journey.tsx::ToolStop::interface",
+      "file": "src/app/journey/journey.tsx",
+      "name": "ToolStop",
+      "kind": "interface",
+      "line": 102,
+      "exported": false
+    },
+    {
+      "id": "src/app/projects/[slug]/page.tsx::Props::interface",
+      "file": "src/app/projects/[slug]/page.tsx",
+      "name": "Props",
+      "kind": "interface",
+      "line": 5,
+      "exported": false
+    },
+    {
+      "id": "src/app/story/[slug]/page.tsx::Props::interface",
+      "file": "src/app/story/[slug]/page.tsx",
+      "name": "Props",
+      "kind": "interface",
+      "line": 5,
+      "exported": false
+    },
+    {
+      "id": "src/app/story/[slug]/story.tsx::Role::type",
+      "file": "src/app/story/[slug]/story.tsx",
+      "name": "Role",
+      "kind": "type",
+      "line": 7,
+      "exported": false
+    },
+    {
+      "id": "src/app/story/[slug]/story.tsx::Bubble::interface",
+      "file": "src/app/story/[slug]/story.tsx",
+      "name": "Bubble",
+      "kind": "interface",
+      "line": 9,
+      "exported": false
+    },
+    {
+      "id": "src/components/agent-bar.tsx::Phase::type",
+      "file": "src/components/agent-bar.tsx",
+      "name": "Phase",
+      "kind": "type",
+      "line": 216,
+      "exported": false
+    },
+    {
+      "id": "src/components/agent-bar.tsx::AgentStep::interface",
+      "file": "src/components/agent-bar.tsx",
+      "name": "AgentStep",
+      "kind": "interface",
+      "line": 10,
+      "exported": false
+    },
+    {
+      "id": "src/components/agent-bar.tsx::AgentCommand::interface",
+      "file": "src/components/agent-bar.tsx",
+      "name": "AgentCommand",
+      "kind": "interface",
+      "line": 16,
+      "exported": false
+    },
+    {
+      "id": "src/components/architecture-diagram.tsx::ArchitectureDiagramProps::interface",
+      "file": "src/components/architecture-diagram.tsx",
+      "name": "ArchitectureDiagramProps",
+      "kind": "interface",
+      "line": 6,
+      "exported": false
+    },
+    {
+      "id": "src/components/command-palette.tsx::Command::interface",
+      "file": "src/components/command-palette.tsx",
+      "name": "Command",
+      "kind": "interface",
+      "line": 7,
+      "exported": false
+    },
+    {
+      "id": "src/components/cursor-presence.tsx::Ghost::interface",
+      "file": "src/components/cursor-presence.tsx",
+      "name": "Ghost",
+      "kind": "interface",
+      "line": 6,
+      "exported": false
+    },
+    {
+      "id": "src/components/cursor.tsx::Mode::type",
+      "file": "src/components/cursor.tsx",
+      "name": "Mode",
+      "kind": "type",
+      "line": 6,
+      "exported": false
+    },
+    {
+      "id": "src/components/decision-tree.tsx::Decision::interface",
+      "file": "src/components/decision-tree.tsx",
+      "name": "Decision",
+      "kind": "interface",
+      "line": 6,
+      "exported": false
+    },
+    {
+      "id": "src/components/experience.tsx::Role::interface",
+      "file": "src/components/experience.tsx",
+      "name": "Role",
+      "kind": "interface",
+      "line": 6,
+      "exported": false
+    },
+    {
+      "id": "src/components/gogaa-sandbox.tsx::Line::interface",
+      "file": "src/components/gogaa-sandbox.tsx",
+      "name": "Line",
+      "kind": "interface",
+      "line": 6,
+      "exported": false
+    },
+    {
+      "id": "src/components/gogaa-sandbox.tsx::SandboxCommand::interface",
+      "file": "src/components/gogaa-sandbox.tsx",
+      "name": "SandboxCommand",
+      "kind": "interface",
+      "line": 12,
+      "exported": false
+    },
+    {
+      "id": "src/components/magnetic.tsx::MagneticProps::interface",
+      "file": "src/components/magnetic.tsx",
+      "name": "MagneticProps",
+      "kind": "interface",
+      "line": 6,
+      "exported": false
+    },
+    {
+      "id": "src/components/project-modal.tsx::ProjectModalProps::interface",
+      "file": "src/components/project-modal.tsx",
+      "name": "ProjectModalProps",
+      "kind": "interface",
+      "line": 7,
+      "exported": false
+    },
+    {
+      "id": "src/components/project-showcase.tsx::Props::interface",
+      "file": "src/components/project-showcase.tsx",
+      "name": "Props",
+      "kind": "interface",
+      "line": 7,
+      "exported": false
+    },
+    {
+      "id": "src/components/shortcuts-overlay.tsx::Shortcut::interface",
+      "file": "src/components/shortcuts-overlay.tsx",
+      "name": "Shortcut",
+      "kind": "interface",
+      "line": 6,
+      "exported": false
+    },
+    {
+      "id": "src/components/shortcuts-overlay.tsx::Group::interface",
+      "file": "src/components/shortcuts-overlay.tsx",
+      "name": "Group",
+      "kind": "interface",
+      "line": 11,
+      "exported": false
+    },
+    {
+      "id": "src/components/skills.tsx::SkillGroup::interface",
+      "file": "src/components/skills.tsx",
+      "name": "SkillGroup",
+      "kind": "interface",
+      "line": 5,
+      "exported": false
+    },
+    {
+      "id": "src/components/terminal-boot.tsx::Check::interface",
+      "file": "src/components/terminal-boot.tsx",
+      "name": "Check",
+      "kind": "interface",
+      "line": 6,
+      "exported": false
+    },
+    {
+      "id": "src/components/terminal-boot.tsx::BootProps::interface",
+      "file": "src/components/terminal-boot.tsx",
+      "name": "BootProps",
+      "kind": "interface",
+      "line": 19,
+      "exported": false
+    },
+    {
+      "id": "src/components/testimonials.tsx::Testimonial::interface",
+      "file": "src/components/testimonials.tsx",
+      "name": "Testimonial",
+      "kind": "interface",
+      "line": 5,
+      "exported": false
+    },
+    {
+      "id": "src/components/time-machine.tsx::YearContext::interface",
+      "file": "src/components/time-machine.tsx",
+      "name": "YearContext",
+      "kind": "interface",
+      "line": 6,
+      "exported": false
+    },
+    {
+      "id": "src/data/projects.ts::ProjectData::interface",
+      "file": "src/data/projects.ts",
+      "name": "ProjectData",
+      "kind": "interface",
+      "line": 1,
+      "exported": true
+    },
+    {
+      "id": "src/lib/kb.ts::KbEntry::interface",
+      "file": "src/lib/kb.ts",
+      "name": "KbEntry",
+      "kind": "interface",
+      "line": 5,
+      "exported": true
+    },
+    {
+      "id": "src/lib/use-status.ts::Status::interface",
+      "file": "src/lib/use-status.ts",
+      "name": "Status",
+      "kind": "interface",
+      "line": 5,
+      "exported": true
+    },
+    {
+      "id": "src/components/project-mockup.tsx::MockupKind::type",
+      "file": "src/components/project-mockup.tsx",
+      "name": "MockupKind",
+      "kind": "type",
+      "line": 5,
+      "exported": true
+    }
+  ],
+  "edges": []
+}
