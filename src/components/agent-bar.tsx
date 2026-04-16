@@ -225,19 +225,26 @@ export function AgentBar(): React.ReactElement {
   const [dismissed, setDismissed] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  /* Auto-reveal after settle */
+  /* Always open immediately unless the user has explicitly dismissed it.
+     If boot is still running, wait for 'boot-complete' then appear. */
   useEffect(() => {
     if (typeof window === "undefined") return;
     if (sessionStorage.getItem("agent-dismissed")) {
       setDismissed(true);
       return;
     }
-    const bootComplete = sessionStorage.getItem("boot-complete");
-    const delay = bootComplete ? 2500 : 5500;
-    const t = setTimeout(() => {
+    if (sessionStorage.getItem("boot-complete")) {
       setPhase("dormant");
-    }, delay);
-    return () => clearTimeout(t);
+      return;
+    }
+    const onBoot = (): void => setPhase("dormant");
+    window.addEventListener("boot-complete", onBoot);
+    // Fallback so it shows even if boot event never fires
+    const t = setTimeout(() => setPhase("dormant"), 3500);
+    return () => {
+      window.removeEventListener("boot-complete", onBoot);
+      clearTimeout(t);
+    };
   }, []);
 
   /* Global keystroke buffer — typing anywhere triggers the bar */
@@ -344,7 +351,7 @@ export function AgentBar(): React.ReactElement {
     setDismissed(true);
   };
 
-  /* Floating re-open tab when dismissed */
+  /* When dismissed, collapse to a small chip on the bottom-left */
   if (dismissed && phase !== "processing" && phase !== "responding") {
     return (
       <button
