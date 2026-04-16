@@ -12,7 +12,7 @@ interface Message {
 }
 
 const FALLBACK =
-  "I don't have a canned answer for that — but a 15-min call will. calendly.com/shami8024/30min · or ask me about rate, stack, availability, gogaa, codelens, or openevent.";
+  "I don't have a canned answer for that. Try asking about: rate · stack · availability · timezone · CodeLens · gogaa · OpenEvent · process · Stripe · Supabase · experience · team size · relocation · security · testing. Or book a 15-min call: calendly.com/shami8024/30min";
 
 export function ChatCV(): React.ReactElement {
   const [messages, setMessages] = useState<Message[]>([
