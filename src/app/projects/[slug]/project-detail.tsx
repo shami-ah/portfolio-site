@@ -5,7 +5,6 @@ import { diagrams } from "@/data/diagrams";
 import { FadeUp, SlideIn } from "@/components/motion";
 import { ArchitectureDiagram } from "@/components/architecture-diagram";
 import { DecisionTree } from "@/components/decision-tree";
-import { SplitCompare } from "@/components/split-compare";
 import { GogaaSandbox } from "@/components/gogaa-sandbox";
 import { motion } from "framer-motion";
 
@@ -110,15 +109,6 @@ export function ProjectDetail({
           </SlideIn>
         </div>
       </section>
-
-      {/* Split compare — collapsible */}
-      {project.vs && (
-        <section className="px-6">
-          <div className="max-w-4xl mx-auto">
-            <SplitCompare mine={project.vs.mine} standard={project.vs.standard} />
-          </div>
-        </section>
-      )}
 
       {/* Gogaa sandbox — only on gogaa-cli */}
       {project.slug === "gogaa-cli" && (

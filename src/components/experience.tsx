@@ -2,7 +2,6 @@
 
 import { FadeUp } from "./motion";
 import { useStatus } from "@/lib/use-status";
-import { TimeMachine } from "./time-machine";
 
 interface Role {
   title: string;
@@ -61,14 +60,10 @@ export function Experience(): React.ReactElement {
           <p className="text-sm font-mono text-accent mb-4 uppercase tracking-wider">
             Experience
           </p>
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-10 md:mb-12 leading-tight">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-10 md:mb-16 leading-tight">
             Where I&apos;ve shipped
             <span className="text-muted"> production systems.</span>
           </h2>
-        </FadeUp>
-
-        <FadeUp delay={0.1}>
-          <TimeMachine />
         </FadeUp>
 
         <div className="relative">
@@ -80,7 +75,7 @@ export function Experience(): React.ReactElement {
                 <div className="relative pl-8 md:pl-20">
                   <div className="absolute left-1.5 md:left-8 top-2 w-3 h-3 -translate-x-[5px] rounded-full bg-accent border-2 border-background" />
 
-                  <div className="p-4 md:p-6 rounded-xl bg-card border border-card-border hover:border-accent/20 transition-all duration-300">
+                  <div className="p-4 md:p-6 rounded-xl bg-card border border-card-border hover:border-muted/30 transition-all duration-300">
                     <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-3 md:mb-4">
                       <div>
                         <h3 className="text-base md:text-lg font-bold">{role.title}</h3>

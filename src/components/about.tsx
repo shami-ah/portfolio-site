@@ -98,33 +98,6 @@ export function About(): React.ReactElement {
           </SlideIn>
         </div>
 
-        {/* Dev workflow strip */}
-        <FadeUp delay={0.2}>
-          <div className="p-4 md:p-6 rounded-xl bg-card/50 border border-card-border text-center">
-            <p className="text-[10px] md:text-xs font-mono text-muted mb-4 md:mb-5 uppercase tracking-wider">
-              My actual dev workflow, every day
-            </p>
-            <div className="flex flex-wrap items-center justify-center gap-1.5 md:gap-2">
-              {[
-                "Phone + Tailscale",
-                "Docker Container",
-                "Claude Code + gogaa",
-                "CodeLens review",
-                "GitHub Actions",
-                "Deploy",
-              ].map((step, i, arr) => (
-                <span key={step} className="flex items-center gap-1.5 md:gap-2">
-                  <span className="px-2 md:px-3 py-1 md:py-1.5 text-[10px] md:text-xs font-mono bg-accent/10 text-accent border border-accent/20 rounded-md whitespace-nowrap">
-                    {step}
-                  </span>
-                  {i < arr.length - 1 && (
-                    <span className="text-muted/40 text-xs">&rarr;</span>
-                  )}
-                </span>
-              ))}
-            </div>
-          </div>
-        </FadeUp>
       </div>
     </section>
   );

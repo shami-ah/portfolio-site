@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { TimeMachine } from "@/components/time-machine";
 
 /* ------------------------------------------------------------------ */
 /*  Content — intentionally NOT duplicated from the main portfolio.   */
@@ -243,6 +244,21 @@ export function Journey(): React.ReactElement {
         </div>
       </section>
 
+      {/* TIME MACHINE — the career trajectory in one control */}
+      <section className="py-16 md:py-20 px-5 md:px-6 relative">
+        <div className="max-w-4xl mx-auto">
+          <div className="mb-8 md:mb-10 text-center">
+            <p className="text-sm font-mono text-accent mb-3 uppercase tracking-[0.3em]">
+              trajectory
+            </p>
+            <h2 className="text-2xl md:text-4xl font-bold leading-tight">
+              Drag through the years.
+            </h2>
+          </div>
+          <TimeMachine />
+        </div>
+      </section>
+
       {/* PRINCIPLES — the unique content */}
       <section className="py-20 md:py-28 px-5 md:px-6 relative">
         <div className="max-w-5xl mx-auto">
@@ -376,6 +392,69 @@ export function Journey(): React.ReactElement {
                 </div>
                 <p className="text-xs md:text-sm text-muted leading-relaxed">
                   {t.why}
+                </p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* BUILDING NEXT — roadmap */}
+      <section className="py-20 md:py-28 px-5 md:px-6 bg-card/20 relative">
+        <div className="max-w-5xl mx-auto">
+          <div className="mb-12 md:mb-16 text-center">
+            <p className="text-sm font-mono text-accent mb-4 uppercase tracking-[0.3em]">
+              on the roadmap
+            </p>
+            <h2 className="text-3xl md:text-5xl font-bold leading-tight">
+              What I&apos;m building next.
+            </h2>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-4 md:gap-5">
+            {[
+              {
+                title: "Gogaa Architect Mode",
+                status: "Next Up",
+                desc: "Two-model split for complex tasks: a strong model plans and writes specs, a fast model executes edits. Cuts cost and improves quality on hard problems.",
+              },
+              {
+                title: "OpenEvent Adaptive Approval Engine",
+                status: "Designing",
+                desc: "The system tracks which actions are approved vs rejected. As patterns emerge, trust thresholds adjust automatically. Human review load drops week-over-week without removing the human from the loop.",
+              },
+              {
+                title: "Gogaa Remote Session Viewer",
+                status: "Planned",
+                desc: "Watch and control any gogaa agent session from a browser or phone, over LAN or tunnel. Real-time streaming of tool calls, diffs, and cost. The agent running on your dev machine, accessible anywhere.",
+              },
+            ].map((item, i) => (
+              <motion.div
+                key={item.title}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-60px" }}
+                transition={{ duration: 0.5, delay: i * 0.08 }}
+                className="relative p-5 md:p-6 rounded-xl bg-card/60 border border-card-border hover:border-foreground/20 transition-colors"
+              >
+                <div className="flex items-start justify-between gap-3 mb-3">
+                  <h3 className="text-sm md:text-base font-bold leading-tight">
+                    {item.title}
+                  </h3>
+                  <span
+                    className={`shrink-0 px-2 py-0.5 text-[10px] font-mono rounded ${
+                      item.status === "Next Up"
+                        ? "bg-green-500/10 text-green-400 border border-green-500/20"
+                        : item.status === "Designing"
+                          ? "bg-yellow-500/10 text-yellow-400 border border-yellow-500/20"
+                          : "bg-muted/10 text-muted/80 border border-card-border"
+                    }`}
+                  >
+                    {item.status}
+                  </span>
+                </div>
+                <p className="text-xs md:text-sm text-muted leading-relaxed">
+                  {item.desc}
                 </p>
               </motion.div>
             ))}

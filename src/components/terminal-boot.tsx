@@ -111,25 +111,25 @@ export function TerminalBoot({ force = false, onDone }: BootProps): React.ReactE
     }, 500);
   };
 
-  // Phase: intro typing
+  // Phase: intro typing (fast)
   useEffect(() => {
     if (!visible || phase !== "intro") return;
     if (introTyped < introText.length) {
       const t = setTimeout(() => {
         setIntroTyped((i) => i + 1);
         beep();
-      }, 45);
+      }, 18);
       return () => clearTimeout(t);
     }
-    const t = setTimeout(() => setPhase("checks"), 280);
+    const t = setTimeout(() => setPhase("checks"), 90);
     return () => clearTimeout(t);
   }, [visible, phase, introTyped, soundOn]);
 
-  // Phase: checks cascade
+  // Phase: checks cascade (fast)
   useEffect(() => {
     if (!visible || phase !== "checks") return;
     if (checkStep >= checks.length) {
-      const t = setTimeout(() => setPhase("status"), 350);
+      const t = setTimeout(() => setPhase("status"), 140);
       return () => clearTimeout(t);
     }
     const t = setTimeout(
@@ -137,20 +137,20 @@ export function TerminalBoot({ force = false, onDone }: BootProps): React.ReactE
         setCheckStep((s) => s + 1);
         beep();
       },
-      checkStep === 0 ? 180 : 230,
+      80,
     );
     return () => clearTimeout(t);
   }, [visible, phase, checkStep, soundOn]);
 
-  // Phase: status → launching → exit
+  // Phase: status → launching → exit (fast)
   useEffect(() => {
     if (!visible) return;
     if (phase === "status") {
-      const t = setTimeout(() => setPhase("launching"), 500);
+      const t = setTimeout(() => setPhase("launching"), 220);
       return () => clearTimeout(t);
     }
     if (phase === "launching") {
-      const t = setTimeout(dismiss, 650);
+      const t = setTimeout(dismiss, 280);
       return () => clearTimeout(t);
     }
   }, [visible, phase]);

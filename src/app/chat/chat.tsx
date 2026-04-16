@@ -12,7 +12,7 @@ interface Message {
 }
 
 const FALLBACK =
-  "I don't have a canned answer for that. Try asking about: rate · stack · availability · timezone · CodeLens · gogaa · OpenEvent · process · Stripe · Supabase · experience · team size · relocation · security · testing. Or book a 15-min call: calendly.com/shami8024/30min";
+  "Hmm, that's outside what I know well. Ahtesham would answer it better on a call — calendly.com/shami8024/30min. Or try rephrasing — I know about rate, stack, availability, his tools, and how he works with clients.";
 
 export function ChatCV(): React.ReactElement {
   const [messages, setMessages] = useState<Message[]>([
