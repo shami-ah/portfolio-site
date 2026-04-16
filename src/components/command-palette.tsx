@@ -112,12 +112,39 @@ export function CommandPalette(): React.ReactElement {
           window.open("https://github.com/shami-ah", "_blank", "noopener,noreferrer"),
       },
       {
+        id: "chat",
+        label: "Chat with my AI CV",
+        hint: "Ask anything · scoped to my work",
+        group: "Resources",
+        action: () => {
+          window.location.href = "/chat";
+        },
+      },
+      {
         id: "journey",
         label: "Take the interactive tour",
         hint: "Timeline · day in the life · parallel systems",
         group: "Resources",
         action: () => {
           window.location.href = "/journey";
+        },
+      },
+      {
+        id: "faq",
+        label: "Jump to FAQ",
+        hint: "Rates · timezone · how I work",
+        group: "Navigate",
+        action: () => scrollToId("faq"),
+      },
+      {
+        id: "shortcuts",
+        label: "Show keyboard shortcuts",
+        hint: "Press ? anywhere",
+        group: "Resources",
+        action: () => {
+          // Simulate pressing "?"
+          const event = new KeyboardEvent("keydown", { key: "?" });
+          window.dispatchEvent(event);
         },
       },
       {

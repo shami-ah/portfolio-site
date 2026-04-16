@@ -99,6 +99,22 @@ const commands: AgentCommand[] = [
     },
   },
   {
+    keyword: "chat",
+    intent: "conversational_query",
+    confidence: 0.95,
+    steps: [
+      { name: "classify_intent", detail: "label: conversational_query · conf 0.95", ms: 31 },
+      { name: "route_to_tool", detail: "→ spawn_chat_agent", ms: 6 },
+      { name: "execute", detail: "target: /chat", ms: 42 },
+    ],
+    response: "Launching chat agent. Ask anything about my work — scoped knowledge base, no hallucinations.",
+    action: () => {
+      setTimeout(() => {
+        window.location.href = "/chat";
+      }, 450);
+    },
+  },
+  {
     keyword: "projects",
     intent: "browse_projects",
     confidence: 0.91,
@@ -336,7 +352,7 @@ export function AgentBar(): React.ReactElement {
                 type="text"
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
-                placeholder="type a command · hire · call · projects · tour · cv"
+                placeholder="type · hire · call · projects · tour · chat · cv"
                 className="flex-1 min-w-0 bg-transparent outline-none font-mono text-xs md:text-sm placeholder:text-muted/40 text-foreground"
               />
               <kbd className="hidden md:inline text-[10px] font-mono text-muted/50 border border-card-border px-1.5 py-0.5 rounded">

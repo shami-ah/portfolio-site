@@ -18,6 +18,11 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
+  icons: {
+    icon: [
+      { url: "/favicon.svg", type: "image/svg+xml" },
+    ],
+  },
   title: "Ahtesham Ahmad | AI Automation Architect",
   description:
     "I architect AI systems that run businesses autonomously. Full-stack AI engineer with 250+ delivered projects, production SaaS, and open-source developer tools.",

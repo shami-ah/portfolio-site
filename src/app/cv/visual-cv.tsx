@@ -1,9 +1,10 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { useState, useEffect } from "react";
+import { motion, useMotionValue, useSpring } from "framer-motion";
+import { useState, useEffect, useRef } from "react";
 import { useSearchParams } from "next/navigation";
 import { useCvHit } from "@/components/cv-counter";
+import { useStatus } from "@/lib/use-status";
 
 const ACCENT = "#3b82f6";
 const AMBER = "#f59e0b";
@@ -104,6 +105,7 @@ function TimelineDot({ active }: { active?: boolean }) {
 
 export function VisualCV(): React.ReactElement {
   useCvHit();
+  const { status } = useStatus();
   const handleDownload = () => window.print();
   const searchParams = useSearchParams();
   const preview = searchParams.get("preview") === "true";
@@ -267,10 +269,10 @@ export function VisualCV(): React.ReactElement {
 
               {/* Key Projects */}
               <Section title="Key Projects" icon="◆">
-                <ProjectCard name="Gogaa CLI" tag="Dev Tool · CLI" tagColor={ACCENT} description="Claude Code alternative: 11 providers, Aider parity, 1418 tests. Repo map, SEARCH/REPLACE, watch mode, plugin marketplace, parallel agents. Built it because nothing else had everything." />
-                <ProjectCard name="CodeLens" tag="AI Dev Tool" tagColor={ACCENT} description="305-pattern AI code review engine across 9 stacks. Security taint tracking, PR risk scoring, guardian mode. Zero deps, <1s reviews." />
-                <ProjectCard name="OpenEvent" tag="Production SaaS" tagColor={AMBER} description="Live with 100+ clients across 150+ events. Saves each team ~1.5 hrs/day of manual email processing. Multi-agent orchestration: email → entity extraction → workflow → auto-approval." />
-                <ProjectCard name="Command Center" tag="Developer Tool" tagColor="#10b981" description="Unified dev interface with Claude API, Google Gemini, Supabase, Gmail/Calendar integration. PWA with push notifications." link="github.com/shami-ah/shami-command-center" />
+                <ProjectCard name="Gogaa CLI" tag="Dev Tool · CLI" tagColor={ACCENT} version={status.gogaa.version} description={`Claude Code alternative: ${status.gogaa.providers} providers, Aider parity, ${status.gogaa.tests.toLocaleString()} tests. Repo map, SEARCH/REPLACE, watch mode, plugin marketplace, parallel agents.`} />
+                <ProjectCard name="CodeLens" tag="AI Dev Tool" tagColor={ACCENT} version={status.codelens.version} description={`${status.codelens.patterns}-pattern AI code review engine across ${status.codelens.stacks} stacks. Security taint tracking, PR risk scoring, guardian mode. Zero deps, <1s reviews.`} />
+                <ProjectCard name="OpenEvent" tag="Production SaaS" tagColor={AMBER} liveLabel="live" description={`${status.openevent.clients}+ clients across ${status.openevent.events}+ events. Saves each team ~${status.openevent.hoursSavedPerDay} hrs/day of manual email processing. Multi-agent orchestration: email → entity extraction → workflow → auto-approval.`} />
+                <ProjectCard name="Command Center" tag="Developer Tool" tagColor="#10b981" description="Unified dev interface with Claude API, Google Gemini, Supabase, Gmail/Calendar integration. PWA with push notifications." />
                 <ProjectCard name="Gluten-Free Deals & Dining" tag="Cross-Platform" tagColor="#8b5cf6" description="React Native + Next.js app. LLM-generated 200+ search queries, concurrent scraping from 40+ retailers, GPS restaurant finder, AI recipe generation." />
                 <ProjectCard name="AI Agent System" tag="Multi-Agent" tagColor="#ec4899" description="5 purpose-built AI agents with tool-calling: job search, research, code review, proposals, freelance automation. Groq + Tavily + GitHub API. Deployed on HuggingFace Spaces." link="shami96-deep-agent.hf.space" />
               </Section>
@@ -687,21 +689,96 @@ function TimelineRole({ title, company, period, location, items, active }: { tit
   );
 }
 
-function ProjectCard({ name, tag, tagColor, description, link }: { name: string; tag: string; tagColor: string; description: string; link?: string }) {
+function ProjectCard({
+  name,
+  tag,
+  tagColor,
+  description,
+  link,
+  version,
+  liveLabel,
+}: {
+  name: string;
+  tag: string;
+  tagColor: string;
+  description: string;
+  link?: string;
+  version?: string;
+  liveLabel?: string;
+}) {
+  const ref = useRef<HTMLDivElement>(null);
+  const rx = useMotionValue(0);
+  const ry = useMotionValue(0);
+  const rotateX = useSpring(rx, { stiffness: 200, damping: 20 });
+  const rotateY = useSpring(ry, { stiffness: 200, damping: 20 });
+
+  const onMouseMove = (e: React.MouseEvent<HTMLDivElement>): void => {
+    const rect = ref.current?.getBoundingClientRect();
+    if (!rect) return;
+    const px = (e.clientX - rect.left) / rect.width;
+    const py = (e.clientY - rect.top) / rect.height;
+    ry.set((px - 0.5) * 7);
+    rx.set((0.5 - py) * 7);
+  };
+  const onMouseLeave = (): void => {
+    rx.set(0);
+    ry.set(0);
+  };
+
   return (
     <motion.div
-      className="p-4 rounded-lg border border-zinc-800 bg-zinc-900/30 hover:border-zinc-700 transition-all group"
-      whileHover={{ y: -2, boxShadow: `0 4px 20px ${tagColor}10` }}
+      ref={ref}
+      className="p-4 rounded-lg border border-zinc-800 bg-zinc-900/30 hover:border-zinc-700 transition-all group relative overflow-hidden"
+      onMouseMove={onMouseMove}
+      onMouseLeave={onMouseLeave}
+      style={{
+        rotateX,
+        rotateY,
+        transformPerspective: 1000,
+        transformStyle: "preserve-3d",
+      }}
+      whileHover={{ boxShadow: `0 8px 30px ${tagColor}20` }}
       initial={{ opacity: 0, y: 10 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
     >
-      <div className="flex items-baseline gap-2 mb-1">
-        <p className="font-semibold text-sm text-zinc-200 group-hover:text-white transition-colors">{name}</p>
-        <span className="text-[10px] px-1.5 py-0.5 rounded-full font-mono" style={{ color: tagColor, border: `1px solid ${tagColor}40` }}>{tag}</span>
+      {/* Top accent line appears on hover */}
+      <div
+        className="absolute top-0 left-0 right-0 h-px opacity-0 group-hover:opacity-70 transition-opacity duration-300"
+        style={{
+          background: `linear-gradient(90deg, transparent, ${tagColor}, transparent)`,
+        }}
+      />
+
+      <div className="flex items-baseline gap-2 mb-1 flex-wrap">
+        <p className="font-semibold text-sm text-zinc-200 group-hover:text-white transition-colors">
+          {name}
+        </p>
+        <span
+          className="text-[10px] px-1.5 py-0.5 rounded-full font-mono"
+          style={{ color: tagColor, border: `1px solid ${tagColor}40` }}
+        >
+          {tag}
+        </span>
+        {version && (
+          <span
+            className="text-[9px] px-1.5 py-0.5 rounded font-mono bg-zinc-800/60 text-zinc-400 tabular-nums"
+            title="live version"
+          >
+            v{version}
+          </span>
+        )}
+        {liveLabel && (
+          <span className="inline-flex items-center gap-1 text-[9px] font-mono text-green-400/80">
+            <span className="w-1 h-1 rounded-full bg-green-400 animate-pulse" />
+            {liveLabel}
+          </span>
+        )}
       </div>
       <p className="text-xs text-zinc-500 leading-relaxed">{description}</p>
-      {link && <p className="text-[10px] text-blue-400/60 mt-1.5 font-mono">{link}</p>}
+      {link && (
+        <p className="text-[10px] text-blue-400/60 mt-1.5 font-mono">{link}</p>
+      )}
     </motion.div>
   );
 }
