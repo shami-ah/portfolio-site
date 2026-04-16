@@ -1,10 +1,8 @@
 import { TopBar } from "@/components/top-bar";
 import { Hero } from "@/components/hero";
 import { About } from "@/components/about";
-import { Experience } from "@/components/experience";
-import { BeforeAfter } from "@/components/before-after";
 import { Projects } from "@/components/projects";
-import { Skills } from "@/components/skills";
+import { Experience } from "@/components/experience";
 import { Testimonials } from "@/components/testimonials";
 import { Contact } from "@/components/contact";
 import { Footer } from "@/components/footer";
@@ -23,10 +21,8 @@ export default function Home(): React.ReactElement {
       <div className="relative z-10">
         <Hero />
         <About />
-        <Experience />
-        <BeforeAfter />
         <Projects />
-        <Skills />
+        <Experience />
         <Testimonials />
         <Contact />
       </div>

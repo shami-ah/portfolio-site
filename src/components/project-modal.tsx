@@ -300,6 +300,73 @@ export function ProjectModal({
                 </div>
               </motion.div>
 
+              {/* OpenEvent-only: Before / After impact panel */}
+              {project.slug === "openevent" && (
+                <motion.div
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.4, duration: 0.35 }}
+                  className="mt-8 md:mt-10"
+                >
+                  <p className="text-[10px] md:text-xs font-mono text-accent/70 uppercase tracking-[0.2em] mb-3">
+                    Measured Impact
+                  </p>
+                  <div className="grid grid-cols-2 gap-2 md:gap-3">
+                    <div className="p-4 md:p-5 rounded-xl bg-background/50 border border-card-border">
+                      <p className="text-[9px] font-mono text-muted/60 uppercase tracking-[0.2em] mb-1.5">
+                        before
+                      </p>
+                      <p className="text-3xl md:text-5xl font-bold text-muted font-mono leading-none">
+                        ~1.5<span className="text-muted/40 text-lg md:text-2xl">hrs</span>
+                      </p>
+                      <p className="text-[10px] md:text-xs text-muted/70 mt-2">
+                        per team, per day, reading &amp; triaging email
+                      </p>
+                    </div>
+                    <div className="relative p-4 md:p-5 rounded-xl bg-gradient-to-br from-accent/10 via-background/50 to-background/50 border border-accent/30 overflow-hidden">
+                      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-accent to-transparent" />
+                      <p className="text-[9px] font-mono text-accent uppercase tracking-[0.2em] mb-1.5 flex items-center gap-1.5">
+                        <span className="w-1 h-1 rounded-full bg-green-400 animate-pulse" />
+                        after
+                      </p>
+                      <p className="text-3xl md:text-5xl font-bold text-accent font-mono leading-none">
+                        ~15<span className="text-accent/50 text-lg md:text-2xl">min</span>
+                      </p>
+                      <p className="text-[10px] md:text-xs text-muted mt-2">
+                        review AI-drafted actions &amp; approve
+                      </p>
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-3 gap-2 mt-2">
+                    {[
+                      { n: "100+", l: "active clients" },
+                      { n: "150+", l: "events run" },
+                      { n: "83%", l: "time saved" },
+                    ].map((s, i) => (
+                      <div
+                        key={s.l}
+                        className={`p-2.5 rounded-lg text-center ${
+                          i === 2
+                            ? "bg-accent/10 border border-accent/30"
+                            : "bg-background/50 border border-card-border"
+                        }`}
+                      >
+                        <p
+                          className={`text-base md:text-lg font-bold font-mono tabular-nums ${
+                            i === 2 ? "text-accent" : "text-foreground/90"
+                          }`}
+                        >
+                          {s.n}
+                        </p>
+                        <p className="text-[9px] text-muted/60 uppercase tracking-wider">
+                          {s.l}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                </motion.div>
+              )}
+
               {/* Key Results */}
               {project.results && project.results.length > 0 && (
                 <motion.div
