@@ -60,20 +60,45 @@ export function TerminalBoot({ force = false, onDone }: BootProps): React.ReactE
     }
   };
 
-  // Mount decision
+  // Mount decision: show on every fresh load (reload, direct URL, external
+  // referrer). Skip when arriving from an internal page like /cv or /journey.
   useEffect(() => {
     if (typeof window === "undefined") return;
-    if (!force && sessionStorage.getItem("boot-seen")) {
+
+    // Load sound preference regardless
+    const saved = localStorage.getItem("boot-sound");
+    if (saved === "1") setSoundOn(true);
+
+    if (force) {
+      setVisible(true);
+      return;
+    }
+
+    // Detect internal navigation: if the user just came from /cv, /journey,
+    // or a /projects/* page, don't replay the intro.
+    let cameFromInternal = false;
+    try {
+      const ref = document.referrer;
+      if (ref) {
+        const refUrl = new URL(ref);
+        if (refUrl.origin === window.location.origin) {
+          const p = refUrl.pathname;
+          if (p !== "/" && p !== "") cameFromInternal = true;
+        }
+      }
+    } catch {
+      // ignore malformed referrer
+    }
+
+    if (cameFromInternal) {
       sessionStorage.setItem("boot-complete", "1");
       window.dispatchEvent(new CustomEvent("boot-complete"));
       return;
     }
-    // Load sound preference
-    const saved = localStorage.getItem("boot-sound");
-    if (saved === "1") setSoundOn(true);
 
+    // Clear any stale flags from previous sessions and show
+    sessionStorage.removeItem("boot-complete");
     setVisible(true);
-    sessionStorage.setItem("boot-seen", "1");
   }, [force]);
 
   const dismiss = (): void => {

@@ -14,6 +14,7 @@ import { CommandPalette } from "@/components/command-palette";
 import { ScrollProgress } from "@/components/scroll-progress";
 import { HueShift } from "@/components/hue-shift";
 import { EasterEggs } from "@/components/easter-eggs";
+import { DiscoveryToast } from "@/components/discovery-toast";
 
 export default function Home(): React.ReactElement {
   return (
@@ -36,6 +37,7 @@ export default function Home(): React.ReactElement {
       </div>
       <Footer />
       <CommandPalette />
+      <DiscoveryToast />
     </main>
   );
 }
