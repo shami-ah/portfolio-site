@@ -1,6 +1,7 @@
 "use client";
 
 import { FadeUp } from "./motion";
+import { CvCounter } from "./cv-counter";
 
 const links = [
   {
@@ -128,6 +129,7 @@ export function Contact(): React.ReactElement {
             <span className="text-muted font-medium">Wadware House</span>
             {" "}for agency projects.
           </p>
+          <CvCounter />
         </FadeUp>
       </div>
     </section>

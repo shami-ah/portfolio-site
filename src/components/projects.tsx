@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { projects, type ProjectData } from "@/data/projects";
 import { FadeUp } from "./motion";
 import { ProjectModal } from "./project-modal";
@@ -41,7 +41,7 @@ function ProjectCard({
             {project.type}
           </span>
           <div className="flex items-center gap-2">
-            {project.live && !project.github && (
+            {project.live && (
               <span className="flex items-center gap-1 text-[10px] font-mono text-green-400/80">
                 <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
                 Live
@@ -104,6 +104,36 @@ export function Projects(): React.ReactElement {
   const featured = projects.filter((p) => p.featured);
   const others = projects.filter((p) => !p.featured);
 
+  // Gallery navigation
+  const navigate = useCallback(
+    (dir: 1 | -1) => {
+      setActiveProject((current) => {
+        if (!current) return current;
+        const idx = projects.findIndex((p) => p.slug === current.slug);
+        if (idx === -1) return current;
+        const next = (idx + dir + projects.length) % projects.length;
+        return projects[next];
+      });
+    },
+    [],
+  );
+
+  // Listen for command palette project-open events
+  useEffect(() => {
+    const onOpen = (e: Event): void => {
+      const ce = e as CustomEvent<string>;
+      const match = projects.find((p) => p.slug === ce.detail);
+      if (match) {
+        document
+          .getElementById("projects")
+          ?.scrollIntoView({ behavior: "smooth", block: "start" });
+        setTimeout(() => setActiveProject(match), 400);
+      }
+    };
+    window.addEventListener("open-project", onOpen);
+    return () => window.removeEventListener("open-project", onOpen);
+  }, []);
+
   return (
     <section id="projects" className="py-20 md:py-32">
       <div className="max-w-6xl mx-auto px-5 md:px-6">
@@ -150,6 +180,7 @@ export function Projects(): React.ReactElement {
       <ProjectModal
         project={activeProject}
         onClose={() => setActiveProject(null)}
+        onNavigate={navigate}
       />
     </section>
   );

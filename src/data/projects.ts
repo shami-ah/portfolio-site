@@ -149,6 +149,7 @@ export const projects: ProjectData[] = [
       "Serving active clients in production",
       "Full CI/CD pipeline with staging and production environments",
     ],
+    live: "https://openevent.io",
     featured: true,
   },
   {

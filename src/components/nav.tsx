@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import { NavTicker } from "./nav-ticker";
 
 const links = [
   { href: "#about", label: "About" },
@@ -33,12 +34,15 @@ export function Nav(): React.ReactElement {
       }`}
     >
       <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
-        <a
-          href="#"
-          className="font-mono text-sm font-bold tracking-wider text-accent"
-        >
-          Ahtesham Ahmad
-        </a>
+        <div className="flex items-center gap-4">
+          <a
+            href="#"
+            className="font-mono text-sm font-bold tracking-wider text-accent shrink-0"
+          >
+            Ahtesham Ahmad
+          </a>
+          <NavTicker />
+        </div>
 
         {/* Desktop */}
         <div className="hidden md:flex items-center gap-8">

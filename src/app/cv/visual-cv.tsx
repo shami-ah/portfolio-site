@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
+import { useCvHit } from "@/components/cv-counter";
 
 const ACCENT = "#3b82f6";
 const AMBER = "#f59e0b";
@@ -102,9 +103,18 @@ function TimelineDot({ active }: { active?: boolean }) {
 }
 
 export function VisualCV(): React.ReactElement {
+  useCvHit();
   const handleDownload = () => window.print();
   const searchParams = useSearchParams();
   const preview = searchParams.get("preview") === "true";
+
+  // Auto-fire print dialog when coming from command palette with ?print=1
+  useEffect(() => {
+    if (searchParams.get("print") === "1") {
+      const t = setTimeout(() => window.print(), 600);
+      return () => clearTimeout(t);
+    }
+  }, [searchParams]);
 
   const flowSteps = ["Ingest", "Classify", "Orchestrate", "Review", "Execute", "Observe"];
 
