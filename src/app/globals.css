@@ -66,21 +66,3 @@ html {
   background: var(--muted);
 }
 
-/* Custom cursor — only when active class is on html and device has fine pointer */
-@media (hover: hover) and (pointer: fine) {
-  html.custom-cursor-active,
-  html.custom-cursor-active body,
-  html.custom-cursor-active a,
-  html.custom-cursor-active button,
-  html.custom-cursor-active [role="button"],
-  html.custom-cursor-active summary,
-  html.custom-cursor-active label {
-    cursor: none;
-  }
-  /* Keep native cursor on text fields for accessibility */
-  html.custom-cursor-active input,
-  html.custom-cursor-active textarea,
-  html.custom-cursor-active [contenteditable] {
-    cursor: text;
-  }
-}

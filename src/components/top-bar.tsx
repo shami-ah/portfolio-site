@@ -55,15 +55,9 @@ export function TopBar(): React.ReactElement {
           scrolled ? "bg-background/70 backdrop-blur-md" : ""
         }`}
       >
-        <p className="text-[9px] md:text-[10px] font-mono text-accent uppercase tracking-[0.3em] mb-0.5">
-          Engr.
-        </p>
-        <h1 className="text-base md:text-2xl font-bold tracking-tight leading-none">
+        <h1 className="text-sm md:text-xl font-bold tracking-tight leading-none">
           Ahtesham Ahmad
         </h1>
-        <p className="text-[8px] md:text-[10px] font-mono text-muted/50 uppercase tracking-[0.2em] mt-1">
-          AI Automation Architect
-        </p>
       </motion.a>
 
       {/* Actions — top-right · hides when modal open */}

@@ -118,15 +118,10 @@ const commands: AgentCommand[] = [
     confidence: 0.93,
     steps: [
       { name: "classify_intent", detail: "label: feature_walkthrough · conf 0.93", ms: 32 },
-      { name: "route_to_tool", detail: "→ navigate", ms: 5 },
-      { name: "execute", detail: "target: /build", ms: 35 },
+      { name: "load_pipeline", detail: "6-step delivery pipeline", ms: 12 },
+      { name: "render_pipeline", detail: "product → architect → spec → scaffold → review → ship", ms: 28 },
     ],
-    response: "Launching 6-step feature build walkthrough. Architect → spec → scaffold → review → ship.",
-    action: () => {
-      setTimeout(() => {
-        window.location.href = "/build";
-      }, 450);
-    },
+    response: "Here's the 6-step pipeline I follow for every feature: product outcome first, architecture doc, spec with schema/RLS, agent scaffolds from the spec, CodeLens catches what I miss, ship behind a feature flag. That's it. Every project. Every time.",
   },
   {
     keyword: "chat",
@@ -169,11 +164,9 @@ const commands: AgentCommand[] = [
       { name: "route_to_tool", detail: "→ reset_session", ms: 8 },
       { name: "execute", detail: "clearing flags…", ms: 40 },
     ],
-    response: "Rebooting portfolio…",
+    response: "Replaying intro sequence...",
     action: () => {
-      sessionStorage.removeItem("boot-seen");
-      sessionStorage.removeItem("boot-complete");
-      setTimeout(() => window.location.reload(), 550);
+      window.dispatchEvent(new CustomEvent("replay-intro"));
     },
   },
   {

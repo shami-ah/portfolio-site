@@ -10,8 +10,6 @@ import { TerminalBoot } from "@/components/terminal-boot";
 import { CommandPalette } from "@/components/command-palette";
 import { AgentBar } from "@/components/agent-bar";
 import { ShortcutsOverlay } from "@/components/shortcuts-overlay";
-import { Cursor } from "@/components/cursor";
-import { CursorPresence } from "@/components/cursor-presence";
 
 export default function Home(): React.ReactElement {
   return (
@@ -30,8 +28,6 @@ export default function Home(): React.ReactElement {
       <CommandPalette />
       <AgentBar />
       <ShortcutsOverlay />
-      <CursorPresence />
-      <Cursor />
     </main>
   );
 }

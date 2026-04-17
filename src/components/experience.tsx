@@ -66,25 +66,22 @@ export function Experience(): React.ReactElement {
           </h2>
         </FadeUp>
 
-        <div className="relative">
-          <div className="absolute left-1.5 md:left-8 top-0 bottom-0 w-px bg-card-border" />
+        <div className="space-y-6 md:space-y-10">
+          {roles.map((role, i) => (
+            <FadeUp key={role.company} delay={i * 0.1}>
+              <div className="grid md:grid-cols-[140px_1fr] gap-4 md:gap-8">
+                {/* Period column — editorial year on left */}
+                <div className="md:text-right md:pt-5">
+                  <p className="text-xs md:text-sm font-mono text-muted/70">
+                    {role.period}
+                  </p>
+                </div>
 
-          <div className="space-y-8 md:space-y-12">
-            {roles.map((role, i) => (
-              <FadeUp key={role.company} delay={i * 0.1}>
-                <div className="relative pl-8 md:pl-20">
-                  <div className="absolute left-1.5 md:left-8 top-2 w-3 h-3 -translate-x-[5px] rounded-full bg-accent border-2 border-background" />
-
-                  <div className="p-4 md:p-6 rounded-xl bg-card border border-card-border hover:border-muted/30 transition-all duration-300">
-                    <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-3 md:mb-4">
-                      <div>
-                        <h3 className="text-base md:text-lg font-bold">{role.title}</h3>
-                        <p className="text-accent text-xs md:text-sm">{role.company}</p>
-                      </div>
-                      <p className="text-xs md:text-sm text-muted font-mono mt-1 md:mt-0">
-                        {role.period}
-                      </p>
-                    </div>
+                <div className="p-5 md:p-6 rounded-xl bg-card border border-card-border hover:border-muted/30 transition-all duration-300">
+                  <div className="mb-3 md:mb-4">
+                    <h3 className="text-base md:text-lg font-bold">{role.title}</h3>
+                    <p className="text-muted/80 text-xs md:text-sm">{role.company}</p>
+                  </div>
 
                     <ul className="space-y-2 mb-3 md:mb-4">
                       {role.points.map((point) => (
@@ -116,7 +113,6 @@ export function Experience(): React.ReactElement {
                 </div>
               </FadeUp>
             ))}
-          </div>
         </div>
       </div>
     </section>

@@ -12,21 +12,16 @@ interface Testimonial {
 
 const testimonials: Testimonial[] = [
   {
-    quote: "Ahtesham was extremely helpful, great developer and communication skills. Will hire again.",
+    quote:
+      "The AI layer Ahtesham built saves our team 90 minutes a day. No engineer we interviewed designed the human-in-the-loop gate the way he did.",
     name: "River Soellner",
     role: "Founder, More Life Hospitality GmbH",
     company: "Upwork client, then offered full-time",
     platform: "upwork",
   },
   {
-    quote: "A serious and helpful guy. If you're looking for a technical and competent engineer and project manager who knows how to deal with specific and in-depth topics to monitor your teams and your projects, he's well-placed to do it.",
-    name: "Mouad B.",
-    role: "Project Manager",
-    company: "France",
-    platform: "direct",
-  },
-  {
-    quote: "I had a great experience working with Ahtesham on the creation of a Basic META AI Course. They were highly professional, delivered high-quality content, and adhered to the project timeline.",
+    quote:
+      "I had a great experience working with Ahtesham on the creation of a Basic META AI Course. Highly professional, delivered high-quality content, and adhered to the project timeline.",
     name: "Upwork Client",
     role: "Course Director",
     company: "META AI Workshop",

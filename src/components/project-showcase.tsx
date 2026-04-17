@@ -77,7 +77,7 @@ export function ProjectShowcase({
             onClick={() => onOpen(project)}
             className="inline-flex items-center gap-2 px-4 py-2 text-sm bg-accent text-white font-medium rounded-lg hover:bg-accent/90 hover:shadow-lg hover:shadow-accent/20 transition-all"
           >
-            Quick overview
+            Open
           </button>
           <a
             href={`/projects/${project.slug}`}

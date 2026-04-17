@@ -1,28 +1,16 @@
 "use client";
 
 import { useEffect, useState, useRef } from "react";
-import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { Magnetic } from "./magnetic";
 import { useStatus } from "@/lib/use-status";
 import { HeroFlow } from "./hero-flow";
 
-const taglines = [
-  {
-    prefix: "I build AI systems that",
-    accent: "run businesses",
-    suffix: "on their own.",
-  },
-  {
-    prefix: "I design architectures where",
-    accent: "humans stay in control",
-    suffix: "while AI does the work.",
-  },
-  {
-    prefix: "I ship production tools that",
-    accent: "catch bugs",
-    suffix: "commercial options miss.",
-  },
-];
+const tagline = {
+  prefix: "I build AI systems that",
+  accent: "run businesses on their own,",
+  suffix: "while humans stay in control.",
+};
 
 /** Word-wave fade reveal for a single string. */
 function WordReveal({
@@ -59,7 +47,6 @@ function WordReveal({
 export function Hero(): React.ReactElement {
   const { status } = useStatus();
   const [ready, setReady] = useState(false);
-  const [tagIdx, setTagIdx] = useState(0);
   const heroRef = useRef<HTMLElement>(null);
 
   const { scrollY } = useScroll();
@@ -84,17 +71,6 @@ export function Hero(): React.ReactElement {
     };
   }, []);
 
-  // Rotate taglines every 5.5s after initial reveal
-  useEffect(() => {
-    if (!ready) return;
-    const initial = setTimeout(() => {
-      const interval = setInterval(() => {
-        setTagIdx((i) => (i + 1) % taglines.length);
-      }, 5500);
-      return () => clearInterval(interval);
-    }, 6000);
-    return () => clearTimeout(initial);
-  }, [ready]);
 
   return (
     <section
@@ -135,31 +111,18 @@ export function Hero(): React.ReactElement {
           Open to opportunities
         </motion.div>
 
-        {/* Rotating heading */}
-        <div className="relative mb-5 md:mb-6 min-h-[120px] sm:min-h-[140px] md:min-h-[180px] lg:min-h-[220px] flex items-start justify-center">
-          <AnimatePresence mode="wait">
-            {ready && (
-              <motion.h1
-                key={tagIdx}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.5 }}
-                className="text-[28px] sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight leading-[1.15] absolute inset-x-0"
-              >
-                <WordReveal text={taglines[tagIdx].prefix} delay={0.55} />
-                <br className="hidden sm:block" />
-                <span className="text-accent">
-                  <WordReveal
-                    text={` ${taglines[tagIdx].accent} `}
-                    delay={0.9}
-                  />
-                </span>
-                <WordReveal text={taglines[tagIdx].suffix} delay={1.1} />
-              </motion.h1>
-            )}
-          </AnimatePresence>
-        </div>
+        {/* Single confident tagline */}
+        {ready && (
+          <h1 className="text-[28px] sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight leading-[1.15] mb-5 md:mb-6">
+            <WordReveal text={tagline.prefix} delay={0.55} />
+            <br className="hidden sm:block" />
+            <span className="text-accent">
+              <WordReveal text={` ${tagline.accent}`} delay={0.9} />
+            </span>
+            <br className="hidden sm:block" />
+            <WordReveal text={tagline.suffix} delay={1.2} />
+          </h1>
+        )}
 
         {/* Subheading */}
         <motion.p

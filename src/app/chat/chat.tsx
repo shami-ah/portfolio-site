@@ -20,7 +20,7 @@ export function ChatCV(): React.ReactElement {
       id: "intro",
       role: "assistant",
       content:
-        "Hi — I'm an AI interface to Ahtesham's work. Ask me anything: rate, stack, availability, which tools he's built, or how you'd work together. I answer from a scoped knowledge base so I won't hallucinate.",
+        "Hi. I'm an AI assistant scoped to Ahtesham's portfolio. Ask me about his rate, stack, availability, the tools he's built, or how you'd work together. I use his full portfolio as context.",
     },
   ]);
   const [input, setInput] = useState("");
@@ -39,25 +39,10 @@ export function ChatCV(): React.ReactElement {
     inputRef.current?.focus();
   }, []);
 
-  const streamAnswer = async (query: string): Promise<void> => {
-    setIsThinking(true);
-    // Simulate "thinking" delay
-    await new Promise((r) => setTimeout(r, 400 + Math.random() * 300));
-    setIsThinking(false);
-
-    const entry = findAnswer(query);
-    const full = entry ? entry.response : FALLBACK;
-
-    const id = `a-${Date.now()}`;
-    setMessages((prev) => [
-      ...prev,
-      { id, role: "assistant", content: "", streaming: true },
-    ]);
-
-    // Stream word by word
-    const words = full.split(" ");
+  const streamWords = async (id: string, text: string): Promise<void> => {
+    const words = text.split(" ");
     for (let i = 0; i < words.length; i++) {
-      await new Promise((r) => setTimeout(r, 28 + Math.random() * 30));
+      await new Promise((r) => setTimeout(r, 22 + Math.random() * 25));
       setMessages((prev) =>
         prev.map((m) =>
           m.id === id
@@ -69,6 +54,41 @@ export function ChatCV(): React.ReactElement {
     setMessages((prev) =>
       prev.map((m) => (m.id === id ? { ...m, streaming: false } : m)),
     );
+  };
+
+  const streamAnswer = async (query: string): Promise<void> => {
+    setIsThinking(true);
+
+    const id = `a-${Date.now()}`;
+    let answer = "";
+
+    // Try Groq RAG first, fall back to local KB
+    try {
+      const res = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: query }),
+      });
+      if (res.ok) {
+        const data = (await res.json()) as { answer: string };
+        answer = data.answer;
+      }
+    } catch {
+      // API unavailable — silent fallback
+    }
+
+    // If API returned nothing useful, try local KB
+    if (!answer) {
+      const entry = findAnswer(query);
+      answer = entry ? entry.response : FALLBACK;
+    }
+
+    setIsThinking(false);
+    setMessages((prev) => [
+      ...prev,
+      { id, role: "assistant", content: "", streaming: true },
+    ]);
+    await streamWords(id, answer);
   };
 
   const send = (q: string): void => {
@@ -215,8 +235,8 @@ export function ChatCV(): React.ReactElement {
           </button>
         </div>
         <p className="text-[9px] md:text-[10px] font-mono text-muted/30 text-center pb-2 px-4">
-          not a real LLM · scoped keyword-matched knowledge base · answers come
-          from a curated set
+          powered by Groq · scoped to portfolio context · polite fallback if
+          outside scope
         </p>
       </form>
     </main>

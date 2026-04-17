@@ -60,51 +60,44 @@ export function TerminalBoot({ force = false, onDone }: BootProps): React.ReactE
     }
   };
 
-  // Mount decision: show on every fresh load (reload, direct URL, external
-  // referrer). Skip when arriving from an internal page like /cv or /journey.
+  // Mount decision: show ONCE (persisted via localStorage). After that,
+  // never on reload unless a "replay-intro" event is dispatched or the
+  // localStorage flag is manually cleared (via /replay command).
   useEffect(() => {
     if (typeof window === "undefined") return;
 
-    // Load sound preference regardless
     const saved = localStorage.getItem("boot-sound");
     if (saved === "1") setSoundOn(true);
 
-    if (force) {
+    const seen = localStorage.getItem("boot-ever-seen") === "1";
+
+    // Listen for replay events (from agent/palette commands)
+    const onReplay = (): void => {
+      localStorage.removeItem("boot-ever-seen");
+      sessionStorage.removeItem("boot-complete");
+      setPhase("intro");
+      setIntroTyped(0);
+      setCheckStep(0);
       setVisible(true);
-      return;
+    };
+    window.addEventListener("replay-intro", onReplay);
+
+    if (force || !seen) {
+      setVisible(true);
+      return () => window.removeEventListener("replay-intro", onReplay);
     }
 
-    // Detect internal navigation: if the user just came from /cv, /journey,
-    // or a /projects/* page, don't replay the intro.
-    let cameFromInternal = false;
-    try {
-      const ref = document.referrer;
-      if (ref) {
-        const refUrl = new URL(ref);
-        if (refUrl.origin === window.location.origin) {
-          const p = refUrl.pathname;
-          if (p !== "/" && p !== "") cameFromInternal = true;
-        }
-      }
-    } catch {
-      // ignore malformed referrer
-    }
-
-    if (cameFromInternal) {
-      sessionStorage.setItem("boot-complete", "1");
-      window.dispatchEvent(new CustomEvent("boot-complete"));
-      return;
-    }
-
-    // Clear any stale flags from previous sessions and show
-    sessionStorage.removeItem("boot-complete");
-    setVisible(true);
+    // Already seen — signal complete immediately so Hero etc. can proceed
+    sessionStorage.setItem("boot-complete", "1");
+    window.dispatchEvent(new CustomEvent("boot-complete"));
+    return () => window.removeEventListener("replay-intro", onReplay);
   }, [force]);
 
   const dismiss = (): void => {
     setPhase("exit");
     setTimeout(() => {
       setVisible(false);
+      localStorage.setItem("boot-ever-seen", "1");
       sessionStorage.setItem("boot-complete", "1");
       window.dispatchEvent(new CustomEvent("boot-complete"));
       onDone?.();

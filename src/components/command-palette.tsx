@@ -123,15 +123,6 @@ export function CommandPalette(): React.ReactElement {
         },
       },
       {
-        id: "build",
-        label: "Watch me ship a real feature",
-        hint: "6 steps: architect → spec → scaffold → review → ship",
-        group: "Resources",
-        action: () => {
-          window.location.href = "/build";
-        },
-      },
-      {
         id: "faq",
         label: "Jump to FAQ",
         hint: "Rates · timezone · how I work",
@@ -173,9 +164,7 @@ export function CommandPalette(): React.ReactElement {
         hint: "Re-run the boot animation",
         group: "Resources",
         action: () => {
-          sessionStorage.removeItem("boot-seen");
-          sessionStorage.removeItem("boot-complete");
-          window.location.reload();
+          window.dispatchEvent(new CustomEvent("replay-intro"));
         },
       },
     ],

@@ -231,7 +231,7 @@ export function Projects(): React.ReactElement {
         <div className="pt-6 md:pt-10 border-t border-card-border/50">
           <FadeUp>
             <p className="text-xs font-mono text-muted/60 uppercase tracking-wider mb-5 md:mb-6">
-              more experiments &amp; tools
+              Other work
             </p>
           </FadeUp>
           <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4">
