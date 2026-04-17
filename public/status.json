@@ -2,7 +2,7 @@
   "$schema": "https://ahtesham.dev/status.schema.json",
   "updated": "2026-04-17",
   "gogaa": {
-    "version": "0.9.1",
+    "version": "0.10.0",
     "tests": 1418,
     "providers": 11,
     "status": "private beta"
@@ -24,7 +24,7 @@
     "yearsBuilding": 5
   },
   "currentlyBuilding": {
-    "label": "Gogaa v0.9.2",
+    "label": "Gogaa v0.10.1",
     "detail": "parallel panes streaming"
   }
 }

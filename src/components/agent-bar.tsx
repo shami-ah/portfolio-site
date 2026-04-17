@@ -4,6 +4,103 @@ import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 /* ------------------------------------------------------------------ */
+/*  Build pipeline popup — 5-second centered overlay                  */
+/* ------------------------------------------------------------------ */
+
+const BUILD_STEPS = [
+  { label: "Product", detail: "Pin the outcome" },
+  { label: "Architect", detail: "Sketch the flow" },
+  { label: "Spec", detail: "Schema + RLS + edge cases" },
+  { label: "Scaffold", detail: "Agent generates from spec" },
+  { label: "Review", detail: "CodeLens catches what I miss" },
+  { label: "Ship", detail: "Feature flag, 10%, then 100%" },
+];
+
+function BuildPopup({ onDone }: { onDone: () => void }): React.ReactElement {
+  const [step, setStep] = useState(0);
+
+  useEffect(() => {
+    if (step < BUILD_STEPS.length) {
+      const t = setTimeout(() => setStep((s) => s + 1), 650);
+      return () => clearTimeout(t);
+    }
+    const t = setTimeout(onDone, 1200);
+    return () => clearTimeout(t);
+  }, [step, onDone]);
+
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.3 }}
+      className="fixed inset-0 z-[180] flex items-center justify-center px-4"
+      onClick={onDone}
+    >
+      <div className="absolute inset-0 bg-background/70 backdrop-blur-md" />
+      <motion.div
+        initial={{ opacity: 0, scale: 0.92, y: 10 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        exit={{ opacity: 0, scale: 0.92, y: 10 }}
+        transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+        className="relative w-full max-w-sm rounded-2xl bg-card/95 border border-accent/30 shadow-2xl shadow-accent/20 p-6 md:p-8"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <p className="text-[10px] font-mono text-accent uppercase tracking-[0.25em] mb-5 flex items-center gap-2">
+          <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
+          how I ship every feature
+        </p>
+
+        <div className="space-y-2.5">
+          {BUILD_STEPS.map((s, i) => (
+            <motion.div
+              key={s.label}
+              initial={{ opacity: 0, x: -8 }}
+              animate={i < step ? { opacity: 1, x: 0 } : { opacity: 0.15, x: 0 }}
+              transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+              className="flex items-center gap-3"
+            >
+              <span className={`text-[10px] font-mono tabular-nums w-5 text-right shrink-0 ${i < step ? "text-accent" : "text-muted/30"}`}>
+                {String(i + 1).padStart(2, "0")}
+              </span>
+              <div className="flex-1 min-w-0">
+                <p className={`text-sm font-bold ${i < step ? "text-foreground" : "text-muted/40"}`}>
+                  {s.label}
+                </p>
+                <p className={`text-[11px] ${i < step ? "text-muted" : "text-muted/30"}`}>
+                  {s.detail}
+                </p>
+              </div>
+              {i < step && (
+                <motion.span
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  className="text-green-400 shrink-0"
+                >
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                    <polyline points="20 6 9 17 4 12" />
+                  </svg>
+                </motion.span>
+              )}
+            </motion.div>
+          ))}
+        </div>
+
+        {step >= BUILD_STEPS.length && (
+          <motion.p
+            initial={{ opacity: 0, y: 4 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="mt-5 pt-4 border-t border-card-border text-xs text-muted text-center"
+          >
+            Every project. Every time.
+          </motion.p>
+        )}
+      </motion.div>
+    </motion.div>
+  );
+}
+
+/* ------------------------------------------------------------------ */
 /*  Commands — each is a full "agent trace" the user can trigger      */
 /* ------------------------------------------------------------------ */
 
@@ -119,9 +216,9 @@ const commands: AgentCommand[] = [
     steps: [
       { name: "classify_intent", detail: "label: feature_walkthrough · conf 0.93", ms: 32 },
       { name: "load_pipeline", detail: "6-step delivery pipeline", ms: 12 },
-      { name: "render_pipeline", detail: "product → architect → spec → scaffold → review → ship", ms: 28 },
     ],
-    response: "Here's the 6-step pipeline I follow for every feature: product outcome first, architecture doc, spec with schema/RLS, agent scaffolds from the spec, CodeLens catches what I miss, ship behind a feature flag. That's it. Every project. Every time.",
+    response: "Rendering the pipeline now.",
+    action: () => window.dispatchEvent(new CustomEvent("show-build-popup")),
   },
   {
     keyword: "chat",
@@ -216,7 +313,15 @@ export function AgentBar(): React.ReactElement {
   const [shownSteps, setShownSteps] = useState(0);
   const [showResponse, setShowResponse] = useState(false);
   const [dismissed, setDismissed] = useState(false);
+  const [showBuildPopup, setShowBuildPopup] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
+
+  // Listen for build popup trigger
+  useEffect(() => {
+    const handler = (): void => setShowBuildPopup(true);
+    window.addEventListener("show-build-popup", handler);
+    return () => window.removeEventListener("show-build-popup", handler);
+  }, []);
 
   /* Always open immediately unless the user has explicitly dismissed it.
      If boot is still running, wait for 'boot-complete' then appear. */
@@ -514,6 +619,13 @@ export function AgentBar(): React.ReactElement {
               </AnimatePresence>
             </div>
           </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Build pipeline popup */}
+      <AnimatePresence>
+        {showBuildPopup && (
+          <BuildPopup onDone={() => setShowBuildPopup(false)} />
         )}
       </AnimatePresence>
     </div>

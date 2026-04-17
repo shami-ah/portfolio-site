@@ -196,6 +196,26 @@ export function ChatCV(): React.ReactElement {
             </div>
           </div>
         )}
+
+        {/* Book a call CTA — appears after at least 2 exchanges */}
+        {messages.length >= 3 && !isThinking && (
+          <div className="max-w-3xl mx-auto px-4 md:px-6 pb-6 text-center">
+            <a
+              href="https://calendly.com/shami8024/30min"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-accent text-white text-sm font-medium hover:bg-accent/90 hover:shadow-lg hover:shadow-accent/20 transition-all"
+            >
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+                <line x1="16" y1="2" x2="16" y2="6" />
+                <line x1="8" y1="2" x2="8" y2="6" />
+                <line x1="3" y1="10" x2="21" y2="10" />
+              </svg>
+              Book a 15-min call
+            </a>
+          </div>
+        )}
       </div>
 
       {/* Input */}
