@@ -36,35 +36,37 @@ export const projects: ProjectData[] = [
   {
     slug: "codelens",
     title: "CodeLens",
-    subtitle: "Universal AI Code Review System (v0.3.3, 305 patterns)",
+    subtitle: "Universal AI Code Review System (v0.3.4, 339 patterns)",
     type: "AI Dev Tool",
-    impact: "I spent months cataloguing every category of production bug I kept seeing across client projects: missing auth guards, silent N+1 queries, race conditions, taint paths that reach SQL. The result is 305 hand-crafted patterns across 9 stacks that run in under one second, entirely on your machine. No cloud. No latency. Code never leaves the repo.",
+    impact: "I spent months cataloguing every category of production bug I kept seeing across client projects: missing auth guards, silent N+1 queries, race conditions, taint paths that reach SQL. The result is 339 hand-crafted patterns across 9 stacks that run in under one second, entirely on your machine. No cloud. No latency. Code never leaves the repo. The pattern library grows continuously through two pipelines: a Glean pipeline that mines production PRs, and an Agent Harvest system that cross-compares findings from 19 community reviewer agents to identify detection gaps.",
     problem:
       "Every code review tool I evaluated made the same tradeoff. Fast but shallow (regex linters), or deep but slow and cloud-dependent (AI tools that send your code to a third party). Neither caught the bugs that actually ship: the ones that look fine in isolation but break when a schema changes, when user input flows through three layers unvalidated, or when a test suite silently diverges from the live code. And none of them could talk to the AI coding assistant sitting next to them and say: don't generate that pattern.",
     solution:
-      "A hybrid review engine that runs 305 deterministic patterns first, builds a persistent codebase index (call graph, schema graph, column registry, type graph), then layers AI reasoning on top for deep cross-file analysis. The pattern library took months to build. Each rule is hand-crafted against real failure cases, mapped to OWASP/CWE, and validated against real production repos: vercel/next.js, discourse/discourse, monicahq/monica, spring-petclinic. The feature I'm most proud of is Guardian mode. It injects the full pattern library directly into Claude Code, Cursor, Windsurf, Copilot, and Codex, shifting bug prevention to before the code is even written. I run it on every project I touch. The pattern library grows continuously through a Glean pipeline that extracts generalizable findings from real production PRs and imports them as new detection rules.",
+      "A hybrid review engine that runs 339 deterministic patterns first, builds a persistent codebase index (call graph, schema graph, column registry, type graph), then layers AI reasoning on top for deep cross-file analysis. The pattern library took months to build. Each rule is hand-crafted against real failure cases, mapped to OWASP/CWE, and validated against real production repos: vercel/next.js, discourse/discourse, monicahq/monica, spring-petclinic. The feature I'm most proud of is Guardian mode. It injects the full pattern library directly into Claude Code, Cursor, Windsurf, Copilot, and Codex, shifting bug prevention to before the code is even written. I run it on every project I touch. The pattern library grows through two pipelines: a Glean pipeline that extracts generalizable findings from real production PRs, and an Agent Harvest system that runs 19 community reviewer agents alongside CodeLens and converts any detection gap into a new pattern.",
     architecture: [
       "Git Diff",
       "AST-aware File Parser",
       "Persistent Index (call graph + schema graph + type graph + column registry)",
       "Incremental Update (60ms)",
       "Pass 0-2: Pre-flight, Layer Analysis, Cross-file Tracing",
-      "Pass 3: Pattern Scan (305 patterns, 9 stacks) + AI Agent Auto-Detection",
+      "Pass 3: Pattern Scan (339 patterns, 9 stacks) + AI Agent Auto-Detection",
       "Pass 3.5: Taint Tracking + Test Coverage + Dep Vulns",
       "Pass 4: Self-Validation + PR Risk Score",
       "AI Reasoning Layer (Claude / Codex / Gemini)",
       "Self-Learning Feedback Loop",
       "Glean Pipeline (extracts novel patterns from production PR reviews)",
+      "Agent Harvest System (cross-compares 19 community agents to find detection gaps)",
     ],
     features: [
-      "305 hand-crafted patterns across 9 stacks (TypeScript, Python, Go, Java, Ruby, PHP, Next.js, FastAPI, Spring Boot). Every rule maps to a real production failure mode, tagged with OWASP/CWE",
+      "339 hand-crafted patterns across 9 stacks (TypeScript, Python, Go, Java, Ruby, PHP, Next.js, FastAPI, Spring Boot). Every rule maps to a real production failure mode, tagged with OWASP/CWE",
       "Guardian mode injects pattern rules into Claude Code, Cursor, Windsurf, Copilot, and Codex at the prompt level. Bugs are prevented during generation, not just caught after",
       "Security taint tracking: a 222-line source-to-sink tracer that follows user input through API handlers, business logic, and DB calls. Flags unsanitized paths to SQL, exec, and innerHTML with CWE mapping",
       "PR Risk Score: weighted 1-10 rating across 8 factors (auth changes, schema mods, missing tests, dependency changes, error handler removal, API surface, config edits, file count)",
       "Persistent codebase index: call graph, schema graph, column registry, and type graph stored in .code-review/. 62K+ edges on a real production codebase, rebuilt incrementally in 60ms",
       "Self-learning noise filter tracks which findings developers act on vs dismiss, uses TF-IDF similarity to auto-suppress patterns that are consistently ignored in this codebase. Fully local, no cloud ML",
       "Code explanation command: codelens explain <file> uses the call graph to show callers, callees, data flow, and risk surface. Useful when onboarding to an unfamiliar codebase",
-      "Glean pipeline: processes real production PR reviews, extracts generalizable bug patterns, deduplicates against the existing library, and produces import-ready pattern candidates. 500+ PRs processed to date",
+      "Glean pipeline: processes real production PR reviews, extracts generalizable bug patterns, deduplicates against the existing library, and produces import-ready pattern candidates. 600+ PRs processed to date",
+      "Agent Harvest system: runs 19 community reviewer agents (silent-failure-hunter, type-design-analyzer, security auditor, test analyzer, etc.) alongside CodeLens and converts any detection gap into a new pattern. 34 patterns harvested in the first sweep",
       "Test coverage gap detection flags code changes with no corresponding test updates in the same PR",
       "Dependency vulnerability scanning against 42+ known CVEs across npm, pip, and Maven ecosystems",
       "Docker distribution: docker run --rm -v $(pwd):/project ghcr.io/shami-ah/codelens review. Zero setup, no Node.js required, source code obfuscated in the image",
@@ -97,13 +99,17 @@ export const projects: ProjectData[] = [
         description: "Pattern matching alone catches common mistakes but misses injection vulnerabilities that span multiple files. The taint tracker follows data from user-controlled sources (req.body, req.params, form inputs) through business logic to dangerous sinks (SQL queries, exec calls, innerHTML, redirects). It understands sanitizer functions and marks data as clean after validation. Every finding maps to a CWE ID so security teams have a reference, not just a warning.",
       },
       {
+        title: "Agent Harvest: turning competitor agents into training data",
+        description: "I run 19 open-source community reviewer agents (silent-failure-hunter, type-design-analyzer, security auditor, test coverage analyzer, etc.) alongside CodeLens on the same code. Any finding an agent catches that CodeLens misses becomes a new pattern candidate. The first sweep harvested 34 new patterns covering silent error handling, type design quality, test anti-patterns, SSRF, insecure deserialization, and code complexity. Every review session now doubles as training data for the pattern library.",
+      },
+      {
         title: "Docker distribution with source obfuscation",
         description: "The pattern library is the core IP. A multi-stage Docker build compiles TypeScript and runs esbuild to produce a single minified bundle. The final image ships only the opaque 351KB file, no source code, no node_modules. Anyone can use the tool via GHCR without access to the source. This made it possible to share with clients and beta testers while evaluating a commercial release.",
       },
     ],
     stack: ["TypeScript", "Docker", "esbuild", "Regex Parsers", "Persistent JSON Index", "GitHub Actions", "Claude Code Adapter", "GHCR"],
     results: [
-      "305 patterns across 9 stacks, every rule validated against real production repos",
+      "339 patterns across 9 stacks, every rule validated against real production repos",
       "First index build: 4.0s on a 1,622-file production codebase with 62K+ call graph edges",
       "Incremental updates: 60ms, fast enough for pre-commit hooks and editor integrations",
       "7-file PR review: 780ms end-to-end",
@@ -111,7 +117,7 @@ export const projects: ProjectData[] = [
       "Guardian mode active in production: prevents bug categories at generation time, not just review time",
       "Zero runtime dependencies: single 351KB file, runs in any CI pipeline without setup",
       "Docker image auto-published to GHCR on every push, one-command usage, source obfuscated",
-      "Glean pipeline has processed 600+ production PRs, extracting 90 novel patterns into the react-supabase-ts module",
+      "Glean pipeline has processed 600+ production PRs, extracting 90 novel patterns into the react-supabase-ts module. Agent Harvest system added 34 patterns in its first sweep by cross-comparing 19 community reviewer agents",
     ],
     // github: "https://github.com/shami-ah/codelens", // Private, evaluating commercial release
     featured: true,
@@ -126,13 +132,13 @@ export const projects: ProjectData[] = [
       commonChoice: 1,
       myChoice: 2,
       reasoning:
-        "ESLint stays single-file. Commercial SaaS sends your code to a third party and still misses schema/cross-file bugs. I built a hybrid engine: 305 hand-crafted patterns + persistent call graph + source-to-sink taint tracer. Runs fully local, zero deps, <1s reviews. Now active in production.",
+        "ESLint stays single-file. Commercial SaaS sends your code to a third party and still misses schema/cross-file bugs. I built a hybrid engine: 339 hand-crafted patterns + persistent call graph + source-to-sink taint tracer + agent harvest pipeline. Runs fully local, zero deps, <1s reviews. Now active in production.",
     },
     vs: {
       mine: {
         title: "CodeLens",
         bullets: [
-          "305 hand-crafted patterns validated against real failures",
+          "339 hand-crafted patterns validated against real failures",
           "Persistent codebase index, 60ms incremental updates",
           "Source-to-sink taint tracking across files with CWE mapping",
           "Zero deps, runs anywhere Node runs, 351KB single file",
