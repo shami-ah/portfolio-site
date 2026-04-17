@@ -42,48 +42,94 @@ function BuildPopup({ onDone }: { onDone: () => void }): React.ReactElement {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      transition={{ duration: 0.3 }}
-      style={{ position: "fixed", inset: 0, zIndex: 9999, display: "flex", alignItems: "center", justifyContent: "center", padding: "1rem" }}
+      transition={{ duration: 0.35 }}
+      style={{ position: "fixed", inset: 0, zIndex: 9999, display: "flex", alignItems: "center", justifyContent: "center", padding: "1.5rem" }}
       onClick={onDone}
     >
-      <div style={{ position: "absolute", inset: 0, background: "rgba(9,9,11,0.85)", backdropFilter: "blur(16px)", WebkitBackdropFilter: "blur(16px)" }} />
+      <div style={{ position: "absolute", inset: 0, background: "rgba(9,9,11,0.88)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)" }} />
+
+      {/* Ambient glow behind the bubble */}
       <motion.div
-        initial={{ opacity: 0, scale: 0.88 }}
-        animate={{ opacity: 1, scale: 1 }}
-        exit={{ opacity: 0, scale: 0.88 }}
-        transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+        initial={{ scale: 0, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+        style={{ position: "absolute", width: "380px", height: "380px", borderRadius: "50%", background: "radial-gradient(circle, rgba(59,130,246,0.15) 0%, transparent 70%)", pointerEvents: "none" }}
+      />
+
+      {/* The bubble container — frosted glass sphere */}
+      <motion.div
+        initial={{ scale: 0, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        exit={{ scale: 0, opacity: 0 }}
+        transition={{ type: "spring", stiffness: 300, damping: 22, mass: 0.8 }}
         onClick={(e) => e.stopPropagation()}
-        className="relative w-full max-w-xs sm:max-w-sm rounded-2xl bg-card border border-accent/40 shadow-2xl shadow-accent/30 p-6 sm:p-8"
+        style={{
+          position: "relative",
+          width: "100%",
+          maxWidth: "340px",
+          borderRadius: "28px",
+          background: "rgba(24,24,27,0.85)",
+          backdropFilter: "blur(24px)",
+          WebkitBackdropFilter: "blur(24px)",
+          border: "1px solid rgba(59,130,246,0.25)",
+          boxShadow: "0 0 60px rgba(59,130,246,0.15), 0 0 120px rgba(59,130,246,0.05), inset 0 1px 0 rgba(255,255,255,0.05)",
+          padding: "28px",
+          overflow: "hidden",
+        }}
       >
-        <p className="text-[10px] font-mono text-accent uppercase tracking-[0.25em] mb-6 flex items-center gap-2">
+        {/* Shine reflection on the bubble */}
+        <div style={{
+          position: "absolute",
+          top: "-30%",
+          left: "-20%",
+          width: "140%",
+          height: "60%",
+          background: "radial-gradient(ellipse at center, rgba(255,255,255,0.04) 0%, transparent 70%)",
+          pointerEvents: "none",
+          borderRadius: "50%",
+        }} />
+
+        <p className="text-[10px] font-mono text-accent uppercase tracking-[0.25em] mb-5 flex items-center justify-center gap-2 relative">
           <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
           how I ship every feature
         </p>
 
-        <div className="space-y-3">
+        {/* Steps as individual floating pills */}
+        <div className="space-y-2.5 relative">
           {BUILD_STEPS.map((s, i) => (
             <motion.div
               key={s.label}
-              initial={{ opacity: 0, x: -8 }}
-              animate={i < step ? { opacity: 1, x: 0 } : { opacity: 0.15, x: 0 }}
-              transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-              className="flex items-center gap-3"
+              initial={{ scale: 0, opacity: 0 }}
+              animate={
+                i < step
+                  ? { scale: 1, opacity: 1, y: 0 }
+                  : { scale: 0.85, opacity: 0.12, y: 0 }
+              }
+              transition={
+                i < step
+                  ? { type: "spring", stiffness: 500, damping: 18, mass: 0.5, delay: 0.05 }
+                  : { duration: 0.2 }
+              }
+              className={`flex items-center gap-3 px-4 py-2.5 rounded-full border transition-colors ${
+                i < step
+                  ? "bg-accent/10 border-accent/30"
+                  : "bg-card/30 border-card-border/30"
+              }`}
             >
-              <span className={`text-[10px] font-mono tabular-nums w-5 text-right shrink-0 ${i < step ? "text-accent" : "text-muted/30"}`}>
+              <span className={`text-[10px] font-mono tabular-nums shrink-0 ${i < step ? "text-accent" : "text-muted/30"}`}>
                 {String(i + 1).padStart(2, "0")}
               </span>
-              <div className="flex-1 min-w-0">
-                <p className={`text-sm font-bold ${i < step ? "text-foreground" : "text-muted/40"}`}>
-                  {s.label}
-                </p>
-                <p className={`text-[11px] ${i < step ? "text-muted" : "text-muted/30"}`}>
-                  {s.detail}
-                </p>
-              </div>
+              <span className={`text-sm font-semibold flex-1 ${i < step ? "text-foreground" : "text-muted/30"}`}>
+                {s.label}
+              </span>
+              <span className={`text-[10px] hidden sm:inline ${i < step ? "text-muted/70" : "text-muted/20"}`}>
+                {s.detail}
+              </span>
               {i < step && (
                 <motion.span
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
+                  initial={{ scale: 0, rotate: -90 }}
+                  animate={{ scale: 1, rotate: 0 }}
+                  transition={{ type: "spring", stiffness: 500, damping: 15 }}
                   className="text-green-400 shrink-0"
                 >
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
@@ -97,9 +143,10 @@ function BuildPopup({ onDone }: { onDone: () => void }): React.ReactElement {
 
         {step >= BUILD_STEPS.length && (
           <motion.p
-            initial={{ opacity: 0, y: 4 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="mt-6 pt-4 border-t border-card-border text-xs text-muted text-center"
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ type: "spring", stiffness: 300, damping: 20 }}
+            className="mt-5 text-xs text-muted text-center"
           >
             Every project. Every time.
           </motion.p>
