@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import ReactDOM from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
 
 /* ------------------------------------------------------------------ */
@@ -20,6 +21,11 @@ function BuildPopup({ onDone }: { onDone: () => void }): React.ReactElement {
   const [step, setStep] = useState(0);
 
   useEffect(() => {
+    document.body.style.overflow = "hidden";
+    return () => { document.body.style.overflow = ""; };
+  }, []);
+
+  useEffect(() => {
     if (step < BUILD_STEPS.length) {
       const t = setTimeout(() => setStep((s) => s + 1), 650);
       return () => clearTimeout(t);
@@ -28,30 +34,33 @@ function BuildPopup({ onDone }: { onDone: () => void }): React.ReactElement {
     return () => clearTimeout(t);
   }, [step, onDone]);
 
-  return (
+  // Render via portal to break out of agent-bar's container
+  if (typeof document === "undefined") return <></>;
+
+  const el = (
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.3 }}
-      className="fixed inset-0 z-[180] flex items-center justify-center px-4"
+      style={{ position: "fixed", inset: 0, zIndex: 9999, display: "flex", alignItems: "center", justifyContent: "center", padding: "1rem" }}
       onClick={onDone}
     >
-      <div className="absolute inset-0 bg-background/70 backdrop-blur-md" />
+      <div style={{ position: "absolute", inset: 0, background: "rgba(9,9,11,0.85)", backdropFilter: "blur(16px)", WebkitBackdropFilter: "blur(16px)" }} />
       <motion.div
-        initial={{ opacity: 0, scale: 0.92, y: 10 }}
-        animate={{ opacity: 1, scale: 1, y: 0 }}
-        exit={{ opacity: 0, scale: 0.92, y: 10 }}
-        transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-        className="relative w-full max-w-sm rounded-2xl bg-card/95 border border-accent/30 shadow-2xl shadow-accent/20 p-6 md:p-8"
+        initial={{ opacity: 0, scale: 0.88 }}
+        animate={{ opacity: 1, scale: 1 }}
+        exit={{ opacity: 0, scale: 0.88 }}
+        transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
         onClick={(e) => e.stopPropagation()}
+        className="relative w-full max-w-xs sm:max-w-sm rounded-2xl bg-card border border-accent/40 shadow-2xl shadow-accent/30 p-6 sm:p-8"
       >
-        <p className="text-[10px] font-mono text-accent uppercase tracking-[0.25em] mb-5 flex items-center gap-2">
+        <p className="text-[10px] font-mono text-accent uppercase tracking-[0.25em] mb-6 flex items-center gap-2">
           <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
           how I ship every feature
         </p>
 
-        <div className="space-y-2.5">
+        <div className="space-y-3">
           {BUILD_STEPS.map((s, i) => (
             <motion.div
               key={s.label}
@@ -90,7 +99,7 @@ function BuildPopup({ onDone }: { onDone: () => void }): React.ReactElement {
           <motion.p
             initial={{ opacity: 0, y: 4 }}
             animate={{ opacity: 1, y: 0 }}
-            className="mt-5 pt-4 border-t border-card-border text-xs text-muted text-center"
+            className="mt-6 pt-4 border-t border-card-border text-xs text-muted text-center"
           >
             Every project. Every time.
           </motion.p>
@@ -98,6 +107,8 @@ function BuildPopup({ onDone }: { onDone: () => void }): React.ReactElement {
       </motion.div>
     </motion.div>
   );
+
+  return ReactDOM.createPortal(el, document.body);
 }
 
 /* ------------------------------------------------------------------ */
