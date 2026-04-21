@@ -23,7 +23,7 @@ export const metadata: Metadata = {
       { url: "/favicon.svg", type: "image/svg+xml" },
     ],
   },
-  metadataBase: new URL("https://portfolio-site-4nb.pages.dev"),
+  metadataBase: new URL("https://ahtesham.dev.wadwarehouse.com"),
   title: {
     default: "Ahtesham Ahmad | AI Automation Architect",
     template: "%s | Ahtesham Ahmad",
@@ -46,14 +46,14 @@ export const metadata: Metadata = {
     "Claude Code",
     "AI Code Review",
   ],
-  authors: [{ name: "Ahtesham Ahmad", url: "https://portfolio-site-4nb.pages.dev" }],
+  authors: [{ name: "Ahtesham Ahmad", url: "https://ahtesham.dev.wadwarehouse.com" }],
   creator: "Ahtesham Ahmad",
   openGraph: {
     title: "Ahtesham Ahmad | AI Automation Architect",
     description:
       "I build AI systems that run businesses on their own, while humans stay in control. 250+ projects, production SaaS, open-source tools.",
     type: "website",
-    url: "https://portfolio-site-4nb.pages.dev",
+    url: "https://ahtesham.dev.wadwarehouse.com",
     siteName: "Ahtesham Ahmad Portfolio",
     locale: "en_US",
     images: [
@@ -84,7 +84,7 @@ export const metadata: Metadata = {
     },
   },
   alternates: {
-    canonical: "https://portfolio-site-4nb.pages.dev",
+    canonical: "https://ahtesham.dev.wadwarehouse.com",
   },
 };
 

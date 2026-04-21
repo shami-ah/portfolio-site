@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://portfolio-site-4nb.pages.dev/sitemap.xml
+Sitemap: https://ahtesham.dev.wadwarehouse.com/sitemap.xml

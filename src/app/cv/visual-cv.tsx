@@ -198,7 +198,7 @@ export function VisualCV(): React.ReactElement {
                 <p>shami8024@gmail.com</p>
                 <p className="text-blue-400">github.com/shami-ah</p>
                 <p className="text-blue-400">linkedin.com/in/ahtesham</p>
-                <p className="text-blue-400">portfolio-site-4nb.pages.dev</p>
+                <p className="text-blue-400">ahtesham.dev.wadwarehouse.com</p>
                 <p>Islamabad, PK · Remote</p>
               </motion.div>
             </div>
@@ -408,7 +408,7 @@ export function VisualCV(): React.ReactElement {
               shami8024@gmail.com<br/>
               <span style={{ color: "#4a6fa5" }}>github.com/shami-ah</span><br/>
               <span style={{ color: "#4a6fa5" }}>linkedin.com/in/ahtesham</span><br/>
-              <span style={{ color: "#4a6fa5" }}>portfolio-site-4nb.pages.dev</span><br/>
+              <span style={{ color: "#4a6fa5" }}>ahtesham.dev.wadwarehouse.com</span><br/>
               Islamabad, PK · Remote
             </div>
           </div>
