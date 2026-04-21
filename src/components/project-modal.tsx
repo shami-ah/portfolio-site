@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import type { ProjectData } from "@/data/projects";
+import { AccessRequestModal } from "./access-request-modal";
 
 interface ProjectModalProps {
   project: ProjectData | null;
@@ -75,9 +76,11 @@ export function ProjectModal({
   onNavigate,
 }: ProjectModalProps): React.ReactElement {
   const [selectedNode, setSelectedNode] = useState<string | null>(null);
+  const [accessModalOpen, setAccessModalOpen] = useState(false);
 
   useEffect(() => {
     setSelectedNode(null);
+    setAccessModalOpen(false);
   }, [project?.slug]);
 
   useEffect(() => {
@@ -98,6 +101,7 @@ export function ProjectModal({
   }, [project, onClose, onNavigate]);
 
   return (
+    <>
     <AnimatePresence>
       {project && (
         <motion.div
@@ -457,6 +461,19 @@ export function ProjectModal({
                   <span className="truncate sm:hidden">Swipe cards or tap below</span>
                 </div>
                 <div className="flex flex-wrap gap-2">
+                  {project.requestAccess && (
+                    <button
+                      type="button"
+                      onClick={() => setAccessModalOpen(true)}
+                      className="inline-flex items-center gap-1.5 px-3 md:px-4 py-2 text-xs md:text-sm border border-amber-500/30 bg-amber-500/10 text-amber-400 rounded-lg hover:bg-amber-500/20 hover:border-amber-500/50 transition-all duration-200"
+                    >
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                        <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                      </svg>
+                      Request Access
+                    </button>
+                  )}
                   {project.github && (
                     <a
                       href={project.github}
@@ -503,5 +520,12 @@ export function ProjectModal({
         </motion.div>
       )}
     </AnimatePresence>
+
+    {/* Access Request Modal — renders outside the main modal */}
+    <AccessRequestModal
+      open={accessModalOpen}
+      onClose={() => setAccessModalOpen(false)}
+    />
+    </>
   );
 }

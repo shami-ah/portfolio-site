@@ -14,6 +14,8 @@ export interface ProjectData {
   github?: string;
   live?: string;
   featured?: boolean;
+  /** Show "Request Access" button — opens access request form */
+  requestAccess?: boolean;
   /** Decision tree: visitor picks what they'd do before seeing the real answer */
   decision?: {
     scenario: string;
@@ -513,6 +515,7 @@ export const projects: ProjectData[] = [
     subtitle: "AI Coding Agent: Any Model, Any Provider (v0.9.1)",
     type: "Developer Tool / CLI",
     featured: true,
+    requestAccess: true,
     impact: "I mapped the entire agentic coding ecosystem (Claude Code, Aider, Cursor, OpenCode, Codex) and found that every tool made you choose. Provider freedom or deep integration. Polished TUI or serious git workflow. MCP support or SEARCH/REPLACE edits. Nobody had all of it. So I built the thing that was missing: a full AI coding agent where the provider is a variable, the git workflow is Aider-level, the UI is CC-level, and nothing is locked down. 11 providers, 1418 passing tests, plugin marketplace, parallel agents, watch mode, scheduled triggers. The only open-source CLI that closes every gap simultaneously.",
     problem:
       "Claude Code is powerful but locked to Anthropic. If the API goes down, you stop working. If you hit rate limits, you stop working. If the task is simple and Sonnet is overkill, you still pay Sonnet prices. Cursor locks you into a GUI with no terminal, no SSH, no headless server usage. Aider is excellent for git workflow and repo understanding, but its TUI is spartan, it has no plugin system, no parallel agents, and no MCP support. Every AI coding tool I found made you choose: deep integration or provider freedom, polish or workflow quality. Nobody had built something with all of it.",
