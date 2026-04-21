@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
-const REGISTRY_URL = "https://gogaa-registry.wadwarehouse.com";
+const REGISTRY_URL = "https://ahtesham.dev.wadwarehouse.com/gogaa-registry";
 
 type FormState = "idle" | "submitting" | "success" | "error";
 
