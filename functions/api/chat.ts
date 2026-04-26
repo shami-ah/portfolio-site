@@ -39,10 +39,12 @@ CodeLens (v0.3.3): AI code review engine, 305 hand-crafted patterns across 9 sta
   Zero deps, <1s reviews, single 351KB file, Docker distribution via GHCR
   Private beta, evaluating commercial release
 
-Gogaa CLI (v0.10.0): open-source AI coding agent
+Gogaa CLI (v1.0.0): open-source AI coding agent
   11 LLM providers with auto-fallback, full Aider parity (repo map, SEARCH/REPLACE, watch mode, LLM commits)
+  Full Claude Code UI parity, REPL tool, ultrathink detection, multi-provider robustness
   Plugin marketplace, parallel panes, scheduled triggers, WAL session persistence
   1,418 tests passing, React Ink TUI with 22 themes
+  Gogaa Web: companion browser-based terminal with PTY over WebSocket
 
 OpenEvent: production SaaS for event management
   Email→AI classification→entity extraction→human approval→workflow execution→audit log
