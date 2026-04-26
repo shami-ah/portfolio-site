@@ -34,7 +34,7 @@ const groups: Group[] = [
     title: "Agent commands (type anywhere)",
     items: [
       { keys: ["h", "i", "r", "e"], label: "Jump to Contact" },
-      { keys: ["c", "a", "l", "l"], label: "Open Calendly" },
+      { keys: ["c", "a", "l", "l"], label: "Book a call" },
       { keys: ["c", "v"], label: "Open Visual CV" },
       { keys: ["c", "h", "a", "t"], label: "Open chat agent" },
       { keys: ["t", "o", "u", "r"], label: "Open the immersive tour" },

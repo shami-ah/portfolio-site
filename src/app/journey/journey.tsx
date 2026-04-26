@@ -180,7 +180,7 @@ export function Journey(): React.ReactElement {
             <span className="text-accent">how I work</span> · behind the systems
           </p>
           <a
-            href="https://calendly.com/shami8024/30min"
+            href="https://ahtesham.dev.wadwarehouse.com/book"
             target="_blank"
             rel="noopener noreferrer"
             className="text-[10px] md:text-xs font-mono px-3 py-1.5 rounded-md bg-accent/10 text-accent border border-accent/30 hover:bg-accent/20 transition-all"
@@ -476,7 +476,7 @@ export function Journey(): React.ReactElement {
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
             <a
-              href="https://calendly.com/shami8024/30min"
+              href="https://ahtesham.dev.wadwarehouse.com/book"
               target="_blank"
               rel="noopener noreferrer"
               className="px-6 py-3 bg-accent text-white font-medium rounded-lg hover:bg-accent/90 hover:shadow-lg hover:shadow-accent/20 transition-all"

@@ -240,12 +240,12 @@ const commands: AgentCommand[] = [
     confidence: 0.93,
     steps: [
       { name: "classify_intent", detail: "label: meeting_request · conf 0.93", ms: 38 },
-      { name: "route_to_tool", detail: "→ open_calendly", ms: 5 },
-      { name: "execute", detail: "url: calendly.com/shami8024/30min", ms: 22 },
+      { name: "route_to_tool", detail: "→ open_booking", ms: 5 },
+      { name: "execute", detail: "url: ahtesham.dev.wadwarehouse.com/book", ms: 22 },
     ],
     response: "Opening 15-min intro call scheduler in a new tab.",
     action: () =>
-      window.open("https://calendly.com/shami8024/30min", "_blank", "noopener,noreferrer"),
+      window.open("https://ahtesham.dev.wadwarehouse.com/book", "_blank", "noopener,noreferrer"),
   },
   {
     keyword: "cv",

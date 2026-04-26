@@ -52,7 +52,7 @@ export const kb: KbEntry[] = [
       "can you work", "take on", "new project", "new work",
     ],
     response:
-      "Open to both full-time remote roles and 90-day project engagements. My calendar is shared at calendly.com/shami8024/30min — pick any open slot.",
+      "Open to both full-time remote roles and 90-day project engagements. Use the Book a Call button to pick any open slot.",
     tags: ["commercial"],
   },
   {
@@ -252,14 +252,14 @@ export const kb: KbEntry[] = [
       "how to contact", "how can i", "reach out", "connect",
     ],
     response:
-      "Email: shami8024@gmail.com · Calendly: calendly.com/shami8024/30min · LinkedIn: linkedin.com/in/ahtesham · GitHub: github.com/shami-ah. Fastest path is the calendar link.",
+      "Email: shami8024@gmail.com · LinkedIn: linkedin.com/in/ahtesham · GitHub: github.com/shami-ah. Fastest path is the Book a Call button above.",
     tags: ["commercial"],
   },
   {
-    id: "calendly",
-    keywords: ["calendly", "book", "booking", "schedule", "call", "meeting", "meet"],
+    id: "booking",
+    keywords: ["book", "booking", "schedule", "call", "meeting", "meet", "calendly"],
     response:
-      "Book a 15-min intro call at calendly.com/shami8024/30min. Google Meet, open slots weekdays, no commitment.",
+      "Use the Book a Call button to schedule a 15-min intro call. Google Meet, open slots weekdays, no commitment.",
     tags: ["commercial"],
   },
   {

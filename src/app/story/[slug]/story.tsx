@@ -44,7 +44,7 @@ function buildBubbles(project: ProjectData): Bubble[] {
   bubbles.push({
     role: "me",
     text:
-      "Easiest path: book a 15-min call at calendly.com/shami8024/30min. We'll talk scope and timeline. I'll follow up with an architecture doc before any code.",
+      "Easiest path: book a 15-min call using the button below. We'll talk scope and timeline. I'll follow up with an architecture doc before any code.",
   });
 
   return bubbles;
@@ -189,7 +189,7 @@ export function Story({ project }: { project: ProjectData }): React.ReactElement
                     full case study →
                   </a>
                   <a
-                    href="https://calendly.com/shami8024/30min"
+                    href="https://ahtesham.dev.wadwarehouse.com/book"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="px-4 py-2 text-sm rounded-lg bg-accent text-white font-medium hover:bg-accent/90 transition-all"

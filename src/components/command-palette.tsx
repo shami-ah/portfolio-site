@@ -67,11 +67,11 @@ export function CommandPalette(): React.ReactElement {
       {
         id: "book",
         label: "Book a 15-min intro call",
-        hint: "Calendly · Google Meet",
+        hint: "Google Meet · Self-hosted",
         group: "Contact",
         action: () =>
           window.open(
-            "https://calendly.com/shami8024/30min",
+            "https://ahtesham.dev.wadwarehouse.com/book",
             "_blank",
             "noopener,noreferrer",
           ),

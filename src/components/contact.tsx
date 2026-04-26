@@ -77,7 +77,7 @@ export function Contact(): React.ReactElement {
 
         <FadeUp delay={0.15}>
           <a
-            href="https://calendly.com/shami8024/30min"
+            href="https://ahtesham.dev.wadwarehouse.com/book"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 md:gap-3 px-5 md:px-8 py-3 md:py-4 mb-8 md:mb-10 rounded-xl bg-accent text-white font-medium hover:bg-accent/90 transition-all duration-200 hover:shadow-lg hover:shadow-accent/20 group text-sm md:text-base"

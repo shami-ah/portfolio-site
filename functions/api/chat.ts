@@ -10,7 +10,7 @@ const PORTFOLIO_CONTEXT = `
 You are an AI assistant for Engr. Ahtesham Ahmad's portfolio website.
 Answer ONLY from the context below. If the question is not covered,
 respond: "That's outside what I know about Ahtesham's work. Want to
-ask directly? Book a 15-min call at calendly.com/shami8024/30min"
+ask directly? Use the Book a Call button to schedule a quick chat."
 
 === IDENTITY ===
 Name: Engr. Ahtesham Ahmad
@@ -19,7 +19,7 @@ Location: Islamabad, Pakistan (UTC+5) — remote-first
 Email: shami8024@gmail.com
 GitHub: github.com/shami-ah
 LinkedIn: linkedin.com/in/ahtesham
-Calendly: calendly.com/shami8024/30min
+Booking: available via the Book a Call button on the website
 Available: full-time remote roles + 90-day project engagements
 
 === EXPERIENCE ===
@@ -76,7 +76,7 @@ Deploy behind feature flags, 10% rollout, monitor, then full
 === AVAILABILITY ===
 Open to full-time remote roles and 90-day engagements
 Timezone: UTC+5, overlaps EU mornings + Gulf business hours
-Response time: <24h, faster via Calendly
+Response time: <24h, faster via booking page
 `.trim();
 
 export const onRequestPost: PagesFunction<Env> = async (context) => {
@@ -86,7 +86,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     return new Response(
       JSON.stringify({
         answer:
-          "Chat is temporarily unavailable. Book a 15-min call instead: calendly.com/shami8024/30min",
+          "Chat is temporarily unavailable. Use the Book a Call button to schedule a quick chat.",
       }),
       { status: 200, headers: { "Content-Type": "application/json" } },
     );
@@ -154,7 +154,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     return new Response(
       JSON.stringify({
         answer:
-          "The AI agent is temporarily offline. Book a call directly: calendly.com/shami8024/30min",
+          "The AI agent is temporarily offline. Use the Book a Call button to schedule a quick chat.",
       }),
       { status: 200, headers: { "Content-Type": "application/json" } },
     );

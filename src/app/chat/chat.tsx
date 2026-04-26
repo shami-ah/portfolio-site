@@ -12,7 +12,7 @@ interface Message {
 }
 
 const FALLBACK =
-  "Hmm, that's outside what I know well. Ahtesham would answer it better on a call — calendly.com/shami8024/30min. Or try rephrasing — I know about rate, stack, availability, his tools, and how he works with clients.";
+  "Hmm, that's outside what I know well. Ahtesham would answer it better on a call. Or try rephrasing — I know about rate, stack, availability, his tools, and how he works with clients.";
 
 export function ChatCV(): React.ReactElement {
   const [messages, setMessages] = useState<Message[]>([
@@ -153,7 +153,7 @@ export function ChatCV(): React.ReactElement {
 
           <div className="flex items-center gap-2">
             <a
-              href="https://calendly.com/shami8024/30min"
+              href="https://ahtesham.dev.wadwarehouse.com/book"
               target="_blank"
               rel="noopener noreferrer"
               className="text-xs font-mono px-3 py-1.5 rounded-md bg-accent/10 text-accent border border-accent/30 hover:bg-accent/20 transition-all"
@@ -201,7 +201,7 @@ export function ChatCV(): React.ReactElement {
         {messages.length >= 3 && !isThinking && (
           <div className="max-w-3xl mx-auto px-4 md:px-6 pb-6 text-center">
             <a
-              href="https://calendly.com/shami8024/30min"
+              href="https://ahtesham.dev.wadwarehouse.com/book"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-accent text-white text-sm font-medium hover:bg-accent/90 hover:shadow-lg hover:shadow-accent/20 transition-all"
