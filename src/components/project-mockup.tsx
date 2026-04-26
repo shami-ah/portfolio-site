@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 
-export type MockupKind = "codelens" | "gogaa" | "openevent";
+export type MockupKind = "codelens" | "gogaa" | "openevent" | "rasad";
 
 /** Stylized product mockup. Brand-consistent, scalable, and never breaks
  *  like a raw screenshot would. Renders terminal/dashboard chrome plus
@@ -27,8 +27,9 @@ export function ProjectMockup({
         </div>
         <p className="text-[10px] font-mono text-muted/60 ml-2">
           {kind === "codelens" && "codelens review ."}
-          {kind === "gogaa" && "gogaa · v0.9.1"}
+          {kind === "gogaa" && "gogaa · v1.0.0"}
           {kind === "openevent" && "app.openevent.io — inbox"}
+          {kind === "rasad" && "rasad dashboard · localhost:9847"}
         </p>
       </div>
 
@@ -37,6 +38,7 @@ export function ProjectMockup({
         {kind === "codelens" && <CodeLensBody />}
         {kind === "gogaa" && <GogaaBody />}
         {kind === "openevent" && <OpenEventBody />}
+        {kind === "rasad" && <RasadBody />}
       </div>
     </div>
   );
@@ -321,6 +323,155 @@ function OpenEventBody(): React.ReactElement {
         className="text-[9px] text-muted/50 text-center pt-2 mt-2 border-t border-card-border"
       >
         100+ clients · 150+ events · every AI action needs human approval
+      </motion.p>
+    </div>
+  );
+}
+
+/* ------------------------------ Rasad --------------------------------- */
+/* Rebuilt from real Rasad dashboard — cockpit stats, session health,     */
+/* X-Ray action breakdown, and quality grading.                           */
+
+function RasadBody(): React.ReactElement {
+  return (
+    <div className="font-sans">
+      {/* Header */}
+      <motion.div
+        initial={{ opacity: 0, y: 4 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-40px" }}
+        transition={{ duration: 0.35, delay: 0.1 }}
+        className="flex items-center justify-between mb-3 pb-2 border-b border-card-border"
+      >
+        <div className="flex items-center gap-2">
+          <span className="text-foreground/80 font-semibold text-[11px]">
+            Daily AI Control
+          </span>
+          <span className="text-[8px] px-1.5 py-0.5 rounded bg-emerald-500/15 text-emerald-400 border border-emerald-500/25">
+            local-first
+          </span>
+        </div>
+        <span className="text-muted/50 text-[9px]">localhost:9847</span>
+      </motion.div>
+
+      {/* Stats row */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true, margin: "-40px" }}
+        transition={{ duration: 0.35, delay: 0.25 }}
+        className="grid grid-cols-4 gap-2 mb-3"
+      >
+        {[
+          { label: "Today", value: "345", color: "text-emerald-400" },
+          { label: "Spend", value: "$877", color: "text-amber-400" },
+          { label: "Avg/Day", value: "$564", color: "text-cyan-400" },
+          { label: "Actions", value: "14.6K", color: "text-accent" },
+        ].map((s) => (
+          <div
+            key={s.label}
+            className="p-1.5 rounded bg-background/40 border border-card-border"
+          >
+            <p className="text-[8px] text-muted/50 uppercase">{s.label}</p>
+            <p className={`text-[12px] font-bold ${s.color}`}>{s.value}</p>
+          </div>
+        ))}
+      </motion.div>
+
+      {/* X-Ray session card */}
+      <motion.div
+        initial={{ opacity: 0, x: -4 }}
+        whileInView={{ opacity: 1, x: 0 }}
+        viewport={{ once: true, margin: "-40px" }}
+        transition={{ duration: 0.35, delay: 0.4 }}
+        className="p-2.5 rounded-md border border-accent/20 bg-accent/5 mb-3"
+      >
+        <div className="flex items-center justify-between mb-1.5">
+          <div className="flex items-center gap-1.5">
+            <span className="text-[10px] font-semibold text-foreground">X-Ray</span>
+            <span className="text-[8px] px-1 py-0.5 rounded bg-accent/15 text-accent border border-accent/25">
+              Claude Code
+            </span>
+          </div>
+          <div className="flex items-center gap-1.5">
+            <span className="text-[8px] px-1.5 py-0.5 rounded bg-emerald-500/15 text-emerald-400">
+              100% clean
+            </span>
+            <span className="text-[8px] text-muted/50">1h 28m</span>
+          </div>
+        </div>
+        <div className="grid grid-cols-3 gap-1.5 text-center">
+          {[
+            { label: "Actions", value: "202", color: "text-foreground" },
+            { label: "Write/Edit", value: "135", color: "text-emerald-400" },
+            { label: "Files", value: "25", color: "text-cyan-400" },
+          ].map((m) => (
+            <div
+              key={m.label}
+              className="py-1 rounded bg-background/30 border border-card-border"
+            >
+              <p className={`text-[11px] font-bold ${m.color}`}>{m.value}</p>
+              <p className="text-[7px] text-muted/50">{m.label}</p>
+            </div>
+          ))}
+        </div>
+        {/* Session health blocks */}
+        <div className="flex gap-[2px] mt-2">
+          {Array.from({ length: 20 }).map((_, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, scaleY: 0 }}
+              whileInView={{ opacity: 1, scaleY: 1 }}
+              viewport={{ once: true, margin: "-40px" }}
+              transition={{ duration: 0.15, delay: 0.5 + i * 0.03 }}
+              className="flex-1 h-2.5 rounded-[2px] bg-emerald-500/60"
+            />
+          ))}
+        </div>
+      </motion.div>
+
+      {/* Quality grade */}
+      <motion.div
+        initial={{ opacity: 0, y: 4 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-40px" }}
+        transition={{ duration: 0.35, delay: 0.7 }}
+        className="flex items-center justify-between p-2 rounded-md border border-card-border bg-background/30"
+      >
+        <div className="flex items-center gap-2">
+          <span className="w-7 h-7 rounded-md bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center text-[12px] font-bold text-emerald-400">
+            A
+          </span>
+          <div>
+            <p className="text-[10px] font-medium text-foreground">Session Quality</p>
+            <p className="text-[8px] text-muted/50">82 avg · 200 scored</p>
+          </div>
+        </div>
+        <div className="flex gap-1">
+          {["A", "B", "C", "D"].map((g) => (
+            <span
+              key={g}
+              className={`text-[8px] px-1 py-0.5 rounded ${
+                g === "A"
+                  ? "bg-emerald-500/15 text-emerald-400"
+                  : "bg-background/40 text-muted/40"
+              }`}
+            >
+              {g}
+            </span>
+          ))}
+        </div>
+      </motion.div>
+
+      {/* Footer */}
+      <motion.p
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true, margin: "-40px" }}
+        transition={{ duration: 0.4, delay: 0.9 }}
+        className="text-[9px] text-muted/50 text-center pt-2 mt-2 border-t border-card-border"
+      >
+        656 sessions · 38K messages · your data never leaves your machine
       </motion.p>
     </div>
   );

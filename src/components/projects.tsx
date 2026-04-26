@@ -17,6 +17,7 @@ const SHOWCASE_SLUGS: { slug: string; mockup: MockupKind }[] = [
   { slug: "openevent", mockup: "openevent" },
   { slug: "codelens", mockup: "codelens" },
   { slug: "gogaa-cli", mockup: "gogaa" },
+  { slug: "rasad", mockup: "rasad" },
 ];
 
 function ProjectCard({

@@ -671,7 +671,6 @@ export const projects: ProjectData[] = [
     subtitle: "AI Observatory for Developers (v0.1.0)",
     type: "Developer Tool / CLI + Web",
     featured: true,
-    requestAccess: true,
     impact: "Every developer using AI coding assistants is flying blind. You don't know what the AI changed, how much you spent, whether context was lost mid-session, or if the AI contradicted its own patterns. Rasad (Arabic for 'to observe') gives you complete visibility: a local-first CLI + web dashboard that monitors every AI coding session across multiple tools. 656 sessions synced, 38K messages indexed, 14K tool calls tracked. Your data never leaves your machine.",
     problem:
       "AI coding assistants are black boxes. You get a diff at the end but no visibility into what happened during the session. How many tokens were burned? Did the AI forget your requirements halfway through? Did it read 67 files but only change 3? Was that $87 session worth it or should you have split it? There's no observability layer for AI-assisted development. You're paying hundreds per month with no way to audit, optimize, or learn from the sessions.",
