@@ -666,6 +666,105 @@ export const projects: ProjectData[] = [
     },
   },
   {
+    slug: "rasad",
+    title: "Rasad",
+    subtitle: "AI Observatory for Developers (v0.1.0)",
+    type: "Developer Tool / CLI + Web",
+    featured: true,
+    requestAccess: true,
+    impact: "Every developer using AI coding assistants is flying blind. You don't know what the AI changed, how much you spent, whether context was lost mid-session, or if the AI contradicted its own patterns. Rasad (Arabic for 'to observe') gives you complete visibility: a local-first CLI + web dashboard that monitors every AI coding session across multiple tools. 656 sessions synced, 38K messages indexed, 14K tool calls tracked. Your data never leaves your machine.",
+    problem:
+      "AI coding assistants are black boxes. You get a diff at the end but no visibility into what happened during the session. How many tokens were burned? Did the AI forget your requirements halfway through? Did it read 67 files but only change 3? Was that $87 session worth it or should you have split it? There's no observability layer for AI-assisted development. You're paying hundreds per month with no way to audit, optimize, or learn from the sessions.",
+    solution:
+      "A local-first CLI and web dashboard that ingests session data from multiple AI coding tools (Claude Code, Gogaa CLI, Codex CLI, with Cursor detected). SQLite with WAL mode and FTS5 full-text search handles 700MB+ of session data with streaming parsers that never load full files into memory. The dashboard provides 15+ analysis views: X-Ray (action-by-action replay), Session Quality grading (A-F based on efficiency and cost), Model Comparison (head-to-head cost/quality), Ghost Context (what the AI forgot), Drift Detection (pattern inconsistencies), and more. A React Ink TUI provides real-time monitoring with proactive alerts. Everything runs on localhost:9847, zero outbound network requests.",
+    architecture: [
+      "Data Adapters (Claude Code JSONL parser, Gogaa JSON parser, Codex CLI adapter, Cursor adapter stub)",
+      "SQLite Database (WAL mode, FTS5 full-text search with Porter stemming, batch inserts in transactions of 1000)",
+      "Streaming Parsers (handle 700MB+ session files without memory overflow)",
+      "Fastify API Server (localhost-only, WebSocket for live updates, session/analytics/export endpoints)",
+      "React 19 Dashboard (Vite, Tailwind CSS, React Query, Recharts, React Router, 15+ pages)",
+      "React Ink TUI (full-screen interactive terminal UI with live session feed and proactive alerts)",
+      "File Watcher (chokidar, incremental sync, pushes updates via WebSocket to dashboard clients)",
+      "18 CLI Commands (karma, trajectory, passport, vibe-diff, drift, compare, search, watch, setup, etc.)",
+      "Quality Scoring Engine (grades sessions A-F based on efficiency, focus, cost, and retries)",
+      "Markdown Export (session passports and diffs exportable as .md files for handoff)",
+    ],
+    features: [
+      "Cockpit dashboard: daily AI control center with command shortcuts, live stats (sessions, spend, threads), attention queue for costly sessions, connected agents overview, weekly activity chart, and most common actions breakdown",
+      "X-Ray view: action-by-action session replay showing every tool call (read, write, edit, bash, search), timing, file focus areas, session health blocks, and error tracking. Filter by tool type",
+      "Session Quality grading: A-F scores based on efficiency, focus, cost, and retry patterns. Grade distribution chart, top sessions vs needs-improvement leaderboard",
+      "Model Comparison: head-to-head model analysis with cost per session, cache hit rates, message counts, average duration. Bar chart for total cost by model",
+      "Multi-source ingestion: Claude Code, Gogaa CLI, Codex CLI all active. Cursor detected and ready to import. Each adapter has fidelity ratings and actionable next steps",
+      "Full-text search across all conversations using SQLite FTS5 with Porter stemming and Unicode tokenization",
+      "Live monitoring TUI: React Ink-based full-screen terminal UI with real-time session feed, proactive alerts for cost spikes, anomaly detection with sparklines",
+      "18 CLI commands: rasad (quick summary), dashboard, sync, karma (costs), timeline, trajectory, context, passport, vibe-diff, drift, compare, search, watch, setup, quality, recommend, wrapped, summarize",
+      "First sync processes 656 sessions (700MB+) in 6 seconds. Incremental sync under 1 second",
+      "Markdown export: session passports and code diffs exportable as .md files for team handoff or documentation",
+      "Zero outbound network requests. All data stays on your machine. SQLite database at ~/.rasad/rasad.db",
+      "Auto-setup: rasad setup installs hooks and shell integration automatically",
+    ],
+    techDecisions: [
+      {
+        title: "SQLite over PostgreSQL: the right database for a local-first tool",
+        description: "Rasad runs on the developer's machine, not a server. SQLite with WAL mode gives concurrent read/write without a database process, FTS5 gives full-text search across 38K+ messages without Elasticsearch, and the entire database is a single file at ~/.rasad/rasad.db. Batch inserts in transactions of 1000 rows keep first-sync under 7 seconds for 656 sessions. No Docker, no connection strings, no migrations to run.",
+      },
+      {
+        title: "Streaming parsers for session ingestion",
+        description: "Claude Code stores sessions as JSONL files that can reach hundreds of megabytes. Loading an entire file into memory would crash Node.js on large histories. The parser reads line-by-line using streaming, processes each message immediately, and never holds more than one line in memory. This is why Rasad can handle 700MB+ of session data on a 16GB machine without issues.",
+      },
+      {
+        title: "Dual interface: web dashboard + terminal TUI",
+        description: "Some developers live in the browser, others never leave the terminal. Building both interfaces from the same API layer means neither is a second-class citizen. The dashboard uses React 19 + Vite + Tailwind for rich visualizations (charts, health blocks, grade distributions). The TUI uses React Ink for real-time monitoring without leaving the terminal. Both connect to the same Fastify API with WebSocket for live updates.",
+      },
+    ],
+    stack: ["TypeScript", "Node.js", "SQLite", "better-sqlite3", "FTS5", "Fastify", "WebSocket", "React 19", "Vite", "Tailwind CSS", "React Query", "Recharts", "React Ink", "Commander.js", "chokidar"],
+    results: [
+      "656 sessions synced across 4 AI coding tools in a single dashboard",
+      "38,075 messages and 14,637 tool calls indexed with full-text search",
+      "First sync: 6.2 seconds for 700MB+ of session data. Incremental sync: <1 second",
+      "Average session quality score: 82/100 (Grade A). 200 sessions graded automatically",
+      "Model cost tracking: $29,904 on opus-4-6, $483 on sonnet-4-6, $219 on haiku across 345 daily sessions",
+      "15+ dashboard views: Cockpit, X-Ray, Sessions, Models, Grades, Savings, Highlights, Patterns, Steps, Memory, Summary, Changes, Search, Agents",
+      "Zero outbound network requests. 100% local-first. Your data never leaves your machine",
+    ],
+    github: "https://github.com/shami-ah/rasad",
+    decision: {
+      scenario: "You're spending $500+/day on AI coding assistants across multiple tools. You have no visibility into what the AI is doing, what it costs per session, or whether sessions are efficient.",
+      question: "How do you get observability?",
+      options: [
+        "Manually review API billing dashboards per provider",
+        "Build custom logging into each AI tool",
+        "Build a unified observatory that ingests from all tools automatically",
+      ],
+      commonChoice: 0,
+      myChoice: 2,
+      reasoning:
+        "Billing dashboards show cost but not behavior. Custom logging requires modifying each tool. Rasad sits outside all of them, reads their session files directly, and gives you one dashboard with X-Ray replay, quality grading, cost tracking, and pattern analysis across every AI tool you use.",
+    },
+    vs: {
+      mine: {
+        title: "Rasad",
+        bullets: [
+          "Multi-tool: Claude Code + Gogaa + Codex + Cursor in one view",
+          "Action-level X-Ray: see every read, write, edit, bash call",
+          "Session quality grading (A-F) with efficiency scoring",
+          "Local-first: zero network requests, data never leaves your machine",
+          "6-second sync for 700MB+ of session data",
+        ],
+      },
+      standard: {
+        title: "API billing dashboards",
+        bullets: [
+          "Single provider only, no cross-tool view",
+          "Cost data only, no behavioral analysis",
+          "No session replay or action-level visibility",
+          "Data lives on vendor servers",
+          "No quality scoring or optimization recommendations",
+        ],
+      },
+    },
+  },
+  {
     slug: "agent-system",
     title: "AI Agent System",
     subtitle:
