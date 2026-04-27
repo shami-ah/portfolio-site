@@ -76,30 +76,53 @@ export function AccessRequestModal({ open, onClose }: AccessRequestModalProps): 
     setFormState("submitting");
     setErrorMessage("");
 
-    try {
-      const res = await fetch(`${REGISTRY_URL}/api/access/request`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: name.trim(),
-          email: email.trim(),
-          country,
-          organization: organization.trim() || undefined,
-          reason: reason.trim(),
-        }),
-      });
+    const payload = JSON.stringify({
+      name: name.trim(),
+      email: email.trim(),
+      country,
+      organization: organization.trim() || undefined,
+      reason: reason.trim(),
+    });
 
-      const data = (await res.json()) as { ok?: boolean; error?: string; message?: string };
+    const MAX_RETRIES = 2;
 
-      if (res.ok && data.ok) {
-        setFormState("success");
-      } else {
+    for (let attempt = 0; attempt <= MAX_RETRIES; attempt++) {
+      try {
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), 15_000);
+
+        const res = await fetch(`${REGISTRY_URL}/api/access/request`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: payload,
+          signal: controller.signal,
+        });
+
+        clearTimeout(timeout);
+
+        const data = (await res.json()) as { ok?: boolean; error?: string; message?: string };
+
+        if (res.ok && data.ok) {
+          setFormState("success");
+          return;
+        }
+        // Server responded with an error — don't retry (duplicate, validation, etc.)
         setFormState("error");
         setErrorMessage(data.error ?? data.message ?? "Something went wrong. Please try again.");
+        return;
+      } catch (err) {
+        // Retry on network/timeout errors, but not on the last attempt
+        if (attempt < MAX_RETRIES) {
+          await new Promise((r) => setTimeout(r, 1000 * (attempt + 1)));
+          continue;
+        }
+        setFormState("error");
+        setErrorMessage(
+          err instanceof DOMException && err.name === "AbortError"
+            ? "Request timed out. Please check your connection and try again."
+            : "Could not reach the server. Please check your connection and try again."
+        );
       }
-    } catch {
-      setFormState("error");
-      setErrorMessage("Could not reach the server. Please check your connection and try again.");
     }
   }
 

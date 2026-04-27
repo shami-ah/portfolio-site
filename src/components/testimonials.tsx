@@ -76,12 +76,12 @@ export function Testimonials(): React.ReactElement | null {
 
         <div className="grid md:grid-cols-2 gap-4 md:gap-5">
           {testimonials.map((t, i) => (
-            <FadeUp key={t.name} delay={i * 0.08}>
-              <div className="h-full p-5 md:p-6 rounded-xl bg-card border border-card-border hover:border-muted/30 transition-all duration-300 flex flex-col">
+            <FadeUp key={t.name} delay={i * 0.08} className="min-w-0">
+              <div className="h-full p-5 md:p-6 rounded-xl bg-card border border-card-border hover:border-muted/30 transition-all duration-300 flex flex-col overflow-hidden">
                 <p className="text-3xl text-accent/30 font-serif leading-none mb-2 md:mb-3 select-none">
                   &ldquo;
                 </p>
-                <p className="text-xs md:text-sm text-muted leading-relaxed flex-1 mb-4 md:mb-6">
+                <p className="text-xs md:text-sm text-muted leading-relaxed flex-1 mb-4 md:mb-6 break-words">
                   {t.quote}
                 </p>
                 <div className="flex items-center gap-3 pt-3 md:pt-4 border-t border-card-border">
