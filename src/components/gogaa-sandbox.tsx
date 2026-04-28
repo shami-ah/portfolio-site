@@ -17,24 +17,26 @@ const commands: Record<string, SandboxCommand> = {
   help: {
     output: [
       { id: "h1", kind: "info", text: "Available commands:" },
-      { id: "h2", kind: "tool", text: "  /help           — this help" },
-      { id: "h3", kind: "tool", text: "  /model          — list available models" },
+      { id: "h2", kind: "tool", text: "  /model          — switch between 14 providers" },
+      { id: "h3", kind: "tool", text: "  /dual           — planner/executor/critic pipeline" },
       { id: "h4", kind: "tool", text: "  /commit         — LLM-generated commit from staged diff" },
       { id: "h5", kind: "tool", text: "  /plugins        — open plugin marketplace" },
       { id: "h6", kind: "tool", text: "  /sessions       — list WAL-persisted sessions" },
-      { id: "h7", kind: "tool", text: "  explain <file>  — ask the agent to explain a file" },
-      { id: "h8", kind: "tool", text: "  add a jwt guard — edit flow with SEARCH/REPLACE" },
+      { id: "h7", kind: "tool", text: "  /rasad          — live session analytics dashboard" },
+      { id: "h8", kind: "tool", text: "  /plan           — enter planning mode (read-only)" },
+      { id: "h9", kind: "info", text: "  + 95 more slash commands. type any prompt to start coding." },
     ],
   },
   "/model": {
     output: [
-      { id: "m1", kind: "info", text: "❯ 11 providers available, auto-fallback on rate-limits:" },
+      { id: "m1", kind: "info", text: "❯ 14 providers · auto-fallback on 429/500/timeout:" },
       { id: "m2", kind: "ok", text: "  ●  claude-sonnet-4-6        (current · Anthropic)" },
       { id: "m3", kind: "tool", text: "  ○  gpt-5                    (OpenAI)" },
       { id: "m4", kind: "tool", text: "  ○  gemini-2.5-pro           (Google)" },
       { id: "m5", kind: "tool", text: "  ○  minimax-m2.7             (direct · ~90% cheaper)" },
       { id: "m6", kind: "tool", text: "  ○  groq/llama-3.3-70b       (free tier)" },
-      { id: "m7", kind: "tool", text: "  ○  deepseek-v3, codestral, +5 more" },
+      { id: "m7", kind: "tool", text: "  ○  deepseek-v3, codestral, qwen, ollama, +5 more" },
+      { id: "m8", kind: "info", text: "  tier: large · quality gate: off · critic: available" },
     ],
   },
   "/commit": {
@@ -81,30 +83,29 @@ const commands: Record<string, SandboxCommand> = {
   },
   "add a jwt guard": {
     output: [
-      { id: "j1", kind: "info", text: "❯ classifying intent... code_task" },
-      { id: "j2", kind: "info", text: "❯ scanning repo map for auth-related files..." },
-      { id: "j3", kind: "ok", text: "✓ matched: src/middleware/auth.ts" },
-      { id: "j4", kind: "info", text: "❯ generating SEARCH/REPLACE edit block..." },
-      { id: "j5", kind: "stream", text: "" },
-      { id: "j6", kind: "tool", text: "  src/middleware/auth.ts" },
-      { id: "j7", kind: "tool", text: "  <<<<<<< SEARCH" },
-      { id: "j8", kind: "tool", text: "  export function middleware(req, res, next) {" },
-      { id: "j9", kind: "tool", text: "  =======" },
-      { id: "j10", kind: "tool", text: "  export function middleware(req, res, next) {" },
-      { id: "j11", kind: "tool", text: "    const token = req.headers.authorization?.slice(7);" },
-      { id: "j12", kind: "tool", text: "    if (!token) return res.status(401).json({ error: 'missing_token' });" },
-      { id: "j13", kind: "tool", text: "  >>>>>>> REPLACE" },
-      { id: "j14", kind: "ok", text: "✓ applied. auto-running lint + tests..." },
-      { id: "j15", kind: "ok", text: "✓ lint passed · 187 tests passed · no regressions" },
+      { id: "j1", kind: "info", text: "❯ intent: code_task · tier: large · quality gate: active" },
+      { id: "j2", kind: "tool", text: "  Read  src/middleware/auth.ts" },
+      { id: "j3", kind: "tool", text: "  Grep  \"middleware\" across 14 files" },
+      { id: "j4", kind: "ok", text: "✓ found entry point · 3 callers in src/api/" },
+      { id: "j5", kind: "info", text: "❯ editing src/middleware/auth.ts..." },
+      { id: "j6", kind: "stream", text: "" },
+      { id: "j7", kind: "tool", text: "  Edit  src/middleware/auth.ts (+12 lines)" },
+      { id: "j8", kind: "ok", text: "✓ quality gate: no truncation, braces balanced, path exists" },
+      { id: "j9", kind: "info", text: "❯ auto-verifying mutations..." },
+      { id: "j10", kind: "tool", text: "  Bash  npx tsc --noEmit" },
+      { id: "j11", kind: "ok", text: "✓ typecheck passed" },
+      { id: "j12", kind: "tool", text: "  Bash  npm test -- --reporter=dot" },
+      { id: "j13", kind: "ok", text: "✓ 187 tests passed · 0 failed · no regressions" },
+      { id: "j14", kind: "ok", text: "✓ done · 1 file edited · $0.03 · 4.2s" },
     ],
   },
 };
 
-const suggestions = ["/help", "/model", "/commit", "/plugins", "/sessions", "explain src/auth.ts", "add a jwt guard"];
+const suggestions = ["/help", "/model", "/commit", "/plugins", "/sessions", "explain src/auth.ts", "add a jwt guard"] as const;
 
 export function GogaaSandbox(): React.ReactElement {
   const [lines, setLines] = useState<Line[]>([
-    { id: "boot-1", kind: "info", text: "gogaa v0.9.1 · 11 providers loaded · 1,418 tests passed" },
+    { id: "boot-1", kind: "info", text: "gogaa v1.1.0 · 14 providers loaded · 1,435 tests passed" },
     { id: "boot-2", kind: "ok", text: "✓ ready. try `/help` or click a suggestion below." },
   ]);
   const [input, setInput] = useState("");
