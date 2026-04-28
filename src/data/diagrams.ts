@@ -186,6 +186,87 @@ export const diagrams: Record<string, string> = {
     style K fill:#1e293b,stroke:#22c55e,color:#86efac
     style Context fill:#0f172a,stroke:#3b82f6,color:#93c5fd`,
 
+  "agent-orchestrator": `flowchart TD
+    A[User Goal] --> B[Planner Agent\\ngoal decomposition]
+    B --> C[Task DAG\\nwith dependencies]
+    C --> D{HITL\\nApproval Gate}
+    D -->|Reject| E[Cancelled]
+    D -->|Approve| F[Orchestrator\\nDAG execution]
+
+    F --> G[Worker Agent\\ntool-use loop]
+    G --> H[Validator Agent\\nstructured critique]
+    H -->|Pass| I[Task Complete]
+    H -->|Fail round 1-2| J[Feedback\\nInjection]
+    J --> G
+    H -->|Fail round 3| K[Task Failed\\n+ HITL escalation]
+
+    subgraph Tools ["Tool Registry (Zod-validated)"]
+      T1[web_search]
+      T2[file_read]
+      T3[file_write]
+      T4[shell_exec]
+    end
+
+    G --> Tools
+
+    subgraph Infra ["Infrastructure"]
+      M1[Memory Store\\nerror pattern learning]
+      M2[Event Bus\\ntask:critique · task:validated]
+      M3[State Machine\\n6 states · validated transitions]
+    end
+
+    F -.-> Infra
+    H -.-> M1
+
+    style A fill:#1e293b,stroke:#3b82f6,color:#93c5fd
+    style B fill:#1e293b,stroke:#3b82f6,color:#93c5fd
+    style D fill:#1e293b,stroke:#eab308,color:#fde047
+    style G fill:#1e293b,stroke:#3b82f6,color:#93c5fd
+    style H fill:#1e293b,stroke:#ef4444,color:#fca5a5
+    style I fill:#1e293b,stroke:#22c55e,color:#86efac
+    style J fill:#1e293b,stroke:#eab308,color:#fde047
+    style Tools fill:#0f172a,stroke:#3b82f6,color:#93c5fd
+    style Infra fill:#0f172a,stroke:#22c55e,color:#86efac`,
+
+  rasad: `flowchart TD
+    A[Claude Code\\nJSONL sessions] --> D[Streaming\\nParser]
+    B[Gogaa CLI\\nJSON + JSONL] --> D
+    C[Codex CLI\\nadapter] --> D
+
+    D --> E[SQLite\\nWAL + FTS5]
+
+    E --> F1[Dashboard\\nReact 19 + Recharts]
+    E --> F2[TUI\\nReact Ink]
+    E --> F3[CLI\\n18 commands]
+
+    F2 --> G[X-Ray View\\nCAMEL phase detection]
+    G --> G1[Planning]
+    G --> G2[Exploring]
+    G --> G3[Executing]
+    G --> G4[Verifying]
+    G --> G5[Refining]
+
+    E --> H[Quality Engine\\n6-factor scoring A-F]
+    H --> I[Coaching\\nphase-aware tips]
+    E --> J[Recommendations\\ncost optimization]
+
+    subgraph Live ["Live Monitoring"]
+      K1[File Watcher\\nchokidar]
+      K2[WebSocket\\npush updates]
+      K3[Fastify API\\nlocalhost only]
+    end
+
+    D -.-> Live
+    Live -.-> F1
+
+    style A fill:#1e293b,stroke:#3b82f6,color:#93c5fd
+    style B fill:#1e293b,stroke:#3b82f6,color:#93c5fd
+    style E fill:#1e293b,stroke:#3b82f6,color:#93c5fd
+    style G fill:#1e293b,stroke:#eab308,color:#fde047
+    style H fill:#1e293b,stroke:#ef4444,color:#fca5a5
+    style I fill:#1e293b,stroke:#22c55e,color:#86efac
+    style Live fill:#0f172a,stroke:#22c55e,color:#86efac`,
+
   "agent-system": `flowchart TD
     A[Client Request] --> B[FastAPI Server]
 
