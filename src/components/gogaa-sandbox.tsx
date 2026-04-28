@@ -103,14 +103,52 @@ const commands: Record<string, SandboxCommand> = {
 
 const suggestions = ["/help", "/model", "/commit", "/plugins", "/sessions", "explain src/auth.ts", "add a jwt guard"] as const;
 
+/** Auto-play sequence that shows gogaa in action on mount. */
+const AUTOPLAY: Line[] = [
+  { id: "a0", kind: "info", text: "gogaa v1.1.0 · 14 providers loaded · claude-sonnet-4-6" },
+  { id: "a1", kind: "ok", text: "✓ project: ~/Work/api-server · 847 symbols indexed" },
+  { id: "a2", kind: "user", text: "add rate limiting to the /api/users endpoint" },
+  { id: "a3", kind: "info", text: "❯ intent: code_task · tier: large · planning..." },
+  { id: "a4", kind: "tool", text: "  Read  src/routes/users.ts" },
+  { id: "a5", kind: "tool", text: "  Read  src/middleware/index.ts" },
+  { id: "a6", kind: "tool", text: "  Grep  \"rateLimit\" across 23 files" },
+  { id: "a7", kind: "ok", text: "✓ found existing rate-limit util in src/lib/rate-limit.ts" },
+  { id: "a8", kind: "info", text: "❯ editing src/routes/users.ts..." },
+  { id: "a9", kind: "tool", text: "  Edit  src/routes/users.ts (+8 lines)" },
+  { id: "a10", kind: "ok", text: "✓ quality gate: braces balanced, no truncation" },
+  { id: "a11", kind: "info", text: "❯ auto-verifying..." },
+  { id: "a12", kind: "tool", text: "  Bash  npx tsc --noEmit" },
+  { id: "a13", kind: "ok", text: "✓ typecheck passed" },
+  { id: "a14", kind: "tool", text: "  Bash  npm test -- --grep users" },
+  { id: "a15", kind: "ok", text: "✓ 12 tests passed · 0 failed" },
+  { id: "a16", kind: "ok", text: "✓ done · 1 file · $0.02 · 3.8s" },
+];
+
 export function GogaaSandbox(): React.ReactElement {
-  const [lines, setLines] = useState<Line[]>([
-    { id: "boot-1", kind: "info", text: "gogaa v1.1.0 · 14 providers loaded · 1,435 tests passed" },
-    { id: "boot-2", kind: "ok", text: "✓ ready. try `/help` or click a suggestion below." },
-  ]);
+  const [lines, setLines] = useState<Line[]>([]);
   const [input, setInput] = useState("");
   const [busy, setBusy] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const autoPlayed = useRef(false);
+
+  // Auto-play on mount — show gogaa doing real work
+  useEffect(() => {
+    if (autoPlayed.current) return;
+    autoPlayed.current = true;
+    let cancelled = false;
+
+    (async (): Promise<void> => {
+      setBusy(true);
+      for (const line of AUTOPLAY) {
+        if (cancelled) break;
+        await new Promise((r) => setTimeout(r, line.kind === "user" ? 600 : 200 + Math.random() * 150));
+        setLines((l) => [...l, { ...line, id: `${line.id}-${Date.now()}` }]);
+      }
+      if (!cancelled) setBusy(false);
+    })();
+
+    return () => { cancelled = true; };
+  }, []);
 
   useEffect(() => {
     scrollRef.current?.scrollTo({
