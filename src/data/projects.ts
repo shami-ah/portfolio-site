@@ -38,7 +38,7 @@ export const projects: ProjectData[] = [
   {
     slug: "codelens",
     title: "CodeLens",
-    subtitle: "Universal AI Code Review System (v0.3.5, 345 patterns)",
+    subtitle: "Universal AI Code Review System (v0.3.5, 345 patterns, multi-agent ensemble critique)",
     type: "AI Dev Tool",
     impact: "I spent months cataloguing every category of production bug I kept seeing across client projects: missing auth guards, silent N+1 queries, race conditions, taint paths that reach SQL. The result is 345 hand-crafted patterns across 9 stacks that run in under one second, entirely on your machine. No cloud. No latency. Code never leaves the repo. The pattern library grows continuously through three pipelines: a Glean pipeline that mines production PRs, an Agent Harvest system that cross-compares findings from 19 community reviewer agents, and a Greptile Parity process that benchmarks CodeLens head-to-head against commercial AI reviewers on real PRs to close detection gaps.",
     problem:
@@ -69,7 +69,7 @@ export const projects: ProjectData[] = [
       "Self-learning noise filter tracks which findings developers act on vs dismiss, uses TF-IDF similarity to auto-suppress patterns that are consistently ignored in this codebase. Fully local, no cloud ML",
       "Code explanation command: codelens explain <file> uses the call graph to show callers, callees, data flow, and risk surface. Useful when onboarding to an unfamiliar codebase",
       "Glean pipeline: processes real production PR reviews, extracts generalizable bug patterns, deduplicates against the existing library, and produces import-ready pattern candidates. 600+ PRs processed to date",
-      "Agent Harvest system: runs 19 community reviewer agents (silent-failure-hunter, type-design-analyzer, security auditor, test analyzer, etc.) alongside CodeLens and converts any detection gap into a new pattern. 34 patterns harvested in the first sweep",
+      "Agent Harvest with ensemble critique: runs 19 community reviewer agents (silent-failure-hunter, type-design-analyzer, security auditor, test analyzer, etc.) alongside CodeLens with self-consistency sampling. Findings that appear across multiple independent agents are ranked higher. Converts any detection gap into a new pattern. 34 patterns harvested in the first sweep",
       "Greptile Parity: head-to-head benchmarking against commercial AI reviewers on real production PRs. Ran CodeLens against the same 54-file PR that Greptile reviewed, identified 7 detection gaps, closed 6 with new patterns (G102-G107), and enhanced the AI methodology with focused security probes for the remaining semantic gaps",
       "Focused security probes: 6 structured questions the AI must answer per-file with YES/NO + line evidence. Catches authorization ownership gaps, fallback path parity bugs, behavior regressions, and draft/live state inconsistencies that no regex pattern can express",
       "Test coverage gap detection flags code changes with no corresponding test updates in the same PR",
@@ -519,7 +519,7 @@ export const projects: ProjectData[] = [
   {
     slug: "gogaa-cli",
     title: "Gogaa CLI",
-    subtitle: "AI Coding Agent: Any Model, Any Provider (v1.0.0)",
+    subtitle: "AI Coding Agent: Any Model, Any Provider (v1.1.0)",
     type: "Developer Tool / CLI",
     featured: true,
     requestAccess: true,
@@ -559,7 +559,7 @@ export const projects: ProjectData[] = [
       "MiniMax M2.7: OpenAI-compatible direct API, 1M context window, ~90% cheaper than Claude Sonnet, outperforms Sonnet 4.5 on SWE-bench Multilingual. The best cost-quality tradeoff I've found for agentic coding",
       "Anthropic tool search: BM25 deferred loading auto-enabled above 10 tools. Core tools (file, bash, grep, glob) always loaded, 11 secondary tools discovered on demand, ~85% context reduction (~45k tokens saved per session)",
       "24 built-in tools: file-read/write/edit (VFS-aware), bash (sandboxed), grep, glob, web-search, web-fetch, image-read, PDF-read, LSP (go-to-def, find-refs, diagnostics, hover), sub-agent, memory (save/list/recall), compare, semantic search, project index",
-      "Sub-agent system spawns a specialized sub-agent with its own model selection, context, and tool scope. The parent agent continues without blocking",
+      "CAMEL-inspired multi-agent system: Planner/Executor/Critic pipeline with self-consistency sampling (spawn N agents, score via critic, return best). Dedicated critic agent type with structured scoring rubric. Sub-agents spawn with independent model selection, context, and tool scope",
       "React Ink TUI: block-art banner, streaming output with blinking cursor, numbered permission prompts, collapsible tool summaries, running timer with token cost per exchange",
       "Live status bar shows path, branch, context percentage, cost, and time. Updates in real time during streaming",
       "Git integration: /git status/diff/log, /commit with auto-drafted message, /pr to create commits and PRs from the chat interface",
