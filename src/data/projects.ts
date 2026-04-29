@@ -12,6 +12,8 @@ export interface ProjectData {
   stack: string[];
   results: string[];
   github?: string;
+  /** Gitea repo path (e.g. "shami/gogaa-ts") — shows "Repo" button linking to README showcase */
+  giteaRepo?: string;
   live?: string;
   featured?: boolean;
   /** Show "Request Access" button — opens access request form */
@@ -129,6 +131,7 @@ export const projects: ProjectData[] = [
       "Glean pipeline has processed 600+ production PRs, extracting 90 novel patterns into the react-supabase-ts module. Agent Harvest added 34 patterns in its first sweep. Greptile Parity benchmarking raised coverage from 8% to 67% on a real production PR in one session",
     ],
     // github: "https://github.com/shami-ah/codelens", // Private, evaluating commercial release
+    giteaRepo: "shami/codelens",
     featured: true,
     decision: {
       scenario: "You've seen 3 production bugs this month that slipped past SonarQube + ESLint + Claude Code review. They involve user input reaching DB queries unvalidated across 4 files.",
@@ -629,6 +632,7 @@ export const projects: ProjectData[] = [
       "Parallel agent panes, branch checkpoints, scheduled triggers, web session viewer, and 22 themes",
     ],
     // github link private until npm publish
+    giteaRepo: "shami/gogaa-ts",
     decision: {
       scenario: "Every AI coding CLI is locked to one vendor. If the API goes down or rate-limits hit, you stop working. Some have great git workflow but spartan UI. Others have polish but no MCP. Every tool makes you choose.",
       question: "What would you build?",

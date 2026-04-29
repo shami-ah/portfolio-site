@@ -484,6 +484,18 @@ export function ProjectModal({
                       GitHub
                     </a>
                   )}
+                  {project.giteaRepo && (
+                    <a
+                      href={`/projects/${project.slug}/readme`}
+                      className="inline-flex items-center gap-1.5 px-3 md:px-4 py-2 text-xs md:text-sm border border-accent/30 bg-accent/5 rounded-lg hover:border-accent/50 hover:bg-accent/10 transition-all duration-200 text-accent/80 hover:text-accent"
+                    >
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+                        <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
+                      </svg>
+                      Repo
+                    </a>
+                  )}
                   {project.live && (
                     <a
                       href={project.live}
