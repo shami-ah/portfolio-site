@@ -40,13 +40,13 @@ export const projects: ProjectData[] = [
   {
     slug: "codelens",
     title: "CodeLens",
-    subtitle: "Universal AI Code Review System (v0.3.5, 345 patterns, multi-agent ensemble critique)",
+    subtitle: "Universal AI Code Review System (v0.4.0, ~430 patterns, multi-agent ensemble critique)",
     type: "AI Dev Tool",
-    impact: "I spent months cataloguing every category of production bug I kept seeing across client projects: missing auth guards, silent N+1 queries, race conditions, taint paths that reach SQL. The result is 345 hand-crafted patterns across 9 stacks that run in under one second, entirely on your machine. No cloud. No latency. Code never leaves the repo. The pattern library grows continuously through three pipelines: a Glean pipeline that mines production PRs, an Agent Harvest system that cross-compares findings from 19 community reviewer agents, and a Greptile Parity process that benchmarks CodeLens head-to-head against commercial AI reviewers on real PRs to close detection gaps.",
+    impact: "I spent months cataloguing every category of production bug I kept seeing across client projects: missing auth guards, silent N+1 queries, race conditions, taint paths that reach SQL. The result is ~430 hand-crafted patterns across 9 stacks that run in under one second, entirely on your machine. No cloud. No latency. Code never leaves the repo. The pattern library grows continuously through three pipelines: a Glean pipeline that mines production PRs, an Agent Harvest system that cross-compares findings from 19 community reviewer agents, and a Greptile Parity process that benchmarks CodeLens head-to-head against commercial AI reviewers on real PRs to close detection gaps.",
     problem:
       "Every code review tool I evaluated made the same tradeoff. Fast but shallow (regex linters), or deep but slow and cloud-dependent (AI tools that send your code to a third party). Neither caught the bugs that actually ship: the ones that look fine in isolation but break when a schema changes, when user input flows through three layers unvalidated, or when a test suite silently diverges from the live code. And none of them could talk to the AI coding assistant sitting next to them and say: don't generate that pattern.",
     solution:
-      "A hybrid review engine that runs 345 deterministic patterns first, builds a persistent codebase index (call graph, schema graph, column registry, type graph), then layers AI reasoning with focused security probes on top. The AI phase uses 6 structured probes that force per-file yes/no answers with line evidence, catching semantic bugs that no pattern can express: missing authorization guards, fallback path parity, behavior regressions, draft/live state bugs. For large PRs, parallel agents run focused rounds by layer. The pattern library grows through three pipelines: Glean (production PR mining), Agent Harvest (19 community agents), and Greptile Parity (head-to-head benchmarking against commercial AI reviewers).",
+      "A hybrid review engine that runs ~430 deterministic patterns first, builds a persistent codebase index (call graph, schema graph, column registry, type graph), then layers AI reasoning with focused security probes on top. The AI phase uses 6 structured probes that force per-file yes/no answers with line evidence, catching semantic bugs that no pattern can express: missing authorization guards, fallback path parity, behavior regressions, draft/live state bugs. For large PRs, parallel agents run focused rounds by layer. The pattern library grows through three pipelines: Glean (production PR mining), Agent Harvest (19 community agents), and Greptile Parity (head-to-head benchmarking against commercial AI reviewers).",
     architecture: [
       "Git Diff",
       "AST-aware File Parser",
@@ -54,7 +54,7 @@ export const projects: ProjectData[] = [
       "Incremental Update (60ms)",
       "Pass 0-2: Pre-flight, Layer Analysis, Cross-file Tracing",
       "Pass 2: Focused Security Probes (6 per-file forced questions with line evidence)",
-      "Pass 3: Pattern Scan (345 patterns, 9 stacks) + AI Agent Auto-Detection",
+      "Pass 3: Pattern Scan (~430 patterns, 9 stacks) + AI Agent Auto-Detection",
       "Pass 3.5: Taint Tracking + Test Coverage + Dep Vulns",
       "Pass 4: Self-Validation + PR Risk Score",
       "AI Reasoning Layer (Claude / Codex / Gemini) + Multi-Round Parallel Agents",
@@ -63,7 +63,7 @@ export const projects: ProjectData[] = [
       "Agent Harvest System (cross-compares 19 community agents to find detection gaps)",
     ],
     features: [
-      "345 hand-crafted patterns across 9 stacks (TypeScript, Python, Go, Java, Ruby, PHP, Next.js, FastAPI, Spring Boot). Every rule maps to a real production failure mode, tagged with OWASP/CWE",
+      "~430 hand-crafted patterns across 9 stacks (TypeScript, Python, Go, Java, Ruby, PHP, Next.js, FastAPI, Spring Boot). Every rule maps to a real production failure mode, tagged with OWASP/CWE",
       "Guardian mode injects pattern rules into Claude Code, Cursor, Windsurf, Copilot, and Codex at the prompt level. Bugs are prevented during generation, not just caught after",
       "Security taint tracking: a 222-line source-to-sink tracer that follows user input through API handlers, business logic, and DB calls. Flags unsanitized paths to SQL, exec, and innerHTML with CWE mapping",
       "PR Risk Score: weighted 1-10 rating across 8 factors (auth changes, schema mods, missing tests, dependency changes, error handler removal, API surface, config edits, file count)",
@@ -95,7 +95,7 @@ export const projects: ProjectData[] = [
       },
       {
         title: "Glean pipeline: the pattern library grows from real production code",
-        description: "Static rule sets go stale. I built a pipeline called Glean that processes real PR reviews from production codebases, extracts generalizable bug patterns, and deduplicates them against the existing library. Over 500 PRs from a production SaaS with 40+ edge functions, Stripe Connect, and Supabase have been processed. The pipeline has added 90 patterns to the react-supabase-ts module alone. Each new project I review makes the tool better for every project after it.",
+        description: "Static rule sets go stale. I built a pipeline called Glean that processes real PR reviews from production codebases, extracts generalizable bug patterns, and deduplicates them against the existing library. Over 520 PRs from a production SaaS with 40+ edge functions, Stripe Connect, and Supabase have been processed. The pipeline has added 194 patterns to the react-supabase-ts module alone. Each new project I review makes the tool better for every project after it.",
       },
       {
         title: "Guardian mode as a shift-left layer inside AI agents",
@@ -120,7 +120,7 @@ export const projects: ProjectData[] = [
     ],
     stack: ["TypeScript", "Docker", "esbuild", "Regex Parsers", "Persistent JSON Index", "GitHub Actions", "Claude Code Adapter", "GHCR"],
     results: [
-      "345 patterns across 9 stacks, every rule validated against real production repos",
+      "~430 patterns across 9 stacks, every rule validated against real production repos",
       "First index build: 4.0s on a 1,622-file production codebase with 62K+ call graph edges",
       "Incremental updates: 60ms, fast enough for pre-commit hooks and editor integrations",
       "7-file PR review: 780ms end-to-end",
@@ -128,7 +128,7 @@ export const projects: ProjectData[] = [
       "Guardian mode active in production: prevents bug categories at generation time, not just review time",
       "Zero runtime dependencies: single 351KB file, runs in any CI pipeline without setup",
       "Docker image auto-published to GHCR on every push, one-command usage, source obfuscated",
-      "Glean pipeline has processed 600+ production PRs, extracting 90 novel patterns into the react-supabase-ts module. Agent Harvest added 34 patterns in its first sweep. Greptile Parity benchmarking raised coverage from 8% to 67% on a real production PR in one session",
+      "Glean pipeline has processed 600+ production PRs, extracting 194 novel patterns into the react-supabase-ts module. Agent Harvest added 34 patterns in its first sweep. Greptile Parity benchmarking raised coverage from 8% to 67% on a real production PR in one session",
     ],
     // github: "https://github.com/shami-ah/codelens", // Private, evaluating commercial release
     giteaRepo: "shami/codelens",
@@ -144,13 +144,13 @@ export const projects: ProjectData[] = [
       commonChoice: 1,
       myChoice: 2,
       reasoning:
-        "ESLint stays single-file. Commercial SaaS sends your code to a third party and still misses schema/cross-file bugs. I built a hybrid engine: 345 hand-crafted patterns + persistent call graph + source-to-sink taint tracer + agent harvest pipeline. Runs fully local, zero deps, <1s reviews. Now active in production.",
+        "ESLint stays single-file. Commercial SaaS sends your code to a third party and still misses schema/cross-file bugs. I built a hybrid engine: ~430 hand-crafted patterns + persistent call graph + source-to-sink taint tracer + agent harvest pipeline. Runs fully local, zero deps, <1s reviews. Now active in production.",
     },
     vs: {
       mine: {
         title: "CodeLens",
         bullets: [
-          "345 hand-crafted patterns validated against real failures",
+          "~430 hand-crafted patterns validated against real failures",
           "Persistent codebase index, 60ms incremental updates",
           "Source-to-sink taint tracking across files with CWE mapping",
           "Zero deps, runs anywhere Node runs, 351KB single file",
