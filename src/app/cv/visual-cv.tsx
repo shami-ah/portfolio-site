@@ -5,7 +5,7 @@ import { useState, useEffect, useRef } from "react";
 import { useSearchParams } from "next/navigation";
 import { useCvHit } from "@/components/cv-counter";
 import { useStatus } from "@/lib/use-status";
-import { Download, FileText, Zap, Rocket, Building2, Link2, TreePine, GraduationCap, Globe, Cog, Cloud, ArrowRight } from "lucide-react";
+import { Download, Zap, Rocket, Building2, Link2, TreePine, GraduationCap, Globe, Cog, Cloud, ArrowRight } from "lucide-react";
 
 // Use CSS variables so these adapt to light/dark theme
 const ACCENT = "var(--accent, #d4a853)";
@@ -42,9 +42,8 @@ function FlowNode({ label, delay, isLast }: { label: string; delay: number; isLa
       transition={{ delay, duration: 0.3, ease: "easeOut" }}
     >
       <motion.span
-        className="px-2.5 py-1 rounded-lg text-xs font-mono font-medium border backdrop-blur-sm"
-        style={{ borderColor: `${ACCENT}40`, background: `${ACCENT}15`, color: ACCENT }}
-        whileHover={{ scale: 1.1, boxShadow: `0 0 20px ${ACCENT}40` }}
+        className="px-2.5 py-1 rounded-lg text-xs font-mono font-medium border border-accent/25 bg-accent/10 text-accent backdrop-blur-sm"
+        whileHover={{ scale: 1.1 }}
         transition={{ duration: 0.2 }}
       >
         {label}
@@ -75,10 +74,10 @@ function SkillBar({ name, level, delay }: { name: string; level: number; delay: 
         <span className="text-foreground/80 group-hover:text-foreground transition-colors">{name}</span>
         <span className="text-muted/80 font-mono">{level}%</span>
       </div>
-      <div className="h-1.5 bg-card rounded-full overflow-hidden">
+      <div className="h-1.5 bg-card-border/30 rounded-full overflow-hidden">
         <motion.div
-          className="h-full rounded-full"
-          style={{ background: `linear-gradient(90deg, ${ACCENT}, ${ACCENT}cc)`, boxShadow: `0 0 10px ${ACCENT}40` }}
+          className="h-full rounded-full bg-accent"
+          style={{ boxShadow: "0 0 10px var(--accent-glow)" }}
           initial={{ width: 0 }}
           whileInView={{ width: `${level}%` }}
           viewport={{ once: true }}
@@ -126,15 +125,6 @@ export function VisualCV(): React.ReactElement {
     <>
       {/* Floating controls */}
       <div className="print:hidden fixed top-4 right-4 z-50 flex flex-wrap gap-2 justify-end max-w-[calc(100vw-2rem)]">
-        <motion.a
-          href="/chat"
-          className="px-3 md:px-4 py-2 bg-accent/20 hover:bg-accent/20 text-accent rounded-lg text-xs md:text-sm font-medium backdrop-blur-sm border border-accent/20 inline-flex items-center gap-1.5 shadow-lg shadow-accent/10"
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-        >
-          <FileText size={14} />
-          Chat
-        </motion.a>
         <motion.button
           onClick={handleDownload}
           className="px-3 md:px-4 py-2 bg-accent/90 hover:bg-accent text-background rounded-lg text-xs md:text-sm font-medium backdrop-blur-sm border border-accent/20 flex items-center gap-1.5 shadow-lg shadow-accent/20"
@@ -242,7 +232,7 @@ export function VisualCV(): React.ReactElement {
               <motion.div
                 key={stat.l}
                 className="p-5 rounded-xl border border-card-border bg-card/40 backdrop-blur-sm text-center group hover:border-accent/20 transition-colors"
-                whileHover={{ y: -4, boxShadow: `0 8px 30px ${ACCENT}10` }}
+                whileHover={{ y: -4 }}
               >
                 <p className="text-3xl font-bold font-mono" style={{ color: i === 3 ? AMBER : ACCENT }}>
                   <AnimatedCounter value={stat.n} suffix={stat.s} />

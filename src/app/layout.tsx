@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, Space_Grotesk, JetBrains_Mono } from "next/font/google";
 import { ChatTrigger } from "@/components/chat-trigger";
+import { ThemeToggle } from "@/components/theme-toggle";
 import "./globals.css";
 
 const inter = Inter({
@@ -115,6 +116,9 @@ export default function RootLayout({
           Skip to content
         </a>
         {children}
+        <div className="fixed bottom-4 left-4 z-50">
+          <ThemeToggle />
+        </div>
         <ChatTrigger />
         <script
           dangerouslySetInnerHTML={{
