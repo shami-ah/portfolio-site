@@ -87,9 +87,6 @@ export const metadata: Metadata = {
   },
   alternates: {
     canonical: "https://ahtesham.dev.wadwarehouse.com",
-    types: {
-      "application/rss+xml": "/feed.xml",
-    },
   },
 };
 

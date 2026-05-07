@@ -42,13 +42,6 @@ export function Footer(): React.ReactElement {
           >
             &gt; Upwork
           </a>
-          <a
-            href="/feed.xml"
-            className="text-small font-mono text-muted/40 hover:text-accent transition-colors"
-            title="RSS Feed"
-          >
-            &gt; RSS
-          </a>
         </div>
       </div>
     </footer>
