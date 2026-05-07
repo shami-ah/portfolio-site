@@ -2,19 +2,12 @@
 
 import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useStatus } from "@/lib/use-status";
 
 interface Check {
   label: string;
   detail: string;
 }
-
-const checks: Check[] = [
-  { label: "5 years production AI", detail: "since 2019" },
-  { label: "250+ projects shipped", detail: "global clients" },
-  { label: "1,418 tests passing", detail: "gogaa v0.9.1" },
-  { label: "305 patterns active", detail: "codelens v0.3.3" },
-  { label: "100+ clients live", detail: "openevent" },
-];
 
 interface BootProps {
   /** If true, replays the boot even if already seen this session. */
@@ -24,6 +17,7 @@ interface BootProps {
 }
 
 export function TerminalBoot({ force = false, onDone }: BootProps): React.ReactElement | null {
+  const { status } = useStatus();
   const [visible, setVisible] = useState(false);
   const [phase, setPhase] = useState<
     "intro" | "checks" | "status" | "launching" | "exit"
@@ -33,7 +27,15 @@ export function TerminalBoot({ force = false, onDone }: BootProps): React.ReactE
   const [soundOn, setSoundOn] = useState(false);
   const audioCtxRef = useRef<AudioContext | null>(null);
 
-  const introText = "$ ./ahtesham init";
+  const introText = "$ shami init --mode=command-center";
+
+  const checks: Check[] = [
+    { label: "neural map loaded", detail: "5 years production AI" },
+    { label: `${status.gogaa.tests.toLocaleString()} tests passing`, detail: `gogaa v${status.gogaa.version}` },
+    { label: `~${status.codelens.patterns} patterns armed`, detail: `codelens v${status.codelens.version}` },
+    { label: `${status.openevent.clients}+ clients connected`, detail: "openevent live" },
+    { label: "agent ready", detail: "command center online" },
+  ];
 
   // Short beep on type
   const beep = (): void => {
@@ -72,9 +74,13 @@ export function TerminalBoot({ force = false, onDone }: BootProps): React.ReactE
     const seen = localStorage.getItem("boot-ever-seen") === "1";
 
     // Listen for replay events (from agent/palette commands)
-    const onReplay = (): void => {
+    // Detail can specify { slow: true } for slower replay
+    const onReplay = (e: Event): void => {
+      const slow = (e as CustomEvent<{ slow?: boolean }>).detail?.slow ?? false;
       localStorage.removeItem("boot-ever-seen");
       sessionStorage.removeItem("boot-complete");
+      if (slow) sessionStorage.setItem("boot-slow", "1");
+      else sessionStorage.removeItem("boot-slow");
       setPhase("intro");
       setIntroTyped(0);
       setCheckStep(0);
@@ -104,25 +110,29 @@ export function TerminalBoot({ force = false, onDone }: BootProps): React.ReactE
     }, 500);
   };
 
-  // Phase: intro typing (fast)
+  // Speed multiplier: 1x for first visit, 2.5x for replay (slower so user can read)
+  const slow = typeof sessionStorage !== "undefined" && sessionStorage.getItem("boot-slow") === "1";
+  const m = slow ? 2.5 : 1;
+
+  // Phase: intro typing
   useEffect(() => {
     if (!visible || phase !== "intro") return;
     if (introTyped < introText.length) {
       const t = setTimeout(() => {
         setIntroTyped((i) => i + 1);
         beep();
-      }, 18);
+      }, 18 * m);
       return () => clearTimeout(t);
     }
-    const t = setTimeout(() => setPhase("checks"), 90);
+    const t = setTimeout(() => setPhase("checks"), 90 * m);
     return () => clearTimeout(t);
-  }, [visible, phase, introTyped, soundOn]);
+  }, [visible, phase, introTyped, soundOn, m]);
 
-  // Phase: checks cascade (fast)
+  // Phase: checks cascade
   useEffect(() => {
     if (!visible || phase !== "checks") return;
     if (checkStep >= checks.length) {
-      const t = setTimeout(() => setPhase("status"), 140);
+      const t = setTimeout(() => setPhase("status"), 140 * m);
       return () => clearTimeout(t);
     }
     const t = setTimeout(
@@ -130,16 +140,16 @@ export function TerminalBoot({ force = false, onDone }: BootProps): React.ReactE
         setCheckStep((s) => s + 1);
         beep();
       },
-      80,
+      80 * m,
     );
     return () => clearTimeout(t);
-  }, [visible, phase, checkStep, soundOn]);
+  }, [visible, phase, checkStep, soundOn, m]);
 
-  // Phase: status → launching → exit (fast)
+  // Phase: status → launching → exit
   useEffect(() => {
     if (!visible) return;
     if (phase === "status") {
-      const t = setTimeout(() => setPhase("launching"), 220);
+      const t = setTimeout(() => setPhase("launching"), 220 * m);
       return () => clearTimeout(t);
     }
     if (phase === "launching") {
@@ -204,7 +214,7 @@ export function TerminalBoot({ force = false, onDone }: BootProps): React.ReactE
                 <span className="w-2.5 h-2.5 rounded-full bg-green-500/60" />
               </div>
               <p className="text-[10px] text-muted/60 ml-auto font-mono">
-                ahtesham@portfolio ~ zsh
+                shami@command-center ~ zsh
               </p>
             </div>
 
@@ -296,6 +306,7 @@ export function TerminalBoot({ force = false, onDone }: BootProps): React.ReactE
                   phase === "launching" ||
                   phase === "exit") && (
                   <motion.p
+                    key="status-ready"
                     initial={{ opacity: 0, y: 4 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.3 }}
@@ -308,13 +319,14 @@ export function TerminalBoot({ force = false, onDone }: BootProps): React.ReactE
                 )}
                 {(phase === "launching" || phase === "exit") && (
                   <motion.p
+                    key="status-launching"
                     initial={{ opacity: 0, y: 4 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.3 }}
                     className="text-[12px] text-accent flex items-center gap-2"
                   >
                     <span className="text-accent">❯</span>
-                    launching portfolio
+                    entering command center
                     <span className="inline-flex gap-0.5">
                       <span className="animate-pulse">.</span>
                       <span className="animate-pulse" style={{ animationDelay: "0.15s" }}>.</span>

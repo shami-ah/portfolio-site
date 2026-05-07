@@ -13,8 +13,6 @@ export function TopBar(): React.ReactElement {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Watch for data-modal-open on <body> and hide the top bar while any
-  // modal is open, so the modal has the whole viewport to itself.
   useEffect(() => {
     if (typeof document === "undefined") return;
     const sync = (): void => {
@@ -29,19 +27,16 @@ export function TopBar(): React.ReactElement {
     return () => obs.disconnect();
   }, []);
 
-  const openSearch = (): void => {
-    const ev = new KeyboardEvent("keydown", {
-      key: "k",
-      metaKey: true,
-      ctrlKey: true,
-      bubbles: true,
-    });
-    window.dispatchEvent(ev);
+  const reboot = (): void => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    setTimeout(() => {
+      window.dispatchEvent(new CustomEvent("replay-intro", { detail: { slow: true } }));
+    }, 300);
   };
 
   return (
     <>
-      {/* Signature name — top-left corner, hides when modal open */}
+      {/* Signature — top-left corner */}
       <motion.a
         href="/"
         initial={{ opacity: 0, y: -10 }}
@@ -55,12 +50,19 @@ export function TopBar(): React.ReactElement {
           scrolled ? "bg-background/70 backdrop-blur-md" : ""
         }`}
       >
-        <h1 className="text-sm md:text-xl font-bold tracking-tight leading-none">
-          Ahtesham Ahmad
-        </h1>
+        <span className="font-mono text-sm md:text-base tracking-tight">
+          <span className="text-accent">&gt;</span>{" "}
+          <span className="text-foreground font-semibold">ahtesham</span>
+          <span className="text-muted/50">.dev</span>
+          <motion.span
+            animate={{ opacity: [1, 0] }}
+            transition={{ duration: 0.8, repeat: Infinity, repeatType: "reverse" }}
+            className="inline-block w-[2px] h-[14px] bg-accent ml-1 align-middle"
+          />
+        </span>
       </motion.a>
 
-      {/* Actions — top-right · hides when modal open */}
+      {/* Actions — top-right */}
       <motion.div
         initial={{ opacity: 0, y: -10 }}
         animate={{
@@ -71,17 +73,13 @@ export function TopBar(): React.ReactElement {
         transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
         className="fixed top-0 right-0 z-40 px-3 md:px-6 py-3 md:py-4 flex items-center gap-2 md:gap-3"
       >
-        {/* Search — clear, inviting, labeled */}
+        {/* Reboot */}
         <button
           type="button"
-          onClick={openSearch}
-          aria-label="Search the portfolio · open command palette"
-          className="group relative inline-flex items-center gap-2 md:gap-2.5 px-3 md:px-4 py-2 md:py-2.5 rounded-lg bg-card/85 backdrop-blur-md border border-card-border hover:border-accent/50 hover:bg-card transition-all duration-200 shadow-md"
+          onClick={reboot}
+          aria-label="Reboot system — replay intro"
+          className="group relative inline-flex items-center gap-2 px-3 md:px-4 py-2 md:py-2.5 rounded-lg bg-card/85 backdrop-blur-md border border-card-border hover:border-accent/50 hover:bg-card transition-all duration-200 shadow-md"
         >
-          {/* Pulse ring to draw attention */}
-          <span className="absolute -inset-[1px] rounded-lg pointer-events-none">
-            <span className="absolute inset-0 rounded-lg border border-accent/0 group-hover:border-accent/30 transition-colors" />
-          </span>
           <svg
             width="14"
             height="14"
@@ -93,28 +91,44 @@ export function TopBar(): React.ReactElement {
             strokeLinejoin="round"
             className="text-muted group-hover:text-accent transition-colors shrink-0"
           >
-            <circle cx="11" cy="11" r="8" />
-            <line x1="21" y1="21" x2="16.65" y2="16.65" />
+            <path d="M21 2v6h-6" />
+            <path d="M3 12a9 9 0 0 1 15-6.7L21 8" />
+            <path d="M3 22v-6h6" />
+            <path d="M21 12a9 9 0 0 1-15 6.7L3 16" />
           </svg>
           <span className="hidden sm:inline text-xs md:text-sm text-muted group-hover:text-foreground transition-colors whitespace-nowrap">
-            Search &amp; jump
-          </span>
-          <kbd className="hidden md:inline text-[10px] font-mono text-muted/60 border border-card-border px-1.5 py-0.5 rounded bg-background/70">
-            ⌘K
-          </kbd>
-
-          {/* Hint tooltip appears on hover */}
-          <span className="absolute top-full right-0 mt-2 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap">
-            <span className="inline-block text-[10px] font-mono text-muted/80 bg-card/95 backdrop-blur-md border border-card-border rounded-md px-2 py-1.5 shadow-lg">
-              jump to any section, project, or action
-            </span>
+            Reboot System
           </span>
         </button>
 
-        {/* Walk my career — clear CTA */}
+        {/* My setup */}
+        <a
+          href="/uses"
+          aria-label="Tools, stack, and workflow"
+          className="group relative inline-flex items-center gap-1.5 md:gap-2 px-3 md:px-4 py-2 md:py-2.5 rounded-lg bg-card/85 backdrop-blur-md border border-card-border hover:border-accent/50 hover:bg-card transition-all duration-200 shadow-md"
+        >
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="text-muted group-hover:text-accent transition-colors shrink-0"
+          >
+            <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" />
+          </svg>
+          <span className="hidden sm:inline text-xs md:text-sm text-muted group-hover:text-foreground transition-colors whitespace-nowrap">
+            My setup
+          </span>
+        </a>
+
+        {/* How I work */}
         <a
           href="/journey"
-          aria-label="Walk through my career — interactive timeline"
+          aria-label="Walk through my career"
           className="group relative inline-flex items-center gap-1.5 md:gap-2 px-3 md:px-4 py-2 md:py-2.5 rounded-lg bg-accent/10 border border-accent/30 text-accent hover:bg-accent/20 hover:border-accent/60 hover:shadow-lg hover:shadow-accent/20 transition-all duration-200 font-medium"
         >
           <svg
@@ -133,14 +147,6 @@ export function TopBar(): React.ReactElement {
           </svg>
           <span className="hidden sm:inline text-xs md:text-sm whitespace-nowrap">
             How I work
-          </span>
-          <span className="sm:hidden text-xs">How</span>
-
-          {/* Hint tooltip */}
-          <span className="absolute top-full right-0 mt-2 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap">
-            <span className="inline-block text-[10px] font-mono text-muted/80 bg-card/95 backdrop-blur-md border border-card-border rounded-md px-2 py-1.5 shadow-lg">
-              my principles, daily workflow &amp; dev stack
-            </span>
           </span>
         </a>
       </motion.div>
