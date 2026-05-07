@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { X } from "lucide-react";
 
 interface Shortcut {
   keys: string[];
@@ -92,7 +93,7 @@ export function ShortcutsOverlay(): React.ReactElement {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.96, y: 10 }}
             transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-            className="relative w-full max-w-2xl rounded-2xl bg-card border border-accent/30 shadow-2xl shadow-accent/15 overflow-hidden"
+            className="relative w-full max-w-2xl rounded-xl bg-card border border-accent/20 shadow-2xl shadow-accent/15 overflow-hidden"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Header */}
@@ -111,19 +112,7 @@ export function ShortcutsOverlay(): React.ReactElement {
                 aria-label="Close"
                 className="shrink-0 w-8 h-8 rounded-full border border-card-border hover:border-accent/40 hover:bg-card-hover flex items-center justify-center text-muted hover:text-foreground transition-all"
               >
-                <svg
-                  width="14"
-                  height="14"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <line x1="18" y1="6" x2="6" y2="18" />
-                  <line x1="6" y1="6" x2="18" y2="18" />
-                </svg>
+                <X size={14} />
               </button>
             </div>
 
@@ -131,7 +120,7 @@ export function ShortcutsOverlay(): React.ReactElement {
             <div className="max-h-[70vh] overflow-y-auto px-5 md:px-6 py-5 md:py-6 space-y-6">
               {groups.map((g) => (
                 <div key={g.title}>
-                  <p className="text-caption font-mono uppercase tracking-[0.2em] text-muted/50 mb-3">
+                  <p className="text-caption font-mono uppercase tracking-[0.2em] text-muted/60 mb-3">
                     {g.title}
                   </p>
                   <div className="space-y-2">
@@ -140,17 +129,17 @@ export function ShortcutsOverlay(): React.ReactElement {
                         key={item.label}
                         className="flex items-center justify-between gap-4 py-1.5"
                       >
-                        <span className="text-sm text-foreground/90">
+                        <span className="text-sm text-foreground/80">
                           {item.label}
                         </span>
                         <div className="flex items-center gap-1 shrink-0">
                           {item.keys.map((k, i) => (
                             <span key={i} className="inline-flex items-center gap-1">
-                              <kbd className="inline-flex items-center justify-center min-w-[22px] h-6 px-1.5 text-small font-mono text-accent bg-accent/10 border border-accent/30 rounded">
+                              <kbd className="inline-flex items-center justify-center min-w-[22px] h-6 px-1.5 text-small font-mono text-accent bg-accent/10 border border-accent/20 rounded">
                                 {k}
                               </kbd>
                               {i < item.keys.length - 1 && (
-                                <span className="text-muted/30 text-caption">+</span>
+                                <span className="text-muted/40 text-caption">+</span>
                               )}
                             </span>
                           ))}

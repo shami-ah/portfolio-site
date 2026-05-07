@@ -53,7 +53,7 @@ function ActivityFeed(): React.ReactElement {
         >
           <span className="text-accent-secondary/70">[{entry.time}]</span>{" "}
           <span className="text-muted/60">{entry.action}</span>{" "}
-          <span className="text-foreground/70">{entry.target}</span>
+          <span className="text-foreground/80">{entry.target}</span>
         </motion.div>
       ))}
     </div>
@@ -91,7 +91,7 @@ export function Workspace(): React.ReactElement {
             <span className="w-3 h-3 rounded-full bg-yellow-500/60" />
             <span className="w-3 h-3 rounded-full bg-green-500/60" />
           </div>
-          <span className="font-mono text-xs text-muted/50 ml-2">
+          <span className="font-mono text-xs text-muted/60 ml-2">
             workspace.shami
           </span>
         </div>
@@ -108,12 +108,12 @@ export function Workspace(): React.ReactElement {
 
       <div className="flex-1 flex overflow-hidden">
         {/* IDE Sidebar — file explorer */}
-        <div className="w-[180px] border-r border-card-border bg-card/30 shrink-0 hidden md:flex flex-col">
-          <div className="px-3 py-2 border-b border-card-border/50">
+        <div className="w-[180px] border-r border-card-border bg-card/20 shrink-0 hidden md:flex flex-col">
+          <div className="px-3 py-2 border-b border-card-border/40">
             <span className="text-caption font-mono text-muted/40 uppercase tracking-widest">Explorer</span>
           </div>
           <div className="px-1 py-1">
-            <div className="flex items-center gap-1.5 px-2 py-1 text-small font-mono text-muted/50">
+            <div className="flex items-center gap-1.5 px-2 py-1 text-small font-mono text-muted/60">
               <span className="text-accent/40 text-caption">&#9662;</span> workspace/
             </div>
             {sidebarFiles.map((f) => (
@@ -123,22 +123,22 @@ export function Workspace(): React.ReactElement {
                 onClick={() => setActiveTab(f.name === "terminal.sh" ? "terminal" : "neural-map")}
                 className={`w-full flex items-center gap-1.5 px-2 py-1 pl-5 text-small font-mono rounded transition-all text-left ${
                   f.active
-                    ? "bg-accent/8 text-accent border-r-2 border-accent"
-                    : "text-muted/50 hover:bg-card-hover hover:text-muted/80"
+                    ? "bg-accent/10 text-accent border-r-2 border-accent"
+                    : "text-muted/60 hover:bg-card-hover hover:text-muted/80"
                 }`}
               >
                 <span className={`text-caption ${f.icon}`}>&#9670;</span>
                 {f.name}
               </button>
             ))}
-            <div className="flex items-center gap-1.5 px-2 py-1 text-small font-mono text-muted/30">
+            <div className="flex items-center gap-1.5 px-2 py-1 text-small font-mono text-muted/40">
               <span className="text-accent/20 text-caption">&#9656;</span> .config/
             </div>
           </div>
 
           {/* Sidebar bottom — status */}
-          <div className="mt-auto border-t border-card-border/50 p-3">
-            <div className="text-caption font-mono text-muted/30 uppercase tracking-widest mb-2">Status</div>
+          <div className="mt-auto border-t border-card-border/40 p-3">
+            <div className="text-caption font-mono text-muted/40 uppercase tracking-widest mb-2">Status</div>
             <StatusPanel />
           </div>
         </div>
@@ -150,7 +150,7 @@ export function Workspace(): React.ReactElement {
             <button
               type="button"
               onClick={() => setActiveTab("terminal")}
-              className={`flex items-center gap-1.5 px-4 py-2 text-small font-mono border-r border-card-border/50 transition-colors ${
+              className={`flex items-center gap-1.5 px-4 py-2 text-small font-mono border-r border-card-border/40 transition-colors ${
                 activeTab === "terminal"
                   ? "bg-background text-foreground/80 border-b-2 border-b-accent -mb-px"
                   : "text-muted/40 hover:text-muted/60"
@@ -162,7 +162,7 @@ export function Workspace(): React.ReactElement {
             <button
               type="button"
               onClick={() => setActiveTab("neural-map")}
-              className={`flex items-center gap-1.5 px-4 py-2 text-small font-mono border-r border-card-border/50 transition-colors ${
+              className={`flex items-center gap-1.5 px-4 py-2 text-small font-mono border-r border-card-border/40 transition-colors ${
                 activeTab === "neural-map"
                   ? "bg-background text-foreground/80 border-b-2 border-b-accent -mb-px"
                   : "text-muted/40 hover:text-muted/60"
@@ -181,8 +181,8 @@ export function Workspace(): React.ReactElement {
                   <WorkspaceTerminal />
                 </div>
                 <div className="p-2 hidden md:flex flex-col gap-2">
-                  <div className="flex-1 rounded-lg border border-card-border bg-card/30 overflow-hidden flex flex-col">
-                    <div className="px-3 py-2 border-b border-card-border/50 bg-card/40 shrink-0">
+                  <div className="flex-1 rounded-lg border border-card-border bg-card/20 overflow-hidden flex flex-col">
+                    <div className="px-3 py-2 border-b border-card-border/40 bg-card/40 shrink-0">
                       <span className="text-caption font-mono text-muted/40">activity feed</span>
                     </div>
                     <div className="flex-1 p-3 overflow-hidden">
@@ -193,8 +193,8 @@ export function Workspace(): React.ReactElement {
               </div>
             ) : (
               <div className="h-full flex flex-col">
-                <div className="flex items-center justify-between px-4 py-2 border-b border-card-border/30 bg-card/20 shrink-0">
-                  <span className="text-caption font-mono text-muted/50">neural map: hover nodes to explore connections</span>
+                <div className="flex items-center justify-between px-4 py-2 border-b border-card-border/20 bg-card/20 shrink-0">
+                  <span className="text-caption font-mono text-muted/60">neural map: hover nodes to explore connections</span>
                 </div>
                 <div className="flex-1 relative">
                   <NeuralMap />
@@ -204,7 +204,7 @@ export function Workspace(): React.ReactElement {
           </div>
 
           {/* Status bar */}
-          <div className="flex items-center justify-between px-3 py-1 border-t border-card-border bg-card/40 shrink-0 text-caption font-mono text-muted/35">
+          <div className="flex items-center justify-between px-3 py-1 border-t border-card-border bg-card/40 shrink-0 text-caption font-mono text-muted/40">
             <div className="flex items-center gap-4">
               <span className="flex items-center gap-1.5">
                 <span className="w-1 h-1 rounded-full bg-accent-status" />

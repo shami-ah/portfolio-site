@@ -63,7 +63,7 @@ export function Testimonials(): React.ReactElement | null {
   if (testimonials.length === 0) return null;
 
   return (
-    <section id="testimonials" className="py-20 md:py-32 bg-card/30">
+    <section id="testimonials" className="py-20 md:py-32 bg-card/20">
       <div className="max-w-6xl mx-auto px-5 md:px-6">
         <FadeUp>
           <p className="text-sm font-mono text-accent mb-4 uppercase tracking-wider">
@@ -77,8 +77,8 @@ export function Testimonials(): React.ReactElement | null {
         <div className="grid md:grid-cols-2 gap-4 md:gap-5">
           {testimonials.map((t, i) => (
             <FadeUp key={t.name} delay={i * 0.08} className="min-w-0">
-              <div className="h-full p-5 md:p-6 rounded-xl bg-card border border-card-border hover:border-muted/30 transition-all duration-300 flex flex-col overflow-hidden">
-                <p className="text-3xl text-accent/30 font-serif leading-none mb-2 md:mb-3 select-none">
+              <div className="h-full p-5 md:p-6 rounded-xl bg-card border border-card-border hover:border-muted/20 transition-all duration-300 flex flex-col overflow-hidden">
+                <p className="text-3xl text-accent/40 font-serif leading-none mb-2 md:mb-3 select-none">
                   &ldquo;
                 </p>
                 <p className="text-xs md:text-sm text-muted leading-relaxed flex-1 mb-4 md:mb-6 break-words">
@@ -94,7 +94,7 @@ export function Testimonials(): React.ReactElement | null {
                     </p>
                   </div>
                   {t.platform && t.platform !== "direct" && (
-                    <span className="shrink-0 text-caption font-mono text-muted/50 border border-card-border rounded px-2 py-0.5">
+                    <span className="shrink-0 text-caption font-mono text-muted/60 border border-card-border rounded px-2 py-0.5">
                       {platformLabel[t.platform]}
                     </span>
                   )}

@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { Search } from "lucide-react";
 import { projects } from "@/data/projects";
 
 interface Command {
@@ -293,10 +294,7 @@ export function CommandPalette(): React.ReactElement {
             >
               {/* Search input */}
               <div className="flex items-center gap-3 px-4 md:px-5 py-3.5 border-b border-card-border">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-accent/70 shrink-0">
-                  <circle cx="11" cy="11" r="8" />
-                  <line x1="21" y1="21" x2="16.65" y2="16.65" />
-                </svg>
+                <Search size={16} className="text-accent/80 shrink-0" />
                 <input
                   ref={inputRef}
                   type="text"
@@ -305,7 +303,7 @@ export function CommandPalette(): React.ReactElement {
                   placeholder="Jump to section, project, contact…"
                   className="flex-1 bg-transparent outline-none text-sm md:text-base placeholder:text-muted/40"
                 />
-                <kbd className="hidden sm:inline text-caption font-mono text-muted/50 border border-card-border px-1.5 py-0.5 rounded">
+                <kbd className="hidden sm:inline text-caption font-mono text-muted/60 border border-card-border px-1.5 py-0.5 rounded">
                   Esc
                 </kbd>
               </div>
@@ -349,7 +347,7 @@ export function CommandPalette(): React.ReactElement {
                             )}
                           </div>
                           {isActive && (
-                            <span className="text-caption font-mono text-accent/70 shrink-0">
+                            <span className="text-caption font-mono text-accent/80 shrink-0">
                               ↵
                             </span>
                           )}
@@ -361,7 +359,7 @@ export function CommandPalette(): React.ReactElement {
               </div>
 
               {/* Footer hints */}
-              <div className="flex items-center justify-between gap-3 px-4 md:px-5 py-2.5 border-t border-card-border text-caption font-mono text-muted/50">
+              <div className="flex items-center justify-between gap-3 px-4 md:px-5 py-2.5 border-t border-card-border text-caption font-mono text-muted/60">
                 <div className="flex items-center gap-3">
                   <span className="inline-flex items-center gap-1">
                     <kbd className="px-1.5 py-0.5 border border-card-border rounded bg-background/50">↑↓</kbd>

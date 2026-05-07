@@ -218,7 +218,7 @@ export function TerminalBoot({ force = false, onDone }: BootProps): React.ReactE
                 : { opacity: 1, scale: 1, y: 0 }
             }
             transition={{ duration: phase === "exit" ? 0.5 : 0.35, ease: [0.22, 1, 0.36, 1] }}
-            className="relative w-full max-w-xl rounded-xl border border-accent/30 bg-card/90 backdrop-blur-md shadow-2xl shadow-accent/20 font-mono text-sm overflow-hidden"
+            className="relative w-full max-w-xl rounded-xl border border-accent/20 bg-card/80 backdrop-blur-md shadow-2xl shadow-accent/20 font-mono text-sm overflow-hidden"
           >
             {/* Window chrome */}
             <div className="flex items-center gap-2 px-3 py-2 border-b border-card-border bg-card/60">
@@ -237,7 +237,7 @@ export function TerminalBoot({ force = false, onDone }: BootProps): React.ReactE
               {/* Intro command line */}
               <p className="text-body leading-relaxed">
                 <span className="text-accent">❯</span>{" "}
-                <span className="text-foreground/90">
+                <span className="text-foreground/80">
                   {introText.slice(0, introTyped)}
                 </span>
                 {phase === "intro" && (
@@ -254,7 +254,7 @@ export function TerminalBoot({ force = false, onDone }: BootProps): React.ReactE
                   className="pt-2"
                 >
                   <div className="flex items-center justify-between mb-1.5">
-                    <span className="text-caption text-muted/70 tracking-widest uppercase">
+                    <span className="text-caption text-muted/80 tracking-widest uppercase">
                       {phase === "checks" && "loading modules"}
                       {phase === "status" && "status"}
                       {phase === "launching" && "launching"}
@@ -294,7 +294,7 @@ export function TerminalBoot({ force = false, onDone }: BootProps): React.ReactE
                       <span className="text-green-400 shrink-0">
                         <Check size={12} strokeWidth={3} />
                       </span>
-                      <span className="text-foreground/90 flex-1">{c.label}</span>
+                      <span className="text-foreground/80 flex-1">{c.label}</span>
                       <span className="text-muted/40 text-caption font-mono">
                         {c.detail}
                       </span>
@@ -313,7 +313,7 @@ export function TerminalBoot({ force = false, onDone }: BootProps): React.ReactE
                     initial={{ opacity: 0, y: 4 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.3 }}
-                    className="text-small pt-3 border-t border-card-border/50 flex items-center gap-2"
+                    className="text-small pt-3 border-t border-card-border/40 flex items-center gap-2"
                   >
                     <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse shrink-0" />
                     <span className="text-muted/60">status:</span>

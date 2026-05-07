@@ -11,7 +11,7 @@ import { FadeUp } from "@/components/motion";
 function Line({ label, value, accent }: { label: string; value: string; accent?: boolean }): React.ReactElement {
   return (
     <div className="font-mono text-small md:text-small leading-[1.8]">
-      <span className="text-foreground/70">{label}</span>
+      <span className="text-foreground/80">{label}</span>
       <span className="text-muted/40"> : </span>
       <span className={accent ? "text-accent" : "text-accent-secondary/80"}>{value}</span>
     </div>
@@ -34,7 +34,7 @@ function StatStrip({ stats }: { stats: { label: string; value: string }[] }): Re
 function CodeLine({ num, children }: { num: number; children: React.ReactNode }): React.ReactElement {
   return (
     <div className="flex leading-[1.75] font-mono text-small px-3 hover:bg-card-hover/30 transition-colors">
-      <span className="w-6 text-right mr-3 text-muted/15 select-none shrink-0">{num}</span>
+      <span className="w-6 text-right mr-3 text-muted/20 select-none shrink-0">{num}</span>
       <span>{children}</span>
     </div>
   );
@@ -43,8 +43,8 @@ function CodeLine({ num, children }: { num: number; children: React.ReactNode })
 // Syntax tokens
 function K({ children }: { children: React.ReactNode }): React.ReactElement { return <span className="text-accent">{children}</span>; }
 function S({ children }: { children: React.ReactNode }): React.ReactElement { return <span className="text-accent-secondary">{children}</span>; }
-function V({ children }: { children: React.ReactNode }): React.ReactElement { return <span className="text-foreground/50">{children}</span>; }
-function C({ children }: { children: React.ReactNode }): React.ReactElement { return <span className="text-muted/30">{children}</span>; }
+function V({ children }: { children: React.ReactNode }): React.ReactElement { return <span className="text-foreground/60">{children}</span>; }
+function C({ children }: { children: React.ReactNode }): React.ReactElement { return <span className="text-muted/40">{children}</span>; }
 function G({ children }: { children: React.ReactNode }): React.ReactElement { return <span className="text-accent-status">{children}</span>; }
 function P({ children }: { children: React.ReactNode }): React.ReactElement { return <span className="text-muted/20">{children}</span>; }
 
@@ -62,7 +62,7 @@ interface FileEntry {
 
 const files: FileEntry[] = [
   { id: "readme", name: "README.md", path: "README.md", iconColor: "text-muted/40", folder: "root" },
-  { id: "ecosystem", name: "ecosystem.ts", path: "src/ecosystem.ts", iconColor: "text-accent/50", folder: "src" },
+  { id: "ecosystem", name: "ecosystem.ts", path: "src/ecosystem.ts", iconColor: "text-accent/60", folder: "src" },
   { id: "wisc", name: "wisc.ts", path: "src/wisc.ts", iconColor: "text-accent-secondary/50", folder: "src" },
   { id: "stack", name: "stack.yaml", path: "config/stack.yaml", iconColor: "text-accent-secondary/40", folder: "config" },
   { id: "workflow", name: "workflow.yaml", path: "config/workflow.yaml", iconColor: "text-accent/40", folder: "config" },
@@ -252,10 +252,10 @@ function PreviewReadme(): React.ReactElement {
       <p className="text-xs text-muted leading-relaxed mb-4">A self-improving AI development ecosystem. Every piece was chosen because it makes the others better. Most of the AI tooling here I built myself.</p>
       <div className="flex flex-wrap gap-2 mb-4">
         {["Gogaa CLI", "CodeLens", "Rasad", "Claude Code"].map((t) => (
-          <span key={t} className="px-2 py-0.5 text-caption font-mono bg-accent/5 text-accent/70 rounded border border-accent/10">{t}</span>
+          <span key={t} className="px-2 py-0.5 text-caption font-mono bg-accent/5 text-accent/80 rounded border border-accent/20">{t}</span>
         ))}
       </div>
-      <div className="p-3 rounded-lg bg-background/40 border border-card-border/50 font-mono text-caption">
+      <div className="p-3 rounded-lg bg-background/40 border border-card-border/40 font-mono text-caption">
         <div className="text-muted/40 mb-1">$ npm install shami-toolkit</div>
         <div className="text-accent-status/60">+ shami-toolkit@1.0.0</div>
       </div>
@@ -267,16 +267,16 @@ function PreviewReadme(): React.ReactElement {
 function PreviewEcosystem(): React.ReactElement {
   return (
     <div className="p-5">
-      <div className="rounded-xl border border-accent/15 bg-gradient-to-br from-card via-card to-accent/[0.03] p-5">
+      <div className="rounded-xl border border-accent/20 bg-gradient-to-br from-card via-card to-accent/[0.03] p-5">
         <p className="text-caption font-mono text-accent uppercase tracking-[0.2em] mb-3">The loop nobody else has</p>
         <p className="text-sm font-medium mb-1">I built an ecosystem where each tool makes the others better.</p>
         <p className="text-caption text-muted leading-relaxed mb-5">Gogaa writes code. CodeLens reviews it. Patterns feed back via Guardian mode. Rasad monitors every session.</p>
         {/* Circular diagram */}
         <div className="hidden md:flex relative items-center justify-center py-4">
-          <div className="absolute w-[200px] h-[200px] rounded-full border border-dashed border-accent/12" />
+          <div className="absolute w-[200px] h-[200px] rounded-full border border-dashed border-accent/20" />
           <div className="absolute text-center">
-            <p className="text-caption font-mono text-muted/35 uppercase tracking-widest">self</p>
-            <p className="text-caption font-mono text-muted/35 uppercase tracking-widest">improving</p>
+            <p className="text-caption font-mono text-muted/40 uppercase tracking-widest">self</p>
+            <p className="text-caption font-mono text-muted/40 uppercase tracking-widest">improving</p>
           </div>
           <div className="relative w-[200px] h-[200px]">
             {loopNodes.map((node, i) => {
@@ -289,7 +289,7 @@ function PreviewEcosystem(): React.ReactElement {
               return (
                 <div key={node.label} className={`absolute ${pos[i]} z-10 px-3 py-1.5 rounded-lg border bg-card text-center min-w-[80px] ${node.color.split(" ")[0]}`}>
                   <p className={`text-caption font-bold ${node.color.split(" ")[1]}`}>{node.label}</p>
-                  <p className="text-caption text-muted/50">{node.stat}</p>
+                  <p className="text-caption text-muted/60">{node.stat}</p>
                 </div>
               );
             })}
@@ -300,13 +300,13 @@ function PreviewEcosystem(): React.ReactElement {
           {loopNodes.map((node) => (
             <div key={node.label} className="flex items-center gap-2 px-3 py-1.5 rounded-lg border border-card-border bg-card">
               <span className={`text-xs font-bold ${node.color.split(" ")[1]}`}>{node.label}</span>
-              <span className="text-caption text-muted/50">{node.stat}</span>
+              <span className="text-caption text-muted/60">{node.stat}</span>
             </div>
           ))}
         </div>
         {/* Timeline */}
-        <div className="mt-4 pt-3 border-t border-card-border/30">
-          <p className="text-caption font-mono text-muted/35 uppercase tracking-widest mb-2">In practice</p>
+        <div className="mt-4 pt-3 border-t border-card-border/20">
+          <p className="text-caption font-mono text-muted/40 uppercase tracking-widest mb-2">In practice</p>
           <div className="flex flex-wrap gap-1 items-center">
             {[
               { t: "9:00", a: "Gogaa scaffolds", c: "text-accent" },
@@ -318,7 +318,7 @@ function PreviewEcosystem(): React.ReactElement {
                 <span className="px-1.5 py-0.5 rounded bg-background/40 border border-card-border/40 text-caption font-mono">
                   <span className="text-muted/40">{s.t}</span> <span className={s.c}>{s.a}</span>
                 </span>
-                {i < arr.length - 1 && <span className="text-muted/15 text-caption">&rarr;</span>}
+                {i < arr.length - 1 && <span className="text-muted/20 text-caption">&rarr;</span>}
               </span>
             ))}
           </div>
@@ -349,11 +349,11 @@ function PreviewWisc(): React.ReactElement {
           </div>
         ))}
       </div>
-      <div className="mt-3 pt-2 border-t border-card-border/50 flex items-center gap-2 text-caption font-mono">
-        <span className="text-muted/50">result:</span>
+      <div className="mt-3 pt-2 border-t border-card-border/40 flex items-center gap-2 text-caption font-mono">
+        <span className="text-muted/60">result:</span>
         <span className="text-accent-status">72KB &rarr; 11.7KB</span>
-        <span className="text-muted/30">&middot;</span>
-        <span className="text-muted/50">84% reduction</span>
+        <span className="text-muted/40">&middot;</span>
+        <span className="text-muted/60">84% reduction</span>
       </div>
     </div>
   );
@@ -391,7 +391,7 @@ function PreviewWorkflow(): React.ReactElement {
           { n: "06", l: "Ship", d: "Feature flag, 10% rollout, then 100%." },
         ].map((s) => (
           <div key={s.n} className="flex gap-2 items-start">
-            <span className="text-caption font-mono text-accent/50 tabular-nums pt-0.5 shrink-0">{s.n}</span>
+            <span className="text-caption font-mono text-accent/60 tabular-nums pt-0.5 shrink-0">{s.n}</span>
             <div>
               <span className="text-small font-semibold text-foreground">{s.l}</span>
               <span className="text-caption text-muted"> {s.d}</span>
@@ -502,15 +502,15 @@ export function Uses(): React.ReactElement {
             <span className="w-3 h-3 rounded-full bg-yellow-500/60" />
             <span className="w-3 h-3 rounded-full bg-green-500/60" />
           </div>
-          <span className="ml-2 text-small font-mono text-muted/45">shami-toolkit</span>
+          <span className="ml-2 text-small font-mono text-muted/40">shami-toolkit</span>
         </div>
-        <a href="/" className="text-caption font-mono text-accent/50 hover:text-accent transition-colors">&larr; portfolio</a>
+        <a href="/" className="text-caption font-mono text-accent/60 hover:text-accent transition-colors">&larr; portfolio</a>
       </div>
 
       <div className="flex flex-1 overflow-hidden">
         {/* Sidebar file tree — desktop only */}
         <div className="w-[190px] border-r border-card-border bg-[#111113] shrink-0 hidden lg:flex flex-col font-mono text-caption overflow-y-auto">
-          <div className="px-3 py-2 text-caption text-muted/25 uppercase tracking-[1.5px]">Explorer</div>
+          <div className="px-3 py-2 text-caption text-muted/20 uppercase tracking-[1.5px]">Explorer</div>
 
           {folders.map((folder) => {
             const folderFiles = files.filter((f) => f.folder === folder);
@@ -518,7 +518,7 @@ export function Uses(): React.ReactElement {
             if (folder === "root") {
               return folderFiles.map((f) => (
                 <button key={f.id} type="button" onClick={() => selectFile(f.id)}
-                  className={`w-full flex items-center gap-1.5 px-3 py-[3px] text-left transition-all ${activeFile === f.id ? "bg-accent/6 text-accent border-r-2 border-accent" : "text-muted/45 hover:bg-card-hover/40 hover:text-muted/70"}`}>
+                  className={`w-full flex items-center gap-1.5 px-3 py-[3px] text-left transition-all ${activeFile === f.id ? "bg-accent/5 text-accent border-r-2 border-accent" : "text-muted/40 hover:bg-card-hover/40 hover:text-muted/80"}`}>
                   <span className={`text-caption ${f.iconColor}`}>&#9671;</span>{f.name}
                 </button>
               ));
@@ -526,12 +526,12 @@ export function Uses(): React.ReactElement {
             return (
               <div key={folder}>
                 <div className="flex items-center gap-1.5 px-3 py-[3px] text-muted/40">
-                  <span className="text-caption text-accent/30">&#9662;</span>
-                  <span className="font-semibold text-foreground/35">{folder}/</span>
+                  <span className="text-caption text-accent/40">&#9662;</span>
+                  <span className="font-semibold text-foreground/40">{folder}/</span>
                 </div>
                 {folderFiles.map((f) => (
                   <button key={f.id} type="button" onClick={() => selectFile(f.id)}
-                    className={`w-full flex items-center gap-1.5 pl-6 pr-3 py-[3px] text-left transition-all ${activeFile === f.id ? "bg-accent/6 text-accent border-r-2 border-accent" : "text-muted/45 hover:bg-card-hover/40 hover:text-muted/70"}`}>
+                    className={`w-full flex items-center gap-1.5 pl-6 pr-3 py-[3px] text-left transition-all ${activeFile === f.id ? "bg-accent/5 text-accent border-r-2 border-accent" : "text-muted/40 hover:bg-card-hover/40 hover:text-muted/80"}`}>
                     <span className={`text-caption ${f.iconColor}`}>&#9670;</span>{f.name}
                   </button>
                 ))}
@@ -539,43 +539,74 @@ export function Uses(): React.ReactElement {
             );
           })}
 
-          <div className="mt-auto px-3 py-2 border-t border-card-border/30">
+          <div className="mt-auto px-3 py-2 border-t border-card-border/20">
             <div className="text-caption text-muted/20 uppercase tracking-[1px] mb-1">Git</div>
-            <div className="text-caption text-muted/25 flex items-center gap-1"><span className="w-[3px] h-[3px] rounded-full bg-accent-status" /> main</div>
+            <div className="text-caption text-muted/20 flex items-center gap-1"><span className="w-[3px] h-[3px] rounded-full bg-accent-status" /> main</div>
           </div>
         </div>
 
         {/* Main editor area */}
         <div className="flex-1 flex flex-col overflow-hidden">
-          {/* Mobile file picker — visible when sidebar is hidden */}
-          <div className="flex lg:hidden border-b border-card-border bg-[#111113] shrink-0 overflow-x-auto">
-            <div className="flex items-center gap-0.5 px-2 py-1.5">
-              {files.map((f) => (
-                <button
-                  key={f.id}
-                  type="button"
-                  onClick={() => selectFile(f.id)}
-                  className={`shrink-0 flex items-center gap-1 px-2.5 py-1 rounded-md text-caption font-mono transition-all ${
-                    activeFile === f.id
-                      ? "bg-accent/10 text-accent border border-accent/30"
-                      : "text-muted/45 hover:text-muted/70 hover:bg-card-hover/40 border border-transparent"
-                  }`}
-                >
-                  <span className={`text-caption ${f.iconColor}`}>&#9670;</span>
-                  {f.name}
-                </button>
-              ))}
+          {/* Mobile: file picker + view toggle in one compact bar */}
+          <div className="flex flex-col md:hidden border-b border-card-border bg-[#111113] shrink-0">
+            {/* File picker — horizontal scroll */}
+            <div className="overflow-x-auto scrollbar-none">
+              <div className="flex items-center gap-0.5 px-2 py-1.5 min-w-min">
+                {files.map((f) => {
+                  const shortName = f.name.replace(/\.(ts|yaml|md)$/, "");
+                  return (
+                    <button
+                      key={f.id}
+                      type="button"
+                      onClick={() => selectFile(f.id)}
+                      className={`shrink-0 px-2.5 py-1 rounded-lg text-[11px] font-mono transition-all ${
+                        activeFile === f.id
+                          ? "bg-accent/10 text-accent"
+                          : "text-muted/40 active:bg-card-hover/40"
+                      }`}
+                    >
+                      {shortName}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+            {/* View toggle */}
+            <div className="flex border-t border-card-border/20">
+              <button
+                type="button"
+                onClick={() => setMobileView("code")}
+                className={`flex-1 py-1.5 text-[10px] font-mono uppercase tracking-wider transition-colors ${
+                  mobileView === "code"
+                    ? "text-accent bg-accent/5 border-b-2 border-accent"
+                    : "text-muted/40"
+                }`}
+              >
+                {activeEntry?.name ?? "Code"}
+              </button>
+              <div className="w-px bg-card-border/20" />
+              <button
+                type="button"
+                onClick={() => setMobileView("preview")}
+                className={`flex-1 py-1.5 text-[10px] font-mono uppercase tracking-wider transition-colors ${
+                  mobileView === "preview"
+                    ? "text-accent bg-accent/5 border-b-2 border-accent"
+                    : "text-muted/40"
+                }`}
+              >
+                Preview
+              </button>
             </div>
           </div>
 
-          {/* Tabs */}
-          <div className="flex border-b border-card-border bg-[#111113]/50 shrink-0 overflow-x-auto">
+          {/* Desktop: tabs */}
+          <div className="hidden md:flex border-b border-card-border bg-[#111113]/50 shrink-0 overflow-x-auto">
             {openTabs.map((tabId) => {
               const f = files.find((x) => x.id === tabId);
               if (!f) return null;
               return (
                 <button key={tabId} type="button" onClick={() => setActiveFile(tabId)}
-                  className={`flex items-center gap-1 px-3 py-[5px] text-caption font-mono border-r border-card-border/30 shrink-0 transition-colors ${activeFile === tabId ? "bg-background text-foreground/70 border-b-2 border-b-accent -mb-px" : "text-muted/35 hover:text-muted/55"}`}>
+                  className={`flex items-center gap-1 px-3 py-[5px] text-caption font-mono border-r border-card-border/20 shrink-0 transition-colors ${activeFile === tabId ? "bg-background text-foreground/80 border-b-2 border-b-accent -mb-px" : "text-muted/40 hover:text-muted/60"}`}>
                   <span className={`text-caption ${f.iconColor}`}>&#9670;</span>
                   {f.name}
                   <span onClick={(e) => closeTab(tabId, e)} className="ml-1 text-small opacity-20 hover:opacity-60 transition-opacity">&times;</span>
@@ -584,47 +615,19 @@ export function Uses(): React.ReactElement {
             })}
           </div>
 
-          {/* Breadcrumb */}
-          <div className="px-3 py-[3px] text-caption font-mono text-muted/20 border-b border-card-border/20 shrink-0 bg-background/30">
-            shami-toolkit <span className="text-muted/10">&rsaquo;</span> {activeEntry?.path}
+          {/* Breadcrumb — desktop only */}
+          <div className="hidden md:block px-3 py-[3px] text-caption font-mono text-muted/20 border-b border-card-border/20 shrink-0 bg-background/30">
+            shami-toolkit <span className="text-muted/20">&rsaquo;</span> {activeEntry?.path}
           </div>
-
-          {/* Mobile code/preview toggle — visible below md */}
-          {activeFile && activeEntry && (
-            <div className="flex md:hidden border-b border-card-border/30 bg-card/30 shrink-0">
-              <button
-                type="button"
-                onClick={() => setMobileView("code")}
-                className={`flex-1 py-1.5 text-caption font-mono transition-colors ${
-                  mobileView === "code"
-                    ? "text-accent border-b-2 border-accent bg-background/50"
-                    : "text-muted/35 hover:text-muted/55"
-                }`}
-              >
-                Code
-              </button>
-              <button
-                type="button"
-                onClick={() => setMobileView("preview")}
-                className={`flex-1 py-1.5 text-caption font-mono transition-colors ${
-                  mobileView === "preview"
-                    ? "text-accent border-b-2 border-accent bg-background/50"
-                    : "text-muted/35 hover:text-muted/55"
-                }`}
-              >
-                Preview
-              </button>
-            </div>
-          )}
 
           {/* Split: Code + Preview — or empty state */}
           {activeFile && activeEntry ? (
             <div className="flex-1 flex overflow-hidden">
               {/* Code — shown on md+ always, on mobile when toggled */}
-              <div className={`flex-1 overflow-y-auto border-r border-card-border/25 bg-background/40 ${
+              <div className={`flex-1 overflow-y-auto border-r border-card-border/20 bg-background/40 ${
                 mobileView === "code" ? "block" : "hidden md:block"
               }`}>
-                <div className="sticky top-0 z-5 px-3 py-[3px] text-caption font-mono text-muted/20 uppercase tracking-[1px] border-b border-card-border/15 bg-background/90 backdrop-blur-sm">
+                <div className="sticky top-0 z-5 px-3 py-[3px] text-caption font-mono text-muted/20 uppercase tracking-[1px] border-b border-card-border/20 bg-background/90 backdrop-blur-sm">
                   {activeEntry.name}
                 </div>
                 <CodePanel />
@@ -633,7 +636,7 @@ export function Uses(): React.ReactElement {
               <div className={`flex-[1.1] overflow-y-auto ${
                 mobileView === "preview" ? "block" : "hidden md:block"
               }`}>
-                <div className="sticky top-0 z-5 px-3 py-[3px] text-caption font-mono text-muted/20 uppercase tracking-[1px] border-b border-card-border/15 bg-background/90 backdrop-blur-sm">
+                <div className="sticky top-0 z-5 px-3 py-[3px] text-caption font-mono text-muted/20 uppercase tracking-[1px] border-b border-card-border/20 bg-background/90 backdrop-blur-sm">
                   Preview
                 </div>
                 <PreviewPanel />
@@ -643,22 +646,22 @@ export function Uses(): React.ReactElement {
             <div className="flex-1 flex items-center justify-center">
               <div className="text-center">
                 <p className="text-muted/20 text-3xl mb-3 font-mono">&#123; &#125;</p>
-                <p className="text-sm text-muted/30 font-mono mb-1">No file open</p>
+                <p className="text-sm text-muted/40 font-mono mb-1">No file open</p>
                 <p className="text-caption text-muted/20">Select a file from the sidebar to explore</p>
               </div>
             </div>
           )}
 
-          {/* Status bar */}
-          <div className="flex items-center justify-between px-3 py-[2px] border-t border-card-border bg-card/40 shrink-0 text-caption font-mono text-muted/25">
+          {/* Status bar — compact on mobile */}
+          <div className="flex items-center justify-between px-3 py-[2px] border-t border-card-border bg-card/40 shrink-0 text-caption font-mono text-muted/20">
             <div className="flex items-center gap-3">
               <span className="flex items-center gap-1"><span className="w-[3px] h-[3px] rounded-full bg-accent-status" /> main</span>
               <span>{lang}</span>
-              <span>UTF-8</span>
+              <span className="hidden sm:inline">UTF-8</span>
             </div>
             <div className="flex items-center gap-3">
-              <span>shami-toolkit</span>
-              <span>Ln 1, Col 1</span>
+              <span className="hidden sm:inline">shami-toolkit</span>
+              <span className="hidden sm:inline">Ln 1, Col 1</span>
             </div>
           </div>
         </div>

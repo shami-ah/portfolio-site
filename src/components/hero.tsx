@@ -174,7 +174,7 @@ export function Hero(): React.ReactElement {
           initial={{ opacity: 0, y: 20 }}
           animate={ready ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8, delay: 3.0, ease: [0.22, 1, 0.36, 1] }}
-          className="mt-10 md:mt-16 p-4 md:p-5 rounded-xl bg-card/50 border border-card-border backdrop-blur-sm"
+          className="mt-10 md:mt-16 p-4 md:p-5 rounded-xl bg-card/40 border border-card-border backdrop-blur-sm"
         >
           <p className="text-caption md:text-xs font-mono text-muted mb-4 md:mb-5 uppercase tracking-wider">
             How I architect every system · live
@@ -194,7 +194,7 @@ export function Hero(): React.ReactElement {
           animate={{ y: [0, 8, 0] }}
           transition={{ duration: 2, repeat: Infinity }}
         >
-          <div className="w-5 h-8 rounded-full border-2 border-muted/30 flex items-start justify-center p-1">
+          <div className="w-5 h-8 rounded-full border-2 border-muted/20 flex items-start justify-center p-1">
             <div className="w-1 h-2 bg-muted/50 rounded-full" />
           </div>
         </motion.div>

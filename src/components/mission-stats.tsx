@@ -120,7 +120,7 @@ export function MissionStats(): React.ReactElement {
               <div className="card-glow card-gradient-border p-4 md:p-5 rounded-xl bg-card border border-card-border h-full flex flex-col group hover:border-transparent transition-colors duration-300">
                 <div className="flex items-center gap-2 mb-3">
                   <span className="w-1.5 h-1.5 rounded-full bg-accent-status animate-pulse group-hover:scale-150 transition-transform" />
-                  <span className="text-caption font-mono text-muted/50 uppercase tracking-wider group-hover:text-accent/70 transition-colors">
+                  <span className="text-caption font-mono text-muted/60 uppercase tracking-wider group-hover:text-accent/80 transition-colors">
                     {w.label}
                   </span>
                 </div>
@@ -241,13 +241,13 @@ function TerminalAboutCard(): React.ReactElement {
       className="rounded-xl bg-card border border-card-border overflow-hidden h-full flex flex-col shadow-2xl shadow-black/20 cursor-default"
     >
       {/* Chrome */}
-      <div className="flex items-center gap-2 px-3 py-2 border-b border-card-border bg-card/50">
+      <div className="flex items-center gap-2 px-3 py-2 border-b border-card-border bg-card/40">
         <div className="flex gap-1.5">
           <span className="w-2.5 h-2.5 rounded-full bg-red-500/60" />
           <span className="w-2.5 h-2.5 rounded-full bg-yellow-500/60" />
           <span className="w-2.5 h-2.5 rounded-full bg-green-500/60" />
         </div>
-        <span className="ml-1 text-caption font-mono text-muted/50">shami ~ zsh</span>
+        <span className="ml-1 text-caption font-mono text-muted/60">shami ~ zsh</span>
       </div>
 
       {/* Photo centered at top */}
@@ -255,7 +255,7 @@ function TerminalAboutCard(): React.ReactElement {
         <div className="relative">
           <div className="absolute -inset-2 bg-gradient-to-br from-accent/15 to-accent-secondary/10 rounded-full blur-xl pointer-events-none" />
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/ahtesham.jpg" alt="Ahtesham Ahmad" className="relative w-14 h-14 rounded-full object-cover border-2 border-accent/25" />
+          <img src="/ahtesham.jpg" alt="Ahtesham Ahmad" className="relative w-14 h-14 rounded-full object-cover border-2 border-accent/20" />
         </div>
       </div>
 
@@ -306,18 +306,18 @@ function TerminalAboutCard(): React.ReactElement {
         {allDone && (
           <div>
             <span className="text-accent">❯</span>{" "}
-            <span className="inline-block w-[6px] h-[12px] bg-accent/70 translate-y-[2px] animate-pulse" />
+            <span className="inline-block w-[6px] h-[12px] bg-accent/60 translate-y-[2px] animate-pulse" />
           </div>
         )}
       </div>
 
       {/* Status bar */}
-      <div className="px-3 py-1.5 border-t border-card-border/50 flex items-center justify-between bg-card/30">
+      <div className="px-3 py-1.5 border-t border-card-border/40 flex items-center justify-between bg-card/20">
         <div className="flex items-center gap-2 text-caption font-mono">
           <span className="w-1.5 h-1.5 rounded-full bg-accent-status animate-pulse" />
           <span className="text-accent-status/70">available for hire</span>
         </div>
-        <a href="/uses" className="text-caption font-mono text-muted/30 hover:text-accent transition-colors">setup &rarr;</a>
+        <a href="/uses" className="text-caption font-mono text-muted/40 hover:text-accent transition-colors">setup &rarr;</a>
       </div>
     </motion.div>
   );

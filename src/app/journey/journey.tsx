@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { ArrowLeft, Smartphone, Container, Bot, Shield, Settings, Rocket } from "lucide-react";
 import { TimeMachine } from "@/components/time-machine";
 
 /* ------------------------------------------------------------------ */
@@ -100,39 +101,39 @@ const day: { time: string; title: string; note: string; tag: string }[] = [
 ];
 
 interface ToolStop {
-  icon: string;
+  icon: React.ReactNode;
   label: string;
   why: string;
 }
 
 const devStack: ToolStop[] = [
   {
-    icon: "📱",
+    icon: <Smartphone size={20} />,
     label: "Phone + Tailscale",
     why: "My dev environment follows me. SSH into my Mac from anywhere, private mesh network, no port forwarding.",
   },
   {
-    icon: "🐳",
+    icon: <Container size={20} />,
     label: "Docker container",
     why: "Reproducible isolated env. Same container on Mac, Linux VPS, phone-SSH. Zero 'works on my machine'.",
   },
   {
-    icon: "🤖",
+    icon: <Bot size={20} />,
     label: "Claude Code + gogaa",
     why: "Two agents, different strengths. CC for complex tasks, gogaa when I need 11 providers or Aider-grade git flow.",
   },
   {
-    icon: "🛡",
+    icon: <Shield size={20} />,
     label: "CodeLens guardian",
     why: "Injects 305 patterns into Claude Code / Cursor / Copilot's context. Bugs are prevented at generation, not review.",
   },
   {
-    icon: "⚙",
+    icon: <Settings size={20} />,
     label: "GitHub Actions",
     why: "Every PR: build, lint, CodeLens review, auto-migration to staging. Green CI is the only path to main.",
   },
   {
-    icon: "🚀",
+    icon: <Rocket size={20} />,
     label: "Feature-flag deploy",
     why: "Ship dark. 10% → watch → 100%. Sentry + Grafana dashboards open during rollout.",
   },
@@ -161,29 +162,17 @@ export function Journey(): React.ReactElement {
             href="/"
             className="inline-flex items-center gap-2 text-xs font-mono text-muted hover:text-accent transition-colors"
           >
-            <svg
-              width="14"
-              height="14"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <line x1="19" y1="12" x2="5" y2="12" />
-              <polyline points="12 19 5 12 12 5" />
-            </svg>
+            <ArrowLeft size={14} />
             back to portfolio
           </a>
-          <p className="text-caption md:text-xs font-mono text-muted/70 text-center truncate hidden sm:block">
+          <p className="text-caption md:text-xs font-mono text-muted/80 text-center truncate hidden sm:block">
             <span className="text-accent">how I work</span> · behind the systems
           </p>
           <a
             href="https://ahtesham.dev.wadwarehouse.com/book"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-caption md:text-xs font-mono px-3 py-1.5 rounded-md bg-accent/10 text-accent border border-accent/30 hover:bg-accent/20 transition-all"
+            className="text-caption md:text-xs font-mono px-3 py-1.5 rounded-lg bg-accent/10 text-accent border border-accent/20 hover:bg-accent/20 transition-all"
           >
             book a call →
           </a>
@@ -237,7 +226,7 @@ export function Journey(): React.ReactElement {
             >
               <div className="w-1 h-2 bg-accent rounded-full" />
             </motion.div>
-            <p className="text-caption font-mono text-muted/50 uppercase tracking-widest">
+            <p className="text-caption font-mono text-muted/60 uppercase tracking-widest">
               scroll
             </p>
           </motion.div>
@@ -279,11 +268,11 @@ export function Journey(): React.ReactElement {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-80px" }}
                 transition={{ duration: 0.5, delay: i * 0.06, ease: [0.22, 1, 0.36, 1] }}
-                className="group p-6 md:p-7 rounded-2xl bg-card/60 border border-card-border hover:border-accent/30 transition-all duration-500 relative overflow-hidden"
+                className="group p-6 md:p-7 rounded-xl bg-card/60 border border-card-border hover:border-accent/20 transition-all duration-500 relative overflow-hidden"
               >
                 <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-accent/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
 
-                <p className="text-caption font-mono uppercase tracking-[0.25em] text-accent/70 mb-3">
+                <p className="text-caption font-mono uppercase tracking-[0.25em] text-accent/80 mb-3">
                   {p.tag}
                 </p>
                 <h3 className="text-lg md:text-xl font-bold mb-3 leading-tight">
@@ -293,7 +282,7 @@ export function Journey(): React.ReactElement {
                   {p.body}
                 </p>
                 <div className="pt-3 border-t border-card-border">
-                  <p className="text-caption font-mono uppercase tracking-[0.2em] text-muted/50 mb-1.5">
+                  <p className="text-caption font-mono uppercase tracking-[0.2em] text-muted/60 mb-1.5">
                     real example
                   </p>
                   <p className="text-xs text-foreground/80 leading-relaxed">
@@ -337,7 +326,7 @@ export function Journey(): React.ReactElement {
                 >
                   {/* Time label */}
                   <div className="absolute left-0 top-0 w-14 md:w-[110px] text-left">
-                    <p className="text-sm md:text-base font-mono font-bold text-accent/90 tabular-nums">
+                    <p className="text-sm md:text-base font-mono font-bold text-accent/80 tabular-nums">
                       {d.time}
                     </p>
                     <p className="text-caption md:text-caption font-mono text-muted/40 uppercase tracking-widest mt-0.5">
@@ -347,7 +336,7 @@ export function Journey(): React.ReactElement {
                   {/* Dot */}
                   <div className="absolute left-[22px] md:left-[55px] top-2 w-3 h-3 rounded-full bg-accent ring-4 ring-background" />
                   {/* Content */}
-                  <div className="p-4 md:p-5 rounded-xl bg-card border border-card-border hover:border-accent/30 transition-colors">
+                  <div className="p-4 md:p-5 rounded-xl bg-card border border-card-border hover:border-accent/20 transition-colors">
                     <h3 className="text-base md:text-lg font-bold mb-1.5">
                       {d.title}
                     </h3>
@@ -382,10 +371,10 @@ export function Journey(): React.ReactElement {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-60px" }}
                 transition={{ duration: 0.5, delay: i * 0.06 }}
-                className="p-5 md:p-6 rounded-xl bg-card/60 border border-card-border hover:border-accent/30 transition-colors"
+                className="p-5 md:p-6 rounded-xl bg-card/60 border border-card-border hover:border-accent/20 transition-colors"
               >
                 <div className="flex items-center gap-2 mb-3">
-                  <span className="text-2xl" aria-hidden>
+                  <span className="text-accent shrink-0" aria-hidden>
                     {t.icon}
                   </span>
                   <p className="text-sm md:text-base font-bold">{t.label}</p>
@@ -485,7 +474,7 @@ export function Journey(): React.ReactElement {
             </a>
             <a
               href="/#projects"
-              className="px-6 py-3 border border-card-border text-foreground rounded-lg hover:bg-card hover:border-muted/30 transition-all"
+              className="px-6 py-3 border border-card-border text-foreground rounded-lg hover:bg-card hover:border-muted/20 transition-all"
             >
               See the projects
             </a>

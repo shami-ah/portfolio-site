@@ -74,7 +74,7 @@ function Node({
   return (
     <div className="relative flex flex-col items-center gap-1 md:gap-1.5">
       <motion.div
-        className="relative w-8 h-8 md:w-10 md:h-10 rounded-lg border border-accent/30 bg-card/80 backdrop-blur-sm flex items-center justify-center"
+        className="relative w-8 h-8 md:w-10 md:h-10 rounded-lg border border-accent/20 bg-card/80 backdrop-blur-sm flex items-center justify-center"
         animate={{
           borderColor: [
             "rgba(59,130,246,0.3)",
@@ -112,7 +112,7 @@ function Node({
           }}
         />
       </motion.div>
-      <p className="text-caption md:text-small text-muted/70 whitespace-nowrap">
+      <p className="text-caption md:text-small text-muted/80 whitespace-nowrap">
         {label}
       </p>
     </div>

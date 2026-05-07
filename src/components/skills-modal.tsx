@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import ReactDOM from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
+import { X } from "lucide-react";
 import { NeuralMap } from "./neural-map";
 import { skillNodes, groupColors } from "@/data/skills-graph";
 
@@ -72,10 +73,10 @@ export function SkillsModal(): React.ReactElement {
             exit={{ scale: 0.95, opacity: 0, y: 20 }}
             transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
             onClick={(e) => e.stopPropagation()}
-            className="relative w-full max-w-5xl h-[80vh] rounded-2xl bg-card/95 border border-card-border overflow-hidden flex flex-col shadow-2xl"
+            className="relative w-full max-w-5xl h-[80vh] rounded-xl bg-card/80 border border-card-border overflow-hidden flex flex-col shadow-2xl"
           >
             {/* Header */}
-            <div className="flex items-center justify-between px-5 py-4 border-b border-card-border bg-card/50 shrink-0">
+            <div className="flex items-center justify-between px-5 py-4 border-b border-card-border bg-card/40 shrink-0">
               <div className="flex items-center gap-3">
                 <div className="flex gap-1.5">
                   <span className="w-3 h-3 rounded-full bg-red-500/70 cursor-pointer" onClick={() => setOpen(false)} />
@@ -89,13 +90,10 @@ export function SkillsModal(): React.ReactElement {
                 <button
                   type="button"
                   onClick={() => setOpen(false)}
-                  className="text-muted/50 hover:text-foreground transition-colors"
+                  className="text-muted/60 hover:text-foreground transition-colors"
                   aria-label="Close"
                 >
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <line x1="18" y1="6" x2="6" y2="18" />
-                    <line x1="6" y1="6" x2="18" y2="18" />
-                  </svg>
+                  <X size={16} />
                 </button>
               </div>
             </div>
@@ -109,7 +107,7 @@ export function SkillsModal(): React.ReactElement {
 
               {/* Legend sidebar */}
               <div className="w-56 shrink-0 border-l border-card-border p-4 overflow-y-auto hidden md:block">
-                <p className="text-caption font-mono text-muted/50 uppercase tracking-wider mb-4">
+                <p className="text-caption font-mono text-muted/60 uppercase tracking-wider mb-4">
                   Skill Groups
                 </p>
                 <div className="space-y-4">
@@ -133,7 +131,7 @@ export function SkillsModal(): React.ReactElement {
                   ))}
                 </div>
 
-                <div className="mt-6 pt-4 border-t border-card-border/50">
+                <div className="mt-6 pt-4 border-t border-card-border/40">
                   <p className="text-caption font-mono text-muted/40 leading-relaxed">
                     Nodes sized by expertise level. Edges show how skills connect in my workflow. Hover any node to highlight its cluster.
                   </p>
@@ -142,7 +140,7 @@ export function SkillsModal(): React.ReactElement {
             </div>
 
             {/* Footer */}
-            <div className="flex items-center justify-between px-5 py-3 border-t border-card-border bg-card/30 shrink-0">
+            <div className="flex items-center justify-between px-5 py-3 border-t border-card-border bg-card/20 shrink-0">
               <span className="text-caption font-mono text-muted/40">
                 5 groups · {skillNodes.length} technologies · production-tested
               </span>

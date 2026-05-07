@@ -67,7 +67,7 @@ export function GitLog(): React.ReactElement {
   const roles = getRoles(status.openevent);
 
   return (
-    <section id="log" className="py-20 md:py-32 bg-card/30">
+    <section id="log" className="py-20 md:py-32 bg-card/20">
       <div className="max-w-5xl mx-auto px-5 md:px-6">
         <FadeUp>
           <TypeLabel
@@ -113,7 +113,7 @@ export function GitLog(): React.ReactElement {
                   </div>
 
                   {/* Author + date */}
-                  <div className="text-xs text-muted/50 mb-4">
+                  <div className="text-xs text-muted/60 mb-4">
                     <span>Author: Ahtesham Ahmad</span>
                     <span className="mx-2 text-muted/20">|</span>
                     <span className="text-accent-secondary/70">{role.period}</span>
@@ -139,7 +139,7 @@ export function GitLog(): React.ReactElement {
                     {role.stack.map((tech) => (
                       <span
                         key={tech}
-                        className="px-2 py-0.5 text-caption bg-accent/5 text-accent/70 rounded border border-accent/10"
+                        className="px-2 py-0.5 text-caption bg-accent/5 text-accent/80 rounded border border-accent/20"
                       >
                         {tech}
                       </span>
@@ -147,7 +147,7 @@ export function GitLog(): React.ReactElement {
                   </div>
 
                   {/* Git stats */}
-                  <div className="flex items-center gap-3 text-small text-muted/50 pt-3 border-t border-card-border/50">
+                  <div className="flex items-center gap-3 text-small text-muted/60 pt-3 border-t border-card-border/40">
                     <span>{role.stats.files} files changed</span>
                     <span className="text-accent-status">+{role.stats.insertions.toLocaleString()}</span>
                     <span className="text-red-400/70">-{role.stats.deletions.toLocaleString()}</span>
@@ -168,13 +168,13 @@ export function GitLog(): React.ReactElement {
               <div className="hidden md:block absolute left-[16px] top-3 w-[15px] h-[15px] rounded-full border-2 border-accent/40 bg-background z-10" />
 
               <div className="flex items-center gap-2 mb-2">
-                <span className="text-caption font-mono text-muted/30">branches →</span>
+                <span className="text-caption font-mono text-muted/40">branches →</span>
               </div>
               <div className="flex flex-wrap gap-2">
                 {["gogaa-cli", "codelens", "rasad"].map((branch) => (
                   <span
                     key={branch}
-                    className="px-3 py-1 rounded-md text-caption font-mono bg-accent/5 text-accent/60 border border-accent/15"
+                    className="px-3 py-1 rounded-lg text-caption font-mono bg-accent/5 text-accent/60 border border-accent/20"
                   >
                     {branch}
                   </span>
@@ -187,7 +187,7 @@ export function GitLog(): React.ReactElement {
               <div className="relative md:pl-14">
                 {/* Dot */}
                 <div className="hidden md:block absolute left-[17px] top-2 w-[13px] h-[13px] rounded-full border-2 border-muted/20 bg-background z-10" />
-                <div className="flex items-center gap-3 py-3 text-xs font-mono text-muted/30">
+                <div className="flex items-center gap-3 py-3 text-xs font-mono text-muted/40">
                   <span className="w-2 h-2 rounded-full bg-muted/20 md:hidden" />
                   Initial Commit (Hello World) · 2019
                 </div>

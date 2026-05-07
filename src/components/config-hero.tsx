@@ -54,7 +54,7 @@ function SyntaxLine({ line, lineNum }: {
       }
 
       if ("{}[],;:".includes(text[i])) {
-        tokens.push({ text: text[i], color: "text-muted/50" });
+        tokens.push({ text: text[i], color: "text-muted/60" });
         i++;
         continue;
       }
@@ -88,15 +88,15 @@ function SyntaxLine({ line, lineNum }: {
   if (type === "comment") {
     return (
       <div className="flex">
-        <span className="w-8 text-right mr-4 text-muted/30 select-none">{lineNum}</span>
-        <span className="text-muted/50">{text}</span>
+        <span className="w-8 text-right mr-4 text-muted/40 select-none">{lineNum}</span>
+        <span className="text-muted/60">{text}</span>
       </div>
     );
   }
 
   return (
     <div className="flex">
-      <span className="w-8 text-right mr-4 text-muted/30 select-none">{lineNum}</span>
+      <span className="w-8 text-right mr-4 text-muted/40 select-none">{lineNum}</span>
       <span>{colorized}</span>
     </div>
   );
@@ -151,7 +151,7 @@ export function ConfigHero(): React.ReactElement {
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <motion.div
           style={{ y: orbY1, opacity: orbOpacity }}
-          className="absolute -top-40 -right-40 w-72 md:w-[32rem] h-72 md:h-[32rem] bg-accent/8 rounded-full blur-3xl"
+          className="absolute -top-40 -right-40 w-72 md:w-[32rem] h-72 md:h-[32rem] bg-accent/10 rounded-full blur-3xl"
         />
         <motion.div
           style={{ y: orbY2, opacity: orbOpacity }}
@@ -238,7 +238,7 @@ export function ConfigHero(): React.ReactElement {
           >
             <div className="rounded-xl border border-card-border bg-card/80 backdrop-blur-sm overflow-hidden shadow-2xl shadow-black/30">
               {/* Window chrome */}
-              <div className="flex items-center gap-2 px-4 py-3 border-b border-card-border bg-card/50">
+              <div className="flex items-center gap-2 px-4 py-3 border-b border-card-border bg-card/40">
                 <div className="flex gap-1.5">
                   <span className="w-3 h-3 rounded-full bg-red-500/70" />
                   <span className="w-3 h-3 rounded-full bg-yellow-500/70" />
@@ -262,7 +262,7 @@ export function ConfigHero(): React.ReactElement {
                 {/* Blinking cursor */}
                 {visibleLines < CONFIG_LINES.length && (
                   <div className="flex">
-                    <span className="w-8 text-right mr-4 text-muted/30 select-none">{visibleLines + 1}</span>
+                    <span className="w-8 text-right mr-4 text-muted/40 select-none">{visibleLines + 1}</span>
                     <span className="w-2 h-[1.1em] bg-accent animate-pulse" />
                   </div>
                 )}
@@ -284,7 +284,7 @@ export function ConfigHero(): React.ReactElement {
           animate={{ y: [0, 8, 0] }}
           transition={{ duration: 2, repeat: Infinity }}
         >
-          <div className="w-5 h-8 rounded-full border-2 border-muted/30 flex items-start justify-center p-1">
+          <div className="w-5 h-8 rounded-full border-2 border-muted/20 flex items-start justify-center p-1">
             <div className="w-1 h-2 bg-muted/50 rounded-full" />
           </div>
         </motion.div>

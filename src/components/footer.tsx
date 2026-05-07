@@ -7,7 +7,7 @@ export function Footer(): React.ReactElement {
           <p className="text-small font-mono text-muted/40">
             © {new Date().getFullYear()} Ahtesham Ahmad
           </p>
-          <p className="text-small font-mono text-muted/30 hidden sm:block">
+          <p className="text-small font-mono text-muted/40 hidden sm:block">
             &gt; system uptime: {years} years
           </p>
         </div>
@@ -41,6 +41,13 @@ export function Footer(): React.ReactElement {
             className="text-small font-mono text-muted/40 hover:text-accent transition-colors"
           >
             &gt; Upwork
+          </a>
+          <a
+            href="/feed.xml"
+            className="text-small font-mono text-muted/40 hover:text-accent transition-colors"
+            title="RSS Feed"
+          >
+            &gt; RSS
           </a>
         </div>
       </div>

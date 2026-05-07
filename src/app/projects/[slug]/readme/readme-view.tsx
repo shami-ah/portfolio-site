@@ -3,6 +3,7 @@
 import { type ProjectData } from "@/data/projects";
 import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import { BookOpen, FileText, Lock } from "lucide-react";
 import { FadeUp } from "@/components/motion";
 
 export function ReadmeView({
@@ -24,7 +25,7 @@ export function ReadmeView({
             <span>&larr;</span> Back to {project.title}
           </a>
           <div className="flex items-center gap-3">
-            <span className="px-2.5 py-1 text-xs font-mono rounded-md border border-amber-500/30 bg-amber-500/10 text-amber-400">
+            <span className="px-2.5 py-1 text-xs font-mono rounded-lg border border-amber-500/30 bg-amber-500/10 text-amber-400">
               Private Repository
             </span>
             <span className="text-sm font-mono text-accent">{project.type}</span>
@@ -37,10 +38,7 @@ export function ReadmeView({
         <div className="max-w-4xl mx-auto">
           <FadeUp>
             <div className="flex items-center gap-3 mb-4">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-accent">
-                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
-                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
-              </svg>
+              <BookOpen size={24} strokeWidth={1.5} className="text-accent" />
               <h1 className="text-3xl md:text-4xl font-bold">{project.title}</h1>
             </div>
             <p className="text-lg text-muted mb-6">{project.subtitle}</p>
@@ -48,7 +46,7 @@ export function ReadmeView({
               {project.stack.slice(0, 8).map((tech) => (
                 <span
                   key={tech}
-                  className="px-3 py-1.5 text-xs font-mono bg-accent/5 text-accent/80 rounded-md border border-accent/10"
+                  className="px-3 py-1.5 text-xs font-mono bg-accent/5 text-accent/80 rounded-lg border border-accent/20"
                 >
                   {tech}
                 </span>
@@ -62,13 +60,10 @@ export function ReadmeView({
       <section className="px-6 pb-20">
         <div className="max-w-4xl mx-auto">
           <FadeUp delay={0.1}>
-            <div className="rounded-xl border border-card-border bg-card/50 overflow-hidden">
+            <div className="rounded-xl border border-card-border bg-card/40 overflow-hidden">
               {/* File header bar */}
               <div className="flex items-center gap-2 px-5 py-3 border-b border-card-border bg-card/80">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-muted">
-                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                  <polyline points="14 2 14 8 20 8" />
-                </svg>
+                <FileText size={16} className="text-muted" />
                 <span className="text-sm font-mono text-muted">README.md</span>
               </div>
 
@@ -100,10 +95,7 @@ export function ReadmeView({
           {/* Footer note */}
           <FadeUp delay={0.2}>
             <div className="mt-8 flex items-center justify-center gap-2 text-sm text-muted/60">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
-                <path d="M7 11V7a5 5 0 0 1 10 0v4" />
-              </svg>
+              <Lock size={14} />
               <span>Source code is private. This page shows the project README only.</span>
             </div>
           </FadeUp>

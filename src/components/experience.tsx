@@ -54,7 +54,7 @@ export function Experience(): React.ReactElement {
   const { status } = useStatus();
   const roles = getRoles(status.openevent);
   return (
-    <section id="log" className="py-20 md:py-32 bg-card/30">
+    <section id="log" className="py-20 md:py-32 bg-card/20">
       <div className="max-w-6xl mx-auto px-5 md:px-6">
         <FadeUp>
           <p className="text-sm font-mono text-accent mb-4 uppercase tracking-wider">
@@ -72,12 +72,12 @@ export function Experience(): React.ReactElement {
               <div className="grid md:grid-cols-[140px_1fr] gap-4 md:gap-8">
                 {/* Period column — editorial year on left */}
                 <div className="md:text-right md:pt-5">
-                  <p className="text-xs md:text-sm font-mono text-muted/70">
+                  <p className="text-xs md:text-sm font-mono text-muted/80">
                     {role.period}
                   </p>
                 </div>
 
-                <div className="p-5 md:p-6 rounded-xl bg-card border border-card-border hover:border-muted/30 transition-all duration-300">
+                <div className="p-5 md:p-6 rounded-xl bg-card border border-card-border hover:border-muted/20 transition-all duration-300">
                   <div className="mb-3 md:mb-4">
                     <h3 className="text-base md:text-lg font-bold">{role.title}</h3>
                     <p className="text-muted/80 text-xs md:text-sm">{role.company}</p>
@@ -102,7 +102,7 @@ export function Experience(): React.ReactElement {
                         {role.stack.split(", ").map((tech) => (
                           <span
                             key={tech}
-                            className="px-2 md:px-2.5 py-0.5 md:py-1 text-caption md:text-xs font-mono bg-accent/5 text-accent/70 rounded-md border border-accent/10"
+                            className="px-2 md:px-2.5 py-0.5 md:py-1 text-caption md:text-xs font-mono bg-accent/5 text-accent/80 rounded-lg border border-accent/20"
                           >
                             {tech}
                           </span>

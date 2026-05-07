@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { ArrowLeft } from "lucide-react";
 import type { ProjectData } from "@/data/projects";
 
 type Role = "user" | "me";
@@ -91,22 +92,10 @@ export function Story({ project }: { project: ProjectData }): React.ReactElement
             href={`/projects/${project.slug}`}
             className="inline-flex items-center gap-2 text-xs font-mono text-muted hover:text-accent transition-colors"
           >
-            <svg
-              width="14"
-              height="14"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <line x1="19" y1="12" x2="5" y2="12" />
-              <polyline points="12 19 5 12 12 5" />
-            </svg>
+            <ArrowLeft size={14} />
             full case study
           </a>
-          <p className="text-caption md:text-xs font-mono text-muted/70 truncate">
+          <p className="text-caption md:text-xs font-mono text-muted/80 truncate">
             story mode · <span className="text-accent">{project.title}</span>
           </p>
           <button
@@ -131,14 +120,14 @@ export function Story({ project }: { project: ProjectData }): React.ReactElement
               className={`flex ${b.role === "user" ? "justify-end" : "justify-start"}`}
             >
               <div
-                className={`max-w-[85%] md:max-w-[75%] px-4 py-3 rounded-2xl text-sm md:text-lead leading-relaxed ${
+                className={`max-w-[85%] md:max-w-[75%] px-4 py-3 rounded-xl text-sm md:text-lead leading-relaxed ${
                   b.role === "user"
                     ? "bg-accent text-white rounded-br-md"
-                    : "bg-card border border-card-border text-foreground/90 rounded-bl-md"
+                    : "bg-card border border-card-border text-foreground/80 rounded-bl-md"
                 }`}
               >
                 {b.role === "me" && (
-                  <p className="text-caption font-mono uppercase tracking-[0.25em] text-accent/70 mb-1.5">
+                  <p className="text-caption font-mono uppercase tracking-[0.25em] text-accent/80 mb-1.5">
                     ahtesham
                   </p>
                 )}
@@ -154,13 +143,13 @@ export function Story({ project }: { project: ProjectData }): React.ReactElement
               animate={{ opacity: 1 }}
               className="flex justify-start"
             >
-              <div className="bg-card border border-card-border rounded-2xl rounded-bl-md px-4 py-3 flex items-center gap-1.5">
+              <div className="bg-card border border-card-border rounded-xl rounded-bl-md px-4 py-3 flex items-center gap-1.5">
                 {[0, 1, 2].map((i) => (
                   <motion.span
                     key={i}
                     animate={{ opacity: [0.3, 1, 0.3], y: [0, -2, 0] }}
                     transition={{ duration: 1, repeat: Infinity, delay: i * 0.15 }}
-                    className="w-1.5 h-1.5 rounded-full bg-accent/70"
+                    className="w-1.5 h-1.5 rounded-full bg-accent/60"
                   />
                 ))}
               </div>
@@ -177,7 +166,7 @@ export function Story({ project }: { project: ProjectData }): React.ReactElement
               transition={{ duration: 0.4 }}
               className="max-w-3xl mx-auto px-4 md:px-6 pb-10"
             >
-              <div className="p-5 md:p-6 rounded-xl bg-gradient-to-br from-accent/10 via-card to-card border border-accent/30 text-center">
+              <div className="p-5 md:p-6 rounded-xl bg-gradient-to-br from-accent/10 via-card to-card border border-accent/20 text-center">
                 <p className="text-sm md:text-base mb-4 text-muted">
                   That&apos;s the short version. Want the full case study or to talk about your own system?
                 </p>

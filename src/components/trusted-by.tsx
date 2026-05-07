@@ -27,9 +27,9 @@ export function TrustedBy(): React.ReactElement {
           {clients.map((name, i) => (
             <span key={name} className="flex items-center gap-3">
               {i > 0 && (
-                <span className="text-muted/15 hidden sm:inline">·</span>
+                <span className="text-muted/20 hidden sm:inline">·</span>
               )}
-              <span className="text-xs md:text-sm text-muted/50 font-medium whitespace-nowrap">
+              <span className="text-xs md:text-sm text-muted/60 font-medium whitespace-nowrap">
                 {name}
               </span>
             </span>

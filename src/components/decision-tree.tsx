@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { Check } from "lucide-react";
 
 interface Decision {
   scenario: string;
@@ -18,7 +19,7 @@ export function DecisionTree({ decision }: { decision: Decision }): React.ReactE
   const matched = picked === decision.myChoice;
 
   return (
-    <section className="my-10 md:my-14 p-5 md:p-8 rounded-2xl bg-gradient-to-br from-accent/[0.06] via-card to-card border border-accent/30 relative overflow-hidden">
+    <section className="my-10 md:my-14 p-5 md:p-8 rounded-xl bg-gradient-to-br from-accent/[0.06] via-card to-card border border-accent/20 relative overflow-hidden">
       <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-accent to-transparent" />
 
       <p className="text-caption md:text-xs font-mono uppercase tracking-[0.25em] text-accent mb-3 flex items-center gap-2">
@@ -48,14 +49,14 @@ export function DecisionTree({ decision }: { decision: Decision }): React.ReactE
               whileHover={picked === null ? { x: 4 } : {}}
               className={`w-full text-left p-3 md:p-4 rounded-lg border transition-all duration-300 flex items-start gap-3 ${
                 picked === null
-                  ? "border-card-border bg-card/50 hover:border-accent/40 hover:bg-accent/5 cursor-pointer"
+                  ? "border-card-border bg-card/40 hover:border-accent/40 hover:bg-accent/5 cursor-pointer"
                   : isMine
                     ? "border-green-500/50 bg-green-500/10"
                     : isPicked
                       ? "border-accent/40 bg-accent/10"
                       : isCommon
                         ? "border-amber-500/30 bg-amber-500/5"
-                        : "border-card-border bg-card/30 opacity-60"
+                        : "border-card-border bg-card/20 opacity-60"
               }`}
             >
               <span
@@ -89,7 +90,7 @@ export function DecisionTree({ decision }: { decision: Decision }): React.ReactE
                     </span>
                   )}
                   {isPicked && !isMine && !isCommon && (
-                    <span className="text-caption font-mono text-accent px-1.5 py-0.5 rounded border border-accent/30 bg-accent/10">
+                    <span className="text-caption font-mono text-accent px-1.5 py-0.5 rounded border border-accent/20 bg-accent/10">
                       your pick
                     </span>
                   )}
@@ -111,12 +112,10 @@ export function DecisionTree({ decision }: { decision: Decision }): React.ReactE
             className="mt-5 pt-5 border-t border-accent/20"
           >
             <p className="text-caption font-mono uppercase tracking-[0.25em] text-green-400 mb-2 flex items-center gap-2">
-              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-                <polyline points="20 6 9 17 4 12" />
-              </svg>
+              <Check size={10} strokeWidth={3} />
               {matched ? "you got it — here's why" : "here's what I actually did"}
             </p>
-            <p className="text-sm md:text-base text-foreground/90 leading-relaxed">
+            <p className="text-sm md:text-base text-foreground/80 leading-relaxed">
               {decision.reasoning}
             </p>
 
@@ -124,7 +123,7 @@ export function DecisionTree({ decision }: { decision: Decision }): React.ReactE
               <button
                 type="button"
                 onClick={() => setPicked(null)}
-                className="mt-4 text-caption font-mono text-muted/50 hover:text-muted transition-colors"
+                className="mt-4 text-caption font-mono text-muted/60 hover:text-muted transition-colors"
               >
                 ↻ try another option
               </button>

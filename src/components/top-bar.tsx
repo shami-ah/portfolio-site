@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { RefreshCcw, Wrench, TrendingUp } from "lucide-react";
+import { ThemeToggle } from "./theme-toggle";
 
 export function TopBar(): React.ReactElement {
   const [scrolled, setScrolled] = useState(false);
@@ -54,7 +55,7 @@ export function TopBar(): React.ReactElement {
         <span className="font-mono text-sm md:text-base tracking-tight">
           <span className="text-accent">&gt;</span>{" "}
           <span className="text-foreground font-semibold">ahtesham</span>
-          <span className="text-muted/50">.dev</span>
+          <span className="text-muted/60">.dev</span>
           <motion.span
             animate={{ opacity: [1, 0] }}
             transition={{ duration: 0.8, repeat: Infinity, repeatType: "reverse" }}
@@ -74,12 +75,15 @@ export function TopBar(): React.ReactElement {
         transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
         className="fixed top-0 right-0 z-40 px-3 md:px-6 py-3 md:py-4 flex items-center gap-2 md:gap-3"
       >
+        {/* Theme toggle */}
+        <ThemeToggle />
+
         {/* Reboot */}
         <button
           type="button"
           onClick={reboot}
           aria-label="Reboot system — replay intro"
-          className="group relative inline-flex items-center gap-2 px-3 md:px-4 py-2 md:py-2.5 rounded-lg bg-card/85 backdrop-blur-md border border-card-border hover:border-accent/50 hover:bg-card transition-all duration-200 shadow-md"
+          className="group relative inline-flex items-center gap-2 px-3 md:px-4 py-2 md:py-2.5 rounded-lg bg-card/80 backdrop-blur-md border border-card-border hover:border-accent/40 hover:bg-card transition-all duration-200 shadow-md"
         >
           <RefreshCcw size={14} className="text-muted group-hover:text-accent transition-colors shrink-0" />
           <span className="hidden sm:inline text-xs md:text-sm text-muted group-hover:text-foreground transition-colors whitespace-nowrap">
@@ -91,7 +95,7 @@ export function TopBar(): React.ReactElement {
         <a
           href="/uses"
           aria-label="Tools, stack, and workflow"
-          className="group relative hidden sm:inline-flex items-center gap-1.5 md:gap-2 px-3 md:px-4 py-2 md:py-2.5 rounded-lg bg-card/85 backdrop-blur-md border border-card-border hover:border-accent/50 hover:bg-card transition-all duration-200 shadow-md"
+          className="group relative hidden sm:inline-flex items-center gap-1.5 md:gap-2 px-3 md:px-4 py-2 md:py-2.5 rounded-lg bg-card/80 backdrop-blur-md border border-card-border hover:border-accent/40 hover:bg-card transition-all duration-200 shadow-md"
         >
           <Wrench size={14} className="text-muted group-hover:text-accent transition-colors shrink-0" />
           <span className="hidden sm:inline text-xs md:text-sm text-muted group-hover:text-foreground transition-colors whitespace-nowrap">
@@ -103,7 +107,7 @@ export function TopBar(): React.ReactElement {
         <a
           href="/journey"
           aria-label="Walk through my career"
-          className="group relative inline-flex items-center gap-1.5 md:gap-2 px-3 md:px-4 py-2 md:py-2.5 rounded-lg bg-accent/10 border border-accent/30 text-accent hover:bg-accent/20 hover:border-accent/60 hover:shadow-lg hover:shadow-accent/20 transition-all duration-200 font-medium"
+          className="group relative inline-flex items-center gap-1.5 md:gap-2 px-3 md:px-4 py-2 md:py-2.5 rounded-lg bg-accent/10 border border-accent/20 text-accent hover:bg-accent/20 hover:border-accent/60 hover:shadow-lg hover:shadow-accent/20 transition-all duration-200 font-medium"
         >
           <TrendingUp size={14} className="shrink-0" />
           <span className="hidden sm:inline text-xs md:text-sm whitespace-nowrap">

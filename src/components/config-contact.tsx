@@ -2,6 +2,7 @@
 
 import { FadeUp } from "./motion";
 import { TypeLabel } from "./type-label";
+import { Calendar } from "lucide-react";
 
 const contactLinks = [
   { key: "email", label: "shami8024@gmail.com", href: "mailto:shami8024@gmail.com" },
@@ -13,7 +14,7 @@ const contactLinks = [
 
 export function ConfigContact(): React.ReactElement {
   return (
-    <section id="contact" className="relative overflow-hidden py-20 md:py-32 bg-card/30">
+    <section id="contact" className="relative overflow-hidden py-20 md:py-32 bg-card/20">
       <div className="absolute -top-40 left-1/2 -translate-x-1/2 w-[36rem] h-[36rem] bg-accent/[0.04] rounded-full blur-3xl pointer-events-none" />
 
       <div className="relative max-w-5xl mx-auto px-5 md:px-6">
@@ -35,7 +36,7 @@ export function ConfigContact(): React.ReactElement {
               &ldquo;The AI layer Ahtesham built saves our team 90 minutes a day.
               No engineer we interviewed designed the human-in-the-loop gate the way he did.&rdquo;
             </p>
-            <p className="text-small text-muted/50 font-mono mt-2">
+            <p className="text-small text-muted/60 font-mono mt-2">
               River Soellner, Founder, More Life Hospitality GmbH
             </p>
           </div>
@@ -76,12 +77,7 @@ export function ConfigContact(): React.ReactElement {
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 px-7 py-3.5 rounded-lg bg-accent text-background font-semibold hover:brightness-110 hover:shadow-lg hover:shadow-accent/25 transition-all duration-200 text-sm whitespace-nowrap shrink-0"
               >
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
-                  <line x1="16" y1="2" x2="16" y2="6" />
-                  <line x1="8" y1="2" x2="8" y2="6" />
-                  <line x1="3" y1="10" x2="21" y2="10" />
-                </svg>
+                <Calendar size={16} strokeWidth={1.5} />
                 Book a 15-min call
               </a>
             </div>

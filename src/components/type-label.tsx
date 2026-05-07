@@ -29,7 +29,7 @@ export function TypeLabel({
     <p ref={ref} className={className}>
       {text.slice(0, charCount)}
       {isInView && charCount < text.length && (
-        <span className="inline-block w-[6px] h-[1em] bg-accent/70 ml-0.5 translate-y-[1px] animate-pulse" />
+        <span className="inline-block w-[6px] h-[1em] bg-accent/60 ml-0.5 translate-y-[1px] animate-pulse" />
       )}
     </p>
   );

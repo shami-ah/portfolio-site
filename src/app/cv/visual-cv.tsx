@@ -5,6 +5,7 @@ import { useState, useEffect, useRef } from "react";
 import { useSearchParams } from "next/navigation";
 import { useCvHit } from "@/components/cv-counter";
 import { useStatus } from "@/lib/use-status";
+import { Download, FileText, Zap, Rocket, Building2, Link2, TreePine, GraduationCap, Globe, Cog, Cloud, ArrowRight } from "lucide-react";
 
 const ACCENT = "#d4a853";
 const AMBER = "#8ba4c4";
@@ -40,7 +41,7 @@ function FlowNode({ label, delay, isLast }: { label: string; delay: number; isLa
       transition={{ delay, duration: 0.3, ease: "easeOut" }}
     >
       <motion.span
-        className="px-2.5 py-1 rounded-md text-xs font-mono font-medium border backdrop-blur-sm"
+        className="px-2.5 py-1 rounded-lg text-xs font-mono font-medium border backdrop-blur-sm"
         style={{ borderColor: `${ACCENT}40`, background: `${ACCENT}15`, color: ACCENT }}
         whileHover={{ scale: 1.1, boxShadow: `0 0 20px ${ACCENT}40` }}
         transition={{ duration: 0.2 }}
@@ -49,7 +50,7 @@ function FlowNode({ label, delay, isLast }: { label: string; delay: number; isLa
       </motion.span>
       {!isLast && (
         <motion.span
-          className="text-muted/50 text-xs"
+          className="text-muted/60 text-xs"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: delay + 0.2, duration: 0.3 }}
@@ -71,7 +72,7 @@ function SkillBar({ name, level, delay }: { name: string; level: number; delay: 
     >
       <div className="flex justify-between text-xs mb-1">
         <span className="text-foreground/80 group-hover:text-white transition-colors">{name}</span>
-        <span className="text-muted/70 font-mono">{level}%</span>
+        <span className="text-muted/80 font-mono">{level}%</span>
       </div>
       <div className="h-1.5 bg-card rounded-full overflow-hidden">
         <motion.div
@@ -91,10 +92,10 @@ function SkillBar({ name, level, delay }: { name: string; level: number; delay: 
 function TimelineDot({ active }: { active?: boolean }) {
   return (
     <div className="relative flex items-center justify-center">
-      <div className={`w-3 h-3 rounded-full border-2 ${active ? "border-accent bg-accent/30" : "border-zinc-600 bg-card"}`} />
+      <div className={`w-3 h-3 rounded-full border-2 ${active ? "border-accent bg-accent/20" : "border-zinc-600 bg-card"}`} />
       {active && (
         <motion.div
-          className="absolute w-3 h-3 rounded-full border border-accent/50"
+          className="absolute w-3 h-3 rounded-full border border-accent/40"
           animate={{ scale: [1, 2, 1], opacity: [0.5, 0, 0.5] }}
           transition={{ duration: 2, repeat: Infinity }}
         />
@@ -126,25 +127,23 @@ export function VisualCV(): React.ReactElement {
       <div className="print:hidden fixed top-4 right-4 z-50 flex flex-wrap gap-2 justify-end max-w-[calc(100vw-2rem)]">
         <motion.a
           href="/chat"
-          className="px-3 md:px-4 py-2 bg-accent/15 hover:bg-accent/25 text-accent rounded-lg text-xs md:text-sm font-medium backdrop-blur-sm border border-accent/30 inline-flex items-center gap-1.5 shadow-lg shadow-accent/10"
+          className="px-3 md:px-4 py-2 bg-accent/20 hover:bg-accent/20 text-accent rounded-lg text-xs md:text-sm font-medium backdrop-blur-sm border border-accent/20 inline-flex items-center gap-1.5 shadow-lg shadow-accent/10"
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
         >
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
-          </svg>
+          <FileText size={14} />
           Chat
         </motion.a>
         <motion.button
           onClick={handleDownload}
-          className="px-3 md:px-4 py-2 bg-accent/90 hover:bg-accent text-white rounded-lg text-xs md:text-sm font-medium backdrop-blur-sm border border-accent/30 flex items-center gap-1.5 shadow-lg shadow-accent/20"
+          className="px-3 md:px-4 py-2 bg-accent/90 hover:bg-accent text-white rounded-lg text-xs md:text-sm font-medium backdrop-blur-sm border border-accent/20 flex items-center gap-1.5 shadow-lg shadow-accent/20"
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
         >
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><polyline points="14 2 14 8 20 8" /><line x1="12" y1="18" x2="12" y2="12" /><polyline points="9 15 12 18 15 15" /></svg>
+          <Download size={14} />
           PDF
         </motion.button>
-        <a href="/" className="px-3 md:px-4 py-2 bg-card/90 hover:bg-card-hover text-white rounded-lg text-xs md:text-sm font-medium backdrop-blur-sm border border-card-border">← Back</a>
+        <a href="/" className="px-3 md:px-4 py-2 bg-card/80 hover:bg-card-hover text-white rounded-lg text-xs md:text-sm font-medium backdrop-blur-sm border border-card-border">← Back</a>
       </div>
 
       {/* Screen version - dark, animated */}
@@ -167,7 +166,7 @@ export function VisualCV(): React.ReactElement {
             <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
               <div>
                 <motion.p
-                  className="text-xs font-mono uppercase tracking-[0.3em] text-muted/70 mb-3"
+                  className="text-xs font-mono uppercase tracking-[0.3em] text-muted/80 mb-3"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.2 }}
@@ -183,14 +182,14 @@ export function VisualCV(): React.ReactElement {
                   transition={{ delay: 0.4 }}
                 >AI Engineer</motion.p>
                 <motion.p
-                  className="text-sm text-muted/70 mt-4 max-w-md leading-relaxed"
+                  className="text-sm text-muted/80 mt-4 max-w-md leading-relaxed"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.45 }}
                 >AI engineer building production AI systems end-to-end: multi-agent orchestration, RAG pipelines, and full-stack AI-powered SaaS. I architect solutions where AI agents classify, execute, and learn while humans stay in control. Currently Lead AI Developer shipping OpenEvent to 100+ clients.</motion.p>
               </div>
               <motion.div
-                className="text-sm text-muted/70 space-y-1.5 font-mono"
+                className="text-sm text-muted/80 space-y-1.5 font-mono"
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.5 }}
@@ -241,13 +240,13 @@ export function VisualCV(): React.ReactElement {
             ].map((stat, i) => (
               <motion.div
                 key={stat.l}
-                className="p-5 rounded-xl border border-card-border bg-card/50 backdrop-blur-sm text-center group hover:border-accent/30 transition-colors"
+                className="p-5 rounded-xl border border-card-border bg-card/40 backdrop-blur-sm text-center group hover:border-accent/20 transition-colors"
                 whileHover={{ y: -4, boxShadow: `0 8px 30px ${ACCENT}10` }}
               >
                 <p className="text-3xl font-bold font-mono" style={{ color: i === 3 ? AMBER : ACCENT }}>
                   <AnimatedCounter value={stat.n} suffix={stat.s} />
                 </p>
-                <p className="text-xs text-muted/70 mt-1 uppercase tracking-wider">{stat.l}</p>
+                <p className="text-xs text-muted/80 mt-1 uppercase tracking-wider">{stat.l}</p>
               </motion.div>
             ))}
           </motion.div>
@@ -256,7 +255,7 @@ export function VisualCV(): React.ReactElement {
             {/* Left - Experience & Projects */}
             <div className="space-y-12">
               {/* Experience */}
-              <Section title="Experience" icon="▸">
+              <Section title="Experience" icon={<ArrowRight size={12} />}>
                 <TimelineRole active title="Lead AI Developer" company="MORE LIFE Hospitality GmbH" period="Sep 2025 – Present" location="Zurich · Remote" items={[
                   "Architected AI orchestration: email → classification → task extraction → workflow execution → auto-approval",
                   "Built Supabase Edge Functions for LLM calls, entity extraction, and workflow triggers",
@@ -286,7 +285,7 @@ export function VisualCV(): React.ReactElement {
               </Section>
 
               {/* Key Projects */}
-              <Section title="Key Projects" icon="◆">
+              <Section title="Key Projects" icon={<Building2 size={12} />}>
                 <ProjectCard name="Gogaa CLI" tag="Dev Tool · CLI" tagColor={ACCENT} version={status.gogaa.version} description={`Claude Code alternative: ${status.gogaa.providers} providers, Aider parity, ${status.gogaa.tests.toLocaleString()} tests. Repo map, SEARCH/REPLACE, watch mode, plugin marketplace, parallel agents.`} />
                 <ProjectCard name="CodeLens" tag="AI Dev Tool" tagColor={ACCENT} version={status.codelens.version} description={`${status.codelens.patterns}-pattern AI code review engine across ${status.codelens.stacks} stacks. Security taint tracking, PR risk scoring, guardian mode. Zero deps, <1s reviews.`} />
                 <ProjectCard name="OpenEvent" tag="Production SaaS" tagColor={AMBER} liveLabel="live" description={`${status.openevent.clients}+ clients across ${status.openevent.events}+ events. Saves each team ~${status.openevent.hoursSavedPerDay} hrs/day of manual email processing. Multi-agent orchestration: email → entity extraction → workflow → auto-approval.`} />
@@ -296,14 +295,14 @@ export function VisualCV(): React.ReactElement {
               </Section>
 
               {/* Education */}
-              <Section title="Education" icon="◈">
-                <motion.div className="p-4 rounded-lg border border-card-border bg-card/30" initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}>
+              <Section title="Education" icon={<GraduationCap size={12} />}>
+                <motion.div className="p-4 rounded-lg border border-card-border bg-card/20" initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}>
                   <div className="flex justify-between items-baseline">
                     <div>
                       <p className="font-semibold text-sm">B.Eng in Electrical & Electronics Engineering</p>
-                      <p className="text-xs text-muted/70">Sukkur IBA University</p>
+                      <p className="text-xs text-muted/80">Sukkur IBA University</p>
                     </div>
-                    <p className="text-xs text-muted/50 font-mono">2017 – 2020 · Grade A</p>
+                    <p className="text-xs text-muted/60 font-mono">2017 – 2020 · Grade A</p>
                   </div>
                 </motion.div>
               </Section>
@@ -312,32 +311,32 @@ export function VisualCV(): React.ReactElement {
             {/* Right - Skills & Meta */}
             <div className="space-y-8">
               {/* Skills with animated bars */}
-              <Section title="AI & ML" icon="⚡">
+              <Section title="AI & ML" icon={<Zap size={12} />}>
                 {["Claude API", "OpenAI / LangChain", "RAG Pipelines", "Multi-Agent Systems", "Prompt Engineering", "Taint Analysis"].map((s, i) => (
                   <SkillBar key={s} name={s} level={90 - i * 5} delay={i * 0.05} />
                 ))}
               </Section>
 
-              <Section title="Full Stack" icon="⚙">
+              <Section title="Full Stack" icon={<Cog size={12} />}>
                 {["TypeScript / React", "Next.js", "Supabase / PostgreSQL", "Node.js / Python", "Tailwind / Framer"].map((s, i) => (
                   <SkillBar key={s} name={s} level={92 - i * 4} delay={i * 0.05} />
                 ))}
               </Section>
 
-              <Section title="Infrastructure" icon="☁">
+              <Section title="Infrastructure" icon={<Cloud size={12} />}>
                 {["GitHub Actions / CI", "Docker / Cloudflare", "Stripe Integration", "Playwright / n8n"].map((s, i) => (
                   <SkillBar key={s} name={s} level={88 - i * 5} delay={i * 0.05} />
                 ))}
               </Section>
 
-              <Section title="Process" icon="▹">
+              <Section title="Process" icon={<ArrowRight size={12} />}>
                 {["Architecture-First Development", "Team Leadership (3-10 people)", "Client-Facing Comms & SOWs", "CodeLens: 305-pattern review engine", "Gogaa: Claude Code alternative"].map((s, i) => (
                   <SkillBar key={s} name={s} level={90 - i * 4} delay={i * 0.05} />
                 ))}
               </Section>
 
               {/* Certifications */}
-              <Section title="Certifications" icon="🎓">
+              <Section title="Certifications" icon={<GraduationCap size={12} />}>
                 <div className="space-y-2 text-xs">
                   {["Generative AI & LLMs · IBM", "Project Management · Google", "Gen AI for PMs · PMI"].map((cert, i) => (
                     <motion.p key={cert} className="text-muted pl-3 border-l border-card-border" initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }}>{cert}</motion.p>
@@ -346,25 +345,25 @@ export function VisualCV(): React.ReactElement {
               </Section>
 
               {/* Languages */}
-              <Section title="Languages" icon="🌐">
+              <Section title="Languages" icon={<Globe size={12} />}>
                 <div className="flex gap-2 flex-wrap">
                   {[{ l: "English", v: "Professional" }, { l: "Urdu", v: "Native" }, { l: "Pashtu", v: "Native" }, { l: "Sindhi", v: "Conversational" }, { l: "Arabic", v: "Conversational" }].map((lang) => (
-                    <span key={lang.l} className="text-xs px-2.5 py-1 rounded-md bg-card/80 text-muted border border-card-border">{lang.l} · {lang.v}</span>
+                    <span key={lang.l} className="text-xs px-2.5 py-1 rounded-lg bg-card/80 text-muted border border-card-border">{lang.l} · {lang.v}</span>
                   ))}
                 </div>
               </Section>
 
               {/* Building Next */}
-              <Section title="Building Next" icon="🚀">
+              <Section title="Building Next" icon={<Rocket size={12} />}>
                 <div className="space-y-2">
                   {[
-                    { icon: "🏗️", name: "Gogaa Architect Mode", status: "Next", color: ACCENT },
-                    { icon: "🔗", name: "Spec-to-Code Traceability", status: "Designing", color: AMBER },
-                    { icon: "🌳", name: "CodeLens v0.4 (AST)", status: "Planned", color: "#10b981" },
+                    { icon: <Building2 size={14} />, name: "Gogaa Architect Mode", status: "Next", color: ACCENT },
+                    { icon: <Link2 size={14} />, name: "Spec-to-Code Traceability", status: "Designing", color: AMBER },
+                    { icon: <TreePine size={14} />, name: "CodeLens v0.4 (AST)", status: "Planned", color: "#10b981" },
                   ].map((item, i) => (
                     <motion.div
                       key={item.name}
-                      className="flex items-center gap-3 p-2.5 rounded-lg bg-card/50 border border-card-border"
+                      className="flex items-center gap-3 p-2.5 rounded-lg bg-card/40 border border-card-border"
                       initial={{ opacity: 0, x: 20 }}
                       whileInView={{ opacity: 1, x: 0 }}
                       viewport={{ once: true }}
@@ -390,7 +389,7 @@ export function VisualCV(): React.ReactElement {
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
           >
-<p className="text-xs text-muted/50 font-mono">&nbsp;</p>
+<p className="text-xs text-muted/60 font-mono">&nbsp;</p>
           </motion.footer>
         </div>
       </div>
@@ -550,7 +549,7 @@ export function VisualCV(): React.ReactElement {
 
               {/* AI & ML */}
               <p className="font-mono text-caption uppercase" style={{ letterSpacing: "2px", color: "#aaa", marginBottom: "6px" }}>
-                <span style={{ color: "#4a6fa5" }}>⚡</span> AI & ML
+                <span style={{ color: "#4a6fa5" }}>▸</span> AI & ML
               </p>
               {[
                 { name: "Claude API", level: 90 },
@@ -573,7 +572,7 @@ export function VisualCV(): React.ReactElement {
 
               {/* Full Stack */}
               <p className="font-mono text-caption uppercase" style={{ letterSpacing: "2px", color: "#aaa", marginBottom: "6px", marginTop: "10px" }}>
-                <span style={{ color: "#4a6fa5" }}>⚙</span> Full Stack
+                <span style={{ color: "#4a6fa5" }}>▸</span> Full Stack
               </p>
               {[
                 { name: "TypeScript / React", level: 92 },
@@ -595,7 +594,7 @@ export function VisualCV(): React.ReactElement {
 
               {/* Infrastructure */}
               <p className="font-mono text-caption uppercase" style={{ letterSpacing: "2px", color: "#aaa", marginBottom: "6px", marginTop: "10px" }}>
-                <span style={{ color: "#4a6fa5" }}>☁</span> Infrastructure
+                <span style={{ color: "#4a6fa5" }}>▸</span> Infrastructure
               </p>
               {[
                 { name: "GitHub Actions / CI", level: 88 },
@@ -637,7 +636,7 @@ export function VisualCV(): React.ReactElement {
 
               {/* Certifications */}
               <p className="font-mono text-caption uppercase" style={{ letterSpacing: "2px", color: "#aaa", marginBottom: "6px", marginTop: "10px" }}>
-                <span style={{ color: "#4a6fa5" }}>🎓</span> Certifications
+                <span style={{ color: "#4a6fa5" }}>▸</span> Certifications
               </p>
               {["Generative AI & LLMs · IBM", "Project Management · Google", "Gen AI for PMs · PMI"].map((cert) => (
                 <p key={cert} className="text-caption" style={{ color: "#888", paddingLeft: "8px", borderLeft: "2px solid #e8e8e4", marginBottom: "4px", lineHeight: 1.4 }}>{cert}</p>
@@ -645,7 +644,7 @@ export function VisualCV(): React.ReactElement {
 
               {/* Languages */}
               <p className="font-mono text-caption uppercase" style={{ letterSpacing: "2px", color: "#aaa", marginBottom: "6px", marginTop: "10px" }}>
-                <span style={{ color: "#4a6fa5" }}>🌐</span> Languages
+                <span style={{ color: "#4a6fa5" }}>▸</span> Languages
               </p>
               <div style={{ display: "flex", gap: "6px", flexWrap: "wrap" }}>
                 {["English · Professional", "Urdu · Native", "Pashtu · Native", "Sindhi · Conversational", "Arabic · Conversational"].map((lang) => (
@@ -655,7 +654,7 @@ export function VisualCV(): React.ReactElement {
 
               {/* Building Next — compact single row */}
               <p className="font-mono text-caption uppercase" style={{ letterSpacing: "2px", color: "#aaa", marginBottom: "4px", marginTop: "8px" }}>
-                <span style={{ color: "#4a6fa5" }}>🚀</span> Building Next
+                <span style={{ color: "#4a6fa5" }}>▸</span> Building Next
               </p>
               <p className="text-caption" style={{ color: "#888", lineHeight: 1.5 }}>
                 Gogaa Architect Mode (Next) · Spec-to-Code Traceability · CodeLens v0.4
@@ -678,10 +677,10 @@ export function VisualCV(): React.ReactElement {
   );
 }
 
-function Section({ title, icon, children }: { title: string; icon: string; children: React.ReactNode }) {
+function Section({ title, icon, children }: { title: string; icon: React.ReactNode; children: React.ReactNode }) {
   return (
     <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5 }}>
-      <h2 className="text-xs font-mono uppercase tracking-[0.2em] text-muted/70 mb-4 flex items-center gap-2">
+      <h2 className="text-xs font-mono uppercase tracking-[0.2em] text-muted/80 mb-4 flex items-center gap-2">
         <span style={{ color: ACCENT }}>{icon}</span> {title}
       </h2>
       <div className="space-y-3">{children}</div>
@@ -699,12 +698,12 @@ function TimelineRole({ title, company, period, location, items, active }: { tit
       <div className="pb-6 flex-1">
         <div className="flex justify-between items-baseline flex-wrap gap-2">
           <p className="font-semibold text-sm text-zinc-200">{title}</p>
-          <p className="text-xs text-muted/50 font-mono">{period}</p>
+          <p className="text-xs text-muted/60 font-mono">{period}</p>
         </div>
-        <p className="text-xs text-muted/70">{company} · {location}</p>
+        <p className="text-xs text-muted/80">{company} · {location}</p>
         <ul className="mt-2 space-y-1">
           {items.map((item, i) => (
-            <motion.li key={i} className="text-xs text-muted pl-3 relative before:content-['▸'] before:absolute before:left-0 before:text-accent/50 before:text-caption" initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: i * 0.05 }}>
+            <motion.li key={i} className="text-xs text-muted pl-3 relative before:content-['▸'] before:absolute before:left-0 before:text-accent/60 before:text-caption" initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: i * 0.05 }}>
               {item}
             </motion.li>
           ))}
@@ -753,7 +752,7 @@ function ProjectCard({
   return (
     <motion.div
       ref={ref}
-      className="p-4 rounded-lg border border-card-border bg-card/30 hover:border-zinc-700 transition-all group relative overflow-hidden"
+      className="p-4 rounded-lg border border-card-border bg-card/20 hover:border-zinc-700 transition-all group relative overflow-hidden"
       onMouseMove={onMouseMove}
       onMouseLeave={onMouseLeave}
       style={{
@@ -800,7 +799,7 @@ function ProjectCard({
           </span>
         )}
       </div>
-      <p className="text-xs text-muted/70 leading-relaxed">{description}</p>
+      <p className="text-xs text-muted/80 leading-relaxed">{description}</p>
       {link && (
         <p className="text-caption text-blue-400/60 mt-1.5 font-mono">{link}</p>
       )}

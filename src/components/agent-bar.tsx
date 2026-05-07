@@ -113,17 +113,17 @@ function BuildPopup({ onDone }: { onDone: () => void }): React.ReactElement {
               }
               className={`flex items-center gap-3 px-4 py-2.5 rounded-full border transition-colors ${
                 i < step
-                  ? "bg-accent/10 border-accent/30"
-                  : "bg-card/30 border-card-border/30"
+                  ? "bg-accent/10 border-accent/20"
+                  : "bg-card/20 border-card-border/20"
               }`}
             >
-              <span className={`text-caption font-mono tabular-nums shrink-0 ${i < step ? "text-accent" : "text-muted/30"}`}>
+              <span className={`text-caption font-mono tabular-nums shrink-0 ${i < step ? "text-accent" : "text-muted/40"}`}>
                 {String(i + 1).padStart(2, "0")}
               </span>
-              <span className={`text-sm font-semibold flex-1 ${i < step ? "text-foreground" : "text-muted/30"}`}>
+              <span className={`text-sm font-semibold flex-1 ${i < step ? "text-foreground" : "text-muted/40"}`}>
                 {s.label}
               </span>
-              <span className={`text-caption hidden sm:inline ${i < step ? "text-muted/70" : "text-muted/20"}`}>
+              <span className={`text-caption hidden sm:inline ${i < step ? "text-muted/80" : "text-muted/20"}`}>
                 {s.detail}
               </span>
               {i < step && (
@@ -591,10 +591,10 @@ export function AgentBar(): React.ReactElement {
           setDismissed(false);
           setPhase("dormant");
         }}
-        className="fixed bottom-5 left-5 z-40 inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-card/80 backdrop-blur-md border border-accent/25 text-small font-mono text-muted hover:text-accent hover:border-accent/50 transition-all shadow-lg shadow-background/40"
+        className="fixed bottom-5 left-5 z-40 inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-card/80 backdrop-blur-md border border-accent/20 text-small font-mono text-muted hover:text-accent hover:border-accent/40 transition-all shadow-lg shadow-background/40"
         aria-label="Open agent"
       >
-        <span className="w-1.5 h-1.5 rounded-full bg-accent/70 animate-pulse" />
+        <span className="w-1.5 h-1.5 rounded-full bg-accent/60 animate-pulse" />
         agent
       </button>
     );
@@ -620,14 +620,14 @@ export function AgentBar(): React.ReactElement {
             transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
             className="pointer-events-auto"
           >
-            <div className="rounded-xl bg-card/90 backdrop-blur-md border border-accent/30 shadow-2xl shadow-accent/10 overflow-hidden">
+            <div className="rounded-xl bg-card/80 backdrop-blur-md border border-accent/20 shadow-2xl shadow-accent/10 overflow-hidden">
               {/* Activity ticker */}
               <ActivityTicker />
 
               {/* Input row */}
               <form
                 onSubmit={onSubmit}
-                className="group relative flex items-center gap-2 px-3 md:px-4 py-2.5 border-t border-card-border/30"
+                className="group relative flex items-center gap-2 px-3 md:px-4 py-2.5 border-t border-card-border/20"
               >
                 <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse shrink-0" />
                 <span className="text-accent font-mono text-xs md:text-sm shrink-0">❯</span>
@@ -639,7 +639,7 @@ export function AgentBar(): React.ReactElement {
                   placeholder="type a command: hire · projects · build · skills · chat"
                   className="flex-1 min-w-0 bg-transparent outline-none font-mono text-xs md:text-sm placeholder:text-muted/40 text-foreground"
                 />
-                <kbd className="hidden md:inline text-caption font-mono text-muted/50 border border-card-border px-1.5 py-0.5 rounded">
+                <kbd className="hidden md:inline text-caption font-mono text-muted/60 border border-card-border px-1.5 py-0.5 rounded">
                   /
                 </kbd>
                 <button
@@ -669,22 +669,22 @@ export function AgentBar(): React.ReactElement {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 10, scale: 0.97 }}
             transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-            className="pointer-events-auto rounded-xl bg-card/95 backdrop-blur-md border border-accent/40 shadow-2xl shadow-accent/25 overflow-hidden"
+            className="pointer-events-auto rounded-xl bg-card/80 backdrop-blur-md border border-accent/40 shadow-2xl shadow-accent/25 overflow-hidden"
           >
             {/* Header */}
-            <div className="flex items-center gap-2 px-3 md:px-4 py-2 border-b border-accent/15 bg-background/40">
+            <div className="flex items-center gap-2 px-3 md:px-4 py-2 border-b border-accent/20 bg-background/40">
               <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse shrink-0" />
               <p className="text-caption font-mono uppercase tracking-[0.25em] text-accent/80">
                 agent · session active
               </p>
-              <p className="ml-auto text-caption font-mono text-muted/50 tabular-nums">
+              <p className="ml-auto text-caption font-mono text-muted/60 tabular-nums">
                 {phase === "responding" ? `${totalMs}ms` : "…"}
               </p>
             </div>
 
             {/* Body */}
             <div className="px-3 md:px-5 py-3 md:py-4 space-y-1 font-mono text-small md:text-small">
-              <p className="text-foreground/90">
+              <p className="text-foreground/80">
                 <span className="text-accent">❯ parse</span>
                 <span className="text-muted/60">(&ldquo;</span>
                 <span className="text-foreground">{activeCmd.keyword}</span>
@@ -717,7 +717,7 @@ export function AgentBar(): React.ReactElement {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.12, duration: 0.25 }}
-                  className="text-muted/50 pl-5 text-caption md:text-small"
+                  className="text-muted/60 pl-5 text-caption md:text-small"
                 >
                   {i === activeCmd.steps.length - 1 ? "   " : "│  "}
                   {s.detail}

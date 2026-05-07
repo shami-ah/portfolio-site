@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { ChevronLeft, ChevronRight, X, Lock, BookOpen, MessageSquare } from "lucide-react";
 import type { ProjectData } from "@/data/projects";
 import { AccessRequestModal } from "./access-request-modal";
 
@@ -12,14 +13,14 @@ interface ProjectModalProps {
 }
 
 const typeColors: Record<string, string> = {
-  "AI Dev Tool": "text-accent border-accent/30 bg-accent/10",
+  "AI Dev Tool": "text-accent border-accent/20 bg-accent/10",
   "Production SaaS": "text-amber-400 border-amber-500/30 bg-amber-500/10",
   "Developer Tool": "text-green-400 border-green-500/30 bg-green-500/10",
   "Developer Tool / CLI": "text-green-400 border-green-500/30 bg-green-500/10",
   "Cross-Platform": "text-purple-400 border-purple-500/30 bg-purple-500/10",
   "Multi-Agent": "text-pink-400 border-pink-500/30 bg-pink-500/10",
   "AI Agents": "text-pink-400 border-pink-500/30 bg-pink-500/10",
-  "AI / ML": "text-accent border-accent/30 bg-accent/10",
+  "AI / ML": "text-accent border-accent/20 bg-accent/10",
   DevOps: "text-cyan-400 border-cyan-500/30 bg-cyan-500/10",
 };
 
@@ -127,11 +128,9 @@ export function ProjectModal({
                   onNavigate(-1);
                 }}
                 aria-label="Previous project"
-                className="hidden md:flex absolute left-4 top-1/2 -translate-y-1/2 z-10 w-11 h-11 rounded-full bg-card/90 border border-card-border hover:border-accent/40 hover:bg-card-hover transition-all items-center justify-center text-muted hover:text-foreground backdrop-blur-sm"
+                className="hidden md:flex absolute left-4 top-1/2 -translate-y-1/2 z-10 w-11 h-11 rounded-full bg-card/80 border border-card-border hover:border-accent/40 hover:bg-card-hover transition-all items-center justify-center text-muted hover:text-foreground backdrop-blur-sm"
               >
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <polyline points="15 18 9 12 15 6" />
-                </svg>
+                <ChevronLeft size={18} />
               </button>
               <button
                 type="button"
@@ -140,11 +139,9 @@ export function ProjectModal({
                   onNavigate(1);
                 }}
                 aria-label="Next project"
-                className="hidden md:flex absolute right-4 top-1/2 -translate-y-1/2 z-10 w-11 h-11 rounded-full bg-card/90 border border-card-border hover:border-accent/40 hover:bg-card-hover transition-all items-center justify-center text-muted hover:text-foreground backdrop-blur-sm"
+                className="hidden md:flex absolute right-4 top-1/2 -translate-y-1/2 z-10 w-11 h-11 rounded-full bg-card/80 border border-card-border hover:border-accent/40 hover:bg-card-hover transition-all items-center justify-center text-muted hover:text-foreground backdrop-blur-sm"
               >
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <polyline points="9 18 15 12 9 6" />
-                </svg>
+                <ChevronRight size={18} />
               </button>
             </>
           )}
@@ -156,7 +153,7 @@ export function ProjectModal({
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.96, y: 12 }}
             transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-            className="relative w-full max-w-4xl max-h-[90vh] bg-card border border-card-border rounded-2xl shadow-2xl shadow-accent/5 overflow-hidden flex flex-col"
+            className="relative w-full max-w-4xl max-h-[90vh] bg-card border border-card-border rounded-xl shadow-2xl shadow-accent/5 overflow-hidden flex flex-col"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Close button */}
@@ -164,12 +161,9 @@ export function ProjectModal({
               type="button"
               onClick={onClose}
               aria-label="Close"
-              className="absolute top-4 right-4 z-10 w-9 h-9 rounded-full bg-card/90 border border-card-border hover:border-accent/40 hover:bg-card-hover transition-all duration-200 flex items-center justify-center text-muted hover:text-foreground backdrop-blur-sm"
+              className="absolute top-4 right-4 z-10 w-9 h-9 rounded-full bg-card/80 border border-card-border hover:border-accent/40 hover:bg-card-hover transition-all duration-200 flex items-center justify-center text-muted hover:text-foreground backdrop-blur-sm"
             >
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <line x1="18" y1="6" x2="6" y2="18" />
-                <line x1="6" y1="6" x2="18" y2="18" />
-              </svg>
+              <X size={16} />
             </button>
 
             {/* Scrollable content */}
@@ -201,7 +195,7 @@ export function ProjectModal({
                 <p className="text-sm md:text-base text-muted mb-5">
                   {project.subtitle}
                 </p>
-                <p className="text-sm md:text-base text-foreground/90 leading-relaxed border-l-2 border-accent pl-4">
+                <p className="text-sm md:text-base text-foreground/80 leading-relaxed border-l-2 border-accent pl-4">
                   {project.impact}
                 </p>
               </motion.div>
@@ -214,7 +208,7 @@ export function ProjectModal({
                 className="mt-8 md:mt-10 grid md:grid-cols-2 gap-5 md:gap-6"
               >
                 <div>
-                  <p className="text-caption md:text-xs font-mono text-accent/70 uppercase tracking-[0.2em] mb-2">
+                  <p className="text-caption md:text-xs font-mono text-accent/80 uppercase tracking-[0.2em] mb-2">
                     Problem
                   </p>
                   <p className="text-xs md:text-sm text-muted leading-relaxed line-clamp-[8]">
@@ -222,7 +216,7 @@ export function ProjectModal({
                   </p>
                 </div>
                 <div>
-                  <p className="text-caption md:text-xs font-mono text-accent/70 uppercase tracking-[0.2em] mb-2">
+                  <p className="text-caption md:text-xs font-mono text-accent/80 uppercase tracking-[0.2em] mb-2">
                     Solution
                   </p>
                   <p className="text-xs md:text-sm text-muted leading-relaxed line-clamp-[8]">
@@ -238,7 +232,7 @@ export function ProjectModal({
                 transition={{ delay: 0.3, duration: 0.35 }}
                 className="mt-8 md:mt-10"
               >
-                <p className="text-caption md:text-xs font-mono text-accent/70 uppercase tracking-[0.2em] mb-3">
+                <p className="text-caption md:text-xs font-mono text-accent/80 uppercase tracking-[0.2em] mb-3">
                   System Architecture
                   <span className="text-muted/40 normal-case tracking-normal ml-2 hidden sm:inline">
                     click any node for detail
@@ -263,7 +257,7 @@ export function ProjectModal({
                             className={`px-2 md:px-2.5 py-1 md:py-1.5 text-caption md:text-small font-mono rounded whitespace-nowrap border transition-all ${
                               isSelected
                                 ? "bg-accent text-white border-accent shadow-lg shadow-accent/30"
-                                : "bg-accent/10 text-accent/90 border-accent/20 hover:bg-accent/20 hover:border-accent/40"
+                                : "bg-accent/10 text-accent/80 border-accent/20 hover:bg-accent/20 hover:border-accent/40"
                             }`}
                           >
                             {label}
@@ -275,7 +269,7 @@ export function ProjectModal({
                       );
                     })}
                     {project.architecture.length > 8 && (
-                      <span className="text-caption font-mono text-muted/50 ml-2">
+                      <span className="text-caption font-mono text-muted/60 ml-2">
                         +{project.architecture.length - 8} more
                       </span>
                     )}
@@ -295,7 +289,7 @@ export function ProjectModal({
                           <span className="text-accent/80 font-mono">
                             {selectedNode.split(/[(\n]/)[0].trim()}
                           </span>
-                          <span className="mx-2 text-muted/30">·</span>
+                          <span className="mx-2 text-muted/40">·</span>
                           <span>{describeNode(selectedNode)}</span>
                         </div>
                       </motion.div>
@@ -312,7 +306,7 @@ export function ProjectModal({
                   transition={{ delay: 0.4, duration: 0.35 }}
                   className="mt-8 md:mt-10"
                 >
-                  <p className="text-caption md:text-xs font-mono text-accent/70 uppercase tracking-[0.2em] mb-3">
+                  <p className="text-caption md:text-xs font-mono text-accent/80 uppercase tracking-[0.2em] mb-3">
                     Measured Impact
                   </p>
                   <div className="grid grid-cols-2 gap-2 md:gap-3">
@@ -323,18 +317,18 @@ export function ProjectModal({
                       <p className="text-3xl md:text-5xl font-bold text-muted font-mono leading-none">
                         ~1.5<span className="text-muted/40 text-lg md:text-2xl">hrs</span>
                       </p>
-                      <p className="text-caption md:text-xs text-muted/70 mt-2">
+                      <p className="text-caption md:text-xs text-muted/80 mt-2">
                         per team, per day, reading &amp; triaging email
                       </p>
                     </div>
-                    <div className="relative p-4 md:p-5 rounded-xl bg-gradient-to-br from-accent/10 via-background/50 to-background/50 border border-accent/30 overflow-hidden">
+                    <div className="relative p-4 md:p-5 rounded-xl bg-gradient-to-br from-accent/10 via-background/50 to-background/50 border border-accent/20 overflow-hidden">
                       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-accent to-transparent" />
                       <p className="text-caption font-mono text-accent uppercase tracking-[0.2em] mb-1.5 flex items-center gap-1.5">
                         <span className="w-1 h-1 rounded-full bg-green-400 animate-pulse" />
                         after
                       </p>
                       <p className="text-3xl md:text-5xl font-bold text-accent font-mono leading-none">
-                        ~15<span className="text-accent/50 text-lg md:text-2xl">min</span>
+                        ~15<span className="text-accent/60 text-lg md:text-2xl">min</span>
                       </p>
                       <p className="text-caption md:text-xs text-muted mt-2">
                         review AI-drafted actions &amp; approve
@@ -351,13 +345,13 @@ export function ProjectModal({
                         key={s.l}
                         className={`p-2.5 rounded-lg text-center ${
                           i === 2
-                            ? "bg-accent/10 border border-accent/30"
+                            ? "bg-accent/10 border border-accent/20"
                             : "bg-background/50 border border-card-border"
                         }`}
                       >
                         <p
                           className={`text-base md:text-lg font-bold font-mono tabular-nums ${
-                            i === 2 ? "text-accent" : "text-foreground/90"
+                            i === 2 ? "text-accent" : "text-foreground/80"
                           }`}
                         >
                           {s.n}
@@ -379,7 +373,7 @@ export function ProjectModal({
                   transition={{ delay: 0.4, duration: 0.35 }}
                   className="mt-8 md:mt-10"
                 >
-                  <p className="text-caption md:text-xs font-mono text-accent/70 uppercase tracking-[0.2em] mb-3">
+                  <p className="text-caption md:text-xs font-mono text-accent/80 uppercase tracking-[0.2em] mb-3">
                     Key Results
                   </p>
                   <ul className="grid md:grid-cols-2 gap-2.5 md:gap-3">
@@ -391,7 +385,7 @@ export function ProjectModal({
                         transition={{ delay: 0.45 + i * 0.04, duration: 0.25 }}
                         className="flex gap-2 text-xs md:text-sm text-muted leading-relaxed"
                       >
-                        <span className="text-accent/70 shrink-0 mt-0.5">▸</span>
+                        <span className="text-accent/80 shrink-0 mt-0.5">▸</span>
                         <span>{r}</span>
                       </motion.li>
                     ))}
@@ -407,7 +401,7 @@ export function ProjectModal({
                   transition={{ delay: 0.5, duration: 0.35 }}
                   className="mt-8 md:mt-10"
                 >
-                  <p className="text-caption md:text-xs font-mono text-accent/70 uppercase tracking-[0.2em] mb-3">
+                  <p className="text-caption md:text-xs font-mono text-accent/80 uppercase tracking-[0.2em] mb-3">
                     Key Technical Decisions
                   </p>
                   <ul className="space-y-2">
@@ -420,7 +414,7 @@ export function ProjectModal({
                         className="flex gap-2 items-start text-xs md:text-sm"
                       >
                         <span className="text-accent/60 mt-0.5 shrink-0">◆</span>
-                        <span className="text-foreground/85">{d.title}</span>
+                        <span className="text-foreground/80">{d.title}</span>
                       </motion.li>
                     ))}
                   </ul>
@@ -434,7 +428,7 @@ export function ProjectModal({
                 transition={{ delay: 0.6, duration: 0.35 }}
                 className="mt-8 md:mt-10"
               >
-                <p className="text-caption md:text-xs font-mono text-accent/70 uppercase tracking-[0.2em] mb-3">
+                <p className="text-caption md:text-xs font-mono text-accent/80 uppercase tracking-[0.2em] mb-3">
                   Stack
                 </p>
                 <div className="flex flex-wrap gap-1.5">
@@ -467,10 +461,7 @@ export function ProjectModal({
                       onClick={() => setAccessModalOpen(true)}
                       className="inline-flex items-center gap-1.5 px-3 md:px-4 py-2 text-xs md:text-sm border border-amber-500/30 bg-amber-500/10 text-amber-400 rounded-lg hover:bg-amber-500/20 hover:border-amber-500/50 transition-all duration-200"
                     >
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
-                        <path d="M7 11V7a5 5 0 0 1 10 0v4" />
-                      </svg>
+                      <Lock size={14} />
                       Request Access
                     </button>
                   )}
@@ -487,12 +478,9 @@ export function ProjectModal({
                   {project.giteaRepo && (
                     <a
                       href={`/projects/${project.slug}/readme`}
-                      className="inline-flex items-center gap-1.5 px-3 md:px-4 py-2 text-xs md:text-sm border border-accent/30 bg-accent/5 rounded-lg hover:border-accent/50 hover:bg-accent/10 transition-all duration-200 text-accent/80 hover:text-accent"
+                      className="inline-flex items-center gap-1.5 px-3 md:px-4 py-2 text-xs md:text-sm border border-accent/20 bg-accent/5 rounded-lg hover:border-accent/40 hover:bg-accent/10 transition-all duration-200 text-accent/80 hover:text-accent"
                     >
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
-                        <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
-                      </svg>
+                      <BookOpen size={14} />
                       Repo
                     </a>
                   )}
@@ -510,11 +498,9 @@ export function ProjectModal({
                   {project.featured && (
                     <a
                       href={`/story/${project.slug}`}
-                      className="inline-flex items-center gap-1.5 px-3 md:px-4 py-2 text-xs md:text-sm border border-accent/30 bg-accent/10 text-accent rounded-lg hover:bg-accent/20 hover:border-accent/50 transition-all duration-200"
+                      className="inline-flex items-center gap-1.5 px-3 md:px-4 py-2 text-xs md:text-sm border border-accent/20 bg-accent/10 text-accent rounded-lg hover:bg-accent/20 hover:border-accent/40 transition-all duration-200"
                     >
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
-                      </svg>
+                      <MessageSquare size={14} />
                       Story mode
                     </a>
                   )}

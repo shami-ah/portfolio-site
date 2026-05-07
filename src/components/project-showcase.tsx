@@ -36,7 +36,7 @@ export function ProjectShowcase({
       {/* Content side */}
       <div className="space-y-4 md:space-y-5">
         <div className="flex flex-wrap items-center gap-2">
-          <span className="px-2.5 py-1 text-caption md:text-xs font-mono rounded border border-accent/20 bg-accent/5 text-accent/90">
+          <span className="px-2.5 py-1 text-caption md:text-xs font-mono rounded border border-accent/20 bg-accent/5 text-accent/80">
             {project.type}
           </span>
           {project.live && (
@@ -59,13 +59,13 @@ export function ProjectShowcase({
           {project.stack.slice(0, 6).map((t) => (
             <span
               key={t}
-              className="px-2 py-0.5 text-caption font-mono bg-card-hover/60 text-muted/70 rounded border border-card-border"
+              className="px-2 py-0.5 text-caption font-mono bg-card-hover/60 text-muted/80 rounded border border-card-border"
             >
               {t}
             </span>
           ))}
           {project.stack.length > 6 && (
-            <span className="px-2 py-0.5 text-caption font-mono text-muted/50">
+            <span className="px-2 py-0.5 text-caption font-mono text-muted/60">
               +{project.stack.length - 6}
             </span>
           )}

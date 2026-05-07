@@ -88,10 +88,10 @@ export function About(): React.ReactElement {
                 <CountUp to={status.portfolio.projects} suffix="" />
                 <span className="text-accent">+</span>
               </p>
-              <p className="text-xs md:text-sm font-mono text-muted/70 uppercase tracking-[0.2em] mt-2">
+              <p className="text-xs md:text-sm font-mono text-muted/80 uppercase tracking-[0.2em] mt-2">
                 production projects shipped
               </p>
-              <p className="text-caption md:text-xs text-muted/50 mt-1">
+              <p className="text-caption md:text-xs text-muted/60 mt-1">
                 2019 → now · 40+ returning clients · 100% satisfaction
               </p>
             </div>

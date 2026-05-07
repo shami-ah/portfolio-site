@@ -1,8 +1,9 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
 
-:root {
-  /* Command Center — Obsidian Gold + Glass */
+/* ── Dark Theme (default) ── */
+:root,
+.dark {
   --background: #0c0c0e;
   --foreground: #ede8e0;
   --muted: #7a756d;
@@ -18,6 +19,26 @@
   --gradient-brand: linear-gradient(135deg, #d4a853, #8ba4c4);
   --gradient-brand-subtle: linear-gradient(135deg, rgba(212, 168, 83, 0.12), rgba(139, 164, 196, 0.12));
   --gradient-glow: radial-gradient(ellipse at 45% -5%, rgba(212, 168, 83, 0.08) 0%, rgba(139, 164, 196, 0.03) 45%, transparent 70%);
+  color-scheme: dark;
+}
+
+/* ── Light Theme ── */
+.light {
+  --background: #fafaf8;
+  --foreground: #1a1a2e;
+  --muted: #6b7280;
+  --accent: #b8860b;
+  --accent-glow: rgba(184, 134, 11, 0.06);
+  --accent-secondary: #4a6fa5;
+  --accent-status: #16a34a;
+  --card: #ffffff;
+  --card-border: #e5e5e0;
+  --card-hover: #f5f5f1;
+
+  --gradient-brand: linear-gradient(135deg, #b8860b, #4a6fa5);
+  --gradient-brand-subtle: linear-gradient(135deg, rgba(184, 134, 11, 0.08), rgba(74, 111, 165, 0.08));
+  --gradient-glow: radial-gradient(ellipse at 45% -5%, rgba(184, 134, 11, 0.04) 0%, rgba(74, 111, 165, 0.02) 45%, transparent 70%);
+  color-scheme: light;
 }
 
 @theme inline {
@@ -54,6 +75,24 @@
   --font-size-hero--line-height: 0.85;
 }
 
+/* ── Design System Reference ──
+ *
+ * RADIUS (3 tiers):
+ *   rounded-lg   — buttons, badges, inputs
+ *   rounded-xl   — cards, panels, modals
+ *   rounded-full — pills, dots, avatars
+ *
+ * OPACITY (4 stops — applies to text-*, bg-*, border-*):
+ *   /20  ghost/decorative
+ *   /40  tertiary
+ *   /60  secondary
+ *   /80  near-primary
+ *   Exception: bg-accent uses /5, /10, /20 for subtle tints
+ *
+ * TYPE SCALE: caption → small → body → lead → title → heading → display → hero
+ * FONTS: --font-sans (body), --font-heading (display), --font-mono (code)
+ */
+
 /* overflow-x: clip hides overflow without creating a scroll context,
    so `position: sticky` still works in descendants (journey page). */
 html,
@@ -81,6 +120,11 @@ body::before {
     linear-gradient(90deg, rgba(212, 168, 83, 0.02) 1px, transparent 1px);
   background-size: 64px 64px;
 }
+.light body::before {
+  background-image:
+    linear-gradient(rgba(184, 134, 11, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(184, 134, 11, 0.04) 1px, transparent 1px);
+}
 
 /* Subtle noise grain for depth */
 body::after {
@@ -92,6 +136,9 @@ body::after {
   opacity: 0.018;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   background-size: 256px 256px;
+}
+.light body::after {
+  opacity: 0.03;
 }
 
 /* Glow effect for interactive cards — cursor-following radial highlight */
@@ -209,12 +256,41 @@ h1, h2, h3, h4, h5, h6 {
   color: white;
 }
 
-/* Smooth scroll */
+/* Smooth scroll — disabled for users who prefer reduced motion */
 html {
   scroll-behavior: smooth;
 }
 
-/* Custom scrollbar */
+/* ── Reduced Motion ── */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ── Skip-to-content (a11y) ── */
+.skip-to-content {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 9999;
+  padding: 0.75rem 1.5rem;
+  background: var(--accent);
+  color: white;
+  font-family: var(--font-mono), monospace;
+  font-size: 0.875rem;
+  text-decoration: none;
+  border-radius: 0 0 0.5rem 0;
+}
+.skip-to-content:focus {
+  left: 0;
+}
+
+/* Custom scrollbar — adapts to theme via CSS vars */
 ::-webkit-scrollbar {
   width: 6px;
 }
@@ -227,4 +303,17 @@ html {
 }
 ::-webkit-scrollbar-thumb:hover {
   background: var(--muted);
+}
+
+/* Light mode card glow override */
+.light .card-glow:hover {
+  box-shadow: 0 0 0 1px rgba(184, 134, 11, 0.2), 0 4px 20px rgba(0, 0, 0, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  border-color: rgba(184, 134, 11, 0.25);
+}
+.light .card-glow::before {
+  background: radial-gradient(
+    400px circle at var(--glow-x) var(--glow-y),
+    rgba(184, 134, 11, 0.05),
+    transparent 60%
+  );
 }

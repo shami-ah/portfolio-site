@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { Lock } from "lucide-react";
 import { findAnswer, starters } from "@/lib/kb";
 
 /* ------------------------------------------------------------------ */
@@ -141,17 +142,17 @@ export function ChatCV(): React.ReactElement {
     <main className="h-screen flex flex-col bg-background overflow-hidden">
 
       {/* Header — Gogaa style */}
-      <header className="shrink-0 border-b border-card-border bg-card/50">
+      <header className="shrink-0 border-b border-card-border bg-card/40">
         {/* Title bar — mimics Gogaa's top bar */}
-        <div className="flex items-center gap-3 px-4 md:px-6 py-2.5 border-b border-card-border/50">
+        <div className="flex items-center gap-3 px-4 md:px-6 py-2.5 border-b border-card-border/40">
           <div className="flex gap-1.5">
             <a href="/" className="w-3 h-3 rounded-full bg-red-500/70 hover:bg-red-500 transition-colors" title="Back to portfolio" />
             <span className="w-3 h-3 rounded-full bg-yellow-500/70" />
             <span className="w-3 h-3 rounded-full bg-green-500/70" />
           </div>
           <div className="flex-1 text-center">
-            <span className="text-small font-mono text-muted/50">
-              🔒 gogaa.dev / agent / portfolio-chat
+            <span className="text-small font-mono text-muted/60">
+              <Lock size={10} className="inline -mt-0.5" /> gogaa.dev / agent / portfolio-chat
             </span>
           </div>
           <span className="text-caption font-mono text-accent-status flex items-center gap-1.5">
@@ -178,16 +179,16 @@ export function ChatCV(): React.ReactElement {
 
           <div className="flex items-center gap-2">
             {/* Model selector pills */}
-            <div className="hidden md:flex items-center gap-1 bg-card/50 border border-card-border rounded-lg p-0.5">
+            <div className="hidden md:flex items-center gap-1 bg-card/40 border border-card-border rounded-lg p-0.5">
               {MODELS.map((m) => (
                 <button
                   key={m.id}
                   type="button"
                   onClick={() => setActiveModel(m.id)}
-                  className={`px-2.5 py-1 rounded-md text-small font-mono transition-all ${
+                  className={`px-2.5 py-1 rounded-lg text-small font-mono transition-all ${
                     activeModel === m.id
                       ? `text-foreground bg-card-hover border border-card-border`
-                      : "text-muted/40 hover:text-muted/70"
+                      : "text-muted/40 hover:text-muted/80"
                   }`}
                 >
                   {m.label}
@@ -199,7 +200,7 @@ export function ChatCV(): React.ReactElement {
               href="https://ahtesham.dev.wadwarehouse.com/book"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-small font-mono px-3 py-1.5 rounded-md bg-accent/10 text-accent border border-accent/30 hover:bg-accent/20 transition-all"
+              className="text-small font-mono px-3 py-1.5 rounded-lg bg-accent/10 text-accent border border-accent/20 hover:bg-accent/20 transition-all"
             >
               book a call
             </a>
@@ -218,14 +219,14 @@ export function ChatCV(): React.ReactElement {
           <div className="mb-4">
             {/* Logo */}
             <div className="flex items-center gap-4 mb-3">
-              <div className="w-12 h-12 rounded-2xl bg-accent-status flex items-center justify-center shrink-0 shadow-lg shadow-accent-status/20">
+              <div className="w-12 h-12 rounded-xl bg-accent-status flex items-center justify-center shrink-0 shadow-lg shadow-accent-status/20">
                 <span className="text-background font-bold text-xl">G</span>
               </div>
               <div>
                 <h2 className="text-2xl font-bold tracking-tight">
                   <span className="text-accent-status">gogaa</span>
                 </h2>
-                <p className="text-small font-mono text-muted/50">AI coding agent · open source</p>
+                <p className="text-small font-mono text-muted/60">AI coding agent · open source</p>
               </div>
             </div>
 
@@ -237,7 +238,7 @@ export function ChatCV(): React.ReactElement {
                   initial={{ opacity: 0, x: -6 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.15 }}
-                  className={i < 2 ? "text-accent-status/60" : "text-muted/50"}
+                  className={i < 2 ? "text-accent-status/60" : "text-muted/60"}
                 >
                   {line || "\u00a0"}
                 </motion.div>
@@ -259,14 +260,14 @@ export function ChatCV(): React.ReactElement {
                   <img
                     src="/ahtesham.jpg"
                     alt="Ahtesham Ahmad"
-                    className="w-14 h-14 rounded-xl border border-accent/25 object-cover shrink-0"
+                    className="w-14 h-14 rounded-xl border border-accent/20 object-cover shrink-0"
                   />
                   <div className="min-w-0">
                     <p className="text-foreground font-semibold font-sans text-base">Ahtesham Ahmad</p>
                     <p className="text-muted/60 text-xs">AI Engineer · Open to opportunities</p>
                     <div className="flex flex-wrap gap-1.5 mt-2">
                       {["Multi-Agent Systems", "Production AI", "Developer Tooling", "TypeScript", "React", "Supabase"].map((t) => (
-                        <span key={t} className="px-2 py-0.5 text-caption bg-accent/5 text-accent/70 rounded border border-accent/10">
+                        <span key={t} className="px-2 py-0.5 text-caption bg-accent/5 text-accent/80 rounded border border-accent/20">
                           {t}
                         </span>
                       ))}
@@ -274,7 +275,7 @@ export function ChatCV(): React.ReactElement {
                   </div>
                 </div>
 
-                <div className="mt-4 pt-3 border-t border-card-border/50 text-xs text-muted/60 font-sans leading-relaxed">
+                <div className="mt-4 pt-3 border-t border-card-border/40 text-xs text-muted/60 font-sans leading-relaxed">
                   I&apos;m a portfolio agent scoped to Ahtesham&apos;s work. Ask me about his rate, stack,
                   availability, the tools he built, or how you&apos;d work together.
                 </div>
@@ -291,7 +292,7 @@ export function ChatCV(): React.ReactElement {
                     "See his availability & rate",
                     "Send him a direct message",
                   ].map((item, i) => (
-                    <div key={i} className="text-small text-muted/50 flex items-center gap-1.5">
+                    <div key={i} className="text-small text-muted/60 flex items-center gap-1.5">
                       <span className="text-accent/40">{i + 1}.</span> {item}
                     </div>
                   ))}
@@ -333,7 +334,7 @@ export function ChatCV(): React.ReactElement {
       {/* Input — terminal style */}
       <form
         onSubmit={onSubmit}
-        className="shrink-0 border-t border-card-border bg-card/30"
+        className="shrink-0 border-t border-card-border bg-card/20"
       >
         <div className="max-w-3xl mx-auto px-4 md:px-6 py-3 flex items-center gap-3">
           <span className="text-accent font-mono text-sm shrink-0">$</span>
@@ -343,21 +344,21 @@ export function ChatCV(): React.ReactElement {
             value={input}
             onChange={(e) => setInput(e.target.value)}
             placeholder="ask me anything about Ahtesham..."
-            className="flex-1 bg-transparent outline-none font-mono text-sm placeholder:text-muted/30"
+            className="flex-1 bg-transparent outline-none font-mono text-sm placeholder:text-muted/40"
           />
           <button
             type="submit"
             disabled={!input.trim()}
-            className="shrink-0 px-3 py-1.5 bg-accent text-background text-xs font-mono font-medium rounded-md hover:brightness-110 transition-all disabled:opacity-30 disabled:cursor-not-allowed"
+            className="shrink-0 px-3 py-1.5 bg-accent text-background text-xs font-mono font-medium rounded-lg hover:brightness-110 transition-all disabled:opacity-30 disabled:cursor-not-allowed"
           >
             send ↵
           </button>
         </div>
         <div className="max-w-3xl mx-auto px-4 md:px-6 pb-2 flex items-center justify-between">
-          <p className="text-caption font-mono text-muted/25">
+          <p className="text-caption font-mono text-muted/20">
             gogaa-cli v1.2.1 · portfolio agent mode · {model.label} via {model.provider}
           </p>
-          <p className="text-caption font-mono text-muted/25">
+          <p className="text-caption font-mono text-muted/20">
             {messages.filter((m) => m.role === "user").length} / 20 messages
           </p>
         </div>
@@ -381,7 +382,7 @@ function ChatMessage({ msg }: { msg: Message }): React.ReactElement {
     >
       {isUser ? (
         <div className="flex items-start gap-3 justify-end">
-          <div className="max-w-[80%] px-4 py-2.5 rounded-xl rounded-br-sm bg-accent/15 border border-accent/20 text-sm font-sans text-foreground/90">
+          <div className="max-w-[80%] px-4 py-2.5 rounded-xl rounded-br-sm bg-accent/20 border border-accent/20 text-sm font-sans text-foreground/80">
             {msg.content}
           </div>
         </div>
@@ -398,10 +399,10 @@ function ChatMessage({ msg }: { msg: Message }): React.ReactElement {
           </div>
           <div className="min-w-0 max-w-[85%]">
             <div className="flex items-center gap-2 mb-1">
-              <span className="text-caption font-mono text-accent/70">shami.ai</span>
-              <span className="text-caption font-mono text-muted/30">agent</span>
+              <span className="text-caption font-mono text-accent/80">shami.ai</span>
+              <span className="text-caption font-mono text-muted/40">agent</span>
             </div>
-            <div className="px-4 py-3 rounded-xl rounded-tl-sm bg-card border border-card-border text-sm font-sans text-foreground/85 leading-relaxed">
+            <div className="px-4 py-3 rounded-xl rounded-tl-sm bg-card border border-card-border text-sm font-sans text-foreground/80 leading-relaxed">
               <p className="whitespace-pre-wrap">
                 {msg.content}
                 {msg.streaming && (
@@ -437,8 +438,8 @@ function ThinkingIndicator({ model }: { model: string }): React.ReactElement {
       </div>
       <div>
         <div className="flex items-center gap-2 mb-1">
-          <span className="text-caption font-mono text-accent/70">shami.ai</span>
-          <span className="text-caption font-mono text-muted/30">thinking via {model}</span>
+          <span className="text-caption font-mono text-accent/80">shami.ai</span>
+          <span className="text-caption font-mono text-muted/40">thinking via {model}</span>
         </div>
         <div className="px-4 py-3 rounded-xl rounded-tl-sm bg-card border border-card-border flex items-center gap-2">
           {[0, 1, 2].map((i) => (

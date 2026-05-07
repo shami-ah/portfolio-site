@@ -2,6 +2,7 @@
 
 import { motion, type Variants } from "framer-motion";
 import { type ReactNode } from "react";
+import { useReducedMotion } from "@/lib/use-reduced-motion";
 
 const fadeUp: Variants = {
   hidden: { opacity: 0, y: 30 },
@@ -18,6 +19,8 @@ const staggerContainer: Variants = {
   visible: { transition: { staggerChildren: 0.1 } },
 };
 
+const instant = { duration: 0 };
+
 export function FadeUp({
   children,
   delay = 0,
@@ -27,13 +30,14 @@ export function FadeUp({
   delay?: number;
   className?: string;
 }): React.ReactElement {
+  const reduced = useReducedMotion();
   return (
     <motion.div
       variants={fadeUp}
-      initial="hidden"
+      initial={reduced ? "visible" : "hidden"}
       whileInView="visible"
       viewport={{ once: true, margin: "-50px" }}
-      transition={{ duration: 0.5, delay, ease: "easeOut" }}
+      transition={reduced ? instant : { duration: 0.5, delay, ease: "easeOut" }}
       className={className}
     >
       {children}
@@ -50,13 +54,14 @@ export function FadeIn({
   delay?: number;
   className?: string;
 }): React.ReactElement {
+  const reduced = useReducedMotion();
   return (
     <motion.div
       variants={fadeIn}
-      initial="hidden"
+      initial={reduced ? "visible" : "hidden"}
       whileInView="visible"
       viewport={{ once: true, margin: "-50px" }}
-      transition={{ duration: 0.6, delay }}
+      transition={reduced ? instant : { duration: 0.6, delay }}
       className={className}
     >
       {children}
@@ -71,11 +76,12 @@ export function StaggerContainer({
   children: ReactNode;
   className?: string;
 }): React.ReactElement {
+  const reduced = useReducedMotion();
   return (
     <motion.div
-      variants={staggerContainer}
-      initial="hidden"
-      whileInView="visible"
+      variants={reduced ? undefined : staggerContainer}
+      initial={reduced ? undefined : "hidden"}
+      whileInView={reduced ? undefined : "visible"}
       viewport={{ once: true, margin: "-50px" }}
       className={className}
     >
@@ -95,12 +101,13 @@ export function SlideIn({
   delay?: number;
   className?: string;
 }): React.ReactElement {
+  const reduced = useReducedMotion();
   return (
     <motion.div
-      initial={{ opacity: 0, x: direction === "left" ? -40 : 40 }}
+      initial={reduced ? { opacity: 1, x: 0 } : { opacity: 0, x: direction === "left" ? -40 : 40 }}
       whileInView={{ opacity: 1, x: 0 }}
       viewport={{ once: true, margin: "-50px" }}
-      transition={{ duration: 0.5, delay, ease: "easeOut" }}
+      transition={reduced ? instant : { duration: 0.5, delay, ease: "easeOut" }}
       className={className}
     >
       {children}

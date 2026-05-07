@@ -4,11 +4,11 @@ import { useEffect, useState, useCallback, useRef } from "react";
 import { motion } from "framer-motion";
 
 const pipelineSteps = [
-  { id: "hero", label: "init" },
-  { id: "mission", label: "assess" },
-  { id: "projects", label: "review" },
-  { id: "log", label: "verify" },
-  { id: "contact", label: "decide" },
+  { id: "hero", label: "about" },
+  { id: "mission", label: "impact" },
+  { id: "projects", label: "work" },
+  { id: "log", label: "activity" },
+  { id: "contact", label: "connect" },
 ] as const;
 
 export function SidebarNav(): React.ReactElement {
@@ -95,8 +95,8 @@ export function SidebarNav(): React.ReactElement {
             <button
               type="button"
               onClick={() => scrollTo(id)}
-              className={`group relative flex items-center gap-1 px-1.5 py-1 rounded-md transition-all duration-300 w-full text-left ${
-                isActive ? "bg-accent/8" : ""
+              className={`group relative flex items-center gap-1 px-1.5 py-1 rounded-lg transition-all duration-300 w-full text-left ${
+                isActive ? "bg-accent/10" : ""
               }`}
             >
               {/* Active glow bar */}
@@ -110,13 +110,13 @@ export function SidebarNav(): React.ReactElement {
                 {isDone ? "✓" : isActive ? "▸" : "○"}
               </span>
               <span className={`text-caption transition-colors ${
-                isDone ? "text-foreground/50" : isActive ? "text-accent" : "text-muted/20"
+                isDone ? "text-foreground/60" : isActive ? "text-accent" : "text-muted/20"
               }`}>
                 {label}
               </span>
               {(isDone || isActive) && timeStr && (
                 <span className={`text-caption ml-auto tabular-nums ${
-                  isDone ? "text-accent-status/30" : "text-accent/30"
+                  isDone ? "text-accent-status/30" : "text-accent/40"
                 }`}>
                   {timeStr}
                 </span>

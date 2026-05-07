@@ -69,7 +69,7 @@ export function HighlightStrip(): React.ReactElement {
               <p className="text-3xl md:text-4xl font-bold font-mono text-accent mb-1">
                 <CountTo to={h.value} suffix={h.suffix} />
               </p>
-              <p className="text-small md:text-xs text-muted/50 font-mono uppercase tracking-wider">
+              <p className="text-small md:text-xs text-muted/60 font-mono uppercase tracking-wider">
                 {h.label}
               </p>
             </motion.div>

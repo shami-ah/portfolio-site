@@ -274,11 +274,11 @@ export function NeuralMap(): React.ReactElement {
       />
       {tooltip && (
         <div
-          className="absolute pointer-events-none px-2.5 py-1.5 rounded-md bg-card/95 backdrop-blur-md border border-card-border text-small font-mono shadow-lg z-10"
+          className="absolute pointer-events-none px-2.5 py-1.5 rounded-lg bg-card/80 backdrop-blur-md border border-card-border text-small font-mono shadow-lg z-10"
           style={{ left: tooltip.x + 12, top: tooltip.y - 30 }}
         >
           <span style={{ color: groupColors[tooltip.node.group] }}>{tooltip.node.label}</span>
-          <span className="text-muted/50 ml-2">{tooltip.node.group} · L{tooltip.node.level}</span>
+          <span className="text-muted/60 ml-2">{tooltip.node.group} · L{tooltip.node.level}</span>
         </div>
       )}
     </div>

@@ -7,16 +7,14 @@ import { GitLog } from "@/components/git-log";
 import { ConfigContact } from "@/components/config-contact";
 import { Footer } from "@/components/footer";
 import { TerminalBoot } from "@/components/terminal-boot";
-import { CommandPalette } from "@/components/command-palette";
 import { AgentBar } from "@/components/agent-bar";
-import { ShortcutsOverlay } from "@/components/shortcuts-overlay";
 import { SkillsModal } from "@/components/skills-modal";
 import { CursorGlow } from "@/components/cursor-glow";
 import { SectionDivider } from "@/components/section-divider";
 
 export default function Home(): React.ReactElement {
   return (
-    <main>
+    <main id="main-content">
       <TerminalBoot />
       <TopBar />
       <SidebarNav />
@@ -33,9 +31,7 @@ export default function Home(): React.ReactElement {
         <ConfigContact />
       </div>
       <Footer />
-      <CommandPalette />
       <AgentBar />
-      <ShortcutsOverlay />
       <SkillsModal />
     </main>
   );

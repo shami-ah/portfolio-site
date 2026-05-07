@@ -116,7 +116,7 @@ export function WorkspaceTerminal(): React.ReactElement {
       onClick={() => inputRef.current?.focus()}
     >
       {/* Title bar */}
-      <div className="flex items-center gap-2 px-4 py-2.5 border-b border-card-border bg-card/50 shrink-0">
+      <div className="flex items-center gap-2 px-4 py-2.5 border-b border-card-border bg-card/40 shrink-0">
         <div className="flex gap-1.5">
           <span className="w-2.5 h-2.5 rounded-full bg-red-500/60" />
           <span className="w-2.5 h-2.5 rounded-full bg-yellow-500/60" />
@@ -128,7 +128,7 @@ export function WorkspaceTerminal(): React.ReactElement {
       {/* Output area */}
       <div className="flex-1 overflow-y-auto p-4 font-mono text-small md:text-body leading-relaxed">
         {lines.map((line, i) => (
-          <div key={i} className={line.type === "input" ? "text-accent" : "text-muted/70"}>
+          <div key={i} className={line.type === "input" ? "text-accent" : "text-muted/80"}>
             {line.text.split("\n").map((l, j) => (
               <div key={j} className="min-h-[1.4em]">{l || "\u00a0"}</div>
             ))}
@@ -138,7 +138,7 @@ export function WorkspaceTerminal(): React.ReactElement {
       </div>
 
       {/* Input */}
-      <form onSubmit={handleSubmit} className="flex items-center gap-2 px-4 py-3 border-t border-card-border bg-card/30 shrink-0">
+      <form onSubmit={handleSubmit} className="flex items-center gap-2 px-4 py-3 border-t border-card-border bg-card/20 shrink-0">
         <span className="text-accent text-body font-mono">$</span>
         <input
           ref={inputRef}
@@ -146,7 +146,7 @@ export function WorkspaceTerminal(): React.ReactElement {
           value={input}
           onChange={(e) => setInput(e.target.value)}
           placeholder="type a command..."
-          className="flex-1 bg-transparent text-body font-mono text-foreground placeholder:text-muted/30 outline-none"
+          className="flex-1 bg-transparent text-body font-mono text-foreground placeholder:text-muted/40 outline-none"
           autoFocus
         />
       </form>

@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { X, Check, Loader2 } from "lucide-react";
 
 const REGISTRY_URL = "https://ahtesham.dev.wadwarehouse.com/gogaa-registry";
 
@@ -144,7 +145,7 @@ export function AccessRequestModal({ open, onClose }: AccessRequestModalProps): 
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 16 }}
             transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
-            className="relative w-full max-w-lg bg-card border border-card-border rounded-2xl shadow-2xl shadow-accent/5 overflow-hidden"
+            className="relative w-full max-w-lg bg-card border border-card-border rounded-xl shadow-2xl shadow-accent/5 overflow-hidden"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Header */}
@@ -162,10 +163,7 @@ export function AccessRequestModal({ open, onClose }: AccessRequestModalProps): 
                   aria-label="Close"
                   className="w-8 h-8 rounded-full bg-card-hover border border-card-border hover:border-accent/40 transition-all flex items-center justify-center text-muted hover:text-foreground"
                 >
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <line x1="18" y1="6" x2="6" y2="18" />
-                    <line x1="6" y1="6" x2="18" y2="18" />
-                  </svg>
+                  <X size={14} />
                 </button>
               </div>
             </div>
@@ -179,9 +177,7 @@ export function AccessRequestModal({ open, onClose }: AccessRequestModalProps): 
                   className="text-center py-8"
                 >
                   <div className="w-14 h-14 rounded-full bg-green-500/10 border border-green-500/30 flex items-center justify-center mx-auto mb-4">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-green-400">
-                      <polyline points="20 6 9 17 4 12" />
-                    </svg>
+                    <Check size={24} className="text-green-400" />
                   </div>
                   <h4 className="text-base font-semibold mb-2">Request Submitted</h4>
                   <p className="text-sm text-muted leading-relaxed max-w-sm mx-auto">
@@ -211,7 +207,7 @@ export function AccessRequestModal({ open, onClose }: AccessRequestModalProps): 
                       placeholder="John Doe"
                       required
                       minLength={2}
-                      className="w-full px-3 py-2 text-sm bg-background border border-card-border rounded-lg focus:border-accent/50 focus:ring-1 focus:ring-accent/20 outline-none transition-all placeholder:text-muted/40"
+                      className="w-full px-3 py-2 text-sm bg-background border border-card-border rounded-lg focus:border-accent/40 focus:ring-1 focus:ring-accent/20 outline-none transition-all placeholder:text-muted/40"
                     />
                   </div>
 
@@ -227,7 +223,7 @@ export function AccessRequestModal({ open, onClose }: AccessRequestModalProps): 
                       onChange={(e) => setEmail(e.target.value)}
                       placeholder="john@example.com"
                       required
-                      className="w-full px-3 py-2 text-sm bg-background border border-card-border rounded-lg focus:border-accent/50 focus:ring-1 focus:ring-accent/20 outline-none transition-all placeholder:text-muted/40"
+                      className="w-full px-3 py-2 text-sm bg-background border border-card-border rounded-lg focus:border-accent/40 focus:ring-1 focus:ring-accent/20 outline-none transition-all placeholder:text-muted/40"
                     />
                   </div>
 
@@ -242,7 +238,7 @@ export function AccessRequestModal({ open, onClose }: AccessRequestModalProps): 
                         value={country}
                         onChange={(e) => setCountry(e.target.value)}
                         required
-                        className="w-full px-3 py-2 text-sm bg-background border border-card-border rounded-lg focus:border-accent/50 focus:ring-1 focus:ring-accent/20 outline-none transition-all appearance-none"
+                        className="w-full px-3 py-2 text-sm bg-background border border-card-border rounded-lg focus:border-accent/40 focus:ring-1 focus:ring-accent/20 outline-none transition-all appearance-none"
                         style={{
                           backgroundImage: `url("data:image/svg+xml,%3Csvg width='12' height='12' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M6 9l6 6 6-6' stroke='%23666' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")`,
                           backgroundRepeat: "no-repeat",
@@ -266,7 +262,7 @@ export function AccessRequestModal({ open, onClose }: AccessRequestModalProps): 
                         value={organization}
                         onChange={(e) => setOrganization(e.target.value)}
                         placeholder="Acme Inc."
-                        className="w-full px-3 py-2 text-sm bg-background border border-card-border rounded-lg focus:border-accent/50 focus:ring-1 focus:ring-accent/20 outline-none transition-all placeholder:text-muted/40"
+                        className="w-full px-3 py-2 text-sm bg-background border border-card-border rounded-lg focus:border-accent/40 focus:ring-1 focus:ring-accent/20 outline-none transition-all placeholder:text-muted/40"
                       />
                     </div>
                   </div>
@@ -284,7 +280,7 @@ export function AccessRequestModal({ open, onClose }: AccessRequestModalProps): 
                       required
                       minLength={10}
                       rows={3}
-                      className="w-full px-3 py-2 text-sm bg-background border border-card-border rounded-lg focus:border-accent/50 focus:ring-1 focus:ring-accent/20 outline-none transition-all placeholder:text-muted/40 resize-none"
+                      className="w-full px-3 py-2 text-sm bg-background border border-card-border rounded-lg focus:border-accent/40 focus:ring-1 focus:ring-accent/20 outline-none transition-all placeholder:text-muted/40 resize-none"
                     />
                   </div>
 
@@ -307,10 +303,7 @@ export function AccessRequestModal({ open, onClose }: AccessRequestModalProps): 
                   >
                     {formState === "submitting" ? (
                       <span className="flex items-center justify-center gap-2">
-                        <svg className="animate-spin w-4 h-4" viewBox="0 0 24 24" fill="none">
-                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
-                        </svg>
+                        <Loader2 size={16} className="animate-spin" />
                         Submitting...
                       </span>
                     ) : (
@@ -318,7 +311,7 @@ export function AccessRequestModal({ open, onClose }: AccessRequestModalProps): 
                     )}
                   </button>
 
-                  <p className="text-caption text-muted/50 text-center">
+                  <p className="text-caption text-muted/60 text-center">
                     Your information is only used to process this request.
                   </p>
                 </form>

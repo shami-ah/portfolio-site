@@ -40,7 +40,7 @@ const links = [
 
 export function Contact(): React.ReactElement {
   return (
-    <section id="contact" className="relative overflow-hidden py-20 md:py-32 bg-card/30">
+    <section id="contact" className="relative overflow-hidden py-20 md:py-32 bg-card/20">
       {/* Ambient glow */}
       <div className="absolute -top-40 left-1/2 -translate-x-1/2 w-[36rem] h-[36rem] bg-accent/[0.06] rounded-full blur-3xl pointer-events-none" />
 
@@ -85,7 +85,7 @@ export function Contact(): React.ReactElement {
                 href={link.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 md:gap-2.5 px-3 md:px-4 py-2 md:py-2.5 rounded-lg bg-card border border-card-border hover:border-accent/30 hover:bg-card-hover transition-all duration-200 text-xs md:text-sm text-muted hover:text-foreground group"
+                className="inline-flex items-center gap-2 md:gap-2.5 px-3 md:px-4 py-2 md:py-2.5 rounded-lg bg-card border border-card-border hover:border-accent/20 hover:bg-card-hover transition-all duration-200 text-xs md:text-sm text-muted hover:text-foreground group"
               >
                 <span className="text-muted group-hover:text-accent transition-colors">
                   {link.icon}
@@ -112,7 +112,7 @@ export function Contact(): React.ReactElement {
               </div>
               <div className="relative shrink-0 order-1 md:order-2">
                 <div className="absolute -inset-4 bg-gradient-to-br from-accent/20 via-purple-500/10 to-transparent rounded-full blur-2xl pointer-events-none" />
-                <div className="relative w-[110px] h-[110px] md:w-[150px] md:h-[150px] rounded-2xl overflow-hidden border border-accent/25 shadow-2xl shadow-accent/15">
+                <div className="relative w-[110px] h-[110px] md:w-[150px] md:h-[150px] rounded-xl overflow-hidden border border-accent/20 shadow-2xl shadow-accent/15">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src="/ahtesham.jpg"

@@ -97,7 +97,7 @@ function SystemCard({
     >
       <div className="card-glow card-gradient-border rounded-xl bg-card border border-card-border overflow-hidden hover:border-transparent transition-all duration-300 group h-full flex flex-col">
         {/* Header row: status + name + version */}
-        <div className="flex items-center justify-between px-4 md:px-5 py-3 border-b border-card-border/50">
+        <div className="flex items-center justify-between px-4 md:px-5 py-3 border-b border-card-border/40">
           <div className="flex items-center gap-2.5">
             <span className={`flex items-center gap-1.5 text-caption font-mono ${meta.statusColor}`}>
               <span className="w-1.5 h-1.5 rounded-full bg-current animate-pulse" />
@@ -116,9 +116,9 @@ function SystemCard({
         </div>
 
         {/* Mockup — compact, fixed height, consistent */}
-        <div className="border-b border-card-border/30 p-2 md:p-3 bg-background/30">
+        <div className="border-b border-card-border/20 p-2 md:p-3 bg-background/30">
           <div className="max-h-[140px] md:max-h-[200px] overflow-hidden rounded-lg">
-            <ProjectMockup kind={mockup} className="shadow-none border-card-border/50" />
+            <ProjectMockup kind={mockup} className="shadow-none border-card-border/40" />
           </div>
         </div>
 
@@ -134,7 +134,7 @@ function SystemCard({
             {meta.metrics.map((m) => (
               <div key={m.label}>
                 <p className="text-lg md:text-xl font-bold font-mono text-foreground">{m.value}</p>
-                <p className="text-caption font-mono text-muted/50 uppercase">{m.label}</p>
+                <p className="text-caption font-mono text-muted/60 uppercase">{m.label}</p>
               </div>
             ))}
           </div>
@@ -144,7 +144,7 @@ function SystemCard({
             {project.stack.slice(0, 7).map((t) => (
               <span
                 key={t}
-                className="px-2 py-0.5 text-caption font-mono bg-accent/5 text-accent/70 rounded border border-accent/10"
+                className="px-2 py-0.5 text-caption font-mono bg-accent/5 text-accent/80 rounded border border-accent/20"
               >
                 {t}
               </span>
@@ -157,7 +157,7 @@ function SystemCard({
           </div>
 
           {/* Actions — pinned to bottom */}
-          <div className="flex items-center gap-3 pt-3 border-t border-card-border/30 mt-auto">
+          <div className="flex items-center gap-3 pt-3 border-t border-card-border/20 mt-auto">
             <button
               type="button"
               onClick={() => onOpen(project)}
@@ -212,16 +212,16 @@ function DeploymentRow({
         <span className="font-medium text-sm group-hover:text-accent transition-colors truncate">
           {project.title}
         </span>
-        <span className="px-2 py-0.5 text-caption font-mono rounded bg-card-hover text-muted/50 border border-card-border shrink-0">
+        <span className="px-2 py-0.5 text-caption font-mono rounded bg-card-hover text-muted/60 border border-card-border shrink-0">
           {project.type}
         </span>
         {project.requestAccess && (
-          <span className="text-caption font-mono text-muted/30 shrink-0">private</span>
+          <span className="text-caption font-mono text-muted/40 shrink-0">private</span>
         )}
         <span className="text-xs text-muted/40 truncate hidden sm:block flex-1 text-right">
           {project.subtitle}
         </span>
-        <span className="text-caption text-muted/30 group-hover:text-accent transition-colors font-mono shrink-0">
+        <span className="text-caption text-muted/40 group-hover:text-accent transition-colors font-mono shrink-0">
           view →
         </span>
       </button>
@@ -310,9 +310,9 @@ export function Projects(): React.ReactElement {
         </div>
 
         {/* Other deployments — compact list */}
-        <div className="pt-6 border-t border-card-border/50">
+        <div className="pt-6 border-t border-card-border/40">
           <FadeUp>
-            <p className="text-caption font-mono text-muted/50 uppercase tracking-wider mb-3 px-4">
+            <p className="text-caption font-mono text-muted/60 uppercase tracking-wider mb-3 px-4">
               Other deployments · {others.length} systems
             </p>
           </FadeUp>

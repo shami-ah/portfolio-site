@@ -203,18 +203,18 @@ export function GogaaSandbox(): React.ReactElement {
       case "info":
         return "text-foreground/80";
       case "tool":
-        return "text-muted/70";
+        return "text-muted/80";
       case "stream":
-        return "text-accent/50";
+        return "text-accent/60";
       default:
         return "text-muted";
     }
   };
 
   return (
-    <div className="rounded-xl border border-accent/25 bg-card/70 backdrop-blur-md shadow-xl shadow-accent/5 overflow-hidden">
+    <div className="rounded-xl border border-accent/20 bg-card/60 backdrop-blur-md shadow-xl shadow-accent/5 overflow-hidden">
       {/* Header */}
-      <div className="flex items-center justify-between px-3 md:px-4 py-2 border-b border-card-border bg-card/50">
+      <div className="flex items-center justify-between px-3 md:px-4 py-2 border-b border-card-border bg-card/40">
         <div className="flex items-center gap-2">
           <div className="flex gap-1.5">
             <span className="w-2.5 h-2.5 rounded-full bg-red-500/60" />
