@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Ahtesham Ahmad — Writing</title>
+    <link>https://ahtesham.dev.wadwarehouse.com</link>
+    <description>Technical writing on AI engineering, system architecture, and developer tooling.</description>
+    <language>en-us</language>
+    <atom:link href="https://ahtesham.dev.wadwarehouse.com/feed.xml" rel="self" type="application/rss+xml"/>
+    <item>
+      <title>WISC: A Context Engineering Framework for AI Agents</title>
+      <description>Write, Isolate, Select, Compress. How I reduced a 72KB always-loaded context to 11.7KB with zero capability loss.</description>
+      <category>framework</category>
+      <pubDate>Wed, 01 May 2026 00:00:00 GMT</pubDate>
+      <link>https://ahtesham.dev.wadwarehouse.com</link>
+      <guid isPermaLink="false">wisc-context-engineering-framework</guid>
+    </item>
+    <item>
+      <title>Why Your AI Code Review Misses the Bugs That Ship</title>
+      <description>The gap between style linters and real production bugs. How cross-file taint tracking catches what ESLint can't.</description>
+      <category>engineering</category>
+      <pubDate>Wed, 01 May 2026 00:00:00 GMT</pubDate>
+      <link>https://ahtesham.dev.wadwarehouse.com</link>
+      <guid isPermaLink="false">ai-code-review-misses-bugs</guid>
+    </item>
+    <item>
+      <title>Building a 5-Strategy JSON Parser for Unreliable LLM Output</title>
+      <description>Every AI agent tutorial assumes models return valid JSON. How progressive fallback parsing brought success from ~70% to ~95%.</description>
+      <category>deep dive</category>
+      <pubDate>Wed, 01 May 2026 00:00:00 GMT</pubDate>
+      <link>https://ahtesham.dev.wadwarehouse.com</link>
+      <guid isPermaLink="false">5-strategy-json-parser-llm</guid>
+    </item>
+  </channel>
+</rss>
