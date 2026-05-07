@@ -9,10 +9,13 @@ import { useStatus } from "@/lib/use-status";
 function CountUp({ to, suffix = "" }: { to: number; suffix?: string }): React.ReactElement {
   const ref = useRef<HTMLSpanElement>(null);
   const isInView = useInView(ref, { once: true });
-  const [count, setCount] = useState(0);
+  const [count, setCount] = useState(to);
+  const hasAnimated = useRef(false);
 
   useEffect(() => {
-    if (!isInView) return;
+    if (!isInView || hasAnimated.current || to === 0) return;
+    hasAnimated.current = true;
+    setCount(0);
     const duration = 1400;
     const start = Date.now();
     const tick = (): void => {
