@@ -52,7 +52,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Ahtesham Ahmad | AI Engineer",
     description:
-      "I turn business workflows into AI-powered products. 250+ projects, production SaaS with 100+ clients, open-source developer tools.",
+      "I turn business workflows into AI-powered products. 50+ production systems, production SaaS with 100+ clients, open-source developer tools.",
     type: "website",
     url: "https://ahtesham.dev.wadwarehouse.com",
     siteName: "Ahtesham Ahmad Portfolio",
@@ -70,7 +70,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Ahtesham Ahmad | AI Engineer",
     description:
-      "I turn business workflows into AI-powered products. 250+ projects, production SaaS, open-source developer tools.",
+      "I turn business workflows into AI-powered products. 50+ production systems, production SaaS, open-source developer tools.",
     images: ["/og.png"],
   },
   robots: {
@@ -86,6 +86,9 @@ export const metadata: Metadata = {
   },
   alternates: {
     canonical: "https://ahtesham.dev.wadwarehouse.com",
+    types: {
+      "application/rss+xml": "/feed.xml",
+    },
   },
 };
 
@@ -98,8 +101,19 @@ export default function RootLayout({
     <html
       lang="en"
       className={`${inter.variable} ${spaceGrotesk.variable} ${jetbrainsMono.variable} h-full antialiased dark`}
+      suppressHydrationWarning
     >
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var t=localStorage.getItem('theme');if(t==='light'){document.documentElement.classList.remove('dark');document.documentElement.classList.add('light')}}catch(e){}})()`,
+          }}
+        />
+      </head>
       <body className="min-h-full flex flex-col bg-background text-foreground">
+        <a href="#main-content" className="skip-to-content">
+          Skip to content
+        </a>
         {children}
         <ChatTrigger />
         <script

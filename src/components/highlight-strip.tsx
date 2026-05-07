@@ -27,7 +27,7 @@ function CountTo({ to, suffix = "" }: { to: number; suffix?: string }): React.Re
 
 const highlights = [
   { value: 100, suffix: "+", label: "clients live" },
-  { value: 250, suffix: "+", label: "projects shipped" },
+  { value: 50, suffix: "+", label: "production systems" },
   { value: 1418, suffix: "", label: "tests passing" },
   { value: 6, suffix: "", label: "engineers led" },
 ];

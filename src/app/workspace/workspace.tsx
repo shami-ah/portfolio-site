@@ -13,7 +13,7 @@ function StatusPanel(): React.ReactElement {
     { name: "openevent", version: `${status.openevent.clients}+ clients`, state: status.openevent.status },
     { name: "gogaa-cli", version: `v${status.gogaa.version}`, state: status.gogaa.status },
     { name: "codelens", version: `v${status.codelens.version}`, state: status.codelens.status },
-    { name: "portfolio", version: `${status.portfolio.projects}+ projects`, state: "online" },
+    { name: "portfolio", version: `${status.portfolio.productionSystems}+ systems`, state: "online" },
   ];
 
   return (

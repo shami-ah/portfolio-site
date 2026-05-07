@@ -212,7 +212,7 @@ export const kb: KbEntry[] = [
       "journey", "cv", "resume", "bio",
     ],
     response:
-      "Engineering since 2019, deep into AI since 2022. Started freelance AI projects on Upwork (250+ delivered). Director of IT & R&D at Rouelite Techno 2022-2024, where I introduced AI into operations, reducing manual work by 70%. 500+ RLHF/SFT evaluation sessions on frontier models at Outlier/RWS/Translated. Since Sep 2025: Lead AI Developer at More Life Hospitality GmbH, shipping OpenEvent to 100+ clients.",
+      "Engineering since 2019, deep into AI since 2022. 50+ production systems shipped for real businesses across 250+ total client projects on Upwork and direct clients. Director of IT & R&D at Rouelite Techno 2022-2024, where I introduced AI into operations, reducing manual work by 70%. 500+ RLHF/SFT evaluation sessions on frontier models at Outlier/RWS/Translated. Since Sep 2025: Lead AI Developer at More Life Hospitality GmbH, shipping OpenEvent to 100+ clients.",
     tags: ["background"],
   },
   {

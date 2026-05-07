@@ -20,7 +20,8 @@
     "status": "live"
   },
   "portfolio": {
-    "projects": 250,
+    "productionSystems": 50,
+    "totalProjects": 250,
     "yearsBuilding": 5
   },
   "currentlyBuilding": {

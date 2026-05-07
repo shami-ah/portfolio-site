@@ -1,118 +1,200 @@
 "use client";
 
-import { useEffect, useState, useMemo } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { useEffect, useState, useRef, useCallback } from "react";
+import { motion, useScroll, useTransform, useMotionValue, useSpring } from "framer-motion";
 import { useStatus } from "@/lib/use-status";
 
-const CONFIG_LINES = [
-  { text: "// openevent.pipeline.ts", type: "comment" as const },
-  { text: "", type: "blank" as const },
-  { text: "export const inbox = createPipeline({", type: "keyword" as const },
-  { text: '  trigger: "incoming_email",', type: "string" as const },
-  { text: "  steps: [", type: "keyword" as const },
-  { text: '    classify({ model: "gpt-4o", schema: EventIntent }),', type: "string" as const },
-  { text: '    extract(["date", "guests", "venue", "budget"]),', type: "string" as const },
-  { text: '    requireApproval({ notify: "team_lead" }),', type: "status" as const },
-  { text: "    execute([", type: "keyword" as const },
-  { text: "      bookCalendar(),", type: "string" as const },
-  { text: "      sendConfirmation(),", type: "string" as const },
-  { text: '      createInvoice({ via: "stripe" }),', type: "string" as const },
-  { text: "    ]),", type: "keyword" as const },
-  { text: "  ],", type: "keyword" as const },
-  { text: "  onError: escalateToHuman(),", type: "status" as const },
-  { text: "}) satisfies Pipeline;", type: "keyword" as const },
+/* ------------------------------------------------------------------ */
+/*  Terminal About Card — char-by-char typing + response streaming     */
+/* ------------------------------------------------------------------ */
+
+interface TermStep {
+  cmd: string;
+  output?: string;
+  type?: "identity";
+  green?: boolean;
+}
+
+const TERM_STEPS: TermStep[] = [
+  { cmd: "whoami", type: "identity" },
+  { cmd: "cat location", output: "Islamabad, PK · remote-first" },
+  { cmd: "echo $LANGUAGES", output: "EN, UR, PS, SD, AR" },
+  { cmd: "cat interests.txt", output: "Snooker, cricket, history, technology" },
+  { cmd: "cat superpower.txt", output: "Picks up anything fast" },
+  { cmd: "cat philosophy.md", output: "Build the tool when none exists", green: true },
 ];
 
-function SyntaxLine({ line, lineNum }: {
-  line: typeof CONFIG_LINES[number];
-  lineNum: number;
-}): React.ReactElement {
-  const { text, type } = line;
+function HeroAboutCard({ ready }: { ready: boolean }): React.ReactElement {
+  const ref = useRef<HTMLDivElement>(null);
 
-  // useMemo must run unconditionally (React hooks rules)
-  const colorized = useMemo(() => {
-    if (type === "blank" || type === "comment") return null;
+  // Phase machine: type command char by char → show output → next command
+  const [stepIdx, setStepIdx] = useState(0);
+  const [cmdChars, setCmdChars] = useState(0);
+  const [showOutput, setShowOutput] = useState(false);
+  const [outputChars, setOutputChars] = useState(0);
+  const [completedSteps, setCompletedSteps] = useState<TermStep[]>([]);
 
-    const tokens: { text: string; color: string }[] = [];
-    let i = 0;
+  const currentStep = TERM_STEPS[stepIdx] as TermStep | undefined;
+  const isTypingCmd = currentStep && cmdChars < currentStep.cmd.length;
+  const isStreamingOutput = currentStep && showOutput && currentStep.output && outputChars < currentStep.output.length;
+  const allDone = stepIdx >= TERM_STEPS.length;
 
-    while (i < text.length) {
-      const kwMatch = text.slice(i).match(/^(export default|export|default|satisfies|const)\b/);
-      if (kwMatch) {
-        tokens.push({ text: kwMatch[0], color: "text-accent" });
-        i += kwMatch[0].length;
-        continue;
-      }
-
-      if (text[i] === '"') {
-        const end = text.indexOf('"', i + 1);
-        if (end !== -1) {
-          tokens.push({ text: text.slice(i, end + 1), color: type === "status" ? "text-accent-status" : "text-accent-secondary" });
-          i = end + 1;
-          continue;
-        }
-      }
-
-      if ("{}[],;:".includes(text[i])) {
-        tokens.push({ text: text[i], color: "text-muted/60" });
-        i++;
-        continue;
-      }
-
-      if (text[i] === " ") {
-        tokens.push({ text: " ", color: "" });
-        i++;
-        continue;
-      }
-
-      const propNameMatch = text.slice(i).match(/^(\w+)/);
-      if (propNameMatch) {
-        tokens.push({ text: propNameMatch[0], color: "text-foreground/80" });
-        i += propNameMatch[0].length;
-        continue;
-      }
-
-      tokens.push({ text: text[i], color: "text-foreground" });
-      i++;
+  // Type command characters — starts when hero is ready
+  useEffect(() => {
+    if (!ready || !currentStep || allDone) return;
+    if (cmdChars < currentStep.cmd.length) {
+      const timer = setTimeout(() => setCmdChars((c) => c + 1), 35);
+      return () => clearTimeout(timer);
     }
+    const timer = setTimeout(() => setShowOutput(true), 200);
+    return () => clearTimeout(timer);
+  }, [ready, cmdChars, currentStep, allDone]);
 
-    return tokens.map((t, idx) => (
-      <span key={idx} className={t.color}>{t.text}</span>
-    ));
-  }, [text, type]);
+  // Stream output characters
+  useEffect(() => {
+    if (!showOutput || !currentStep) return;
+    if (currentStep.type === "identity") {
+      const timer = setTimeout(() => {
+        setCompletedSteps((prev) => [...prev, currentStep]);
+        setStepIdx((i) => i + 1);
+        setCmdChars(0);
+        setShowOutput(false);
+        setOutputChars(0);
+      }, 500);
+      return () => clearTimeout(timer);
+    }
+    if (currentStep.output && outputChars < currentStep.output.length) {
+      const timer = setTimeout(() => setOutputChars((c) => c + 1), 18);
+      return () => clearTimeout(timer);
+    }
+    const timer = setTimeout(() => {
+      setCompletedSteps((prev) => [...prev, currentStep]);
+      setStepIdx((i) => i + 1);
+      setCmdChars(0);
+      setShowOutput(false);
+      setOutputChars(0);
+    }, 300);
+    return () => clearTimeout(timer);
+  }, [showOutput, outputChars, currentStep]);
 
-  if (type === "blank") {
-    return <div className="h-[1.7em]" />;
-  }
+  // 3D tilt
+  const rx = useMotionValue(0);
+  const ry = useMotionValue(0);
+  const rotateX = useSpring(rx, { stiffness: 200, damping: 20 });
+  const rotateY = useSpring(ry, { stiffness: 200, damping: 20 });
 
-  if (type === "comment") {
-    return (
-      <div className="flex">
-        <span className="w-8 text-right mr-4 text-muted/40 select-none">{lineNum}</span>
-        <span className="text-muted/60">{text}</span>
-      </div>
-    );
-  }
+  const onMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>): void => {
+    const rect = ref.current?.getBoundingClientRect();
+    if (!rect) return;
+    ry.set(((e.clientX - rect.left) / rect.width - 0.5) * 10);
+    rx.set((0.5 - (e.clientY - rect.top) / rect.height) * 10);
+  }, [rx, ry]);
+
+  const onMouseLeave = useCallback((): void => { rx.set(0); ry.set(0); }, [rx, ry]);
 
   return (
-    <div className="flex">
-      <span className="w-8 text-right mr-4 text-muted/40 select-none">{lineNum}</span>
-      <span>{colorized}</span>
-    </div>
+    <motion.div
+      ref={ref}
+      onMouseMove={onMouseMove}
+      onMouseLeave={onMouseLeave}
+      style={{ rotateX, rotateY, transformPerspective: 900, transformStyle: "preserve-3d" }}
+      whileHover={{ scale: 1.02, boxShadow: "0 25px 50px rgba(0,0,0,0.4), 0 0 40px rgba(212,168,83,0.06)" }}
+      transition={{ duration: 0.2 }}
+      className="rounded-xl bg-card border border-card-border overflow-hidden flex flex-col shadow-2xl shadow-black/20 cursor-default"
+    >
+      {/* Chrome */}
+      <div className="flex items-center gap-2 px-3 py-2 border-b border-card-border bg-card/40">
+        <div className="flex gap-1.5">
+          <span className="w-2.5 h-2.5 rounded-full bg-red-500/60" />
+          <span className="w-2.5 h-2.5 rounded-full bg-yellow-500/60" />
+          <span className="w-2.5 h-2.5 rounded-full bg-green-500/60" />
+        </div>
+        <span className="ml-1 text-caption font-mono text-muted/60">shami ~ zsh</span>
+      </div>
+
+      {/* Photo centered at top */}
+      <div className="flex flex-col items-center pt-5 pb-3">
+        <div className="relative">
+          <div className="absolute -inset-3 bg-gradient-to-br from-accent/20 to-accent-secondary/12 rounded-full blur-xl pointer-events-none" />
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/ahtesham.jpg" alt="Ahtesham Ahmad" className="relative w-20 h-20 rounded-full object-cover border-2 border-accent/30 shadow-lg shadow-accent/10" />
+        </div>
+      </div>
+
+      {/* Terminal body */}
+      <div className="px-4 pb-3 font-mono text-small leading-[1.9] flex-1 overflow-hidden">
+        {completedSteps.map((step) => (
+          <div key={step.cmd} className="mb-1">
+            <div><span className="text-accent">❯</span> <span className="text-foreground/80">{step.cmd}</span></div>
+            {step.type === "identity" ? (
+              <div className="pl-3 py-0.5">
+                <span className="text-foreground font-bold font-sans text-xs">Ahtesham Ahmad</span>
+                <span className="text-accent/60 ml-2 text-caption">AI Engineer</span>
+              </div>
+            ) : (
+              <div className={`pl-3 ${step.green ? "text-accent-status/70" : "text-foreground/60"}`}>
+                {step.output}
+              </div>
+            )}
+          </div>
+        ))}
+
+        {currentStep && !allDone && (
+          <div className="mb-1">
+            <div>
+              <span className="text-accent">❯</span>{" "}
+              <span className="text-foreground/80">{currentStep.cmd.slice(0, cmdChars)}</span>
+              {isTypingCmd && <span className="inline-block w-[6px] h-[12px] bg-accent/80 ml-px translate-y-[2px] animate-pulse" />}
+            </div>
+            {showOutput && currentStep.type === "identity" && (
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="pl-3 py-0.5">
+                <span className="text-foreground font-bold font-sans text-xs">Ahtesham Ahmad</span>
+                <span className="text-accent/60 ml-2 text-caption">AI Engineer</span>
+              </motion.div>
+            )}
+            {showOutput && currentStep.output && currentStep.type !== "identity" && (
+              <div className={`pl-3 ${currentStep.green ? "text-accent-status/70" : "text-foreground/60"}`}>
+                {currentStep.output.slice(0, outputChars)}
+                {isStreamingOutput && <span className="inline-block w-[5px] h-[10px] bg-foreground/30 ml-px translate-y-[1px] animate-pulse" />}
+              </div>
+            )}
+          </div>
+        )}
+
+        {allDone && (
+          <div>
+            <span className="text-accent">❯</span>{" "}
+            <span className="inline-block w-[6px] h-[12px] bg-accent/60 translate-y-[2px] animate-pulse" />
+          </div>
+        )}
+      </div>
+
+      {/* Status bar */}
+      <div className="px-3 py-1.5 border-t border-card-border/40 flex items-center justify-between bg-card/20">
+        <div className="flex items-center gap-2 text-caption font-mono">
+          <span className="w-1.5 h-1.5 rounded-full bg-accent-status animate-pulse" />
+          <span className="text-accent-status/70">available for hire</span>
+        </div>
+        <a href="/uses" className="text-caption font-mono text-muted/40 hover:text-accent transition-colors">setup &rarr;</a>
+      </div>
+    </motion.div>
   );
 }
+
+/* ------------------------------------------------------------------ */
+/*  Hero Section                                                       */
+/* ------------------------------------------------------------------ */
 
 export function ConfigHero(): React.ReactElement {
   const { status } = useStatus();
   const [ready, setReady] = useState(false);
-  const [visibleLines, setVisibleLines] = useState(0);
 
   const { scrollY } = useScroll();
   const orbY1 = useTransform(scrollY, [0, 800], [0, 120]);
   const orbY2 = useTransform(scrollY, [0, 800], [0, -80]);
   const orbOpacity = useTransform(scrollY, [0, 600], [1, 0.3]);
-  const codeY = useTransform(scrollY, [0, 600], [0, -40]);
-  const codeScale = useTransform(scrollY, [0, 600], [1, 0.97]);
+  const cardY = useTransform(scrollY, [0, 600], [0, -40]);
+  const cardScale = useTransform(scrollY, [0, 600], [1, 0.97]);
 
   // Wait for boot-complete
   useEffect(() => {
@@ -130,17 +212,6 @@ export function ConfigHero(): React.ReactElement {
       clearTimeout(fallback);
     };
   }, []);
-
-  // Type out lines one by one
-  useEffect(() => {
-    if (!ready) return;
-    if (visibleLines >= CONFIG_LINES.length) return;
-    const timer = setTimeout(
-      () => setVisibleLines((n) => n + 1),
-      visibleLines === 0 ? 400 : 55,
-    );
-    return () => clearTimeout(timer);
-  }, [ready, visibleLines]);
 
   return (
     <section
@@ -164,7 +235,6 @@ export function ConfigHero(): React.ReactElement {
 
           {/* Left: tagline + CTA */}
           <div className="text-center md:text-left">
-            {/* System badge */}
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={ready ? { opacity: 1, scale: 1 } : {}}
@@ -175,7 +245,6 @@ export function ConfigHero(): React.ReactElement {
               Open to opportunities
             </motion.div>
 
-            {/* Tagline */}
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
               animate={ready ? { opacity: 1, y: 0 } : {}}
@@ -197,7 +266,6 @@ export function ConfigHero(): React.ReactElement {
               AI-powered SaaS. I design the architecture, build the product, and own the delivery.
             </motion.p>
 
-            {/* CTAs */}
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={ready ? { opacity: 1, y: 0 } : {}}
@@ -212,7 +280,6 @@ export function ConfigHero(): React.ReactElement {
               </a>
             </motion.div>
 
-            {/* Currently building */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={ready ? { opacity: 1 } : {}}
@@ -229,45 +296,14 @@ export function ConfigHero(): React.ReactElement {
             </motion.div>
           </div>
 
-          {/* Right: code editor — floats with parallax depth */}
+          {/* Right: about card with parallax */}
           <motion.div
             initial={{ opacity: 0, y: 30, scale: 0.97 }}
             animate={ready ? { opacity: 1, y: 0, scale: 1 } : {}}
             transition={{ duration: 0.7, delay: 0.6, ease: [0.22, 1, 0.36, 1] }}
-            style={{ y: codeY, scale: codeScale }}
+            style={{ y: cardY, scale: cardScale }}
           >
-            <div className="rounded-xl border border-card-border bg-card/80 backdrop-blur-sm overflow-hidden shadow-2xl shadow-black/30">
-              {/* Window chrome */}
-              <div className="flex items-center gap-2 px-4 py-3 border-b border-card-border bg-card/40">
-                <div className="flex gap-1.5">
-                  <span className="w-3 h-3 rounded-full bg-red-500/70" />
-                  <span className="w-3 h-3 rounded-full bg-yellow-500/70" />
-                  <span className="w-3 h-3 rounded-full bg-green-500/70" />
-                </div>
-                <span className="ml-2 text-xs font-mono text-muted/60">openevent.pipeline.ts</span>
-              </div>
-
-              {/* Code content */}
-              <div className="p-4 md:p-5 font-mono text-small md:text-body leading-[1.7] overflow-x-auto">
-                {CONFIG_LINES.slice(0, visibleLines).map((line, i) => (
-                  <motion.div
-                    key={i}
-                    initial={{ opacity: 0, x: -8 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.15, ease: "easeOut" }}
-                  >
-                    <SyntaxLine line={line} lineNum={i + 1} />
-                  </motion.div>
-                ))}
-                {/* Blinking cursor */}
-                {visibleLines < CONFIG_LINES.length && (
-                  <div className="flex">
-                    <span className="w-8 text-right mr-4 text-muted/40 select-none">{visibleLines + 1}</span>
-                    <span className="w-2 h-[1.1em] bg-accent animate-pulse" />
-                  </div>
-                )}
-              </div>
-            </div>
+            <HeroAboutCard ready={ready} />
           </motion.div>
 
         </div>

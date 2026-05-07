@@ -45,8 +45,8 @@ Tools: Gogaa CLI, CodeLens, Rasad`,
 
 Other work:
   ▸ Command Center, RAG Pipeline, VQA Agent, Dev Environment
-  ▸ 250+ production projects globally
-  ▸ 40+ long-term client relationships`,
+  ▸ 50+ production systems for real businesses
+  ▸ 40+ long-term clients across 250+ total projects`,
 
   status: `SYSTEM STATUS — all services operational
 

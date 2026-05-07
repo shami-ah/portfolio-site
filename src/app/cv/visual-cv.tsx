@@ -233,7 +233,7 @@ export function VisualCV(): React.ReactElement {
             transition={{ duration: 0.5 }}
           >
             {[
-              { n: 250, s: "+", l: "Projects Delivered" },
+              { n: 50, s: "+", l: "Production Systems" },
               { n: 5, s: "+", l: "Years Experience" },
               { n: 100, s: "%", l: "Client Satisfaction" },
               { n: 1418, s: "", l: "Gogaa Tests Passing" },
@@ -275,8 +275,8 @@ export function VisualCV(): React.ReactElement {
                   "Evaluated model reasoning, code generation, and instruction-following quality",
                 ]} />
                 <TimelineRole title="Freelance AI & Full-Stack Engineer" company="Upwork · Fiverr · Direct Clients" period="2019 – Present" location="Remote · Global" items={[
-                  "250+ projects delivered: web apps, dashboards, AI integrations, automation",
-                  "40+ long-term client relationships, 100% job success rate on Upwork",
+                  "50+ production systems shipped: SaaS products, AI pipelines, dashboards, automation",
+                  "40+ long-term clients across 250+ total projects, 100% job success rate on Upwork",
                 ]} />
                 <TimelineRole title="Co-Founder & AI Engineer" company="Wadware House" period="2023 – Present" location="Remote" items={[
                   "Co-founded AI automation agency for scoped client engagements",
@@ -435,7 +435,7 @@ export function VisualCV(): React.ReactElement {
           {/* Stats */}
           <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "10px", marginBottom: "7px" }}>
             {[
-              { n: "250+", l: "Projects Delivered" },
+              { n: "50+", l: "Production Systems" },
               { n: "5+", l: "Years Experience" },
               { n: "100%", l: "Client Satisfaction" },
               { n: "1418", l: "Gogaa Tests Passing", amber: true },
@@ -478,8 +478,8 @@ export function VisualCV(): React.ReactElement {
                   "Evaluated model reasoning, code generation, and instruction-following quality",
                 ]},
                 { title: "Freelance AI & Full-Stack Engineer", company: "Upwork · Fiverr · Direct Clients", location: "Remote · Global", period: "2019 – Present", items: [
-                  "250+ projects delivered: web apps, dashboards, AI integrations, automation",
-                  "40+ long-term client relationships, 100% job success rate on Upwork",
+                  "50+ production systems shipped: SaaS products, AI pipelines, dashboards, automation",
+                  "40+ long-term clients across 250+ total projects, 100% job success rate on Upwork",
                 ]},
                 { title: "Co-Founder & AI Engineer", company: "Wadware House", location: "Remote", period: "2023 – Present", items: [
                   "Co-founded AI automation agency for scoped client engagements",

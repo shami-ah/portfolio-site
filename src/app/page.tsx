@@ -19,7 +19,7 @@ export default function Home(): React.ReactElement {
       <TopBar />
       <SidebarNav />
       <CursorGlow />
-      <div className="relative z-10">
+      <div className="relative z-10 lg:pl-24">
         <ConfigHero />
         <SectionDivider />
         <MissionStats />

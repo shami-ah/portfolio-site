@@ -42,8 +42,8 @@ const getRoles = (oe: { clients: number; events: number; hoursSavedPerDay: numbe
     company: "Wadware House · Global Clients",
     period: "2019 \u2013 Present",
     points: [
-      "250+ production projects globally: RAG systems, AI workflows, automation, analytics dashboards",
-      "40+ long-term client relationships, 100% satisfaction rate",
+      "50+ production systems for real businesses: RAG pipelines, AI workflows, SaaS products, analytics dashboards",
+      "40+ long-term client relationships across 250+ total projects, 100% satisfaction rate",
       "500+ RLHF/SFT evaluation sessions on frontier models (Outlier, RWS, Translated)",
       "Wadware House: AI automation agency for businesses needing scoped project engagements",
     ],
