@@ -97,54 +97,54 @@ export function MissionStats(): React.ReactElement {
             </FadeUp>
           </div>
 
-          {/* Right 30% — about card, stretches full height of mission */}
+          {/* Right 30% — terminal-style about card */}
           <FadeUp delay={0.1} className="h-full">
-            <div className="card-glow rounded-xl bg-card border border-card-border p-5 h-full flex flex-col justify-between">
-              {/* Photo + name */}
-              <div>
-                <div className="flex flex-col items-center mb-5">
-                  <div className="relative mb-3">
-                    <div className="absolute -inset-2 bg-gradient-to-br from-accent/15 to-accent-secondary/10 rounded-full blur-xl pointer-events-none" />
+            <div className="rounded-xl bg-card border border-card-border overflow-hidden h-full flex flex-col shadow-2xl shadow-black/20">
+              {/* Terminal chrome */}
+              <div className="flex items-center gap-2 px-3 py-2 border-b border-card-border bg-card/50">
+                <div className="flex gap-1.5">
+                  <span className="w-2.5 h-2.5 rounded-full bg-red-500/60" />
+                  <span className="w-2.5 h-2.5 rounded-full bg-yellow-500/60" />
+                  <span className="w-2.5 h-2.5 rounded-full bg-green-500/60" />
+                </div>
+                <span className="ml-1 text-[10px] font-mono text-muted/50">shami ~ whoami</span>
+              </div>
+
+              {/* Terminal body */}
+              <div className="p-4 font-mono text-[11px] leading-[1.9] flex-1">
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="relative">
+                    <div className="absolute -inset-1 bg-accent/10 rounded-full blur-md pointer-events-none" />
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
                       src="/ahtesham.jpg"
                       alt="Ahtesham Ahmad"
-                      className="relative w-16 h-16 rounded-full object-cover border border-accent/20"
+                      className="relative w-10 h-10 rounded-full object-cover border border-accent/20"
                     />
                   </div>
-                  <p className="font-semibold text-foreground">Ahtesham Ahmad</p>
-                  <p className="text-[10px] text-accent/70 font-mono">open to opportunities</p>
-                </div>
-
-                {/* Quick facts */}
-                <div className="space-y-2.5 text-[11px] text-muted leading-relaxed">
-                  <div className="flex items-start gap-2">
-                    <span className="text-accent/50 mt-px shrink-0">&#9654;</span>
-                    <span>Islamabad, PK &middot; work globally, remote-first</span>
-                  </div>
-                  <div className="flex items-start gap-2">
-                    <span className="text-accent/50 mt-px shrink-0">&#9654;</span>
-                    <span>Picks up anything fast. React Ink, Docker, Stripe in days</span>
-                  </div>
-                  <div className="flex items-start gap-2">
-                    <span className="text-accent/50 mt-px shrink-0">&#9654;</span>
-                    <span>Five languages: EN, UR, PS, SD, AR</span>
-                  </div>
-                  <div className="flex items-start gap-2">
-                    <span className="text-accent/50 mt-px shrink-0">&#9654;</span>
-                    <span>Built tools when nothing else did the job</span>
+                  <div>
+                    <p className="text-foreground font-semibold text-xs font-sans">Ahtesham Ahmad</p>
+                    <p className="text-accent/60 text-[9px]">AI Engineer</p>
                   </div>
                 </div>
+                <div><span className="text-accent">$</span> <span className="text-muted/50">location</span></div>
+                <div className="text-foreground/70 pl-3">Islamabad, PK · remote-first</div>
+                <div><span className="text-accent">$</span> <span className="text-muted/50">languages</span></div>
+                <div className="text-foreground/70 pl-3">EN, UR, PS, SD, AR</div>
+                <div><span className="text-accent">$</span> <span className="text-muted/50">superpower</span></div>
+                <div className="text-foreground/70 pl-3">Picks up anything fast</div>
+                <div><span className="text-accent">$</span> <span className="text-muted/50">philosophy</span></div>
+                <div className="text-accent-status/70 pl-3">Build the tool when none exists</div>
               </div>
 
-              {/* Bottom */}
-              <div className="mt-5 pt-3 border-t border-card-border/50 flex items-center justify-between">
-                <div className="flex items-center gap-2 text-[10px] font-mono">
+              {/* Status bar */}
+              <div className="px-3 py-2 border-t border-card-border/50 flex items-center justify-between bg-card/30">
+                <div className="flex items-center gap-2 text-[9px] font-mono">
                   <span className="w-1.5 h-1.5 rounded-full bg-accent-status animate-pulse" />
-                  <span className="text-accent-status/80">available for hire</span>
+                  <span className="text-accent-status/70">available</span>
                 </div>
-                <a href="/uses" className="text-[10px] font-mono text-muted/40 hover:text-accent transition-colors">
-                  my setup &rarr;
+                <a href="/uses" className="text-[9px] font-mono text-muted/30 hover:text-accent transition-colors">
+                  setup &rarr;
                 </a>
               </div>
             </div>

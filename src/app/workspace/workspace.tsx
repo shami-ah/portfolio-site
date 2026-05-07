@@ -74,72 +74,151 @@ export function Workspace(): React.ReactElement {
     return () => clearInterval(interval);
   }, []);
 
+  const [activeTab, setActiveTab] = useState<"terminal" | "neural-map">("terminal");
+
+  const sidebarFiles = [
+    { name: "terminal.sh", icon: "text-accent-status", active: activeTab === "terminal" },
+    { name: "neural-map.tsx", icon: "text-accent-secondary", active: activeTab === "neural-map" },
+  ];
+
   return (
     <div className="h-screen flex flex-col bg-background overflow-hidden">
-      {/* Header bar */}
-      <header className="flex items-center justify-between px-4 md:px-6 py-3 border-b border-card-border bg-card/50 shrink-0">
+      {/* IDE Title bar */}
+      <header className="flex items-center justify-between px-4 py-2 border-b border-card-border bg-card/60 shrink-0">
         <div className="flex items-center gap-3">
-          <span className="font-mono text-sm">
-            <span className="text-accent">&gt;</span>{" "}
-            <span className="text-foreground font-semibold">workspace</span>
-            <span className="text-muted/50">.shami</span>
+          <div className="flex gap-1.5">
+            <span className="w-3 h-3 rounded-full bg-red-500/60" />
+            <span className="w-3 h-3 rounded-full bg-yellow-500/60" />
+            <span className="w-3 h-3 rounded-full bg-green-500/60" />
+          </div>
+          <span className="font-mono text-xs text-muted/50 ml-2">
+            workspace.shami
           </span>
         </div>
         <div className="flex items-center gap-4">
-          <span className="text-[11px] font-mono text-muted/50">{time}</span>
+          <span className="text-[10px] font-mono text-muted/40">{time}</span>
           <a
             href="/"
-            className="text-[11px] font-mono text-accent hover:text-accent/80 transition-colors"
+            className="text-[10px] font-mono text-accent/60 hover:text-accent transition-colors"
           >
-            &gt; back to command center
+            ← back
           </a>
         </div>
       </header>
 
-      {/* Panel grid */}
-      <div className="flex-1 grid grid-cols-1 md:grid-cols-[1fr_1fr] grid-rows-[1fr_1fr] gap-px bg-card-border/30 overflow-hidden">
-
-        {/* Terminal — top left, spans full height on desktop */}
-        <div className="md:row-span-2 p-2">
-          <WorkspaceTerminal />
-        </div>
-
-        {/* Neural Map — top right */}
-        <div className="p-2 hidden md:block">
-          <div className="h-full rounded-xl border border-card-border bg-card/30 overflow-hidden flex flex-col">
-            <div className="flex items-center justify-between px-4 py-2.5 border-b border-card-border bg-card/50 shrink-0">
-              <span className="text-[10px] font-mono text-muted/60">neural map — skills</span>
-              <span className="text-[10px] font-mono text-muted/30">hover to explore</span>
-            </div>
-            <div className="flex-1 relative">
-              <NeuralMap />
-            </div>
+      <div className="flex-1 flex overflow-hidden">
+        {/* IDE Sidebar — file explorer */}
+        <div className="w-[180px] border-r border-card-border bg-card/30 shrink-0 hidden md:flex flex-col">
+          <div className="px-3 py-2 border-b border-card-border/50">
+            <span className="text-[9px] font-mono text-muted/40 uppercase tracking-widest">Explorer</span>
           </div>
-        </div>
-
-        {/* Bottom right — split between activity feed and status */}
-        <div className="p-2 hidden md:grid grid-cols-[1.2fr_0.8fr] gap-2">
-          {/* Activity Feed */}
-          <div className="rounded-xl border border-card-border bg-card/30 overflow-hidden flex flex-col">
-            <div className="px-4 py-2.5 border-b border-card-border bg-card/50 shrink-0">
-              <span className="text-[10px] font-mono text-muted/60">activity feed</span>
+          <div className="px-1 py-1">
+            <div className="flex items-center gap-1.5 px-2 py-1 text-[11px] font-mono text-muted/50">
+              <span className="text-accent/40 text-[9px]">&#9662;</span> workspace/
             </div>
-            <div className="flex-1 p-3 overflow-hidden">
-              <ActivityFeed />
+            {sidebarFiles.map((f) => (
+              <button
+                key={f.name}
+                type="button"
+                onClick={() => setActiveTab(f.name === "terminal.sh" ? "terminal" : "neural-map")}
+                className={`w-full flex items-center gap-1.5 px-2 py-1 pl-5 text-[11px] font-mono rounded transition-all text-left ${
+                  f.active
+                    ? "bg-accent/8 text-accent border-r-2 border-accent"
+                    : "text-muted/50 hover:bg-card-hover hover:text-muted/80"
+                }`}
+              >
+                <span className={`text-[8px] ${f.icon}`}>&#9670;</span>
+                {f.name}
+              </button>
+            ))}
+            <div className="flex items-center gap-1.5 px-2 py-1 text-[11px] font-mono text-muted/30">
+              <span className="text-accent/20 text-[9px]">&#9656;</span> .config/
             </div>
           </div>
 
-          {/* Status */}
-          <div className="rounded-xl border border-card-border bg-card/30 overflow-hidden flex flex-col">
-            <div className="px-4 py-2.5 border-b border-card-border bg-card/50 shrink-0">
-              <span className="text-[10px] font-mono text-muted/60">system status</span>
-            </div>
-            <div className="flex-1 p-3">
-              <StatusPanel />
-            </div>
+          {/* Sidebar bottom — status */}
+          <div className="mt-auto border-t border-card-border/50 p-3">
+            <div className="text-[9px] font-mono text-muted/30 uppercase tracking-widest mb-2">Status</div>
+            <StatusPanel />
           </div>
         </div>
 
+        {/* Main editor area */}
+        <div className="flex-1 flex flex-col overflow-hidden">
+          {/* Tabs */}
+          <div className="flex border-b border-card-border bg-card/20 shrink-0">
+            <button
+              type="button"
+              onClick={() => setActiveTab("terminal")}
+              className={`flex items-center gap-1.5 px-4 py-2 text-[11px] font-mono border-r border-card-border/50 transition-colors ${
+                activeTab === "terminal"
+                  ? "bg-background text-foreground/80 border-b-2 border-b-accent -mb-px"
+                  : "text-muted/40 hover:text-muted/60"
+              }`}
+            >
+              <span className="text-accent-status text-[8px]">&#9670;</span>
+              terminal.sh
+            </button>
+            <button
+              type="button"
+              onClick={() => setActiveTab("neural-map")}
+              className={`flex items-center gap-1.5 px-4 py-2 text-[11px] font-mono border-r border-card-border/50 transition-colors ${
+                activeTab === "neural-map"
+                  ? "bg-background text-foreground/80 border-b-2 border-b-accent -mb-px"
+                  : "text-muted/40 hover:text-muted/60"
+              }`}
+            >
+              <span className="text-accent-secondary text-[8px]">&#9670;</span>
+              neural-map.tsx
+            </button>
+          </div>
+
+          {/* Editor content — panels */}
+          <div className="flex-1 overflow-hidden">
+            {activeTab === "terminal" ? (
+              <div className="h-full grid grid-cols-1 md:grid-cols-[1fr_0.6fr] gap-px bg-card-border/20">
+                <div className="p-2">
+                  <WorkspaceTerminal />
+                </div>
+                <div className="p-2 hidden md:flex flex-col gap-2">
+                  <div className="flex-1 rounded-lg border border-card-border bg-card/30 overflow-hidden flex flex-col">
+                    <div className="px-3 py-2 border-b border-card-border/50 bg-card/40 shrink-0">
+                      <span className="text-[9px] font-mono text-muted/40">activity feed</span>
+                    </div>
+                    <div className="flex-1 p-3 overflow-hidden">
+                      <ActivityFeed />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <div className="h-full flex flex-col">
+                <div className="flex items-center justify-between px-4 py-2 border-b border-card-border/30 bg-card/20 shrink-0">
+                  <span className="text-[10px] font-mono text-muted/50">neural map: hover nodes to explore connections</span>
+                </div>
+                <div className="flex-1 relative">
+                  <NeuralMap />
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Status bar */}
+          <div className="flex items-center justify-between px-3 py-1 border-t border-card-border bg-card/40 shrink-0 text-[9px] font-mono text-muted/35">
+            <div className="flex items-center gap-4">
+              <span className="flex items-center gap-1.5">
+                <span className="w-1 h-1 rounded-full bg-accent-status" />
+                main
+              </span>
+              <span>UTF-8</span>
+              <span>{activeTab === "terminal" ? "Shell" : "TypeScript React"}</span>
+            </div>
+            <div className="flex items-center gap-4">
+              <span>workspace v1.0</span>
+              <span>Ln 1, Col 1</span>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
