@@ -29,12 +29,25 @@ export function TerminalBoot({ force = false, onDone }: BootProps): React.ReactE
 
   const introText = "$ shami init --mode=command-center";
 
+  // Classify visitor based on referrer
+  const [visitorClass, setVisitorClass] = useState({ referrer: "direct", intent: "curious_explorer", persona: "explorer" });
+  useEffect(() => {
+    if (typeof document === "undefined") return;
+    const ref = document.referrer;
+    if (ref.includes("linkedin")) setVisitorClass({ referrer: "linkedin.com", intent: "likely_hiring", persona: "decision_maker" });
+    else if (ref.includes("github")) setVisitorClass({ referrer: "github.com", intent: "likely_developer", persona: "technical_evaluator" });
+    else if (ref.includes("upwork")) setVisitorClass({ referrer: "upwork.com", intent: "potential_client", persona: "buyer" });
+    else if (ref.includes("google")) setVisitorClass({ referrer: "google.com", intent: "researcher", persona: "explorer" });
+    else if (ref.includes("twitter") || ref.includes("x.com")) setVisitorClass({ referrer: "x.com", intent: "social_referral", persona: "curious_visitor" });
+  }, []);
+
   const checks: Check[] = [
-    { label: "loading projects", detail: `${status.portfolio.projects}+ delivered` },
-    { label: `${status.gogaa.tests.toLocaleString()} tests passing`, detail: `gogaa v${status.gogaa.version}` },
-    { label: `~${status.codelens.patterns} patterns loaded`, detail: `codelens v${status.codelens.version}` },
+    { label: "detecting visitor", detail: "scanning" },
+    { label: `referrer: ${visitorClass.referrer}`, detail: "classified" },
+    { label: `intent: ${visitorClass.intent}`, detail: `conf 0.87` },
+    { label: `optimizing for: ${visitorClass.persona}`, detail: "layout ready" },
     { label: `${status.openevent.clients}+ clients live`, detail: "openevent" },
-    { label: "ready", detail: "command center online" },
+    { label: "ready", detail: "personalized for you" },
   ];
 
   // Short beep on type

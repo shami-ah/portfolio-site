@@ -111,30 +111,43 @@ export function MissionStats(): React.ReactElement {
               </div>
 
               {/* Terminal body */}
-              <div className="p-4 font-mono text-[11px] leading-[1.9] flex-1">
-                <div className="flex items-center gap-3 mb-3">
-                  <div className="relative">
-                    <div className="absolute -inset-1 bg-accent/10 rounded-full blur-md pointer-events-none" />
+              <div className="p-4 font-mono text-[11px] leading-[1.8] flex-1">
+                {/* Command */}
+                <div className="mb-3">
+                  <span className="text-accent">❯</span> <span className="text-foreground/90">whoami</span>
+                </div>
+
+                {/* Output: identity card */}
+                <div className="flex items-center gap-3 mb-4 pl-1">
+                  <div className="relative shrink-0">
+                    <div className="absolute -inset-1.5 bg-gradient-to-br from-accent/15 to-accent-secondary/10 rounded-full blur-lg pointer-events-none" />
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
                       src="/ahtesham.jpg"
                       alt="Ahtesham Ahmad"
-                      className="relative w-10 h-10 rounded-full object-cover border border-accent/20"
+                      className="relative w-12 h-12 rounded-full object-cover border border-accent/25"
                     />
                   </div>
                   <div>
-                    <p className="text-foreground font-semibold text-xs font-sans">Ahtesham Ahmad</p>
-                    <p className="text-accent/60 text-[9px]">AI Engineer</p>
+                    <p className="text-foreground font-bold text-sm font-sans">Ahtesham Ahmad</p>
+                    <p className="text-accent text-[10px]">AI Engineer</p>
                   </div>
                 </div>
-                <div><span className="text-accent">$</span> <span className="text-muted/50">location</span></div>
-                <div className="text-foreground/70 pl-3">Islamabad, PK · remote-first</div>
-                <div><span className="text-accent">$</span> <span className="text-muted/50">languages</span></div>
-                <div className="text-foreground/70 pl-3">EN, UR, PS, SD, AR</div>
-                <div><span className="text-accent">$</span> <span className="text-muted/50">superpower</span></div>
-                <div className="text-foreground/70 pl-3">Picks up anything fast</div>
-                <div><span className="text-accent">$</span> <span className="text-muted/50">philosophy</span></div>
-                <div className="text-accent-status/70 pl-3">Build the tool when none exists</div>
+
+                {/* More commands */}
+                <div className="space-y-0.5 text-[10.5px]">
+                  <div><span className="text-accent">❯</span> <span className="text-muted/40">cat location</span></div>
+                  <div className="text-foreground/70 pl-4 pb-1">Islamabad, PK · remote-first</div>
+
+                  <div><span className="text-accent">❯</span> <span className="text-muted/40">echo $LANGUAGES</span></div>
+                  <div className="text-foreground/70 pl-4 pb-1">EN, UR, PS, SD, AR</div>
+
+                  <div><span className="text-accent">❯</span> <span className="text-muted/40">cat superpower.txt</span></div>
+                  <div className="text-foreground/70 pl-4 pb-1">Picks up anything fast</div>
+
+                  <div><span className="text-accent">❯</span> <span className="text-muted/40">cat philosophy.md</span></div>
+                  <div className="text-accent-status/70 pl-4">Build the tool when none exists</div>
+                </div>
               </div>
 
               {/* Status bar */}

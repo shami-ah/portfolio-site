@@ -1,29 +1,47 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import { motion } from "framer-motion";
 
-const sections = [
-  { id: "hero", label: "home", icon: "⌂" },
-  { id: "mission", label: "mission", icon: "◎" },
-  { id: "projects", label: "projects", icon: "◫" },
-  { id: "log", label: "log", icon: "⎋" },
-  { id: "contact", label: "contact", icon: "✉" },
+const pipelineSteps = [
+  { id: "hero", label: "init", icon: "○" },
+  { id: "mission", label: "assess_fit", icon: "○" },
+  { id: "projects", label: "review_systems", icon: "○" },
+  { id: "log", label: "verify_track_record", icon: "○" },
+  { id: "contact", label: "decide", icon: "○" },
 ] as const;
 
 export function SidebarNav(): React.ReactElement {
   const [active, setActive] = useState("hero");
   const [modalOpen, setModalOpen] = useState(false);
+  // Track real time spent on each section in seconds
+  const [sectionTimes, setSectionTimes] = useState<Record<string, number>>({});
+  const activeRef = useRef("hero");
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   const updateActive = useCallback(() => {
     const scrollY = window.scrollY + window.innerHeight * 0.35;
-    let current: string = sections[0].id;
-    for (const { id } of sections) {
+    let current: string = pipelineSteps[0].id;
+    for (const { id } of pipelineSteps) {
       const el = document.getElementById(id);
       if (!el) continue;
       if (el.offsetTop <= scrollY) current = id;
     }
     setActive(current);
+    activeRef.current = current;
+  }, []);
+
+  // Section time tracker — counts real seconds
+  useEffect(() => {
+    timerRef.current = setInterval(() => {
+      setSectionTimes((prev) => ({
+        ...prev,
+        [activeRef.current]: (prev[activeRef.current] ?? 0) + 0.1,
+      }));
+    }, 100);
+    return () => {
+      if (timerRef.current) clearInterval(timerRef.current);
+    };
   }, []);
 
   useEffect(() => {
@@ -51,6 +69,8 @@ export function SidebarNav(): React.ReactElement {
     if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
+  const activeIdx = pipelineSteps.findIndex((s) => s.id === active);
+
   return (
     <motion.nav
       initial={{ opacity: 0, x: -12 }}
@@ -60,39 +80,65 @@ export function SidebarNav(): React.ReactElement {
         pointerEvents: modalOpen ? "none" as const : "auto" as const,
       }}
       transition={{ duration: 0.4, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
-      aria-label="Section navigation"
-      className="fixed left-3 top-1/2 -translate-y-1/2 z-40 hidden md:flex flex-col gap-1.5"
+      aria-label="Pipeline navigation"
+      className="fixed left-3 top-1/2 -translate-y-1/2 z-40 hidden md:flex flex-col gap-0 font-mono"
     >
-      {sections.map(({ id, label, icon }) => {
-        const isActive = active === id;
+      {pipelineSteps.map(({ id, label }, i) => {
+        const isDone = i < activeIdx;
+        const isActive = i === activeIdx;
+        const isPending = i > activeIdx;
+        const timeSpent = sectionTimes[id] ?? 0;
+        const timeStr = timeSpent >= 1 ? `${timeSpent.toFixed(1)}s` : timeSpent > 0 ? `${(timeSpent * 1000).toFixed(0)}ms` : "";
+
         return (
-          <button
-            key={id}
-            type="button"
-            onClick={() => scrollTo(id)}
-            title={label}
-            className={`group relative flex items-center justify-center w-8 h-8 rounded-md transition-all duration-200 ${
-              isActive
-                ? "bg-accent/15 text-accent"
-                : "text-muted/30 hover:text-muted/70 hover:bg-card/50"
-            }`}
-          >
-            {/* Active side indicator */}
-            <span
-              className={`absolute left-0 top-1/2 -translate-y-1/2 w-[2px] rounded-full transition-all duration-300 ${
-                isActive
-                  ? "h-4 bg-accent shadow-[0_0_6px_rgba(212,168,83,0.5)]"
-                  : "h-0 bg-transparent"
+          <div key={id}>
+            <button
+              type="button"
+              onClick={() => scrollTo(id)}
+              className={`group relative flex items-center gap-[6px] px-2 py-[5px] rounded-md transition-all duration-300 w-full text-left ${
+                isActive ? "bg-accent/8" : isDone ? "" : ""
               }`}
-            />
+            >
+              {/* Active glow bar */}
+              {isActive && (
+                <span className="absolute left-0 top-1/2 -translate-y-1/2 w-[2px] h-3 rounded-full bg-accent shadow-[0_0_6px_rgba(212,168,83,0.5)]" />
+              )}
 
-            <span className="text-sm leading-none">{icon}</span>
+              {/* Icon */}
+              <span className={`text-[11px] shrink-0 ${
+                isDone ? "text-accent-status" :
+                isActive ? "text-accent" :
+                "text-muted/20"
+              }`}>
+                {isDone ? "✓" : isActive ? "▸" : "○"}
+              </span>
 
-            {/* Tooltip on hover */}
-            <span className="absolute left-full ml-2 px-2 py-1 rounded-md bg-card/95 backdrop-blur-md border border-card-border text-[11px] font-mono text-foreground whitespace-nowrap opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity duration-150 shadow-lg">
-              <span className="text-accent/60">&gt; </span>{label}
-            </span>
-          </button>
+              {/* Label */}
+              <span className={`text-[10px] transition-colors ${
+                isDone ? "text-foreground/60" :
+                isActive ? "text-accent" :
+                "text-muted/25"
+              }`}>
+                {label}
+              </span>
+
+              {/* Time */}
+              {(isDone || isActive) && timeStr && (
+                <span className={`text-[9px] ml-auto tabular-nums ${
+                  isDone ? "text-accent-status/40" : "text-accent/40"
+                }`}>
+                  {timeStr}
+                </span>
+              )}
+            </button>
+
+            {/* Connector line */}
+            {i < pipelineSteps.length - 1 && (
+              <div className={`w-px h-[6px] ml-[14px] transition-colors duration-300 ${
+                isDone ? "bg-accent-status/20" : "bg-card-border/40"
+              }`} />
+            )}
+          </div>
         );
       })}
     </motion.nav>
