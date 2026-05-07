@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { motion, useInView } from "framer-motion";
+import { useEffect, useRef, useState, useCallback } from "react";
+import { motion, useInView, useMotionValue, useSpring } from "framer-motion";
 import { FadeUp } from "./motion";
 import { TypeLabel } from "./type-label";
 import { useStatus } from "@/lib/use-status";
@@ -97,70 +97,9 @@ export function MissionStats(): React.ReactElement {
             </FadeUp>
           </div>
 
-          {/* Right 30% — terminal-style about card */}
+          {/* Right 30% — terminal about card with 3D tilt + typing */}
           <FadeUp delay={0.1} className="h-full">
-            <div className="rounded-xl bg-card border border-card-border overflow-hidden h-full flex flex-col shadow-2xl shadow-black/20">
-              {/* Terminal chrome */}
-              <div className="flex items-center gap-2 px-3 py-2 border-b border-card-border bg-card/50">
-                <div className="flex gap-1.5">
-                  <span className="w-2.5 h-2.5 rounded-full bg-red-500/60" />
-                  <span className="w-2.5 h-2.5 rounded-full bg-yellow-500/60" />
-                  <span className="w-2.5 h-2.5 rounded-full bg-green-500/60" />
-                </div>
-                <span className="ml-1 text-[10px] font-mono text-muted/50">shami ~ whoami</span>
-              </div>
-
-              {/* Terminal body */}
-              <div className="p-4 font-mono text-[11px] leading-[1.8] flex-1">
-                {/* Command */}
-                <div className="mb-3">
-                  <span className="text-accent">❯</span> <span className="text-foreground/90">whoami</span>
-                </div>
-
-                {/* Output: identity card */}
-                <div className="flex items-center gap-3 mb-4 pl-1">
-                  <div className="relative shrink-0">
-                    <div className="absolute -inset-1.5 bg-gradient-to-br from-accent/15 to-accent-secondary/10 rounded-full blur-lg pointer-events-none" />
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src="/ahtesham.jpg"
-                      alt="Ahtesham Ahmad"
-                      className="relative w-12 h-12 rounded-full object-cover border border-accent/25"
-                    />
-                  </div>
-                  <div>
-                    <p className="text-foreground font-bold text-sm font-sans">Ahtesham Ahmad</p>
-                    <p className="text-accent text-[10px]">AI Engineer</p>
-                  </div>
-                </div>
-
-                {/* More commands */}
-                <div className="space-y-0.5 text-[10.5px]">
-                  <div><span className="text-accent">❯</span> <span className="text-muted/40">cat location</span></div>
-                  <div className="text-foreground/70 pl-4 pb-1">Islamabad, PK · remote-first</div>
-
-                  <div><span className="text-accent">❯</span> <span className="text-muted/40">echo $LANGUAGES</span></div>
-                  <div className="text-foreground/70 pl-4 pb-1">EN, UR, PS, SD, AR</div>
-
-                  <div><span className="text-accent">❯</span> <span className="text-muted/40">cat superpower.txt</span></div>
-                  <div className="text-foreground/70 pl-4 pb-1">Picks up anything fast</div>
-
-                  <div><span className="text-accent">❯</span> <span className="text-muted/40">cat philosophy.md</span></div>
-                  <div className="text-accent-status/70 pl-4">Build the tool when none exists</div>
-                </div>
-              </div>
-
-              {/* Status bar */}
-              <div className="px-3 py-2 border-t border-card-border/50 flex items-center justify-between bg-card/30">
-                <div className="flex items-center gap-2 text-[9px] font-mono">
-                  <span className="w-1.5 h-1.5 rounded-full bg-accent-status animate-pulse" />
-                  <span className="text-accent-status/70">available</span>
-                </div>
-                <a href="/uses" className="text-[9px] font-mono text-muted/30 hover:text-accent transition-colors">
-                  setup &rarr;
-                </a>
-              </div>
-            </div>
+            <TerminalAboutCard />
           </FadeUp>
         </div>
 
@@ -194,5 +133,147 @@ export function MissionStats(): React.ReactElement {
         </div>
       </div>
     </section>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  Terminal About Card — 3D tilt + staggered command typing           */
+/* ------------------------------------------------------------------ */
+
+const TERM_LINES = [
+  { cmd: "whoami", type: "identity" as const },
+  { cmd: "cat location", output: "Islamabad, PK · remote-first" },
+  { cmd: "echo $LANGUAGES", output: "EN, UR, PS, SD, AR" },
+  { cmd: "cat superpower.txt", output: "Picks up anything fast" },
+  { cmd: "cat philosophy.md", output: "Build the tool when none exists", green: true },
+];
+
+function TerminalAboutCard(): React.ReactElement {
+  const ref = useRef<HTMLDivElement>(null);
+  const isInView = useInView(ref, { once: true, margin: "-60px" });
+  const [visibleLines, setVisibleLines] = useState(0);
+
+  // 3D tilt
+  const rx = useMotionValue(0);
+  const ry = useMotionValue(0);
+  const rotateX = useSpring(rx, { stiffness: 200, damping: 20 });
+  const rotateY = useSpring(ry, { stiffness: 200, damping: 20 });
+
+  const onMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>): void => {
+    const rect = ref.current?.getBoundingClientRect();
+    if (!rect) return;
+    const px = (e.clientX - rect.left) / rect.width;
+    const py = (e.clientY - rect.top) / rect.height;
+    ry.set((px - 0.5) * 10);
+    rx.set((0.5 - py) * 10);
+  }, [rx, ry]);
+
+  const onMouseLeave = useCallback((): void => {
+    rx.set(0);
+    ry.set(0);
+  }, [rx, ry]);
+
+  // Type lines one by one
+  useEffect(() => {
+    if (!isInView) return;
+    if (visibleLines >= TERM_LINES.length) return;
+    const timer = setTimeout(
+      () => setVisibleLines((n) => n + 1),
+      visibleLines === 0 ? 400 : 600,
+    );
+    return () => clearTimeout(timer);
+  }, [isInView, visibleLines]);
+
+  return (
+    <motion.div
+      ref={ref}
+      onMouseMove={onMouseMove}
+      onMouseLeave={onMouseLeave}
+      style={{
+        rotateX,
+        rotateY,
+        transformPerspective: 900,
+        transformStyle: "preserve-3d",
+      }}
+      whileHover={{
+        scale: 1.02,
+        boxShadow: "0 25px 50px rgba(0,0,0,0.4), 0 0 40px rgba(212,168,83,0.06)",
+      }}
+      transition={{ duration: 0.2 }}
+      className="rounded-xl bg-card border border-card-border overflow-hidden h-full flex flex-col shadow-2xl shadow-black/20 cursor-default"
+    >
+      {/* Terminal chrome */}
+      <div className="flex items-center gap-2 px-3 py-2 border-b border-card-border bg-card/50">
+        <div className="flex gap-1.5">
+          <span className="w-2.5 h-2.5 rounded-full bg-red-500/60" />
+          <span className="w-2.5 h-2.5 rounded-full bg-yellow-500/60" />
+          <span className="w-2.5 h-2.5 rounded-full bg-green-500/60" />
+        </div>
+        <span className="ml-1 text-[10px] font-mono text-muted/50">shami ~ whoami</span>
+      </div>
+
+      {/* Terminal body */}
+      <div className="p-4 font-mono text-[11px] leading-[1.8] flex-1">
+        {TERM_LINES.slice(0, visibleLines).map((line, i) => (
+          <motion.div
+            key={line.cmd}
+            initial={{ opacity: 0, y: 6 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3 }}
+            className={i > 0 ? "mt-1" : ""}
+          >
+            {/* Command */}
+            <div>
+              <span className="text-accent">❯</span>{" "}
+              <span className={line.type === "identity" ? "text-foreground/90" : "text-muted/40"}>
+                {line.cmd}
+              </span>
+            </div>
+
+            {/* Output */}
+            {line.type === "identity" ? (
+              <div className="flex items-center gap-3 my-2 pl-1">
+                <div className="relative shrink-0">
+                  <div className="absolute -inset-1.5 bg-gradient-to-br from-accent/15 to-accent-secondary/10 rounded-full blur-lg pointer-events-none" />
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src="/ahtesham.jpg"
+                    alt="Ahtesham Ahmad"
+                    className="relative w-12 h-12 rounded-full object-cover border border-accent/25"
+                  />
+                </div>
+                <div>
+                  <p className="text-foreground font-bold text-sm font-sans">Ahtesham Ahmad</p>
+                  <p className="text-accent text-[10px]">AI Engineer</p>
+                </div>
+              </div>
+            ) : (
+              <div className={`pl-4 text-[10.5px] ${line.green ? "text-accent-status/70" : "text-foreground/70"}`}>
+                {line.output}
+              </div>
+            )}
+          </motion.div>
+        ))}
+
+        {/* Blinking cursor while typing */}
+        {isInView && visibleLines < TERM_LINES.length && (
+          <div className="mt-1">
+            <span className="text-accent">❯</span>{" "}
+            <span className="inline-block w-[7px] h-[13px] bg-accent/70 animate-pulse translate-y-[2px]" />
+          </div>
+        )}
+      </div>
+
+      {/* Status bar */}
+      <div className="px-3 py-2 border-t border-card-border/50 flex items-center justify-between bg-card/30">
+        <div className="flex items-center gap-2 text-[9px] font-mono">
+          <span className="w-1.5 h-1.5 rounded-full bg-accent-status animate-pulse" />
+          <span className="text-accent-status/70">available</span>
+        </div>
+        <a href="/uses" className="text-[9px] font-mono text-muted/30 hover:text-accent transition-colors">
+          setup &rarr;
+        </a>
+      </div>
+    </motion.div>
   );
 }
