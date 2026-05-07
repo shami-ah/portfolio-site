@@ -101,11 +101,11 @@ export function TopBar(): React.ReactElement {
           </span>
         </button>
 
-        {/* My setup */}
+        {/* My setup — hidden on small mobile to avoid crowding */}
         <a
           href="/uses"
           aria-label="Tools, stack, and workflow"
-          className="group relative inline-flex items-center gap-1.5 md:gap-2 px-3 md:px-4 py-2 md:py-2.5 rounded-lg bg-card/85 backdrop-blur-md border border-card-border hover:border-accent/50 hover:bg-card transition-all duration-200 shadow-md"
+          className="group relative hidden sm:inline-flex items-center gap-1.5 md:gap-2 px-3 md:px-4 py-2 md:py-2.5 rounded-lg bg-card/85 backdrop-blur-md border border-card-border hover:border-accent/50 hover:bg-card transition-all duration-200 shadow-md"
         >
           <svg
             width="14"

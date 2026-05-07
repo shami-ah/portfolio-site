@@ -47,9 +47,9 @@ function Line({
   accent?: boolean;
 }): React.ReactElement {
   return (
-    <div className="flex gap-2 font-mono text-[12px] md:text-[13px] leading-[1.8]">
-      <span className="text-foreground/70 shrink-0">{label}</span>
-      <span className="text-muted/40">:</span>
+    <div className="font-mono text-[11px] md:text-[13px] leading-[1.8]">
+      <span className="text-foreground/70">{label}</span>
+      <span className="text-muted/40"> : </span>
       <span className={accent ? "text-accent" : "text-accent-secondary/80"}>{value}</span>
     </div>
   );
@@ -61,7 +61,7 @@ function Line({
 
 function StatStrip({ stats }: { stats: { label: string; value: string }[] }): React.ReactElement {
   return (
-    <div className="flex gap-4 mt-2">
+    <div className="flex flex-wrap gap-x-4 gap-y-1 mt-2">
       {stats.map((s) => (
         <div key={s.label} className="flex items-center gap-1.5 text-[10px] font-mono">
           <span className="text-foreground/80 font-semibold">{s.value}</span>
@@ -100,24 +100,47 @@ function EcosystemLoop(): React.ReactElement {
           The whole system improves with every project.
         </p>
 
-        {/* Circular diagram */}
-        <div className="relative flex items-center justify-center py-6">
-          {/* Connecting ring */}
+        {/* Loop diagram — vertical flow on mobile, circular on desktop */}
+        {/* Mobile: vertical chain */}
+        <div className="flex flex-col gap-2 md:hidden">
+          {loopNodes.map((node, i) => (
+            <div key={node.label}>
+              <motion.div
+                initial={{ opacity: 0, x: -12 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true, margin: "-20px" }}
+                transition={{ delay: 0.2 + i * 0.1 }}
+                className="flex items-center gap-3 px-4 py-2.5 rounded-xl border border-card-border bg-card"
+              >
+                <span className={`text-sm font-bold ${node.color.split(" ")[1]}`}>{node.label}</span>
+                <span className="text-[10px] text-muted/60">{node.stat}</span>
+              </motion.div>
+              {i < loopNodes.length - 1 && (
+                <div className="flex justify-center py-1">
+                  <span className="text-muted/25 text-xs">&darr;</span>
+                </div>
+              )}
+            </div>
+          ))}
+          <div className="flex justify-center py-1">
+            <span className="text-accent/30 text-[10px] font-mono">&circlearrowleft; loop</span>
+          </div>
+        </div>
+
+        {/* Desktop: circular diagram */}
+        <div className="hidden md:flex relative items-center justify-center py-6">
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="absolute w-[280px] h-[280px] md:w-[340px] md:h-[340px] rounded-full border border-dashed border-accent/15"
+            className="absolute w-[340px] h-[340px] rounded-full border border-dashed border-accent/15"
           />
-          {/* Animated pulse ring */}
           <motion.div
-            className="absolute w-[280px] h-[280px] md:w-[340px] md:h-[340px] rounded-full border border-accent/10"
+            className="absolute w-[340px] h-[340px] rounded-full border border-accent/10"
             animate={{ scale: [1, 1.04, 1], opacity: [0.3, 0.1, 0.3] }}
             transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
           />
-
-          {/* Center label */}
           <motion.div
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
@@ -128,25 +151,21 @@ function EcosystemLoop(): React.ReactElement {
             <p className="text-[9px] font-mono text-muted/40 uppercase tracking-widest">self</p>
             <p className="text-[9px] font-mono text-muted/40 uppercase tracking-widest">improving</p>
           </motion.div>
-
-          {/* Nodes positioned around the circle */}
-          <div className="relative w-[280px] h-[280px] md:w-[340px] md:h-[340px]">
+          <div className="relative w-[340px] h-[340px]">
             {loopNodes.map((node, i) => {
-              // Position: top, right, bottom, left
               const positions = [
                 "top-0 left-1/2 -translate-x-1/2 -translate-y-1/2",
                 "top-1/2 right-0 translate-x-1/2 -translate-y-1/2",
                 "bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2",
                 "top-1/2 left-0 -translate-x-1/2 -translate-y-1/2",
               ];
-              // Arrow positions between nodes
               const arrowPositions = [
                 "top-[15%] right-[10%]",
                 "bottom-[15%] right-[10%]",
                 "bottom-[15%] left-[10%]",
                 "top-[15%] left-[10%]",
               ];
-              const arrowChars = ["\u2198", "\u2199", "\u2196", "\u2197"]; // ↘ ↙ ↖ ↗
+              const arrowChars = ["\u2198", "\u2199", "\u2196", "\u2197"];
 
               return (
                 <div key={node.label}>
@@ -155,13 +174,11 @@ function EcosystemLoop(): React.ReactElement {
                     whileInView={{ opacity: 1, scale: 1 }}
                     viewport={{ once: true }}
                     transition={{ delay: 0.3 + i * 0.15, type: "spring", stiffness: 300, damping: 20 }}
-                    className={`absolute ${positions[i]} z-10 px-4 py-2.5 rounded-xl border bg-card shadow-lg shadow-background/50 text-center min-w-[100px]`}
-                    style={{ borderColor: `var(--${node.color.includes('secondary') ? 'accent-secondary' : node.color.includes('status') ? 'accent-status' : 'accent'})` }}
+                    className={`absolute ${positions[i]} z-10 px-4 py-2.5 rounded-xl border bg-card shadow-lg shadow-background/50 text-center min-w-[100px] ${node.color.split(" ")[0]}`}
                   >
-                    <p className={`text-xs font-bold ${node.color.split(' ')[1]}`}>{node.label}</p>
+                    <p className={`text-xs font-bold ${node.color.split(" ")[1]}`}>{node.label}</p>
                     <p className="text-[9px] text-muted/60 mt-0.5">{node.stat}</p>
                   </motion.div>
-                  {/* Arrow */}
                   <motion.span
                     initial={{ opacity: 0 }}
                     whileInView={{ opacity: 0.25 }}
@@ -177,12 +194,12 @@ function EcosystemLoop(): React.ReactElement {
           </div>
         </div>
 
-        {/* Day-in-my-life timeline */}
+        {/* Day-in-my-life timeline — vertical on mobile, horizontal on desktop */}
         <div className="mt-6 pt-5 border-t border-card-border/30">
           <p className="text-[9px] font-mono text-muted/40 uppercase tracking-widest mb-3">
             What this looks like in practice
           </p>
-          <div className="flex flex-wrap items-center gap-1.5 md:gap-0">
+          <div className="flex flex-col gap-1.5 md:flex-row md:flex-wrap md:gap-0 md:items-center">
             {[
               { time: "9:00", action: "Gogaa scaffolds feature", color: "text-accent" },
               { time: "9:04", action: "CodeLens auto-reviews", color: "text-accent-secondary" },
@@ -197,7 +214,7 @@ function EcosystemLoop(): React.ReactElement {
                   <span className={`text-[10px] font-mono ${step.color}`}>{step.action}</span>
                 </div>
                 {i < arr.length - 1 && (
-                  <span className="text-muted/20 text-[10px] mx-0.5">&rarr;</span>
+                  <span className="text-muted/20 text-[10px] mx-0.5 hidden md:inline">&rarr;</span>
                 )}
               </div>
             ))}
