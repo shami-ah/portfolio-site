@@ -85,7 +85,7 @@ export function SkillsModal(): React.ReactElement {
                 <span className="font-mono text-sm text-muted/60">neural-map — skills &amp; expertise</span>
               </div>
               <div className="flex items-center gap-3">
-                <span className="text-[10px] font-mono text-muted/40">{skillNodes.length} nodes · hover to explore</span>
+                <span className="text-caption font-mono text-muted/40">{skillNodes.length} nodes · hover to explore</span>
                 <button
                   type="button"
                   onClick={() => setOpen(false)}
@@ -109,7 +109,7 @@ export function SkillsModal(): React.ReactElement {
 
               {/* Legend sidebar */}
               <div className="w-56 shrink-0 border-l border-card-border p-4 overflow-y-auto hidden md:block">
-                <p className="text-[10px] font-mono text-muted/50 uppercase tracking-wider mb-4">
+                <p className="text-caption font-mono text-muted/50 uppercase tracking-wider mb-4">
                   Skill Groups
                 </p>
                 <div className="space-y-4">
@@ -124,7 +124,7 @@ export function SkillsModal(): React.ReactElement {
                       </div>
                       <div className="flex flex-wrap gap-1 pl-4">
                         {g.skills.map((s) => (
-                          <span key={s} className="text-[10px] font-mono text-muted/60 bg-card-hover px-1.5 py-0.5 rounded">
+                          <span key={s} className="text-caption font-mono text-muted/60 bg-card-hover px-1.5 py-0.5 rounded">
                             {s}
                           </span>
                         ))}
@@ -134,7 +134,7 @@ export function SkillsModal(): React.ReactElement {
                 </div>
 
                 <div className="mt-6 pt-4 border-t border-card-border/50">
-                  <p className="text-[10px] font-mono text-muted/40 leading-relaxed">
+                  <p className="text-caption font-mono text-muted/40 leading-relaxed">
                     Nodes sized by expertise level. Edges show how skills connect in my workflow. Hover any node to highlight its cluster.
                   </p>
                 </div>
@@ -143,10 +143,10 @@ export function SkillsModal(): React.ReactElement {
 
             {/* Footer */}
             <div className="flex items-center justify-between px-5 py-3 border-t border-card-border bg-card/30 shrink-0">
-              <span className="text-[10px] font-mono text-muted/40">
+              <span className="text-caption font-mono text-muted/40">
                 5 groups · {skillNodes.length} technologies · production-tested
               </span>
-              <kbd className="text-[10px] font-mono text-muted/40 border border-card-border px-1.5 py-0.5 rounded">
+              <kbd className="text-caption font-mono text-muted/40 border border-card-border px-1.5 py-0.5 rounded">
                 ESC to close
               </kbd>
             </div>

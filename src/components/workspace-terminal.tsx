@@ -122,11 +122,11 @@ export function WorkspaceTerminal(): React.ReactElement {
           <span className="w-2.5 h-2.5 rounded-full bg-yellow-500/60" />
           <span className="w-2.5 h-2.5 rounded-full bg-green-500/60" />
         </div>
-        <span className="text-[10px] font-mono text-muted/60 ml-2">shami@command-center ~ terminal</span>
+        <span className="text-caption font-mono text-muted/60 ml-2">shami@command-center ~ terminal</span>
       </div>
 
       {/* Output area */}
-      <div className="flex-1 overflow-y-auto p-4 font-mono text-[12px] md:text-[13px] leading-relaxed">
+      <div className="flex-1 overflow-y-auto p-4 font-mono text-small md:text-body leading-relaxed">
         {lines.map((line, i) => (
           <div key={i} className={line.type === "input" ? "text-accent" : "text-muted/70"}>
             {line.text.split("\n").map((l, j) => (
@@ -139,14 +139,14 @@ export function WorkspaceTerminal(): React.ReactElement {
 
       {/* Input */}
       <form onSubmit={handleSubmit} className="flex items-center gap-2 px-4 py-3 border-t border-card-border bg-card/30 shrink-0">
-        <span className="text-accent text-[13px] font-mono">$</span>
+        <span className="text-accent text-body font-mono">$</span>
         <input
           ref={inputRef}
           type="text"
           value={input}
           onChange={(e) => setInput(e.target.value)}
           placeholder="type a command..."
-          className="flex-1 bg-transparent text-[13px] font-mono text-foreground placeholder:text-muted/30 outline-none"
+          className="flex-1 bg-transparent text-body font-mono text-foreground placeholder:text-muted/30 outline-none"
           autoFocus
         />
       </form>

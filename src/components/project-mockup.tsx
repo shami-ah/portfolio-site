@@ -25,7 +25,7 @@ export function ProjectMockup({
           <span className="w-2.5 h-2.5 rounded-full bg-yellow-500/50" />
           <span className="w-2.5 h-2.5 rounded-full bg-green-500/50" />
         </div>
-        <p className="text-[10px] font-mono text-muted/60 ml-2">
+        <p className="text-caption font-mono text-muted/60 ml-2">
           {kind === "codelens" && "codelens review ."}
           {kind === "gogaa" && "gogaa · v1.0.0"}
           {kind === "openevent" && "app.openevent.io — inbox"}
@@ -34,7 +34,7 @@ export function ProjectMockup({
       </div>
 
       {/* Body */}
-      <div className="p-4 md:p-5 font-mono text-[11px] md:text-[12px] leading-relaxed min-h-[240px]">
+      <div className="p-4 md:p-5 font-mono text-small md:text-small leading-relaxed min-h-[240px]">
         {kind === "codelens" && <CodeLensBody />}
         {kind === "gogaa" && <GogaaBody />}
         {kind === "openevent" && <OpenEventBody />}
@@ -77,7 +77,7 @@ function CodeLensBody(): React.ReactElement {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-40px" }}
         transition={{ duration: 0.35, delay: 0.75 }}
-        className="mt-3 pl-2 border-l-2 border-red-500/60 text-[10px] md:text-[11px]"
+        className="mt-3 pl-2 border-l-2 border-red-500/60 text-caption md:text-small"
       >
         <p className="text-red-300">
           dashboard.tsx:19 · HIGH{" "}
@@ -101,7 +101,7 @@ function CodeLensBody(): React.ReactElement {
         className="mt-4 pt-3 border-t border-card-border"
       >
         <div className="flex items-center justify-between mb-1.5">
-          <span className="text-muted/70 text-[10px]">PR Risk Score</span>
+          <span className="text-muted/70 text-caption">PR Risk Score</span>
           <span className="text-amber-300 font-bold">5 / 10</span>
         </div>
         <div className="h-1.5 bg-background/50 rounded-full overflow-hidden">
@@ -113,7 +113,7 @@ function CodeLensBody(): React.ReactElement {
             className="h-full bg-gradient-to-r from-amber-500 to-red-500/80"
           />
         </div>
-        <p className="text-[9px] text-muted/50 mt-2">
+        <p className="text-caption text-muted/50 mt-2">
           critical findings +2 · warnings +1 · low test coverage +1.5
         </p>
       </motion.div>
@@ -136,7 +136,7 @@ function GogaaBody(): React.ReactElement {
         className="flex gap-3 items-start"
       >
         {/* 3-row Unicode block logo — copied exactly from gogaa source */}
-        <pre className="text-white font-mono leading-[1.1] text-[14px] md:text-[16px] select-none">
+        <pre className="text-white font-mono leading-[1.1] text-body md:text-lead select-none">
 {` ▐▛███▜▌
 ▝▜█████▛▘
   ▘▘ ▝▝`}
@@ -190,7 +190,7 @@ function GogaaBody(): React.ReactElement {
         whileInView={{ opacity: 1 }}
         viewport={{ once: true, margin: "-40px" }}
         transition={{ duration: 0.4, delay: 0.6 }}
-        className="mt-3 flex items-center justify-between text-[9px]"
+        className="mt-3 flex items-center justify-between text-caption"
       >
         <span className="text-muted/50">11 providers · auto-fallback</span>
         <span className="text-green-400/70 inline-flex items-center gap-1">
@@ -216,12 +216,12 @@ function OpenEventBody(): React.ReactElement {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-40px" }}
         transition={{ duration: 0.35, delay: 0.1 }}
-        className="flex items-center justify-between text-[10px] mb-3 pb-2 border-b border-card-border"
+        className="flex items-center justify-between text-caption mb-3 pb-2 border-b border-card-border"
       >
-        <span className="text-foreground/80 font-semibold text-[11px]">
+        <span className="text-foreground/80 font-semibold text-small">
           Event Requests
         </span>
-        <span className="text-accent/80 text-[10px]">5 threads</span>
+        <span className="text-accent/80 text-caption">5 threads</span>
       </motion.div>
 
       {/* Top thread */}
@@ -232,17 +232,17 @@ function OpenEventBody(): React.ReactElement {
         transition={{ duration: 0.35, delay: 0.25 }}
         className="flex items-start gap-2.5 py-2 px-2 rounded bg-accent/5 border-l-2 border-accent mb-3"
       >
-        <div className="w-7 h-7 rounded-full bg-gradient-to-br from-accent/80 to-purple-500/80 flex items-center justify-center text-[10px] text-white font-bold shrink-0">
+        <div className="w-7 h-7 rounded-full bg-gradient-to-br from-accent/80 to-purple-500/80 flex items-center justify-center text-caption text-white font-bold shrink-0">
           SJ
         </div>
         <div className="flex-1 min-w-0">
           <div className="flex items-center justify-between gap-2">
-            <p className="text-[11px] font-semibold text-foreground truncate">
+            <p className="text-small font-semibold text-foreground truncate">
               Sarah Johnson
             </p>
-            <p className="text-[9px] text-muted/50 shrink-0">11:42 AM</p>
+            <p className="text-caption text-muted/50 shrink-0">11:42 AM</p>
           </div>
-          <p className="text-[10px] text-muted truncate">
+          <p className="text-caption text-muted truncate">
             Corporate Conference · 150 Guests · March 15
           </p>
         </div>
@@ -277,10 +277,10 @@ function OpenEventBody(): React.ReactElement {
             >
               <polyline points="20 6 9 17 4 12" />
             </svg>
-            <p className="text-[10.5px] text-foreground/95 font-medium flex-1 truncate">
+            <p className="text-small text-foreground/95 font-medium flex-1 truncate">
               {a.text}
             </p>
-            <span className="text-[9px] text-muted/60 truncate max-w-[40%]">
+            <span className="text-caption text-muted/60 truncate max-w-[40%]">
               {a.detail}
             </span>
           </motion.div>
@@ -297,19 +297,19 @@ function OpenEventBody(): React.ReactElement {
       >
         <div className="flex items-center gap-1.5 mb-1">
           <span className="w-1 h-1 rounded-full bg-red-400" />
-          <p className="text-[9px] uppercase tracking-widest text-red-300 font-semibold">
+          <p className="text-caption uppercase tracking-widest text-red-300 font-semibold">
             date conflict detected
           </p>
         </div>
-        <p className="text-[10px] text-muted/80">
+        <p className="text-caption text-muted/80">
           Conflicts with <span className="text-foreground">Chen Wedding</span>{" "}
           (CHF 25,000)
         </p>
         <div className="flex gap-1.5 mt-2">
-          <span className="flex-1 text-center text-[9px] py-1 rounded bg-accent/15 text-accent border border-accent/30">
+          <span className="flex-1 text-center text-caption py-1 rounded bg-accent/15 text-accent border border-accent/30">
             Accept New
           </span>
-          <span className="flex-1 text-center text-[9px] py-1 rounded border border-card-border text-muted">
+          <span className="flex-1 text-center text-caption py-1 rounded border border-card-border text-muted">
             Keep Existing
           </span>
         </div>
@@ -320,7 +320,7 @@ function OpenEventBody(): React.ReactElement {
         whileInView={{ opacity: 1 }}
         viewport={{ once: true, margin: "-40px" }}
         transition={{ duration: 0.4, delay: 1.2 }}
-        className="text-[9px] text-muted/50 text-center pt-2 mt-2 border-t border-card-border"
+        className="text-caption text-muted/50 text-center pt-2 mt-2 border-t border-card-border"
       >
         100+ clients · 150+ events · every AI action needs human approval
       </motion.p>
@@ -344,14 +344,14 @@ function RasadBody(): React.ReactElement {
         className="flex items-center justify-between mb-3 pb-2 border-b border-card-border"
       >
         <div className="flex items-center gap-2">
-          <span className="text-foreground/80 font-semibold text-[11px]">
+          <span className="text-foreground/80 font-semibold text-small">
             Daily AI Control
           </span>
-          <span className="text-[8px] px-1.5 py-0.5 rounded bg-emerald-500/15 text-emerald-400 border border-emerald-500/25">
+          <span className="text-caption px-1.5 py-0.5 rounded bg-emerald-500/15 text-emerald-400 border border-emerald-500/25">
             local-first
           </span>
         </div>
-        <span className="text-muted/50 text-[9px]">localhost:9847</span>
+        <span className="text-muted/50 text-caption">localhost:9847</span>
       </motion.div>
 
       {/* Stats row */}
@@ -372,8 +372,8 @@ function RasadBody(): React.ReactElement {
             key={s.label}
             className="p-1.5 rounded bg-background/40 border border-card-border"
           >
-            <p className="text-[8px] text-muted/50 uppercase">{s.label}</p>
-            <p className={`text-[12px] font-bold ${s.color}`}>{s.value}</p>
+            <p className="text-caption text-muted/50 uppercase">{s.label}</p>
+            <p className={`text-small font-bold ${s.color}`}>{s.value}</p>
           </div>
         ))}
       </motion.div>
@@ -388,16 +388,16 @@ function RasadBody(): React.ReactElement {
       >
         <div className="flex items-center justify-between mb-1.5">
           <div className="flex items-center gap-1.5">
-            <span className="text-[10px] font-semibold text-foreground">X-Ray</span>
-            <span className="text-[8px] px-1 py-0.5 rounded bg-accent/15 text-accent border border-accent/25">
+            <span className="text-caption font-semibold text-foreground">X-Ray</span>
+            <span className="text-caption px-1 py-0.5 rounded bg-accent/15 text-accent border border-accent/25">
               Claude Code
             </span>
           </div>
           <div className="flex items-center gap-1.5">
-            <span className="text-[8px] px-1.5 py-0.5 rounded bg-emerald-500/15 text-emerald-400">
+            <span className="text-caption px-1.5 py-0.5 rounded bg-emerald-500/15 text-emerald-400">
               100% clean
             </span>
-            <span className="text-[8px] text-muted/50">1h 28m</span>
+            <span className="text-caption text-muted/50">1h 28m</span>
           </div>
         </div>
         <div className="grid grid-cols-3 gap-1.5 text-center">
@@ -410,8 +410,8 @@ function RasadBody(): React.ReactElement {
               key={m.label}
               className="py-1 rounded bg-background/30 border border-card-border"
             >
-              <p className={`text-[11px] font-bold ${m.color}`}>{m.value}</p>
-              <p className="text-[7px] text-muted/50">{m.label}</p>
+              <p className={`text-small font-bold ${m.color}`}>{m.value}</p>
+              <p className="text-caption text-muted/50">{m.label}</p>
             </div>
           ))}
         </div>
@@ -439,19 +439,19 @@ function RasadBody(): React.ReactElement {
         className="flex items-center justify-between p-2 rounded-md border border-card-border bg-background/30"
       >
         <div className="flex items-center gap-2">
-          <span className="w-7 h-7 rounded-md bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center text-[12px] font-bold text-emerald-400">
+          <span className="w-7 h-7 rounded-md bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center text-small font-bold text-emerald-400">
             A
           </span>
           <div>
-            <p className="text-[10px] font-medium text-foreground">Session Quality</p>
-            <p className="text-[8px] text-muted/50">82 avg · 200 scored</p>
+            <p className="text-caption font-medium text-foreground">Session Quality</p>
+            <p className="text-caption text-muted/50">82 avg · 200 scored</p>
           </div>
         </div>
         <div className="flex gap-1">
           {["A", "B", "C", "D"].map((g) => (
             <span
               key={g}
-              className={`text-[8px] px-1 py-0.5 rounded ${
+              className={`text-caption px-1 py-0.5 rounded ${
                 g === "A"
                   ? "bg-emerald-500/15 text-emerald-400"
                   : "bg-background/40 text-muted/40"
@@ -469,7 +469,7 @@ function RasadBody(): React.ReactElement {
         whileInView={{ opacity: 1 }}
         viewport={{ once: true, margin: "-40px" }}
         transition={{ duration: 0.4, delay: 0.9 }}
-        className="text-[9px] text-muted/50 text-center pt-2 mt-2 border-t border-card-border"
+        className="text-caption text-muted/50 text-center pt-2 mt-2 border-t border-card-border"
       >
         656 sessions · 38K messages · your data never leaves your machine
       </motion.p>

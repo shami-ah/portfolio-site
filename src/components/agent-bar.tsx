@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import ReactDOM from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
+import { Briefcase, Map, Phone, FileText, Hammer, MessageSquare, FolderOpen, Zap, Check, X } from "lucide-react";
 
 /* ------------------------------------------------------------------ */
 /*  Build pipeline popup — 5-second centered overlay                  */
@@ -89,7 +90,7 @@ function BuildPopup({ onDone }: { onDone: () => void }): React.ReactElement {
           borderRadius: "50%",
         }} />
 
-        <p className="text-[10px] font-mono text-accent uppercase tracking-[0.25em] mb-5 flex items-center justify-center gap-2 relative">
+        <p className="text-caption font-mono text-accent uppercase tracking-[0.25em] mb-5 flex items-center justify-center gap-2 relative">
           <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
           how I ship every feature
         </p>
@@ -116,13 +117,13 @@ function BuildPopup({ onDone }: { onDone: () => void }): React.ReactElement {
                   : "bg-card/30 border-card-border/30"
               }`}
             >
-              <span className={`text-[10px] font-mono tabular-nums shrink-0 ${i < step ? "text-accent" : "text-muted/30"}`}>
+              <span className={`text-caption font-mono tabular-nums shrink-0 ${i < step ? "text-accent" : "text-muted/30"}`}>
                 {String(i + 1).padStart(2, "0")}
               </span>
               <span className={`text-sm font-semibold flex-1 ${i < step ? "text-foreground" : "text-muted/30"}`}>
                 {s.label}
               </span>
-              <span className={`text-[10px] hidden sm:inline ${i < step ? "text-muted/70" : "text-muted/20"}`}>
+              <span className={`text-caption hidden sm:inline ${i < step ? "text-muted/70" : "text-muted/20"}`}>
                 {s.detail}
               </span>
               {i < step && (
@@ -132,9 +133,7 @@ function BuildPopup({ onDone }: { onDone: () => void }): React.ReactElement {
                   transition={{ type: "spring", stiffness: 500, damping: 15 }}
                   className="text-green-400 shrink-0"
                 >
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-                    <polyline points="20 6 9 17 4 12" />
-                  </svg>
+                  <Check size={14} strokeWidth={3} />
                 </motion.span>
               )}
             </motion.div>
@@ -189,7 +188,7 @@ const commands: AgentCommand[] = [
   {
     keyword: "hire",
     label: "I want to hire you",
-    icon: "💼",
+    icon: "briefcase",
     intent: "hiring_intent",
     confidence: 0.94,
     steps: [
@@ -216,7 +215,7 @@ const commands: AgentCommand[] = [
   {
     keyword: "tour",
     label: "Walk my career",
-    icon: "🗺",
+    icon: "map",
     intent: "guided_tour",
     confidence: 0.97,
     steps: [
@@ -235,7 +234,7 @@ const commands: AgentCommand[] = [
   {
     keyword: "call",
     label: "Book a 15-min call",
-    icon: "📞",
+    icon: "phone",
     intent: "meeting_request",
     confidence: 0.93,
     steps: [
@@ -250,7 +249,7 @@ const commands: AgentCommand[] = [
   {
     keyword: "cv",
     label: "View CV",
-    icon: "📄",
+    icon: "file-text",
     intent: "resume_request",
     confidence: 0.96,
     steps: [
@@ -268,7 +267,7 @@ const commands: AgentCommand[] = [
   {
     keyword: "build",
     label: "Watch me ship a feature",
-    icon: "🔨",
+    icon: "hammer",
     intent: "feature_walkthrough",
     confidence: 0.93,
     steps: [
@@ -281,7 +280,7 @@ const commands: AgentCommand[] = [
   {
     keyword: "chat",
     label: "Ask AI about my work",
-    icon: "💬",
+    icon: "message-square",
     intent: "conversational_query",
     confidence: 0.95,
     steps: [
@@ -299,7 +298,7 @@ const commands: AgentCommand[] = [
   {
     keyword: "projects",
     label: "See my projects",
-    icon: "🗂",
+    icon: "folder-open",
     intent: "browse_projects",
     confidence: 0.91,
     steps: [
@@ -348,7 +347,7 @@ const commands: AgentCommand[] = [
   {
     keyword: "skills",
     label: "My tech stack",
-    icon: "⚡",
+    icon: "zap",
     intent: "show_skills",
     confidence: 0.96,
     steps: [
@@ -395,10 +394,10 @@ const TICKER_MESSAGES = [
   { icon: "◉", color: "text-accent-status", text: "openevent: 100+ clients online · processing emails" },
   { icon: "◉", color: "text-accent-status", text: "gogaa v1.2.1: 1,418 tests passing · 11 providers active" },
   { icon: "◉", color: "text-accent-status", text: "codelens v0.3.5: ~430 patterns armed · scanning" },
-  { icon: "◈", color: "text-accent", text: "agent: analyzing visitor session · ready for commands" },
-  { icon: "◈", color: "text-accent-secondary", text: "stack: TypeScript · React · Supabase · Claude · Docker" },
-  { icon: "◈", color: "text-accent", text: "built: OpenEvent (live) · Gogaa CLI (beta) · CodeLens (beta) · Rasad (alpha)" },
-  { icon: "▸", color: "text-accent-secondary", text: 'try: type "hire" · "projects" · "build" · "skills" to explore' },
+  { icon: "◉", color: "text-accent", text: "agent: analyzing visitor session · ready for commands" },
+  { icon: "◉", color: "text-accent-secondary", text: "stack: TypeScript · React · Supabase · Claude · Docker" },
+  { icon: "◉", color: "text-accent", text: "built: OpenEvent (live) · Gogaa CLI (beta) · CodeLens (beta) · Rasad (alpha)" },
+  { icon: "◉", color: "text-accent-secondary", text: 'try: type "hire" · "projects" · "build" · "skills" to explore' },
 ];
 
 function ActivityTicker(): React.ReactElement {
@@ -414,7 +413,7 @@ function ActivityTicker(): React.ReactElement {
   const msg = TICKER_MESSAGES[idx];
 
   return (
-    <div className="flex items-center gap-2 px-3 md:px-4 py-1.5 text-[10px] font-mono overflow-hidden">
+    <div className="flex items-center gap-2 px-3 md:px-4 py-1.5 text-caption font-mono overflow-hidden">
       <AnimatePresence mode="wait">
         <motion.div
           key={idx}
@@ -592,7 +591,7 @@ export function AgentBar(): React.ReactElement {
           setDismissed(false);
           setPhase("dormant");
         }}
-        className="fixed bottom-5 left-5 z-40 inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-card/80 backdrop-blur-md border border-accent/25 text-[11px] font-mono text-muted hover:text-accent hover:border-accent/50 transition-all shadow-lg shadow-background/40"
+        className="fixed bottom-5 left-5 z-40 inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-card/80 backdrop-blur-md border border-accent/25 text-small font-mono text-muted hover:text-accent hover:border-accent/50 transition-all shadow-lg shadow-background/40"
         aria-label="Open agent"
       >
         <span className="w-1.5 h-1.5 rounded-full bg-accent/70 animate-pulse" />
@@ -640,7 +639,7 @@ export function AgentBar(): React.ReactElement {
                   placeholder="type a command: hire · projects · build · skills · chat"
                   className="flex-1 min-w-0 bg-transparent outline-none font-mono text-xs md:text-sm placeholder:text-muted/40 text-foreground"
                 />
-                <kbd className="hidden md:inline text-[10px] font-mono text-muted/50 border border-card-border px-1.5 py-0.5 rounded">
+                <kbd className="hidden md:inline text-caption font-mono text-muted/50 border border-card-border px-1.5 py-0.5 rounded">
                   /
                 </kbd>
                 <button
@@ -649,19 +648,7 @@ export function AgentBar(): React.ReactElement {
                   aria-label="Dismiss"
                   className="text-muted/40 hover:text-foreground shrink-0 ml-1"
                 >
-                  <svg
-                    width="12"
-                    height="12"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <line x1="18" y1="6" x2="6" y2="18" />
-                    <line x1="6" y1="6" x2="18" y2="18" />
-                  </svg>
+                  <X size={12} strokeWidth={2.5} />
                 </button>
                 <motion.div
                   aria-hidden
@@ -687,16 +674,16 @@ export function AgentBar(): React.ReactElement {
             {/* Header */}
             <div className="flex items-center gap-2 px-3 md:px-4 py-2 border-b border-accent/15 bg-background/40">
               <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse shrink-0" />
-              <p className="text-[10px] font-mono uppercase tracking-[0.25em] text-accent/80">
+              <p className="text-caption font-mono uppercase tracking-[0.25em] text-accent/80">
                 agent · session active
               </p>
-              <p className="ml-auto text-[10px] font-mono text-muted/50 tabular-nums">
+              <p className="ml-auto text-caption font-mono text-muted/50 tabular-nums">
                 {phase === "responding" ? `${totalMs}ms` : "…"}
               </p>
             </div>
 
             {/* Body */}
-            <div className="px-3 md:px-5 py-3 md:py-4 space-y-1 font-mono text-[11px] md:text-[12px]">
+            <div className="px-3 md:px-5 py-3 md:py-4 space-y-1 font-mono text-small md:text-small">
               <p className="text-foreground/90">
                 <span className="text-accent">❯ parse</span>
                 <span className="text-muted/60">(&ldquo;</span>
@@ -717,7 +704,7 @@ export function AgentBar(): React.ReactElement {
                     <span className="text-muted/40">{isLast ? "└─" : "├─"}</span>
                     <span className="text-foreground/80">{s.name}</span>
                     <span className="text-green-400 ml-auto shrink-0">✓</span>
-                    <span className="text-muted/40 text-[10px] tabular-nums">
+                    <span className="text-muted/40 text-caption tabular-nums">
                       {s.ms}ms
                     </span>
                   </motion.div>
@@ -730,7 +717,7 @@ export function AgentBar(): React.ReactElement {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.12, duration: 0.25 }}
-                  className="text-muted/50 pl-5 text-[10px] md:text-[11px]"
+                  className="text-muted/50 pl-5 text-caption md:text-small"
                 >
                   {i === activeCmd.steps.length - 1 ? "   " : "│  "}
                   {s.detail}

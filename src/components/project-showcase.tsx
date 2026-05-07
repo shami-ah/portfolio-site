@@ -36,11 +36,11 @@ export function ProjectShowcase({
       {/* Content side */}
       <div className="space-y-4 md:space-y-5">
         <div className="flex flex-wrap items-center gap-2">
-          <span className="px-2.5 py-1 text-[10px] md:text-xs font-mono rounded border border-accent/20 bg-accent/5 text-accent/90">
+          <span className="px-2.5 py-1 text-caption md:text-xs font-mono rounded border border-accent/20 bg-accent/5 text-accent/90">
             {project.type}
           </span>
           {project.live && (
-            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 text-[10px] md:text-xs font-mono rounded border border-green-500/30 bg-green-500/10 text-green-400">
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 text-caption md:text-xs font-mono rounded border border-green-500/30 bg-green-500/10 text-green-400">
               <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
               live
             </span>
@@ -59,13 +59,13 @@ export function ProjectShowcase({
           {project.stack.slice(0, 6).map((t) => (
             <span
               key={t}
-              className="px-2 py-0.5 text-[10px] font-mono bg-card-hover/60 text-muted/70 rounded border border-card-border"
+              className="px-2 py-0.5 text-caption font-mono bg-card-hover/60 text-muted/70 rounded border border-card-border"
             >
               {t}
             </span>
           ))}
           {project.stack.length > 6 && (
-            <span className="px-2 py-0.5 text-[10px] font-mono text-muted/50">
+            <span className="px-2 py-0.5 text-caption font-mono text-muted/50">
               +{project.stack.length - 6}
             </span>
           )}

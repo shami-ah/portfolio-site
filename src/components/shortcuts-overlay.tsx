@@ -98,7 +98,7 @@ export function ShortcutsOverlay(): React.ReactElement {
             {/* Header */}
             <div className="flex items-center justify-between px-5 md:px-6 py-4 border-b border-card-border">
               <div>
-                <p className="text-[10px] font-mono uppercase tracking-[0.25em] text-accent mb-1">
+                <p className="text-caption font-mono uppercase tracking-[0.25em] text-accent mb-1">
                   Keyboard shortcuts
                 </p>
                 <h2 className="text-lg md:text-xl font-bold">
@@ -131,7 +131,7 @@ export function ShortcutsOverlay(): React.ReactElement {
             <div className="max-h-[70vh] overflow-y-auto px-5 md:px-6 py-5 md:py-6 space-y-6">
               {groups.map((g) => (
                 <div key={g.title}>
-                  <p className="text-[10px] font-mono uppercase tracking-[0.2em] text-muted/50 mb-3">
+                  <p className="text-caption font-mono uppercase tracking-[0.2em] text-muted/50 mb-3">
                     {g.title}
                   </p>
                   <div className="space-y-2">
@@ -146,11 +146,11 @@ export function ShortcutsOverlay(): React.ReactElement {
                         <div className="flex items-center gap-1 shrink-0">
                           {item.keys.map((k, i) => (
                             <span key={i} className="inline-flex items-center gap-1">
-                              <kbd className="inline-flex items-center justify-center min-w-[22px] h-6 px-1.5 text-[11px] font-mono text-accent bg-accent/10 border border-accent/30 rounded">
+                              <kbd className="inline-flex items-center justify-center min-w-[22px] h-6 px-1.5 text-small font-mono text-accent bg-accent/10 border border-accent/30 rounded">
                                 {k}
                               </kbd>
                               {i < item.keys.length - 1 && (
-                                <span className="text-muted/30 text-[10px]">+</span>
+                                <span className="text-muted/30 text-caption">+</span>
                               )}
                             </span>
                           ))}
@@ -163,7 +163,7 @@ export function ShortcutsOverlay(): React.ReactElement {
             </div>
 
             {/* Footer */}
-            <div className="flex items-center justify-between px-5 md:px-6 py-3 border-t border-card-border bg-background/40 text-[10px] font-mono text-muted/60">
+            <div className="flex items-center justify-between px-5 md:px-6 py-3 border-t border-card-border bg-background/40 text-caption font-mono text-muted/60">
               <span>press ? anywhere to toggle</span>
               <span>esc to close</span>
             </div>

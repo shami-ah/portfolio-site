@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useStatus } from "@/lib/use-status";
+import { Check, Volume2, VolumeX } from "lucide-react";
 
 interface Check {
   label: string;
@@ -226,7 +227,7 @@ export function TerminalBoot({ force = false, onDone }: BootProps): React.ReactE
                 <span className="w-2.5 h-2.5 rounded-full bg-yellow-500/60" />
                 <span className="w-2.5 h-2.5 rounded-full bg-green-500/60" />
               </div>
-              <p className="text-[10px] text-muted/60 ml-auto font-mono">
+              <p className="text-caption text-muted/60 ml-auto font-mono">
                 shami@command-center ~ zsh
               </p>
             </div>
@@ -234,7 +235,7 @@ export function TerminalBoot({ force = false, onDone }: BootProps): React.ReactE
             {/* Body */}
             <div className="p-5 md:p-6 space-y-3 min-h-[320px]">
               {/* Intro command line */}
-              <p className="text-[13px] leading-relaxed">
+              <p className="text-body leading-relaxed">
                 <span className="text-accent">❯</span>{" "}
                 <span className="text-foreground/90">
                   {introText.slice(0, introTyped)}
@@ -253,13 +254,13 @@ export function TerminalBoot({ force = false, onDone }: BootProps): React.ReactE
                   className="pt-2"
                 >
                   <div className="flex items-center justify-between mb-1.5">
-                    <span className="text-[10px] text-muted/70 tracking-widest uppercase">
+                    <span className="text-caption text-muted/70 tracking-widest uppercase">
                       {phase === "checks" && "loading modules"}
                       {phase === "status" && "status"}
                       {phase === "launching" && "launching"}
                       {phase === "exit" && "launching"}
                     </span>
-                    <span className="text-[10px] font-mono text-accent/80 tabular-nums">
+                    <span className="text-caption font-mono text-accent/80 tabular-nums">
                       {Math.round(progress)}%
                     </span>
                   </div>
@@ -288,24 +289,13 @@ export function TerminalBoot({ force = false, onDone }: BootProps): React.ReactE
                           : { opacity: 0, x: -6 }
                       }
                       transition={{ duration: 0.28, ease: "easeOut" }}
-                      className="flex items-center gap-2.5 text-[12px]"
+                      className="flex items-center gap-2.5 text-small"
                     >
                       <span className="text-green-400 shrink-0">
-                        <svg
-                          width="12"
-                          height="12"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="3"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        >
-                          <polyline points="20 6 9 17 4 12" />
-                        </svg>
+                        <Check size={12} strokeWidth={3} />
                       </span>
                       <span className="text-foreground/90 flex-1">{c.label}</span>
-                      <span className="text-muted/40 text-[10px] font-mono">
+                      <span className="text-muted/40 text-caption font-mono">
                         {c.detail}
                       </span>
                     </motion.div>
@@ -323,7 +313,7 @@ export function TerminalBoot({ force = false, onDone }: BootProps): React.ReactE
                     initial={{ opacity: 0, y: 4 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.3 }}
-                    className="text-[12px] pt-3 border-t border-card-border/50 flex items-center gap-2"
+                    className="text-small pt-3 border-t border-card-border/50 flex items-center gap-2"
                   >
                     <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse shrink-0" />
                     <span className="text-muted/60">status:</span>
@@ -336,7 +326,7 @@ export function TerminalBoot({ force = false, onDone }: BootProps): React.ReactE
                     initial={{ opacity: 0, y: 4 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.3 }}
-                    className="text-[12px] text-accent flex items-center gap-2"
+                    className="text-small text-accent flex items-center gap-2"
                   >
                     <span className="text-accent">❯</span>
                     entering command center
@@ -360,23 +350,15 @@ export function TerminalBoot({ force = false, onDone }: BootProps): React.ReactE
               className="text-muted/40 hover:text-muted transition-colors"
             >
               {soundOn ? (
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
-                  <path d="M15.54 8.46a5 5 0 0 1 0 7.07" />
-                  <path d="M19.07 4.93a10 10 0 0 1 0 14.14" />
-                </svg>
+                <Volume2 size={14} />
               ) : (
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
-                  <line x1="23" y1="9" x2="17" y2="15" />
-                  <line x1="17" y1="9" x2="23" y2="15" />
-                </svg>
+                <VolumeX size={14} />
               )}
             </button>
             <button
               type="button"
               onClick={dismiss}
-              className="text-[10px] font-mono text-muted/40 hover:text-muted transition-colors"
+              className="text-caption font-mono text-muted/40 hover:text-muted transition-colors"
             >
               skip →
             </button>

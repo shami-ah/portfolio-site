@@ -112,7 +112,7 @@ function Node({
           }}
         />
       </motion.div>
-      <p className="text-[9px] md:text-[11px] text-muted/70 whitespace-nowrap">
+      <p className="text-caption md:text-small text-muted/70 whitespace-nowrap">
         {label}
       </p>
     </div>

@@ -305,7 +305,7 @@ export function CommandPalette(): React.ReactElement {
                   placeholder="Jump to section, project, contact…"
                   className="flex-1 bg-transparent outline-none text-sm md:text-base placeholder:text-muted/40"
                 />
-                <kbd className="hidden sm:inline text-[10px] font-mono text-muted/50 border border-card-border px-1.5 py-0.5 rounded">
+                <kbd className="hidden sm:inline text-caption font-mono text-muted/50 border border-card-border px-1.5 py-0.5 rounded">
                   Esc
                 </kbd>
               </div>
@@ -319,7 +319,7 @@ export function CommandPalette(): React.ReactElement {
                 )}
                 {Object.entries(groups).map(([groupName, items]) => (
                   <div key={groupName} className="py-1">
-                    <p className="px-4 md:px-5 text-[10px] font-mono uppercase tracking-wider text-muted/40 mb-1">
+                    <p className="px-4 md:px-5 text-caption font-mono uppercase tracking-wider text-muted/40 mb-1">
                       {groupName}
                     </p>
                     {items.map((cmd) => {
@@ -343,13 +343,13 @@ export function CommandPalette(): React.ReactElement {
                               {cmd.label}
                             </p>
                             {cmd.hint && (
-                              <p className="text-[11px] text-muted/60 truncate">
+                              <p className="text-small text-muted/60 truncate">
                                 {cmd.hint}
                               </p>
                             )}
                           </div>
                           {isActive && (
-                            <span className="text-[10px] font-mono text-accent/70 shrink-0">
+                            <span className="text-caption font-mono text-accent/70 shrink-0">
                               ↵
                             </span>
                           )}
@@ -361,7 +361,7 @@ export function CommandPalette(): React.ReactElement {
               </div>
 
               {/* Footer hints */}
-              <div className="flex items-center justify-between gap-3 px-4 md:px-5 py-2.5 border-t border-card-border text-[10px] font-mono text-muted/50">
+              <div className="flex items-center justify-between gap-3 px-4 md:px-5 py-2.5 border-t border-card-border text-caption font-mono text-muted/50">
                 <div className="flex items-center gap-3">
                   <span className="inline-flex items-center gap-1">
                     <kbd className="px-1.5 py-0.5 border border-card-border rounded bg-background/50">↑↓</kbd>

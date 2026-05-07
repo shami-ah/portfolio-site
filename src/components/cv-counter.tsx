@@ -29,7 +29,7 @@ export function CvCounter(): React.ReactElement | null {
   if (count === null || count < 5) return null;
 
   return (
-    <p className="text-[10px] md:text-xs font-mono text-muted/50 mt-2">
+    <p className="text-caption md:text-xs font-mono text-muted/50 mt-2">
       CV viewed <span className="text-accent/70">{count.toLocaleString()}</span>{" "}
       times
     </p>

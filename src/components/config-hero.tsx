@@ -169,7 +169,7 @@ export function ConfigHero(): React.ReactElement {
               initial={{ opacity: 0, scale: 0.9 }}
               animate={ready ? { opacity: 1, scale: 1 } : {}}
               transition={{ duration: 0.5, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
-              className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent-status/10 border border-accent-status/20 text-accent-status text-[10px] md:text-xs font-mono mb-6"
+              className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent-status/10 border border-accent-status/20 text-accent-status text-caption md:text-xs font-mono mb-6"
             >
               <span className="w-1.5 h-1.5 bg-accent-status rounded-full animate-pulse" />
               Open to opportunities
@@ -220,7 +220,7 @@ export function ConfigHero(): React.ReactElement {
               className="flex items-center gap-2 mt-6 justify-center md:justify-start"
             >
               <span className="w-1.5 h-1.5 bg-accent rounded-full animate-pulse" />
-              <p className="text-[10px] md:text-xs font-mono text-muted/60">
+              <p className="text-caption md:text-xs font-mono text-muted/60">
                 building:{" "}
                 <span className="text-accent/80">
                   {status.currentlyBuilding.label}
@@ -248,7 +248,7 @@ export function ConfigHero(): React.ReactElement {
               </div>
 
               {/* Code content */}
-              <div className="p-4 md:p-5 font-mono text-[11px] md:text-[13px] leading-[1.7] overflow-x-auto">
+              <div className="p-4 md:p-5 font-mono text-small md:text-body leading-[1.7] overflow-x-auto">
                 {CONFIG_LINES.slice(0, visibleLines).map((line, i) => (
                   <motion.div
                     key={i}

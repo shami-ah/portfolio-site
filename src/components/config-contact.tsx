@@ -35,7 +35,7 @@ export function ConfigContact(): React.ReactElement {
               &ldquo;The AI layer Ahtesham built saves our team 90 minutes a day.
               No engineer we interviewed designed the human-in-the-loop gate the way he did.&rdquo;
             </p>
-            <p className="text-[11px] text-muted/50 font-mono mt-2">
+            <p className="text-small text-muted/50 font-mono mt-2">
               River Soellner, Founder, More Life Hospitality GmbH
             </p>
           </div>
@@ -46,7 +46,7 @@ export function ConfigContact(): React.ReactElement {
           <div className="rounded-xl border border-accent/20 bg-gradient-to-br from-card via-card to-accent/[0.03] p-6 md:p-8">
             <div className="grid md:grid-cols-[1fr_auto] gap-8 items-center">
               <div>
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent-status/10 border border-accent-status/20 text-accent-status text-[10px] md:text-xs font-mono mb-4">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent-status/10 border border-accent-status/20 text-accent-status text-caption md:text-xs font-mono mb-4">
                   <span className="w-1.5 h-1.5 bg-accent-status rounded-full animate-pulse" />
                   Available for full-time &amp; contract
                 </div>
@@ -56,7 +56,7 @@ export function ConfigContact(): React.ReactElement {
                 <p className="text-sm text-muted mb-5">
                   One engineer, full ownership, from data model to deployed SaaS.
                 </p>
-                <div className="flex flex-wrap gap-x-5 gap-y-1.5 text-[11px] font-mono text-muted/60">
+                <div className="flex flex-wrap gap-x-5 gap-y-1.5 text-small font-mono text-muted/60">
                   {contactLinks.map((link) => (
                     <a
                       key={link.key}

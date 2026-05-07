@@ -60,11 +60,11 @@ export function Writing(): React.ReactElement {
             <FadeUp key={a.title} delay={i * 0.08}>
               <div className="card-glow h-full rounded-xl bg-card border border-card-border p-5 flex flex-col hover:border-accent/20 transition-all duration-300 group">
                 <div className="flex items-center justify-between mb-3">
-                  <span className={`text-[10px] font-mono uppercase tracking-wider ${a.tagColor}`}>
+                  <span className={`text-caption font-mono uppercase tracking-wider ${a.tagColor}`}>
                     {a.tag}
                   </span>
                   {a.soon && (
-                    <span className="text-[9px] font-mono text-muted/40 px-2 py-0.5 rounded border border-card-border">
+                    <span className="text-caption font-mono text-muted/40 px-2 py-0.5 rounded border border-card-border">
                       coming soon
                     </span>
                   )}

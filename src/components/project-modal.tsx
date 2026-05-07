@@ -182,14 +182,14 @@ export function ProjectModal({
               >
                 <div className="flex flex-wrap items-center gap-2 mb-3">
                   <span
-                    className={`px-2.5 py-1 text-[10px] md:text-xs font-mono rounded border ${
+                    className={`px-2.5 py-1 text-caption md:text-xs font-mono rounded border ${
                       typeColors[project.type] ?? "text-muted border-card-border bg-card-hover"
                     }`}
                   >
                     {project.type}
                   </span>
                   {project.live && (
-                    <span className="flex items-center gap-1.5 px-2.5 py-1 text-[10px] md:text-xs font-mono rounded border border-green-500/30 bg-green-500/10 text-green-400">
+                    <span className="flex items-center gap-1.5 px-2.5 py-1 text-caption md:text-xs font-mono rounded border border-green-500/30 bg-green-500/10 text-green-400">
                       <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
                       Live
                     </span>
@@ -214,7 +214,7 @@ export function ProjectModal({
                 className="mt-8 md:mt-10 grid md:grid-cols-2 gap-5 md:gap-6"
               >
                 <div>
-                  <p className="text-[10px] md:text-xs font-mono text-accent/70 uppercase tracking-[0.2em] mb-2">
+                  <p className="text-caption md:text-xs font-mono text-accent/70 uppercase tracking-[0.2em] mb-2">
                     Problem
                   </p>
                   <p className="text-xs md:text-sm text-muted leading-relaxed line-clamp-[8]">
@@ -222,7 +222,7 @@ export function ProjectModal({
                   </p>
                 </div>
                 <div>
-                  <p className="text-[10px] md:text-xs font-mono text-accent/70 uppercase tracking-[0.2em] mb-2">
+                  <p className="text-caption md:text-xs font-mono text-accent/70 uppercase tracking-[0.2em] mb-2">
                     Solution
                   </p>
                   <p className="text-xs md:text-sm text-muted leading-relaxed line-clamp-[8]">
@@ -238,7 +238,7 @@ export function ProjectModal({
                 transition={{ delay: 0.3, duration: 0.35 }}
                 className="mt-8 md:mt-10"
               >
-                <p className="text-[10px] md:text-xs font-mono text-accent/70 uppercase tracking-[0.2em] mb-3">
+                <p className="text-caption md:text-xs font-mono text-accent/70 uppercase tracking-[0.2em] mb-3">
                   System Architecture
                   <span className="text-muted/40 normal-case tracking-normal ml-2 hidden sm:inline">
                     click any node for detail
@@ -260,7 +260,7 @@ export function ProjectModal({
                           <button
                             type="button"
                             onClick={() => setSelectedNode(isSelected ? null : node)}
-                            className={`px-2 md:px-2.5 py-1 md:py-1.5 text-[10px] md:text-[11px] font-mono rounded whitespace-nowrap border transition-all ${
+                            className={`px-2 md:px-2.5 py-1 md:py-1.5 text-caption md:text-small font-mono rounded whitespace-nowrap border transition-all ${
                               isSelected
                                 ? "bg-accent text-white border-accent shadow-lg shadow-accent/30"
                                 : "bg-accent/10 text-accent/90 border-accent/20 hover:bg-accent/20 hover:border-accent/40"
@@ -275,7 +275,7 @@ export function ProjectModal({
                       );
                     })}
                     {project.architecture.length > 8 && (
-                      <span className="text-[10px] font-mono text-muted/50 ml-2">
+                      <span className="text-caption font-mono text-muted/50 ml-2">
                         +{project.architecture.length - 8} more
                       </span>
                     )}
@@ -291,7 +291,7 @@ export function ProjectModal({
                         transition={{ duration: 0.22 }}
                         className="overflow-hidden"
                       >
-                        <div className="pt-3 border-t border-card-border/60 text-[11px] md:text-xs text-muted leading-relaxed">
+                        <div className="pt-3 border-t border-card-border/60 text-small md:text-xs text-muted leading-relaxed">
                           <span className="text-accent/80 font-mono">
                             {selectedNode.split(/[(\n]/)[0].trim()}
                           </span>
@@ -312,31 +312,31 @@ export function ProjectModal({
                   transition={{ delay: 0.4, duration: 0.35 }}
                   className="mt-8 md:mt-10"
                 >
-                  <p className="text-[10px] md:text-xs font-mono text-accent/70 uppercase tracking-[0.2em] mb-3">
+                  <p className="text-caption md:text-xs font-mono text-accent/70 uppercase tracking-[0.2em] mb-3">
                     Measured Impact
                   </p>
                   <div className="grid grid-cols-2 gap-2 md:gap-3">
                     <div className="p-4 md:p-5 rounded-xl bg-background/50 border border-card-border">
-                      <p className="text-[9px] font-mono text-muted/60 uppercase tracking-[0.2em] mb-1.5">
+                      <p className="text-caption font-mono text-muted/60 uppercase tracking-[0.2em] mb-1.5">
                         before
                       </p>
                       <p className="text-3xl md:text-5xl font-bold text-muted font-mono leading-none">
                         ~1.5<span className="text-muted/40 text-lg md:text-2xl">hrs</span>
                       </p>
-                      <p className="text-[10px] md:text-xs text-muted/70 mt-2">
+                      <p className="text-caption md:text-xs text-muted/70 mt-2">
                         per team, per day, reading &amp; triaging email
                       </p>
                     </div>
                     <div className="relative p-4 md:p-5 rounded-xl bg-gradient-to-br from-accent/10 via-background/50 to-background/50 border border-accent/30 overflow-hidden">
                       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-accent to-transparent" />
-                      <p className="text-[9px] font-mono text-accent uppercase tracking-[0.2em] mb-1.5 flex items-center gap-1.5">
+                      <p className="text-caption font-mono text-accent uppercase tracking-[0.2em] mb-1.5 flex items-center gap-1.5">
                         <span className="w-1 h-1 rounded-full bg-green-400 animate-pulse" />
                         after
                       </p>
                       <p className="text-3xl md:text-5xl font-bold text-accent font-mono leading-none">
                         ~15<span className="text-accent/50 text-lg md:text-2xl">min</span>
                       </p>
-                      <p className="text-[10px] md:text-xs text-muted mt-2">
+                      <p className="text-caption md:text-xs text-muted mt-2">
                         review AI-drafted actions &amp; approve
                       </p>
                     </div>
@@ -362,7 +362,7 @@ export function ProjectModal({
                         >
                           {s.n}
                         </p>
-                        <p className="text-[9px] text-muted/60 uppercase tracking-wider">
+                        <p className="text-caption text-muted/60 uppercase tracking-wider">
                           {s.l}
                         </p>
                       </div>
@@ -379,7 +379,7 @@ export function ProjectModal({
                   transition={{ delay: 0.4, duration: 0.35 }}
                   className="mt-8 md:mt-10"
                 >
-                  <p className="text-[10px] md:text-xs font-mono text-accent/70 uppercase tracking-[0.2em] mb-3">
+                  <p className="text-caption md:text-xs font-mono text-accent/70 uppercase tracking-[0.2em] mb-3">
                     Key Results
                   </p>
                   <ul className="grid md:grid-cols-2 gap-2.5 md:gap-3">
@@ -407,7 +407,7 @@ export function ProjectModal({
                   transition={{ delay: 0.5, duration: 0.35 }}
                   className="mt-8 md:mt-10"
                 >
-                  <p className="text-[10px] md:text-xs font-mono text-accent/70 uppercase tracking-[0.2em] mb-3">
+                  <p className="text-caption md:text-xs font-mono text-accent/70 uppercase tracking-[0.2em] mb-3">
                     Key Technical Decisions
                   </p>
                   <ul className="space-y-2">
@@ -434,14 +434,14 @@ export function ProjectModal({
                 transition={{ delay: 0.6, duration: 0.35 }}
                 className="mt-8 md:mt-10"
               >
-                <p className="text-[10px] md:text-xs font-mono text-accent/70 uppercase tracking-[0.2em] mb-3">
+                <p className="text-caption md:text-xs font-mono text-accent/70 uppercase tracking-[0.2em] mb-3">
                   Stack
                 </p>
                 <div className="flex flex-wrap gap-1.5">
                   {project.stack.map((tech) => (
                     <span
                       key={tech}
-                      className="px-2 py-1 text-[10px] md:text-[11px] font-mono bg-background/50 text-muted rounded border border-card-border"
+                      className="px-2 py-1 text-caption md:text-small font-mono bg-background/50 text-muted rounded border border-card-border"
                     >
                       {tech}
                     </span>
@@ -453,7 +453,7 @@ export function ProjectModal({
             {/* Sticky footer CTA */}
             <div className="absolute bottom-0 left-0 right-0 p-4 md:p-5 bg-gradient-to-t from-card via-card to-card/90 border-t border-card-border backdrop-blur-sm">
               <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
-                <div className="flex items-center gap-2 text-[10px] md:text-xs font-mono text-muted/60">
+                <div className="flex items-center gap-2 text-caption md:text-xs font-mono text-muted/60">
                   <span className="w-1.5 h-1.5 rounded-full bg-accent/60" />
                   <span className="truncate hidden sm:inline">
                     {onNavigate ? "← → to browse projects" : "Quick overview · full case study for the deep dive"}

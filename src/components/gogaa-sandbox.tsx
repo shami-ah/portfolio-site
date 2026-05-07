@@ -221,11 +221,11 @@ export function GogaaSandbox(): React.ReactElement {
             <span className="w-2.5 h-2.5 rounded-full bg-yellow-500/60" />
             <span className="w-2.5 h-2.5 rounded-full bg-green-500/60" />
           </div>
-          <p className="text-[10px] font-mono text-muted/60 ml-2">
+          <p className="text-caption font-mono text-muted/60 ml-2">
             gogaa — live demo (sandboxed)
           </p>
         </div>
-        <span className="inline-flex items-center gap-1 text-[9px] font-mono text-green-400/70">
+        <span className="inline-flex items-center gap-1 text-caption font-mono text-green-400/70">
           <span className="w-1 h-1 rounded-full bg-green-400 animate-pulse" />
           interactive
         </span>
@@ -234,7 +234,7 @@ export function GogaaSandbox(): React.ReactElement {
       {/* Output */}
       <div
         ref={scrollRef}
-        className="p-3 md:p-4 font-mono text-[11px] md:text-[12px] leading-[1.65] h-[280px] md:h-[340px] overflow-y-auto"
+        className="p-3 md:p-4 font-mono text-small md:text-small leading-[1.65] h-[280px] md:h-[340px] overflow-y-auto"
       >
         {lines.map((l) => (
           <motion.p
@@ -265,7 +265,7 @@ export function GogaaSandbox(): React.ReactElement {
             type="button"
             onClick={() => run(s)}
             disabled={busy}
-            className="text-[10px] md:text-[11px] font-mono px-2 py-1 rounded border border-card-border bg-card/60 text-muted/80 hover:text-accent hover:border-accent/40 hover:bg-accent/10 transition-all disabled:opacity-40"
+            className="text-caption md:text-small font-mono px-2 py-1 rounded border border-card-border bg-card/60 text-muted/80 hover:text-accent hover:border-accent/40 hover:bg-accent/10 transition-all disabled:opacity-40"
           >
             {s}
           </button>
@@ -287,7 +287,7 @@ export function GogaaSandbox(): React.ReactElement {
           onChange={(e) => setInput(e.target.value)}
           disabled={busy}
           placeholder="type a command or click a suggestion…"
-          className="flex-1 bg-transparent outline-none font-mono text-[12px] md:text-[13px] placeholder:text-muted/40 text-foreground"
+          className="flex-1 bg-transparent outline-none font-mono text-small md:text-body placeholder:text-muted/40 text-foreground"
         />
       </form>
     </div>

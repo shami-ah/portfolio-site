@@ -1,18 +1,14 @@
 "use client";
 
 import { FadeUp } from "./motion";
+import { Mail, FileDown, Calendar } from "lucide-react";
 
 const links = [
   {
     label: "Email",
     href: "mailto:shami8024@gmail.com",
     display: "shami8024@gmail.com",
-    icon: (
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-        <rect x="2" y="4" width="20" height="16" rx="2" />
-        <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
-      </svg>
-    ),
+    icon: <Mail size={16} strokeWidth={1.5} />,
   },
   {
     label: "LinkedIn",
@@ -38,14 +34,7 @@ const links = [
     label: "Resume",
     href: "/cv",
     display: "View CV",
-    icon: (
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-        <polyline points="14 2 14 8 20 8" />
-        <line x1="12" y1="18" x2="12" y2="12" />
-        <polyline points="9 15 12 18 15 15" />
-      </svg>
-    ),
+    icon: <FileDown size={16} strokeWidth={1.5} />,
   },
 ];
 
@@ -60,7 +49,7 @@ export function Contact(): React.ReactElement {
           <p className="text-sm font-mono text-accent mb-4 uppercase tracking-wider">
             Contact
           </p>
-          <div className="inline-flex items-center gap-2 px-3 md:px-4 py-1 md:py-1.5 rounded-full bg-green-500/10 border border-green-500/20 text-green-400 text-[10px] md:text-xs font-mono mb-6 md:mb-8">
+          <div className="inline-flex items-center gap-2 px-3 md:px-4 py-1 md:py-1.5 rounded-full bg-green-500/10 border border-green-500/20 text-green-400 text-caption md:text-xs font-mono mb-6 md:mb-8">
             <span className="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse shrink-0" />
             <span className="truncate">Available for full-time &amp; 90-day engagements</span>
           </div>
@@ -82,12 +71,7 @@ export function Contact(): React.ReactElement {
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 md:gap-3 px-5 md:px-8 py-3 md:py-4 mb-8 md:mb-10 rounded-xl bg-accent text-white font-medium hover:bg-accent/90 transition-all duration-200 hover:shadow-lg hover:shadow-accent/20 group text-sm md:text-base"
           >
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="md:w-[18px] md:h-[18px]">
-              <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
-              <line x1="16" y1="2" x2="16" y2="6" />
-              <line x1="8" y1="2" x2="8" y2="6" />
-              <line x1="3" y1="10" x2="21" y2="10" />
-            </svg>
+            <Calendar size={16} strokeWidth={1.5} className="md:w-[18px] md:h-[18px]" />
             Book a free 15-min intro call
             <span className="text-white/60 text-sm font-normal group-hover:text-white/80 transition-colors hidden sm:inline">→</span>
           </a>
@@ -117,10 +101,10 @@ export function Contact(): React.ReactElement {
           <div className="mt-20 md:mt-28 pt-12 md:pt-16 border-t border-card-border">
             <div className="flex flex-col md:flex-row items-center md:items-end justify-center gap-6 md:gap-10">
               <div className="text-center md:text-left order-2 md:order-1">
-                <p className="text-[10px] md:text-xs font-mono text-accent uppercase tracking-[0.3em] mb-2">
+                <p className="text-caption md:text-xs font-mono text-accent uppercase tracking-[0.3em] mb-2">
                   Engr.
                 </p>
-                <p className="text-[40px] sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-[-0.03em] leading-[0.92]">
+                <p className="text-display sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-[-0.03em] leading-[0.92]">
                   Ahtesham
                   <br />
                   <span className="text-muted/60">Ahmad.</span>

@@ -34,6 +34,24 @@
   --font-sans: var(--font-body);
   --font-heading: var(--font-heading);
   --font-mono: var(--font-mono);
+
+  /* Type Scale — 8 sizes, no arbitrary text-[Npx] */
+  --font-size-caption: 0.625rem;          /* 10px — labels, timestamps, meta */
+  --font-size-caption--line-height: 1rem;
+  --font-size-small: 0.75rem;             /* 12px — secondary text */
+  --font-size-small--line-height: 1.125rem;
+  --font-size-body: 0.875rem;             /* 14px — default body */
+  --font-size-body--line-height: 1.375rem;
+  --font-size-lead: 1rem;                 /* 16px — emphasized body */
+  --font-size-lead--line-height: 1.5rem;
+  --font-size-title: 1.25rem;             /* 20px — section titles */
+  --font-size-title--line-height: 1.75rem;
+  --font-size-heading: 1.75rem;           /* 28px — page headings */
+  --font-size-heading--line-height: 2.25rem;
+  --font-size-display: 3rem;              /* 48px — display text */
+  --font-size-display--line-height: 3.5rem;
+  --font-size-hero: clamp(5rem, 12vw, 12.5rem); /* 80–200px — hero */
+  --font-size-hero--line-height: 0.85;
 }
 
 /* overflow-x: clip hides overflow without creating a scroll context,

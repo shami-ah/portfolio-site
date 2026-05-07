@@ -88,13 +88,13 @@ export function Testimonials(): React.ReactElement | null {
                   <Avatar name={t.name} index={i} />
                   <div className="min-w-0 flex-1">
                     <p className="text-xs md:text-sm font-semibold truncate">{t.name}</p>
-                    <p className="text-[11px] md:text-xs text-muted truncate">
+                    <p className="text-small md:text-xs text-muted truncate">
                       {t.role}
                       {t.company ? ` · ${t.company}` : ""}
                     </p>
                   </div>
                   {t.platform && t.platform !== "direct" && (
-                    <span className="shrink-0 text-[10px] font-mono text-muted/50 border border-card-border rounded px-2 py-0.5">
+                    <span className="shrink-0 text-caption font-mono text-muted/50 border border-card-border rounded px-2 py-0.5">
                       {platformLabel[t.platform]}
                     </span>
                   )}

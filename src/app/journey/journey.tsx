@@ -176,14 +176,14 @@ export function Journey(): React.ReactElement {
             </svg>
             back to portfolio
           </a>
-          <p className="text-[10px] md:text-xs font-mono text-muted/70 text-center truncate hidden sm:block">
+          <p className="text-caption md:text-xs font-mono text-muted/70 text-center truncate hidden sm:block">
             <span className="text-accent">how I work</span> · behind the systems
           </p>
           <a
             href="https://ahtesham.dev.wadwarehouse.com/book"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-[10px] md:text-xs font-mono px-3 py-1.5 rounded-md bg-accent/10 text-accent border border-accent/30 hover:bg-accent/20 transition-all"
+            className="text-caption md:text-xs font-mono px-3 py-1.5 rounded-md bg-accent/10 text-accent border border-accent/30 hover:bg-accent/20 transition-all"
           >
             book a call →
           </a>
@@ -237,7 +237,7 @@ export function Journey(): React.ReactElement {
             >
               <div className="w-1 h-2 bg-accent rounded-full" />
             </motion.div>
-            <p className="text-[10px] font-mono text-muted/50 uppercase tracking-widest">
+            <p className="text-caption font-mono text-muted/50 uppercase tracking-widest">
               scroll
             </p>
           </motion.div>
@@ -283,7 +283,7 @@ export function Journey(): React.ReactElement {
               >
                 <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-accent/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
 
-                <p className="text-[10px] font-mono uppercase tracking-[0.25em] text-accent/70 mb-3">
+                <p className="text-caption font-mono uppercase tracking-[0.25em] text-accent/70 mb-3">
                   {p.tag}
                 </p>
                 <h3 className="text-lg md:text-xl font-bold mb-3 leading-tight">
@@ -293,7 +293,7 @@ export function Journey(): React.ReactElement {
                   {p.body}
                 </p>
                 <div className="pt-3 border-t border-card-border">
-                  <p className="text-[10px] font-mono uppercase tracking-[0.2em] text-muted/50 mb-1.5">
+                  <p className="text-caption font-mono uppercase tracking-[0.2em] text-muted/50 mb-1.5">
                     real example
                   </p>
                   <p className="text-xs text-foreground/80 leading-relaxed">
@@ -340,7 +340,7 @@ export function Journey(): React.ReactElement {
                     <p className="text-sm md:text-base font-mono font-bold text-accent/90 tabular-nums">
                       {d.time}
                     </p>
-                    <p className="text-[9px] md:text-[10px] font-mono text-muted/40 uppercase tracking-widest mt-0.5">
+                    <p className="text-caption md:text-caption font-mono text-muted/40 uppercase tracking-widest mt-0.5">
                       {d.tag}
                     </p>
                   </div>
@@ -442,7 +442,7 @@ export function Journey(): React.ReactElement {
                     {item.title}
                   </h3>
                   <span
-                    className={`shrink-0 px-2 py-0.5 text-[10px] font-mono rounded ${
+                    className={`shrink-0 px-2 py-0.5 text-caption font-mono rounded ${
                       item.status === "Next Up"
                         ? "bg-green-500/10 text-green-400 border border-green-500/20"
                         : item.status === "Designing"

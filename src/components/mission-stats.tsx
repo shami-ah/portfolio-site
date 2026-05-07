@@ -117,14 +117,14 @@ export function MissionStats(): React.ReactElement {
               <div className="card-glow card-gradient-border p-4 md:p-5 rounded-xl bg-card border border-card-border h-full flex flex-col group hover:border-transparent transition-colors duration-300">
                 <div className="flex items-center gap-2 mb-3">
                   <span className="w-1.5 h-1.5 rounded-full bg-accent-status animate-pulse group-hover:scale-150 transition-transform" />
-                  <span className="text-[10px] font-mono text-muted/50 uppercase tracking-wider group-hover:text-accent/70 transition-colors">
+                  <span className="text-caption font-mono text-muted/50 uppercase tracking-wider group-hover:text-accent/70 transition-colors">
                     {w.label}
                   </span>
                 </div>
                 <p className="text-2xl md:text-3xl font-bold font-mono text-foreground mb-1 group-hover:text-accent transition-colors duration-300">
                   {w.value}
                 </p>
-                <p className="text-[10px] md:text-xs text-muted">
+                <p className="text-caption md:text-xs text-muted">
                   {w.desc}
                 </p>
               </div>
@@ -244,7 +244,7 @@ function TerminalAboutCard(): React.ReactElement {
           <span className="w-2.5 h-2.5 rounded-full bg-yellow-500/60" />
           <span className="w-2.5 h-2.5 rounded-full bg-green-500/60" />
         </div>
-        <span className="ml-1 text-[10px] font-mono text-muted/50">shami ~ zsh</span>
+        <span className="ml-1 text-caption font-mono text-muted/50">shami ~ zsh</span>
       </div>
 
       {/* Photo centered at top */}
@@ -257,7 +257,7 @@ function TerminalAboutCard(): React.ReactElement {
       </div>
 
       {/* Terminal body */}
-      <div className="px-4 pb-3 font-mono text-[10.5px] leading-[1.9] flex-1 overflow-hidden">
+      <div className="px-4 pb-3 font-mono text-small leading-[1.9] flex-1 overflow-hidden">
         {/* Completed steps */}
         {completedSteps.map((step) => (
           <div key={step.cmd} className="mb-1">
@@ -265,7 +265,7 @@ function TerminalAboutCard(): React.ReactElement {
             {step.type === "identity" ? (
               <div className="pl-3 py-0.5">
                 <span className="text-foreground font-bold font-sans text-xs">Ahtesham Ahmad</span>
-                <span className="text-accent/60 ml-2 text-[9px]">AI Engineer</span>
+                <span className="text-accent/60 ml-2 text-caption">AI Engineer</span>
               </div>
             ) : (
               <div className={`pl-3 ${step.green ? "text-accent-status/70" : "text-foreground/60"}`}>
@@ -287,7 +287,7 @@ function TerminalAboutCard(): React.ReactElement {
             {showOutput && currentStep.type === "identity" && (
               <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="pl-3 py-0.5">
                 <span className="text-foreground font-bold font-sans text-xs">Ahtesham Ahmad</span>
-                <span className="text-accent/60 ml-2 text-[9px]">AI Engineer</span>
+                <span className="text-accent/60 ml-2 text-caption">AI Engineer</span>
               </motion.div>
             )}
             {showOutput && currentStep.output && currentStep.type !== "identity" && (
@@ -310,11 +310,11 @@ function TerminalAboutCard(): React.ReactElement {
 
       {/* Status bar */}
       <div className="px-3 py-1.5 border-t border-card-border/50 flex items-center justify-between bg-card/30">
-        <div className="flex items-center gap-2 text-[9px] font-mono">
+        <div className="flex items-center gap-2 text-caption font-mono">
           <span className="w-1.5 h-1.5 rounded-full bg-accent-status animate-pulse" />
           <span className="text-accent-status/70">available for hire</span>
         </div>
-        <a href="/uses" className="text-[9px] font-mono text-muted/30 hover:text-accent transition-colors">setup &rarr;</a>
+        <a href="/uses" className="text-caption font-mono text-muted/30 hover:text-accent transition-colors">setup &rarr;</a>
       </div>
     </motion.div>
   );

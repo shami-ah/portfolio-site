@@ -10,7 +10,7 @@ import { FadeUp } from "@/components/motion";
 
 function Line({ label, value, accent }: { label: string; value: string; accent?: boolean }): React.ReactElement {
   return (
-    <div className="font-mono text-[11px] md:text-[12px] leading-[1.8]">
+    <div className="font-mono text-small md:text-small leading-[1.8]">
       <span className="text-foreground/70">{label}</span>
       <span className="text-muted/40"> : </span>
       <span className={accent ? "text-accent" : "text-accent-secondary/80"}>{value}</span>
@@ -22,7 +22,7 @@ function StatStrip({ stats }: { stats: { label: string; value: string }[] }): Re
   return (
     <div className="flex flex-wrap gap-x-4 gap-y-1 mt-2">
       {stats.map((s) => (
-        <div key={s.label} className="flex items-center gap-1.5 text-[10px] font-mono">
+        <div key={s.label} className="flex items-center gap-1.5 text-caption font-mono">
           <span className="text-foreground/80 font-semibold">{s.value}</span>
           <span className="text-muted/40">{s.label}</span>
         </div>
@@ -33,7 +33,7 @@ function StatStrip({ stats }: { stats: { label: string; value: string }[] }): Re
 
 function CodeLine({ num, children }: { num: number; children: React.ReactNode }): React.ReactElement {
   return (
-    <div className="flex leading-[1.75] font-mono text-[11px] px-3 hover:bg-card-hover/30 transition-colors">
+    <div className="flex leading-[1.75] font-mono text-small px-3 hover:bg-card-hover/30 transition-colors">
       <span className="w-6 text-right mr-3 text-muted/15 select-none shrink-0">{num}</span>
       <span>{children}</span>
     </div>
@@ -252,14 +252,14 @@ function PreviewReadme(): React.ReactElement {
       <p className="text-xs text-muted leading-relaxed mb-4">A self-improving AI development ecosystem. Every piece was chosen because it makes the others better. Most of the AI tooling here I built myself.</p>
       <div className="flex flex-wrap gap-2 mb-4">
         {["Gogaa CLI", "CodeLens", "Rasad", "Claude Code"].map((t) => (
-          <span key={t} className="px-2 py-0.5 text-[10px] font-mono bg-accent/5 text-accent/70 rounded border border-accent/10">{t}</span>
+          <span key={t} className="px-2 py-0.5 text-caption font-mono bg-accent/5 text-accent/70 rounded border border-accent/10">{t}</span>
         ))}
       </div>
-      <div className="p-3 rounded-lg bg-background/40 border border-card-border/50 font-mono text-[10px]">
+      <div className="p-3 rounded-lg bg-background/40 border border-card-border/50 font-mono text-caption">
         <div className="text-muted/40 mb-1">$ npm install shami-toolkit</div>
         <div className="text-accent-status/60">+ shami-toolkit@1.0.0</div>
       </div>
-      <p className="text-[10px] text-muted/40 mt-4 font-mono">Ahtesham Ahmad · AI Engineer</p>
+      <p className="text-caption text-muted/40 mt-4 font-mono">Ahtesham Ahmad · AI Engineer</p>
     </div>
   );
 }
@@ -268,15 +268,15 @@ function PreviewEcosystem(): React.ReactElement {
   return (
     <div className="p-5">
       <div className="rounded-xl border border-accent/15 bg-gradient-to-br from-card via-card to-accent/[0.03] p-5">
-        <p className="text-[9px] font-mono text-accent uppercase tracking-[0.2em] mb-3">The loop nobody else has</p>
+        <p className="text-caption font-mono text-accent uppercase tracking-[0.2em] mb-3">The loop nobody else has</p>
         <p className="text-sm font-medium mb-1">I built an ecosystem where each tool makes the others better.</p>
-        <p className="text-[10px] text-muted leading-relaxed mb-5">Gogaa writes code. CodeLens reviews it. Patterns feed back via Guardian mode. Rasad monitors every session.</p>
+        <p className="text-caption text-muted leading-relaxed mb-5">Gogaa writes code. CodeLens reviews it. Patterns feed back via Guardian mode. Rasad monitors every session.</p>
         {/* Circular diagram */}
         <div className="hidden md:flex relative items-center justify-center py-4">
           <div className="absolute w-[200px] h-[200px] rounded-full border border-dashed border-accent/12" />
           <div className="absolute text-center">
-            <p className="text-[8px] font-mono text-muted/35 uppercase tracking-widest">self</p>
-            <p className="text-[8px] font-mono text-muted/35 uppercase tracking-widest">improving</p>
+            <p className="text-caption font-mono text-muted/35 uppercase tracking-widest">self</p>
+            <p className="text-caption font-mono text-muted/35 uppercase tracking-widest">improving</p>
           </div>
           <div className="relative w-[200px] h-[200px]">
             {loopNodes.map((node, i) => {
@@ -288,8 +288,8 @@ function PreviewEcosystem(): React.ReactElement {
               ];
               return (
                 <div key={node.label} className={`absolute ${pos[i]} z-10 px-3 py-1.5 rounded-lg border bg-card text-center min-w-[80px] ${node.color.split(" ")[0]}`}>
-                  <p className={`text-[10px] font-bold ${node.color.split(" ")[1]}`}>{node.label}</p>
-                  <p className="text-[8px] text-muted/50">{node.stat}</p>
+                  <p className={`text-caption font-bold ${node.color.split(" ")[1]}`}>{node.label}</p>
+                  <p className="text-caption text-muted/50">{node.stat}</p>
                 </div>
               );
             })}
@@ -300,13 +300,13 @@ function PreviewEcosystem(): React.ReactElement {
           {loopNodes.map((node) => (
             <div key={node.label} className="flex items-center gap-2 px-3 py-1.5 rounded-lg border border-card-border bg-card">
               <span className={`text-xs font-bold ${node.color.split(" ")[1]}`}>{node.label}</span>
-              <span className="text-[9px] text-muted/50">{node.stat}</span>
+              <span className="text-caption text-muted/50">{node.stat}</span>
             </div>
           ))}
         </div>
         {/* Timeline */}
         <div className="mt-4 pt-3 border-t border-card-border/30">
-          <p className="text-[8px] font-mono text-muted/35 uppercase tracking-widest mb-2">In practice</p>
+          <p className="text-caption font-mono text-muted/35 uppercase tracking-widest mb-2">In practice</p>
           <div className="flex flex-wrap gap-1 items-center">
             {[
               { t: "9:00", a: "Gogaa scaffolds", c: "text-accent" },
@@ -315,10 +315,10 @@ function PreviewEcosystem(): React.ReactElement {
               { t: "9:06", a: "push", c: "text-foreground/60" },
             ].map((s, i, arr) => (
               <span key={s.t} className="flex items-center gap-1">
-                <span className="px-1.5 py-0.5 rounded bg-background/40 border border-card-border/40 text-[8px] font-mono">
+                <span className="px-1.5 py-0.5 rounded bg-background/40 border border-card-border/40 text-caption font-mono">
                   <span className="text-muted/40">{s.t}</span> <span className={s.c}>{s.a}</span>
                 </span>
-                {i < arr.length - 1 && <span className="text-muted/15 text-[8px]">&rarr;</span>}
+                {i < arr.length - 1 && <span className="text-muted/15 text-caption">&rarr;</span>}
               </span>
             ))}
           </div>
@@ -331,8 +331,8 @@ function PreviewEcosystem(): React.ReactElement {
 function PreviewWisc(): React.ReactElement {
   return (
     <div className="p-5">
-      <p className="text-[9px] font-mono text-accent uppercase tracking-[0.15em] mb-3">WISC Framework</p>
-      <p className="text-[10px] text-muted leading-relaxed mb-4">A methodology for managing AI agent context. Cuts 35-40K tokens down to what you need per turn.</p>
+      <p className="text-caption font-mono text-accent uppercase tracking-[0.15em] mb-3">WISC Framework</p>
+      <p className="text-caption text-muted leading-relaxed mb-4">A methodology for managing AI agent context. Cuts 35-40K tokens down to what you need per turn.</p>
       <div className="grid grid-cols-2 gap-2">
         {[
           { l: "W", w: "Write", d: "Persist decisions to files, not conversation" },
@@ -343,13 +343,13 @@ function PreviewWisc(): React.ReactElement {
           <div key={item.l} className="p-2.5 rounded-lg border border-card-border bg-background/30">
             <div className="flex items-baseline gap-1.5 mb-1">
               <span className="text-base font-bold text-accent font-mono">{item.l}</span>
-              <span className="text-[10px] font-semibold text-foreground">{item.w}</span>
+              <span className="text-caption font-semibold text-foreground">{item.w}</span>
             </div>
-            <p className="text-[9px] text-muted leading-relaxed">{item.d}</p>
+            <p className="text-caption text-muted leading-relaxed">{item.d}</p>
           </div>
         ))}
       </div>
-      <div className="mt-3 pt-2 border-t border-card-border/50 flex items-center gap-2 text-[10px] font-mono">
+      <div className="mt-3 pt-2 border-t border-card-border/50 flex items-center gap-2 text-caption font-mono">
         <span className="text-muted/50">result:</span>
         <span className="text-accent-status">72KB &rarr; 11.7KB</span>
         <span className="text-muted/30">&middot;</span>
@@ -362,7 +362,7 @@ function PreviewWisc(): React.ReactElement {
 function PreviewStack(): React.ReactElement {
   return (
     <div className="p-5">
-      <p className="text-[9px] font-mono text-accent uppercase tracking-[0.15em] mb-3">Stack</p>
+      <p className="text-caption font-mono text-accent uppercase tracking-[0.15em] mb-3">Stack</p>
       <div className="space-y-0.5">
         <Line label="TypeScript" value="types prevent prod bugs, no any ever" />
         <Line label="React 19" value="component model, server components" />
@@ -380,7 +380,7 @@ function PreviewStack(): React.ReactElement {
 function PreviewWorkflow(): React.ReactElement {
   return (
     <div className="p-5">
-      <p className="text-[9px] font-mono text-accent uppercase tracking-[0.15em] mb-3">How every feature ships</p>
+      <p className="text-caption font-mono text-accent uppercase tracking-[0.15em] mb-3">How every feature ships</p>
       <div className="space-y-2">
         {[
           { n: "01", l: "Product", d: "Pin the outcome. What does the user see when this works?" },
@@ -391,10 +391,10 @@ function PreviewWorkflow(): React.ReactElement {
           { n: "06", l: "Ship", d: "Feature flag, 10% rollout, then 100%." },
         ].map((s) => (
           <div key={s.n} className="flex gap-2 items-start">
-            <span className="text-[9px] font-mono text-accent/50 tabular-nums pt-0.5 shrink-0">{s.n}</span>
+            <span className="text-caption font-mono text-accent/50 tabular-nums pt-0.5 shrink-0">{s.n}</span>
             <div>
-              <span className="text-[11px] font-semibold text-foreground">{s.l}</span>
-              <span className="text-[10px] text-muted"> {s.d}</span>
+              <span className="text-small font-semibold text-foreground">{s.l}</span>
+              <span className="text-caption text-muted"> {s.d}</span>
             </div>
           </div>
         ))}
@@ -406,7 +406,7 @@ function PreviewWorkflow(): React.ReactElement {
 function PreviewEnvironment(): React.ReactElement {
   return (
     <div className="p-5">
-      <p className="text-[9px] font-mono text-accent uppercase tracking-[0.15em] mb-3">Hardware &amp; Environment</p>
+      <p className="text-caption font-mono text-accent uppercase tracking-[0.15em] mb-3">Hardware &amp; Environment</p>
       <div className="space-y-0.5 mb-4">
         <Line label="machine" value="MacBook Pro M-series, 16GB" />
         <Line label="server" value="Ubuntu VPS, Docker + Traefik + Gitea" />
@@ -414,7 +414,7 @@ function PreviewEnvironment(): React.ReactElement {
         <Line label="container" value="Node 24, Python, Deno, Playwright" />
         <Line label="onboarding" value="clone, setup.sh, start.sh. 10 minutes" />
       </div>
-      <p className="text-[9px] font-mono text-accent uppercase tracking-[0.15em] mb-3">Terminal</p>
+      <p className="text-caption font-mono text-accent uppercase tracking-[0.15em] mb-3">Terminal</p>
       <div className="space-y-0.5">
         <Line label="shell" value="zsh + oh-my-zsh + Powerlevel10k" />
         <Line label="fonts" value="JetBrains Mono, Inter, Space Grotesk" />
@@ -428,7 +428,7 @@ function PreviewEnvironment(): React.ReactElement {
 function PreviewPhilosophy(): React.ReactElement {
   return (
     <div className="p-5">
-      <p className="text-[9px] font-mono text-accent uppercase tracking-[0.15em] mb-3">Principles</p>
+      <p className="text-caption font-mono text-accent uppercase tracking-[0.15em] mb-3">Principles</p>
       <div className="space-y-2">
         {[
           { h: "f4a9c2d", m: "ship it, then improve it", b: "Perfection is the enemy of production." },
@@ -437,12 +437,12 @@ function PreviewPhilosophy(): React.ReactElement {
           { h: "c3f8b21", m: "no any in TypeScript, ever", b: "It always comes back as a runtime error." },
           { h: "e7d4a90", m: "AI with human gates", b: "The first misread costs you the client." },
         ].map((c) => (
-          <div key={c.h} className="font-mono text-[11px]">
+          <div key={c.h} className="font-mono text-small">
             <div className="flex items-baseline gap-2">
               <span className="text-accent-secondary">{c.h}</span>
               <span className="text-foreground/80">{c.m}</span>
             </div>
-            <p className="text-[10px] text-muted/40 pl-16">{c.b}</p>
+            <p className="text-caption text-muted/40 pl-16">{c.b}</p>
           </div>
         ))}
       </div>
@@ -471,6 +471,7 @@ const previewPanels: Record<string, () => React.ReactElement> = {
 export function Uses(): React.ReactElement {
   const [activeFile, setActiveFile] = useState("readme");
   const [openTabs, setOpenTabs] = useState<string[]>(["readme"]);
+  const [mobileView, setMobileView] = useState<"code" | "preview">("preview");
 
   const selectFile = (id: string): void => {
     setActiveFile(id);
@@ -501,15 +502,15 @@ export function Uses(): React.ReactElement {
             <span className="w-3 h-3 rounded-full bg-yellow-500/60" />
             <span className="w-3 h-3 rounded-full bg-green-500/60" />
           </div>
-          <span className="ml-2 text-[11px] font-mono text-muted/45">shami-toolkit</span>
+          <span className="ml-2 text-small font-mono text-muted/45">shami-toolkit</span>
         </div>
-        <a href="/" className="text-[10px] font-mono text-accent/50 hover:text-accent transition-colors">&larr; portfolio</a>
+        <a href="/" className="text-caption font-mono text-accent/50 hover:text-accent transition-colors">&larr; portfolio</a>
       </div>
 
       <div className="flex flex-1 overflow-hidden">
         {/* Sidebar file tree — desktop only */}
-        <div className="w-[190px] border-r border-card-border bg-[#111113] shrink-0 hidden lg:flex flex-col font-mono text-[10px] overflow-y-auto">
-          <div className="px-3 py-2 text-[8px] text-muted/25 uppercase tracking-[1.5px]">Explorer</div>
+        <div className="w-[190px] border-r border-card-border bg-[#111113] shrink-0 hidden lg:flex flex-col font-mono text-caption overflow-y-auto">
+          <div className="px-3 py-2 text-caption text-muted/25 uppercase tracking-[1.5px]">Explorer</div>
 
           {folders.map((folder) => {
             const folderFiles = files.filter((f) => f.folder === folder);
@@ -518,20 +519,20 @@ export function Uses(): React.ReactElement {
               return folderFiles.map((f) => (
                 <button key={f.id} type="button" onClick={() => selectFile(f.id)}
                   className={`w-full flex items-center gap-1.5 px-3 py-[3px] text-left transition-all ${activeFile === f.id ? "bg-accent/6 text-accent border-r-2 border-accent" : "text-muted/45 hover:bg-card-hover/40 hover:text-muted/70"}`}>
-                  <span className={`text-[8px] ${f.iconColor}`}>&#9671;</span>{f.name}
+                  <span className={`text-caption ${f.iconColor}`}>&#9671;</span>{f.name}
                 </button>
               ));
             }
             return (
               <div key={folder}>
                 <div className="flex items-center gap-1.5 px-3 py-[3px] text-muted/40">
-                  <span className="text-[7px] text-accent/30">&#9662;</span>
+                  <span className="text-caption text-accent/30">&#9662;</span>
                   <span className="font-semibold text-foreground/35">{folder}/</span>
                 </div>
                 {folderFiles.map((f) => (
                   <button key={f.id} type="button" onClick={() => selectFile(f.id)}
                     className={`w-full flex items-center gap-1.5 pl-6 pr-3 py-[3px] text-left transition-all ${activeFile === f.id ? "bg-accent/6 text-accent border-r-2 border-accent" : "text-muted/45 hover:bg-card-hover/40 hover:text-muted/70"}`}>
-                    <span className={`text-[8px] ${f.iconColor}`}>&#9670;</span>{f.name}
+                    <span className={`text-caption ${f.iconColor}`}>&#9670;</span>{f.name}
                   </button>
                 ))}
               </div>
@@ -539,13 +540,34 @@ export function Uses(): React.ReactElement {
           })}
 
           <div className="mt-auto px-3 py-2 border-t border-card-border/30">
-            <div className="text-[8px] text-muted/20 uppercase tracking-[1px] mb-1">Git</div>
-            <div className="text-[9px] text-muted/25 flex items-center gap-1"><span className="w-[3px] h-[3px] rounded-full bg-accent-status" /> main</div>
+            <div className="text-caption text-muted/20 uppercase tracking-[1px] mb-1">Git</div>
+            <div className="text-caption text-muted/25 flex items-center gap-1"><span className="w-[3px] h-[3px] rounded-full bg-accent-status" /> main</div>
           </div>
         </div>
 
         {/* Main editor area */}
         <div className="flex-1 flex flex-col overflow-hidden">
+          {/* Mobile file picker — visible when sidebar is hidden */}
+          <div className="flex lg:hidden border-b border-card-border bg-[#111113] shrink-0 overflow-x-auto">
+            <div className="flex items-center gap-0.5 px-2 py-1.5">
+              {files.map((f) => (
+                <button
+                  key={f.id}
+                  type="button"
+                  onClick={() => selectFile(f.id)}
+                  className={`shrink-0 flex items-center gap-1 px-2.5 py-1 rounded-md text-caption font-mono transition-all ${
+                    activeFile === f.id
+                      ? "bg-accent/10 text-accent border border-accent/30"
+                      : "text-muted/45 hover:text-muted/70 hover:bg-card-hover/40 border border-transparent"
+                  }`}
+                >
+                  <span className={`text-caption ${f.iconColor}`}>&#9670;</span>
+                  {f.name}
+                </button>
+              ))}
+            </div>
+          </div>
+
           {/* Tabs */}
           <div className="flex border-b border-card-border bg-[#111113]/50 shrink-0 overflow-x-auto">
             {openTabs.map((tabId) => {
@@ -553,33 +575,65 @@ export function Uses(): React.ReactElement {
               if (!f) return null;
               return (
                 <button key={tabId} type="button" onClick={() => setActiveFile(tabId)}
-                  className={`flex items-center gap-1 px-3 py-[5px] text-[10px] font-mono border-r border-card-border/30 shrink-0 transition-colors ${activeFile === tabId ? "bg-background text-foreground/70 border-b-2 border-b-accent -mb-px" : "text-muted/35 hover:text-muted/55"}`}>
-                  <span className={`text-[7px] ${f.iconColor}`}>&#9670;</span>
+                  className={`flex items-center gap-1 px-3 py-[5px] text-caption font-mono border-r border-card-border/30 shrink-0 transition-colors ${activeFile === tabId ? "bg-background text-foreground/70 border-b-2 border-b-accent -mb-px" : "text-muted/35 hover:text-muted/55"}`}>
+                  <span className={`text-caption ${f.iconColor}`}>&#9670;</span>
                   {f.name}
-                  <span onClick={(e) => closeTab(tabId, e)} className="ml-1 text-[11px] opacity-20 hover:opacity-60 transition-opacity">&times;</span>
+                  <span onClick={(e) => closeTab(tabId, e)} className="ml-1 text-small opacity-20 hover:opacity-60 transition-opacity">&times;</span>
                 </button>
               );
             })}
           </div>
 
           {/* Breadcrumb */}
-          <div className="px-3 py-[3px] text-[9px] font-mono text-muted/20 border-b border-card-border/20 shrink-0 bg-background/30">
+          <div className="px-3 py-[3px] text-caption font-mono text-muted/20 border-b border-card-border/20 shrink-0 bg-background/30">
             shami-toolkit <span className="text-muted/10">&rsaquo;</span> {activeEntry?.path}
           </div>
+
+          {/* Mobile code/preview toggle — visible below md */}
+          {activeFile && activeEntry && (
+            <div className="flex md:hidden border-b border-card-border/30 bg-card/30 shrink-0">
+              <button
+                type="button"
+                onClick={() => setMobileView("code")}
+                className={`flex-1 py-1.5 text-caption font-mono transition-colors ${
+                  mobileView === "code"
+                    ? "text-accent border-b-2 border-accent bg-background/50"
+                    : "text-muted/35 hover:text-muted/55"
+                }`}
+              >
+                Code
+              </button>
+              <button
+                type="button"
+                onClick={() => setMobileView("preview")}
+                className={`flex-1 py-1.5 text-caption font-mono transition-colors ${
+                  mobileView === "preview"
+                    ? "text-accent border-b-2 border-accent bg-background/50"
+                    : "text-muted/35 hover:text-muted/55"
+                }`}
+              >
+                Preview
+              </button>
+            </div>
+          )}
 
           {/* Split: Code + Preview — or empty state */}
           {activeFile && activeEntry ? (
             <div className="flex-1 flex overflow-hidden">
-              {/* Code */}
-              <div className="flex-1 overflow-y-auto border-r border-card-border/25 bg-background/40 hidden md:block">
-                <div className="sticky top-0 z-5 px-3 py-[3px] text-[8px] font-mono text-muted/20 uppercase tracking-[1px] border-b border-card-border/15 bg-background/90 backdrop-blur-sm">
+              {/* Code — shown on md+ always, on mobile when toggled */}
+              <div className={`flex-1 overflow-y-auto border-r border-card-border/25 bg-background/40 ${
+                mobileView === "code" ? "block" : "hidden md:block"
+              }`}>
+                <div className="sticky top-0 z-5 px-3 py-[3px] text-caption font-mono text-muted/20 uppercase tracking-[1px] border-b border-card-border/15 bg-background/90 backdrop-blur-sm">
                   {activeEntry.name}
                 </div>
                 <CodePanel />
               </div>
-              {/* Preview */}
-              <div className="flex-[1.1] overflow-y-auto">
-                <div className="sticky top-0 z-5 px-3 py-[3px] text-[8px] font-mono text-muted/20 uppercase tracking-[1px] border-b border-card-border/15 bg-background/90 backdrop-blur-sm">
+              {/* Preview — shown on md+ always, on mobile when toggled */}
+              <div className={`flex-[1.1] overflow-y-auto ${
+                mobileView === "preview" ? "block" : "hidden md:block"
+              }`}>
+                <div className="sticky top-0 z-5 px-3 py-[3px] text-caption font-mono text-muted/20 uppercase tracking-[1px] border-b border-card-border/15 bg-background/90 backdrop-blur-sm">
                   Preview
                 </div>
                 <PreviewPanel />
@@ -590,13 +644,13 @@ export function Uses(): React.ReactElement {
               <div className="text-center">
                 <p className="text-muted/20 text-3xl mb-3 font-mono">&#123; &#125;</p>
                 <p className="text-sm text-muted/30 font-mono mb-1">No file open</p>
-                <p className="text-[10px] text-muted/20">Select a file from the sidebar to explore</p>
+                <p className="text-caption text-muted/20">Select a file from the sidebar to explore</p>
               </div>
             </div>
           )}
 
           {/* Status bar */}
-          <div className="flex items-center justify-between px-3 py-[2px] border-t border-card-border bg-card/40 shrink-0 text-[9px] font-mono text-muted/25">
+          <div className="flex items-center justify-between px-3 py-[2px] border-t border-card-border bg-card/40 shrink-0 text-caption font-mono text-muted/25">
             <div className="flex items-center gap-3">
               <span className="flex items-center gap-1"><span className="w-[3px] h-[3px] rounded-full bg-accent-status" /> main</span>
               <span>{lang}</span>

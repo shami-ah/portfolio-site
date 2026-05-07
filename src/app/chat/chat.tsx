@@ -150,11 +150,11 @@ export function ChatCV(): React.ReactElement {
             <span className="w-3 h-3 rounded-full bg-green-500/70" />
           </div>
           <div className="flex-1 text-center">
-            <span className="text-[11px] font-mono text-muted/50">
+            <span className="text-small font-mono text-muted/50">
               🔒 gogaa.dev / agent / portfolio-chat
             </span>
           </div>
-          <span className="text-[10px] font-mono text-accent-status flex items-center gap-1.5">
+          <span className="text-caption font-mono text-accent-status flex items-center gap-1.5">
             <span className="w-1.5 h-1.5 rounded-full bg-accent-status animate-pulse" />
             Running
           </span>
@@ -170,9 +170,9 @@ export function ChatCV(): React.ReactElement {
             <div>
               <div className="flex items-center gap-2">
                 <span className="font-mono text-sm font-semibold text-foreground">Gogaa</span>
-                <span className="text-[10px] font-mono text-muted/40">· {model.label}</span>
+                <span className="text-caption font-mono text-muted/40">· {model.label}</span>
               </div>
-              <span className="text-[10px] font-mono text-muted/40">portfolio agent mode · scoped to Ahtesham&apos;s work</span>
+              <span className="text-caption font-mono text-muted/40">portfolio agent mode · scoped to Ahtesham&apos;s work</span>
             </div>
           </div>
 
@@ -184,7 +184,7 @@ export function ChatCV(): React.ReactElement {
                   key={m.id}
                   type="button"
                   onClick={() => setActiveModel(m.id)}
-                  className={`px-2.5 py-1 rounded-md text-[11px] font-mono transition-all ${
+                  className={`px-2.5 py-1 rounded-md text-small font-mono transition-all ${
                     activeModel === m.id
                       ? `text-foreground bg-card-hover border border-card-border`
                       : "text-muted/40 hover:text-muted/70"
@@ -199,7 +199,7 @@ export function ChatCV(): React.ReactElement {
               href="https://ahtesham.dev.wadwarehouse.com/book"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-[11px] font-mono px-3 py-1.5 rounded-md bg-accent/10 text-accent border border-accent/30 hover:bg-accent/20 transition-all"
+              className="text-small font-mono px-3 py-1.5 rounded-md bg-accent/10 text-accent border border-accent/30 hover:bg-accent/20 transition-all"
             >
               book a call
             </a>
@@ -225,12 +225,12 @@ export function ChatCV(): React.ReactElement {
                 <h2 className="text-2xl font-bold tracking-tight">
                   <span className="text-accent-status">gogaa</span>
                 </h2>
-                <p className="text-[11px] font-mono text-muted/50">AI coding agent · open source</p>
+                <p className="text-small font-mono text-muted/50">AI coding agent · open source</p>
               </div>
             </div>
 
             {/* Meta lines — type in one by one */}
-            <div className="text-[11px] md:text-[12px] font-mono leading-[1.6] pl-1">
+            <div className="text-small md:text-small font-mono leading-[1.6] pl-1">
               {WELCOME_META.slice(0, bootLine).map((line, i) => (
                 <motion.div
                   key={i}
@@ -266,7 +266,7 @@ export function ChatCV(): React.ReactElement {
                     <p className="text-muted/60 text-xs">AI Engineer · Open to opportunities</p>
                     <div className="flex flex-wrap gap-1.5 mt-2">
                       {["Multi-Agent Systems", "Production AI", "Developer Tooling", "TypeScript", "React", "Supabase"].map((t) => (
-                        <span key={t} className="px-2 py-0.5 text-[10px] bg-accent/5 text-accent/70 rounded border border-accent/10">
+                        <span key={t} className="px-2 py-0.5 text-caption bg-accent/5 text-accent/70 rounded border border-accent/10">
                           {t}
                         </span>
                       ))}
@@ -279,7 +279,7 @@ export function ChatCV(): React.ReactElement {
                   availability, the tools he built, or how you&apos;d work together.
                 </div>
 
-                <div className="mt-3 text-[10px] text-muted/40">
+                <div className="mt-3 text-caption text-muted/40">
                   What I can help with:
                 </div>
                 <div className="mt-2 grid grid-cols-2 gap-1.5">
@@ -291,7 +291,7 @@ export function ChatCV(): React.ReactElement {
                     "See his availability & rate",
                     "Send him a direct message",
                   ].map((item, i) => (
-                    <div key={i} className="text-[11px] text-muted/50 flex items-center gap-1.5">
+                    <div key={i} className="text-small text-muted/50 flex items-center gap-1.5">
                       <span className="text-accent/40">{i + 1}.</span> {item}
                     </div>
                   ))}
@@ -313,7 +313,7 @@ export function ChatCV(): React.ReactElement {
                   key={s}
                   type="button"
                   onClick={() => send(s)}
-                  className="text-[11px] px-3 py-1.5 rounded-lg border border-card-border bg-card/60 hover:border-accent/40 hover:bg-accent/10 hover:text-accent transition-all font-sans"
+                  className="text-small px-3 py-1.5 rounded-lg border border-card-border bg-card/60 hover:border-accent/40 hover:bg-accent/10 hover:text-accent transition-all font-sans"
                 >
                   {s}
                 </button>
@@ -354,10 +354,10 @@ export function ChatCV(): React.ReactElement {
           </button>
         </div>
         <div className="max-w-3xl mx-auto px-4 md:px-6 pb-2 flex items-center justify-between">
-          <p className="text-[9px] font-mono text-muted/25">
+          <p className="text-caption font-mono text-muted/25">
             gogaa-cli v1.2.1 · portfolio agent mode · {model.label} via {model.provider}
           </p>
-          <p className="text-[9px] font-mono text-muted/25">
+          <p className="text-caption font-mono text-muted/25">
             {messages.filter((m) => m.role === "user").length} / 20 messages
           </p>
         </div>
@@ -398,8 +398,8 @@ function ChatMessage({ msg }: { msg: Message }): React.ReactElement {
           </div>
           <div className="min-w-0 max-w-[85%]">
             <div className="flex items-center gap-2 mb-1">
-              <span className="text-[10px] font-mono text-accent/70">shami.ai</span>
-              <span className="text-[10px] font-mono text-muted/30">agent</span>
+              <span className="text-caption font-mono text-accent/70">shami.ai</span>
+              <span className="text-caption font-mono text-muted/30">agent</span>
             </div>
             <div className="px-4 py-3 rounded-xl rounded-tl-sm bg-card border border-card-border text-sm font-sans text-foreground/85 leading-relaxed">
               <p className="whitespace-pre-wrap">
@@ -437,8 +437,8 @@ function ThinkingIndicator({ model }: { model: string }): React.ReactElement {
       </div>
       <div>
         <div className="flex items-center gap-2 mb-1">
-          <span className="text-[10px] font-mono text-accent/70">shami.ai</span>
-          <span className="text-[10px] font-mono text-muted/30">thinking via {model}</span>
+          <span className="text-caption font-mono text-accent/70">shami.ai</span>
+          <span className="text-caption font-mono text-muted/30">thinking via {model}</span>
         </div>
         <div className="px-4 py-3 rounded-xl rounded-tl-sm bg-card border border-card-border flex items-center gap-2">
           {[0, 1, 2].map((i) => (

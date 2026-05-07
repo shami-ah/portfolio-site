@@ -106,7 +106,7 @@ export function GitLog(): React.ReactElement {
                   {/* Commit header */}
                   <div className="flex flex-wrap items-center gap-x-2 gap-y-1 mb-1 text-xs">
                     <span className="text-accent-secondary">{role.hash}</span>
-                    <span className="px-1.5 py-0.5 rounded bg-accent/10 text-accent text-[10px] border border-accent/20">
+                    <span className="px-1.5 py-0.5 rounded bg-accent/10 text-accent text-caption border border-accent/20">
                       {role.branch}
                     </span>
                     <span className="text-muted/40 hidden sm:inline">{role.company}</span>
@@ -139,7 +139,7 @@ export function GitLog(): React.ReactElement {
                     {role.stack.map((tech) => (
                       <span
                         key={tech}
-                        className="px-2 py-0.5 text-[10px] bg-accent/5 text-accent/70 rounded border border-accent/10"
+                        className="px-2 py-0.5 text-caption bg-accent/5 text-accent/70 rounded border border-accent/10"
                       >
                         {tech}
                       </span>
@@ -147,7 +147,7 @@ export function GitLog(): React.ReactElement {
                   </div>
 
                   {/* Git stats */}
-                  <div className="flex items-center gap-3 text-[11px] text-muted/50 pt-3 border-t border-card-border/50">
+                  <div className="flex items-center gap-3 text-small text-muted/50 pt-3 border-t border-card-border/50">
                     <span>{role.stats.files} files changed</span>
                     <span className="text-accent-status">+{role.stats.insertions.toLocaleString()}</span>
                     <span className="text-red-400/70">-{role.stats.deletions.toLocaleString()}</span>
@@ -168,13 +168,13 @@ export function GitLog(): React.ReactElement {
               <div className="hidden md:block absolute left-[16px] top-3 w-[15px] h-[15px] rounded-full border-2 border-accent/40 bg-background z-10" />
 
               <div className="flex items-center gap-2 mb-2">
-                <span className="text-[10px] font-mono text-muted/30">branches →</span>
+                <span className="text-caption font-mono text-muted/30">branches →</span>
               </div>
               <div className="flex flex-wrap gap-2">
                 {["gogaa-cli", "codelens", "rasad"].map((branch) => (
                   <span
                     key={branch}
-                    className="px-3 py-1 rounded-md text-[10px] font-mono bg-accent/5 text-accent/60 border border-accent/15"
+                    className="px-3 py-1 rounded-md text-caption font-mono bg-accent/5 text-accent/60 border border-accent/15"
                   >
                     {branch}
                   </span>

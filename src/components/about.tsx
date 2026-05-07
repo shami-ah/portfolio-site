@@ -84,14 +84,14 @@ export function About(): React.ReactElement {
           {/* Right column: dramatic number */}
           <SlideIn direction="right">
             <div className="relative">
-              <p className="font-bold tabular-nums leading-[0.85] tracking-tighter bg-gradient-to-br from-foreground to-muted/50 bg-clip-text text-transparent text-[100px] sm:text-[140px] md:text-[160px] lg:text-[200px]">
+              <p className="font-bold tabular-nums leading-[0.85] tracking-tighter bg-gradient-to-br from-foreground to-muted/50 bg-clip-text text-transparent text-hero sm:text-hero md:text-hero lg:text-hero">
                 <CountUp to={status.portfolio.projects} suffix="" />
                 <span className="text-accent">+</span>
               </p>
               <p className="text-xs md:text-sm font-mono text-muted/70 uppercase tracking-[0.2em] mt-2">
                 production projects shipped
               </p>
-              <p className="text-[10px] md:text-xs text-muted/50 mt-1">
+              <p className="text-caption md:text-xs text-muted/50 mt-1">
                 2019 → now · 40+ returning clients · 100% satisfaction
               </p>
             </div>
@@ -108,7 +108,7 @@ export function About(): React.ReactElement {
               <p className="text-2xl md:text-3xl font-bold text-foreground font-mono">
                 {stat.counter}
               </p>
-              <p className="text-[10px] md:text-xs text-muted mt-1 uppercase tracking-wider">
+              <p className="text-caption md:text-xs text-muted mt-1 uppercase tracking-wider">
                 {stat.label}
               </p>
             </div>

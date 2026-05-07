@@ -89,7 +89,7 @@ export function Experience(): React.ReactElement {
                           key={point.slice(0, 40)}
                           className="text-xs md:text-sm text-muted leading-relaxed flex gap-2"
                         >
-                          <span className="text-accent/60 mt-1 shrink-0 text-[10px]">
+                          <span className="text-accent/60 mt-1 shrink-0 text-caption">
                             &#9654;
                           </span>
                           {point}
@@ -102,7 +102,7 @@ export function Experience(): React.ReactElement {
                         {role.stack.split(", ").map((tech) => (
                           <span
                             key={tech}
-                            className="px-2 md:px-2.5 py-0.5 md:py-1 text-[10px] md:text-xs font-mono bg-accent/5 text-accent/70 rounded-md border border-accent/10"
+                            className="px-2 md:px-2.5 py-0.5 md:py-1 text-caption md:text-xs font-mono bg-accent/5 text-accent/70 rounded-md border border-accent/10"
                           >
                             {tech}
                           </span>

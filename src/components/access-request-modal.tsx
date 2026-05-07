@@ -199,7 +199,7 @@ export function AccessRequestModal({ open, onClose }: AccessRequestModalProps): 
                 <form onSubmit={handleSubmit} className="space-y-4">
                   {/* Name */}
                   <div>
-                    <label htmlFor="ar-name" className="block text-[11px] font-mono text-muted uppercase tracking-wider mb-1.5">
+                    <label htmlFor="ar-name" className="block text-small font-mono text-muted uppercase tracking-wider mb-1.5">
                       Full Name *
                     </label>
                     <input
@@ -217,7 +217,7 @@ export function AccessRequestModal({ open, onClose }: AccessRequestModalProps): 
 
                   {/* Email */}
                   <div>
-                    <label htmlFor="ar-email" className="block text-[11px] font-mono text-muted uppercase tracking-wider mb-1.5">
+                    <label htmlFor="ar-email" className="block text-small font-mono text-muted uppercase tracking-wider mb-1.5">
                       Email *
                     </label>
                     <input
@@ -234,7 +234,7 @@ export function AccessRequestModal({ open, onClose }: AccessRequestModalProps): 
                   {/* Country + Organization row */}
                   <div className="grid grid-cols-2 gap-3">
                     <div>
-                      <label htmlFor="ar-country" className="block text-[11px] font-mono text-muted uppercase tracking-wider mb-1.5">
+                      <label htmlFor="ar-country" className="block text-small font-mono text-muted uppercase tracking-wider mb-1.5">
                         Country *
                       </label>
                       <select
@@ -256,7 +256,7 @@ export function AccessRequestModal({ open, onClose }: AccessRequestModalProps): 
                       </select>
                     </div>
                     <div>
-                      <label htmlFor="ar-org" className="block text-[11px] font-mono text-muted uppercase tracking-wider mb-1.5">
+                      <label htmlFor="ar-org" className="block text-small font-mono text-muted uppercase tracking-wider mb-1.5">
                         Company / Org
                         <span className="text-muted/40 normal-case ml-1">(optional)</span>
                       </label>
@@ -273,7 +273,7 @@ export function AccessRequestModal({ open, onClose }: AccessRequestModalProps): 
 
                   {/* Reason */}
                   <div>
-                    <label htmlFor="ar-reason" className="block text-[11px] font-mono text-muted uppercase tracking-wider mb-1.5">
+                    <label htmlFor="ar-reason" className="block text-small font-mono text-muted uppercase tracking-wider mb-1.5">
                       Why do you want access? *
                     </label>
                     <textarea
@@ -318,7 +318,7 @@ export function AccessRequestModal({ open, onClose }: AccessRequestModalProps): 
                     )}
                   </button>
 
-                  <p className="text-[10px] text-muted/50 text-center">
+                  <p className="text-caption text-muted/50 text-center">
                     Your information is only used to process this request.
                   </p>
                 </form>

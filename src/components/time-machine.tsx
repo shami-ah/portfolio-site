@@ -124,11 +124,11 @@ export function TimeMachine(): React.ReactElement {
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-accent/50 to-transparent" />
 
       <div className="flex items-center justify-between mb-5 gap-3">
-        <p className="text-[10px] md:text-xs font-mono uppercase tracking-[0.25em] text-accent flex items-center gap-2">
+        <p className="text-caption md:text-xs font-mono uppercase tracking-[0.25em] text-accent flex items-center gap-2">
           <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
           time machine
         </p>
-        <p className="text-[10px] font-mono text-muted/50 hidden sm:block">
+        <p className="text-caption font-mono text-muted/50 hidden sm:block">
           drag or click a year
         </p>
       </div>
@@ -145,7 +145,7 @@ export function TimeMachine(): React.ReactElement {
                 setUserInteracted(true);
                 setIdx(i);
               }}
-              className={`flex-1 text-[10px] md:text-xs font-mono py-1.5 rounded transition-all ${
+              className={`flex-1 text-caption md:text-xs font-mono py-1.5 rounded transition-all ${
                 active
                   ? "text-accent font-bold"
                   : "text-muted/50 hover:text-muted"
@@ -213,7 +213,7 @@ export function TimeMachine(): React.ReactElement {
             <p className="text-3xl md:text-4xl font-bold font-mono text-foreground">
               {ctx.year}
             </p>
-            <span className="px-2 py-0.5 text-[10px] font-mono rounded border border-accent/30 bg-accent/10 text-accent">
+            <span className="px-2 py-0.5 text-caption font-mono rounded border border-accent/30 bg-accent/10 text-accent">
               {ctx.label}
             </span>
           </div>

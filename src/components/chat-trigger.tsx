@@ -32,7 +32,7 @@ export function ChatTrigger(): React.ReactElement {
           <span className="font-mono text-sm font-bold">&gt;_</span>
 
           {/* Tooltip */}
-          <span className="absolute right-full mr-3 px-2.5 py-1.5 rounded-md bg-card/95 backdrop-blur-md border border-card-border text-[11px] font-mono text-foreground whitespace-nowrap opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity duration-150 shadow-lg">
+          <span className="absolute right-full mr-3 px-2.5 py-1.5 rounded-md bg-card/95 backdrop-blur-md border border-card-border text-small font-mono text-foreground whitespace-nowrap opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity duration-150 shadow-lg">
             Chat with my AI
           </span>
         </motion.a>

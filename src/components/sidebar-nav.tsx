@@ -104,18 +104,18 @@ export function SidebarNav(): React.ReactElement {
                 <span className="absolute left-0 top-1/2 -translate-y-1/2 w-[2px] h-3 rounded-full bg-accent shadow-[0_0_6px_rgba(212,168,83,0.5)]" />
               )}
 
-              <span className={`text-[9px] shrink-0 ${
+              <span className={`text-caption shrink-0 ${
                 isDone ? "text-accent-status" : isActive ? "text-accent" : "text-muted/20"
               }`}>
                 {isDone ? "✓" : isActive ? "▸" : "○"}
               </span>
-              <span className={`text-[9px] transition-colors ${
+              <span className={`text-caption transition-colors ${
                 isDone ? "text-foreground/50" : isActive ? "text-accent" : "text-muted/20"
               }`}>
                 {label}
               </span>
               {(isDone || isActive) && timeStr && (
-                <span className={`text-[8px] ml-auto tabular-nums ${
+                <span className={`text-caption ml-auto tabular-nums ${
                   isDone ? "text-accent-status/30" : "text-accent/30"
                 }`}>
                   {timeStr}

@@ -106,13 +106,13 @@ export function Story({ project }: { project: ProjectData }): React.ReactElement
             </svg>
             full case study
           </a>
-          <p className="text-[10px] md:text-xs font-mono text-muted/70 truncate">
+          <p className="text-caption md:text-xs font-mono text-muted/70 truncate">
             story mode · <span className="text-accent">{project.title}</span>
           </p>
           <button
             type="button"
             onClick={() => setAutoPlay((v) => !v)}
-            className="text-[10px] font-mono px-2 py-1 rounded border border-card-border bg-card/60 text-muted hover:text-accent transition-all"
+            className="text-caption font-mono px-2 py-1 rounded border border-card-border bg-card/60 text-muted hover:text-accent transition-all"
           >
             {autoPlay ? "⏸ pause" : "▶ play"}
           </button>
@@ -131,14 +131,14 @@ export function Story({ project }: { project: ProjectData }): React.ReactElement
               className={`flex ${b.role === "user" ? "justify-end" : "justify-start"}`}
             >
               <div
-                className={`max-w-[85%] md:max-w-[75%] px-4 py-3 rounded-2xl text-sm md:text-[15px] leading-relaxed ${
+                className={`max-w-[85%] md:max-w-[75%] px-4 py-3 rounded-2xl text-sm md:text-lead leading-relaxed ${
                   b.role === "user"
                     ? "bg-accent text-white rounded-br-md"
                     : "bg-card border border-card-border text-foreground/90 rounded-bl-md"
                 }`}
               >
                 {b.role === "me" && (
-                  <p className="text-[9px] font-mono uppercase tracking-[0.25em] text-accent/70 mb-1.5">
+                  <p className="text-caption font-mono uppercase tracking-[0.25em] text-accent/70 mb-1.5">
                     ahtesham
                   </p>
                 )}

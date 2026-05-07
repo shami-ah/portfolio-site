@@ -105,7 +105,7 @@ export function Hero(): React.ReactElement {
           initial={{ opacity: 0, scale: 0.9 }}
           animate={ready ? { opacity: 1, scale: 1 } : {}}
           transition={{ duration: 0.5, delay: 0.25, ease: [0.22, 1, 0.36, 1] }}
-          className="inline-flex items-center gap-2 px-3 md:px-4 py-1 md:py-1.5 rounded-full bg-green-500/10 border border-green-500/20 text-green-400 text-[10px] md:text-xs font-mono mb-6 md:mb-8"
+          className="inline-flex items-center gap-2 px-3 md:px-4 py-1 md:py-1.5 rounded-full bg-green-500/10 border border-green-500/20 text-green-400 text-caption md:text-xs font-mono mb-6 md:mb-8"
         >
           <span className="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse" />
           Open to opportunities
@@ -113,7 +113,7 @@ export function Hero(): React.ReactElement {
 
         {/* Single confident tagline */}
         {ready && (
-          <h1 className="text-[28px] sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight leading-[1.15] mb-5 md:mb-6">
+          <h1 className="text-heading sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight leading-[1.15] mb-5 md:mb-6">
             <WordReveal text={tagline.prefix} delay={0.55} />
             <br className="hidden sm:block" />
             <span className="text-accent">
@@ -161,7 +161,7 @@ export function Hero(): React.ReactElement {
           className="flex items-center justify-center gap-2 mt-4 md:mt-5 px-2"
         >
           <span className="w-1.5 h-1.5 bg-accent rounded-full animate-pulse shrink-0" />
-          <p className="text-[10px] md:text-xs font-mono text-muted/60 truncate">
+          <p className="text-caption md:text-xs font-mono text-muted/60 truncate">
             Currently building:{" "}
             <span className="text-accent/80">
               {status.currentlyBuilding.label}: {status.currentlyBuilding.detail}
@@ -176,7 +176,7 @@ export function Hero(): React.ReactElement {
           transition={{ duration: 0.8, delay: 3.0, ease: [0.22, 1, 0.36, 1] }}
           className="mt-10 md:mt-16 p-4 md:p-5 rounded-xl bg-card/50 border border-card-border backdrop-blur-sm"
         >
-          <p className="text-[10px] md:text-xs font-mono text-muted mb-4 md:mb-5 uppercase tracking-wider">
+          <p className="text-caption md:text-xs font-mono text-muted mb-4 md:mb-5 uppercase tracking-wider">
             How I architect every system · live
           </p>
           <HeroFlow />
