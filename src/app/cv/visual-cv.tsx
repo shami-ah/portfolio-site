@@ -6,8 +6,8 @@ import { useSearchParams } from "next/navigation";
 import { useCvHit } from "@/components/cv-counter";
 import { useStatus } from "@/lib/use-status";
 
-const ACCENT = "#3b82f6";
-const AMBER = "#f59e0b";
+const ACCENT = "#d4a853";
+const AMBER = "#8ba4c4";
 
 // Counter animation hook
 function useCounter(target: number, duration = 2000) {
@@ -49,7 +49,7 @@ function FlowNode({ label, delay, isLast }: { label: string; delay: number; isLa
       </motion.span>
       {!isLast && (
         <motion.span
-          className="text-zinc-600 text-xs"
+          className="text-muted/50 text-xs"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: delay + 0.2, duration: 0.3 }}
@@ -70,10 +70,10 @@ function SkillBar({ name, level, delay }: { name: string; level: number; delay: 
       transition={{ delay, duration: 0.4 }}
     >
       <div className="flex justify-between text-xs mb-1">
-        <span className="text-zinc-300 group-hover:text-white transition-colors">{name}</span>
-        <span className="text-zinc-500 font-mono">{level}%</span>
+        <span className="text-foreground/80 group-hover:text-white transition-colors">{name}</span>
+        <span className="text-muted/70 font-mono">{level}%</span>
       </div>
-      <div className="h-1.5 bg-zinc-800 rounded-full overflow-hidden">
+      <div className="h-1.5 bg-card rounded-full overflow-hidden">
         <motion.div
           className="h-full rounded-full"
           style={{ background: `linear-gradient(90deg, ${ACCENT}, ${ACCENT}cc)`, boxShadow: `0 0 10px ${ACCENT}40` }}
@@ -91,10 +91,10 @@ function SkillBar({ name, level, delay }: { name: string; level: number; delay: 
 function TimelineDot({ active }: { active?: boolean }) {
   return (
     <div className="relative flex items-center justify-center">
-      <div className={`w-3 h-3 rounded-full border-2 ${active ? "border-blue-500 bg-blue-500/30" : "border-zinc-600 bg-zinc-800"}`} />
+      <div className={`w-3 h-3 rounded-full border-2 ${active ? "border-accent bg-accent/30" : "border-zinc-600 bg-card"}`} />
       {active && (
         <motion.div
-          className="absolute w-3 h-3 rounded-full border border-blue-500/50"
+          className="absolute w-3 h-3 rounded-full border border-accent/50"
           animate={{ scale: [1, 2, 1], opacity: [0.5, 0, 0.5] }}
           transition={{ duration: 2, repeat: Infinity }}
         />
@@ -137,22 +137,22 @@ export function VisualCV(): React.ReactElement {
         </motion.a>
         <motion.button
           onClick={handleDownload}
-          className="px-3 md:px-4 py-2 bg-blue-500/90 hover:bg-blue-500 text-white rounded-lg text-xs md:text-sm font-medium backdrop-blur-sm border border-blue-400/30 flex items-center gap-1.5 shadow-lg shadow-blue-500/20"
+          className="px-3 md:px-4 py-2 bg-accent/90 hover:bg-accent text-white rounded-lg text-xs md:text-sm font-medium backdrop-blur-sm border border-accent/30 flex items-center gap-1.5 shadow-lg shadow-accent/20"
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
         >
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><polyline points="14 2 14 8 20 8" /><line x1="12" y1="18" x2="12" y2="12" /><polyline points="9 15 12 18 15 15" /></svg>
           PDF
         </motion.button>
-        <a href="/" className="px-3 md:px-4 py-2 bg-zinc-800/90 hover:bg-zinc-700 text-white rounded-lg text-xs md:text-sm font-medium backdrop-blur-sm border border-zinc-700/50">← Back</a>
+        <a href="/" className="px-3 md:px-4 py-2 bg-card/90 hover:bg-card-hover text-white rounded-lg text-xs md:text-sm font-medium backdrop-blur-sm border border-card-border">← Back</a>
       </div>
 
       {/* Screen version - dark, animated */}
-      <div className={`print:hidden min-h-screen bg-[#09090b] text-white overflow-hidden ${preview ? "hidden" : ""}`}>
+      <div className={`print:hidden min-h-screen bg-background text-white overflow-hidden ${preview ? "hidden" : ""}`}>
         {/* Background effects */}
         <div className="fixed inset-0 pointer-events-none">
-          <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-500/5 rounded-full blur-3xl" />
-          <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-amber-500/5 rounded-full blur-3xl" />
+          <div className="absolute top-0 left-1/4 w-96 h-96 bg-accent/5 rounded-full blur-3xl" />
+          <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-accent-secondary/5 rounded-full blur-3xl" />
           <div className="absolute inset-0" style={{ backgroundImage: "radial-gradient(circle at 1px 1px, rgba(255,255,255,0.03) 1px, transparent 0)", backgroundSize: "40px 40px" }} />
         </div>
 
@@ -167,7 +167,7 @@ export function VisualCV(): React.ReactElement {
             <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
               <div>
                 <motion.p
-                  className="text-xs font-mono uppercase tracking-[0.3em] text-zinc-500 mb-3"
+                  className="text-xs font-mono uppercase tracking-[0.3em] text-muted/70 mb-3"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.2 }}
@@ -177,20 +177,20 @@ export function VisualCV(): React.ReactElement {
                   <span className="block" style={{ color: ACCENT }}>Ahmad</span>
                 </h1>
                 <motion.p
-                  className="text-lg text-zinc-400 mt-3 font-light"
+                  className="text-lg text-muted mt-3 font-light"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.4 }}
                 >AI Automation Architect</motion.p>
                 <motion.p
-                  className="text-sm text-zinc-500 mt-4 max-w-md leading-relaxed"
+                  className="text-sm text-muted/70 mt-4 max-w-md leading-relaxed"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.45 }}
                 >5+ years shipping production AI systems. From multi-agent orchestration and RAG pipelines to full-stack SaaS. I design architectures where AI agents classify, execute, and learn while humans stay in control. Open to senior AI engineering roles in the Gulf region or remote.</motion.p>
               </div>
               <motion.div
-                className="text-sm text-zinc-500 space-y-1.5 font-mono"
+                className="text-sm text-muted/70 space-y-1.5 font-mono"
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.5 }}
@@ -241,13 +241,13 @@ export function VisualCV(): React.ReactElement {
             ].map((stat, i) => (
               <motion.div
                 key={stat.l}
-                className="p-5 rounded-xl border border-zinc-800 bg-zinc-900/50 backdrop-blur-sm text-center group hover:border-blue-500/30 transition-colors"
+                className="p-5 rounded-xl border border-card-border bg-card/50 backdrop-blur-sm text-center group hover:border-accent/30 transition-colors"
                 whileHover={{ y: -4, boxShadow: `0 8px 30px ${ACCENT}10` }}
               >
                 <p className="text-3xl font-bold font-mono" style={{ color: i === 3 ? AMBER : ACCENT }}>
                   <AnimatedCounter value={stat.n} suffix={stat.s} />
                 </p>
-                <p className="text-xs text-zinc-500 mt-1 uppercase tracking-wider">{stat.l}</p>
+                <p className="text-xs text-muted/70 mt-1 uppercase tracking-wider">{stat.l}</p>
               </motion.div>
             ))}
           </motion.div>
@@ -290,13 +290,13 @@ export function VisualCV(): React.ReactElement {
 
               {/* Education */}
               <Section title="Education" icon="◈">
-                <motion.div className="p-4 rounded-lg border border-zinc-800 bg-zinc-900/30" initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}>
+                <motion.div className="p-4 rounded-lg border border-card-border bg-card/30" initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}>
                   <div className="flex justify-between items-baseline">
                     <div>
                       <p className="font-semibold text-sm">B.Eng in Electrical & Electronics Engineering</p>
-                      <p className="text-xs text-zinc-500">Sukkur IBA University</p>
+                      <p className="text-xs text-muted/70">Sukkur IBA University</p>
                     </div>
-                    <p className="text-xs text-zinc-600 font-mono">2017 – 2020 · Grade A</p>
+                    <p className="text-xs text-muted/50 font-mono">2017 – 2020 · Grade A</p>
                   </div>
                 </motion.div>
               </Section>
@@ -333,7 +333,7 @@ export function VisualCV(): React.ReactElement {
               <Section title="Certifications" icon="🎓">
                 <div className="space-y-2 text-xs">
                   {["Generative AI & LLMs · IBM", "Project Management · Google", "Gen AI for PMs · PMI"].map((cert, i) => (
-                    <motion.p key={cert} className="text-zinc-400 pl-3 border-l border-zinc-800" initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }}>{cert}</motion.p>
+                    <motion.p key={cert} className="text-muted pl-3 border-l border-card-border" initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }}>{cert}</motion.p>
                   ))}
                 </div>
               </Section>
@@ -342,7 +342,7 @@ export function VisualCV(): React.ReactElement {
               <Section title="Languages" icon="🌐">
                 <div className="flex gap-2 flex-wrap">
                   {[{ l: "English", v: "Professional" }, { l: "Urdu", v: "Native" }, { l: "Pashtu", v: "Native" }, { l: "Sindhi", v: "Conversational" }, { l: "Arabic", v: "Conversational" }].map((lang) => (
-                    <span key={lang.l} className="text-xs px-2.5 py-1 rounded-md bg-zinc-800/80 text-zinc-400 border border-zinc-700/50">{lang.l} · {lang.v}</span>
+                    <span key={lang.l} className="text-xs px-2.5 py-1 rounded-md bg-card/80 text-muted border border-card-border">{lang.l} · {lang.v}</span>
                   ))}
                 </div>
               </Section>
@@ -357,7 +357,7 @@ export function VisualCV(): React.ReactElement {
                   ].map((item, i) => (
                     <motion.div
                       key={item.name}
-                      className="flex items-center gap-3 p-2.5 rounded-lg bg-zinc-900/50 border border-zinc-800"
+                      className="flex items-center gap-3 p-2.5 rounded-lg bg-card/50 border border-card-border"
                       initial={{ opacity: 0, x: 20 }}
                       whileInView={{ opacity: 1, x: 0 }}
                       viewport={{ once: true }}
@@ -366,7 +366,7 @@ export function VisualCV(): React.ReactElement {
                     >
                       <span>{item.icon}</span>
                       <div className="flex-1">
-                        <p className="text-xs font-medium text-zinc-300">{item.name}</p>
+                        <p className="text-xs font-medium text-foreground/80">{item.name}</p>
                       </div>
                       <span className="text-[10px] px-1.5 py-0.5 rounded-full font-mono" style={{ color: item.color, border: `1px solid ${item.color}40` }}>{item.status}</span>
                     </motion.div>
@@ -378,12 +378,12 @@ export function VisualCV(): React.ReactElement {
 
           {/* Footer */}
           <motion.footer
-            className="mt-16 pt-6 border-t border-zinc-800 text-center"
+            className="mt-16 pt-6 border-t border-card-border text-center"
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
           >
-<p className="text-xs text-zinc-600 font-mono">&nbsp;</p>
+<p className="text-xs text-muted/50 font-mono">&nbsp;</p>
           </motion.footer>
         </div>
       </div>
@@ -667,7 +667,7 @@ export function VisualCV(): React.ReactElement {
 function Section({ title, icon, children }: { title: string; icon: string; children: React.ReactNode }) {
   return (
     <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5 }}>
-      <h2 className="text-xs font-mono uppercase tracking-[0.2em] text-zinc-500 mb-4 flex items-center gap-2">
+      <h2 className="text-xs font-mono uppercase tracking-[0.2em] text-muted/70 mb-4 flex items-center gap-2">
         <span style={{ color: ACCENT }}>{icon}</span> {title}
       </h2>
       <div className="space-y-3">{children}</div>
@@ -680,17 +680,17 @@ function TimelineRole({ title, company, period, location, items, active }: { tit
     <motion.div className="flex gap-4" initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.4 }}>
       <div className="flex flex-col items-center pt-1">
         <TimelineDot active={active} />
-        <div className="flex-1 w-px bg-zinc-800 mt-2" />
+        <div className="flex-1 w-px bg-card mt-2" />
       </div>
       <div className="pb-6 flex-1">
         <div className="flex justify-between items-baseline flex-wrap gap-2">
           <p className="font-semibold text-sm text-zinc-200">{title}</p>
-          <p className="text-xs text-zinc-600 font-mono">{period}</p>
+          <p className="text-xs text-muted/50 font-mono">{period}</p>
         </div>
-        <p className="text-xs text-zinc-500">{company} · {location}</p>
+        <p className="text-xs text-muted/70">{company} · {location}</p>
         <ul className="mt-2 space-y-1">
           {items.map((item, i) => (
-            <motion.li key={i} className="text-xs text-zinc-400 pl-3 relative before:content-['▸'] before:absolute before:left-0 before:text-blue-500/50 before:text-[10px]" initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: i * 0.05 }}>
+            <motion.li key={i} className="text-xs text-muted pl-3 relative before:content-['▸'] before:absolute before:left-0 before:text-accent/50 before:text-[10px]" initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: i * 0.05 }}>
               {item}
             </motion.li>
           ))}
@@ -739,7 +739,7 @@ function ProjectCard({
   return (
     <motion.div
       ref={ref}
-      className="p-4 rounded-lg border border-zinc-800 bg-zinc-900/30 hover:border-zinc-700 transition-all group relative overflow-hidden"
+      className="p-4 rounded-lg border border-card-border bg-card/30 hover:border-zinc-700 transition-all group relative overflow-hidden"
       onMouseMove={onMouseMove}
       onMouseLeave={onMouseLeave}
       style={{
@@ -773,7 +773,7 @@ function ProjectCard({
         </span>
         {version && (
           <span
-            className="text-[9px] px-1.5 py-0.5 rounded font-mono bg-zinc-800/60 text-zinc-400 tabular-nums"
+            className="text-[9px] px-1.5 py-0.5 rounded font-mono bg-card/60 text-muted tabular-nums"
             title="live version"
           >
             v{version}
@@ -786,7 +786,7 @@ function ProjectCard({
           </span>
         )}
       </div>
-      <p className="text-xs text-zinc-500 leading-relaxed">{description}</p>
+      <p className="text-xs text-muted/70 leading-relaxed">{description}</p>
       {link && (
         <p className="text-[10px] text-blue-400/60 mt-1.5 font-mono">{link}</p>
       )}
