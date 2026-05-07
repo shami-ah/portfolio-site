@@ -148,7 +148,7 @@ export function Journey(): React.ReactElement {
         className="fixed inset-0 pointer-events-none opacity-[0.04]"
         style={{
           backgroundImage:
-            "linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)",
+            "linear-gradient(color-mix(in srgb, var(--foreground) 10%, transparent) 1px, transparent 1px), linear-gradient(90deg, color-mix(in srgb, var(--foreground) 10%, transparent) 1px, transparent 1px)",
           backgroundSize: "80px 80px",
         }}
       />
@@ -320,7 +320,7 @@ export function Journey(): React.ReactElement {
                   key={d.time}
                   initial={{ opacity: 0, x: -20 }}
                   whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true, margin: "-60px" }}
+                  viewport={{ once: true, margin: "-50px" }}
                   transition={{ duration: 0.5, delay: i * 0.08 }}
                   className="relative pl-16 md:pl-32"
                 >
@@ -369,7 +369,7 @@ export function Journey(): React.ReactElement {
                 key={t.label}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-60px" }}
+                viewport={{ once: true, margin: "-50px" }}
                 transition={{ duration: 0.5, delay: i * 0.06 }}
                 className="p-5 md:p-6 rounded-xl bg-card/60 border border-card-border hover:border-accent/20 transition-colors"
               >
@@ -422,7 +422,7 @@ export function Journey(): React.ReactElement {
                 key={item.title}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-60px" }}
+                viewport={{ once: true, margin: "-50px" }}
                 transition={{ duration: 0.5, delay: i * 0.08 }}
                 className="relative p-5 md:p-6 rounded-xl bg-card/60 border border-card-border hover:border-foreground/20 transition-colors"
               >

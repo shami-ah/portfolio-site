@@ -509,7 +509,7 @@ export function Uses(): React.ReactElement {
 
       <div className="flex flex-1 overflow-hidden">
         {/* Sidebar file tree — desktop only */}
-        <div className="w-[190px] border-r border-card-border bg-[#111113] shrink-0 hidden lg:flex flex-col font-mono text-caption overflow-y-auto">
+        <div className="w-[190px] border-r border-card-border bg-card shrink-0 hidden lg:flex flex-col font-mono text-caption overflow-y-auto">
           <div className="px-3 py-2 text-caption text-muted/20 uppercase tracking-[1.5px]">Explorer</div>
 
           {folders.map((folder) => {
@@ -548,7 +548,7 @@ export function Uses(): React.ReactElement {
         {/* Main editor area */}
         <div className="flex-1 flex flex-col overflow-hidden">
           {/* Mobile: file picker + view toggle in one compact bar */}
-          <div className="flex flex-col md:hidden border-b border-card-border bg-[#111113] shrink-0">
+          <div className="flex flex-col md:hidden border-b border-card-border bg-card shrink-0">
             {/* File picker — horizontal scroll */}
             <div className="overflow-x-auto scrollbar-none">
               <div className="flex items-center gap-0.5 px-2 py-1.5 min-w-min">
@@ -600,7 +600,7 @@ export function Uses(): React.ReactElement {
           </div>
 
           {/* Desktop: tabs */}
-          <div className="hidden md:flex border-b border-card-border bg-[#111113]/50 shrink-0 overflow-x-auto">
+          <div className="hidden md:flex border-b border-card-border bg-card/50 shrink-0 overflow-x-auto">
             {openTabs.map((tabId) => {
               const f = files.find((x) => x.id === tabId);
               if (!f) return null;
