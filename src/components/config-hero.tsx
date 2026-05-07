@@ -130,8 +130,8 @@ function HeroAboutCard({ ready }: { ready: boolean }): React.ReactElement {
               <div><span className="text-accent">❯</span> <span className="text-foreground/80">{step.cmd}</span></div>
               {step.type === "identity" ? (
                 <div className="pl-3 py-0.5">
-                  <span className="text-foreground font-bold font-sans text-xs">Ahtesham Ahmad</span>
-                  <span className="text-accent/60 ml-2 text-caption">AI Engineer</span>
+                  <span className="text-foreground font-bold">Ahtesham Ahmad</span>
+                  <span className="text-accent/60 ml-2">AI Engineer</span>
                 </div>
               ) : (
                 <div className={`pl-3 ${step.green ? "text-accent-status/70" : "text-foreground/60"}`}>
@@ -150,8 +150,8 @@ function HeroAboutCard({ ready }: { ready: boolean }): React.ReactElement {
               </div>
               {showOutput && currentStep.type === "identity" && (
                 <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="pl-3 py-0.5">
-                  <span className="text-foreground font-bold font-sans text-xs">Ahtesham Ahmad</span>
-                  <span className="text-accent/60 ml-2 text-caption">AI Engineer</span>
+                  <span className="text-foreground font-bold">Ahtesham Ahmad</span>
+                  <span className="text-accent/60 ml-2">AI Engineer</span>
                 </motion.div>
               )}
               {showOutput && currentStep.output && currentStep.type !== "identity" && (
