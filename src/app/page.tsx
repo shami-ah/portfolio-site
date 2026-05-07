@@ -13,7 +13,6 @@ import { ShortcutsOverlay } from "@/components/shortcuts-overlay";
 import { SkillsModal } from "@/components/skills-modal";
 import { CursorGlow } from "@/components/cursor-glow";
 import { SectionDivider } from "@/components/section-divider";
-import { HighlightStrip } from "@/components/highlight-strip";
 
 export default function Home(): React.ReactElement {
   return (
@@ -24,7 +23,7 @@ export default function Home(): React.ReactElement {
       <CursorGlow />
       <div className="relative z-10">
         <ConfigHero />
-        <HighlightStrip />
+        <SectionDivider />
         <MissionStats />
         <SectionDivider />
         <Projects />
