@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
 import { FadeUp } from "./motion";
+import { TypeLabel } from "./type-label";
 import { useStatus } from "@/lib/use-status";
 
 function CountUp({ to, suffix = "" }: { to: number; suffix?: string }): React.ReactElement {
@@ -64,9 +65,10 @@ export function MissionStats(): React.ReactElement {
           {/* Left 70% — mission content */}
           <div>
             <FadeUp>
-              <p className="text-sm font-mono text-accent mb-4 uppercase tracking-wider">
-                Mission
-              </p>
+              <TypeLabel
+                text="$ cat mission.md"
+                className="text-sm font-mono text-accent mb-4 uppercase tracking-wider"
+              />
               <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-10 md:mb-12 leading-tight">
                 Most AI projects break in production.
                 <br />
@@ -115,26 +117,22 @@ export function MissionStats(): React.ReactElement {
                 </div>
 
                 {/* Quick facts */}
-                <div className="space-y-3 text-[11px] text-muted leading-relaxed">
-                  <div className="flex items-center gap-2">
-                    <span className="text-base leading-none">&#127759;</span>
+                <div className="space-y-2.5 text-[11px] text-muted leading-relaxed">
+                  <div className="flex items-start gap-2">
+                    <span className="text-accent/50 mt-px shrink-0">&#9654;</span>
                     <span>Islamabad, PK &middot; work globally, remote-first</span>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-base leading-none">&#9889;</span>
-                    <span>Picks up anything fast. Learned React Ink, Docker, Stripe in days, not months</span>
+                  <div className="flex items-start gap-2">
+                    <span className="text-accent/50 mt-px shrink-0">&#9654;</span>
+                    <span>Picks up anything fast. React Ink, Docker, Stripe in days</span>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-base leading-none">&#127921;</span>
-                    <span>Snooker player. Same patience applies to debugging production at 2 AM</span>
+                  <div className="flex items-start gap-2">
+                    <span className="text-accent/50 mt-px shrink-0">&#9654;</span>
+                    <span>Five languages: EN, UR, PS, SD, AR</span>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-base leading-none">&#9749;</span>
-                    <span>Tea over coffee. Five languages (EN, UR, PS, SD, AR)</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-base leading-none">&#128736;</span>
-                    <span>Broke things until they worked. Then built tools so others don&apos;t have to</span>
+                  <div className="flex items-start gap-2">
+                    <span className="text-accent/50 mt-px shrink-0">&#9654;</span>
+                    <span>Built tools when nothing else did the job</span>
                   </div>
                 </div>
               </div>
@@ -164,7 +162,7 @@ export function MissionStats(): React.ReactElement {
               whileHover={{ y: -4, transition: { duration: 0.2 } }}
               className="h-full"
             >
-              <div className="card-glow p-4 md:p-5 rounded-xl bg-card border border-card-border h-full flex flex-col group hover:border-accent/30 transition-colors duration-300">
+              <div className="card-glow card-gradient-border p-4 md:p-5 rounded-xl bg-card border border-card-border h-full flex flex-col group hover:border-transparent transition-colors duration-300">
                 <div className="flex items-center gap-2 mb-3">
                   <span className="w-1.5 h-1.5 rounded-full bg-accent-status animate-pulse group-hover:scale-150 transition-transform" />
                   <span className="text-[10px] font-mono text-muted/50 uppercase tracking-wider group-hover:text-accent/70 transition-colors">

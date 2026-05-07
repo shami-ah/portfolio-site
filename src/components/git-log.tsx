@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { FadeUp } from "./motion";
+import { TypeLabel } from "./type-label";
 import { useStatus } from "@/lib/use-status";
 
 interface Role {
@@ -69,9 +70,10 @@ export function GitLog(): React.ReactElement {
     <section id="log" className="py-20 md:py-32 bg-card/30">
       <div className="max-w-5xl mx-auto px-5 md:px-6">
         <FadeUp>
-          <p className="text-sm font-mono text-accent mb-4 uppercase tracking-wider">
-            $ git log --stat --oneline
-          </p>
+          <TypeLabel
+            text="$ git log --stat --oneline"
+            className="text-sm font-mono text-accent mb-4 uppercase tracking-wider"
+          />
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-10 md:mb-16 leading-tight">
             Where I&apos;ve shipped
             <span className="text-muted"> production systems.</span>

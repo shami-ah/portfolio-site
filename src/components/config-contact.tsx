@@ -1,6 +1,7 @@
 "use client";
 
 import { FadeUp } from "./motion";
+import { TypeLabel } from "./type-label";
 
 const contactLinks = [
   { key: "email", label: "shami8024@gmail.com", href: "mailto:shami8024@gmail.com" },
@@ -17,9 +18,10 @@ export function ConfigContact(): React.ReactElement {
 
       <div className="relative max-w-5xl mx-auto px-5 md:px-6">
         <FadeUp>
-          <p className="text-sm font-mono text-accent mb-4 uppercase tracking-wider">
-            $ cat contact.yaml
-          </p>
+          <TypeLabel
+            text="$ cat contact.yaml"
+            className="text-sm font-mono text-accent mb-4 uppercase tracking-wider"
+          />
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 leading-tight">
             Let&apos;s build something
             <span className="text-accent"> real.</span>
@@ -34,7 +36,7 @@ export function ConfigContact(): React.ReactElement {
               No engineer we interviewed designed the human-in-the-loop gate the way he did.&rdquo;
             </p>
             <p className="text-[11px] text-muted/50 font-mono mt-2">
-              — River Soellner, Founder, More Life Hospitality GmbH
+              River Soellner, Founder, More Life Hospitality GmbH
             </p>
           </div>
         </FadeUp>

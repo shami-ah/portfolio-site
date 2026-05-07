@@ -107,6 +107,44 @@ body::after {
   border-color: rgba(212, 168, 83, 0.3);
 }
 
+/* Rotating gradient border — the "Linear card" effect */
+@property --gradient-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+.card-gradient-border {
+  position: relative;
+  isolation: isolate;
+}
+.card-gradient-border::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: conic-gradient(
+    from var(--gradient-angle),
+    transparent 40%,
+    var(--accent) 50%,
+    var(--accent-secondary) 55%,
+    transparent 65%
+  );
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  animation: gradient-rotate 4s linear infinite;
+}
+.card-gradient-border:hover::after {
+  opacity: 1;
+}
+@keyframes gradient-rotate {
+  to { --gradient-angle: 360deg; }
+}
+
 /* Animated section divider */
 .section-divider {
   height: 1px;

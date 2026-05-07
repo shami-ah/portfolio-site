@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import { motion, type Variants } from "framer-motion";
 import { projects, type ProjectData } from "@/data/projects";
 import { FadeUp } from "./motion";
+import { TypeLabel } from "./type-label";
 import { ProjectModal } from "./project-modal";
 import { ProjectMockup, type MockupKind } from "./project-mockup";
 import { useStatus } from "@/lib/use-status";
@@ -94,7 +95,7 @@ function SystemCard({
       className="h-full"
       style={{ perspective: 800 }}
     >
-      <div className="card-glow rounded-xl bg-card border border-card-border overflow-hidden hover:border-accent/30 transition-all duration-300 group h-full flex flex-col">
+      <div className="card-glow card-gradient-border rounded-xl bg-card border border-card-border overflow-hidden hover:border-transparent transition-all duration-300 group h-full flex flex-col">
         {/* Header row: status + name + version */}
         <div className="flex items-center justify-between px-4 md:px-5 py-3 border-b border-card-border/50">
           <div className="flex items-center gap-2.5">
@@ -276,9 +277,10 @@ export function Projects(): React.ReactElement {
     <section id="projects" className="py-20 md:py-32">
       <div className="max-w-5xl mx-auto px-5 md:px-6">
         <FadeUp>
-          <p className="text-sm font-mono text-accent mb-4 uppercase tracking-wider">
-            $ systemctl status --all
-          </p>
+          <TypeLabel
+            text="$ systemctl status --all"
+            className="text-sm font-mono text-accent mb-4 uppercase tracking-wider"
+          />
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 leading-tight">
             Systems I&apos;ve shipped.
           </h2>
