@@ -19,7 +19,7 @@ const typeColors: Record<string, string> = {
   "Cross-Platform": "text-purple-400 border-purple-500/30 bg-purple-500/10",
   "Multi-Agent": "text-pink-400 border-pink-500/30 bg-pink-500/10",
   "AI Agents": "text-pink-400 border-pink-500/30 bg-pink-500/10",
-  "AI / ML": "text-blue-400 border-blue-500/30 bg-blue-500/10",
+  "AI / ML": "text-accent border-accent/30 bg-accent/10",
   DevOps: "text-cyan-400 border-cyan-500/30 bg-cyan-500/10",
 };
 

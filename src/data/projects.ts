@@ -3,6 +3,8 @@ export interface ProjectData {
   title: string;
   subtitle: string;
   type: string;
+  /** Short 1-2 sentence summary for project cards. Falls back to impact if not set. */
+  cardSummary?: string;
   impact: string;
   problem: string;
   solution: string;
@@ -42,6 +44,7 @@ export const projects: ProjectData[] = [
     title: "CodeLens",
     subtitle: "Universal AI Code Review System (v0.4.0, ~430 patterns, multi-agent ensemble critique)",
     type: "AI Dev Tool",
+    cardSummary: "~430 hand-crafted bug patterns across 9 stacks, running in under one second, entirely on your machine. No cloud, no latency. The pattern library grows continuously through 3 pipelines.",
     impact: "I spent months cataloguing every category of production bug I kept seeing across client projects: missing auth guards, silent N+1 queries, race conditions, taint paths that reach SQL. The result is ~430 hand-crafted patterns across 9 stacks that run in under one second, entirely on your machine. No cloud. No latency. Code never leaves the repo. The pattern library grows continuously through three pipelines: a Glean pipeline that mines production PRs, an Agent Harvest system that cross-compares findings from 19 community reviewer agents, and a Greptile Parity process that benchmarks CodeLens head-to-head against commercial AI reviewers on real PRs to close detection gaps.",
     problem:
       "Every code review tool I evaluated made the same tradeoff. Fast but shallow (regex linters), or deep but slow and cloud-dependent (AI tools that send your code to a third party). Neither caught the bugs that actually ship: the ones that look fine in isolation but break when a schema changes, when user input flows through three layers unvalidated, or when a test suite silently diverges from the live code. And none of them could talk to the AI coding assistant sitting next to them and say: don't generate that pattern.",
@@ -526,6 +529,7 @@ export const projects: ProjectData[] = [
     type: "Developer Tool / CLI",
     featured: true,
     requestAccess: true,
+    cardSummary: "A full AI coding agent where the provider is a variable. 11 providers with auto-fallback, production-grade git workflow, polished TUI, plugin marketplace, and 1,418 passing tests.",
     impact: "I mapped the entire agentic coding ecosystem and found that every tool made you choose. Provider freedom or deep integration. Polished TUI or serious git workflow. MCP support or SEARCH/REPLACE edits. Nobody had all of it. So I built the thing that was missing: a full AI coding agent where the provider is a variable, the git workflow is production-grade, the UI is polished, and nothing is locked down. 11 providers, 1418 passing tests, plugin marketplace, parallel agents, watch mode, scheduled triggers, and now a web terminal companion. The only open-source CLI that closes every gap simultaneously.",
     problem:
       "Every AI coding tool I evaluated made you choose: provider freedom or deep integration. Polished TUI or serious git workflow. MCP support or surgical edits. Single-vendor lock-in means if the API goes down or rate limits hit, you stop working. GUI-only tools have no terminal, SSH, or headless support. Spartan CLIs lack plugin systems, parallel agents, and MCP. I wanted all of it in one tool, so I built it.",
@@ -675,6 +679,7 @@ export const projects: ProjectData[] = [
     subtitle: "AI Observatory for Developers (v0.1.0)",
     type: "Developer Tool / CLI + Web",
     featured: true,
+    cardSummary: "Complete visibility into your AI coding sessions. Local-first CLI + web dashboard monitoring every tool call, tracking spend, and grading session quality. Your data never leaves your machine.",
     impact: "Every developer using AI coding assistants is flying blind. You don't know what the AI changed, how much you spent, whether context was lost mid-session, or if the AI contradicted its own patterns. Rasad (Arabic for 'to observe') gives you complete visibility: a local-first CLI + web dashboard that monitors every AI coding session across multiple tools. 656 sessions synced, 38K messages indexed, 14K tool calls tracked. Your data never leaves your machine.",
     problem:
       "AI coding assistants are black boxes. You get a diff at the end but no visibility into what happened during the session. How many tokens were burned? Did the AI forget your requirements halfway through? Did it read 67 files but only change 3? Was that $87 session worth it or should you have split it? There's no observability layer for AI-assisted development. You're paying hundreds per month with no way to audit, optimize, or learn from the sessions.",
