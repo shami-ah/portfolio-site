@@ -112,61 +112,73 @@ function HeroAboutCard({ ready }: { ready: boolean }): React.ReactElement {
         <span className="ml-1 text-caption font-mono text-muted/60">shami ~ zsh</span>
       </div>
 
-      {/* Photo centered at top */}
-      <div className="flex flex-col items-center pt-5 pb-3">
+      {/* Mobile photo — small, centered above commands */}
+      <div className="flex sm:hidden flex-col items-center pt-4 pb-2">
         <div className="relative">
-          <div className="absolute -inset-3 bg-gradient-to-br from-accent/20 to-accent-secondary/12 rounded-full blur-xl pointer-events-none" />
+          <div className="absolute -inset-2 bg-gradient-to-br from-accent/20 to-accent-secondary/12 rounded-full blur-xl pointer-events-none" />
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/ahtesham.jpg" alt="Ahtesham Ahmad" className="relative w-20 h-20 rounded-full object-cover border-2 border-accent/30 shadow-lg shadow-accent/10" />
+          <img src="/ahtesham.jpg" alt="Ahtesham Ahmad" className="relative w-16 h-16 rounded-full object-cover border-2 border-accent/30 shadow-lg shadow-accent/10" />
         </div>
       </div>
 
-      {/* Terminal body */}
-      <div className="px-4 pb-3 font-mono text-small leading-[1.9] flex-1 overflow-hidden">
-        {completedSteps.map((step) => (
-          <div key={step.cmd} className="mb-1">
-            <div><span className="text-accent">❯</span> <span className="text-foreground/80">{step.cmd}</span></div>
-            {step.type === "identity" ? (
-              <div className="pl-3 py-0.5">
-                <span className="text-foreground font-bold font-sans text-xs">Ahtesham Ahmad</span>
-                <span className="text-accent/60 ml-2 text-caption">AI Engineer</span>
-              </div>
-            ) : (
-              <div className={`pl-3 ${step.green ? "text-accent-status/70" : "text-foreground/60"}`}>
-                {step.output}
-              </div>
-            )}
-          </div>
-        ))}
+      {/* Card body — terminal left, photo right */}
+      <div className="flex flex-1 overflow-hidden">
+        {/* Terminal commands — left side */}
+        <div className="flex-1 px-4 py-3 font-mono text-small leading-[1.9] overflow-hidden">
+          {completedSteps.map((step) => (
+            <div key={step.cmd} className="mb-1">
+              <div><span className="text-accent">❯</span> <span className="text-foreground/80">{step.cmd}</span></div>
+              {step.type === "identity" ? (
+                <div className="pl-3 py-0.5">
+                  <span className="text-foreground font-bold font-sans text-xs">Ahtesham Ahmad</span>
+                  <span className="text-accent/60 ml-2 text-caption">AI Engineer</span>
+                </div>
+              ) : (
+                <div className={`pl-3 ${step.green ? "text-accent-status/70" : "text-foreground/60"}`}>
+                  {step.output}
+                </div>
+              )}
+            </div>
+          ))}
 
-        {currentStep && !allDone && (
-          <div className="mb-1">
+          {currentStep && !allDone && (
+            <div className="mb-1">
+              <div>
+                <span className="text-accent">❯</span>{" "}
+                <span className="text-foreground/80">{currentStep.cmd.slice(0, cmdChars)}</span>
+                {isTypingCmd && <span className="inline-block w-[6px] h-[12px] bg-accent/80 ml-px translate-y-[2px] animate-pulse" />}
+              </div>
+              {showOutput && currentStep.type === "identity" && (
+                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="pl-3 py-0.5">
+                  <span className="text-foreground font-bold font-sans text-xs">Ahtesham Ahmad</span>
+                  <span className="text-accent/60 ml-2 text-caption">AI Engineer</span>
+                </motion.div>
+              )}
+              {showOutput && currentStep.output && currentStep.type !== "identity" && (
+                <div className={`pl-3 ${currentStep.green ? "text-accent-status/70" : "text-foreground/60"}`}>
+                  {currentStep.output.slice(0, outputChars)}
+                  {isStreamingOutput && <span className="inline-block w-[5px] h-[10px] bg-foreground/30 ml-px translate-y-[1px] animate-pulse" />}
+                </div>
+              )}
+            </div>
+          )}
+
+          {allDone && (
             <div>
               <span className="text-accent">❯</span>{" "}
-              <span className="text-foreground/80">{currentStep.cmd.slice(0, cmdChars)}</span>
-              {isTypingCmd && <span className="inline-block w-[6px] h-[12px] bg-accent/80 ml-px translate-y-[2px] animate-pulse" />}
+              <span className="inline-block w-[6px] h-[12px] bg-accent/60 translate-y-[2px] animate-pulse" />
             </div>
-            {showOutput && currentStep.type === "identity" && (
-              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="pl-3 py-0.5">
-                <span className="text-foreground font-bold font-sans text-xs">Ahtesham Ahmad</span>
-                <span className="text-accent/60 ml-2 text-caption">AI Engineer</span>
-              </motion.div>
-            )}
-            {showOutput && currentStep.output && currentStep.type !== "identity" && (
-              <div className={`pl-3 ${currentStep.green ? "text-accent-status/70" : "text-foreground/60"}`}>
-                {currentStep.output.slice(0, outputChars)}
-                {isStreamingOutput && <span className="inline-block w-[5px] h-[10px] bg-foreground/30 ml-px translate-y-[1px] animate-pulse" />}
-              </div>
-            )}
-          </div>
-        )}
+          )}
+        </div>
 
-        {allDone && (
-          <div>
-            <span className="text-accent">❯</span>{" "}
-            <span className="inline-block w-[6px] h-[12px] bg-accent/60 translate-y-[2px] animate-pulse" />
+        {/* Photo — right side, fills 80% of card height, vertically centered */}
+        <div className="hidden sm:flex items-center justify-center px-8 border-l border-card-border/30">
+          <div className="relative">
+            <div className="absolute -inset-6 bg-gradient-to-br from-accent/15 to-accent-secondary/10 rounded-full blur-3xl pointer-events-none" />
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/ahtesham.jpg" alt="Ahtesham Ahmad" className="relative aspect-square h-[80%] min-h-[180px] max-h-[240px] w-auto rounded-full object-cover border-3 border-accent/25 shadow-2xl shadow-accent/15" />
           </div>
-        )}
+        </div>
       </div>
 
       {/* Status bar */}
