@@ -4,11 +4,11 @@ import { useEffect, useState, useCallback, useRef } from "react";
 import { motion } from "framer-motion";
 
 const pipelineSteps = [
-  { id: "hero", label: "init", icon: "○" },
-  { id: "mission", label: "assess_fit", icon: "○" },
-  { id: "projects", label: "review_systems", icon: "○" },
-  { id: "log", label: "verify_track_record", icon: "○" },
-  { id: "contact", label: "decide", icon: "○" },
+  { id: "hero", label: "init" },
+  { id: "mission", label: "assess" },
+  { id: "projects", label: "review" },
+  { id: "log", label: "verify" },
+  { id: "contact", label: "decide" },
 ] as const;
 
 export function SidebarNav(): React.ReactElement {
@@ -81,7 +81,7 @@ export function SidebarNav(): React.ReactElement {
       }}
       transition={{ duration: 0.4, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
       aria-label="Pipeline navigation"
-      className="fixed left-3 top-1/2 -translate-y-1/2 z-40 hidden md:flex flex-col gap-0 font-mono"
+      className="fixed left-2 top-1/2 -translate-y-1/2 z-40 hidden lg:flex flex-col gap-0 font-mono"
     >
       {pipelineSteps.map(({ id, label }, i) => {
         const isDone = i < activeIdx;
@@ -95,8 +95,8 @@ export function SidebarNav(): React.ReactElement {
             <button
               type="button"
               onClick={() => scrollTo(id)}
-              className={`group relative flex items-center gap-[6px] px-2 py-[5px] rounded-md transition-all duration-300 w-full text-left ${
-                isActive ? "bg-accent/8" : isDone ? "" : ""
+              className={`group relative flex items-center gap-1 px-1.5 py-1 rounded-md transition-all duration-300 w-full text-left ${
+                isActive ? "bg-accent/8" : ""
               }`}
             >
               {/* Active glow bar */}
@@ -104,28 +104,19 @@ export function SidebarNav(): React.ReactElement {
                 <span className="absolute left-0 top-1/2 -translate-y-1/2 w-[2px] h-3 rounded-full bg-accent shadow-[0_0_6px_rgba(212,168,83,0.5)]" />
               )}
 
-              {/* Icon */}
-              <span className={`text-[11px] shrink-0 ${
-                isDone ? "text-accent-status" :
-                isActive ? "text-accent" :
-                "text-muted/20"
+              <span className={`text-[9px] shrink-0 ${
+                isDone ? "text-accent-status" : isActive ? "text-accent" : "text-muted/20"
               }`}>
                 {isDone ? "✓" : isActive ? "▸" : "○"}
               </span>
-
-              {/* Label */}
-              <span className={`text-[10px] transition-colors ${
-                isDone ? "text-foreground/60" :
-                isActive ? "text-accent" :
-                "text-muted/25"
+              <span className={`text-[9px] transition-colors ${
+                isDone ? "text-foreground/50" : isActive ? "text-accent" : "text-muted/20"
               }`}>
                 {label}
               </span>
-
-              {/* Time */}
               {(isDone || isActive) && timeStr && (
-                <span className={`text-[9px] ml-auto tabular-nums ${
-                  isDone ? "text-accent-status/40" : "text-accent/40"
+                <span className={`text-[8px] ml-auto tabular-nums ${
+                  isDone ? "text-accent-status/30" : "text-accent/30"
                 }`}>
                   {timeStr}
                 </span>
@@ -134,8 +125,8 @@ export function SidebarNav(): React.ReactElement {
 
             {/* Connector line */}
             {i < pipelineSteps.length - 1 && (
-              <div className={`w-px h-[6px] ml-[14px] transition-colors duration-300 ${
-                isDone ? "bg-accent-status/20" : "bg-card-border/40"
+              <div className={`w-px h-1 ml-[10px] transition-colors duration-300 ${
+                isDone ? "bg-accent-status/15" : "bg-card-border/30"
               }`} />
             )}
           </div>
