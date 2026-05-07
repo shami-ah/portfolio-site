@@ -27,17 +27,17 @@ export function CommandPalette(): React.ReactElement {
     () => [
       {
         id: "nav-about",
-        label: "Go to About",
+        label: "Go to Mission",
         hint: "Builder mindset, stats, dev workflow",
         group: "Navigate",
-        action: () => scrollToId("about"),
+        action: () => scrollToId("mission"),
       },
       {
         id: "nav-experience",
-        label: "Go to Experience",
+        label: "Go to Log",
         hint: "Roles, companies, impact",
         group: "Navigate",
-        action: () => scrollToId("experience"),
+        action: () => scrollToId("log"),
       },
       {
         id: "nav-projects",
@@ -47,11 +47,25 @@ export function CommandPalette(): React.ReactElement {
         action: () => scrollToId("projects"),
       },
       {
+        id: "nav-writing",
+        label: "Go to Writing",
+        hint: "Articles, deep dives, frameworks",
+        group: "Navigate",
+        action: () => scrollToId("writing"),
+      },
+      {
         id: "nav-contact",
         label: "Go to Contact",
         hint: "Book a call, email, socials",
         group: "Navigate",
         action: () => scrollToId("contact"),
+      },
+      {
+        id: "nav-journey",
+        label: "How I Work",
+        hint: "Principles, daily workflow & dev stack",
+        group: "Navigate",
+        action: () => { window.location.href = "/journey"; },
       },
       ...projects.map<Command>((p) => ({
         id: `p-${p.slug}`,
@@ -103,6 +117,15 @@ export function CommandPalette(): React.ReactElement {
         group: "Contact",
         action: () =>
           window.open("https://github.com/shami-ah", "_blank", "noopener,noreferrer"),
+      },
+      {
+        id: "uses",
+        label: "What I use to build",
+        hint: "Tools, stack, workflow, WISC framework",
+        group: "Resources",
+        action: () => {
+          window.location.href = "/uses";
+        },
       },
       {
         id: "chat",

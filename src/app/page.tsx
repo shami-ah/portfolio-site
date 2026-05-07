@@ -1,33 +1,37 @@
 import { TopBar } from "@/components/top-bar";
-import { Hero } from "@/components/hero";
-import { About } from "@/components/about";
+import { ConfigHero } from "@/components/config-hero";
+import { SidebarNav } from "@/components/sidebar-nav";
+import { MissionStats } from "@/components/mission-stats";
 import { Projects } from "@/components/projects";
-import { Experience } from "@/components/experience";
-import { Testimonials } from "@/components/testimonials";
-import { Contact } from "@/components/contact";
+import { GitLog } from "@/components/git-log";
+import { Writing } from "@/components/writing";
+import { ConfigContact } from "@/components/config-contact";
 import { Footer } from "@/components/footer";
 import { TerminalBoot } from "@/components/terminal-boot";
 import { CommandPalette } from "@/components/command-palette";
 import { AgentBar } from "@/components/agent-bar";
 import { ShortcutsOverlay } from "@/components/shortcuts-overlay";
+import { SkillsModal } from "@/components/skills-modal";
 
 export default function Home(): React.ReactElement {
   return (
     <main>
       <TerminalBoot />
       <TopBar />
+      <SidebarNav />
       <div className="relative z-10">
-        <Hero />
-        <About />
+        <ConfigHero />
+        <MissionStats />
         <Projects />
-        <Experience />
-        <Testimonials />
-        <Contact />
+        <GitLog />
+        <Writing />
+        <ConfigContact />
       </div>
       <Footer />
       <CommandPalette />
       <AgentBar />
       <ShortcutsOverlay />
+      <SkillsModal />
     </main>
   );
 }

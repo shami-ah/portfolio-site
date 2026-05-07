@@ -54,7 +54,7 @@ export function Experience(): React.ReactElement {
   const { status } = useStatus();
   const roles = getRoles(status.openevent);
   return (
-    <section id="experience" className="py-20 md:py-32 bg-card/30">
+    <section id="log" className="py-20 md:py-32 bg-card/30">
       <div className="max-w-6xl mx-auto px-5 md:px-6">
         <FadeUp>
           <p className="text-sm font-mono text-accent mb-4 uppercase tracking-wider">

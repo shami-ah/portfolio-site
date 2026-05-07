@@ -346,6 +346,32 @@ const commands: AgentCommand[] = [
     action: () => window.dispatchEvent(new CustomEvent("toggle-presence")),
   },
   {
+    keyword: "skills",
+    label: "My tech stack",
+    icon: "⚡",
+    intent: "show_skills",
+    confidence: 0.96,
+    steps: [
+      { name: "tokenize", detail: "1 token", ms: 2 },
+      { name: "classify_intent", detail: "label: show_skills · conf 0.96", ms: 30 },
+      { name: "render_neural_map", detail: "27 nodes · 34 edges · 5 groups", ms: 45 },
+    ],
+    response: "Opening neural map — hover nodes to explore connections.",
+    action: () => window.dispatchEvent(new CustomEvent("show-skills-modal")),
+  },
+  {
+    keyword: "skill",
+    intent: "show_skills",
+    confidence: 0.96,
+    steps: [
+      { name: "tokenize", detail: "1 token", ms: 2 },
+      { name: "classify_intent", detail: "label: show_skills · conf 0.96", ms: 30 },
+      { name: "render_neural_map", detail: "27 nodes · 34 edges · 5 groups", ms: 45 },
+    ],
+    response: "Opening neural map — hover nodes to explore connections.",
+    action: () => window.dispatchEvent(new CustomEvent("show-skills-modal")),
+  },
+  {
     keyword: "help",
     intent: "show_commands",
     confidence: 1.0,
@@ -353,9 +379,58 @@ const commands: AgentCommand[] = [
       { name: "introspect", detail: "loading command registry", ms: 18 },
     ],
     response:
-      "Commands: hire · call · projects · tour · build · chat · cv · presence · help. Easter eggs hidden too :)",
+      "Commands: hire · call · projects · skills · tour · build · chat · cv · help. Easter eggs hidden too :)",
   },
 ];
+
+/* ------------------------------------------------------------------ */
+/*  State machine                                                     */
+/* ------------------------------------------------------------------ */
+
+/* ------------------------------------------------------------------ */
+/*  Activity ticker — rotating system logs above the input             */
+/* ------------------------------------------------------------------ */
+
+const TICKER_MESSAGES = [
+  { icon: "◉", color: "text-accent-status", text: "openevent: 100+ clients online · processing emails" },
+  { icon: "◉", color: "text-accent-status", text: "gogaa v1.2.1: 1,418 tests passing · 11 providers active" },
+  { icon: "◉", color: "text-accent-status", text: "codelens v0.3.5: ~430 patterns armed · scanning" },
+  { icon: "◈", color: "text-accent", text: "agent: analyzing visitor session · ready for commands" },
+  { icon: "◈", color: "text-accent-secondary", text: "stack: TypeScript · React · Supabase · Claude · Docker" },
+  { icon: "◈", color: "text-accent", text: "built: Gogaa CLI, CodeLens, OpenEvent, Rasad — all production" },
+  { icon: "▸", color: "text-accent-secondary", text: 'try: type "hire" · "projects" · "build" · "skills" to explore' },
+];
+
+function ActivityTicker(): React.ReactElement {
+  const [idx, setIdx] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setIdx((i) => (i + 1) % TICKER_MESSAGES.length);
+    }, 3500);
+    return () => clearInterval(interval);
+  }, []);
+
+  const msg = TICKER_MESSAGES[idx];
+
+  return (
+    <div className="flex items-center gap-2 px-3 md:px-4 py-1.5 text-[10px] font-mono overflow-hidden">
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={idx}
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -8 }}
+          transition={{ duration: 0.25 }}
+          className="flex items-center gap-2 min-w-0"
+        >
+          <span className={`${msg.color} shrink-0`}>{msg.icon}</span>
+          <span className="text-foreground/60 truncate">{msg.text}</span>
+        </motion.div>
+      </AnimatePresence>
+    </div>
+  );
+}
 
 /* ------------------------------------------------------------------ */
 /*  State machine                                                     */
@@ -546,53 +621,56 @@ export function AgentBar(): React.ReactElement {
             transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
             className="pointer-events-auto"
           >
-            <form
-              onSubmit={onSubmit}
-              className="group relative overflow-hidden rounded-xl bg-card/90 backdrop-blur-md border border-accent/30 shadow-2xl shadow-accent/10 flex items-center gap-2 px-3 md:px-4 py-2.5"
-            >
-              <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse shrink-0" />
-              <span className="text-accent font-mono text-xs md:text-sm shrink-0">❯</span>
-              <span className="text-muted/50 font-mono text-xs md:text-sm shrink-0 hidden sm:inline">
-                agent ·
-              </span>
-              <input
-                ref={inputRef}
-                type="text"
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                placeholder="type · hire · call · projects · tour · build · chat · cv"
-                className="flex-1 min-w-0 bg-transparent outline-none font-mono text-xs md:text-sm placeholder:text-muted/40 text-foreground"
-              />
-              <kbd className="hidden md:inline text-[10px] font-mono text-muted/50 border border-card-border px-1.5 py-0.5 rounded">
-                /
-              </kbd>
-              <button
-                type="button"
-                onClick={dismiss}
-                aria-label="Dismiss"
-                className="text-muted/40 hover:text-foreground shrink-0 ml-1"
+            <div className="rounded-xl bg-card/90 backdrop-blur-md border border-accent/30 shadow-2xl shadow-accent/10 overflow-hidden">
+              {/* Activity ticker */}
+              <ActivityTicker />
+
+              {/* Input row */}
+              <form
+                onSubmit={onSubmit}
+                className="group relative flex items-center gap-2 px-3 md:px-4 py-2.5 border-t border-card-border/30"
               >
-                <svg
-                  width="12"
-                  height="12"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
+                <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse shrink-0" />
+                <span className="text-accent font-mono text-xs md:text-sm shrink-0">❯</span>
+                <input
+                  ref={inputRef}
+                  type="text"
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                  placeholder="type a command — hire · projects · build · skills · chat"
+                  className="flex-1 min-w-0 bg-transparent outline-none font-mono text-xs md:text-sm placeholder:text-muted/40 text-foreground"
+                />
+                <kbd className="hidden md:inline text-[10px] font-mono text-muted/50 border border-card-border px-1.5 py-0.5 rounded">
+                  /
+                </kbd>
+                <button
+                  type="button"
+                  onClick={dismiss}
+                  aria-label="Dismiss"
+                  className="text-muted/40 hover:text-foreground shrink-0 ml-1"
                 >
-                  <line x1="18" y1="6" x2="6" y2="18" />
-                  <line x1="6" y1="6" x2="18" y2="18" />
-                </svg>
-              </button>
-              <motion.div
-                aria-hidden
-                className="absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-accent/0 via-accent/10 to-accent/0 pointer-events-none"
-                animate={{ x: ["-100%", "400%"] }}
-                transition={{ duration: 5, repeat: Infinity, ease: "linear" }}
-              />
-            </form>
+                  <svg
+                    width="12"
+                    height="12"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <line x1="18" y1="6" x2="6" y2="18" />
+                    <line x1="6" y1="6" x2="18" y2="18" />
+                  </svg>
+                </button>
+                <motion.div
+                  aria-hidden
+                  className="absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-accent/0 via-accent/10 to-accent/0 pointer-events-none"
+                  animate={{ x: ["-100%", "400%"] }}
+                  transition={{ duration: 5, repeat: Infinity, ease: "linear" }}
+                />
+              </form>
+            </div>
           </motion.div>
         )}
 

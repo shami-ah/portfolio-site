@@ -16,11 +16,11 @@ export interface Status {
  *  so SSR'd markup stays consistent. */
 const FALLBACK: Status = {
   updated: "2026-04-17",
-  gogaa: { version: "0.10.0", tests: 1418, providers: 11, status: "private beta" },
-  codelens: { version: "0.3.3", patterns: 305, stacks: 9, status: "private beta" },
+  gogaa: { version: "1.2.1", tests: 1418, providers: 11, status: "private beta" },
+  codelens: { version: "0.3.5", patterns: 430, stacks: 9, status: "private beta" },
   openevent: { clients: 100, events: 150, hoursSavedPerDay: 1.5, status: "live" },
   portfolio: { projects: 250, yearsBuilding: 5 },
-  currentlyBuilding: { label: "Gogaa v0.10.1", detail: "parallel panes streaming" },
+  currentlyBuilding: { label: "Gogaa v1.3.0", detail: "CC mega upgrade phase 1" },
 };
 
 let cache: Status | null = null;

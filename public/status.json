@@ -1,15 +1,15 @@
 {
   "$schema": "https://ahtesham.dev/status.schema.json",
-  "updated": "2026-04-17",
+  "updated": "2026-05-07",
   "gogaa": {
-    "version": "0.10.0",
+    "version": "1.2.1",
     "tests": 1418,
     "providers": 11,
     "status": "private beta"
   },
   "codelens": {
-    "version": "0.3.3",
-    "patterns": 305,
+    "version": "0.3.5",
+    "patterns": 430,
     "stacks": 9,
     "status": "private beta"
   },
@@ -24,7 +24,7 @@
     "yearsBuilding": 5
   },
   "currentlyBuilding": {
-    "label": "Gogaa v0.10.1",
-    "detail": "parallel panes streaming"
+    "label": "Gogaa v1.3.0",
+    "detail": "CC mega upgrade phase 1"
   }
 }

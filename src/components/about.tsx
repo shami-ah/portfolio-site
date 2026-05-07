@@ -35,7 +35,7 @@ export function About(): React.ReactElement {
     { counter: <span>&lt;1s</span>, label: "CodeLens Reviews" },
   ];
   return (
-    <section id="about" className="py-20 md:py-32">
+    <section id="mission" className="py-20 md:py-32">
       <div className="max-w-6xl mx-auto px-5 md:px-6">
         <FadeUp>
           <p className="text-sm font-mono text-accent mb-4 uppercase tracking-wider">
