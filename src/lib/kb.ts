@@ -23,14 +23,14 @@ export const kb: KbEntry[] = [
     id: "greeting",
     keywords: ["hi", "hello", "hey", "hola", "greetings", "good morning", "good evening", "howdy"],
     response:
-      "Hey. I'm an AI interface to Ahtesham's work. Ask me about his rate, stack, tools, projects, availability — whatever helps you decide if you two should talk.",
+      "Hey. I'm an AI interface to Ahtesham's work. Ask me about his rate, stack, tools, projects, or availability.",
     tags: ["intro"],
   },
   {
     id: "identity",
     keywords: ["who are you", "what is this", "what is", "who", "about you", "introduce"],
     response:
-      "I'm a scoped AI assistant trained on Ahtesham Ahmad's portfolio. 5+ years shipping production AI, lead AI dev at More Life Hospitality, builder of CodeLens and gogaa CLI. Ask me anything from rate to architecture decisions.",
+      "I'm a scoped AI assistant trained on Ahtesham Ahmad's portfolio. AI engineer and Lead AI Developer at More Life Hospitality, builder of CodeLens and Gogaa CLI. Ask me anything from rate to architecture decisions.",
     tags: ["intro"],
   },
   {
@@ -63,7 +63,7 @@ export const kb: KbEntry[] = [
       "overlap", "meeting", "utc",
     ],
     response:
-      "Based in Pakistan (UTC+5). Overlaps cleanly with EU mornings and full Gulf business hours. Async-first by design — my tooling keeps progress going without meetings.",
+      "Based in Pakistan (UTC+5). Overlaps cleanly with EU mornings and full Gulf business hours. Async-first by design. My tooling keeps progress going without meetings.",
     tags: ["working"],
   },
   {
@@ -75,7 +75,7 @@ export const kb: KbEntry[] = [
       "what stack", "which stack",
     ],
     response:
-      "Two halves: (1) AI orchestration — Claude, OpenAI, multi-agent systems with human approval gates, RAG on pgvector, LangChain. (2) Full-stack TypeScript — React, Next.js, Supabase (Postgres + Edge + RLS), Stripe, Docker. Python for data pipelines and agent backends.",
+      "Two halves: (1) AI orchestration with Claude, OpenAI, multi-agent systems, human approval gates, RAG on pgvector, LangChain. (2) Full-stack TypeScript with React, Next.js, Supabase (Postgres + Edge + RLS), Stripe, Docker. Python for data pipelines and agent backends.",
     tags: ["technical"],
   },
   {
@@ -106,7 +106,7 @@ export const kb: KbEntry[] = [
       "linter", "static analysis", "analyze code", "code quality",
     ],
     response:
-      "CodeLens is my AI code review engine — 305 hand-crafted patterns across 9 stacks, source-to-sink taint tracking, PR risk scoring, and Guardian mode that injects rules into Claude Code / Cursor / Copilot so bugs are caught at generation time, not review time. Runs fully local, sub-second, zero runtime deps.",
+      "CodeLens is my AI code review engine. 305 hand-crafted patterns across 9 stacks, source-to-sink taint tracking, PR risk scoring, and Guardian mode that injects rules into Claude Code / Cursor / Copilot so bugs are caught at generation time, not review time. Runs fully local, sub-second, zero runtime deps.",
     tags: ["product"],
   },
   {
@@ -136,7 +136,7 @@ export const kb: KbEntry[] = [
       "checkout", "subscription", "subscriptions", "invoicing", "invoices",
     ],
     response:
-      "Yes — Stripe is wired into OpenEvent for invoicing, subscription billing, and multi-tenant payouts. I've built full checkout flows, customer portal integration, and hardened webhook handlers against replay and duplicate deliveries.",
+      "Yes. Stripe is wired into OpenEvent for invoicing, subscription billing, and multi-tenant payouts. I've built full checkout flows, customer portal integration, and hardened webhook handlers against replay and duplicate deliveries.",
     tags: ["technical"],
   },
   {
@@ -192,7 +192,7 @@ export const kb: KbEntry[] = [
       "work together", "sprint", "delivery",
     ],
     response:
-      "Architecture document first (1-3 day discovery). Then sprint-based delivery with weekly demos. CodeLens runs on every PR — you see findings alongside every change. Transparency by default: shared staging, Supabase dashboard access, PR-by-PR visibility.",
+      "Architecture document first (1-3 day discovery). Then sprint-based delivery with weekly demos. CodeLens runs on every PR so you see findings alongside every change. Transparency by default: shared staging, Supabase dashboard access, PR-by-PR visibility.",
     tags: ["working"],
   },
   {
@@ -212,7 +212,7 @@ export const kb: KbEntry[] = [
       "journey", "cv", "resume", "bio",
     ],
     response:
-      "5+ years. Started freelance on Upwork/Fiverr in 2019. Director of IT & R&D at Rouelite Techno 2022-2024 (10-person team, CRM serving 500+ daily). RLHF/SFT evaluation on frontier models at Outlier/RWS/Translated. Since Sep 2025: Lead AI Developer at More Life Hospitality GmbH.",
+      "Engineering since 2019, deep into AI since 2022. Started freelance AI projects on Upwork (250+ delivered). Director of IT & R&D at Rouelite Techno 2022-2024, where I introduced AI into operations, reducing manual work by 70%. 500+ RLHF/SFT evaluation sessions on frontier models at Outlier/RWS/Translated. Since Sep 2025: Lead AI Developer at More Life Hospitality GmbH, shipping OpenEvent to 100+ clients.",
     tags: ["background"],
   },
   {
@@ -222,7 +222,7 @@ export const kb: KbEntry[] = [
       "people", "reports", "direct reports",
     ],
     response:
-      "Led engineering teams of 3-10 people across cross-functional delivery. Comfortable owning architecture and still writing code. Not looking for a purely managerial role — I stay hands-on.",
+      "Led engineering teams of 3-10 people across cross-functional delivery. Comfortable owning architecture and still writing code. Not looking for a purely managerial role. I stay hands-on.",
     tags: ["background"],
   },
   {
@@ -232,7 +232,7 @@ export const kb: KbEntry[] = [
       "turnaround", "quick",
     ],
     response:
-      "Usually under 24 hours. Faster if you book a call directly — that lands in my calendar with a reminder.",
+      "Usually under 24 hours. Faster if you book a call directly, that lands in my calendar with a reminder.",
     tags: ["working"],
   },
   {
@@ -265,7 +265,7 @@ export const kb: KbEntry[] = [
   {
     id: "linkedin",
     keywords: ["linkedin", "linked in", "linked-in"],
-    response: "LinkedIn: linkedin.com/in/ahtesham. Feel free to connect — mention where you found the portfolio.",
+    response: "LinkedIn: linkedin.com/in/ahtesham. Feel free to connect, mention where you found the portfolio.",
     tags: ["commercial"],
   },
   {
@@ -285,7 +285,7 @@ export const kb: KbEntry[] = [
       "why you", "stand out", "different", "special",
     ],
     response:
-      "I'm both a consumer AND a builder of AI tooling. Most engineers pick between 'ships features' and 'builds tools' — I do both. When existing tools don't match my standards, I build the tool, then use it on client work. That loop is the moat.",
+      "I'm both a consumer AND a builder of AI tooling. Most engineers pick between 'ships features' and 'builds tools'. I do both. When existing tools don't match my standards, I build the tool, then use it on client work. That loop is the moat.",
     tags: ["background"],
   },
   {
@@ -306,7 +306,7 @@ export const kb: KbEntry[] = [
     id: "english",
     keywords: ["english", "language skill", "communication", "fluent", "speak", "writing"],
     response:
-      "Fluent English, working German. Strong written comms — all my systems have specs, audit logs, and README-first design. Async-friendly by default.",
+      "Fluent English, working German. Strong written comms. All my systems have specs, audit logs, and README-first design. Async-friendly by default.",
     tags: ["working"],
   },
   {
@@ -327,7 +327,7 @@ export const kb: KbEntry[] = [
     id: "docker",
     keywords: ["docker", "container", "containers", "devops", "infrastructure"],
     response:
-      "My dev environment runs in a Docker container — same setup on Mac, Linux VPS, or SSH from my phone. Docker Compose for multi-service local dev. GitHub Actions builds multi-arch images (ARM + x86) for production.",
+      "My dev environment runs in a Docker container, same setup on Mac, Linux VPS, or SSH from my phone. Docker Compose for multi-service local dev. GitHub Actions builds multi-arch images (ARM + x86) for production.",
     tags: ["technical"],
   },
   {

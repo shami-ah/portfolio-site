@@ -30,11 +30,11 @@ export function TerminalBoot({ force = false, onDone }: BootProps): React.ReactE
   const introText = "$ shami init --mode=command-center";
 
   const checks: Check[] = [
-    { label: "neural map loaded", detail: "5 years production AI" },
+    { label: "loading projects", detail: `${status.portfolio.projects}+ delivered` },
     { label: `${status.gogaa.tests.toLocaleString()} tests passing`, detail: `gogaa v${status.gogaa.version}` },
-    { label: `~${status.codelens.patterns} patterns armed`, detail: `codelens v${status.codelens.version}` },
-    { label: `${status.openevent.clients}+ clients connected`, detail: "openevent live" },
-    { label: "agent ready", detail: "command center online" },
+    { label: `~${status.codelens.patterns} patterns loaded`, detail: `codelens v${status.codelens.version}` },
+    { label: `${status.openevent.clients}+ clients live`, detail: "openevent" },
+    { label: "ready", detail: "command center online" },
   ];
 
   // Short beep on type

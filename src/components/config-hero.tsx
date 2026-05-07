@@ -5,24 +5,22 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { useStatus } from "@/lib/use-status";
 
 const CONFIG_LINES = [
-  { text: "// shami.config.ts", type: "comment" as const },
+  { text: "// openevent.pipeline.ts", type: "comment" as const },
   { text: "", type: "blank" as const },
-  { text: "export default {", type: "keyword" as const },
-  { text: '  name: "Ahtesham Ahmad",', type: "string" as const },
-  { text: '  role: "AI Automation Architect",', type: "string" as const },
-  { text: "  focus: [", type: "keyword" as const },
-  { text: '    "multi-agent systems",', type: "string" as const },
-  { text: '    "production AI",', type: "string" as const },
-  { text: '    "developer tooling",', type: "string" as const },
+  { text: "export const inbox = createPipeline({", type: "keyword" as const },
+  { text: '  trigger: "incoming_email",', type: "string" as const },
+  { text: "  steps: [", type: "keyword" as const },
+  { text: '    classify({ model: "gpt-4o", schema: EventIntent }),', type: "string" as const },
+  { text: '    extract(["date", "guests", "venue", "budget"]),', type: "string" as const },
+  { text: '    requireApproval({ notify: "team_lead" }),', type: "status" as const },
+  { text: "    execute([", type: "keyword" as const },
+  { text: "      bookCalendar(),", type: "string" as const },
+  { text: "      sendConfirmation(),", type: "string" as const },
+  { text: '      createInvoice({ via: "stripe" }),', type: "string" as const },
+  { text: "    ]),", type: "keyword" as const },
   { text: "  ],", type: "keyword" as const },
-  { text: '  philosophy: "ship it, then improve it",', type: "status" as const },
-  { text: "  stack: {", type: "keyword" as const },
-  { text: '    ai: ["Claude", "GPT-4", "Groq", "pgvector"],', type: "string" as const },
-  { text: '    infra: ["TypeScript", "React", "Supabase", "Docker"],', type: "string" as const },
-  { text: '    tools: ["CodeLens", "Gogaa CLI", "Rasad"],', type: "string" as const },
-  { text: "  },", type: "keyword" as const },
-  { text: '  principles: "architect first, code second",', type: "string" as const },
-  { text: "} satisfies Config;", type: "keyword" as const },
+  { text: "  onError: escalateToHuman(),", type: "status" as const },
+  { text: "}) satisfies Pipeline;", type: "keyword" as const },
 ];
 
 function SyntaxLine({ line, lineNum }: {
@@ -172,7 +170,7 @@ export function ConfigHero(): React.ReactElement {
               className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent-status/10 border border-accent-status/20 text-accent-status text-[10px] md:text-xs font-mono mb-6"
             >
               <span className="w-1.5 h-1.5 bg-accent-status rounded-full animate-pulse" />
-              SYSTEM.AGENT :: READY
+              Open to opportunities
             </motion.div>
 
             {/* Tagline */}
@@ -182,9 +180,9 @@ export function ConfigHero(): React.ReactElement {
               transition={{ duration: 0.6, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
               className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight leading-[1.15] mb-5"
             >
-              I build{" "}
+              I architect{" "}
               <span className="text-gradient">AI systems</span>
-              {" "}that run businesses on their own.
+              {" "}and ship them to production.
             </motion.h1>
 
             <motion.p
@@ -193,8 +191,8 @@ export function ConfigHero(): React.ReactElement {
               transition={{ duration: 0.6, delay: 0.8, ease: [0.22, 1, 0.36, 1] }}
               className="text-sm md:text-base text-muted max-w-md leading-relaxed mb-8"
             >
-              5+ years shipping production AI. Multi-agent architectures,
-              full-stack products, and the open-source tooling to build them right.
+              From multi-agent orchestration and RAG pipelines to full-stack
+              AI-powered SaaS. I design the architecture, build the product, and own the delivery.
             </motion.p>
 
             {/* CTAs */}
@@ -243,7 +241,7 @@ export function ConfigHero(): React.ReactElement {
                   <span className="w-3 h-3 rounded-full bg-yellow-500/70" />
                   <span className="w-3 h-3 rounded-full bg-green-500/70" />
                 </div>
-                <span className="ml-2 text-xs font-mono text-muted/60">shami.config.ts</span>
+                <span className="ml-2 text-xs font-mono text-muted/60">openevent.pipeline.ts</span>
               </div>
 
               {/* Code content */}

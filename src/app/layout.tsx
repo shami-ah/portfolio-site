@@ -26,15 +26,15 @@ export const metadata: Metadata = {
   },
   metadataBase: new URL("https://ahtesham.dev.wadwarehouse.com"),
   title: {
-    default: "Ahtesham Ahmad | AI Automation Architect",
+    default: "Ahtesham Ahmad | AI Engineer",
     template: "%s | Ahtesham Ahmad",
   },
   description:
-    "I build AI systems that run businesses on their own, while humans stay in control. Full-stack AI engineer with 250+ delivered projects, production SaaS, and open-source developer tools.",
+    "AI engineer building production AI systems end-to-end. Multi-agent orchestration, RAG pipelines, AI-powered SaaS with 100+ clients, and open-source developer tools.",
   keywords: [
     "Ahtesham Ahmad",
     "AI Engineer",
-    "AI Automation Architect",
+    "AI Engineer",
     "LLM",
     "Multi-Agent Systems",
     "Full Stack Developer",
@@ -50,9 +50,9 @@ export const metadata: Metadata = {
   authors: [{ name: "Ahtesham Ahmad", url: "https://ahtesham.dev.wadwarehouse.com" }],
   creator: "Ahtesham Ahmad",
   openGraph: {
-    title: "Ahtesham Ahmad | AI Automation Architect",
+    title: "Ahtesham Ahmad | AI Engineer",
     description:
-      "I build AI systems that run businesses on their own, while humans stay in control. 250+ projects, production SaaS, open-source tools.",
+      "I turn business workflows into AI-powered products. 250+ projects, production SaaS with 100+ clients, open-source developer tools.",
     type: "website",
     url: "https://ahtesham.dev.wadwarehouse.com",
     siteName: "Ahtesham Ahmad Portfolio",
@@ -62,15 +62,15 @@ export const metadata: Metadata = {
         url: "/ahtesham.jpg",
         width: 600,
         height: 600,
-        alt: "Ahtesham Ahmad — AI Automation Architect",
+        alt: "Ahtesham Ahmad — AI Engineer",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Ahtesham Ahmad | AI Automation Architect",
+    title: "Ahtesham Ahmad | AI Engineer",
     description:
-      "I build AI systems that run businesses on their own. 250+ projects, production SaaS, open-source tools.",
+      "I turn business workflows into AI-powered products. 250+ projects, production SaaS, open-source developer tools.",
     images: ["/ahtesham.jpg"],
   },
   robots: {

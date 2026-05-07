@@ -131,8 +131,8 @@ export function Hero(): React.ReactElement {
           transition={{ duration: 0.7, delay: 1.6, ease: [0.22, 1, 0.36, 1] }}
           className="text-sm md:text-lg text-muted max-w-2xl mx-auto mb-8 md:mb-10 leading-relaxed px-2"
         >
-          5+ years shipping production AI. Multi-agent architectures with
-          human approval gates, full-stack products that hold up under real
+          AI engineer shipping production AI systems. Multi-agent architectures with
+          human approval gates, AI-powered products that hold up under real
           load, and the open-source tooling to build them right.
         </motion.p>
 

@@ -23,7 +23,7 @@ const MODELS = [
 ] as const;
 
 const FALLBACK =
-  "Hmm, that's outside what I know well. Ahtesham would answer it better on a call. Or try rephrasing — I know about rate, stack, availability, his tools, and how he works with clients.";
+  "Hmm, that's outside what I know well. Ahtesham would answer it better on a call. Try rephrasing, I know about rate, stack, availability, his tools, and how he works with clients.";
 
 const WELCOME_LOGO = "GOGAA";
 const WELCOME_META = [
@@ -263,7 +263,7 @@ export function ChatCV(): React.ReactElement {
                   />
                   <div className="min-w-0">
                     <p className="text-foreground font-semibold font-sans text-base">Ahtesham Ahmad</p>
-                    <p className="text-muted/60 text-xs">AI Automation Architect · Open to opportunities</p>
+                    <p className="text-muted/60 text-xs">AI Engineer · Open to opportunities</p>
                     <div className="flex flex-wrap gap-1.5 mt-2">
                       {["Multi-Agent Systems", "Production AI", "Developer Tooling", "TypeScript", "React", "Supabase"].map((t) => (
                         <span key={t} className="px-2 py-0.5 text-[10px] bg-accent/5 text-accent/70 rounded border border-accent/10">

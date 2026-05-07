@@ -49,10 +49,10 @@ export function ConfigContact(): React.ReactElement {
                   Available for full-time &amp; contract
                 </div>
                 <p className="text-base md:text-lg text-foreground font-medium mb-2">
-                  I design the architecture, build the AI layer, and ship the product.
+                  I architect the pipeline, build the product around it, and ship to production.
                 </p>
                 <p className="text-sm text-muted mb-5">
-                  No hand-holding required. One engineer, full ownership, production-grade output.
+                  One engineer, full ownership, from data model to deployed SaaS.
                 </p>
                 <div className="flex flex-wrap gap-x-5 gap-y-1.5 text-[11px] font-mono text-muted/60">
                   {contactLinks.map((link) => (

@@ -181,13 +181,13 @@ export function VisualCV(): React.ReactElement {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.4 }}
-                >AI Automation Architect</motion.p>
+                >AI Engineer</motion.p>
                 <motion.p
                   className="text-sm text-muted/70 mt-4 max-w-md leading-relaxed"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.45 }}
-                >5+ years shipping production AI systems. From multi-agent orchestration and RAG pipelines to full-stack SaaS. I design architectures where AI agents classify, execute, and learn while humans stay in control. Open to senior AI engineering roles in the Gulf region or remote.</motion.p>
+                >AI engineer building production AI systems end-to-end: multi-agent orchestration, RAG pipelines, and full-stack AI-powered SaaS. I architect solutions where AI agents classify, execute, and learn while humans stay in control. Currently Lead AI Developer shipping OpenEvent to 100+ clients.</motion.p>
               </div>
               <motion.div
                 className="text-sm text-muted/70 space-y-1.5 font-mono"
@@ -271,10 +271,17 @@ export function VisualCV(): React.ReactElement {
                   "Replaced 3 legacy spreadsheet processes with React + Supabase internal tools",
                   "Implemented agile workflows reducing delivery cycles by 40%",
                 ]} />
-                <TimelineRole title="AI Engineering Consultant" company="Wadware House · Global Clients" period="2019 – Present" location="Remote · Global" items={[
-                  "250+ projects: RAG pipelines, prompt engineering, AI workflows, analytics dashboards",
-                  "40+ long-term client relationships, 100% satisfaction rate",
-                  "500+ RLHF/SFT evaluation sessions on frontier models (Outlier, RWS, Translated)",
+                <TimelineRole title="AI Evaluation Specialist" company="Outlier · RWS · Translated" period="2021 – Present" location="Remote" items={[
+                  "500+ RLHF/SFT evaluation sessions on frontier models",
+                  "Evaluated model reasoning, code generation, and instruction-following quality",
+                ]} />
+                <TimelineRole title="Freelance AI & Full-Stack Engineer" company="Upwork · Fiverr · Direct Clients" period="2019 – Present" location="Remote · Global" items={[
+                  "250+ projects delivered: web apps, dashboards, AI integrations, automation",
+                  "40+ long-term client relationships, 100% job success rate on Upwork",
+                ]} />
+                <TimelineRole title="Co-Founder & AI Engineer" company="Wadware House" period="2023 – Present" location="Remote" items={[
+                  "Co-founded AI automation agency for scoped client engagements",
+                  "Delivered AI integration and automation projects for global clients",
                 ]} />
               </Section>
 
@@ -399,9 +406,9 @@ export function VisualCV(): React.ReactElement {
               <h1 className="text-[36px] font-bold" style={{ letterSpacing: "-1px", lineHeight: 1, color: "#1a1a2e" }}>
                 Ahtesham<br/><span style={{ color: "#4a6fa5" }}>Ahmad</span>
               </h1>
-              <p className="text-[13px] font-light" style={{ color: "#888", marginTop: "4px" }}>AI Automation Architect</p>
+              <p className="text-[13px] font-light" style={{ color: "#888", marginTop: "4px" }}>AI Engineer</p>
               <p className="text-[10px]" style={{ color: "#777", marginTop: "6px", maxWidth: "360px", lineHeight: 1.55 }}>
-                5+ years shipping production AI systems, from multi-agent orchestration and RAG pipelines to full-stack SaaS. I design architectures where AI agents classify, execute, and learn while humans stay in control.
+                AI engineer building production AI systems end-to-end: multi-agent orchestration, RAG pipelines, and full-stack AI-powered SaaS. I architect solutions where AI agents classify, execute, and learn while humans stay in control.
               </p>
             </div>
             <div className="font-mono text-[9px]" style={{ color: "#999", textAlign: "right", lineHeight: 1.7 }}>
@@ -467,10 +474,17 @@ export function VisualCV(): React.ReactElement {
                   "Replaced 3 legacy spreadsheet processes with React + Supabase internal tools",
                   "Implemented agile workflows reducing delivery cycles by 40%",
                 ]},
-                { title: "AI Engineering Consultant", company: "Wadware House · Global Clients", location: "Remote · Global", period: "2019 – Present", items: [
-                  "250+ projects: RAG pipelines, prompt engineering, AI workflows, analytics dashboards",
-                  "40+ long-term client relationships, 100% satisfaction rate",
-                  "500+ RLHF/SFT evaluation sessions on frontier models (Outlier, RWS, Translated)",
+                { title: "AI Evaluation Specialist", company: "Outlier · RWS · Translated", location: "Remote", period: "2021 – Present", items: [
+                  "500+ RLHF/SFT evaluation sessions on frontier models",
+                  "Evaluated model reasoning, code generation, and instruction-following quality",
+                ]},
+                { title: "Freelance AI & Full-Stack Engineer", company: "Upwork · Fiverr · Direct Clients", location: "Remote · Global", period: "2019 – Present", items: [
+                  "250+ projects delivered: web apps, dashboards, AI integrations, automation",
+                  "40+ long-term client relationships, 100% job success rate on Upwork",
+                ]},
+                { title: "Co-Founder & AI Engineer", company: "Wadware House", location: "Remote", period: "2023 – Present", items: [
+                  "Co-founded AI automation agency for scoped client engagements",
+                  "Delivered AI integration and automation projects for global clients",
                 ]},
               ].map((role) => (
                 <div key={role.title} style={{ display: "flex", gap: "10px", marginBottom: "7px" }}>

@@ -17,16 +17,16 @@ const COMMANDS: Record<string, string> = {
   contact    — how to reach me
   clear      — clear terminal`,
 
-  about: `Ahtesham Ahmad — AI Automation Architect
+  about: `Ahtesham Ahmad · AI Engineer
 
-5+ years shipping production AI systems.
+AI engineer building production AI systems end-to-end.
 Multi-agent architectures with human approval gates,
-full-stack products from schema to polished UI,
+AI-powered SaaS from schema to polished UI,
 and the open-source tooling to build them right.
 
 Currently: Lead AI Developer @ More Life Hospitality GmbH
 Building: OpenEvent (100+ clients live)
-Side: Gogaa CLI, CodeLens, Rasad`,
+Tools: Gogaa CLI, CodeLens, Rasad`,
 
   skills: `// skills.json
 {

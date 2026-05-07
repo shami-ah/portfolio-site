@@ -32,28 +32,28 @@ export function MissionStats(): React.ReactElement {
 
   const widgets = [
     {
-      key: "projects_shipped",
-      label: "projects_shipped",
+      key: "projects_delivered",
+      label: "projects_delivered",
       value: <CountUp to={status.portfolio.projects} suffix="+" />,
-      desc: "Production systems globally",
+      desc: "Across 40+ clients globally",
+    },
+    {
+      key: "openevent_clients",
+      label: "openevent.clients",
+      value: <CountUp to={status.openevent.clients} suffix="+" />,
+      desc: "Using OpenEvent daily",
+    },
+    {
+      key: "events_managed",
+      label: "events.managed",
+      value: <CountUp to={status.openevent.events} suffix="+" />,
+      desc: "Saving ~90 min/day per team",
     },
     {
       key: "gogaa_tests",
       label: "gogaa.tests",
       value: <CountUp to={status.gogaa.tests} />,
-      desc: "Test suite passing",
-    },
-    {
-      key: "codelens_patterns",
-      label: "codelens.patterns",
-      value: <>~<CountUp to={status.codelens.patterns} /></>,
-      desc: "Bug patterns armed",
-    },
-    {
-      key: "clients_active",
-      label: "clients.active",
-      value: <CountUp to={status.openevent.clients} suffix="+" />,
-      desc: "OpenEvent live users",
+      desc: "Passing across open-source tools",
     },
   ];
 
@@ -78,29 +78,18 @@ export function MissionStats(): React.ReactElement {
               <div className="space-y-4 md:space-y-5 text-sm md:text-base text-muted leading-relaxed">
                 <p>
                   The gap between an AI demo and a production system is enormous.
-                  Hallucinations slip through, there&apos;s no human oversight, and
-                  the whole thing is held together by a single API call. I&apos;ve
-                  spent five years closing that gap.
+                  I close that gap.
                 </p>
                 <p>
-                  I work where{" "}
-                  <span className="text-foreground font-medium">
-                    AI orchestration
-                  </span>{" "}
-                  meets{" "}
-                  <span className="text-foreground font-medium">
-                    systems engineering
-                  </span>
-                  : multi-agent architectures with human approval gates, workflow
-                  engines that connect LLM reasoning to real actions like calendar
-                  bookings and invoices, and full-stack products shipped from schema
-                  design to polished UI.
+                  <span className="text-foreground font-medium">AI orchestration</span>
+                  {" "}meets{" "}
+                  <span className="text-foreground font-medium">systems engineering</span>
+                  : multi-agent pipelines with human approval gates, LLM reasoning
+                  connected to real actions, full-stack products shipped end-to-end.
                 </p>
                 <p className="text-foreground font-medium border-l-2 border-accent pl-4">
-                  Most engineers are consumers of AI tooling. I&apos;m also a builder of it. When
-                  the tools I needed didn&apos;t exist, I built them. A code review engine that catches
-                  bugs commercial tools miss. An open-source coding agent that closes every gap
-                  simultaneously. That&apos;s a different relationship with the technology.
+                  When the tools I needed didn&apos;t exist, I built them.
+                  I don&apos;t just integrate AI. I build the infrastructure around it.
                 </p>
               </div>
             </FadeUp>
@@ -164,10 +153,10 @@ export function MissionStats(): React.ReactElement {
           </FadeUp>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 items-stretch">
           {widgets.map((w, i) => (
-            <FadeUp key={w.key} delay={i * 0.08}>
-              <div className="card-glow p-4 md:p-5 rounded-xl bg-card border border-card-border">
+            <FadeUp key={w.key} delay={i * 0.08} className="h-full">
+              <div className="card-glow p-4 md:p-5 rounded-xl bg-card border border-card-border h-full flex flex-col">
                 <div className="flex items-center gap-2 mb-3">
                   <span className="w-1.5 h-1.5 rounded-full bg-accent-status animate-pulse" />
                   <span className="text-[10px] font-mono text-muted/50 uppercase tracking-wider">

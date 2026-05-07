@@ -211,7 +211,7 @@ const commands: AgentCommand[] = [
       { name: "retrieve_context", detail: "identity_card", ms: 14 },
     ],
     response:
-      "Hey, you found it. 5 years of production AI. Thanks for actually exploring — most don't.",
+      "Hey, you found it. AI engineer, Lead AI Dev, builder of tools. Thanks for actually exploring. Most don't.",
   },
   {
     keyword: "tour",
@@ -289,7 +289,7 @@ const commands: AgentCommand[] = [
       { name: "route_to_tool", detail: "→ spawn_chat_agent", ms: 6 },
       { name: "execute", detail: "target: /chat", ms: 42 },
     ],
-    response: "Launching chat agent. Ask anything about my work — scoped knowledge base, no hallucinations.",
+    response: "Launching chat agent. Ask anything about my work. Scoped knowledge base, no hallucinations.",
     action: () => {
       setTimeout(() => {
         window.location.href = "/chat";
@@ -332,7 +332,7 @@ const commands: AgentCommand[] = [
       { name: "classify_intent", detail: "label: reaction_positive · conf 0.88", ms: 31 },
     ],
     response:
-      "That's the feeling. Every interaction here is wired to something real — keep poking.",
+      "That's the feeling. Every interaction here is wired to something real. Keep poking.",
   },
   {
     keyword: "presence",
@@ -356,7 +356,7 @@ const commands: AgentCommand[] = [
       { name: "classify_intent", detail: "label: show_skills · conf 0.96", ms: 30 },
       { name: "render_neural_map", detail: "27 nodes · 34 edges · 5 groups", ms: 45 },
     ],
-    response: "Opening neural map — hover nodes to explore connections.",
+    response: "Opening neural map. Hover nodes to explore connections.",
     action: () => window.dispatchEvent(new CustomEvent("show-skills-modal")),
   },
   {
@@ -368,7 +368,7 @@ const commands: AgentCommand[] = [
       { name: "classify_intent", detail: "label: show_skills · conf 0.96", ms: 30 },
       { name: "render_neural_map", detail: "27 nodes · 34 edges · 5 groups", ms: 45 },
     ],
-    response: "Opening neural map — hover nodes to explore connections.",
+    response: "Opening neural map. Hover nodes to explore connections.",
     action: () => window.dispatchEvent(new CustomEvent("show-skills-modal")),
   },
   {
@@ -397,7 +397,7 @@ const TICKER_MESSAGES = [
   { icon: "◉", color: "text-accent-status", text: "codelens v0.3.5: ~430 patterns armed · scanning" },
   { icon: "◈", color: "text-accent", text: "agent: analyzing visitor session · ready for commands" },
   { icon: "◈", color: "text-accent-secondary", text: "stack: TypeScript · React · Supabase · Claude · Docker" },
-  { icon: "◈", color: "text-accent", text: "built: Gogaa CLI, CodeLens, OpenEvent, Rasad — all production" },
+  { icon: "◈", color: "text-accent", text: "built: OpenEvent (live) · Gogaa CLI (beta) · CodeLens (beta) · Rasad (alpha)" },
   { icon: "▸", color: "text-accent-secondary", text: 'try: type "hire" · "projects" · "build" · "skills" to explore' },
 ];
 
@@ -637,7 +637,7 @@ export function AgentBar(): React.ReactElement {
                   type="text"
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
-                  placeholder="type a command — hire · projects · build · skills · chat"
+                  placeholder="type a command: hire · projects · build · skills · chat"
                   className="flex-1 min-w-0 bg-transparent outline-none font-mono text-xs md:text-sm placeholder:text-muted/40 text-foreground"
                 />
                 <kbd className="hidden md:inline text-[10px] font-mono text-muted/50 border border-card-border px-1.5 py-0.5 rounded">
