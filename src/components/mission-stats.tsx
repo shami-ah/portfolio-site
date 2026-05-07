@@ -137,11 +137,18 @@ export function MissionStats(): React.ReactElement {
 }
 
 /* ------------------------------------------------------------------ */
-/*  Terminal About Card — 3D tilt + staggered command typing           */
+/*  Terminal About Card — char-by-char typing + response streaming     */
 /* ------------------------------------------------------------------ */
 
-const TERM_LINES = [
-  { cmd: "whoami", type: "identity" as const },
+interface TermStep {
+  cmd: string;
+  output?: string;
+  type?: "identity";
+  green?: boolean;
+}
+
+const TERM_STEPS: TermStep[] = [
+  { cmd: "whoami", type: "identity" },
   { cmd: "cat location", output: "Islamabad, PK · remote-first" },
   { cmd: "echo $LANGUAGES", output: "EN, UR, PS, SD, AR" },
   { cmd: "cat superpower.txt", output: "Picks up anything fast" },
@@ -151,7 +158,59 @@ const TERM_LINES = [
 function TerminalAboutCard(): React.ReactElement {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, margin: "-60px" });
-  const [visibleLines, setVisibleLines] = useState(0);
+
+  // Phase machine: type command char by char → show output → next command
+  const [stepIdx, setStepIdx] = useState(0);
+  const [cmdChars, setCmdChars] = useState(0);
+  const [showOutput, setShowOutput] = useState(false);
+  const [outputChars, setOutputChars] = useState(0);
+  const [completedSteps, setCompletedSteps] = useState<TermStep[]>([]);
+
+  const currentStep = TERM_STEPS[stepIdx] as TermStep | undefined;
+  const isTypingCmd = currentStep && cmdChars < currentStep.cmd.length;
+  const isStreamingOutput = currentStep && showOutput && currentStep.output && outputChars < currentStep.output.length;
+  const allDone = stepIdx >= TERM_STEPS.length;
+
+  // Type command characters
+  useEffect(() => {
+    if (!isInView || !currentStep || allDone) return;
+    if (cmdChars < currentStep.cmd.length) {
+      const timer = setTimeout(() => setCmdChars((c) => c + 1), 35);
+      return () => clearTimeout(timer);
+    }
+    // Command fully typed — pause then show output
+    const timer = setTimeout(() => setShowOutput(true), 200);
+    return () => clearTimeout(timer);
+  }, [isInView, cmdChars, currentStep, allDone]);
+
+  // Stream output characters
+  useEffect(() => {
+    if (!showOutput || !currentStep) return;
+    if (currentStep.type === "identity") {
+      // Identity shows instantly (it's a card, not text)
+      const timer = setTimeout(() => {
+        setCompletedSteps((prev) => [...prev, currentStep]);
+        setStepIdx((i) => i + 1);
+        setCmdChars(0);
+        setShowOutput(false);
+        setOutputChars(0);
+      }, 500);
+      return () => clearTimeout(timer);
+    }
+    if (currentStep.output && outputChars < currentStep.output.length) {
+      const timer = setTimeout(() => setOutputChars((c) => c + 1), 18);
+      return () => clearTimeout(timer);
+    }
+    // Output done — move to next step
+    const timer = setTimeout(() => {
+      setCompletedSteps((prev) => [...prev, currentStep]);
+      setStepIdx((i) => i + 1);
+      setCmdChars(0);
+      setShowOutput(false);
+      setOutputChars(0);
+    }, 300);
+    return () => clearTimeout(timer);
+  }, [showOutput, outputChars, currentStep]);
 
   // 3D tilt
   const rx = useMotionValue(0);
@@ -162,117 +221,100 @@ function TerminalAboutCard(): React.ReactElement {
   const onMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>): void => {
     const rect = ref.current?.getBoundingClientRect();
     if (!rect) return;
-    const px = (e.clientX - rect.left) / rect.width;
-    const py = (e.clientY - rect.top) / rect.height;
-    ry.set((px - 0.5) * 10);
-    rx.set((0.5 - py) * 10);
+    ry.set(((e.clientX - rect.left) / rect.width - 0.5) * 10);
+    rx.set((0.5 - (e.clientY - rect.top) / rect.height) * 10);
   }, [rx, ry]);
 
-  const onMouseLeave = useCallback((): void => {
-    rx.set(0);
-    ry.set(0);
-  }, [rx, ry]);
-
-  // Type lines one by one
-  useEffect(() => {
-    if (!isInView) return;
-    if (visibleLines >= TERM_LINES.length) return;
-    const timer = setTimeout(
-      () => setVisibleLines((n) => n + 1),
-      visibleLines === 0 ? 400 : 600,
-    );
-    return () => clearTimeout(timer);
-  }, [isInView, visibleLines]);
+  const onMouseLeave = useCallback((): void => { rx.set(0); ry.set(0); }, [rx, ry]);
 
   return (
     <motion.div
       ref={ref}
       onMouseMove={onMouseMove}
       onMouseLeave={onMouseLeave}
-      style={{
-        rotateX,
-        rotateY,
-        transformPerspective: 900,
-        transformStyle: "preserve-3d",
-      }}
-      whileHover={{
-        scale: 1.02,
-        boxShadow: "0 25px 50px rgba(0,0,0,0.4), 0 0 40px rgba(212,168,83,0.06)",
-      }}
+      style={{ rotateX, rotateY, transformPerspective: 900, transformStyle: "preserve-3d" }}
+      whileHover={{ scale: 1.02, boxShadow: "0 25px 50px rgba(0,0,0,0.4), 0 0 40px rgba(212,168,83,0.06)" }}
       transition={{ duration: 0.2 }}
       className="rounded-xl bg-card border border-card-border overflow-hidden h-full flex flex-col shadow-2xl shadow-black/20 cursor-default"
     >
-      {/* Terminal chrome */}
+      {/* Chrome */}
       <div className="flex items-center gap-2 px-3 py-2 border-b border-card-border bg-card/50">
         <div className="flex gap-1.5">
           <span className="w-2.5 h-2.5 rounded-full bg-red-500/60" />
           <span className="w-2.5 h-2.5 rounded-full bg-yellow-500/60" />
           <span className="w-2.5 h-2.5 rounded-full bg-green-500/60" />
         </div>
-        <span className="ml-1 text-[10px] font-mono text-muted/50">shami ~ whoami</span>
+        <span className="ml-1 text-[10px] font-mono text-muted/50">shami ~ zsh</span>
+      </div>
+
+      {/* Photo centered at top */}
+      <div className="flex flex-col items-center pt-4 pb-2">
+        <div className="relative">
+          <div className="absolute -inset-2 bg-gradient-to-br from-accent/15 to-accent-secondary/10 rounded-full blur-xl pointer-events-none" />
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/ahtesham.jpg" alt="Ahtesham Ahmad" className="relative w-14 h-14 rounded-full object-cover border-2 border-accent/25" />
+        </div>
       </div>
 
       {/* Terminal body */}
-      <div className="p-4 font-mono text-[11px] leading-[1.8] flex-1">
-        {TERM_LINES.slice(0, visibleLines).map((line, i) => (
-          <motion.div
-            key={line.cmd}
-            initial={{ opacity: 0, y: 6 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3 }}
-            className={i > 0 ? "mt-1" : ""}
-          >
-            {/* Command */}
-            <div>
-              <span className="text-accent">❯</span>{" "}
-              <span className={line.type === "identity" ? "text-foreground/90" : "text-muted/40"}>
-                {line.cmd}
-              </span>
-            </div>
-
-            {/* Output */}
-            {line.type === "identity" ? (
-              <div className="flex items-center gap-3 my-2 pl-1">
-                <div className="relative shrink-0">
-                  <div className="absolute -inset-1.5 bg-gradient-to-br from-accent/15 to-accent-secondary/10 rounded-full blur-lg pointer-events-none" />
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src="/ahtesham.jpg"
-                    alt="Ahtesham Ahmad"
-                    className="relative w-12 h-12 rounded-full object-cover border border-accent/25"
-                  />
-                </div>
-                <div>
-                  <p className="text-foreground font-bold text-sm font-sans">Ahtesham Ahmad</p>
-                  <p className="text-accent text-[10px]">AI Engineer</p>
-                </div>
+      <div className="px-4 pb-3 font-mono text-[10.5px] leading-[1.9] flex-1 overflow-hidden">
+        {/* Completed steps */}
+        {completedSteps.map((step) => (
+          <div key={step.cmd} className="mb-1">
+            <div><span className="text-accent">❯</span> <span className="text-foreground/80">{step.cmd}</span></div>
+            {step.type === "identity" ? (
+              <div className="pl-3 py-0.5">
+                <span className="text-foreground font-bold font-sans text-xs">Ahtesham Ahmad</span>
+                <span className="text-accent/60 ml-2 text-[9px]">AI Engineer</span>
               </div>
             ) : (
-              <div className={`pl-4 text-[10.5px] ${line.green ? "text-accent-status/70" : "text-foreground/70"}`}>
-                {line.output}
+              <div className={`pl-3 ${step.green ? "text-accent-status/70" : "text-foreground/60"}`}>
+                {step.output}
               </div>
             )}
-          </motion.div>
+          </div>
         ))}
 
-        {/* Blinking cursor while typing */}
-        {isInView && visibleLines < TERM_LINES.length && (
-          <div className="mt-1">
+        {/* Currently typing command */}
+        {currentStep && !allDone && (
+          <div className="mb-1">
+            <div>
+              <span className="text-accent">❯</span>{" "}
+              <span className="text-foreground/80">{currentStep.cmd.slice(0, cmdChars)}</span>
+              {isTypingCmd && <span className="inline-block w-[6px] h-[12px] bg-accent/80 ml-px translate-y-[2px] animate-pulse" />}
+            </div>
+            {/* Streaming output */}
+            {showOutput && currentStep.type === "identity" && (
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="pl-3 py-0.5">
+                <span className="text-foreground font-bold font-sans text-xs">Ahtesham Ahmad</span>
+                <span className="text-accent/60 ml-2 text-[9px]">AI Engineer</span>
+              </motion.div>
+            )}
+            {showOutput && currentStep.output && currentStep.type !== "identity" && (
+              <div className={`pl-3 ${currentStep.green ? "text-accent-status/70" : "text-foreground/60"}`}>
+                {currentStep.output.slice(0, outputChars)}
+                {isStreamingOutput && <span className="inline-block w-[5px] h-[10px] bg-foreground/30 ml-px translate-y-[1px] animate-pulse" />}
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Final cursor */}
+        {allDone && (
+          <div>
             <span className="text-accent">❯</span>{" "}
-            <span className="inline-block w-[7px] h-[13px] bg-accent/70 animate-pulse translate-y-[2px]" />
+            <span className="inline-block w-[6px] h-[12px] bg-accent/70 translate-y-[2px] animate-pulse" />
           </div>
         )}
       </div>
 
       {/* Status bar */}
-      <div className="px-3 py-2 border-t border-card-border/50 flex items-center justify-between bg-card/30">
+      <div className="px-3 py-1.5 border-t border-card-border/50 flex items-center justify-between bg-card/30">
         <div className="flex items-center gap-2 text-[9px] font-mono">
           <span className="w-1.5 h-1.5 rounded-full bg-accent-status animate-pulse" />
-          <span className="text-accent-status/70">available</span>
+          <span className="text-accent-status/70">available for hire</span>
         </div>
-        <a href="/uses" className="text-[9px] font-mono text-muted/30 hover:text-accent transition-colors">
-          setup &rarr;
-        </a>
+        <a href="/uses" className="text-[9px] font-mono text-muted/30 hover:text-accent transition-colors">setup &rarr;</a>
       </div>
     </motion.div>
   );
