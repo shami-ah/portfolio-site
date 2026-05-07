@@ -481,7 +481,7 @@ export function Uses(): React.ReactElement {
     e.stopPropagation();
     const next = openTabs.filter((t) => t !== id);
     setOpenTabs(next);
-    if (activeFile === id) setActiveFile(next[next.length - 1] ?? "readme");
+    if (activeFile === id) setActiveFile(next[next.length - 1] ?? "");
   };
 
   const activeEntry = files.find((f) => f.id === activeFile);
@@ -567,23 +567,33 @@ export function Uses(): React.ReactElement {
             shami-toolkit <span className="text-muted/10">&rsaquo;</span> {activeEntry?.path}
           </div>
 
-          {/* Split: Code + Preview */}
-          <div className="flex-1 flex overflow-hidden">
-            {/* Code */}
-            <div className="flex-1 overflow-y-auto border-r border-card-border/25 bg-background/40 hidden md:block">
-              <div className="sticky top-0 z-5 px-3 py-[3px] text-[8px] font-mono text-muted/20 uppercase tracking-[1px] border-b border-card-border/15 bg-background/90 backdrop-blur-sm">
-                {activeEntry?.name}
+          {/* Split: Code + Preview — or empty state */}
+          {activeFile && activeEntry ? (
+            <div className="flex-1 flex overflow-hidden">
+              {/* Code */}
+              <div className="flex-1 overflow-y-auto border-r border-card-border/25 bg-background/40 hidden md:block">
+                <div className="sticky top-0 z-5 px-3 py-[3px] text-[8px] font-mono text-muted/20 uppercase tracking-[1px] border-b border-card-border/15 bg-background/90 backdrop-blur-sm">
+                  {activeEntry.name}
+                </div>
+                <CodePanel />
               </div>
-              <CodePanel />
-            </div>
-            {/* Preview */}
-            <div className="flex-[1.1] overflow-y-auto">
-              <div className="sticky top-0 z-5 px-3 py-[3px] text-[8px] font-mono text-muted/20 uppercase tracking-[1px] border-b border-card-border/15 bg-background/90 backdrop-blur-sm">
-                Preview
+              {/* Preview */}
+              <div className="flex-[1.1] overflow-y-auto">
+                <div className="sticky top-0 z-5 px-3 py-[3px] text-[8px] font-mono text-muted/20 uppercase tracking-[1px] border-b border-card-border/15 bg-background/90 backdrop-blur-sm">
+                  Preview
+                </div>
+                <PreviewPanel />
               </div>
-              <PreviewPanel />
             </div>
-          </div>
+          ) : (
+            <div className="flex-1 flex items-center justify-center">
+              <div className="text-center">
+                <p className="text-muted/20 text-3xl mb-3 font-mono">&#123; &#125;</p>
+                <p className="text-sm text-muted/30 font-mono mb-1">No file open</p>
+                <p className="text-[10px] text-muted/20">Select a file from the sidebar to explore</p>
+              </div>
+            </div>
+          )}
 
           {/* Status bar */}
           <div className="flex items-center justify-between px-3 py-[2px] border-t border-card-border bg-card/40 shrink-0 text-[9px] font-mono text-muted/25">
