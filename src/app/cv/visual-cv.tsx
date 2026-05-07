@@ -7,8 +7,9 @@ import { useCvHit } from "@/components/cv-counter";
 import { useStatus } from "@/lib/use-status";
 import { Download, FileText, Zap, Rocket, Building2, Link2, TreePine, GraduationCap, Globe, Cog, Cloud, ArrowRight } from "lucide-react";
 
-const ACCENT = "#d4a853";
-const AMBER = "#8ba4c4";
+// Use CSS variables so these adapt to light/dark theme
+const ACCENT = "var(--accent, #d4a853)";
+const AMBER = "var(--accent-secondary, #8ba4c4)";
 
 // Counter animation hook
 function useCounter(target: number, duration = 2000) {
@@ -71,7 +72,7 @@ function SkillBar({ name, level, delay }: { name: string; level: number; delay: 
       transition={{ delay, duration: 0.4 }}
     >
       <div className="flex justify-between text-xs mb-1">
-        <span className="text-foreground/80 group-hover:text-white transition-colors">{name}</span>
+        <span className="text-foreground/80 group-hover:text-foreground transition-colors">{name}</span>
         <span className="text-muted/80 font-mono">{level}%</span>
       </div>
       <div className="h-1.5 bg-card rounded-full overflow-hidden">
@@ -92,7 +93,7 @@ function SkillBar({ name, level, delay }: { name: string; level: number; delay: 
 function TimelineDot({ active }: { active?: boolean }) {
   return (
     <div className="relative flex items-center justify-center">
-      <div className={`w-3 h-3 rounded-full border-2 ${active ? "border-accent bg-accent/20" : "border-zinc-600 bg-card"}`} />
+      <div className={`w-3 h-3 rounded-full border-2 ${active ? "border-accent bg-accent/20" : "border-card-border bg-card"}`} />
       {active && (
         <motion.div
           className="absolute w-3 h-3 rounded-full border border-accent/40"
@@ -136,23 +137,23 @@ export function VisualCV(): React.ReactElement {
         </motion.a>
         <motion.button
           onClick={handleDownload}
-          className="px-3 md:px-4 py-2 bg-accent/90 hover:bg-accent text-white rounded-lg text-xs md:text-sm font-medium backdrop-blur-sm border border-accent/20 flex items-center gap-1.5 shadow-lg shadow-accent/20"
+          className="px-3 md:px-4 py-2 bg-accent/90 hover:bg-accent text-background rounded-lg text-xs md:text-sm font-medium backdrop-blur-sm border border-accent/20 flex items-center gap-1.5 shadow-lg shadow-accent/20"
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
         >
           <Download size={14} />
           PDF
         </motion.button>
-        <a href="/" className="px-3 md:px-4 py-2 bg-card/80 hover:bg-card-hover text-white rounded-lg text-xs md:text-sm font-medium backdrop-blur-sm border border-card-border">← Back</a>
+        <a href="/" className="px-3 md:px-4 py-2 bg-card/80 hover:bg-card-hover text-foreground rounded-lg text-xs md:text-sm font-medium backdrop-blur-sm border border-card-border">← Back</a>
       </div>
 
       {/* Screen version - dark, animated */}
-      <div className={`print:hidden min-h-screen bg-background text-white overflow-x-hidden ${preview ? "hidden" : ""}`}>
+      <div className={`print:hidden min-h-screen bg-background text-foreground overflow-x-hidden ${preview ? "hidden" : ""}`}>
         {/* Background effects */}
         <div className="fixed inset-0 pointer-events-none">
           <div className="absolute top-0 left-1/4 w-96 h-96 bg-accent/5 rounded-full blur-3xl" />
           <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-accent-secondary/5 rounded-full blur-3xl" />
-          <div className="absolute inset-0" style={{ backgroundImage: "radial-gradient(circle at 1px 1px, rgba(255,255,255,0.03) 1px, transparent 0)", backgroundSize: "40px 40px" }} />
+          <div className="absolute inset-0" style={{ backgroundImage: "radial-gradient(circle at 1px 1px, color-mix(in srgb, var(--foreground) 3%, transparent) 1px, transparent 0)", backgroundSize: "40px 40px" }} />
         </div>
 
         <div className="relative max-w-5xl mx-auto px-6 py-16">
@@ -195,9 +196,9 @@ export function VisualCV(): React.ReactElement {
                 transition={{ delay: 0.5 }}
               >
                 <p>shami8024@gmail.com</p>
-                <p className="text-blue-400">github.com/shami-ah</p>
-                <p className="text-blue-400">linkedin.com/in/ahtesham</p>
-                <p className="text-blue-400">ahtesham.dev.wadwarehouse.com</p>
+                <p className="text-accent-secondary">github.com/shami-ah</p>
+                <p className="text-accent-secondary">linkedin.com/in/ahtesham</p>
+                <p className="text-accent-secondary">ahtesham.dev.wadwarehouse.com</p>
                 <p>Islamabad, PK · Remote</p>
               </motion.div>
             </div>
@@ -697,7 +698,7 @@ function TimelineRole({ title, company, period, location, items, active }: { tit
       </div>
       <div className="pb-6 flex-1">
         <div className="flex justify-between items-baseline flex-wrap gap-2">
-          <p className="font-semibold text-sm text-zinc-200">{title}</p>
+          <p className="font-semibold text-sm text-foreground">{title}</p>
           <p className="text-xs text-muted/60 font-mono">{period}</p>
         </div>
         <p className="text-xs text-muted/80">{company} · {location}</p>
@@ -752,7 +753,7 @@ function ProjectCard({
   return (
     <motion.div
       ref={ref}
-      className="p-4 rounded-lg border border-card-border bg-card/20 hover:border-zinc-700 transition-all group relative overflow-hidden"
+      className="p-4 rounded-lg border border-card-border bg-card/20 hover:border-muted/30 transition-all group relative overflow-hidden"
       onMouseMove={onMouseMove}
       onMouseLeave={onMouseLeave}
       style={{
@@ -775,7 +776,7 @@ function ProjectCard({
       />
 
       <div className="flex items-baseline gap-2 mb-1 flex-wrap">
-        <p className="font-semibold text-sm text-zinc-200 group-hover:text-white transition-colors">
+        <p className="font-semibold text-sm text-foreground group-hover:text-accent transition-colors">
           {name}
         </p>
         <span
@@ -801,7 +802,7 @@ function ProjectCard({
       </div>
       <p className="text-xs text-muted/80 leading-relaxed">{description}</p>
       {link && (
-        <p className="text-caption text-blue-400/60 mt-1.5 font-mono">{link}</p>
+        <p className="text-caption text-accent-secondary/60 mt-1.5 font-mono">{link}</p>
       )}
     </motion.div>
   );
