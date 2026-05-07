@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { motion } from "framer-motion";
+import { motion, type Variants } from "framer-motion";
 import { projects, type ProjectData } from "@/data/projects";
 import { FadeUp } from "./motion";
 import { ProjectModal } from "./project-modal";
@@ -86,7 +86,14 @@ function SystemCard({
   onOpen: (p: ProjectData) => void;
 }): React.ReactElement {
   return (
-    <FadeUp delay={index * 0.08} className="h-full">
+    <motion.div
+      initial={{ opacity: 0, y: 40, scale: 0.96, rotateX: 2 }}
+      whileInView={{ opacity: 1, y: 0, scale: 1, rotateX: 0 }}
+      viewport={{ once: true, margin: "-60px" }}
+      transition={{ duration: 0.6, delay: index * 0.1, ease: [0.22, 1, 0.36, 1] }}
+      className="h-full"
+      style={{ perspective: 800 }}
+    >
       <div className="card-glow rounded-xl bg-card border border-card-border overflow-hidden hover:border-accent/30 transition-all duration-300 group h-full flex flex-col">
         {/* Header row: status + name + version */}
         <div className="flex items-center justify-between px-4 md:px-5 py-3 border-b border-card-border/50">
@@ -176,7 +183,7 @@ function SystemCard({
           </div>
         </div>
       </div>
-    </FadeUp>
+    </motion.div>
   );
 }
 

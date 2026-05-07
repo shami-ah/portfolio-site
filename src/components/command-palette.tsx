@@ -47,13 +47,6 @@ export function CommandPalette(): React.ReactElement {
         action: () => scrollToId("projects"),
       },
       {
-        id: "nav-writing",
-        label: "Go to Writing",
-        hint: "Articles, deep dives, frameworks",
-        group: "Navigate",
-        action: () => scrollToId("writing"),
-      },
-      {
         id: "nav-contact",
         label: "Go to Contact",
         hint: "Book a call, email, socials",

@@ -18,8 +18,8 @@ function CodeCard({
 }): React.ReactElement {
   return (
     <FadeUp delay={delay}>
-      <div className="card-glow rounded-xl border border-card-border bg-card/80 backdrop-blur-sm overflow-hidden">
-        <div className="flex items-center gap-2 px-4 py-2.5 border-b border-card-border bg-card/50">
+      <div className="card-glow rounded-xl border border-card-border/80 bg-card backdrop-blur-sm overflow-hidden shadow-lg shadow-black/20">
+        <div className="flex items-center gap-2 px-4 py-2.5 border-b border-card-border/80 bg-card-hover/50">
           <div className="flex gap-1.5">
             <span className="w-2.5 h-2.5 rounded-full bg-red-500/60" />
             <span className="w-2.5 h-2.5 rounded-full bg-yellow-500/60" />

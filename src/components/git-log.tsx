@@ -1,5 +1,6 @@
 "use client";
 
+import { motion } from "framer-motion";
 import { FadeUp } from "./motion";
 import { useStatus } from "@/lib/use-status";
 
@@ -79,8 +80,14 @@ export function GitLog(): React.ReactElement {
 
         <div className="space-y-6 md:space-y-8">
           {roles.map((role, i) => (
-            <FadeUp key={role.hash} delay={i * 0.1}>
-              <div className="rounded-xl bg-card border border-card-border p-5 md:p-6 font-mono text-sm hover:border-accent/20 transition-colors duration-300">
+            <motion.div
+              key={role.hash}
+              initial={{ opacity: 0, x: i % 2 === 0 ? -30 : 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, margin: "-60px" }}
+              transition={{ duration: 0.6, delay: i * 0.1, ease: [0.22, 1, 0.36, 1] }}
+            >
+              <div className="card-glow rounded-xl bg-card border border-card-border p-5 md:p-6 font-mono text-sm hover:border-accent/20 transition-colors duration-300">
                 {/* Commit header */}
                 <div className="flex flex-wrap items-center gap-x-2 gap-y-1 mb-1 text-xs">
                   <span className="text-accent-secondary">{role.hash}</span>
@@ -131,7 +138,7 @@ export function GitLog(): React.ReactElement {
                   <span className="text-red-400/70">-{role.stats.deletions.toLocaleString()}</span>
                 </div>
               </div>
-            </FadeUp>
+            </motion.div>
           ))}
 
           {/* Initial commit */}

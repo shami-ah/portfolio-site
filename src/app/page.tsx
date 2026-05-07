@@ -4,7 +4,6 @@ import { SidebarNav } from "@/components/sidebar-nav";
 import { MissionStats } from "@/components/mission-stats";
 import { Projects } from "@/components/projects";
 import { GitLog } from "@/components/git-log";
-import { Writing } from "@/components/writing";
 import { ConfigContact } from "@/components/config-contact";
 import { Footer } from "@/components/footer";
 import { TerminalBoot } from "@/components/terminal-boot";
@@ -12,6 +11,9 @@ import { CommandPalette } from "@/components/command-palette";
 import { AgentBar } from "@/components/agent-bar";
 import { ShortcutsOverlay } from "@/components/shortcuts-overlay";
 import { SkillsModal } from "@/components/skills-modal";
+import { CursorGlow } from "@/components/cursor-glow";
+import { SectionDivider } from "@/components/section-divider";
+import { HighlightStrip } from "@/components/highlight-strip";
 
 export default function Home(): React.ReactElement {
   return (
@@ -19,12 +21,16 @@ export default function Home(): React.ReactElement {
       <TerminalBoot />
       <TopBar />
       <SidebarNav />
+      <CursorGlow />
       <div className="relative z-10">
         <ConfigHero />
+        <HighlightStrip />
         <MissionStats />
+        <SectionDivider />
         <Projects />
+        <SectionDivider />
         <GitLog />
-        <Writing />
+        <SectionDivider />
         <ConfigContact />
       </div>
       <Footer />

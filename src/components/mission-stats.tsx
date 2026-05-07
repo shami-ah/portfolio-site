@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { useInView } from "framer-motion";
+import { motion, useInView } from "framer-motion";
 import { FadeUp } from "./motion";
 import { useStatus } from "@/lib/use-status";
 
@@ -155,22 +155,30 @@ export function MissionStats(): React.ReactElement {
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 items-stretch">
           {widgets.map((w, i) => (
-            <FadeUp key={w.key} delay={i * 0.08} className="h-full">
-              <div className="card-glow p-4 md:p-5 rounded-xl bg-card border border-card-border h-full flex flex-col">
+            <motion.div
+              key={w.key}
+              initial={{ opacity: 0, y: 30, scale: 0.95 }}
+              whileInView={{ opacity: 1, y: 0, scale: 1 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ duration: 0.5, delay: i * 0.12, ease: [0.22, 1, 0.36, 1] }}
+              whileHover={{ y: -4, transition: { duration: 0.2 } }}
+              className="h-full"
+            >
+              <div className="card-glow p-4 md:p-5 rounded-xl bg-card border border-card-border h-full flex flex-col group hover:border-accent/30 transition-colors duration-300">
                 <div className="flex items-center gap-2 mb-3">
-                  <span className="w-1.5 h-1.5 rounded-full bg-accent-status animate-pulse" />
-                  <span className="text-[10px] font-mono text-muted/50 uppercase tracking-wider">
+                  <span className="w-1.5 h-1.5 rounded-full bg-accent-status animate-pulse group-hover:scale-150 transition-transform" />
+                  <span className="text-[10px] font-mono text-muted/50 uppercase tracking-wider group-hover:text-accent/70 transition-colors">
                     {w.label}
                   </span>
                 </div>
-                <p className="text-2xl md:text-3xl font-bold font-mono text-foreground mb-1">
+                <p className="text-2xl md:text-3xl font-bold font-mono text-foreground mb-1 group-hover:text-accent transition-colors duration-300">
                   {w.value}
                 </p>
                 <p className="text-[10px] md:text-xs text-muted">
                   {w.desc}
                 </p>
               </div>
-            </FadeUp>
+            </motion.div>
           ))}
         </div>
       </div>

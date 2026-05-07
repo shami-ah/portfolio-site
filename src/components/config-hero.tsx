@@ -111,6 +111,8 @@ export function ConfigHero(): React.ReactElement {
   const orbY1 = useTransform(scrollY, [0, 800], [0, 120]);
   const orbY2 = useTransform(scrollY, [0, 800], [0, -80]);
   const orbOpacity = useTransform(scrollY, [0, 600], [1, 0.3]);
+  const codeY = useTransform(scrollY, [0, 600], [0, -40]);
+  const codeScale = useTransform(scrollY, [0, 600], [1, 0.97]);
 
   // Wait for boot-complete
   useEffect(() => {
@@ -227,11 +229,12 @@ export function ConfigHero(): React.ReactElement {
             </motion.div>
           </div>
 
-          {/* Right: code editor */}
+          {/* Right: code editor — floats with parallax depth */}
           <motion.div
             initial={{ opacity: 0, y: 30, scale: 0.97 }}
             animate={ready ? { opacity: 1, y: 0, scale: 1 } : {}}
             transition={{ duration: 0.7, delay: 0.6, ease: [0.22, 1, 0.36, 1] }}
+            style={{ y: codeY, scale: codeScale }}
           >
             <div className="rounded-xl border border-card-border bg-card/80 backdrop-blur-sm overflow-hidden shadow-2xl shadow-black/30">
               {/* Window chrome */}

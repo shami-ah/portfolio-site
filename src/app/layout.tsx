@@ -59,10 +59,10 @@ export const metadata: Metadata = {
     locale: "en_US",
     images: [
       {
-        url: "/ahtesham.jpg",
-        width: 600,
-        height: 600,
-        alt: "Ahtesham Ahmad — AI Engineer",
+        url: "/og.png",
+        width: 1200,
+        height: 630,
+        alt: "Ahtesham Ahmad | AI Engineer",
       },
     ],
   },
@@ -71,7 +71,7 @@ export const metadata: Metadata = {
     title: "Ahtesham Ahmad | AI Engineer",
     description:
       "I turn business workflows into AI-powered products. 250+ projects, production SaaS, open-source developer tools.",
-    images: ["/ahtesham.jpg"],
+    images: ["/og.png"],
   },
   robots: {
     index: true,
