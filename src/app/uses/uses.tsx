@@ -271,25 +271,36 @@ function PreviewEcosystem(): React.ReactElement {
         <p className="text-caption font-mono text-accent uppercase tracking-[0.2em] mb-3">The loop nobody else has</p>
         <p className="text-sm font-medium mb-1">I built an ecosystem where each tool makes the others better.</p>
         <p className="text-caption text-muted leading-relaxed mb-5">Gogaa writes code. CodeLens reviews it. Patterns feed back via Guardian mode. Rasad monitors every session.</p>
-        {/* Circular diagram */}
-        <div className="hidden md:flex relative items-center justify-center py-4">
-          <div className="absolute w-[200px] h-[200px] rounded-full border border-dashed border-accent/20" />
-          <div className="absolute text-center">
-            <p className="text-caption font-mono text-muted/40 uppercase tracking-widest">self</p>
-            <p className="text-caption font-mono text-muted/40 uppercase tracking-widest">improving</p>
+        {/* Globe diagram with orbital pillars */}
+        <div className="hidden md:flex relative items-center justify-center py-8">
+          {/* Globe: concentric circles */}
+          <div className="absolute w-[160px] h-[160px] rounded-full border border-accent/10" />
+          <div className="absolute w-[120px] h-[120px] rounded-full border border-accent/8" />
+          <div className="absolute w-[80px] h-[80px] rounded-full border border-accent/6" />
+          {/* Horizontal + vertical cross lines for globe effect */}
+          <div className="absolute w-[160px] h-px bg-accent/8" />
+          <div className="absolute w-px h-[160px] bg-accent/8" />
+          {/* Elliptical orbits */}
+          <div className="absolute w-[160px] h-[100px] rounded-full border border-dashed border-accent/15" />
+          <div className="absolute w-[100px] h-[160px] rounded-full border border-dashed border-accent/10" />
+          {/* Center label */}
+          <div className="absolute text-center z-0">
+            <p className="text-caption font-mono text-muted/30 uppercase tracking-[0.3em]">self</p>
+            <p className="text-caption font-mono text-muted/30 uppercase tracking-[0.3em]">improving</p>
           </div>
-          <div className="relative w-[200px] h-[200px]">
+          {/* 4 pillar nodes positioned around the globe */}
+          <div className="relative w-[280px] h-[280px]">
             {loopNodes.map((node, i) => {
               const pos = [
-                "top-0 left-1/2 -translate-x-1/2 -translate-y-1/2",
-                "top-1/2 right-0 translate-x-1/2 -translate-y-1/2",
-                "bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2",
-                "top-1/2 left-0 -translate-x-1/2 -translate-y-1/2",
+                "top-0 left-1/2 -translate-x-1/2 -translate-y-1/3",
+                "top-1/2 right-0 translate-x-1/3 -translate-y-1/2",
+                "bottom-0 left-1/2 -translate-x-1/2 translate-y-1/3",
+                "top-1/2 left-0 -translate-x-1/3 -translate-y-1/2",
               ];
               return (
-                <div key={node.label} className={`absolute ${pos[i]} z-10 px-3 py-1.5 rounded-lg border bg-card text-center min-w-[80px] ${node.color.split(" ")[0]}`}>
-                  <p className={`text-caption font-bold ${node.color.split(" ")[1]}`}>{node.label}</p>
-                  <p className="text-caption text-muted/60">{node.stat}</p>
+                <div key={node.label} className={`absolute ${pos[i]} z-10 px-3 py-2 rounded-lg border bg-card text-center min-w-[90px] shadow-md ${node.color.split(" ")[0]}`}>
+                  <p className={`text-small font-bold ${node.color.split(" ")[1]}`}>{node.label}</p>
+                  <p className="text-caption text-muted/50">{node.stat}</p>
                 </div>
               );
             })}

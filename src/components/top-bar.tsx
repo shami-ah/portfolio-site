@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { RefreshCcw, Wrench, TrendingUp } from "lucide-react";
-import { ThemeToggle } from "./theme-toggle";
 
 export function TopBar(): React.ReactElement {
   const [scrolled, setScrolled] = useState(false);
@@ -75,9 +74,6 @@ export function TopBar(): React.ReactElement {
         transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
         className="fixed top-0 right-0 z-40 px-3 md:px-6 py-3 md:py-4 flex items-center gap-2 md:gap-3"
       >
-        {/* Theme toggle */}
-        <ThemeToggle />
-
         {/* Reboot */}
         <button
           type="button"
