@@ -455,26 +455,10 @@ export function AgentBar(): React.ReactElement {
     return () => window.removeEventListener("show-build-popup", handler);
   }, []);
 
-  /* Always open immediately unless the user has explicitly dismissed it.
-     If boot is still running, wait for 'boot-complete' then appear. */
+  /* Start collapsed by default. User can open with "/" key. */
   useEffect(() => {
     if (typeof window === "undefined") return;
-    if (sessionStorage.getItem("agent-dismissed")) {
-      setDismissed(true);
-      return;
-    }
-    if (sessionStorage.getItem("boot-complete")) {
-      setPhase("dormant");
-      return;
-    }
-    const onBoot = (): void => setPhase("dormant");
-    window.addEventListener("boot-complete", onBoot);
-    // Fallback so it shows even if boot event never fires
-    const t = setTimeout(() => setPhase("dormant"), 3500);
-    return () => {
-      window.removeEventListener("boot-complete", onBoot);
-      clearTimeout(t);
-    };
+    setDismissed(true);
   }, []);
 
   /* Global keystroke buffer — typing anywhere triggers the bar */

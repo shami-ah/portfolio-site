@@ -39,43 +39,45 @@ function HeroAboutCard({ ready }: { ready: boolean }): React.ReactElement {
   const isStreamingOutput = currentStep && showOutput && currentStep.output && outputChars < currentStep.output.length;
   const allDone = stepIdx >= TERM_STEPS.length;
 
-  // Type command characters — starts when hero is ready
+  // Advance to next step helper
+  const advanceStep = useCallback((): void => {
+    setCompletedSteps((prev) => [...prev, TERM_STEPS[stepIdx]]);
+    setStepIdx((i) => i + 1);
+    setCmdChars(0);
+    setShowOutput(false);
+    setOutputChars(0);
+  }, [stepIdx]);
+
+  // Type command characters — slight randomness for human feel
   useEffect(() => {
     if (!ready || !currentStep || allDone) return;
     if (cmdChars < currentStep.cmd.length) {
-      const timer = setTimeout(() => setCmdChars((c) => c + 1), 35);
+      const jitter = 30 + Math.random() * 40; // 30-70ms, feels human
+      const timer = setTimeout(() => setCmdChars((c) => c + 1), jitter);
       return () => clearTimeout(timer);
     }
-    const timer = setTimeout(() => setShowOutput(true), 200);
+    // Command fully typed — pause before showing output
+    const timer = setTimeout(() => setShowOutput(true), 350);
     return () => clearTimeout(timer);
   }, [ready, cmdChars, currentStep, allDone]);
 
-  // Stream output characters
+  // Stream output characters — faster than typing, like terminal response
   useEffect(() => {
     if (!showOutput || !currentStep) return;
     if (currentStep.type === "identity") {
-      const timer = setTimeout(() => {
-        setCompletedSteps((prev) => [...prev, currentStep]);
-        setStepIdx((i) => i + 1);
-        setCmdChars(0);
-        setShowOutput(false);
-        setOutputChars(0);
-      }, 500);
+      const timer = setTimeout(advanceStep, 600);
       return () => clearTimeout(timer);
     }
     if (currentStep.output && outputChars < currentStep.output.length) {
-      const timer = setTimeout(() => setOutputChars((c) => c + 1), 18);
+      // Batch 2-3 chars at once for smoother output feel
+      const batch = Math.random() > 0.3 ? 2 : 1;
+      const timer = setTimeout(() => setOutputChars((c) => Math.min(c + batch, currentStep.output!.length)), 12);
       return () => clearTimeout(timer);
     }
-    const timer = setTimeout(() => {
-      setCompletedSteps((prev) => [...prev, currentStep]);
-      setStepIdx((i) => i + 1);
-      setCmdChars(0);
-      setShowOutput(false);
-      setOutputChars(0);
-    }, 300);
+    // Output done — pause before next command
+    const timer = setTimeout(advanceStep, 500);
     return () => clearTimeout(timer);
-  }, [showOutput, outputChars, currentStep]);
+  }, [showOutput, outputChars, currentStep, advanceStep]);
 
   // 3D tilt
   const rx = useMotionValue(0);
