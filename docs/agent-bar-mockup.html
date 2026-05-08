@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Boot → Agent Button Flow</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root { --bg: #0c0c0e; --fg: #ede8e0; --muted: #7a756d; --accent: #d4a853; --accent-secondary: #8ba4c4; --accent-status: #4ade80; --card: #151515; --card-border: #2a2520; }
+  body { background: var(--bg); color: var(--fg); font-family: 'Inter', system-ui, sans-serif; -webkit-font-smoothing: antialiased; overflow: hidden; height: 100vh; }
+
+  /* ─── Boot Screen ─── */
+  .boot-overlay {
+    position: fixed; inset: 0; z-index: 200;
+    background: var(--bg);
+    display: flex; align-items: center; justify-content: center;
+    flex-direction: column;
+  }
+  .boot-overlay.collapsing {
+    animation: collapseToOrb 1.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  }
+  .boot-overlay.collapsing .boot-content {
+    animation: contentFade 0.5s ease-out forwards;
+  }
+  .boot-overlay.gone { display: none; }
+
+  /* The orb glow that appears during collapse */
+  .collapse-orb {
+    position: fixed;
+    z-index: 201;
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    background: radial-gradient(circle, var(--accent-status) 0%, rgba(74,222,128,0.3) 40%, transparent 70%);
+    pointer-events: none;
+    opacity: 0;
+    left: 50%; bottom: 36px;
+    transform: translateX(-50%) scale(0);
+    filter: blur(0px);
+  }
+  .collapse-orb.active {
+    animation: orbAppear 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.7s forwards;
+  }
+
+  @keyframes collapseToOrb {
+    0% {
+      clip-path: inset(0 0 0 0 round 0px);
+      filter: blur(0px) brightness(1);
+    }
+    25% {
+      clip-path: inset(15% 20% 15% 20% round 16px);
+      filter: blur(1px) brightness(1.1);
+    }
+    50% {
+      clip-path: inset(30% 30% 30% 30% round 30px);
+      filter: blur(4px) brightness(1.3);
+    }
+    70% {
+      clip-path: inset(40% 38% 25% 38% round 50%);
+      filter: blur(8px) brightness(1.5);
+    }
+    85% {
+      clip-path: inset(calc(100% - 80px) calc(50% - 30px) 30px calc(50% - 30px) round 50%);
+      filter: blur(12px) brightness(2);
+      opacity: 0.8;
+    }
+    95% {
+      clip-path: inset(calc(100% - 56px) calc(50% - 14px) 22px calc(50% - 14px) round 50%);
+      filter: blur(16px) brightness(3);
+      opacity: 0.5;
+    }
+    100% {
+      clip-path: inset(calc(100% - 44px) calc(50% - 6px) 24px calc(50% - 6px) round 50%);
+      filter: blur(20px) brightness(4);
+      opacity: 0;
+    }
+  }
+
+  @keyframes contentFade {
+    0% { opacity: 1; filter: blur(0); }
+    100% { opacity: 0; filter: blur(10px); }
+  }
+
+  @keyframes orbAppear {
+    0% { opacity: 0; transform: translateX(-50%) scale(3); filter: blur(8px); }
+    40% { opacity: 1; transform: translateX(-50%) scale(1.5); filter: blur(4px); }
+    70% { opacity: 0.8; transform: translateX(-50%) scale(0.8); filter: blur(0px); }
+    85% { opacity: 0.6; transform: translateX(-50%) scale(1.1); }
+    100% { opacity: 0; transform: translateX(-50%) scale(0.5); }
+  }
+
+  /* Agent button pop-in with bounce */
+  .agent-btn.pop {
+    animation: btnPop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  }
+  @keyframes btnPop {
+    0% { opacity: 0; transform: translateX(-50%) scale(0.3); }
+    60% { opacity: 1; transform: translateX(-50%) scale(1.08); }
+    80% { transform: translateX(-50%) scale(0.96); }
+    100% { opacity: 1; transform: translateX(-50%) scale(1); }
+  }
+
+  .boot-content {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    line-height: 1.8;
+    max-width: 500px;
+    width: 100%;
+    padding: 0 24px;
+  }
+  .boot-line { opacity: 0; transform: translateX(-8px); transition: all 0.2s; }
+  .boot-line.show { opacity: 1; transform: translateX(0); }
+  .boot-line .label { color: var(--fg); }
+  .boot-line .detail { color: var(--muted); margin-left: 8px; }
+  .boot-line .ok { color: var(--accent-status); }
+  .boot-line .accent { color: var(--accent); }
+  .boot-status {
+    margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--card-border);
+    font-size: 11px; color: var(--accent-status);
+    opacity: 0; transition: opacity 0.3s;
+  }
+  .boot-status.show { opacity: 1; }
+
+  /* ─── Main Page (behind boot) ─── */
+  .page {
+    position: fixed; inset: 0; z-index: 1;
+    display: flex; align-items: center; justify-content: center;
+    flex-direction: column; padding-bottom: 80px;
+    opacity: 0; transition: opacity 0.5s;
+  }
+  .page.show { opacity: 1; }
+
+  .top-bar { position: fixed; top: 0; left: 0; right: 0; z-index: 40; padding: 12px 24px; display: flex; justify-content: space-between; align-items: center; background: rgba(12,12,14,0.7); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(42,37,32,0.3); opacity: 0; transition: opacity 0.5s; }
+  .top-bar.show { opacity: 1; }
+  .top-bar .logo { font-family: monospace; font-size: 14px; }
+  .top-bar .logo span { color: var(--accent); }
+  .top-bar .actions { display: flex; gap: 8px; }
+  .top-bar .actions a { padding: 6px 14px; border-radius: 8px; font-size: 12px; font-family: monospace; border: 1px solid var(--card-border); background: var(--card); color: var(--muted); text-decoration: none; }
+
+  .hero-badge { display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; border-radius: 20px; background: rgba(74,222,128,0.1); border: 1px solid rgba(74,222,128,0.2); color: var(--accent-status); font-size: 11px; font-family: monospace; margin-bottom: 20px; opacity: 0; transform: translateY(10px); transition: all 0.5s; }
+  .hero-badge.show { opacity: 1; transform: translateY(0); }
+  .hero-badge .dot { width: 5px; height: 5px; border-radius: 50%; background: var(--accent-status); animation: pulse 2s infinite; }
+
+  .hero-title { font-size: clamp(28px, 5vw, 48px); font-weight: 700; line-height: 1.1; text-align: center; max-width: 700px; margin-bottom: 16px; opacity: 0; transform: translateY(20px); transition: all 0.6s 0.1s; }
+  .hero-title.show { opacity: 1; transform: translateY(0); }
+  .hero-title .grad { background: linear-gradient(135deg, var(--accent), var(--accent-secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+  .hero-desc { color: var(--muted); text-align: center; line-height: 1.7; font-size: 15px; max-width: 480px; opacity: 0; transform: translateY(12px); transition: all 0.5s 0.2s; }
+  .hero-desc.show { opacity: 1; transform: translateY(0); }
+
+  /* ─── Agent Button (appears after shrink) ─── */
+  .agent-btn {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 20px;
+    border-radius: 40px;
+    border: 1px solid var(--card-border);
+    background: rgba(21,21,21,0.95);
+    backdrop-filter: blur(16px);
+    cursor: pointer;
+    opacity: 0;
+    transform: translateX(-50%) scale(0.8);
+    transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+  }
+  .agent-btn.show {
+    opacity: 1;
+    transform: translateX(-50%) scale(1);
+  }
+  .agent-btn:hover {
+    border-color: rgba(212,168,83,0.4);
+    box-shadow: 0 4px 30px rgba(0,0,0,0.5), 0 0 20px rgba(212,168,83,0.06);
+  }
+
+  .agent-btn .green-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--accent-status);
+    animation: pulse 2s infinite;
+    box-shadow: 0 0 8px rgba(74,222,128,0.4);
+  }
+  .agent-btn .btn-label {
+    font-family: monospace;
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .agent-btn .btn-prompt {
+    font-family: monospace;
+    font-size: 13px;
+    color: var(--accent);
+  }
+  .agent-btn .btn-hint {
+    font-family: monospace;
+    font-size: 10px;
+    color: rgba(122,117,109,0.3);
+    padding: 2px 6px;
+    border-radius: 4px;
+    border: 1px solid rgba(42,37,32,0.3);
+  }
+
+  /* Tooltip that appears for 2 seconds */
+  .agent-tooltip {
+    position: fixed;
+    bottom: 68px;
+    left: 50%;
+    transform: translateX(-50%) translateY(4px);
+    z-index: 101;
+    padding: 8px 16px;
+    border-radius: 10px;
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    font-size: 12px;
+    color: var(--fg);
+    font-family: monospace;
+    white-space: nowrap;
+    opacity: 0;
+    transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+  }
+  .agent-tooltip.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+  .agent-tooltip::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 10px; height: 10px;
+    background: var(--card);
+    border-right: 1px solid var(--card-border);
+    border-bottom: 1px solid var(--card-border);
+    transform: translateX(-50%) rotate(45deg);
+  }
+  .agent-tooltip .tt-accent { color: var(--accent); }
+
+  /* ─── Expanded agent panel ─── */
+  .agent-panel {
+    position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+    z-index: 100; width: 100%; max-width: 620px; padding: 0 20px;
+    display: none;
+  }
+  .agent-panel.show { display: block; }
+  .agent-panel .ap-chips { display: flex; justify-content: center; gap: 6px; margin-bottom: 8px; flex-wrap: wrap; }
+  .agent-panel .chip { padding: 5px 12px; border-radius: 16px; border: 1px solid var(--card-border); background: rgba(21,21,21,0.92); backdrop-filter: blur(12px); color: var(--muted); font-size: 11px; cursor: pointer; transition: all 0.2s; }
+  .agent-panel .chip:hover { border-color: var(--accent); color: var(--accent); }
+  .agent-panel .ap-bar { display: flex; align-items: center; gap: 10px; padding: 12px 18px; border-radius: 14px; border: 1px solid var(--card-border); background: rgba(21,21,21,0.92); backdrop-filter: blur(20px); box-shadow: 0 -4px 30px rgba(0,0,0,0.5); }
+  .agent-panel .ap-bar:focus-within { border-color: rgba(212,168,83,0.3); }
+  .agent-panel .ap-bar .prompt { color: var(--accent); font-family: monospace; font-size: 14px; }
+  .agent-panel .ap-bar input { flex: 1; background: none; border: none; outline: none; color: var(--fg); font-size: 13px; font-family: monospace; }
+  .agent-panel .ap-bar input::placeholder { color: rgba(122,117,109,0.35); font-family: 'Inter', system-ui; }
+  .agent-panel .ap-response { margin-bottom: 8px; padding: 14px 18px; border-radius: 12px; border: 1px solid var(--card-border); background: rgba(21,21,21,0.95); backdrop-filter: blur(20px); font-size: 13px; line-height: 1.7; color: rgba(237,232,224,0.8); display: none; }
+  .agent-panel .ap-response.show { display: block; }
+  .agent-panel .ap-response .rl { font-family: monospace; font-size: 10px; color: var(--accent); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 8px; }
+
+  @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+  /* Replay */
+  .replay { position: fixed; top: 12px; right: 12px; z-index: 300; padding: 6px 14px; border-radius: 8px; border: 1px solid var(--accent); background: rgba(212,168,83,0.1); color: var(--accent); font-size: 11px; font-family: monospace; cursor: pointer; }
+</style>
+</head>
+<body>
+
+<button class="replay" onclick="replay()">↻ Replay from boot</button>
+
+<!-- ─── Boot Overlay ─── -->
+<div class="boot-overlay" id="bootOverlay">
+  <div class="boot-content">
+    <div class="boot-line" id="bl0"><span class="accent">❯</span> <span class="label">$ shami init --mode=portfolio</span></div>
+    <div class="boot-line" id="bl1"><span class="ok">✓</span> <span class="label">loading systems</span> <span class="detail">openevent, codelens, gogaa, rasad</span></div>
+    <div class="boot-line" id="bl2"><span class="ok">✓</span> <span class="label">100+ clients live</span> <span class="detail">openevent</span></div>
+    <div class="boot-line" id="bl3"><span class="ok">✓</span> <span class="label">1,418 tests passing</span> <span class="detail">gogaa-cli</span></div>
+    <div class="boot-line" id="bl4"><span class="ok">✓</span> <span class="label">agent ready</span> <span class="detail">portfolio mode</span></div>
+    <div class="boot-status" id="bootStatus">● system online — launching</div>
+  </div>
+</div>
+
+<!-- ─── Page Behind ─── -->
+<div class="top-bar" id="topBar">
+  <div class="logo"><span>></span> ahtesham<span>.dev</span></div>
+  <div class="actions">
+    <a href="#">Projects</a>
+    <a href="#">Writing</a>
+    <a href="#">Hire</a>
+  </div>
+</div>
+
+<div class="page" id="page">
+  <div class="hero-badge" id="heroBadge"><span class="dot"></span> Open to opportunities</div>
+  <h1 class="hero-title" id="heroTitle">I architect <span class="grad">AI systems</span> and ship them to production.</h1>
+  <p class="hero-desc" id="heroDesc">From multi-agent orchestration and RAG pipelines to full-stack AI-powered SaaS.</p>
+</div>
+
+<!-- ─── Collapse orb glow effect ─── -->
+<div class="collapse-orb" id="collapseOrb"></div>
+
+<!-- ─── Agent Button (appears after shrink) ─── -->
+<div class="agent-btn" id="agentBtn" onclick="openPanel()">
+  <span class="green-dot"></span>
+  <span class="btn-prompt">❯</span>
+  <span class="btn-label">agent</span>
+  <span class="btn-hint">/</span>
+</div>
+
+<!-- ─── Tooltip ─── -->
+<div class="agent-tooltip" id="tooltip">
+  ask me anything — <span class="tt-accent">I'm live</span>
+</div>
+
+<!-- ─── Expanded Panel (opens on click) ─── -->
+<div class="agent-panel" id="agentPanel">
+  <div class="ap-response" id="apResponse"></div>
+  <div class="ap-chips">
+    <div class="chip" onclick="runCmd('What do you build?')">What do you build?</div>
+    <div class="chip" onclick="runCmd('projects')">Projects</div>
+    <div class="chip" onclick="runCmd('rate')">Your rate?</div>
+    <div class="chip" onclick="runCmd('cv')">Open CV</div>
+    <div class="chip" onclick="runCmd('hire')">Hire</div>
+  </div>
+  <div class="ap-bar">
+    <span class="prompt">❯</span>
+    <input type="text" id="panelInput" placeholder="ask anything — projects · cv · hire · rate" onkeydown="if(event.key==='Enter'){runCmd(this.value);this.value='';}" />
+  </div>
+</div>
+
+<script>
+const bootOverlay = document.getElementById('bootOverlay');
+const page = document.getElementById('page');
+const topBar = document.getElementById('topBar');
+const agentBtn = document.getElementById('agentBtn');
+const tooltip = document.getElementById('tooltip');
+const agentPanel = document.getElementById('agentPanel');
+const apResponse = document.getElementById('apResponse');
+let panelOpen = false;
+
+function runBoot() {
+  // Reset
+  bootOverlay.className = 'boot-overlay';
+  bootOverlay.style.display = '';
+  document.getElementById('collapseOrb').classList.remove('active');
+  void bootOverlay.offsetWidth; // force reflow
+  page.classList.remove('show');
+  topBar.classList.remove('show');
+  agentBtn.classList.remove('show');
+  agentBtn.classList.remove('pop');
+  tooltip.classList.remove('show');
+  agentPanel.classList.remove('show');
+  panelOpen = false;
+  document.getElementById('heroBadge').classList.remove('show');
+  document.getElementById('heroTitle').classList.remove('show');
+  document.getElementById('heroDesc').classList.remove('show');
+  for (let i = 0; i < 5; i++) document.getElementById('bl' + i).classList.remove('show');
+  document.getElementById('bootStatus').classList.remove('show');
+  document.body.style.overflow = 'hidden';
+
+  // Boot lines appear one by one
+  const delays = [400, 800, 1200, 1600, 2000];
+  delays.forEach((d, i) => {
+    setTimeout(() => document.getElementById('bl' + i).classList.add('show'), d);
+  });
+
+  // Status line
+  setTimeout(() => document.getElementById('bootStatus').classList.add('show'), 2400);
+
+  // COLLAPSE: One fluid animation — boot screen blurs, shrinks, collapses into a glowing orb
+  setTimeout(() => {
+    // Show page behind as the boot starts collapsing
+    page.classList.add('show');
+    topBar.classList.add('show');
+
+    // Start the collapse animation
+    bootOverlay.classList.add('collapsing');
+
+    // Activate the green orb glow at the landing point
+    document.getElementById('collapseOrb').classList.add('active');
+  }, 3200);
+
+  // After collapse animation completes (1.4s) — clean up and show agent button
+  setTimeout(() => {
+    bootOverlay.classList.add('gone');
+    document.getElementById('collapseOrb').classList.remove('active');
+    document.body.style.overflow = '';
+
+    // Hero elements stagger in
+    setTimeout(() => document.getElementById('heroBadge').classList.add('show'), 100);
+    setTimeout(() => document.getElementById('heroTitle').classList.add('show'), 200);
+    setTimeout(() => document.getElementById('heroDesc').classList.add('show'), 400);
+
+    // Agent button POPS in with bounce — right where the orb landed
+    agentBtn.classList.add('pop');
+    agentBtn.classList.add('show');
+
+    // Tooltip: "ask me anything — I'm live"
+    setTimeout(() => tooltip.classList.add('show'), 500);
+    setTimeout(() => tooltip.classList.remove('show'), 3000);
+
+  }, 4700);
+}
+
+function openPanel() {
+  if (panelOpen) return;
+  panelOpen = true;
+  agentBtn.classList.remove('show');
+  tooltip.classList.remove('show');
+  agentPanel.classList.add('show');
+  document.getElementById('panelInput').focus();
+}
+
+// Close panel on Escape
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && panelOpen) {
+    panelOpen = false;
+    agentPanel.classList.remove('show');
+    apResponse.classList.remove('show');
+    agentBtn.classList.add('show');
+  }
+  // "/" opens the panel from anywhere
+  if (e.key === '/' && !panelOpen) {
+    e.preventDefault();
+    openPanel();
+  }
+});
+
+const answers = {
+  'projects': '<span style="color:var(--accent-status)">↓ Scrolling to projects...</span><br>4 flagship systems: OpenEvent (live), CodeLens, Gogaa CLI, Rasad',
+  'rate': '<strong>$80–120/hr</strong> contract · <strong>$8–10K/mo</strong> full-time<br><br>Full stack ownership — architecture to deployed SaaS.<br><span style="color:var(--accent)">→ type "hire" to connect</span>',
+  'cv': '<span style="color:var(--accent-status)">→ Opening CV drawer...</span><br>Experience, skills, projects, PDF download.',
+  'hire': '<span style="color:var(--accent-status)">↓ Scrolling to contact...</span><br>Available now for full-time & contract.',
+  'what do you build?': 'I build <strong>production AI systems</strong>. The flagship is <strong>OpenEvent</strong> — 100+ teams use it daily.<br><br>I also build my own tools: <strong>Gogaa CLI</strong>, <strong>CodeLens</strong>, <strong>Rasad</strong>.<br><span style="color:var(--accent)">→ type "projects" to explore</span>',
+  'skills': '<strong>AI:</strong> Claude API, OpenAI, RAG, Multi-Agent<br><strong>Stack:</strong> TypeScript, React, Next.js, Supabase<br><strong>Infra:</strong> Docker, GitHub Actions, Cloudflare',
+};
+
+function runCmd(text) {
+  const q = text.trim().toLowerCase();
+  if (!q) return;
+  const answer = answers[q] || "Try: <strong>projects · rate · cv · hire · skills</strong>";
+  apResponse.innerHTML = '<div class="rl" style="font-family:monospace;font-size:10px;color:var(--accent);margin-bottom:8px">shami.agent</div>' + answer;
+  apResponse.classList.add('show');
+  clearTimeout(window._ht);
+  window._ht = setTimeout(() => apResponse.classList.remove('show'), 7000);
+}
+
+function replay() {
+  runBoot();
+}
+
+// Auto-start
+runBoot();
+</script>
+
+</body>
+</html>
