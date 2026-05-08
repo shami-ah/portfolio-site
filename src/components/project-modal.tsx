@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronLeft, ChevronRight, X, Lock, BookOpen, MessageSquare } from "lucide-react";
+import { ChevronLeft, ChevronRight, X, Lock, BookOpen } from "lucide-react";
 import type { ProjectData } from "@/data/projects";
 import { AccessRequestModal } from "./access-request-modal";
 
@@ -504,15 +504,6 @@ export function ProjectModal({
                     >
                       <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
                       Try live
-                    </a>
-                  )}
-                  {project.featured && (
-                    <a
-                      href={`/story/${project.slug}`}
-                      className="inline-flex items-center gap-1.5 px-3 md:px-4 py-2 text-xs md:text-sm border border-accent/20 bg-accent/10 text-accent rounded-lg hover:bg-accent/20 hover:border-accent/40 transition-all duration-200"
-                    >
-                      <MessageSquare size={14} />
-                      Story mode
                     </a>
                   )}
                   <a
