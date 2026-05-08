@@ -597,19 +597,26 @@ export function AgentBar(): React.ReactElement {
     return () => clearTimeout(t);
   }, [uiState, buttonReady]);
 
-  // Flying-to-chat animation completion
+  // Flying-to-chat animation completion — glow the chat trigger, then open chat
   useEffect(() => {
     if (uiState !== "flying-to-chat") return;
-    const t = setTimeout(() => {
+    // Fire glow at ~85% through animation (bubble reaches chat button)
+    const glowTimer = setTimeout(() => {
       window.dispatchEvent(new CustomEvent("agent-flying-to-chat"));
+    }, 850);
+    // Open chat after bubble fully absorbed
+    const openTimer = setTimeout(() => {
       window.dispatchEvent(new CustomEvent("open-chat-widget"));
       setActiveCmd(null);
       setShownSteps(0);
       setShowResponse(false);
       setInput("");
       setUiState("button");
-    }, 600);
-    return () => clearTimeout(t);
+    }, 1100);
+    return () => {
+      clearTimeout(glowTimer);
+      clearTimeout(openTimer);
+    };
   }, [uiState]);
 
   const runCommand = useCallback((cmd: AgentCommand): void => {
@@ -855,41 +862,59 @@ export function AgentBar(): React.ReactElement {
         )}
       </AnimatePresence>
 
-      {/* ── Flying-to-chat animation ── */}
+      {/* ── Flying-to-chat bubble animation ── */}
       <AnimatePresence>
         {uiState === "flying-to-chat" && (
           <motion.div
             ref={flyRef}
+            className="fixed z-[100]"
             initial={{
-              position: "fixed",
+              /* Center-bottom: same position as agent button */
               bottom: 20,
-              left: "50%",
-              x: "-50%",
-              width: 200,
+              left: (typeof window !== "undefined" ? window.innerWidth / 2 : 500) - 22,
+              width: 44,
               height: 44,
-              borderRadius: 22,
+              borderRadius: 9999,
               opacity: 1,
               scale: 1,
             }}
             animate={{
-              bottom: 80,
-              left: "calc(100% - 40px)",
-              x: "-50%",
+              /* Land exactly on chat trigger: right-5 = 20px from right, w-11 = 44px */
+              bottom: 20,
+              left: (typeof window !== "undefined" ? window.innerWidth : 1000) - 20 - 44,
               width: 44,
               height: 44,
-              borderRadius: 22,
-              opacity: 0.6,
-              scale: 0.5,
-              filter: "blur(8px) brightness(2)",
+              borderRadius: 9999,
+              opacity: [1, 1, 1, 0.9, 0],
+              scale: [1, 1.15, 1, 0.8, 0.2],
             }}
             exit={{ opacity: 0, scale: 0 }}
-            transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
-            className="fixed z-[100] glass-strong"
-            style={{
-              boxShadow: "0 0 30px rgba(74,222,128,0.3), 0 0 60px rgba(74,222,128,0.1)",
-              background: "radial-gradient(circle, rgba(74,222,128,0.2), rgba(21,21,21,0.7))",
+            transition={{
+              duration: 1,
+              ease: [0.25, 0.1, 0.25, 1],
+              left: { duration: 1, ease: [0.4, 0, 0.2, 1] },
+              opacity: { duration: 1, times: [0, 0.2, 0.6, 0.85, 1] },
+              scale: { duration: 1, times: [0, 0.15, 0.5, 0.85, 1] },
             }}
-          />
+          >
+            {/* Inner glowing orb */}
+            <motion.div
+              className="w-full h-full rounded-full"
+              style={{
+                background: "radial-gradient(circle at 40% 40%, rgba(74,222,128,0.9) 0%, rgba(74,222,128,0.5) 40%, rgba(74,222,128,0.15) 70%, transparent 100%)",
+                boxShadow: "0 0 20px rgba(74,222,128,0.6), 0 0 40px rgba(74,222,128,0.3), 0 0 80px rgba(74,222,128,0.15), inset 0 0 15px rgba(74,222,128,0.3)",
+                border: "1.5px solid rgba(74,222,128,0.5)",
+              }}
+              animate={{
+                boxShadow: [
+                  "0 0 20px rgba(74,222,128,0.6), 0 0 40px rgba(74,222,128,0.3), 0 0 80px rgba(74,222,128,0.15), inset 0 0 15px rgba(74,222,128,0.3)",
+                  "0 0 30px rgba(74,222,128,0.8), 0 0 60px rgba(74,222,128,0.4), 0 0 100px rgba(74,222,128,0.2), inset 0 0 20px rgba(74,222,128,0.4)",
+                  "0 0 15px rgba(74,222,128,0.5), 0 0 30px rgba(74,222,128,0.2), 0 0 60px rgba(74,222,128,0.1), inset 0 0 10px rgba(74,222,128,0.2)",
+                ],
+              }}
+              transition={{ duration: 1, times: [0, 0.5, 1] }}
+            />
+          </motion.div>
         )}
       </AnimatePresence>
 

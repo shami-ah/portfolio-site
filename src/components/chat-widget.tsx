@@ -207,7 +207,10 @@ export function ChatWidget(): React.ReactElement {
         {showTrigger && state === "closed" && (
           <motion.button
             type="button"
-            onClick={() => setState("open")}
+            onClick={() => {
+              window.dispatchEvent(new CustomEvent("open-chat-widget"));
+              setState("open");
+            }}
             initial={{ opacity: 0, scale: 0.8, y: 10 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.8 }}
