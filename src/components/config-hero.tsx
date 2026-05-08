@@ -218,16 +218,24 @@ export function ConfigHero(): React.ReactElement {
     const done = sessionStorage.getItem("boot-complete");
     if (done) {
       setReady(true);
-      return;
     }
-    const onReady = (): void => setReady(true);
+
+    // Breathe for 0.8s after agent button pops before hero streams in
+    const onReady = (): void => { setTimeout(() => setReady(true), 800); };
     window.addEventListener("agent-button-ready", onReady);
-    // Fallback for edge cases (e.g. boot skipped but event not fired)
-    const onBoot = (): void => { setTimeout(() => setReady(true), 1500); };
+
+    // On replay, reset ready so hero re-streams after boot
+    const onReplay = (): void => { setReady(false); };
+    window.addEventListener("replay-intro", onReplay);
+
+    // Fallback for edge cases
+    const onBoot = (): void => { setTimeout(() => setReady(true), 2000); };
     window.addEventListener("boot-complete", onBoot);
+
     const fallback = setTimeout(() => setReady(true), 6000);
     return () => {
       window.removeEventListener("agent-button-ready", onReady);
+      window.removeEventListener("replay-intro", onReplay);
       window.removeEventListener("boot-complete", onBoot);
       clearTimeout(fallback);
     };
@@ -255,20 +263,22 @@ export function ConfigHero(): React.ReactElement {
 
           {/* Left: tagline + CTA */}
           <div className="text-center md:text-left">
+            {/* 1. Badge streams in first */}
             <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={ready ? { opacity: 1, scale: 1 } : {}}
-              transition={{ duration: 0.6, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+              initial={{ opacity: 0, scale: 0.9, y: 8 }}
+              animate={ready ? { opacity: 1, scale: 1, y: 0 } : {}}
+              transition={{ duration: 0.6, delay: 0, ease: [0.22, 1, 0.36, 1] }}
               className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent-status/10 border border-accent-status/20 text-accent-status text-caption md:text-xs font-mono mb-6"
             >
               <span className="w-1.5 h-1.5 bg-accent-status rounded-full animate-pulse" />
               Open to opportunities
             </motion.div>
 
+            {/* 2. Title streams in */}
             <motion.h1
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 24 }}
               animate={ready ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.7, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+              transition={{ duration: 0.8, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
               className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight leading-[1.15] mb-5"
             >
               I architect{" "}
@@ -276,20 +286,22 @@ export function ConfigHero(): React.ReactElement {
               {" "}and ship them to production.
             </motion.h1>
 
+            {/* 3. Description streams in */}
             <motion.p
-              initial={{ opacity: 0, y: 12 }}
+              initial={{ opacity: 0, y: 16 }}
               animate={ready ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.7, delay: 0.7, ease: [0.22, 1, 0.36, 1] }}
+              transition={{ duration: 0.8, delay: 1.0, ease: [0.22, 1, 0.36, 1] }}
               className="text-sm md:text-base text-muted max-w-md leading-relaxed mb-8"
             >
               From multi-agent orchestration and RAG pipelines to full-stack
               AI-powered SaaS. I design the architecture, build the product, and own the delivery.
             </motion.p>
 
+            {/* 4. CTA button streams in */}
             <motion.div
-              initial={{ opacity: 0, y: 10 }}
+              initial={{ opacity: 0, y: 12 }}
               animate={ready ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6, delay: 1.1 }}
+              transition={{ duration: 0.6, delay: 1.6 }}
               className="flex flex-wrap gap-3 justify-center md:justify-start"
             >
               <a
@@ -300,10 +312,11 @@ export function ConfigHero(): React.ReactElement {
               </a>
             </motion.div>
 
+            {/* 5. Building status streams in last */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={ready ? { opacity: 1 } : {}}
-              transition={{ duration: 0.5, delay: 1.5 }}
+              transition={{ duration: 0.5, delay: 2.2 }}
               className="flex items-center gap-2 mt-6 justify-center md:justify-start"
             >
               <span className="w-1.5 h-1.5 bg-accent rounded-full animate-pulse" />
@@ -316,11 +329,11 @@ export function ConfigHero(): React.ReactElement {
             </motion.div>
           </div>
 
-          {/* Right: about card with parallax */}
+          {/* Right: about card slides in alongside the title */}
           <motion.div
-            initial={{ opacity: 0, y: 30, scale: 0.97 }}
+            initial={{ opacity: 0, y: 40, scale: 0.95 }}
             animate={ready ? { opacity: 1, y: 0, scale: 1 } : {}}
-            transition={{ duration: 0.8, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 1.0, delay: 0.6, ease: [0.22, 1, 0.36, 1] }}
             style={{ y: cardY, scale: cardScale }}
           >
             <HeroAboutCard ready={ready} />
