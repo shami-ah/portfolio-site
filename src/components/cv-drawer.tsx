@@ -24,6 +24,126 @@ const ACCENT = "var(--accent, #d4a853)";
 const AMBER = "var(--accent-secondary, #8ba4c4)";
 
 /* ------------------------------------------------------------------ */
+/*  Print CV — standalone HTML in popup window                         */
+/* ------------------------------------------------------------------ */
+
+function printCV(s: ReturnType<typeof useStatus>["status"]): void {
+  const flow = ["Ingest", "Classify", "Orchestrate", "Review", "Execute", "Observe"]
+    .map((step, i, a) => `<span style="font-family:monospace;font-size:9px;font-weight:500;padding:3px 9px;border-radius:5px;border:1px solid #d0d0d0;color:#4a6fa5;background:#f0f0ec">${step}</span>${i < a.length - 1 ? ' <span style="color:#ccc;font-size:9px">\u2192</span> ' : ""}`)
+    .join("");
+
+  const skills = [
+    { title: "AI & ML", items: [["Claude API", 90], ["OpenAI / LangChain", 85], ["RAG Pipelines", 80], ["Multi-Agent Systems", 75], ["Prompt Engineering", 70], ["Taint Analysis", 65]] },
+    { title: "Full Stack", items: [["TypeScript / React", 92], ["Next.js", 88], ["Supabase / PostgreSQL", 84], ["Node.js / Python", 80], ["Tailwind / Framer", 76]] },
+    { title: "Infrastructure", items: [["GitHub Actions / CI", 88], ["Docker / Cloudflare", 83], ["Stripe Integration", 78], ["Playwright / n8n", 73]] },
+    { title: "Process", items: [["Architecture-First Dev", 90], ["Team Leadership (3-10)", 85], ["Client Comms & SOWs", 80], ["Code Review (CodeLens)", 75]] },
+  ].map(sec => `
+    <p style="font-family:monospace;font-size:9px;text-transform:uppercase;letter-spacing:2px;color:#aaa;margin:8px 0 4px"><span style="color:#4a6fa5">\u25B8</span> ${sec.title}</p>
+    ${(sec.items as [string, number][]).map(([n, l]) => `
+      <div style="display:flex;justify-content:space-between;margin-bottom:2px"><span style="font-size:9px;color:#555">${n}</span><span style="font-family:monospace;font-size:9px;color:#bbb">${l}%</span></div>
+      <div style="height:3px;background:#eee;border-radius:1px;margin-bottom:4px"><div style="height:100%;width:${l}%;background:#4a6fa5;border-radius:1px"></div></div>
+    `).join("")}
+  `).join("");
+
+  const roles = [
+    { t: "Lead AI Developer", c: "MORE LIFE Hospitality GmbH \u00b7 Zurich \u00b7 Remote", p: "Sep 2025 \u2013 Present", a: true, items: [
+      "Architected AI orchestration: email \u2192 classification \u2192 task extraction \u2192 workflow execution \u2192 auto-approval",
+      "Multi-agent system with planner/worker/validator + human-in-the-loop approval",
+      "Shipped full React frontend + Supabase Edge Functions + Stripe + Claude API",
+    ]},
+    { t: "Director IT & R&D", c: "Rouelite Techno Pvt. Ltd. \u00b7 Remote", p: "2022 \u2013 2024", items: [
+      "Led 10-person team; system architecture serving 500+ daily users",
+      "AI reduced manual data entry by 70%; agile cut delivery cycles by 40%",
+    ]},
+    { t: "AI Evaluation Specialist", c: "Outlier \u00b7 RWS \u00b7 Translated \u00b7 Remote", p: "2021 \u2013 Present", items: ["500+ RLHF/SFT evaluation sessions on frontier models"] },
+    { t: "Freelance AI & Full-Stack Engineer", c: "Upwork \u00b7 Fiverr \u00b7 Direct Clients \u00b7 Remote", p: "2019 \u2013 Present", items: ["50+ production systems shipped; 40+ clients, 100% job success on Upwork"] },
+    { t: "Co-Founder & AI Engineer", c: "Wadware House \u00b7 Remote", p: "2023 \u2013 Present", items: ["AI automation agency for scoped client engagements"] },
+  ].map(r => `
+    <div style="display:flex;gap:8px;margin-bottom:6px">
+      <div style="display:flex;flex-direction:column;align-items:center;padding-top:2px">
+        <div style="width:7px;height:7px;border-radius:50%;border:2px solid #4a6fa5;background:${r.a ? "rgba(74,111,165,0.15)" : "#fafaf8"}"></div>
+        <div style="flex:1;width:1px;background:#e0e0dc;margin-top:2px"></div>
+      </div>
+      <div style="flex:1">
+        <div style="display:flex;justify-content:space-between;align-items:baseline">
+          <p style="font-size:10.5px;font-weight:600">${r.t}</p>
+          <p style="font-family:monospace;font-size:9px;color:#aaa">${r.p}</p>
+        </div>
+        <p style="font-size:9px;color:#999">${r.c}</p>
+        <ul style="list-style:none;margin-top:3px;padding:0">${r.items.map(i => `<li style="font-size:9px;color:#666;line-height:1.45;padding-left:9px;position:relative;margin-bottom:1px"><span style="position:absolute;left:0;color:rgba(74,111,165,0.4);font-size:7px">\u25B8</span>${i}</li>`).join("")}</ul>
+      </div>
+    </div>
+  `).join("");
+
+  const projects = [
+    { n: "Gogaa CLI", tag: "Dev Tool", tc: "#4a6fa5", d: `Claude Code alternative: ${s.gogaa.providers} providers, ${s.gogaa.tests.toLocaleString()} tests. Repo map, SEARCH/REPLACE, watch mode, plugins, parallel agents.` },
+    { n: "CodeLens", tag: "AI Dev Tool", tc: "#4a6fa5", d: `${s.codelens.patterns}-pattern AI code review across ${s.codelens.stacks} stacks. Taint tracking, PR risk scoring, guardian mode. Zero deps, <1s.` },
+    { n: "OpenEvent", tag: "Production SaaS", tc: "#b8860b", d: `${s.openevent.clients}+ clients, ${s.openevent.events}+ events. Multi-agent: email \u2192 extraction \u2192 workflow \u2192 auto-approval. Saves ~${s.openevent.hoursSavedPerDay} hrs/day.` },
+    { n: "Command Center", tag: "Dev Tool", tc: "#10b981", d: "Unified dev interface: Claude API, Gemini, Supabase, Gmail. PWA with push notifications." },
+    { n: "Gluten-Free Deals & Dining", tag: "Cross-Platform", tc: "#8b5cf6", d: "React Native + Next.js. LLM queries, 40+ retailer scraping, GPS finder, AI recipes." },
+    { n: "AI Agent System", tag: "Multi-Agent", tc: "#ec4899", d: "5 agents with tool-calling on HuggingFace Spaces. Groq + Tavily + GitHub API." },
+  ].map(p => `
+    <div style="padding:5px 8px;border-radius:5px;border:1px solid #e8e8e4;background:#f5f5f1;margin-bottom:3px">
+      <div style="display:flex;align-items:baseline;gap:5px;margin-bottom:1px">
+        <span style="font-size:9.5px;font-weight:600">${p.n}</span>
+        <span style="font-family:monospace;font-size:8px;padding:1px 5px;border-radius:10px;color:${p.tc};border:1px solid ${p.tc}40">${p.tag}</span>
+      </div>
+      <p style="font-size:9px;color:#777;line-height:1.4">${p.d}</p>
+    </div>
+  `).join("");
+
+  const html = `<!DOCTYPE html><html><head><meta charset="utf-8"><title>CV - Ahtesham Ahmad</title>
+<style>@page{size:A4;margin:0}html,body{margin:0;padding:0}body{-webkit-print-color-adjust:exact;print-color-adjust:exact;font-family:system-ui,-apple-system,sans-serif}</style>
+</head><body style="background:#fafaf8;color:#1a1a2e">
+<div style="padding:20px 32px;font-size:10px;line-height:1.45">
+  <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:8px">
+    <div>
+      <p style="font-family:monospace;font-size:9px;text-transform:uppercase;letter-spacing:3px;color:#aaa;margin:0 0 3px">Curriculum Vitae</p>
+      <h1 style="font-size:40px;font-weight:bold;letter-spacing:-1px;line-height:1;color:#1a1a2e;margin:0">Ahtesham <span style="color:#4a6fa5">Ahmad</span></h1>
+      <p style="font-size:13px;font-weight:300;color:#888;margin:3px 0 0">AI Engineer</p>
+      <p style="font-size:9.5px;color:#777;margin-top:5px;max-width:380px;line-height:1.55">AI engineer building production AI systems end-to-end: multi-agent orchestration, RAG pipelines, and full-stack AI-powered SaaS. I architect solutions where AI agents classify, execute, and learn while humans stay in control.</p>
+    </div>
+    <div style="font-family:monospace;font-size:9.5px;color:#999;text-align:right;line-height:1.7">
+      shami8024@gmail.com<br><span style="color:#4a6fa5">github.com/shami-ah</span><br><span style="color:#4a6fa5">linkedin.com/in/ahtesham</span><br><span style="color:#4a6fa5">ahtesham.dev.wadwarehouse.com</span><br>Islamabad, PK \u00b7 Remote
+    </div>
+  </div>
+  <div style="display:flex;align-items:center;gap:5px;flex-wrap:wrap">${flow}</div>
+  <div style="height:1px;background:linear-gradient(90deg,transparent,#4a6fa5,transparent);margin:7px 0"></div>
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:8px">
+    ${[{ n: "50+", l: "Production Systems" }, { n: "5+", l: "Years Experience" }, { n: "100%", l: "Client Satisfaction" }, { n: String(s.gogaa.tests), l: "Gogaa Tests", a: true }].map(st => `<div style="padding:8px;border-radius:6px;border:1px solid #e8e8e4;background:#f5f5f1;text-align:center"><p style="font-family:monospace;font-size:18px;font-weight:bold;color:${st.a ? "#b8860b" : "#4a6fa5"};line-height:1">${st.n}</p><p style="font-size:8px;text-transform:uppercase;letter-spacing:1.5px;color:#aaa;margin-top:3px">${st.l}</p></div>`).join("")}
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 240px;gap:18px">
+    <div>
+      <p style="font-family:monospace;font-size:9px;text-transform:uppercase;letter-spacing:3px;color:#aaa;margin-bottom:6px"><span style="color:#4a6fa5">\u25B8</span> Experience</p>
+      ${roles}
+      <p style="font-family:monospace;font-size:9px;text-transform:uppercase;letter-spacing:3px;color:#aaa;margin:6px 0"><span style="color:#4a6fa5">\u25C6</span> Key Projects</p>
+      ${projects}
+      <p style="font-family:monospace;font-size:9px;text-transform:uppercase;letter-spacing:3px;color:#aaa;margin:6px 0 5px"><span style="color:#4a6fa5">\u25C8</span> Education</p>
+      <div style="padding:6px 8px;border-radius:5px;border:1px solid #e8e8e4;background:#f5f5f1;display:flex;justify-content:space-between;align-items:baseline">
+        <div><p style="font-size:9.5px;font-weight:600">B.Eng in Electrical & Electronics Engineering</p><p style="font-size:9px;color:#999">Sukkur IBA University</p></div>
+        <p style="font-family:monospace;font-size:9px;color:#aaa">2017 \u2013 2020 \u00b7 Grade A</p>
+      </div>
+    </div>
+    <div>
+      ${skills}
+      <p style="font-family:monospace;font-size:9px;text-transform:uppercase;letter-spacing:2px;color:#aaa;margin:8px 0 4px"><span style="color:#4a6fa5">\u25B8</span> Certifications</p>
+      ${["Generative AI & LLMs \u00b7 IBM", "Project Management \u00b7 Google", "Gen AI for PMs \u00b7 PMI"].map(c => `<p style="font-size:9px;color:#888;padding-left:7px;border-left:2px solid #e8e8e4;margin-bottom:3px;line-height:1.4">${c}</p>`).join("")}
+      <p style="font-family:monospace;font-size:9px;text-transform:uppercase;letter-spacing:2px;color:#aaa;margin:8px 0 4px"><span style="color:#4a6fa5">\u25B8</span> Languages</p>
+      <div style="display:flex;gap:5px;flex-wrap:wrap">${["English \u00b7 Pro", "Urdu \u00b7 Native", "Pashtu \u00b7 Native", "Sindhi \u00b7 Conv", "Arabic \u00b7 Conv"].map(l => `<span style="font-size:8px;padding:2px 6px;border-radius:3px;background:#f0f0ec;color:#888;border:1px solid #e4e4e0">${l}</span>`).join("")}</div>
+      <p style="font-family:monospace;font-size:9px;text-transform:uppercase;letter-spacing:2px;color:#aaa;margin:8px 0 3px"><span style="color:#4a6fa5">\u25B8</span> Building Next</p>
+      <p style="font-size:9px;color:#888;line-height:1.45">Gogaa Architect Mode \u00b7 Spec-to-Code Traceability \u00b7 CodeLens v0.4 (AST)</p>
+    </div>
+  </div>
+</div></body></html>`;
+
+  const w = window.open("", "_blank");
+  if (!w) return;
+  w.document.write(html);
+  w.document.close();
+  setTimeout(() => { w.print(); w.close(); }, 300);
+}
+
+/* ------------------------------------------------------------------ */
 /*  Animated counter                                                   */
 /* ------------------------------------------------------------------ */
 
@@ -368,20 +488,7 @@ function DrawerContent({ close, status }: { close: () => void; status: ReturnTyp
           <div className="flex items-center gap-2">
             <motion.button
               type="button"
-              onClick={() => {
-                const id = "cv-print-frame";
-                let frame = document.getElementById(id) as HTMLIFrameElement | null;
-                if (!frame) {
-                  frame = document.createElement("iframe");
-                  frame.id = id;
-                  frame.style.display = "none";
-                  document.body.appendChild(frame);
-                }
-                frame.src = "/cv?preview=true";
-                frame.onload = () => {
-                  setTimeout(() => frame?.contentWindow?.print(), 400);
-                };
-              }}
+              onClick={() => printCV(status)}
               className="px-3 py-1.5 bg-accent/90 hover:bg-accent text-background rounded-lg text-xs font-medium flex items-center gap-1.5 border border-accent/20 shadow-lg shadow-accent/20"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
