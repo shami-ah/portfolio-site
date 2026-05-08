@@ -120,7 +120,7 @@ function HeroAboutCard({ ready }: { ready: boolean }): React.ReactElement {
         <div className="relative">
           <div className="absolute -inset-2 bg-gradient-to-br from-accent/20 to-accent-secondary/12 rounded-full blur-xl pointer-events-none" />
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/ahtesham.jpg" alt="Ahtesham Ahmad" className="relative w-16 h-16 rounded-full object-cover border-2 border-accent/30 shadow-lg shadow-accent/10" />
+          <img src="/ahtesham.jpg" loading="eager" fetchPriority="high" alt="Ahtesham Ahmad" className="relative w-16 h-16 rounded-full object-cover border-2 border-accent/30 shadow-lg shadow-accent/10" />
         </div>
       </div>
 
@@ -179,7 +179,7 @@ function HeroAboutCard({ ready }: { ready: boolean }): React.ReactElement {
           <div className="relative">
             <div className="absolute -inset-6 bg-gradient-to-br from-accent/15 to-accent-secondary/10 rounded-full blur-3xl pointer-events-none" />
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/ahtesham.jpg" alt="Ahtesham Ahmad" className="relative aspect-square h-[80%] min-h-[180px] max-h-[240px] w-auto rounded-full object-cover border-3 border-accent/25 shadow-2xl shadow-accent/15" />
+            <img src="/ahtesham.jpg" loading="eager" fetchPriority="high" alt="Ahtesham Ahmad" className="relative aspect-square h-[80%] min-h-[180px] max-h-[240px] w-auto rounded-full object-cover border-3 border-accent/25 shadow-2xl shadow-accent/15" />
           </div>
         </div>
       </div>
