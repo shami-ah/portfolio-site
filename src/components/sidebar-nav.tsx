@@ -2,19 +2,39 @@
 
 import { useEffect, useState, useCallback, useRef } from "react";
 import { motion } from "framer-motion";
+import { User, Zap, FolderOpen, GitCommit, PenLine, Mail } from "lucide-react";
+
+const L = 2;   // left position
+const R = 16;  // right position
 
 const pipelineSteps = [
-  { id: "hero", label: "about" },
-  { id: "mission", label: "impact" },
-  { id: "projects", label: "work" },
-  { id: "log", label: "activity" },
-  { id: "contact", label: "connect" },
+  { id: "hero", label: "About", icon: User, x: L, y: 0 },
+  { id: "mission", label: "Impact", icon: Zap, x: R, y: 70 },
+  { id: "projects", label: "Work", icon: FolderOpen, x: L, y: 140 },
+  { id: "log", label: "Activity", icon: GitCommit, x: R, y: 210 },
+  { id: "writing", label: "Writing", icon: PenLine, x: L, y: 280 },
+  { id: "contact", label: "Connect", icon: Mail, x: R, y: 350 },
 ] as const;
+
+/** SVG center of each node (icon center = x + 19, y + 19 for a 38px box) */
+function cx(i: number): number { return pipelineSteps[i].x + 19; }
+function cy(i: number): number { return pipelineSteps[i].y + 19; }
+
+function wirePath(a: number, b: number): string {
+  const ax = cx(a), ay = cy(a), bx = cx(b), by = cy(b);
+  const midY = (ay + by) / 2;
+  return `M ${ax} ${ay} Q ${(ax + bx) / 2 + 4} ${midY} ${bx} ${by}`;
+}
+
+function formatTime(seconds: number): string {
+  const m = Math.floor(seconds / 60);
+  const s = Math.floor(seconds % 60);
+  return `${m}m ${s}s`;
+}
 
 export function SidebarNav(): React.ReactElement {
   const [active, setActive] = useState("hero");
   const [modalOpen, setModalOpen] = useState(false);
-  // Track real time spent on each section in seconds
   const [sectionTimes, setSectionTimes] = useState<Record<string, number>>({});
   const activeRef = useRef("hero");
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
@@ -31,7 +51,6 @@ export function SidebarNav(): React.ReactElement {
     activeRef.current = current;
   }, []);
 
-  // Section time tracker — counts real seconds
   useEffect(() => {
     timerRef.current = setInterval(() => {
       setSectionTimes((prev) => ({
@@ -71,67 +90,170 @@ export function SidebarNav(): React.ReactElement {
 
   const activeIdx = pipelineSteps.findIndex((s) => s.id === active);
 
+  // Build wire segments
+  const wires = pipelineSteps.slice(0, -1).map((_, i) => ({
+    path: wirePath(i, i + 1),
+    lit: i < activeIdx, // completed wire
+  }));
+
   return (
     <motion.nav
-      initial={{ opacity: 0, x: -12 }}
+      initial={{ opacity: 0, x: -16 }}
       animate={{
         opacity: modalOpen ? 0 : 1,
-        x: modalOpen ? -12 : 0,
-        pointerEvents: modalOpen ? "none" as const : "auto" as const,
+        x: modalOpen ? -16 : 0,
+        pointerEvents: modalOpen ? ("none" as const) : ("auto" as const),
       }}
       transition={{ duration: 0.4, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
       aria-label="Pipeline navigation"
-      className="fixed left-2 top-1/2 -translate-y-1/2 z-40 hidden lg:flex flex-col gap-0 font-mono"
+      className="fixed left-3 top-1/2 -translate-y-1/2 z-40 hidden lg:flex font-mono"
+      style={{ width: 56, height: 320 }}
     >
-      {pipelineSteps.map(({ id, label }, i) => {
+      {/* Constellation wires */}
+      <svg
+        className="absolute inset-0 pointer-events-none overflow-visible"
+        viewBox="0 0 56 320"
+        fill="none"
+      >
+        {wires.map((w, i) => (
+          <g key={i}>
+            <path
+              d={w.path}
+              stroke={w.lit ? "rgba(74,222,128,0.2)" : "rgba(42,37,32,0.6)"}
+              strokeWidth={w.lit ? 1.5 : 1}
+              strokeDasharray={w.lit ? "none" : "6 4"}
+            />
+            {/* Energy particle on completed wires */}
+            {w.lit && (
+              <circle r="2" fill="#4ade80" filter="url(#glow-green)">
+                <animateMotion
+                  dur={`${1.8 + i * 0.4}s`}
+                  repeatCount="indefinite"
+                  path={w.path}
+                  keyTimes="0;1"
+                  calcMode="spline"
+                  keySplines="0.4 0 0.2 1"
+                  begin={`${i * 0.6}s`}
+                />
+                <animate
+                  attributeName="opacity"
+                  values="0;1;1;0"
+                  dur={`${1.8 + i * 0.4}s`}
+                  repeatCount="indefinite"
+                  begin={`${i * 0.6}s`}
+                />
+              </circle>
+            )}
+          </g>
+        ))}
+        <defs>
+          <filter id="glow-green" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur stdDeviation="3" result="blur" />
+            <feMerge>
+              <feMergeNode in="blur" />
+              <feMergeNode in="SourceGraphic" />
+            </feMerge>
+          </filter>
+        </defs>
+      </svg>
+
+      {/* Nav nodes in constellation layout */}
+      {pipelineSteps.map(({ id, label, icon: Icon, x, y }, i) => {
         const isDone = i < activeIdx;
         const isActive = i === activeIdx;
-        const isPending = i > activeIdx;
         const timeSpent = sectionTimes[id] ?? 0;
-        const timeStr = timeSpent >= 1 ? `${timeSpent.toFixed(1)}s` : timeSpent > 0 ? `${(timeSpent * 1000).toFixed(0)}ms` : "";
+        const showTime = isDone && timeSpent >= 1;
 
         return (
-          <div key={id}>
-            <button
-              type="button"
-              onClick={() => scrollTo(id)}
-              className={`group relative flex items-center gap-1 px-1.5 py-1 rounded-lg transition-all duration-300 w-full text-left ${
-                isActive ? "bg-accent/10" : ""
-              }`}
-            >
-              {/* Active glow bar */}
-              {isActive && (
-                <span className="absolute left-0 top-1/2 -translate-y-1/2 w-[2px] h-3 rounded-full bg-accent shadow-[0_0_6px_rgba(212,168,83,0.5)]" />
-              )}
-
-              <span className={`text-caption shrink-0 ${
-                isDone ? "text-accent-status" : isActive ? "text-accent" : "text-muted/20"
-              }`}>
-                {isDone ? "✓" : isActive ? "▸" : "○"}
-              </span>
-              <span className={`text-caption transition-colors ${
-                isDone ? "text-foreground/60" : isActive ? "text-accent" : "text-muted/20"
-              }`}>
-                {label}
-              </span>
-              {(isDone || isActive) && timeStr && (
-                <span className={`text-caption ml-auto tabular-nums ${
-                  isDone ? "text-accent-status/30" : "text-accent/40"
-                }`}>
-                  {timeStr}
-                </span>
-              )}
-            </button>
-
-            {/* Connector line */}
-            {i < pipelineSteps.length - 1 && (
-              <div className={`w-px h-1 ml-[10px] transition-colors duration-300 ${
-                isDone ? "bg-accent-status/15" : "bg-card-border/30"
-              }`} />
+          <button
+            key={id}
+            type="button"
+            onClick={() => scrollTo(id)}
+            aria-label={label}
+            className="group absolute flex items-center justify-center cursor-pointer transition-all duration-[400ms] ease-[cubic-bezier(0.22,1,0.36,1)]"
+            style={{
+              left: x,
+              top: y,
+              width: isActive ? 46 : 38,
+              height: isActive ? 46 : 38,
+              marginLeft: isActive ? -4 : 0,
+              marginTop: isActive ? -4 : 0,
+              borderRadius: 14,
+              background: isActive ? "rgba(212,168,83,0.10)" : "transparent",
+              boxShadow: isActive
+                ? "0 4px 24px rgba(212,168,83,0.2), inset 0 1px 0 rgba(255,255,255,0.06)"
+                : "none",
+            }}
+          >
+            {/* Pulse ring on active */}
+            {isActive && (
+              <span
+                className="absolute inset-0 rounded-[14px] border border-accent/30 animate-[pulse-expand_2.5s_ease-out_infinite]"
+              />
             )}
-          </div>
+
+            {/* Star glow dot on active */}
+            {isActive && (
+              <span
+                className="absolute -top-1 -right-1 w-[5px] h-[5px] rounded-full bg-accent animate-[star-breathe_2s_ease-in-out_infinite_alternate]"
+                style={{
+                  boxShadow: "0 0 10px var(--accent), 0 0 20px rgba(212,168,83,0.3)",
+                }}
+              />
+            )}
+
+            <Icon
+              size={isActive ? 20 : 15}
+              strokeWidth={isActive ? 2 : 1.5}
+              className={`transition-all duration-300 ${
+                isActive
+                  ? "text-accent drop-shadow-[0_0_6px_rgba(212,168,83,0.5)]"
+                  : isDone
+                    ? "text-accent-status/70 group-hover:text-accent-status"
+                    : "text-muted/25 group-hover:text-muted/50"
+              }`}
+              style={{
+                filter: isActive ? "drop-shadow(0 0 6px rgba(212,168,83,0.5))" : undefined,
+              }}
+            />
+
+            {/* Time badge — beside the wire between this node and the next */}
+            {showTime && i < pipelineSteps.length - 1 && (() => {
+              const goesRight = pipelineSteps[i + 1].x > x;
+              // Place on the opposite side of the wire curve
+              return (
+                <span
+                  className="absolute text-[7px] leading-none text-accent-status/45 tabular-nums font-medium whitespace-nowrap pointer-events-none"
+                  style={{
+                    top: ((pipelineSteps[i + 1].y - y) / 2) + 19,
+                    ...(goesRight
+                      ? { right: 18 }
+                      : { left: 18 }),
+                  }}
+                >
+                  {formatTime(timeSpent)}
+                </span>
+              );
+            })()}
+
+            {/* Tooltip */}
+            <span className="absolute left-full ml-3 px-2.5 py-1 rounded-lg bg-card/90 backdrop-blur-xl border border-card-border/50 text-[10px] text-foreground/80 whitespace-nowrap opacity-0 pointer-events-none group-hover:opacity-100 group-hover:translate-x-0 -translate-x-1 transition-all duration-200 shadow-lg z-10">
+              {label}
+            </span>
+          </button>
         );
       })}
+
+      <style>{`
+        @keyframes pulse-expand {
+          0% { transform: scale(1); opacity: 0.5; }
+          100% { transform: scale(1.6); opacity: 0; }
+        }
+        @keyframes star-breathe {
+          0% { box-shadow: 0 0 6px var(--accent), 0 0 12px rgba(212,168,83,0.2); }
+          100% { box-shadow: 0 0 14px var(--accent), 0 0 28px rgba(212,168,83,0.4); }
+        }
+      `}</style>
     </motion.nav>
   );
 }

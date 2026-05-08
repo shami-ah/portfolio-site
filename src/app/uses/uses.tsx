@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { FadeUp } from "@/components/motion";
@@ -515,7 +516,7 @@ export function Uses(): React.ReactElement {
           </div>
           <span className="ml-2 text-small font-mono text-muted/40">shami-toolkit</span>
         </div>
-        <a href="/" className="text-caption font-mono text-accent/60 hover:text-accent transition-colors">&larr; portfolio</a>
+        <Link href="/" className="text-caption font-mono text-accent/60 hover:text-accent transition-colors">&larr; portfolio</Link>
       </div>
 
       <div className="flex flex-1 overflow-hidden">

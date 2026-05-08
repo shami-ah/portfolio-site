@@ -4,6 +4,7 @@ import { SidebarNav } from "@/components/sidebar-nav";
 import { MissionStats } from "@/components/mission-stats";
 import { Projects } from "@/components/projects";
 import { GitLog } from "@/components/git-log";
+import { Writing } from "@/components/writing";
 import { ConfigContact } from "@/components/config-contact";
 import { Footer } from "@/components/footer";
 import { TerminalBoot } from "@/components/terminal-boot";
@@ -19,7 +20,7 @@ export default function Home(): React.ReactElement {
       <TopBar />
       <SidebarNav />
       <CursorGlow />
-      <div className="relative z-10 lg:pl-24">
+      <div className="relative z-10">
         <ConfigHero />
         <SectionDivider />
         <MissionStats />
@@ -27,6 +28,8 @@ export default function Home(): React.ReactElement {
         <Projects />
         <SectionDivider />
         <GitLog />
+        <SectionDivider />
+        <Writing />
         <SectionDivider />
         <ConfigContact />
       </div>

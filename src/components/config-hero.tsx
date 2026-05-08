@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useState, useRef, useCallback } from "react";
 import { motion, useScroll, useTransform, useMotionValue, useSpring } from "framer-motion";
 import { useStatus } from "@/lib/use-status";
@@ -189,7 +190,7 @@ function HeroAboutCard({ ready }: { ready: boolean }): React.ReactElement {
           <span className="w-1.5 h-1.5 rounded-full bg-accent-status animate-pulse" />
           <span className="text-accent-status/70">available for hire</span>
         </div>
-        <a href="/uses" className="text-caption font-mono text-muted/40 hover:text-accent transition-colors">setup &rarr;</a>
+        <Link href="/uses" className="text-caption font-mono text-muted/40 hover:text-accent transition-colors">setup &rarr;</Link>
       </div>
     </motion.div>
   );

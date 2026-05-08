@@ -28,6 +28,7 @@ export function ThemeToggle(): React.ReactElement {
     const next: Theme = theme === "dark" ? "light" : "dark";
     setTheme(next);
     localStorage.setItem("theme", next);
+    document.cookie = `theme=${next};path=/;max-age=31536000;SameSite=Lax`;
     applyTheme(next);
   }
 

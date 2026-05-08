@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { motion, useMotionValue, useSpring } from "framer-motion";
 import { useState, useEffect, useRef } from "react";
 import { useSearchParams } from "next/navigation";
@@ -134,7 +135,7 @@ export function VisualCV(): React.ReactElement {
           <Download size={14} />
           PDF
         </motion.button>
-        <a href="/" className="px-3 md:px-4 py-2 bg-card/80 hover:bg-card-hover text-foreground rounded-lg text-xs md:text-sm font-medium backdrop-blur-sm border border-card-border">← Back</a>
+        <Link href="/" className="px-3 md:px-4 py-2 bg-card/80 hover:bg-card-hover text-foreground rounded-lg text-xs md:text-sm font-medium backdrop-blur-sm border border-card-border">← Back</Link>
       </div>
 
       {/* Screen version - dark, animated */}
