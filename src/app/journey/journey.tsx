@@ -1,12 +1,13 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ArrowLeft, Smartphone, Container, Bot, Shield, Settings, Rocket } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { TimeMachine } from "@/components/time-machine";
 
 /* ------------------------------------------------------------------ */
-/*  Content — intentionally NOT duplicated from the main portfolio.   */
-/*  This page is the "how" behind the "what" on the home page.        */
+/*  Content — the "how" behind the "what" on the home page.           */
+/*  No career timeline (home covers that). No stack list (/uses).     */
+/*  Just: principles, daily workflow, CTA.                            */
 /* ------------------------------------------------------------------ */
 
 interface Principle {
@@ -58,84 +59,6 @@ const principles: Principle[] = [
     body: "Shipped code is off by default. I turn it on for 10% first, watch Sentry for 24h, then roll globally. No big-bang releases.",
     example:
       "Every OpenEvent feature ships dark. A bad migration caught in staging means one hour of rollback, not a week of bug fires.",
-  },
-];
-
-const day: { time: string; title: string; note: string; tag: string }[] = [
-  {
-    time: "07:00",
-    title: "Overnight review",
-    note: "CodeLens reports on every repo I touched yesterday. Triage what matters. File issues for what doesn't.",
-    tag: "input",
-  },
-  {
-    time: "08:00",
-    title: "Gogaa architect session",
-    note: "One feature. Open spec file. Use gogaa /architect to sketch. Save the diagram to memory. No code yet.",
-    tag: "spec",
-  },
-  {
-    time: "10:00",
-    title: "Spec → scaffold",
-    note: "Gogaa reads spec + patterns. Produces a SEARCH/REPLACE diff. I review block by block. ~90% accepted first pass.",
-    tag: "build",
-  },
-  {
-    time: "13:00",
-    title: "Review hour",
-    note: "Claude Code + CodeLens in parallel on every PR. Merge only after both pass. Guardian mode prevents half the bug classes upstream.",
-    tag: "review",
-  },
-  {
-    time: "15:00",
-    title: "Deep work",
-    note: "Either: tool-building (gogaa, CodeLens), or hard research. No meetings, no Slack. Timer at 90 minutes.",
-    tag: "deep",
-  },
-  {
-    time: "18:00",
-    title: "Retro + memory",
-    note: "Write down what I learned. Update CLAUDE.md. Save feedback to agent memory. Commit. Ship.",
-    tag: "close",
-  },
-];
-
-interface ToolStop {
-  icon: React.ReactNode;
-  label: string;
-  why: string;
-}
-
-const devStack: ToolStop[] = [
-  {
-    icon: <Smartphone size={20} />,
-    label: "Phone + Tailscale",
-    why: "My dev environment follows me. SSH into my Mac from anywhere, private mesh network, no port forwarding.",
-  },
-  {
-    icon: <Container size={20} />,
-    label: "Docker container",
-    why: "Reproducible isolated env. Same container on Mac, Linux VPS, phone-SSH. Zero 'works on my machine'.",
-  },
-  {
-    icon: <Bot size={20} />,
-    label: "Claude Code + gogaa",
-    why: "Two agents, different strengths. CC for complex tasks, gogaa when I need 11 providers or Aider-grade git flow.",
-  },
-  {
-    icon: <Shield size={20} />,
-    label: "CodeLens guardian",
-    why: "Injects 305 patterns into Claude Code / Cursor / Copilot's context. Bugs are prevented at generation, not review.",
-  },
-  {
-    icon: <Settings size={20} />,
-    label: "GitHub Actions",
-    why: "Every PR: build, lint, CodeLens review, auto-migration to staging. Green CI is the only path to main.",
-  },
-  {
-    icon: <Rocket size={20} />,
-    label: "Feature-flag deploy",
-    why: "Ship dark. 10% → watch → 100%. Sentry + Grafana dashboards open during rollout.",
   },
 ];
 
@@ -209,8 +132,7 @@ export function Journey(): React.ReactElement {
             className="text-sm md:text-lg text-muted leading-relaxed max-w-xl mx-auto"
           >
             The home page shows what I&apos;ve built. This page shows the
-            thinking that made it ship. Six principles. A real day. The tools
-            I reach for.
+            thinking that made it ship. Six principles and a real day.
           </motion.p>
 
           <motion.div
@@ -233,22 +155,7 @@ export function Journey(): React.ReactElement {
         </div>
       </section>
 
-      {/* TIME MACHINE — the career trajectory in one control */}
-      <section className="py-16 md:py-20 px-5 md:px-6 relative">
-        <div className="max-w-4xl mx-auto">
-          <div className="mb-8 md:mb-10 text-center">
-            <p className="text-sm font-mono text-accent mb-3 uppercase tracking-[0.3em]">
-              trajectory
-            </p>
-            <h2 className="text-2xl md:text-4xl font-bold leading-tight">
-              Drag through the years.
-            </h2>
-          </div>
-          <TimeMachine />
-        </div>
-      </section>
-
-      {/* PRINCIPLES — the unique content */}
+      {/* PRINCIPLES */}
       <section className="py-20 md:py-28 px-5 md:px-6 relative">
         <div className="max-w-5xl mx-auto">
           <div className="mb-12 md:mb-16 text-center">
@@ -295,159 +202,21 @@ export function Journey(): React.ReactElement {
         </div>
       </section>
 
-      {/* DAY IN THE LIFE */}
+      {/* DAY IN THE LIFE — interactive TimeMachine */}
       <section className="py-20 md:py-28 px-5 md:px-6 bg-card/20 relative">
-        <div className="max-w-5xl mx-auto">
-          <div className="mb-12 md:mb-16 text-center">
-            <p className="text-sm font-mono text-accent mb-4 uppercase tracking-[0.3em]">
+        <div className="max-w-4xl mx-auto">
+          <div className="mb-8 md:mb-10 text-center">
+            <p className="text-sm font-mono text-accent mb-3 uppercase tracking-[0.3em]">
               a typical day
             </p>
-            <h2 className="text-3xl md:text-5xl font-bold mb-4 leading-tight">
-              07:00 to 18:00 · exactly this.
+            <h2 className="text-2xl md:text-4xl font-bold mb-4 leading-tight">
+              07:00 to 18:00 · drag through the day.
             </h2>
             <p className="text-sm md:text-base text-muted max-w-xl mx-auto">
               Deep work over meetings. Architecture over reaction. Memory over rework.
             </p>
           </div>
-
-          <div className="relative">
-            {/* Vertical line */}
-            <div className="absolute left-[27px] md:left-[60px] top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-accent/20 to-transparent" />
-
-            <div className="space-y-6 md:space-y-8">
-              {day.map((d, i) => (
-                <motion.div
-                  key={d.time}
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true, margin: "-50px" }}
-                  transition={{ duration: 0.5, delay: i * 0.08 }}
-                  className="relative pl-16 md:pl-32"
-                >
-                  {/* Time label */}
-                  <div className="absolute left-0 top-0 w-14 md:w-[110px] text-left">
-                    <p className="text-sm md:text-base font-mono font-bold text-accent/80 tabular-nums">
-                      {d.time}
-                    </p>
-                    <p className="text-caption md:text-caption font-mono text-muted/40 uppercase tracking-widest mt-0.5">
-                      {d.tag}
-                    </p>
-                  </div>
-                  {/* Dot */}
-                  <div className="absolute left-[22px] md:left-[55px] top-2 w-3 h-3 rounded-full bg-accent ring-4 ring-background" />
-                  {/* Content */}
-                  <div className="p-4 md:p-5 rounded-xl bg-card border border-card-border hover:border-accent/20 transition-colors">
-                    <h3 className="text-base md:text-lg font-bold mb-1.5">
-                      {d.title}
-                    </h3>
-                    <p className="text-xs md:text-sm text-muted leading-relaxed">
-                      {d.note}
-                    </p>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* DEV STACK */}
-      <section className="py-20 md:py-28 px-5 md:px-6 relative">
-        <div className="max-w-5xl mx-auto">
-          <div className="mb-12 md:mb-16 text-center">
-            <p className="text-sm font-mono text-accent mb-4 uppercase tracking-[0.3em]">
-              the stack I actually reach for
-            </p>
-            <h2 className="text-3xl md:text-5xl font-bold leading-tight">
-              Every tool earns its place.
-            </h2>
-          </div>
-
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
-            {devStack.map((t, i) => (
-              <motion.div
-                key={t.label}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ duration: 0.5, delay: i * 0.06 }}
-                className="p-5 md:p-6 rounded-xl bg-card/60 border border-card-border hover:border-accent/20 transition-colors"
-              >
-                <div className="flex items-center gap-2 mb-3">
-                  <span className="text-accent shrink-0" aria-hidden>
-                    {t.icon}
-                  </span>
-                  <p className="text-sm md:text-base font-bold">{t.label}</p>
-                </div>
-                <p className="text-xs md:text-sm text-muted leading-relaxed">
-                  {t.why}
-                </p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* BUILDING NEXT — roadmap */}
-      <section className="py-20 md:py-28 px-5 md:px-6 bg-card/20 relative">
-        <div className="max-w-5xl mx-auto">
-          <div className="mb-12 md:mb-16 text-center">
-            <p className="text-sm font-mono text-accent mb-4 uppercase tracking-[0.3em]">
-              on the roadmap
-            </p>
-            <h2 className="text-3xl md:text-5xl font-bold leading-tight">
-              What I&apos;m building next.
-            </h2>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-4 md:gap-5">
-            {[
-              {
-                title: "Gogaa Architect Mode",
-                status: "Next Up",
-                desc: "Two-model split for complex tasks: a strong model plans and writes specs, a fast model executes edits. Cuts cost and improves quality on hard problems.",
-              },
-              {
-                title: "OpenEvent Adaptive Approval Engine",
-                status: "Designing",
-                desc: "The system tracks which actions are approved vs rejected. As patterns emerge, trust thresholds adjust automatically. Human review load drops week-over-week without removing the human from the loop.",
-              },
-              {
-                title: "Gogaa Remote Session Viewer",
-                status: "Planned",
-                desc: "Watch and control any gogaa agent session from a browser or phone, over LAN or tunnel. Real-time streaming of tool calls, diffs, and cost. The agent running on your dev machine, accessible anywhere.",
-              },
-            ].map((item, i) => (
-              <motion.div
-                key={item.title}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ duration: 0.5, delay: i * 0.08 }}
-                className="relative p-5 md:p-6 rounded-xl bg-card/60 border border-card-border hover:border-foreground/20 transition-colors"
-              >
-                <div className="flex items-start justify-between gap-3 mb-3">
-                  <h3 className="text-sm md:text-base font-bold leading-tight">
-                    {item.title}
-                  </h3>
-                  <span
-                    className={`shrink-0 px-2 py-0.5 text-caption font-mono rounded ${
-                      item.status === "Next Up"
-                        ? "bg-green-500/10 text-green-400 border border-green-500/20"
-                        : item.status === "Designing"
-                          ? "bg-yellow-500/10 text-yellow-400 border border-yellow-500/20"
-                          : "bg-muted/10 text-muted/80 border border-card-border"
-                    }`}
-                  >
-                    {item.status}
-                  </span>
-                </div>
-                <p className="text-xs md:text-sm text-muted leading-relaxed">
-                  {item.desc}
-                </p>
-              </motion.div>
-            ))}
-          </div>
+          <TimeMachine />
         </div>
       </section>
 
