@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Inter, Space_Grotesk, JetBrains_Mono } from "next/font/google";
-import { ChatTrigger } from "@/components/chat-trigger";
+import { ChatWidget } from "@/components/chat-widget";
 import { ThemeToggle } from "@/components/theme-toggle";
 import "./globals.css";
 
@@ -119,7 +119,7 @@ export default function RootLayout({
         <div className="fixed bottom-6 right-4 md:right-6 z-50 print:hidden">
           <ThemeToggle />
         </div>
-        <ChatTrigger />
+        <ChatWidget />
         <script
           dangerouslySetInnerHTML={{
             __html: `if(location.hostname==='ahtesham.dev.wadwarehouse.com'){fetch('https://shami-command-center.vercel.app/api/server/track',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({path:location.pathname,referrer:document.referrer})}).catch(function(){});}`,

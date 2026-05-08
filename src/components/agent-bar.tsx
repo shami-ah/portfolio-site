@@ -291,7 +291,7 @@ const commands: AgentCommand[] = [
     response: "Launching chat agent. Ask anything about my work. Scoped knowledge base, no hallucinations.",
     action: () => {
       setTimeout(() => {
-        window.location.href = "/chat";
+        window.dispatchEvent(new CustomEvent("open-chat-widget"));
       }, 450);
     },
   },
