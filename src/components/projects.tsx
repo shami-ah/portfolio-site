@@ -134,7 +134,7 @@ function FlagshipCard({
                 rel="noopener noreferrer"
                 className="text-small font-mono text-muted hover:text-accent-status transition-colors"
               >
-                demo &#8599;
+                demo {"\u2197"}
               </a>
             )}
           </div>
@@ -270,7 +270,7 @@ export function Projects(): React.ReactElement {
 
   return (
     <section id="projects" className="py-20 md:py-32">
-      <div className="max-w-7xl mx-auto px-5 md:px-8">
+      <div className="max-w-7xl mx-auto px-5 md:px-8 lg:pl-24">
         {/* Sticky scroll: heading left, cards right */}
         <div className="grid md:grid-cols-2 gap-12 lg:gap-16">
           {/* Left: sticky column */}
