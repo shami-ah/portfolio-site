@@ -32,7 +32,7 @@ function useFlagshipMeta(): Record<string, FlagshipMeta> {
       statusColor: "text-accent-status",
       metrics: [
         { label: "clients", value: `${status.openevent.clients}+` },
-        { label: "events", value: `${status.openevent.events}+` },
+        { label: "in months", value: "8" },
         { label: "time saved", value: "83%" },
       ],
     },
@@ -41,7 +41,7 @@ function useFlagshipMeta(): Record<string, FlagshipMeta> {
       statusColor: "text-accent-secondary",
       metrics: [
         { label: "bug patterns", value: `~${status.codelens.patterns}` },
-        { label: "languages", value: `${status.codelens.stacks}` },
+        { label: "mined from", value: "600+ PRs" },
         { label: "review speed", value: "<1s" },
       ],
     },
@@ -49,18 +49,18 @@ function useFlagshipMeta(): Record<string, FlagshipMeta> {
       status: "BETA",
       statusColor: "text-accent-secondary",
       metrics: [
-        { label: "AI models", value: `${status.gogaa.providers}` },
-        { label: "auto-fallback", value: "yes" },
-        { label: "vendor lock-in", value: "zero" },
+        { label: "providers", value: `${status.gogaa.providers}` },
+        { label: "if one fails", value: "auto-switch" },
+        { label: "lock-in", value: "zero" },
       ],
     },
     rasad: {
       status: "SHIPPED",
       statusColor: "text-accent",
       metrics: [
-        { label: "sessions tracked", value: "656" },
-        { label: "data privacy", value: "100%" },
-        { label: "cloud dependency", value: "none" },
+        { label: "sessions", value: "656" },
+        { label: "graded", value: "A-F" },
+        { label: "cloud", value: "none" },
       ],
     },
   };
@@ -164,8 +164,6 @@ type FrameKind = "phone" | "pwa" | "docker" | "huggingface" | "streamlit" | "dag
 const CARD_FRAMES: Record<string, FrameKind> = {
   "command-center":     "pwa",
   "gluten-free":        "phone",
-  "rag-pipeline":       "streamlit",
-  "vqa-agent":          "streamlit",
   "dev-env":            "docker",
   "agent-orchestrator": "dag",
   "agent-system":       "huggingface",

@@ -50,8 +50,8 @@ export const projects: ProjectData[] = [
     subtitle: "AI-Powered Event Management Platform",
     type: "Production SaaS",
     oneLiner: "AI turns client emails into approved bookings, invoices, and CRM updates.",
-    cardSummary: "Live with 100+ teams. AI reads emails, proposes actions, humans approve with one click.",
-    impact: "Live with 100+ clients across 150+ events, saving each team ~1.5 hours per day. AI classifies emails, proposes actions, and executes after human approval.",
+    cardSummary: "100+ clients in 8 months, no sales team. AI reads emails, proposes actions, humans approve with one click.",
+    impact: "Grew to 100+ clients across 150+ events in 8 months with zero sales team — product-led adoption. Saves each team ~1.5 hours per day. AI classifies emails, proposes actions, and executes after human approval.",
     problem:
       "Event companies drown in emails and manual coordination. Staff spend hours triaging requests, copying data between systems, and chasing approvals. Simple automation breaks on ambiguous language.",
     solution:
@@ -138,9 +138,9 @@ export const projects: ProjectData[] = [
     title: "CodeLens",
     subtitle: "AI Code Review Engine",
     type: "AI Dev Tool",
-    cardSummary: "~430 bug patterns across 9 stacks, running in under one second on your machine. No cloud, no latency.",
-    oneLiner: "430 hand-crafted bug patterns. 9 stacks. Under one second. Code never leaves your machine.",
-    impact: "A hybrid review engine with ~430 hand-crafted patterns across 9 stacks that catches real production bugs in under one second, entirely on your machine. Patterns grow continuously from production PR mining and agent harvesting.",
+    cardSummary: "430 patterns mined from 600+ production PRs. Reviews in under one second, entirely on your machine.",
+    oneLiner: "430 bug patterns mined from 600+ real PRs. Under one second. Code never leaves your machine.",
+    impact: "430 hand-crafted patterns mined from 600+ production PRs across 9 stacks. Reviews in under one second, entirely on your machine. When a commercial AI reviewer (Greptile) caught 12 issues CodeLens missed, I ran a gap analysis and closed every one — coverage went from 8% to 100%.",
     problem:
       "Existing tools are either fast but shallow (linters catching style, not logic) or deep but cloud-dependent (sending your code to a third party). Neither catches the bugs that actually ship: missing auth guards, silent N+1 queries, cross-file taint paths.",
     solution:
@@ -229,9 +229,9 @@ export const projects: ProjectData[] = [
     type: "Developer Tool / CLI",
     featured: true,
     requestAccess: true,
-    cardSummary: "A full AI coding agent where the provider is a variable. 11 providers with auto-fallback, production-grade TUI, 1,400+ tests.",
-    oneLiner: "A full AI coding agent where the provider is a variable. 11 providers, auto-fallback, zero lock-in.",
-    impact: "The only open-source AI coding CLI with 11 providers (auto-fallback), production-grade git workflow, polished React Ink TUI, MCP support, plugin marketplace, and parallel agents — all in one tool. 1,400+ passing tests.",
+    cardSummary: "11 providers behind one interface. If one goes down, you don't stop working. 1,400+ tests, zero vendor lock-in.",
+    oneLiner: "11 providers behind one interface. If one goes down, you don't stop working.",
+    impact: "The only open-source AI coding CLI where the provider is a variable — 11 providers with automatic fallback, so rate-limits never stop your work. Production-grade git workflow, polished React Ink TUI, plugin marketplace, and 1,400+ passing tests.",
     problem:
       "Every AI coding tool makes you choose: provider freedom or deep integration. Polished TUI or serious git workflow. MCP support or surgical edits. If your provider rate-limits, you stop working.",
     solution:
@@ -318,9 +318,9 @@ export const projects: ProjectData[] = [
     subtitle: "AI Session Observatory for Developers",
     type: "Developer Tool / CLI + Web",
     featured: true,
-    cardSummary: "See exactly what your AI coding tools do, cost, and miss. Local-first. Your data never leaves your machine.",
-    oneLiner: "Complete visibility into every AI coding session. Local-first. Data never leaves your machine.",
-    impact: "The observability layer for AI-assisted development. Ingests sessions from Claude Code, Gogaa, and Codex. 656 sessions synced, 38K messages indexed. Action-by-action replay, quality grading, cost tracking. 100% local.",
+    cardSummary: "656 sessions analyzed — every tool call, every file touch, graded A-F. Your data never leaves your machine.",
+    oneLiner: "656 sessions analyzed — every tool call, every file touch, graded A-F. 100% local.",
+    impact: "The observability layer for AI-assisted development. 656 sessions across 4 tools, 38K messages, 14K tool calls — every action replayed, every session graded A-F. Found that routine tasks on Opus cost 18x more than Sonnet with no quality difference. 100% local, zero outbound requests.",
     problem:
       "AI coding assistants are black boxes. You don't know how many tokens were burned, whether context was lost mid-session, or if that $87 session could have been three $8 sessions. Zero observability for a major engineering budget line.",
     solution:
@@ -487,99 +487,6 @@ export const projects: ProjectData[] = [
       "200+ AI-generated queries per category",
       "Cross-platform: Web, iOS, Android from shared codebase",
     ],
-  },
-
-  /* ------------------------------------------------------------------ */
-  /*  RAG Pipeline                                                       */
-  /* ------------------------------------------------------------------ */
-  {
-    slug: "rag-pipeline",
-    title: "RAG Pipeline",
-    subtitle: "Domain-Specific Knowledge Retrieval",
-    type: "AI Infrastructure",
-    impact: "Scalable knowledge retrieval from unstructured documents with context-aware LLM responses and source citations. Sub-second retrieval from thousands of chunks.",
-    problem:
-      "Critical knowledge is locked in PDFs and wikis. Keyword search fails on natural language questions. Employees waste hours searching instead of getting answers.",
-    solution:
-      "A RAG pipeline that chunks documents with context-preserving overlap, generates embeddings via Hugging Face, stores them in Pinecone, and retrieves relevant context before GPT-4 generates cited answers. Incremental updates without full re-indexing.",
-    architecture: [
-      "Document Ingestion (PDF, docs, wiki)",
-      "Overlap-aware Chunking",
-      "Embedding (Hugging Face)",
-      "Pinecone Vector Search",
-      "GPT-4 Answer Generation (with citations)",
-    ],
-    features: [
-      "Overlap-aware chunking preserving context across boundaries",
-      "Sub-second vector search with Pinecone metadata filtering",
-      "GPT-4 answers with source citations for verification",
-      "Incremental updates — add documents without re-indexing",
-      "Streamlit UI for live testing and evaluation",
-    ],
-    techDecisions: [
-      {
-        title: "Pinecone over self-hosted FAISS",
-        description: "Managed scaling, replication, and metadata filtering out of the box. For production, this beats self-hosted FAISS.",
-      },
-      {
-        title: "Source citations in answers",
-        description: "Every answer references source chunks. Users verify against originals, catching hallucinations.",
-      },
-    ],
-    stack: ["Python", "Pinecone", "OpenAI GPT-4", "Hugging Face", "LangChain", "Streamlit"],
-    results: [
-      "Sub-second retrieval from thousands of document chunks",
-      "Context-aware answers with source citations",
-      "Deployed for customer support and internal knowledge base",
-    ],
-    github: "https://github.com/shami-ah/rag-gpt-pinecone",
-  },
-
-  /* ------------------------------------------------------------------ */
-  /*  VQA Agent                                                          */
-  /* ------------------------------------------------------------------ */
-  {
-    slug: "vqa-agent",
-    title: "Multimodal VQA Agent",
-    subtitle: "Visual Question Answering",
-    type: "AI Research",
-    impact: "A multimodal agent that answers natural language questions about images by combining BLIP-2 vision encoding with LLM reasoning and domain-specific RAG context.",
-    problem:
-      "Users need to ask questions about images (accessibility, education, quality inspection) but most AI handles only text. Bridging vision and language requires specialized architectures.",
-    solution:
-      "BLIP-2 extracts image features, RAG enriches context with domain knowledge, and prompt chains decompose complex questions into multi-step reasoning. Conversation memory enables follow-ups.",
-    architecture: [
-      "Image Input",
-      "BLIP-2 Vision Encoder",
-      "LLM Reasoning (GPT-4)",
-      "RAG Context Enrichment",
-      "Multi-step Prompt Chains",
-      "Streamlit Interface",
-    ],
-    features: [
-      "BLIP-2 vision encoding with rich feature extraction for LLM consumption",
-      "Multi-step prompt chains for complex visual questions",
-      "RAG enrichment with domain-specific knowledge bases",
-      "Conversation memory for follow-up questions",
-      "Confidence scoring with low-confidence flagging",
-    ],
-    techDecisions: [
-      {
-        title: "BLIP-2 over CLIP",
-        description: "BLIP-2's Q-Former bridges the modality gap more effectively for natural language questions, not just image-text similarity.",
-      },
-      {
-        title: "Prompt chains over single-shot",
-        description: "Complex questions decompose into sub-queries. Multi-step reasoning produces more accurate answers than single-shot.",
-      },
-    ],
-    stack: ["Python", "BLIP-2", "OpenAI GPT-4", "Hugging Face", "LangChain", "Streamlit"],
-    results: [
-      "Natural language questions about arbitrary images with multi-step reasoning",
-      "Domain-specific accuracy via RAG enrichment",
-      "Applicable to accessibility, education, and quality inspection",
-    ],
-    github: "https://github.com/shami-ah/VQA_Dataset",
   },
 
   /* ------------------------------------------------------------------ */
