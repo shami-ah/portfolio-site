@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Git Log + Writing .md Files</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root { --bg: #0c0c0e; --fg: #ede8e0; --muted: #7a756d; --accent: #d4a853; --accent-secondary: #8ba4c4; --accent-status: #4ade80; --card: #151515; --card-border: #2a2520; }
+  body { background: var(--bg); color: var(--fg); font-family: 'Inter', system-ui, sans-serif; -webkit-font-smoothing: antialiased; min-height: 100vh; padding: 40px 20px; }
+
+  .section { max-width: 1100px; margin: 0 auto; }
+  .section-header { text-align: center; margin-bottom: 48px; }
+  .section-header .label { font-family: monospace; font-size: 10px; color: var(--accent); text-transform: uppercase; letter-spacing: 0.2em; margin-bottom: 12px; }
+  .section-header h2 { font-size: clamp(24px, 4vw, 36px); font-weight: 700; line-height: 1.2; }
+  .section-header h2 .grad { background: linear-gradient(135deg, var(--accent), var(--accent-secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+  .split { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: stretch; position: relative; }
+  .split::after { content: ''; position: absolute; left: 50%; top: 30px; bottom: 30px; width: 1px; background: linear-gradient(180deg, transparent, var(--card-border), transparent); }
+
+  /* ─── Git Log (Left) ─── */
+  .git-log .tree-title { font-family: monospace; font-size: 11px; color: var(--accent); text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 20px; display: flex; align-items: center; gap: 8px; }
+  .git-log .tree-title::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
+
+  .commit { position: relative; padding-left: 32px; margin-bottom: 28px; }
+  .commit::before { content: ''; position: absolute; left: 7px; top: 0; bottom: -28px; width: 1px; background: linear-gradient(180deg, var(--card-border), rgba(42,37,32,0.3)); }
+  .commit:last-of-type::before { display: none; }
+  .commit .dot { position: absolute; left: 0; top: 4px; width: 15px; height: 15px; border-radius: 50%; border: 2px solid var(--card-border); background: var(--bg); z-index: 1; }
+  .commit.active .dot { border-color: var(--accent-status); background: var(--accent-status); box-shadow: 0 0 8px rgba(74,222,128,0.3); }
+  .commit .meta { font-family: monospace; font-size: 10px; color: var(--muted); }
+  .commit .meta .tag { display: inline-block; padding: 1px 6px; border-radius: 4px; font-size: 9px; margin-left: 6px; }
+  .commit .meta .tag.head { background: rgba(74,222,128,0.15); color: var(--accent-status); border: 1px solid rgba(74,222,128,0.2); }
+  .commit .meta .tag.branch { background: rgba(212,168,83,0.1); color: var(--accent); border: 1px solid rgba(212,168,83,0.15); }
+  .commit h3 { font-size: 14px; font-weight: 600; margin-top: 6px; line-height: 1.4; }
+  .commit h3 .dim { color: var(--muted); font-weight: 400; }
+  .commit .desc { font-size: 12px; color: var(--muted); line-height: 1.6; margin-top: 6px; }
+  .commit .tags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 8px; }
+  .commit .tags span { padding: 2px 8px; border-radius: 4px; font-size: 10px; font-family: monospace; background: rgba(212,168,83,0.06); color: var(--accent); border: 1px solid rgba(212,168,83,0.1); }
+  .commit .stats { display: flex; gap: 12px; font-family: monospace; font-size: 10px; color: var(--muted); margin-top: 8px; }
+  .commit .stats .add { color: var(--accent-status); }
+  .commit .stats .del { color: #f87171; }
+  .git-footer { font-family: monospace; font-size: 11px; color: var(--muted); padding-left: 32px; opacity: 0.5; }
+
+  /* ─── Writing .md Files (Right) ─── */
+  .writing .tree-title { font-family: monospace; font-size: 11px; color: var(--accent-secondary); text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 20px; display: flex; align-items: center; gap: 8px; }
+  .writing .tree-title::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--accent-secondary); }
+
+  .md-file { border: 1px solid var(--card-border); border-radius: 10px; overflow: hidden; margin-bottom: 14px; transition: all 0.25s; cursor: pointer; }
+  .md-file:hover { border-color: rgba(139,164,196,0.35); box-shadow: 0 4px 24px rgba(0,0,0,0.3); transform: translateY(-1px); }
+
+  /* File tab header — like a code editor tab */
+  .md-file .file-tab { display: flex; align-items: center; gap: 8px; padding: 7px 14px; background: rgba(21,21,21,0.6); border-bottom: 1px solid var(--card-border); font-family: monospace; font-size: 10px; }
+  .md-file .file-tab .icon { color: var(--accent-secondary); }
+  .md-file .file-tab .path { color: var(--muted); }
+  .md-file .file-tab .path .name { color: var(--fg); opacity: 0.8; }
+  .md-file .file-tab .badge { margin-left: auto; padding: 1px 7px; border-radius: 8px; font-size: 9px; }
+  .md-file .file-tab .badge.time { background: rgba(212,168,83,0.08); color: var(--accent); border: 1px solid rgba(212,168,83,0.12); }
+
+  /* Frontmatter block */
+  .md-file .frontmatter { padding: 10px 14px; background: rgba(139,164,196,0.03); border-bottom: 1px solid rgba(42,37,32,0.4); font-family: monospace; font-size: 10px; line-height: 1.8; color: var(--muted); }
+  .md-file .frontmatter .sep { color: rgba(139,164,196,0.4); }
+  .md-file .frontmatter .key { color: var(--accent-secondary); }
+  .md-file .frontmatter .val { color: var(--fg); opacity: 0.7; }
+  .md-file .frontmatter .val-tag { display: inline-block; padding: 0 5px; border-radius: 3px; background: rgba(139,164,196,0.08); color: var(--accent-secondary); margin-right: 3px; }
+
+  /* Markdown body preview */
+  .md-file .md-body { padding: 14px; }
+  .md-file .md-body .md-h1 { font-size: 15px; font-weight: 700; line-height: 1.4; margin-bottom: 8px; }
+  .md-file .md-body .md-h1::before { content: '# '; font-family: monospace; color: var(--accent-secondary); font-weight: 400; opacity: 0.5; }
+  .md-file .md-body .md-preview { font-size: 12px; color: var(--muted); line-height: 1.65; }
+
+  /* Bottom stats bar */
+  .md-file .md-stats { display: flex; align-items: center; gap: 14px; padding: 7px 14px; border-top: 1px solid rgba(42,37,32,0.4); font-family: monospace; font-size: 10px; color: var(--muted); }
+  .md-file .md-stats .words { color: var(--accent-secondary); }
+  .md-file .md-stats .reading { color: var(--accent); }
+  .md-file .md-stats .arrow { margin-left: auto; color: var(--muted); transition: color 0.2s; font-size: 13px; }
+  .md-file:hover .md-stats .arrow { color: var(--accent); }
+
+  .writing .wr-footer { font-family: monospace; font-size: 11px; color: var(--muted); opacity: 0.5; margin-top: 4px; }
+  .writing .wr-footer a { color: var(--accent-secondary); text-decoration: none; opacity: 0.7; transition: opacity 0.2s; }
+  .writing .wr-footer a:hover { opacity: 1; }
+</style>
+</head>
+<body>
+
+<div class="section">
+  <div class="section-header">
+    <div class="label">career & thoughts</div>
+    <h2>Where I've shipped. <span class="grad">What I've learned.</span></h2>
+  </div>
+
+  <div class="split">
+    <!-- LEFT: Git Log -->
+    <div class="git-log">
+      <div class="tree-title">$ git log --graph</div>
+
+      <div class="commit active">
+        <div class="dot"></div>
+        <div class="meta">f4a9c2d <span class="tag head">HEAD -> present</span></div>
+        <div class="meta">Author: Ahtesham Ahmad | Sep 2025 - Present</div>
+        <h3>Lead AI Developer <span class="dim">@ More Life Hospitality GmbH</span></h3>
+        <div class="desc">Own the AI product roadmap and delivery for OpenEvent, now live with 100+ clients across 150+ events</div>
+        <div class="tags">
+          <span>React</span><span>TypeScript</span><span>Supabase</span><span>OpenAI</span><span>Docker</span>
+        </div>
+        <div class="stats">
+          <span>14 files changed</span>
+          <span class="add">+340</span>
+          <span class="del">-28</span>
+        </div>
+      </div>
+
+      <div class="commit">
+        <div class="dot"></div>
+        <div class="meta">b1e7a3f <span class="tag branch">leadership</span></div>
+        <div class="meta">Author: Ahtesham Ahmad | 2022 - 2024</div>
+        <h3>Director of IT & R&D <span class="dim">@ Rouelite Techno Pvt. Ltd.</span></h3>
+        <div class="desc">Led 6 engineers. Introduced AI into daily operations, cutting manual data entry by 70%</div>
+        <div class="tags">
+          <span>React</span><span>Supabase</span><span>PostgreSQL</span>
+        </div>
+        <div class="stats">
+          <span>8 files changed</span>
+          <span class="add">+200</span>
+          <span class="del">-15</span>
+        </div>
+      </div>
+
+      <div class="commit">
+        <div class="dot"></div>
+        <div class="meta">a0d1e9c <span class="tag branch">origin/agency</span></div>
+        <div class="meta">Author: Ahtesham Ahmad | 2023 - Present</div>
+        <h3>Co-Founder & AI Engineer <span class="dim">@ Wadware House</span></h3>
+        <div class="desc">Co-founded an AI automation agency serving global clients</div>
+        <div class="tags">
+          <span>TypeScript</span><span>React</span><span>Python</span><span>Docker</span>
+        </div>
+        <div class="stats">
+          <span>12 files changed</span>
+          <span class="add">+1,800</span>
+          <span class="del">-400</span>
+        </div>
+      </div>
+
+      <div class="git-footer">Initial Commit (Hello World) · 2019</div>
+    </div>
+
+    <!-- RIGHT: Writing as .md files -->
+    <div class="writing">
+      <div class="tree-title">$ cat ~/writing/*.md</div>
+
+      <div class="md-file">
+        <div class="file-tab">
+          <span class="icon">&#9634;</span>
+          <span class="path">~/writing/<span class="name">json-parser.md</span></span>
+          <span class="badge time">6 min</span>
+        </div>
+        <div class="frontmatter">
+          <div class="sep">---</div>
+          <div><span class="key">title:</span> <span class="val">"The 5-Strategy JSON Parser"</span></div>
+          <div><span class="key">tags:</span> <span class="val-tag">AI Agents</span> <span class="val-tag">TypeScript</span></div>
+          <div><span class="key">words:</span> <span class="val">1,200</span></div>
+          <div class="sep">---</div>
+        </div>
+        <div class="md-body">
+          <div class="md-h1">The 5-Strategy JSON Parser That Took Tool Calls from 70% to 95%</div>
+          <div class="md-preview">When LLMs return malformed JSON, most parsers give up. I built a 5-layer fallback that catches what regex, streaming, and schema validation miss.</div>
+        </div>
+        <div class="md-stats">
+          <span class="words">1,200 words</span>
+          <span class="reading">6 min read</span>
+          <span class="arrow">→</span>
+        </div>
+      </div>
+
+      <div class="md-file">
+        <div class="file-tab">
+          <span class="icon">&#9634;</span>
+          <span class="path">~/writing/<span class="name">human-in-the-loop.md</span></span>
+          <span class="badge time">5 min</span>
+        </div>
+        <div class="frontmatter">
+          <div class="sep">---</div>
+          <div><span class="key">title:</span> <span class="val">"Human-in-the-Loop"</span></div>
+          <div><span class="key">tags:</span> <span class="val-tag">AI Architecture</span> <span class="val-tag">Product Design</span></div>
+          <div><span class="key">words:</span> <span class="val">1,000</span></div>
+          <div class="sep">---</div>
+        </div>
+        <div class="md-body">
+          <div class="md-h1">Human-in-the-Loop Is Not a Compromise</div>
+          <div class="md-preview">The best AI systems aren't fully autonomous. They're designed so humans intervene at exactly the right moment.</div>
+        </div>
+        <div class="md-stats">
+          <span class="words">1,000 words</span>
+          <span class="reading">5 min read</span>
+          <span class="arrow">→</span>
+        </div>
+      </div>
+
+      <div class="md-file">
+        <div class="file-tab">
+          <span class="icon">&#9634;</span>
+          <span class="path">~/writing/<span class="name">wisc-framework.md</span></span>
+          <span class="badge time">7 min</span>
+        </div>
+        <div class="frontmatter">
+          <div class="sep">---</div>
+          <div><span class="key">title:</span> <span class="val">"WISC Framework"</span></div>
+          <div><span class="key">tags:</span> <span class="val-tag">Context Engineering</span> <span class="val-tag">Claude Code</span></div>
+          <div><span class="key">words:</span> <span class="val">1,400</span></div>
+          <div class="sep">---</div>
+        </div>
+        <div class="md-body">
+          <div class="md-h1">WISC: A Framework for AI Agent Context Engineering</div>
+          <div class="md-preview">Write, Isolate, Select, Compress — a practical framework for keeping AI agents sharp across long sessions.</div>
+        </div>
+        <div class="md-stats">
+          <span class="words">1,400 words</span>
+          <span class="reading">7 min read</span>
+          <span class="arrow">→</span>
+        </div>
+      </div>
+
+      <div class="wr-footer"><a href="#">View all articles →</a></div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

@@ -11,9 +11,8 @@ const pipelineSteps = [
   { id: "hero", label: "About", icon: User, x: L, y: 0 },
   { id: "mission", label: "Impact", icon: Zap, x: R, y: 70 },
   { id: "projects", label: "Work", icon: FolderOpen, x: L, y: 140 },
-  { id: "log", label: "Activity", icon: GitCommit, x: R, y: 210 },
-  { id: "writing", label: "Writing", icon: PenLine, x: L, y: 280 },
-  { id: "contact", label: "Connect", icon: Mail, x: R, y: 350 },
+  { id: "log", label: "Career", icon: GitCommit, x: R, y: 210 },
+  { id: "contact", label: "Connect", icon: Mail, x: L, y: 280 },
 ] as const;
 
 /** SVG center of each node (icon center = x + 19, y + 19 for a 38px box) */

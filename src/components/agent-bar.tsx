@@ -428,8 +428,7 @@ const commands: AgentCommand[] = [
 const CHIPS = [
   { label: "Impact", command: "impact" },
   { label: "Projects", command: "projects" },
-  { label: "Experience", command: "experience" },
-  { label: "Writing", command: "writing" },
+  { label: "Career", command: "experience" },
   { label: "Contact", command: "contact" },
 ];
 
@@ -832,7 +831,7 @@ export function AgentBar(): React.ReactElement {
                 />
                 {!input && (
                   <span className="hidden sm:flex items-center gap-1 shrink-0 font-mono text-caption text-muted/30">
-                    cv · rate · skills · chat · tour · help
+                    writing · cv · rate · skills · chat · help
                   </span>
                 )}
                 <button

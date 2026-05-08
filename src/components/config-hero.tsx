@@ -266,6 +266,7 @@ export function ConfigHero(): React.ReactElement {
           <div className="text-center md:text-left">
             {/* 1. Badge streams in first */}
             <motion.div
+              key={`badge-${epoch}`}
               initial={{ opacity: 0, scale: 0.9, y: 8 }}
               animate={ready ? { opacity: 1, scale: 1, y: 0 } : {}}
               transition={{ duration: 0.6, delay: 0, ease: [0.22, 1, 0.36, 1] }}
@@ -277,6 +278,7 @@ export function ConfigHero(): React.ReactElement {
 
             {/* 2. Title streams in */}
             <motion.h1
+              key={`h1-${epoch}`}
               initial={{ opacity: 0, y: 24 }}
               animate={ready ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.8, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
@@ -289,6 +291,7 @@ export function ConfigHero(): React.ReactElement {
 
             {/* 3. Description streams in */}
             <motion.p
+              key={`desc-${epoch}`}
               initial={{ opacity: 0, y: 16 }}
               animate={ready ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.8, delay: 1.0, ease: [0.22, 1, 0.36, 1] }}
@@ -300,6 +303,7 @@ export function ConfigHero(): React.ReactElement {
 
             {/* 4. CTA button streams in */}
             <motion.div
+              key={`cta-${epoch}`}
               initial={{ opacity: 0, y: 12 }}
               animate={ready ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.6, delay: 1.6 }}
@@ -315,6 +319,7 @@ export function ConfigHero(): React.ReactElement {
 
             {/* 5. Building status streams in last */}
             <motion.div
+              key={`build-${epoch}`}
               initial={{ opacity: 0 }}
               animate={ready ? { opacity: 1 } : {}}
               transition={{ duration: 0.5, delay: 2.2 }}
@@ -332,6 +337,7 @@ export function ConfigHero(): React.ReactElement {
 
           {/* Right: about card slides in alongside the title */}
           <motion.div
+            key={`card-${epoch}`}
             initial={{ opacity: 0, y: 40, scale: 0.95 }}
             animate={ready ? { opacity: 1, y: 0, scale: 1 } : {}}
             transition={{ duration: 1.0, delay: 0.6, ease: [0.22, 1, 0.36, 1] }}

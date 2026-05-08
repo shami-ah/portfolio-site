@@ -3,8 +3,7 @@ import { ConfigHero } from "@/components/config-hero";
 import { SidebarNav } from "@/components/sidebar-nav";
 import { MissionStats } from "@/components/mission-stats";
 import { Projects } from "@/components/projects";
-import { GitLog } from "@/components/git-log";
-import { Writing } from "@/components/writing";
+import { ExperienceAndWriting } from "@/components/experience-writing";
 import { ConfigContact } from "@/components/config-contact";
 import { Footer } from "@/components/footer";
 import { TerminalBoot } from "@/components/terminal-boot";
@@ -27,9 +26,7 @@ export default function Home(): React.ReactElement {
         <SectionDivider />
         <Projects />
         <SectionDivider />
-        <GitLog />
-        <SectionDivider />
-        <Writing />
+        <ExperienceAndWriting />
         <SectionDivider />
         <ConfigContact />
       </div>
