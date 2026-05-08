@@ -211,7 +211,8 @@ export function ConfigHero(): React.ReactElement {
   const cardY = useTransform(scrollY, [0, 600], [0, -40]);
   const cardScale = useTransform(scrollY, [0, 600], [1, 0.97]);
 
-  // Wait for boot-complete
+  // Wait for agent-button-ready (fires after boot collapse + button pop)
+  // This ensures hero content cascades in AFTER the boot animation completes
   useEffect(() => {
     if (typeof window === "undefined") return;
     const done = sessionStorage.getItem("boot-complete");
@@ -219,11 +220,15 @@ export function ConfigHero(): React.ReactElement {
       setReady(true);
       return;
     }
-    const onDone = (): void => setReady(true);
-    window.addEventListener("boot-complete", onDone);
-    const fallback = setTimeout(() => setReady(true), 4000);
+    const onReady = (): void => setReady(true);
+    window.addEventListener("agent-button-ready", onReady);
+    // Fallback for edge cases (e.g. boot skipped but event not fired)
+    const onBoot = (): void => { setTimeout(() => setReady(true), 1500); };
+    window.addEventListener("boot-complete", onBoot);
+    const fallback = setTimeout(() => setReady(true), 6000);
     return () => {
-      window.removeEventListener("boot-complete", onDone);
+      window.removeEventListener("agent-button-ready", onReady);
+      window.removeEventListener("boot-complete", onBoot);
       clearTimeout(fallback);
     };
   }, []);
@@ -253,7 +258,7 @@ export function ConfigHero(): React.ReactElement {
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={ready ? { opacity: 1, scale: 1 } : {}}
-              transition={{ duration: 0.5, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+              transition={{ duration: 0.6, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
               className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent-status/10 border border-accent-status/20 text-accent-status text-caption md:text-xs font-mono mb-6"
             >
               <span className="w-1.5 h-1.5 bg-accent-status rounded-full animate-pulse" />
@@ -263,7 +268,7 @@ export function ConfigHero(): React.ReactElement {
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
               animate={ready ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
+              transition={{ duration: 0.7, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
               className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight leading-[1.15] mb-5"
             >
               I architect{" "}
@@ -274,7 +279,7 @@ export function ConfigHero(): React.ReactElement {
             <motion.p
               initial={{ opacity: 0, y: 12 }}
               animate={ready ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6, delay: 0.8, ease: [0.22, 1, 0.36, 1] }}
+              transition={{ duration: 0.7, delay: 0.7, ease: [0.22, 1, 0.36, 1] }}
               className="text-sm md:text-base text-muted max-w-md leading-relaxed mb-8"
             >
               From multi-agent orchestration and RAG pipelines to full-stack
@@ -284,7 +289,7 @@ export function ConfigHero(): React.ReactElement {
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={ready ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.5, delay: 1.1 }}
+              transition={{ duration: 0.6, delay: 1.1 }}
               className="flex flex-wrap gap-3 justify-center md:justify-start"
             >
               <a
@@ -315,7 +320,7 @@ export function ConfigHero(): React.ReactElement {
           <motion.div
             initial={{ opacity: 0, y: 30, scale: 0.97 }}
             animate={ready ? { opacity: 1, y: 0, scale: 1 } : {}}
-            transition={{ duration: 0.7, delay: 0.6, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 0.8, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
             style={{ y: cardY, scale: cardScale }}
           >
             <HeroAboutCard ready={ready} />

@@ -115,13 +115,16 @@ export function TerminalBoot({ force = false, onDone }: BootProps): React.ReactE
 
   const dismiss = (): void => {
     setPhase("exit");
+    // Boot content fades first (0.5s), then overlay collapses (1.4s)
+    // Total: ~1.9s before cleanup
     setTimeout(() => {
       setVisible(false);
       localStorage.setItem("boot-ever-seen", "1");
       sessionStorage.setItem("boot-complete", "1");
       window.dispatchEvent(new CustomEvent("boot-complete"));
+      window.dispatchEvent(new CustomEvent("agent-button-ready"));
       onDone?.();
-    }, 500);
+    }, 1900);
   };
 
   // Speed multiplier: 1x for first visit, 2.5x for replay (slower so user can read)
@@ -195,8 +198,15 @@ export function TerminalBoot({ force = false, onDone }: BootProps): React.ReactE
         <motion.div
           initial={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.5 }}
+          transition={{ duration: 0.1 }}
           className="fixed inset-0 z-[200] bg-background flex items-center justify-center px-4"
+          style={
+            phase === "exit"
+              ? {
+                  animation: "boot-collapse 1.4s cubic-bezier(0.4, 0, 0.2, 1) 0.5s forwards",
+                }
+              : undefined
+          }
         >
           {/* Backdrop grid */}
           <div
@@ -209,16 +219,31 @@ export function TerminalBoot({ force = false, onDone }: BootProps): React.ReactE
           />
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-accent/[0.05] rounded-full blur-3xl pointer-events-none" />
 
+          {/* Orb glow at landing point */}
+          {phase === "exit" && (
+            <div
+              className="fixed z-[201] w-10 h-10 rounded-full pointer-events-none"
+              style={{
+                left: "50%",
+                bottom: "36px",
+                transform: "translateX(-50%) scale(0)",
+                background: "radial-gradient(circle, var(--accent-status) 0%, rgba(74,222,128,0.3) 40%, transparent 70%)",
+                animation: "orb-glow 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.7s forwards",
+              }}
+            />
+          )}
+
           {/* Terminal window */}
           <motion.div
             initial={{ opacity: 0, scale: 0.96, y: 10 }}
-            animate={
-              phase === "exit"
-                ? { opacity: 0, scale: 1.08, filter: "blur(10px)" }
-                : { opacity: 1, scale: 1, y: 0 }
-            }
-            transition={{ duration: phase === "exit" ? 0.5 : 0.35, ease: [0.22, 1, 0.36, 1] }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
             className="relative w-full max-w-xl rounded-xl border border-accent/20 bg-card/80 backdrop-blur-md shadow-2xl shadow-accent/20 font-mono text-sm overflow-hidden"
+            style={
+              phase === "exit"
+                ? { animation: "boot-content-fade 0.5s ease-out forwards" }
+                : undefined
+            }
           >
             {/* Window chrome */}
             <div className="flex items-center gap-2 px-3 py-2 border-b border-card-border bg-card/60">

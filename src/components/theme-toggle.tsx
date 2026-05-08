@@ -39,7 +39,7 @@ export function ThemeToggle(): React.ReactElement {
       type="button"
       onClick={toggle}
       aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
-      className="group relative inline-flex items-center justify-center w-9 h-9 rounded-lg bg-card/80 backdrop-blur-md border border-card-border hover:border-accent/40 hover:bg-card transition-all duration-200 shadow-md"
+      className="group relative inline-flex items-center justify-center w-10 h-10 rounded-full glass hover:border-accent/40 transition-all duration-200 shadow-lg cursor-pointer"
     >
       {theme === "dark" ? (
         <Sun size={14} className="text-muted group-hover:text-accent transition-colors" />

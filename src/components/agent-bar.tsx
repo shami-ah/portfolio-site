@@ -1,9 +1,10 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import ReactDOM from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { Briefcase, Map, Phone, FileText, Hammer, MessageSquare, FolderOpen, Zap, Check, X } from "lucide-react";
+import { Check, X } from "lucide-react";
+import { openCvDrawer } from "@/components/cv-drawer";
 
 /* ------------------------------------------------------------------ */
 /*  Build pipeline popup — 5-second centered overlay                  */
@@ -35,7 +36,6 @@ function BuildPopup({ onDone }: { onDone: () => void }): React.ReactElement {
     return () => clearTimeout(t);
   }, [step, onDone]);
 
-  // Render via portal to break out of agent-bar's container
   if (typeof document === "undefined") return <></>;
 
   const el = (
@@ -48,16 +48,12 @@ function BuildPopup({ onDone }: { onDone: () => void }): React.ReactElement {
       onClick={onDone}
     >
       <div style={{ position: "absolute", inset: 0, background: "rgba(9,9,11,0.88)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)" }} />
-
-      {/* Ambient glow behind the bubble */}
       <motion.div
         initial={{ scale: 0, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
         style={{ position: "absolute", width: "380px", height: "380px", borderRadius: "50%", background: "radial-gradient(circle, rgba(59,130,246,0.15) 0%, transparent 70%)", pointerEvents: "none" }}
       />
-
-      {/* The bubble container — frosted glass sphere */}
       <motion.div
         initial={{ scale: 0, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
@@ -78,24 +74,15 @@ function BuildPopup({ onDone }: { onDone: () => void }): React.ReactElement {
           overflow: "hidden",
         }}
       >
-        {/* Shine reflection on the bubble */}
         <div style={{
-          position: "absolute",
-          top: "-30%",
-          left: "-20%",
-          width: "140%",
-          height: "60%",
+          position: "absolute", top: "-30%", left: "-20%", width: "140%", height: "60%",
           background: "radial-gradient(ellipse at center, rgba(255,255,255,0.04) 0%, transparent 70%)",
-          pointerEvents: "none",
-          borderRadius: "50%",
+          pointerEvents: "none", borderRadius: "50%",
         }} />
-
         <p className="text-caption font-mono text-accent uppercase tracking-[0.25em] mb-5 flex items-center justify-center gap-2 relative">
           <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
           how I ship every feature
         </p>
-
-        {/* Steps as individual floating pills */}
         <div className="space-y-2.5 relative">
           {BUILD_STEPS.map((s, i) => (
             <motion.div
@@ -112,9 +99,7 @@ function BuildPopup({ onDone }: { onDone: () => void }): React.ReactElement {
                   : { duration: 0.2 }
               }
               className={`flex items-center gap-3 px-4 py-2.5 rounded-full border transition-colors ${
-                i < step
-                  ? "bg-accent/10 border-accent/20"
-                  : "bg-card/20 border-card-border/20"
+                i < step ? "bg-accent/10 border-accent/20" : "bg-card/20 border-card-border/20"
               }`}
             >
               <span className={`text-caption font-mono tabular-nums shrink-0 ${i < step ? "text-accent" : "text-muted/40"}`}>
@@ -139,7 +124,6 @@ function BuildPopup({ onDone }: { onDone: () => void }): React.ReactElement {
             </motion.div>
           ))}
         </div>
-
         {step >= BUILD_STEPS.length && (
           <motion.p
             initial={{ opacity: 0, scale: 0.9 }}
@@ -158,7 +142,7 @@ function BuildPopup({ onDone }: { onDone: () => void }): React.ReactElement {
 }
 
 /* ------------------------------------------------------------------ */
-/*  Commands — each is a full "agent trace" the user can trigger      */
+/*  Commands                                                           */
 /* ------------------------------------------------------------------ */
 
 interface AgentStep {
@@ -169,10 +153,7 @@ interface AgentStep {
 
 interface AgentCommand {
   keyword: string;
-  /** Display label shown on the visible chip. If omitted, the chip is hidden
-   *  (still triggerable by typing the keyword — used for easter eggs). */
   label?: string;
-  icon?: string;
   intent: string;
   confidence: number;
   steps: AgentStep[];
@@ -187,8 +168,7 @@ function scrollTo(id: string): void {
 const commands: AgentCommand[] = [
   {
     keyword: "hire",
-    label: "I want to hire you",
-    icon: "briefcase",
+    label: "Hire",
     intent: "hiring_intent",
     confidence: 0.94,
     steps: [
@@ -201,6 +181,18 @@ const commands: AgentCommand[] = [
     action: () => scrollTo("contact"),
   },
   {
+    keyword: "contact",
+    intent: "hiring_intent",
+    confidence: 0.94,
+    steps: [
+      { name: "classify_intent", detail: "label: hiring_intent · conf 0.94", ms: 38 },
+      { name: "route_to_tool", detail: "→ scroll_to_section", ms: 6 },
+      { name: "execute", detail: "target: #contact", ms: 120 },
+    ],
+    response: "Scrolling to contact section.",
+    action: () => scrollTo("contact"),
+  },
+  {
     keyword: "shami",
     intent: "personal_greeting",
     confidence: 0.99,
@@ -209,13 +201,10 @@ const commands: AgentCommand[] = [
       { name: "classify_intent", detail: "label: personal_greeting · conf 0.99", ms: 28 },
       { name: "retrieve_context", detail: "identity_card", ms: 14 },
     ],
-    response:
-      "Hey, you found it. AI engineer, Lead AI Dev, builder of tools. Thanks for actually exploring. Most don't.",
+    response: "Hey, you found it. AI engineer, Lead AI Dev, builder of tools. Thanks for actually exploring. Most don't.",
   },
   {
     keyword: "tour",
-    label: "Walk my career",
-    icon: "map",
     intent: "guided_tour",
     confidence: 0.97,
     steps: [
@@ -225,16 +214,10 @@ const commands: AgentCommand[] = [
       { name: "execute", detail: "target: /journey", ms: 45 },
     ],
     response: "Launching immersive journey. Timeline + a day in my life + parallel systems.",
-    action: () => {
-      setTimeout(() => {
-        window.location.href = "/journey";
-      }, 450);
-    },
+    action: () => { setTimeout(() => { window.location.href = "/journey"; }, 450); },
   },
   {
     keyword: "call",
-    label: "Book a 15-min call",
-    icon: "phone",
     intent: "meeting_request",
     confidence: 0.93,
     steps: [
@@ -243,31 +226,34 @@ const commands: AgentCommand[] = [
       { name: "execute", detail: "url: ahtesham.dev.wadwarehouse.com/book", ms: 22 },
     ],
     response: "Opening 15-min intro call scheduler in a new tab.",
-    action: () =>
-      window.open("https://ahtesham.dev.wadwarehouse.com/book", "_blank", "noopener,noreferrer"),
+    action: () => window.open("https://ahtesham.dev.wadwarehouse.com/book", "_blank", "noopener,noreferrer"),
   },
   {
     keyword: "cv",
-    label: "View CV",
-    icon: "file-text",
     intent: "resume_request",
     confidence: 0.96,
     steps: [
       { name: "classify_intent", detail: "label: resume_request · conf 0.96", ms: 26 },
-      { name: "route_to_tool", detail: "→ navigate", ms: 4 },
-      { name: "execute", detail: "target: /cv", ms: 30 },
+      { name: "route_to_tool", detail: "→ open_cv_drawer", ms: 4 },
+      { name: "execute", detail: "target: cv-drawer", ms: 30 },
     ],
     response: "Opening visual CV. Pro tip: there's a print-ready version too.",
-    action: () => {
-      setTimeout(() => {
-        window.location.href = "/cv";
-      }, 450);
-    },
+    action: () => openCvDrawer(),
+  },
+  {
+    keyword: "resume",
+    intent: "resume_request",
+    confidence: 0.96,
+    steps: [
+      { name: "classify_intent", detail: "label: resume_request · conf 0.96", ms: 26 },
+      { name: "route_to_tool", detail: "→ open_cv_drawer", ms: 4 },
+      { name: "execute", detail: "target: cv-drawer", ms: 30 },
+    ],
+    response: "Opening visual CV. Pro tip: there's a print-ready version too.",
+    action: () => openCvDrawer(),
   },
   {
     keyword: "build",
-    label: "Watch me ship a feature",
-    icon: "hammer",
     intent: "feature_walkthrough",
     confidence: 0.93,
     steps: [
@@ -279,8 +265,6 @@ const commands: AgentCommand[] = [
   },
   {
     keyword: "chat",
-    label: "Ask AI about my work",
-    icon: "message-square",
     intent: "conversational_query",
     confidence: 0.95,
     steps: [
@@ -288,17 +272,11 @@ const commands: AgentCommand[] = [
       { name: "route_to_tool", detail: "→ spawn_chat_agent", ms: 6 },
       { name: "execute", detail: "target: /chat", ms: 42 },
     ],
-    response: "Launching chat agent. Ask anything about my work. Scoped knowledge base, no hallucinations.",
-    action: () => {
-      setTimeout(() => {
-        window.dispatchEvent(new CustomEvent("open-chat-widget"));
-      }, 450);
-    },
+    response: "Launching chat agent. Ask anything about my work.",
+    // action is handled specially in the component for fly-to-chat animation
   },
   {
     keyword: "projects",
-    label: "See my projects",
-    icon: "folder-open",
     intent: "browse_projects",
     confidence: 0.91,
     steps: [
@@ -310,6 +288,18 @@ const commands: AgentCommand[] = [
     action: () => scrollTo("projects"),
   },
   {
+    keyword: "writing",
+    intent: "browse_writing",
+    confidence: 0.91,
+    steps: [
+      { name: "classify_intent", detail: "label: browse_writing · conf 0.91", ms: 33 },
+      { name: "route_to_tool", detail: "→ scroll_to_section", ms: 5 },
+      { name: "execute", detail: "target: #writing", ms: 100 },
+    ],
+    response: "Scrolling to writing section.",
+    action: () => scrollTo("writing"),
+  },
+  {
     keyword: "boot",
     intent: "replay_intro",
     confidence: 0.99,
@@ -319,9 +309,7 @@ const commands: AgentCommand[] = [
       { name: "execute", detail: "clearing flags…", ms: 40 },
     ],
     response: "Replaying intro sequence...",
-    action: () => {
-      window.dispatchEvent(new CustomEvent("replay-intro"));
-    },
+    action: () => window.dispatchEvent(new CustomEvent("replay-intro")),
   },
   {
     keyword: "wow",
@@ -330,8 +318,7 @@ const commands: AgentCommand[] = [
     steps: [
       { name: "classify_intent", detail: "label: reaction_positive · conf 0.88", ms: 31 },
     ],
-    response:
-      "That's the feeling. Every interaction here is wired to something real. Keep poking.",
+    response: "That's the feeling. Every interaction here is wired to something real. Keep poking.",
   },
   {
     keyword: "presence",
@@ -346,8 +333,6 @@ const commands: AgentCommand[] = [
   },
   {
     keyword: "skills",
-    label: "My tech stack",
-    icon: "zap",
     intent: "show_skills",
     confidence: 0.96,
     steps: [
@@ -371,82 +356,101 @@ const commands: AgentCommand[] = [
     action: () => window.dispatchEvent(new CustomEvent("show-skills-modal")),
   },
   {
+    keyword: "rate",
+    intent: "pricing_query",
+    confidence: 0.95,
+    steps: [
+      { name: "classify_intent", detail: "label: pricing_query · conf 0.95", ms: 28 },
+      { name: "retrieve_context", detail: "pricing_card", ms: 12 },
+    ],
+    response: "$80-120/hr contract · $8-10K/mo full-time. Full stack ownership — architecture to deployed SaaS.",
+  },
+  {
+    keyword: "stack",
+    intent: "tech_stack",
+    confidence: 0.94,
+    steps: [
+      { name: "classify_intent", detail: "label: tech_stack · conf 0.94", ms: 30 },
+      { name: "retrieve_context", detail: "stack_card", ms: 14 },
+    ],
+    response: "TypeScript · React · Next.js · Supabase · Claude API · Docker · GitHub Actions · Cloudflare",
+  },
+  {
+    keyword: "availability",
+    intent: "availability_check",
+    confidence: 0.93,
+    steps: [
+      { name: "classify_intent", detail: "label: availability_check · conf 0.93", ms: 26 },
+      { name: "retrieve_context", detail: "status_card", ms: 10 },
+    ],
+    response: "Open to opportunities. Available for full-time, contract, or consulting. Gulf/remote preferred.",
+  },
+  {
+    keyword: "impact",
+    intent: "browse_impact",
+    confidence: 0.92,
+    steps: [
+      { name: "classify_intent", detail: "label: browse_impact · conf 0.92", ms: 30 },
+      { name: "route_to_tool", detail: "→ scroll_to_section", ms: 5 },
+      { name: "execute", detail: "target: #mission", ms: 100 },
+    ],
+    response: "50+ production systems, 100+ teams on OpenEvent, 150+ events managed.",
+    action: () => scrollTo("mission"),
+  },
+  {
+    keyword: "experience",
+    intent: "browse_experience",
+    confidence: 0.93,
+    steps: [
+      { name: "classify_intent", detail: "label: browse_experience · conf 0.93", ms: 32 },
+      { name: "route_to_tool", detail: "→ scroll_to_section", ms: 5 },
+      { name: "execute", detail: "target: #log", ms: 100 },
+    ],
+    response: "Career timeline: Lead AI Dev at More Life Hospitality, Director at Rouelite, Co-Founder at Wadware House.",
+    action: () => scrollTo("log"),
+  },
+  {
     keyword: "help",
     intent: "show_commands",
     confidence: 1.0,
     steps: [
       { name: "introspect", detail: "loading command registry", ms: 18 },
     ],
-    response:
-      "Commands: hire · call · projects · skills · tour · build · chat · cv · help. Easter eggs hidden too :)",
+    response: "Commands: projects · writing · contact · cv · impact · experience · rate · stack · skills · availability · chat · build · tour · call · help",
   },
 ];
 
 /* ------------------------------------------------------------------ */
-/*  State machine                                                     */
+/*  Suggestion chips — home page sections                              */
 /* ------------------------------------------------------------------ */
 
-/* ------------------------------------------------------------------ */
-/*  Activity ticker — rotating system logs above the input             */
-/* ------------------------------------------------------------------ */
-
-const TICKER_MESSAGES = [
-  { icon: "◉", color: "text-accent-status", text: "openevent: 100+ clients online · processing emails" },
-  { icon: "◉", color: "text-accent-status", text: "gogaa v1.2.1: 1,418 tests passing · 11 providers active" },
-  { icon: "◉", color: "text-accent-status", text: "codelens v0.3.5: ~430 patterns armed · scanning" },
-  { icon: "◉", color: "text-accent", text: "agent: analyzing visitor session · ready for commands" },
-  { icon: "◉", color: "text-accent-secondary", text: "stack: TypeScript · React · Supabase · Claude · Docker" },
-  { icon: "◉", color: "text-accent", text: "built: OpenEvent (live) · Gogaa CLI (beta) · CodeLens (beta) · Rasad (alpha)" },
-  { icon: "◉", color: "text-accent-secondary", text: 'try: type "hire" · "projects" · "build" · "skills" to explore' },
+// Chips match homepage section scroll order (one line)
+const CHIPS = [
+  { label: "Impact", command: "impact" },
+  { label: "Projects", command: "projects" },
+  { label: "Experience", command: "experience" },
+  { label: "Writing", command: "writing" },
+  { label: "Contact", command: "contact" },
 ];
 
-function ActivityTicker(): React.ReactElement {
-  const [idx, setIdx] = useState(0);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setIdx((i) => (i + 1) % TICKER_MESSAGES.length);
-    }, 3500);
-    return () => clearInterval(interval);
-  }, []);
-
-  const msg = TICKER_MESSAGES[idx];
-
-  return (
-    <div className="flex items-center gap-2 px-3 md:px-4 py-1.5 text-caption font-mono overflow-hidden">
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={idx}
-          initial={{ opacity: 0, y: 8 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -8 }}
-          transition={{ duration: 0.25 }}
-          className="flex items-center gap-2 min-w-0"
-        >
-          <span className={`${msg.color} shrink-0`}>{msg.icon}</span>
-          <span className="text-foreground/60 truncate">{msg.text}</span>
-        </motion.div>
-      </AnimatePresence>
-    </div>
-  );
-}
-
 /* ------------------------------------------------------------------ */
-/*  State machine                                                     */
+/*  AgentBar — Button / Panel / Flying-to-Chat                        */
 /* ------------------------------------------------------------------ */
 
-type Phase = "hidden" | "dormant" | "processing" | "responding";
+type UIState = "hidden" | "button" | "panel" | "processing" | "responding" | "flying-to-chat";
 
 export function AgentBar(): React.ReactElement {
-  const [phase, setPhase] = useState<Phase>("hidden");
+  const [uiState, setUiState] = useState<UIState>("hidden");
   const [input, setInput] = useState("");
   const [buffer, setBuffer] = useState("");
   const [activeCmd, setActiveCmd] = useState<AgentCommand | null>(null);
   const [shownSteps, setShownSteps] = useState(0);
   const [showResponse, setShowResponse] = useState(false);
-  const [dismissed, setDismissed] = useState(false);
   const [showBuildPopup, setShowBuildPopup] = useState(false);
+  const [showTooltip, setShowTooltip] = useState(false);
+  const [buttonReady, setButtonReady] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
+  const flyRef = useRef<HTMLDivElement>(null);
 
   // Listen for build popup trigger
   useEffect(() => {
@@ -455,36 +459,82 @@ export function AgentBar(): React.ReactElement {
     return () => window.removeEventListener("show-build-popup", handler);
   }, []);
 
-  /* Start collapsed by default. User can open with "/" key. */
+  // Listen for agent-button-ready from boot animation
   useEffect(() => {
-    if (typeof window === "undefined") return;
-    setDismissed(true);
+    const onReady = (): void => {
+      setButtonReady(true);
+      setUiState("button");
+      // Show tooltip for 2.5s
+      setTimeout(() => setShowTooltip(true), 500);
+      setTimeout(() => setShowTooltip(false), 3000);
+    };
+    window.addEventListener("agent-button-ready", onReady);
+
+    // If boot was already seen (returning visitor), show button immediately
+    if (sessionStorage.getItem("boot-complete") === "1") {
+      setButtonReady(true);
+      setUiState("button");
+    }
+
+    return () => window.removeEventListener("agent-button-ready", onReady);
   }, []);
 
-  /* Global keystroke buffer — typing anywhere triggers the bar */
+  // Listen for replay-intro to hide button
+  useEffect(() => {
+    const onReplay = (): void => {
+      setUiState("hidden");
+      setButtonReady(false);
+    };
+    window.addEventListener("replay-intro", onReplay);
+    return () => window.removeEventListener("replay-intro", onReplay);
+  }, []);
+
+  // Hide agent when chat widget is open
+  const [chatOpen, setChatOpen] = useState(false);
+  useEffect(() => {
+    const onChatOpen = (): void => setChatOpen(true);
+    const onChatClose = (): void => setChatOpen(false);
+    window.addEventListener("open-chat-widget", onChatOpen);
+    window.addEventListener("close-chat-widget", onChatClose);
+    return () => {
+      window.removeEventListener("open-chat-widget", onChatOpen);
+      window.removeEventListener("close-chat-widget", onChatClose);
+    };
+  }, []);
+
+  // Global keystroke buffer — typing anywhere triggers commands
   useEffect(() => {
     const onKey = (e: KeyboardEvent): void => {
+      // Escape closes panel from anywhere (even when input is focused)
+      if (e.key === "Escape" && (uiState === "panel" || uiState === "processing" || uiState === "responding")) {
+        e.preventDefault();
+        setActiveCmd(null);
+        setShownSteps(0);
+        setShowResponse(false);
+        setInput("");
+        setUiState("button");
+        return;
+      }
+
       const tag = (e.target as HTMLElement | null)?.tagName;
       if (tag === "INPUT" || tag === "TEXTAREA") return;
       if (e.metaKey || e.ctrlKey || e.altKey) return;
 
-      // "/" focuses the bar's own input
-      if (e.key === "/" && phase !== "processing" && phase !== "responding") {
+      // "/" focuses the panel
+      if (e.key === "/" && uiState !== "processing" && uiState !== "responding" && uiState !== "flying-to-chat") {
         e.preventDefault();
-        if (dismissed) setDismissed(false);
-        setPhase("dormant");
+        setUiState("panel");
         setTimeout(() => inputRef.current?.focus(), 100);
         return;
       }
 
       if (e.key.length !== 1) return;
-      if (phase === "processing" || phase === "responding") return;
+      if (uiState === "processing" || uiState === "responding" || uiState === "flying-to-chat") return;
 
       setBuffer((prev) => {
         const next = (prev + e.key.toLowerCase()).slice(-12);
         const match = commands.find((c) => next.endsWith(c.keyword));
         if (match) {
-          if (dismissed) setDismissed(false);
           runCommand(match);
           return "";
         }
@@ -493,15 +543,15 @@ export function AgentBar(): React.ReactElement {
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [phase, dismissed]);
+  }, [uiState]);
 
-  /* Stage the steps one-by-one during processing */
+  // Stage the steps one-by-one during processing
   useEffect(() => {
-    if (phase !== "processing" || !activeCmd) return;
+    if (uiState !== "processing" || !activeCmd) return;
     if (shownSteps >= activeCmd.steps.length) {
       const t = setTimeout(() => {
         setShowResponse(true);
-        setPhase("responding");
+        setUiState("responding");
       }, 220);
       return () => clearTimeout(t);
     }
@@ -510,222 +560,337 @@ export function AgentBar(): React.ReactElement {
       activeCmd.steps[shownSteps].ms + 120,
     );
     return () => clearTimeout(t);
-  }, [phase, activeCmd, shownSteps]);
+  }, [uiState, activeCmd, shownSteps]);
 
-  /* After response, execute action + fade back to dormant */
+  // After response, execute action + return to panel
   useEffect(() => {
-    if (phase !== "responding" || !activeCmd) return;
+    if (uiState !== "responding" || !activeCmd) return;
+
+    // Special handling for "chat" command — fly to chat widget
+    if (activeCmd.keyword === "chat") {
+      const flyTimer = setTimeout(() => {
+        setUiState("flying-to-chat");
+      }, 800);
+      return () => clearTimeout(flyTimer);
+    }
+
     const actionTimer = setTimeout(() => {
       activeCmd.action?.();
     }, 300);
-    const resetTimer = setTimeout(() => {
+    // After showing response briefly, hide the agent (reappear handled by separate effect)
+    const hideTimer = setTimeout(() => {
       setActiveCmd(null);
       setShownSteps(0);
       setShowResponse(false);
       setInput("");
-      setPhase("dormant");
-    }, 3500);
+      setUiState("hidden");
+    }, 3000);
     return () => {
       clearTimeout(actionTimer);
-      clearTimeout(resetTimer);
+      clearTimeout(hideTimer);
     };
-  }, [phase, activeCmd]);
+  }, [uiState, activeCmd]);
 
-  const runCommand = (cmd: AgentCommand): void => {
-    if (phase === "hidden") setPhase("dormant");
+  // Reappear as button after being hidden (post-command)
+  useEffect(() => {
+    if (uiState !== "hidden" || !buttonReady) return;
+    const t = setTimeout(() => setUiState("button"), 3000);
+    return () => clearTimeout(t);
+  }, [uiState, buttonReady]);
+
+  // Flying-to-chat animation completion
+  useEffect(() => {
+    if (uiState !== "flying-to-chat") return;
+    const t = setTimeout(() => {
+      window.dispatchEvent(new CustomEvent("agent-flying-to-chat"));
+      window.dispatchEvent(new CustomEvent("open-chat-widget"));
+      setActiveCmd(null);
+      setShownSteps(0);
+      setShowResponse(false);
+      setInput("");
+      setUiState("button");
+    }, 600);
+    return () => clearTimeout(t);
+  }, [uiState]);
+
+  const runCommand = useCallback((cmd: AgentCommand): void => {
     setActiveCmd(cmd);
     setShownSteps(0);
     setShowResponse(false);
-    setPhase("processing");
-  };
+    setUiState("processing");
+  }, []);
 
   const onSubmit = (e: React.FormEvent): void => {
     e.preventDefault();
     const q = input.trim().toLowerCase();
+    if (!q) return;
     const match = commands.find((c) => c.keyword === q);
     if (match) {
       runCommand(match);
-    } else if (q.length > 0) {
-      // Unknown command → simulate fallback
+    } else {
       runCommand({
         keyword: q,
         intent: "unknown",
         confidence: 0.12,
         steps: [
-          { name: "classify_intent", detail: `label: unknown · conf 0.12`, ms: 28 },
+          { name: "classify_intent", detail: "label: unknown · conf 0.12", ms: 28 },
           { name: "fallback", detail: "no matching tool", ms: 12 },
         ],
-        response: `No tool matched "${q}". Try: hire · call · projects · tour · cv · help`,
+        response: `No tool matched "${q}". Try: projects · cv · rate · skills · chat`,
       });
     }
   };
 
-  const dismiss = (): void => {
-    sessionStorage.setItem("agent-dismissed", "1");
-    setDismissed(true);
+  const onChipClick = (command: string): void => {
+    const match = commands.find((c) => c.keyword === command);
+    if (match) runCommand(match);
   };
 
-  /* When dismissed, collapse to a small chip on the bottom-left */
-  if (dismissed && phase !== "processing" && phase !== "responding") {
-    return (
-      <button
-        type="button"
-        onClick={() => {
-          sessionStorage.removeItem("agent-dismissed");
-          setDismissed(false);
-          setPhase("dormant");
-        }}
-        className="fixed bottom-5 left-5 z-40 inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-card/80 backdrop-blur-md border border-accent/20 text-small font-mono text-muted hover:text-accent hover:border-accent/40 transition-all shadow-lg shadow-background/40"
-        aria-label="Open agent"
-      >
-        <span className="w-1.5 h-1.5 rounded-full bg-accent/60 animate-pulse" />
-        agent
-      </button>
-    );
-  }
-
-  if (phase === "hidden") return <></>;
+  if (uiState === "hidden" || chatOpen) return <></>;
 
   const totalMs = activeCmd?.steps.reduce((s, x) => s + x.ms, 0) ?? 0;
 
   return (
-    <div
-      aria-live="polite"
-      className="fixed left-1/2 bottom-3 md:bottom-5 -translate-x-1/2 z-40 w-[calc(100vw-1.5rem)] md:w-[calc(100%-2.5rem)] max-w-[640px] pointer-events-none"
-    >
-      <AnimatePresence mode="wait">
-        {/* DORMANT: slim single-row input bar */}
-        {phase === "dormant" && (
-          <motion.div
-            key="dormant"
-            initial={{ opacity: 0, y: 16, scale: 0.97 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 10, scale: 0.97 }}
-            transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-            className="pointer-events-auto"
-          >
-            <div className="rounded-xl bg-card/80 backdrop-blur-md border border-accent/20 shadow-2xl shadow-accent/10 overflow-hidden">
-              {/* Activity ticker */}
-              <ActivityTicker />
+    <>
+      {/* ── Agent Button (pill at bottom center) ── */}
+      <AnimatePresence>
+        {uiState === "button" && buttonReady && (
+          <>
+            {/* Tooltip — wrapper centers, inner animates */}
+            <AnimatePresence>
+              {showTooltip && (
+                <div className="fixed z-[101] bottom-[68px] left-1/2 -translate-x-1/2 pointer-events-none">
+                  <motion.div
+                    initial={{ opacity: 0, y: 4 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 4 }}
+                    transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                    className="font-mono text-small text-foreground whitespace-nowrap px-4 py-2 rounded-xl bg-card border border-card-border shadow-lg relative"
+                  >
+                    ask me anything — <span className="text-accent">I&apos;m live</span>
+                    <span className="absolute -bottom-[5px] left-1/2 -translate-x-1/2 w-2.5 h-2.5 bg-card border-r border-b border-card-border rotate-45" />
+                  </motion.div>
+                </div>
+              )}
+            </AnimatePresence>
 
-              {/* Input row */}
-              <form
-                onSubmit={onSubmit}
-                className="group relative flex items-center gap-2 px-3 md:px-4 py-2.5 border-t border-card-border/20"
+            {/* Button — wrapper centers, motion animates */}
+            <div className="fixed z-[100] bottom-5 left-1/2 -translate-x-1/2">
+              <motion.button
+                type="button"
+                onClick={() => {
+                  setShowTooltip(false);
+                  setUiState("panel");
+                  setTimeout(() => inputRef.current?.focus(), 150);
+                }}
+                initial={{ opacity: 0, scale: 0.3 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.8 }}
+                transition={{ duration: 0.5, ease: [0.34, 1.56, 0.64, 1] }}
+                className="flex items-center gap-2.5 cursor-pointer glass rounded-full px-5 py-2.5"
+                style={{
+                  boxShadow: "0 4px 20px rgba(0,0,0,0.4), 0 0 40px rgba(0,0,0,0.2)",
+                }}
               >
-                <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse shrink-0" />
-                <span className="text-accent font-mono text-xs md:text-sm shrink-0">❯</span>
+              <span
+                className="w-2 h-2 rounded-full bg-accent-status shrink-0"
+                style={{ animation: "green-pulse 2s infinite" }}
+              />
+              <span className="text-accent font-mono text-small font-semibold">&#10095;</span>
+              <span className="font-mono text-small text-muted/60">agent</span>
+              <span
+                className="font-mono text-muted/30 border border-card-border/30 rounded px-1.5 py-0.5"
+                style={{ fontSize: "10px" }}
+              >
+                /
+              </span>
+              </motion.button>
+            </div>
+          </>
+        )}
+      </AnimatePresence>
+
+      {/* ── Panel (expanded command bar) ── */}
+      <AnimatePresence>
+        {(uiState === "panel" || uiState === "processing" || uiState === "responding") && (
+          <div className="fixed z-[100] bottom-5 left-1/2 -translate-x-1/2 w-[calc(100vw-1.5rem)] max-w-[620px]">
+          <motion.div
+            initial={{ opacity: 0, y: 20, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 20, scale: 0.95 }}
+            transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+          >
+            {/* Response area (when processing/responding) */}
+            <AnimatePresence>
+              {(uiState === "processing" || uiState === "responding") && activeCmd && (
+                <motion.div
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 8 }}
+                  transition={{ duration: 0.3 }}
+                  className="mb-2 rounded-xl glass-strong overflow-hidden"
+                  style={{ boxShadow: "0 8px 32px rgba(0,0,0,0.3)" }}
+                >
+                  <div className="px-4 py-3 font-mono text-small space-y-1">
+                    <p className="text-caption font-mono text-accent uppercase tracking-[0.15em] mb-2">
+                      shami.agent
+                    </p>
+                    <p className="text-foreground/80">
+                      <span className="text-accent">&#10095; parse</span>
+                      <span className="text-muted/60">(&ldquo;</span>
+                      <span className="text-foreground">{activeCmd.keyword}</span>
+                      <span className="text-muted/60">&rdquo;)</span>
+                    </p>
+
+                    {activeCmd.steps.slice(0, shownSteps).map((s, i) => {
+                      const isLast = i === activeCmd.steps.length - 1;
+                      return (
+                        <motion.div
+                          key={s.name}
+                          initial={{ opacity: 0, x: -6 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ duration: 0.25 }}
+                          className="flex items-baseline gap-2"
+                        >
+                          <span className="text-muted/40">{isLast ? "└─" : "├─"}</span>
+                          <span className="text-foreground/80">{s.name}</span>
+                          <span className="text-green-400 ml-auto shrink-0">&#10003;</span>
+                          <span className="text-muted/40 text-caption tabular-nums">{s.ms}ms</span>
+                        </motion.div>
+                      );
+                    })}
+
+                    <AnimatePresence>
+                      {showResponse && (
+                        <motion.div
+                          initial={{ opacity: 0, y: 4 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ duration: 0.35 }}
+                          className="pt-2 mt-2 border-t border-card-border/60"
+                        >
+                          <p className="text-foreground leading-relaxed">
+                            <span className="text-accent">&#10095; response</span>
+                            <span className="text-muted/60">:</span>{" "}
+                            <span>{activeCmd.response}</span>
+                          </p>
+                          <p className="text-caption text-muted/40 mt-1 tabular-nums">
+                            completed in {totalMs}ms
+                          </p>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+
+            {/* Suggestion chips — only show when idle (panel state, no active command) */}
+            <AnimatePresence>
+              {uiState === "panel" && !activeCmd && (
+                <motion.div
+                  initial={{ opacity: 0, y: 6 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 6 }}
+                  transition={{ duration: 0.3 }}
+                  className="flex justify-center gap-1.5 mb-2 flex-wrap px-2"
+                >
+                  {CHIPS.map((chip, i) => (
+                    <motion.button
+                      key={chip.command}
+                      type="button"
+                      onClick={() => onChipClick(chip.command)}
+                      initial={{ opacity: 0, y: 8 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: i * 0.05 + 0.1, duration: 0.3 }}
+                      className="px-3 py-1.5 rounded-full glass text-small font-mono text-muted/70 hover:text-accent hover:border-accent/30 transition-all cursor-pointer"
+                    >
+                      {chip.label}
+                    </motion.button>
+                  ))}
+                </motion.div>
+              )}
+            </AnimatePresence>
+
+            {/* Input bar */}
+            <form
+              onSubmit={onSubmit}
+              className="glass-strong rounded-xl overflow-hidden"
+              style={{
+                boxShadow: "0 4px 30px rgba(0,0,0,0.5), 0 0 60px rgba(0,0,0,0.2)",
+              }}
+            >
+              <div className="flex items-center gap-2 px-4 py-3">
+                <span className="text-accent font-mono text-body font-semibold shrink-0">&#10095;</span>
                 <input
                   ref={inputRef}
                   type="text"
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
-                  placeholder="type a command: hire · projects · build · skills · chat"
-                  className="flex-1 min-w-0 bg-transparent outline-none font-mono text-xs md:text-sm placeholder:text-muted/40 text-foreground"
+                  placeholder="ask anything..."
+                  disabled={uiState === "processing" || uiState === "responding"}
+                  className="flex-1 min-w-0 bg-transparent outline-none font-mono text-small placeholder:text-muted/35 text-foreground disabled:opacity-50"
                 />
-                <kbd className="hidden md:inline text-caption font-mono text-muted/60 border border-card-border px-1.5 py-0.5 rounded">
-                  /
-                </kbd>
+                {!input && (
+                  <span className="hidden sm:flex items-center gap-1 shrink-0 font-mono text-caption text-muted/30">
+                    cv · rate · skills · chat · tour · help
+                  </span>
+                )}
                 <button
                   type="button"
-                  onClick={dismiss}
-                  aria-label="Dismiss"
-                  className="text-muted/40 hover:text-foreground shrink-0 ml-1"
+                  onClick={() => {
+                    setActiveCmd(null);
+                    setShownSteps(0);
+                    setShowResponse(false);
+                    setInput("");
+                    setUiState("button");
+                  }}
+                  aria-label="Close agent panel"
+                  className="text-muted/40 hover:text-foreground shrink-0 transition-colors cursor-pointer ml-1"
                 >
-                  <X size={12} strokeWidth={2.5} />
+                  <X size={14} strokeWidth={2.5} />
                 </button>
-                <motion.div
-                  aria-hidden
-                  className="absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-accent/0 via-accent/10 to-accent/0 pointer-events-none"
-                  animate={{ x: ["-100%", "400%"] }}
-                  transition={{ duration: 5, repeat: Infinity, ease: "linear" }}
-                />
-              </form>
-            </div>
+              </div>
+            </form>
           </motion.div>
+          </div>
         )}
+      </AnimatePresence>
 
-        {/* PROCESSING / RESPONDING: expanded agent trace */}
-        {(phase === "processing" || phase === "responding") && activeCmd && (
+      {/* ── Flying-to-chat animation ── */}
+      <AnimatePresence>
+        {uiState === "flying-to-chat" && (
           <motion.div
-            key="trace"
-            initial={{ opacity: 0, y: 16, scale: 0.97 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 10, scale: 0.97 }}
-            transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-            className="pointer-events-auto rounded-xl bg-card/80 backdrop-blur-md border border-accent/40 shadow-2xl shadow-accent/25 overflow-hidden"
-          >
-            {/* Header */}
-            <div className="flex items-center gap-2 px-3 md:px-4 py-2 border-b border-accent/20 bg-background/40">
-              <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse shrink-0" />
-              <p className="text-caption font-mono uppercase tracking-[0.25em] text-accent/80">
-                agent · session active
-              </p>
-              <p className="ml-auto text-caption font-mono text-muted/60 tabular-nums">
-                {phase === "responding" ? `${totalMs}ms` : "…"}
-              </p>
-            </div>
-
-            {/* Body */}
-            <div className="px-3 md:px-5 py-3 md:py-4 space-y-1 font-mono text-small md:text-small">
-              <p className="text-foreground/80">
-                <span className="text-accent">❯ parse</span>
-                <span className="text-muted/60">(&ldquo;</span>
-                <span className="text-foreground">{activeCmd.keyword}</span>
-                <span className="text-muted/60">&rdquo;)</span>
-              </p>
-
-              {activeCmd.steps.slice(0, shownSteps).map((s, i) => {
-                const isLast = i === activeCmd.steps.length - 1;
-                return (
-                  <motion.div
-                    key={s.name}
-                    initial={{ opacity: 0, x: -6 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.25 }}
-                    className="flex items-baseline gap-2"
-                  >
-                    <span className="text-muted/40">{isLast ? "└─" : "├─"}</span>
-                    <span className="text-foreground/80">{s.name}</span>
-                    <span className="text-green-400 ml-auto shrink-0">✓</span>
-                    <span className="text-muted/40 text-caption tabular-nums">
-                      {s.ms}ms
-                    </span>
-                  </motion.div>
-                );
-              })}
-
-              {activeCmd.steps.slice(0, shownSteps).map((s, i) => (
-                <motion.p
-                  key={`d-${s.name}`}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.12, duration: 0.25 }}
-                  className="text-muted/60 pl-5 text-caption md:text-small"
-                >
-                  {i === activeCmd.steps.length - 1 ? "   " : "│  "}
-                  {s.detail}
-                </motion.p>
-              ))}
-
-              <AnimatePresence>
-                {showResponse && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 4 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.35 }}
-                    className="pt-2 mt-2 border-t border-card-border/60"
-                  >
-                    <p className="text-foreground leading-relaxed">
-                      <span className="text-accent">❯ response</span>
-                      <span className="text-muted/60">:</span>{" "}
-                      <span>{activeCmd.response}</span>
-                    </p>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
-          </motion.div>
+            ref={flyRef}
+            initial={{
+              position: "fixed",
+              bottom: 20,
+              left: "50%",
+              x: "-50%",
+              width: 200,
+              height: 44,
+              borderRadius: 22,
+              opacity: 1,
+              scale: 1,
+            }}
+            animate={{
+              bottom: 80,
+              left: "calc(100% - 40px)",
+              x: "-50%",
+              width: 44,
+              height: 44,
+              borderRadius: 22,
+              opacity: 0.6,
+              scale: 0.5,
+              filter: "blur(8px) brightness(2)",
+            }}
+            exit={{ opacity: 0, scale: 0 }}
+            transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
+            className="fixed z-[100] glass-strong"
+            style={{
+              boxShadow: "0 0 30px rgba(74,222,128,0.3), 0 0 60px rgba(74,222,128,0.1)",
+              background: "radial-gradient(circle, rgba(74,222,128,0.2), rgba(21,21,21,0.7))",
+            }}
+          />
         )}
       </AnimatePresence>
 
@@ -735,6 +900,6 @@ export function AgentBar(): React.ReactElement {
           <BuildPopup onDone={() => setShowBuildPopup(false)} />
         )}
       </AnimatePresence>
-    </div>
+    </>
   );
 }

@@ -117,7 +117,7 @@ export default function RootLayout({
           Skip to content
         </a>
         {children}
-        <div className="fixed bottom-6 right-4 md:right-6 z-50 print:hidden">
+        <div className="fixed bottom-5 left-5 z-50 print:hidden">
           <ThemeToggle />
         </div>
         <CVDrawer />

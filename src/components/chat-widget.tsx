@@ -70,6 +70,7 @@ export function ChatWidget(): React.ReactElement {
   const [isThinking, setIsThinking] = useState(false);
   const [activeModel, setActiveModel] = useState("groq");
   const [showTrigger, setShowTrigger] = useState(false);
+  const [triggerGlow, setTriggerGlow] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -79,12 +80,29 @@ export function ChatWidget(): React.ReactElement {
     return () => clearTimeout(timer);
   }, []);
 
+  // Listen for agent flying-to-chat event — add glow pulse before opening
+  useEffect(() => {
+    const handler = (): void => {
+      setTriggerGlow(true);
+      setTimeout(() => setTriggerGlow(false), 600);
+    };
+    window.addEventListener("agent-flying-to-chat", handler);
+    return () => window.removeEventListener("agent-flying-to-chat", handler);
+  }, []);
+
   // Listen for custom event from other components (e.g. agent-bar)
   useEffect(() => {
     const handler = (): void => setState("open");
     window.addEventListener("open-chat-widget", handler);
     return () => window.removeEventListener("open-chat-widget", handler);
   }, []);
+
+  // Notify agent bar when chat closes
+  useEffect(() => {
+    if (state === "closed" || state === "minimized") {
+      window.dispatchEvent(new CustomEvent("close-chat-widget"));
+    }
+  }, [state]);
 
   // Auto-scroll on new messages
   useEffect(() => {
@@ -195,7 +213,7 @@ export function ChatWidget(): React.ReactElement {
             exit={{ opacity: 0, scale: 0.8 }}
             transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
             title="Chat with Shami's AI"
-            className="fixed bottom-20 right-4 md:right-6 z-40 group flex items-center justify-center w-11 h-11 rounded-full bg-accent/20 border border-accent/20 text-accent hover:bg-accent/30 hover:border-accent/40 hover:shadow-lg hover:shadow-accent/15 transition-all duration-200 backdrop-blur-sm cursor-pointer"
+            className={`fixed bottom-5 right-5 z-40 group flex items-center justify-center w-11 h-11 rounded-full bg-accent/20 border border-accent/20 text-accent hover:bg-accent/30 hover:border-accent/40 hover:shadow-lg hover:shadow-accent/15 transition-all duration-200 backdrop-blur-sm cursor-pointer ${triggerGlow ? "ring-2 ring-accent-status/60 shadow-[0_0_20px_rgba(74,222,128,0.3)]" : ""}`}
           >
             <span className="font-mono text-sm font-bold">&gt;_</span>
 
@@ -217,7 +235,7 @@ export function ChatWidget(): React.ReactElement {
             initial="hidden"
             animate="visible"
             exit="exit"
-            className="fixed bottom-20 right-4 md:right-6 z-50 flex items-center gap-2.5 px-4 py-2.5 rounded-xl bg-card/70 backdrop-blur-2xl border border-card-border shadow-[0_15px_40px_rgba(0,0,0,0.25),0_0_20px_rgba(212,168,83,0.03)] cursor-pointer hover:border-accent/30 transition-colors group"
+            className="fixed bottom-5 right-5 z-50 flex items-center gap-2.5 px-4 py-2.5 rounded-xl bg-card/70 backdrop-blur-2xl border border-card-border shadow-[0_15px_40px_rgba(0,0,0,0.25),0_0_20px_rgba(212,168,83,0.03)] cursor-pointer hover:border-accent/30 transition-colors group"
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
@@ -251,7 +269,7 @@ export function ChatWidget(): React.ReactElement {
             exit="exit"
             whileHover={{ scale: 1.01 }}
             transition={{ duration: 0.2 }}
-            className="fixed bottom-20 right-4 md:right-6 z-50 w-[calc(100vw-2rem)] sm:w-[400px] h-[min(560px,calc(100vh-7rem))] flex flex-col rounded-2xl bg-card/80 backdrop-blur-2xl border border-card-border/60 overflow-hidden shadow-[0_25px_60px_rgba(0,0,0,0.35),0_0_40px_rgba(212,168,83,0.04)] hover:border-accent/20 hover:shadow-[0_25px_60px_rgba(0,0,0,0.4),0_0_50px_rgba(212,168,83,0.06)] transition-[border-color,box-shadow] duration-300"
+            className="fixed bottom-5 right-5 z-50 w-[calc(100vw-2rem)] sm:w-[400px] h-[min(560px,calc(100vh-7rem))] flex flex-col rounded-2xl bg-card/80 backdrop-blur-2xl border border-card-border/60 overflow-hidden shadow-[0_25px_60px_rgba(0,0,0,0.35),0_0_40px_rgba(212,168,83,0.04)] hover:border-accent/20 hover:shadow-[0_25px_60px_rgba(0,0,0,0.4),0_0_50px_rgba(212,168,83,0.06)] transition-[border-color,box-shadow] duration-300"
           >
             {/* ── Header ── */}
             <div className="shrink-0 border-b border-card-border/40 bg-card/30">
