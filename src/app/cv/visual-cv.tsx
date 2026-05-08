@@ -386,23 +386,23 @@ export function VisualCV(): React.ReactElement {
         </div>
       </div>
 
-      {/* Print version — light theme, same layout as screen */}
+      {/* Print version — light theme, compact one-page A4 */}
       <div className={`${preview ? "block" : "hidden"} print:block max-w-none mx-auto overflow-hidden`} style={{ background: "#fafaf8", color: "#1a1a2e", maxWidth: preview ? "794px" : "none" }}>
-        <div className="print-content" style={{ padding: "14px 24px", transformOrigin: "top left" }}>
+        <div className="print-content" style={{ padding: "20px 32px", fontSize: "10px", lineHeight: 1.45 }}>
 
           {/* Header */}
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: "7px" }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: "8px" }}>
             <div>
-              <p className="font-mono text-caption uppercase" style={{ letterSpacing: "3px", color: "#aaa", marginBottom: "4px" }}>Curriculum Vitae</p>
-              <h1 className="text-display font-bold" style={{ letterSpacing: "-1px", lineHeight: 1, color: "#1a1a2e" }}>
-                Ahtesham<br/><span style={{ color: "#4a6fa5" }}>Ahmad</span>
+              <p style={{ fontFamily: "monospace", fontSize: "9px", textTransform: "uppercase", letterSpacing: "3px", color: "#aaa", marginBottom: "3px" }}>Curriculum Vitae</p>
+              <h1 style={{ fontSize: "40px", fontWeight: "bold", letterSpacing: "-1px", lineHeight: 1, color: "#1a1a2e", margin: 0 }}>
+                Ahtesham <span style={{ color: "#4a6fa5" }}>Ahmad</span>
               </h1>
-              <p className="text-body font-light" style={{ color: "#888", marginTop: "4px" }}>AI Engineer</p>
-              <p className="text-caption" style={{ color: "#777", marginTop: "6px", maxWidth: "360px", lineHeight: 1.55 }}>
+              <p style={{ fontSize: "13px", fontWeight: 300, color: "#888", marginTop: "3px" }}>AI Engineer</p>
+              <p style={{ fontSize: "9.5px", color: "#777", marginTop: "5px", maxWidth: "380px", lineHeight: 1.55 }}>
                 AI engineer building production AI systems end-to-end: multi-agent orchestration, RAG pipelines, and full-stack AI-powered SaaS. I architect solutions where AI agents classify, execute, and learn while humans stay in control.
               </p>
             </div>
-            <div className="font-mono text-caption" style={{ color: "#999", textAlign: "right", lineHeight: 1.7 }}>
+            <div style={{ fontFamily: "monospace", fontSize: "9.5px", color: "#999", textAlign: "right", lineHeight: 1.7 }}>
               shami8024@gmail.com<br/>
               <span style={{ color: "#4a6fa5" }}>github.com/shami-ah</span><br/>
               <span style={{ color: "#4a6fa5" }}>linkedin.com/in/ahtesham</span><br/>
@@ -415,84 +415,73 @@ export function VisualCV(): React.ReactElement {
           <div style={{ display: "flex", alignItems: "center", gap: "5px", flexWrap: "wrap" }}>
             {flowSteps.map((step, i) => (
               <span key={step} style={{ display: "flex", alignItems: "center", gap: "5px" }}>
-                <span className="font-mono text-caption font-medium" style={{ padding: "3px 10px", borderRadius: "5px", border: "1px solid #d0d0d0", color: "#4a6fa5", background: "#f0f0ec" }}>{step}</span>
-                {i < flowSteps.length - 1 && <span style={{ color: "#ccc", fontSize: "9px" }}>→</span>}
+                <span style={{ fontFamily: "monospace", fontSize: "9px", fontWeight: 500, padding: "3px 9px", borderRadius: "5px", border: "1px solid #d0d0d0", color: "#4a6fa5", background: "#f0f0ec" }}>{step}</span>
+                {i < flowSteps.length - 1 && <span style={{ color: "#ccc", fontSize: "9px" }}>{"\u2192"}</span>}
               </span>
             ))}
           </div>
 
-          {/* Divider */}
           <div style={{ height: "1px", background: "linear-gradient(90deg, transparent, #4a6fa5, transparent)", margin: "7px 0" }} />
 
           {/* Stats */}
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "10px", marginBottom: "7px" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "8px", marginBottom: "8px" }}>
             {[
               { n: "50+", l: "Production Systems" },
               { n: "5+", l: "Years Experience" },
               { n: "100%", l: "Client Satisfaction" },
-              { n: "1418", l: "Gogaa Tests Passing", amber: true },
+              { n: "1418", l: "Gogaa Tests", amber: true },
             ].map((stat) => (
-              <div key={stat.l} style={{ padding: "10px", borderRadius: "8px", border: "1px solid #e8e8e4", background: "#f5f5f1", textAlign: "center" }}>
-                <p className="font-mono text-title font-bold" style={{ color: stat.amber ? "#b8860b" : "#4a6fa5" }}>{stat.n}</p>
-                <p className="text-caption uppercase" style={{ letterSpacing: "1.5px", color: "#aaa", marginTop: "1px" }}>{stat.l}</p>
+              <div key={stat.l} style={{ padding: "8px", borderRadius: "6px", border: "1px solid #e8e8e4", background: "#f5f5f1", textAlign: "center" }}>
+                <p style={{ fontFamily: "monospace", fontSize: "18px", fontWeight: "bold", color: stat.amber ? "#b8860b" : "#4a6fa5", lineHeight: 1 }}>{stat.n}</p>
+                <p style={{ fontSize: "8px", textTransform: "uppercase", letterSpacing: "1.5px", color: "#aaa", marginTop: "3px" }}>{stat.l}</p>
               </div>
             ))}
           </div>
 
           {/* Two Column Layout */}
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 220px", gap: "20px" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 240px", gap: "18px" }}>
 
-            {/* LEFT: Experience + Projects + Education */}
+            {/* LEFT */}
             <div>
-
-              {/* Experience */}
-              <p className="font-mono text-caption uppercase" style={{ letterSpacing: "3px", color: "#aaa", marginBottom: "8px" }}>
-                <span style={{ color: "#4a6fa5" }}>▸</span> Experience
+              <p style={{ fontFamily: "monospace", fontSize: "9px", textTransform: "uppercase", letterSpacing: "3px", color: "#aaa", marginBottom: "6px" }}>
+                <span style={{ color: "#4a6fa5" }}>{"\u25B8"}</span> Experience
               </p>
 
               {[
-                { title: "Lead AI Developer", company: "MORE LIFE Hospitality GmbH", location: "Zurich · Remote", period: "Sep 2025 – Present", active: true, items: [
-                  "Architected AI orchestration: email → classification → task extraction → workflow execution → auto-approval",
-                  "Built Supabase Edge Functions for LLM calls, entity extraction, and workflow triggers",
-                  "Designed multi-agent system with planner/worker/validator pattern + human-in-the-loop approval",
-                  "Shipped React frontend: Task Inbox, Workflow Runner, Approval Flows, Marketing Hub, Admin Dashboard",
-                  "React + TypeScript + Supabase + Stripe + Claude API + GitHub Actions",
+                { title: "Lead AI Developer", company: "MORE LIFE Hospitality GmbH · Zurich · Remote", period: "Sep 2025 – Present", active: true, items: [
+                  "Architected AI orchestration: email \u2192 classification \u2192 task extraction \u2192 workflow execution \u2192 auto-approval",
+                  "Multi-agent system with planner/worker/validator + human-in-the-loop approval",
+                  "Shipped full React frontend + Supabase Edge Functions + Stripe + Claude API",
                 ]},
-                { title: "Director IT & R&D", company: "Rouelite Techno Pvt. Ltd.", location: "Remote", period: "2022 – 2024", items: [
-                  "Led 10-person team building custom CRM and business automation",
-                  "Designed system architecture serving 500+ daily users",
-                  "Introduced AI into daily operations, reducing manual data entry by 70%",
-                  "Replaced 3 legacy spreadsheet processes with React + Supabase internal tools",
-                  "Implemented agile workflows reducing delivery cycles by 40%",
+                { title: "Director IT & R&D", company: "Rouelite Techno Pvt. Ltd. · Remote", period: "2022 – 2024", items: [
+                  "Led 10-person team; system architecture serving 500+ daily users",
+                  "AI reduced manual data entry by 70%; agile cut delivery cycles by 40%",
                 ]},
-                { title: "AI Evaluation Specialist", company: "Outlier · RWS · Translated", location: "Remote", period: "2021 – Present", items: [
+                { title: "AI Evaluation Specialist", company: "Outlier · RWS · Translated · Remote", period: "2021 – Present", items: [
                   "500+ RLHF/SFT evaluation sessions on frontier models",
-                  "Evaluated model reasoning, code generation, and instruction-following quality",
                 ]},
-                { title: "Freelance AI & Full-Stack Engineer", company: "Upwork · Fiverr · Direct Clients", location: "Remote · Global", period: "2019 – Present", items: [
-                  "50+ production systems shipped: SaaS products, AI pipelines, dashboards, automation",
-                  "40+ long-term clients across 250+ total projects, 100% job success rate on Upwork",
+                { title: "Freelance AI & Full-Stack Engineer", company: "Upwork · Fiverr · Direct Clients · Remote", period: "2019 – Present", items: [
+                  "50+ production systems shipped; 40+ clients, 100% job success on Upwork",
                 ]},
-                { title: "Co-Founder & AI Engineer", company: "Wadware House", location: "Remote", period: "2023 – Present", items: [
-                  "Co-founded AI automation agency for scoped client engagements",
-                  "Delivered AI integration and automation projects for global clients",
+                { title: "Co-Founder & AI Engineer", company: "Wadware House · Remote", period: "2023 – Present", items: [
+                  "AI automation agency for scoped client engagements",
                 ]},
               ].map((role) => (
-                <div key={role.title} style={{ display: "flex", gap: "10px", marginBottom: "7px" }}>
+                <div key={role.title} style={{ display: "flex", gap: "8px", marginBottom: "6px" }}>
                   <div style={{ display: "flex", flexDirection: "column", alignItems: "center", paddingTop: "2px" }}>
-                    <div style={{ width: "8px", height: "8px", borderRadius: "50%", border: "2px solid #4a6fa5", background: role.active ? "rgba(74,111,165,0.15)" : "#fafaf8" }} />
-                    <div style={{ flex: 1, width: "1px", background: "#e0e0dc", marginTop: "3px" }} />
+                    <div style={{ width: "7px", height: "7px", borderRadius: "50%", border: "2px solid #4a6fa5", background: role.active ? "rgba(74,111,165,0.15)" : "#fafaf8" }} />
+                    <div style={{ flex: 1, width: "1px", background: "#e0e0dc", marginTop: "2px" }} />
                   </div>
                   <div style={{ flex: 1 }}>
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
-                      <p className="text-small font-semibold">{role.title}</p>
-                      <p className="font-mono text-caption" style={{ color: "#aaa" }}>{role.period}</p>
+                      <p style={{ fontSize: "10.5px", fontWeight: 600 }}>{role.title}</p>
+                      <p style={{ fontFamily: "monospace", fontSize: "9px", color: "#aaa" }}>{role.period}</p>
                     </div>
-                    <p className="text-caption" style={{ color: "#999" }}>{role.company} · {role.location}</p>
-                    <ul style={{ listStyle: "none", marginTop: "4px" }}>
+                    <p style={{ fontSize: "9px", color: "#999" }}>{role.company}</p>
+                    <ul style={{ listStyle: "none", marginTop: "3px", padding: 0 }}>
                       {role.items.map((item, j) => (
-                        <li key={j} className="text-caption" style={{ color: "#666", lineHeight: 1.45, paddingLeft: "10px", position: "relative", marginBottom: "1px" }}>
-                          <span style={{ position: "absolute", left: 0, color: "rgba(74,111,165,0.4)", fontSize: "7px" }}>▸</span>
+                        <li key={j} style={{ fontSize: "9px", color: "#666", lineHeight: 1.45, paddingLeft: "9px", position: "relative", marginBottom: "1px" }}>
+                          <span style={{ position: "absolute", left: 0, color: "rgba(74,111,165,0.4)", fontSize: "7px" }}>{"\u25B8"}</span>
                           {item}
                         </li>
                       ))}
@@ -501,157 +490,87 @@ export function VisualCV(): React.ReactElement {
                 </div>
               ))}
 
-              {/* Projects */}
-              <p className="font-mono text-caption uppercase" style={{ letterSpacing: "3px", color: "#aaa", marginBottom: "8px", marginTop: "7px" }}>
-                <span style={{ color: "#4a6fa5" }}>◆</span> Key Projects
+              <p style={{ fontFamily: "monospace", fontSize: "9px", textTransform: "uppercase", letterSpacing: "3px", color: "#aaa", marginBottom: "6px", marginTop: "6px" }}>
+                <span style={{ color: "#4a6fa5" }}>{"\u25C6"}</span> Key Projects
               </p>
 
               {[
-                { name: "Gogaa CLI", tag: "Dev Tool · CLI", tagColor: "#4a6fa5", desc: "Claude Code alternative: 11 providers, Aider parity, 1418 tests. Repo map, SEARCH/REPLACE, watch mode, plugin marketplace, parallel agents." },
-                { name: "CodeLens", tag: "AI Dev Tool", tagColor: "#4a6fa5", desc: "305-pattern AI code review engine across 9 stacks. Security taint tracking, PR risk scoring, guardian mode. Zero deps, <1s reviews." },
-                { name: "OpenEvent", tag: "Production SaaS", tagColor: "#b8860b", desc: "Live with 100+ clients across 150+ events. Saves each team ~1.5 hrs/day of manual email processing. Multi-agent orchestration: email → entity extraction → workflow → auto-approval." },
-                { name: "Command Center", tag: "Developer Tool", tagColor: "#10b981", desc: "Unified dev interface with Claude API, Google Gemini, Supabase, Gmail/Calendar integration. PWA with push notifications." },
-                { name: "Gluten-Free Deals & Dining", tag: "Cross-Platform", tagColor: "#8b5cf6", desc: "React Native + Next.js app. LLM-generated 200+ search queries, concurrent scraping from 40+ retailers, GPS restaurant finder, AI recipe generation." },
-                { name: "AI Agent System", tag: "Multi-Agent", tagColor: "#ec4899", desc: "5 purpose-built AI agents with tool-calling: job search, research, code review, proposals, freelance automation. Groq + Tavily + GitHub API on HuggingFace Spaces." },
+                { name: "Gogaa CLI", tag: "Dev Tool", tagColor: "#4a6fa5", desc: "Claude Code alternative: 11 providers, 1418 tests. Repo map, SEARCH/REPLACE, watch mode, plugins, parallel agents." },
+                { name: "CodeLens", tag: "AI Dev Tool", tagColor: "#4a6fa5", desc: "305-pattern AI code review across 9 stacks. Taint tracking, PR risk scoring, guardian mode. Zero deps, <1s." },
+                { name: "OpenEvent", tag: "Production SaaS", tagColor: "#b8860b", desc: "100+ clients, 150+ events. Multi-agent: email \u2192 extraction \u2192 workflow \u2192 auto-approval. Saves ~1.5 hrs/day." },
+                { name: "Command Center", tag: "Dev Tool", tagColor: "#10b981", desc: "Unified dev interface: Claude API, Gemini, Supabase, Gmail. PWA with push notifications." },
+                { name: "Gluten-Free Deals & Dining", tag: "Cross-Platform", tagColor: "#8b5cf6", desc: "React Native + Next.js. LLM queries, 40+ retailer scraping, GPS finder, AI recipes." },
+                { name: "AI Agent System", tag: "Multi-Agent", tagColor: "#ec4899", desc: "5 agents with tool-calling on HuggingFace Spaces. Groq + Tavily + GitHub API." },
               ].map((p) => (
-                <div key={p.name} style={{ padding: "8px 10px", borderRadius: "6px", border: "1px solid #e8e8e4", background: "#f5f5f1", marginBottom: "3px" }}>
-                  <div style={{ display: "flex", alignItems: "baseline", gap: "6px", marginBottom: "1px" }}>
-                    <span className="text-caption font-semibold">{p.name}</span>
-                    <span className="font-mono text-caption" style={{ padding: "1px 6px", borderRadius: "20px", color: p.tagColor, border: `1px solid ${p.tagColor}40` }}>{p.tag}</span>
+                <div key={p.name} style={{ padding: "5px 8px", borderRadius: "5px", border: "1px solid #e8e8e4", background: "#f5f5f1", marginBottom: "3px" }}>
+                  <div style={{ display: "flex", alignItems: "baseline", gap: "5px", marginBottom: "1px" }}>
+                    <span style={{ fontSize: "9.5px", fontWeight: 600 }}>{p.name}</span>
+                    <span style={{ fontFamily: "monospace", fontSize: "8px", padding: "1px 5px", borderRadius: "10px", color: p.tagColor, border: `1px solid ${p.tagColor}40` }}>{p.tag}</span>
                   </div>
-                  <p className="text-caption" style={{ color: "#777", lineHeight: 1.45 }}>{p.desc}</p>
+                  <p style={{ fontSize: "9px", color: "#777", lineHeight: 1.4 }}>{p.desc}</p>
                 </div>
               ))}
 
-              {/* Education */}
-              <p className="font-mono text-caption uppercase" style={{ letterSpacing: "3px", color: "#aaa", marginBottom: "6px", marginTop: "6px" }}>
-                <span style={{ color: "#4a6fa5" }}>◈</span> Education
+              <p style={{ fontFamily: "monospace", fontSize: "9px", textTransform: "uppercase", letterSpacing: "3px", color: "#aaa", marginBottom: "5px", marginTop: "6px" }}>
+                <span style={{ color: "#4a6fa5" }}>{"\u25C8"}</span> Education
               </p>
-              <div style={{ padding: "8px 10px", borderRadius: "6px", border: "1px solid #e8e8e4", background: "#f5f5f1", display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
+              <div style={{ padding: "6px 8px", borderRadius: "5px", border: "1px solid #e8e8e4", background: "#f5f5f1", display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
                 <div>
-                  <p className="text-caption font-semibold">B.Eng in Electrical & Electronics Engineering</p>
-                  <p className="text-caption" style={{ color: "#999" }}>Sukkur IBA University</p>
+                  <p style={{ fontSize: "9.5px", fontWeight: 600 }}>B.Eng in Electrical & Electronics Engineering</p>
+                  <p style={{ fontSize: "9px", color: "#999" }}>Sukkur IBA University</p>
                 </div>
-                <p className="font-mono text-caption" style={{ color: "#aaa" }}>2017 – 2020 · Grade A</p>
+                <p style={{ fontFamily: "monospace", fontSize: "9px", color: "#aaa" }}>2017 – 2020 · Grade A</p>
               </div>
             </div>
 
-            {/* RIGHT: Skills + Certs + Languages + Building Next */}
+            {/* RIGHT */}
             <div>
-
-              {/* AI & ML */}
-              <p className="font-mono text-caption uppercase" style={{ letterSpacing: "2px", color: "#aaa", marginBottom: "6px" }}>
-                <span style={{ color: "#4a6fa5" }}>▸</span> AI & ML
-              </p>
               {[
-                { name: "Claude API", level: 90 },
-                { name: "OpenAI / LangChain", level: 85 },
-                { name: "RAG Pipelines", level: 80 },
-                { name: "Multi-Agent Systems", level: 75 },
-                { name: "Prompt Engineering", level: 70 },
-                { name: "Taint Analysis", level: 65 },
-              ].map((s) => (
-                <div key={s.name}>
-                  <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "2px" }}>
-                    <span className="text-caption" style={{ color: "#555" }}>{s.name}</span>
-                    <span className="font-mono text-caption" style={{ color: "#bbb" }}>{s.level}%</span>
-                  </div>
-                  <div style={{ height: "3px", background: "#eee", borderRadius: "2px", marginBottom: "5px" }}>
-                    <div style={{ height: "100%", width: `${s.level}%`, background: "#4a6fa5", borderRadius: "2px" }} />
-                  </div>
+                { title: "AI & ML", skills: [{ n: "Claude API", l: 90 }, { n: "OpenAI / LangChain", l: 85 }, { n: "RAG Pipelines", l: 80 }, { n: "Multi-Agent Systems", l: 75 }, { n: "Prompt Engineering", l: 70 }, { n: "Taint Analysis", l: 65 }] },
+                { title: "Full Stack", skills: [{ n: "TypeScript / React", l: 92 }, { n: "Next.js", l: 88 }, { n: "Supabase / PostgreSQL", l: 84 }, { n: "Node.js / Python", l: 80 }, { n: "Tailwind / Framer", l: 76 }] },
+                { title: "Infrastructure", skills: [{ n: "GitHub Actions / CI", l: 88 }, { n: "Docker / Cloudflare", l: 83 }, { n: "Stripe Integration", l: 78 }, { n: "Playwright / n8n", l: 73 }] },
+                { title: "Process", skills: [{ n: "Architecture-First Dev", l: 90 }, { n: "Team Leadership (3-10)", l: 85 }, { n: "Client Comms & SOWs", l: 80 }, { n: "Code Review (CodeLens)", l: 75 }] },
+              ].map((section, si) => (
+                <div key={section.title}>
+                  <p style={{ fontFamily: "monospace", fontSize: "9px", textTransform: "uppercase", letterSpacing: "2px", color: "#aaa", marginBottom: "4px", marginTop: si > 0 ? "8px" : 0 }}>
+                    <span style={{ color: "#4a6fa5" }}>{"\u25B8"}</span> {section.title}
+                  </p>
+                  {section.skills.map((s) => (
+                    <div key={s.n}>
+                      <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "2px" }}>
+                        <span style={{ fontSize: "9px", color: "#555" }}>{s.n}</span>
+                        <span style={{ fontFamily: "monospace", fontSize: "9px", color: "#bbb" }}>{s.l}%</span>
+                      </div>
+                      <div style={{ height: "3px", background: "#eee", borderRadius: "1px", marginBottom: "4px" }}>
+                        <div style={{ height: "100%", width: `${s.l}%`, background: "#4a6fa5", borderRadius: "1px" }} />
+                      </div>
+                    </div>
+                  ))}
                 </div>
               ))}
 
-              {/* Full Stack */}
-              <p className="font-mono text-caption uppercase" style={{ letterSpacing: "2px", color: "#aaa", marginBottom: "6px", marginTop: "10px" }}>
-                <span style={{ color: "#4a6fa5" }}>▸</span> Full Stack
-              </p>
-              {[
-                { name: "TypeScript / React", level: 92 },
-                { name: "Next.js", level: 88 },
-                { name: "Supabase / PostgreSQL", level: 84 },
-                { name: "Node.js / Python", level: 80 },
-                { name: "Tailwind / Framer", level: 76 },
-              ].map((s) => (
-                <div key={s.name}>
-                  <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "2px" }}>
-                    <span className="text-caption" style={{ color: "#555" }}>{s.name}</span>
-                    <span className="font-mono text-caption" style={{ color: "#bbb" }}>{s.level}%</span>
-                  </div>
-                  <div style={{ height: "3px", background: "#eee", borderRadius: "2px", marginBottom: "5px" }}>
-                    <div style={{ height: "100%", width: `${s.level}%`, background: "#4a6fa5", borderRadius: "2px" }} />
-                  </div>
-                </div>
-              ))}
-
-              {/* Infrastructure */}
-              <p className="font-mono text-caption uppercase" style={{ letterSpacing: "2px", color: "#aaa", marginBottom: "6px", marginTop: "10px" }}>
-                <span style={{ color: "#4a6fa5" }}>▸</span> Infrastructure
-              </p>
-              {[
-                { name: "GitHub Actions / CI", level: 88 },
-                { name: "Docker / Cloudflare", level: 83 },
-                { name: "Stripe Integration", level: 78 },
-                { name: "Playwright / n8n", level: 73 },
-              ].map((s) => (
-                <div key={s.name}>
-                  <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "2px" }}>
-                    <span className="text-caption" style={{ color: "#555" }}>{s.name}</span>
-                    <span className="font-mono text-caption" style={{ color: "#bbb" }}>{s.level}%</span>
-                  </div>
-                  <div style={{ height: "3px", background: "#eee", borderRadius: "2px", marginBottom: "5px" }}>
-                    <div style={{ height: "100%", width: `${s.level}%`, background: "#4a6fa5", borderRadius: "2px" }} />
-                  </div>
-                </div>
-              ))}
-
-              {/* Process */}
-              <p className="font-mono text-caption uppercase" style={{ letterSpacing: "2px", color: "#aaa", marginBottom: "6px", marginTop: "10px" }}>
-                <span style={{ color: "#4a6fa5" }}>▹</span> Process
-              </p>
-              {[
-                { name: "Architecture-First Development", level: 90 },
-                { name: "Team Leadership (3-10 people)", level: 85 },
-                { name: "Client-Facing Comms & SOWs", level: 80 },
-                { name: "Code Review Systems (CodeLens)", level: 75 },
-              ].map((s) => (
-                <div key={s.name}>
-                  <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "2px" }}>
-                    <span className="text-caption" style={{ color: "#555" }}>{s.name}</span>
-                    <span className="font-mono text-caption" style={{ color: "#bbb" }}>{s.level}%</span>
-                  </div>
-                  <div style={{ height: "3px", background: "#eee", borderRadius: "2px", marginBottom: "5px" }}>
-                    <div style={{ height: "100%", width: `${s.level}%`, background: "#4a6fa5", borderRadius: "2px" }} />
-                  </div>
-                </div>
-              ))}
-
-              {/* Certifications */}
-              <p className="font-mono text-caption uppercase" style={{ letterSpacing: "2px", color: "#aaa", marginBottom: "6px", marginTop: "10px" }}>
-                <span style={{ color: "#4a6fa5" }}>▸</span> Certifications
+              <p style={{ fontFamily: "monospace", fontSize: "9px", textTransform: "uppercase", letterSpacing: "2px", color: "#aaa", marginBottom: "4px", marginTop: "8px" }}>
+                <span style={{ color: "#4a6fa5" }}>{"\u25B8"}</span> Certifications
               </p>
               {["Generative AI & LLMs · IBM", "Project Management · Google", "Gen AI for PMs · PMI"].map((cert) => (
-                <p key={cert} className="text-caption" style={{ color: "#888", paddingLeft: "8px", borderLeft: "2px solid #e8e8e4", marginBottom: "4px", lineHeight: 1.4 }}>{cert}</p>
+                <p key={cert} style={{ fontSize: "9px", color: "#888", paddingLeft: "7px", borderLeft: "2px solid #e8e8e4", marginBottom: "3px", lineHeight: 1.4 }}>{cert}</p>
               ))}
 
-              {/* Languages */}
-              <p className="font-mono text-caption uppercase" style={{ letterSpacing: "2px", color: "#aaa", marginBottom: "6px", marginTop: "10px" }}>
-                <span style={{ color: "#4a6fa5" }}>▸</span> Languages
+              <p style={{ fontFamily: "monospace", fontSize: "9px", textTransform: "uppercase", letterSpacing: "2px", color: "#aaa", marginBottom: "4px", marginTop: "8px" }}>
+                <span style={{ color: "#4a6fa5" }}>{"\u25B8"}</span> Languages
               </p>
-              <div style={{ display: "flex", gap: "6px", flexWrap: "wrap" }}>
-                {["English · Professional", "Urdu · Native", "Pashtu · Native", "Sindhi · Conversational", "Arabic · Conversational"].map((lang) => (
-                  <span key={lang} className="text-caption" style={{ padding: "2px 7px", borderRadius: "4px", background: "#f0f0ec", color: "#888", border: "1px solid #e4e4e0" }}>{lang}</span>
+              <div style={{ display: "flex", gap: "5px", flexWrap: "wrap" }}>
+                {["English · Pro", "Urdu · Native", "Pashtu · Native", "Sindhi · Conv", "Arabic · Conv"].map((lang) => (
+                  <span key={lang} style={{ fontSize: "8px", padding: "2px 6px", borderRadius: "3px", background: "#f0f0ec", color: "#888", border: "1px solid #e4e4e0" }}>{lang}</span>
                 ))}
               </div>
 
-              {/* Building Next — compact single row */}
-              <p className="font-mono text-caption uppercase" style={{ letterSpacing: "2px", color: "#aaa", marginBottom: "4px", marginTop: "8px" }}>
-                <span style={{ color: "#4a6fa5" }}>▸</span> Building Next
+              <p style={{ fontFamily: "monospace", fontSize: "9px", textTransform: "uppercase", letterSpacing: "2px", color: "#aaa", marginBottom: "3px", marginTop: "8px" }}>
+                <span style={{ color: "#4a6fa5" }}>{"\u25B8"}</span> Building Next
               </p>
-              <p className="text-caption" style={{ color: "#888", lineHeight: 1.5 }}>
-                Gogaa Architect Mode (Next) · Spec-to-Code Traceability · CodeLens v0.4
+              <p style={{ fontSize: "9px", color: "#888", lineHeight: 1.45 }}>
+                Gogaa Architect Mode · Spec-to-Code Traceability · CodeLens v0.4 (AST)
               </p>
-
             </div>
           </div>
         </div>
@@ -660,6 +579,7 @@ export function VisualCV(): React.ReactElement {
       <style jsx global>{`
         @media print {
           @page { size: A4; margin: 0; }
+          html, body { margin: 0; padding: 0; }
           body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
           .print\\:hidden { display: none !important; }
           .print\\:block { display: block !important; }

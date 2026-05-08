@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, Space_Grotesk, JetBrains_Mono } from "next/font/google";
 import { ChatWidget } from "@/components/chat-widget";
+import { CVDrawer } from "@/components/cv-drawer";
 import { ThemeToggle } from "@/components/theme-toggle";
 import "./globals.css";
 
@@ -119,6 +120,7 @@ export default function RootLayout({
         <div className="fixed bottom-6 right-4 md:right-6 z-50 print:hidden">
           <ThemeToggle />
         </div>
+        <CVDrawer />
         <ChatWidget />
         <script
           dangerouslySetInnerHTML={{

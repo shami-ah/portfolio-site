@@ -3,13 +3,14 @@
 import { FadeUp } from "./motion";
 import { TypeLabel } from "./type-label";
 import { Calendar } from "lucide-react";
+import { openCvDrawer } from "@/components/cv-drawer";
 
 const contactLinks = [
   { key: "email", label: "shami8024@gmail.com", href: "mailto:shami8024@gmail.com" },
   { key: "github", label: "shami-ah", href: "https://github.com/shami-ah" },
   { key: "linkedin", label: "ahtesham-ahmad", href: "https://www.linkedin.com/in/muhammad-ahtesham-ahmad-a153801b5" },
   { key: "upwork", label: "100% job success", href: "https://www.upwork.com/freelancers/~01bd0ab6e093ea2d49" },
-  { key: "resume", label: "/cv", href: "/cv" },
+  { key: "resume", label: "/cv", href: "#cv" },
 ] as const;
 
 export function ConfigContact(): React.ReactElement {
@@ -58,17 +59,28 @@ export function ConfigContact(): React.ReactElement {
                   One engineer, full ownership, from data model to deployed SaaS.
                 </p>
                 <div className="flex flex-wrap gap-x-5 gap-y-1.5 text-small font-mono text-muted/60">
-                  {contactLinks.map((link) => (
-                    <a
-                      key={link.key}
-                      href={link.href}
-                      target={link.href.startsWith("http") ? "_blank" : undefined}
-                      rel={link.href.startsWith("http") ? "noopener noreferrer" : undefined}
-                      className="hover:text-accent transition-colors"
-                    >
-                      {link.key}: <span className="text-accent-secondary/70">{link.label}</span>
-                    </a>
-                  ))}
+                  {contactLinks.map((link) =>
+                    link.key === "resume" ? (
+                      <button
+                        key={link.key}
+                        type="button"
+                        onClick={openCvDrawer}
+                        className="hover:text-accent transition-colors"
+                      >
+                        {link.key}: <span className="text-accent-secondary/70">{link.label}</span>
+                      </button>
+                    ) : (
+                      <a
+                        key={link.key}
+                        href={link.href}
+                        target={link.href.startsWith("http") ? "_blank" : undefined}
+                        rel={link.href.startsWith("http") ? "noopener noreferrer" : undefined}
+                        className="hover:text-accent transition-colors"
+                      >
+                        {link.key}: <span className="text-accent-secondary/70">{link.label}</span>
+                      </a>
+                    )
+                  )}
                 </div>
               </div>
               <a
