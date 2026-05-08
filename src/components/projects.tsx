@@ -283,19 +283,9 @@ export function Projects(): React.ReactElement {
               <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold leading-[1.08] tracking-tight mb-5">
                 Systems I&apos;ve<br />shipped<span className="text-muted">.</span>
               </h2>
-              <p className="text-sm md:text-base text-muted leading-relaxed max-w-sm mb-8">
+              <p className="text-sm md:text-base text-muted leading-relaxed max-w-sm">
                 Production AI systems, developer tools, and SaaS products. Each one links to a full case study with architecture decisions and results.
               </p>
-              <div className="flex gap-8 pt-6 border-t border-card-border/40">
-                <div>
-                  <p className="text-2xl font-bold font-mono text-accent">50+</p>
-                  <p className="text-caption font-mono text-muted uppercase tracking-wider mt-1">production<br />systems</p>
-                </div>
-                <div>
-                  <p className="text-2xl font-bold font-mono text-accent">40+</p>
-                  <p className="text-caption font-mono text-muted uppercase tracking-wider mt-1">returning<br />clients</p>
-                </div>
-              </div>
             </FadeUp>
           </div>
 
