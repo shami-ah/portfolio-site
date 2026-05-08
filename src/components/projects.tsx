@@ -134,7 +134,7 @@ function FlagshipCard({
                 rel="noopener noreferrer"
                 className="text-small font-mono text-muted hover:text-accent-status transition-colors"
               >
-                demo &nearr;
+                demo &#8599;
               </a>
             )}
           </div>

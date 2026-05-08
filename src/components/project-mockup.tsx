@@ -137,7 +137,7 @@ function GogaaBody(): React.ReactElement {
         className="flex gap-3 items-start"
       >
         {/* 3-row Unicode block logo — copied exactly from gogaa source */}
-        <pre className="text-white font-mono leading-[1.1] text-body md:text-lead select-none">
+        <pre className="text-foreground font-mono leading-[1.1] text-body md:text-lead select-none">
 {` ▐▛███▜▌
 ▝▜█████▛▘
   ▘▘ ▝▝`}
