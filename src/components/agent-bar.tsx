@@ -680,7 +680,7 @@ export function AgentBar(): React.ReactElement {
               )}
             </AnimatePresence>
 
-            {/* Button — wrapper centers, motion animates */}
+            {/* Button — small pulsing dot, expands on hover */}
             <div className="fixed z-[100] bottom-5 left-1/2 -translate-x-1/2">
               <motion.button
                 type="button"
@@ -693,22 +693,17 @@ export function AgentBar(): React.ReactElement {
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.8 }}
                 transition={{ duration: 0.5, ease: [0.34, 1.56, 0.64, 1] }}
-                className="flex items-center gap-2.5 cursor-pointer glass rounded-full px-5 py-2.5"
+                className="group flex items-center cursor-pointer glass rounded-full p-2.5 hover:px-4 hover:gap-2 transition-all duration-300"
                 style={{
                   boxShadow: "0 4px 20px rgba(0,0,0,0.4), 0 0 40px rgba(0,0,0,0.2)",
                 }}
               >
               <span
-                className="w-2 h-2 rounded-full bg-accent-status shrink-0"
+                className="w-2.5 h-2.5 rounded-full bg-accent-status shrink-0"
                 style={{ animation: "green-pulse 2s infinite" }}
               />
-              <span className="text-accent font-mono text-small font-semibold">&#10095;</span>
-              <span className="font-mono text-small text-muted/60">agent</span>
-              <span
-                className="font-mono text-muted/30 border border-card-border/30 rounded px-1.5 py-0.5"
-                style={{ fontSize: "10px" }}
-              >
-                /
+              <span className="max-w-0 overflow-hidden group-hover:max-w-[60px] transition-all duration-300 whitespace-nowrap font-mono text-small text-muted/60">
+                agent
               </span>
               </motion.button>
             </div>
