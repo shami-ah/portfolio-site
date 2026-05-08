@@ -78,23 +78,9 @@ export function MissionStats(): React.ReactElement {
           </FadeUp>
 
           <FadeUp delay={0.05}>
-            <div className="space-y-4 md:space-y-5 text-sm md:text-base text-muted leading-relaxed">
-              <p>
-                The gap between an AI demo and a production system is enormous.
-                I close that gap.
-              </p>
-              <p>
-                <span className="text-foreground font-medium">AI orchestration</span>
-                {" "}meets{" "}
-                <span className="text-foreground font-medium">systems engineering</span>
-                : multi-agent pipelines with human approval gates, LLM reasoning
-                connected to real actions, full-stack products shipped end-to-end.
-              </p>
-              <p className="text-foreground font-medium border-l-2 border-accent pl-4">
-                When the tools I needed didn&apos;t exist, I built them.
-                I don&apos;t just integrate AI. I build the infrastructure around it.
-              </p>
-            </div>
+            <p className="text-foreground font-medium border-l-2 border-accent pl-4 text-sm md:text-base leading-relaxed">
+              When the tools I needed didn&apos;t exist, I built them.
+            </p>
           </FadeUp>
         </div>
 

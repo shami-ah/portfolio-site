@@ -31,36 +31,36 @@ function useFlagshipMeta(): Record<string, FlagshipMeta> {
       status: "LIVE",
       statusColor: "text-accent-status",
       metrics: [
-        { label: "teams", value: `${status.openevent.clients}+` },
+        { label: "clients", value: `${status.openevent.clients}+` },
         { label: "events", value: `${status.openevent.events}+` },
-        { label: "saved/day", value: `${status.openevent.hoursSavedPerDay}h` },
+        { label: "time saved", value: "83%" },
       ],
     },
     codelens: {
       status: "BETA",
       statusColor: "text-accent-secondary",
       metrics: [
-        { label: "patterns", value: `~${status.codelens.patterns}` },
-        { label: "stacks", value: `${status.codelens.stacks}` },
-        { label: "speed", value: "<1s" },
+        { label: "bug patterns", value: `~${status.codelens.patterns}` },
+        { label: "languages", value: `${status.codelens.stacks}` },
+        { label: "review speed", value: "<1s" },
       ],
     },
     "gogaa-cli": {
       status: "BETA",
       statusColor: "text-accent-secondary",
       metrics: [
-        { label: "tests", value: `${status.gogaa.tests.toLocaleString()}` },
-        { label: "providers", value: `${status.gogaa.providers}` },
-        { label: "status", value: "beta" },
+        { label: "AI models", value: `${status.gogaa.providers}` },
+        { label: "auto-fallback", value: "yes" },
+        { label: "vendor lock-in", value: "zero" },
       ],
     },
     rasad: {
-      status: "ALPHA",
+      status: "SHIPPED",
       statusColor: "text-accent",
       metrics: [
-        { label: "sessions", value: "656" },
-        { label: "messages", value: "38K" },
-        { label: "tool calls", value: "14K" },
+        { label: "sessions tracked", value: "656" },
+        { label: "data privacy", value: "100%" },
+        { label: "cloud dependency", value: "none" },
       ],
     },
   };
@@ -154,6 +154,292 @@ const STACK_TRANSFORMS = [
   "translate-y-5 translate-x-3 rotate-[3deg] scale-[0.94] opacity-30 z-[5]",
 ] as const;
 
+/* ------------------------------------------------------------------ */
+/*  Platform-native cards for "Other Deployments"                      */
+/*  Each card IS the platform the product runs on                      */
+/* ------------------------------------------------------------------ */
+
+type FrameKind = "phone" | "pwa" | "docker" | "huggingface" | "streamlit" | "dag";
+
+const CARD_FRAMES: Record<string, FrameKind> = {
+  "command-center":     "pwa",
+  "gluten-free":        "phone",
+  "rag-pipeline":       "streamlit",
+  "vqa-agent":          "streamlit",
+  "dev-env":            "docker",
+  "agent-orchestrator": "dag",
+  "agent-system":       "huggingface",
+};
+
+/** Shared props for every card frame */
+interface FrameProps {
+  project: ProjectData;
+  onOpen: (p: ProjectData) => void;
+  counter: string;
+  className: string;
+}
+
+/** Footer row — same for all frames */
+function CardFooter({ project, onOpen, counter }: { project: ProjectData; onOpen: (p: ProjectData) => void; counter: string }): React.ReactElement {
+  return (
+    <div className="flex items-center justify-between pt-2.5 mt-auto border-t border-card-border/30">
+      <button type="button" onClick={() => onOpen(project)} className="text-small font-mono text-accent hover:text-accent/80 transition-colors">
+        view &rarr;
+      </button>
+      <span className="text-caption font-mono text-muted/30">{counter}</span>
+    </div>
+  );
+}
+
+/* ---------- Phone (iOS) ---------- */
+function PhoneCard({ project, onOpen, counter, className }: FrameProps): React.ReactElement {
+  return (
+    <motion.div className={className} layout>
+      <div className="w-full h-full rounded-[24px] border-2 border-card-border bg-card flex flex-col overflow-hidden">
+        {/* Dynamic Island */}
+        <div className="flex items-center justify-center pt-2 pb-1">
+          <div className="w-20 h-[5px] rounded-full bg-card-border/60" />
+        </div>
+        {/* Status bar */}
+        <div className="flex items-center justify-between px-4 pb-1">
+          <span className="text-caption text-muted/40 font-mono">9:41</span>
+          <div className="flex items-center gap-1">
+            <span className="text-caption text-muted/40">5G</span>
+            <div className="flex gap-[2px] items-end h-2.5">
+              {[40, 60, 80, 100].map((h) => (
+                <div key={h} className="w-[3px] rounded-sm bg-muted/30" style={{ height: `${h}%` }} />
+              ))}
+            </div>
+          </div>
+        </div>
+        {/* App content */}
+        <div className="flex-1 px-4 pb-2 flex flex-col">
+          <p className="font-bold text-base mb-1">{project.title}</p>
+          <span className="inline-block text-caption font-mono px-2 py-0.5 rounded-full bg-accent/8 text-accent border border-accent/15 mb-2 self-start">
+            {project.type}
+          </span>
+          <p className="text-small text-muted leading-relaxed line-clamp-2">{project.cardSummary ?? project.subtitle}</p>
+          <CardFooter project={project} onOpen={onOpen} counter={counter} />
+        </div>
+        {/* Home indicator */}
+        <div className="flex justify-center pb-2">
+          <div className="w-28 h-1 rounded-full bg-muted/20" />
+        </div>
+      </div>
+    </motion.div>
+  );
+}
+
+/* ---------- PWA (browser with install badge) ---------- */
+function PwaCard({ project, onOpen, counter, className }: FrameProps): React.ReactElement {
+  return (
+    <motion.div className={className} layout>
+      <div className="w-full h-full rounded-xl border border-card-border bg-card flex flex-col overflow-hidden">
+        {/* Browser chrome */}
+        <div className="flex items-center gap-2 px-3 py-2 border-b border-card-border/50 bg-background/40">
+          <div className="flex gap-1.5">
+            <span className="w-2 h-2 rounded-full bg-red-500/40" />
+            <span className="w-2 h-2 rounded-full bg-yellow-500/40" />
+            <span className="w-2 h-2 rounded-full bg-green-500/40" />
+          </div>
+          <div className="flex-1 mx-1 px-2.5 py-0.5 rounded-md bg-background/50 border border-card-border/40 flex items-center gap-1.5">
+            <span className="text-green-400/50 text-caption">🔒</span>
+            <span className="text-caption font-mono text-muted/50 truncate">command-center.app</span>
+          </div>
+        </div>
+        {/* PWA install banner */}
+        <div className="mx-3 mt-2.5 px-2.5 py-1.5 rounded-lg bg-accent/8 border border-accent/15 flex items-center gap-2">
+          <span className="text-caption">⬇</span>
+          <span className="text-caption text-accent/80">Install as app</span>
+          <span className="text-caption text-muted/40 ml-auto">Works offline</span>
+        </div>
+        <div className="flex-1 p-4 pt-2.5 flex flex-col">
+          <p className="font-bold text-base mb-1">{project.title}</p>
+          <p className="text-small text-muted leading-relaxed line-clamp-2 mb-1">{project.cardSummary ?? project.subtitle}</p>
+          <CardFooter project={project} onOpen={onOpen} counter={counter} />
+        </div>
+      </div>
+    </motion.div>
+  );
+}
+
+/* ---------- Docker Desktop ---------- */
+function DockerCard({ project, onOpen, counter, className }: FrameProps): React.ReactElement {
+  return (
+    <motion.div className={className} layout>
+      <div className="w-full h-full rounded-xl border border-card-border bg-card flex flex-col overflow-hidden">
+        {/* Docker Desktop header */}
+        <div className="flex items-center gap-2 px-3 py-2 border-b border-card-border/50 bg-background/40">
+          <div className="flex gap-1.5">
+            <span className="w-2 h-2 rounded-full bg-red-500/40" />
+            <span className="w-2 h-2 rounded-full bg-yellow-500/40" />
+            <span className="w-2 h-2 rounded-full bg-green-500/40" />
+          </div>
+          <span className="text-caption font-semibold text-muted/60 ml-1">Docker Desktop</span>
+          <span className="text-caption text-muted/30 ml-auto">Containers</span>
+        </div>
+        {/* Container list */}
+        <div className="px-3 pt-2 space-y-1.5">
+          {[
+            { name: "dev-env", status: "Running", port: "3000", color: "bg-green-400" },
+            { name: "postgres-15", status: "Running", port: "5432", color: "bg-green-400" },
+            { name: "redis-7", status: "Running", port: "6379", color: "bg-green-400" },
+          ].map((c) => (
+            <div key={c.name} className="flex items-center gap-2 px-2 py-1 rounded bg-background/40 border border-card-border/30">
+              <span className={`w-1.5 h-1.5 rounded-full ${c.color} shrink-0`} />
+              <span className="text-caption font-mono text-foreground/70 flex-1 truncate">{c.name}</span>
+              <span className="text-caption text-muted/40">:{c.port}</span>
+            </div>
+          ))}
+        </div>
+        <div className="flex-1 px-4 pt-2 pb-4 flex flex-col">
+          <p className="font-bold text-base mb-1">{project.title}</p>
+          <p className="text-small text-muted leading-relaxed line-clamp-2">{project.cardSummary ?? project.subtitle}</p>
+          <CardFooter project={project} onOpen={onOpen} counter={counter} />
+        </div>
+      </div>
+    </motion.div>
+  );
+}
+
+/* ---------- HuggingFace Spaces ---------- */
+function HuggingFaceCard({ project, onOpen, counter, className }: FrameProps): React.ReactElement {
+  return (
+    <motion.div className={className} layout>
+      <div className="w-full h-full rounded-xl border border-card-border bg-card flex flex-col overflow-hidden">
+        {/* HF gradient header */}
+        <div className="px-3 py-2.5 bg-gradient-to-r from-yellow-500/15 via-orange-500/10 to-red-500/10 border-b border-card-border/50">
+          <div className="flex items-center gap-2">
+            <span className="text-base">🤗</span>
+            <span className="text-caption font-semibold text-foreground/80">Hugging Face</span>
+            <span className="text-caption text-muted/40">Spaces</span>
+          </div>
+          <div className="flex items-center gap-2 mt-1.5">
+            <span className="text-caption font-mono text-foreground/60">shami96/deep-agent</span>
+            <span className="flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-green-500/15 border border-green-500/25 text-caption text-green-500">
+              <span className="w-1 h-1 rounded-full bg-green-400 animate-pulse" />
+              Running
+            </span>
+          </div>
+        </div>
+        <div className="flex-1 p-4 pt-3 flex flex-col">
+          <p className="font-bold text-base mb-1">{project.title}</p>
+          <p className="text-small text-muted leading-relaxed line-clamp-2">{project.cardSummary ?? project.subtitle}</p>
+          <CardFooter project={project} onOpen={onOpen} counter={counter} />
+        </div>
+      </div>
+    </motion.div>
+  );
+}
+
+/* ---------- Streamlit (chat/search UI) ---------- */
+function StreamlitCard({ project, onOpen, counter, className }: FrameProps): React.ReactElement {
+  const isVqa = project.slug === "vqa-agent";
+  return (
+    <motion.div className={className} layout>
+      <div className="w-full h-full rounded-xl border border-card-border bg-card flex flex-col overflow-hidden">
+        {/* Streamlit header */}
+        <div className="flex items-center gap-2 px-3 py-2 border-b border-card-border/50 bg-background/40">
+          <div className="w-4 h-4 rounded bg-gradient-to-br from-red-500/60 to-pink-500/60 flex items-center justify-center">
+            <span className="text-[8px] text-white font-bold">S</span>
+          </div>
+          <span className="text-caption font-mono text-muted/50">localhost:8501</span>
+          <span className="flex items-center gap-1 ml-auto px-1.5 py-0.5 rounded bg-green-500/10 border border-green-500/20 text-caption text-green-500/70">
+            <span className="w-1 h-1 rounded-full bg-green-400" />
+            Live
+          </span>
+        </div>
+        {/* Mini chat / query UI */}
+        <div className="px-3 pt-2.5 space-y-1.5">
+          {isVqa ? (
+            <>
+              <div className="flex items-center gap-2 px-2 py-1.5 rounded bg-background/40 border border-card-border/30">
+                <span className="text-caption">🖼</span>
+                <span className="text-caption text-muted/60 font-mono">warehouse_photo.jpg</span>
+              </div>
+              <div className="px-2 py-1.5 rounded bg-accent/5 border border-accent/15">
+                <span className="text-caption text-foreground/70">&ldquo;What safety hazards are in this image?&rdquo;</span>
+              </div>
+            </>
+          ) : (
+            <>
+              <div className="px-2 py-1.5 rounded bg-accent/5 border border-accent/15">
+                <span className="text-caption text-foreground/70">&ldquo;How do I process a refund?&rdquo;</span>
+              </div>
+              <div className="px-2 py-1.5 rounded bg-green-500/5 border border-green-500/15 flex items-start gap-1.5">
+                <span className="text-caption text-green-500/60 shrink-0 mt-0.5">✓</span>
+                <span className="text-caption text-muted/60 line-clamp-1">Go to Payment Ops SOP, section 4.2...</span>
+              </div>
+            </>
+          )}
+        </div>
+        <div className="flex-1 px-4 pt-2 pb-4 flex flex-col">
+          <p className="font-bold text-base mb-1">{project.title}</p>
+          <p className="text-small text-muted leading-relaxed line-clamp-1">{project.cardSummary ?? project.subtitle}</p>
+          <CardFooter project={project} onOpen={onOpen} counter={counter} />
+        </div>
+      </div>
+    </motion.div>
+  );
+}
+
+/* ---------- DAG / Agent flow ---------- */
+function DagCard({ project, onOpen, counter, className }: FrameProps): React.ReactElement {
+  return (
+    <motion.div className={className} layout>
+      <div className="w-full h-full rounded-xl border border-card-border bg-card flex flex-col overflow-hidden">
+        {/* Agent header */}
+        <div className="flex items-center gap-2 px-3 py-2 border-b border-card-border/50 bg-background/40">
+          <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
+          <span className="text-caption font-mono text-muted/60">orchestrator · task DAG</span>
+        </div>
+        {/* Mini DAG visualization */}
+        <div className="px-3 pt-2.5 flex items-center gap-1">
+          {[
+            { label: "Plan", color: "bg-accent/20 text-accent border-accent/30" },
+            { label: "→", color: "text-muted/30" },
+            { label: "Worker", color: "bg-green-500/15 text-green-500 border-green-500/25" },
+            { label: "→", color: "text-muted/30" },
+            { label: "Validate", color: "bg-amber-500/15 text-amber-400 border-amber-500/25" },
+            { label: "→", color: "text-muted/30" },
+            { label: "✓", color: "bg-green-500/15 text-green-500 border-green-500/25" },
+          ].map((n, i) => (
+            n.label === "→"
+              ? <span key={i} className={`text-caption ${n.color}`}>→</span>
+              : <span key={i} className={`px-1.5 py-0.5 rounded text-caption font-mono border ${n.color}`}>{n.label}</span>
+          ))}
+        </div>
+        {/* Task state */}
+        <div className="px-3 pt-1.5 flex items-center gap-2">
+          <span className="text-caption text-muted/40 font-mono">state:</span>
+          <span className="text-caption text-green-500/70 font-mono">completed</span>
+          <span className="text-caption text-muted/30 font-mono ml-auto">3/3 critique rounds</span>
+        </div>
+        <div className="flex-1 px-4 pt-2 pb-4 flex flex-col">
+          <p className="font-bold text-base mb-1">{project.title}</p>
+          <p className="text-small text-muted leading-relaxed line-clamp-2">{project.cardSummary ?? project.subtitle}</p>
+          <CardFooter project={project} onOpen={onOpen} counter={counter} />
+        </div>
+      </div>
+    </motion.div>
+  );
+}
+
+/* ---------- Frame router ---------- */
+function DeviceCard({ project, onOpen, counter, className }: FrameProps): React.ReactElement {
+  const frame = CARD_FRAMES[project.slug] ?? "pwa";
+  const props = { project, onOpen, counter, className };
+  switch (frame) {
+    case "phone":       return <PhoneCard {...props} />;
+    case "pwa":         return <PwaCard {...props} />;
+    case "docker":      return <DockerCard {...props} />;
+    case "huggingface": return <HuggingFaceCard {...props} />;
+    case "streamlit":   return <StreamlitCard {...props} />;
+    case "dag":         return <DagCard {...props} />;
+    default:            return <PwaCard {...props} />;
+  }
+}
+
 function OtherDeployments({
   others,
   onOpen,
@@ -175,42 +461,22 @@ function OtherDeployments({
         </p>
 
         {/* Card stack */}
-        <div className="relative w-[340px] h-[260px] mt-8">
+        <div className="relative w-[340px] h-[300px] mt-8">
           {others.map((project, i) => {
             const pos = (i - current + others.length) % others.length;
             const transformClass = pos < 3
               ? STACK_TRANSFORMS[pos]
               : "translate-y-7 translate-x-4 rotate-[4deg] scale-[0.91] opacity-0 pointer-events-none z-[4]";
+            const counter = pos === 0 ? `${i + 1} / ${others.length}` : "";
 
             return (
-              <motion.div
+              <DeviceCard
                 key={project.slug}
-                className={`absolute top-0 left-0 w-[340px] h-[240px] rounded-xl border border-card-border bg-card p-6 cursor-pointer flex flex-col justify-between transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:border-accent/25 ${transformClass}`}
-                layout
-              >
-                <div>
-                  <p className="font-bold text-base mb-1">{project.title}</p>
-                  <span className="inline-block text-caption font-mono px-2 py-0.5 rounded-full bg-accent/8 text-accent border border-accent/15 mb-3">
-                    {project.type}
-                  </span>
-                  <p className="text-small text-muted leading-relaxed">
-                    {project.subtitle}
-                  </p>
-                </div>
-
-                <div className="flex items-center justify-between pt-3 border-t border-card-border/30">
-                  <button
-                    type="button"
-                    onClick={() => onOpen(project)}
-                    className="text-small font-mono text-accent hover:text-accent/80 transition-colors"
-                  >
-                    view &rarr;
-                  </button>
-                  <span className="text-caption font-mono text-muted/30">
-                    {pos === 0 ? `${i + 1} / ${others.length}` : ""}
-                  </span>
-                </div>
-              </motion.div>
+                project={project}
+                onOpen={onOpen}
+                counter={counter}
+                className={`absolute top-0 left-0 w-[340px] h-[280px] cursor-pointer transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${transformClass}`}
+              />
             );
           })}
         </div>

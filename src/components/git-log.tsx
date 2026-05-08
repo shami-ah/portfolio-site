@@ -26,8 +26,7 @@ function getRoles(oe: { clients: number; events: number; hoursSavedPerDay: numbe
       period: "Sep 2025 - Present",
       points: [
         `Own the AI product roadmap and delivery for OpenEvent, now live with ${oe.clients}+ clients across ${oe.events}+ events`,
-        "Designed multi-agent orchestration: email ingestion, AI classification, entity extraction, human approval gates, automated execution",
-        "Built the full AI layer and shipped the product end-to-end: from pgvector embeddings to Stripe billing",
+        "Built the full AI layer end-to-end: from pgvector embeddings to Stripe billing",
       ],
       stack: ["React", "TypeScript", "Supabase", "OpenAI", "pgvector", "Stripe", "Docker"],
       stats: { files: 14, insertions: 340, deletions: 28 },

@@ -1,8 +1,10 @@
 "use client";
 
+import { useEffect, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { FadeUp } from "./motion";
 import { TypeLabel } from "./type-label";
-import { Calendar } from "lucide-react";
+import { Calendar, Star } from "lucide-react";
 import { openCvDrawer } from "@/components/cv-drawer";
 
 const contactLinks = [
@@ -12,6 +14,95 @@ const contactLinks = [
   { key: "upwork", label: "100% job success", href: "https://www.upwork.com/freelancers/~01bd0ab6e093ea2d49" },
   { key: "resume", label: "/cv", href: "#cv" },
 ] as const;
+
+const testimonials = [
+  {
+    quote: "The AI layer Ahtesham built saves our team 90 minutes a day. No engineer we interviewed designed the human-in-the-loop gate the way he did.",
+    name: "River Soellner",
+    title: "Founder, More Life Hospitality GmbH",
+    flag: "DE",
+  },
+  {
+    quote: "A technical and competent engineer who knows how to deal with specific and in-depth topics. He's well-placed to monitor your teams and your projects.",
+    name: "Mouad",
+    title: "Client, France",
+    flag: "FR",
+  },
+  {
+    quote: "Some aspects of the project were difficult to communicate, but he was very patient and understanding. Very speedy and professional.",
+    name: "Chloe",
+    title: "Client, United States",
+    flag: "US",
+  },
+  {
+    quote: "Delivered exactly what we needed with precision and expertise. The custom AI prompts helped create a powerful project management tool.",
+    name: "Joseph",
+    title: "Client, United Kingdom",
+    flag: "GB",
+  },
+] as const;
+
+function TestimonialCarousel(): React.ReactElement {
+  const [idx, setIdx] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => setIdx((i) => (i + 1) % testimonials.length), 5000);
+    return () => clearInterval(timer);
+  }, []);
+
+  const t = testimonials[idx];
+
+  return (
+    <div className="mb-10 md:mb-14">
+      <div className="relative min-h-[80px]">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={idx}
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ duration: 0.3 }}
+          >
+            <p className="text-sm md:text-base text-muted italic leading-relaxed max-w-2xl">
+              &ldquo;{t.quote}&rdquo;
+            </p>
+            <div className="flex items-center gap-3 mt-2">
+              <p className="text-small text-muted/60 font-mono">
+                {t.name}, {t.title}
+              </p>
+            </div>
+          </motion.div>
+        </AnimatePresence>
+      </div>
+      {/* Dots + rating */}
+      <div className="flex items-center gap-4 mt-4">
+        <div className="flex gap-1.5">
+          {testimonials.map((_, i) => (
+            <button
+              key={i}
+              type="button"
+              onClick={() => setIdx(i)}
+              className={`w-1.5 h-1.5 rounded-full transition-all duration-300 ${
+                i === idx ? "bg-accent w-4" : "bg-muted/20 hover:bg-muted/40"
+              }`}
+              aria-label={`Testimonial ${i + 1}`}
+            />
+          ))}
+        </div>
+        <div className="flex items-center gap-1 text-caption text-muted/40 font-mono">
+          <div className="flex gap-0.5">
+            {[1, 2, 3, 4, 5].map((s) => (
+              <Star key={s} size={10} className={s <= 4 ? "fill-accent/60 text-accent/60" : "fill-accent/30 text-accent/30"} />
+            ))}
+          </div>
+          <span>4.6 / 5</span>
+          <span className="text-muted/20 mx-1">·</span>
+          <span>19 reviews</span>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 export function ConfigContact(): React.ReactElement {
   return (
@@ -30,17 +121,9 @@ export function ConfigContact(): React.ReactElement {
           </h2>
         </FadeUp>
 
-        {/* Single testimonial as social proof line */}
+        {/* Rotating testimonials */}
         <FadeUp delay={0.08}>
-          <div className="mb-10 md:mb-14">
-            <p className="text-sm md:text-base text-muted italic leading-relaxed max-w-2xl">
-              &ldquo;The AI layer Ahtesham built saves our team 90 minutes a day.
-              No engineer we interviewed designed the human-in-the-loop gate the way he did.&rdquo;
-            </p>
-            <p className="text-small text-muted/60 font-mono mt-2">
-              River Soellner, Founder, More Life Hospitality GmbH
-            </p>
-          </div>
+          <TestimonialCarousel />
         </FadeUp>
 
         {/* CTA card */}
@@ -52,9 +135,6 @@ export function ConfigContact(): React.ReactElement {
                   <span className="w-1.5 h-1.5 bg-accent-status rounded-full animate-pulse" />
                   Available for full-time &amp; contract
                 </div>
-                <p className="text-base md:text-lg text-foreground font-medium mb-2">
-                  I architect the pipeline, build the product around it, and ship to production.
-                </p>
                 <p className="text-sm text-muted mb-5">
                   One engineer, full ownership, from data model to deployed SaaS.
                 </p>
