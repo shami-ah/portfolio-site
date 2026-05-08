@@ -141,7 +141,7 @@ function printCV(s: ReturnType<typeof useStatus>["status"]): void {
   if (!frame) {
     frame = document.createElement("iframe");
     frame.id = id;
-    frame.style.cssText = "position:fixed;width:0;height:0;border:none;left:-9999px";
+    frame.style.cssText = "position:fixed;width:794px;height:1123px;border:none;left:-9999px;top:-9999px";
     document.body.appendChild(frame);
   }
   const doc = frame.contentDocument || frame.contentWindow?.document;
