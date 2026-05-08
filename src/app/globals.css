@@ -106,6 +106,14 @@ body {
     var(--background);
   color: var(--foreground);
   font-family: var(--font-sans), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* GPU-accelerate fixed elements for smoother scroll */
+.fixed {
+  will-change: transform;
+  transform: translateZ(0);
 }
 
 /* Faint grid overlay — warm ember tint */

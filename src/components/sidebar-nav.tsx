@@ -47,26 +47,39 @@ export function SidebarNav(): React.ReactElement {
       if (!el) continue;
       if (el.offsetTop <= scrollY) current = id;
     }
-    setActive(current);
-    activeRef.current = current;
+    if (current !== activeRef.current) {
+      setActive(current);
+      activeRef.current = current;
+    }
   }, []);
 
+  // Track time per section — 1s interval (display only shows m:s)
   useEffect(() => {
     timerRef.current = setInterval(() => {
       setSectionTimes((prev) => ({
         ...prev,
-        [activeRef.current]: (prev[activeRef.current] ?? 0) + 0.1,
+        [activeRef.current]: (prev[activeRef.current] ?? 0) + 1,
       }));
-    }, 100);
+    }, 1000);
     return () => {
       if (timerRef.current) clearInterval(timerRef.current);
     };
   }, []);
 
+  // Throttled scroll handler — one update per animation frame
   useEffect(() => {
+    let ticking = false;
+    const onScroll = (): void => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        updateActive();
+        ticking = false;
+      });
+    };
     updateActive();
-    window.addEventListener("scroll", updateActive, { passive: true });
-    return () => window.removeEventListener("scroll", updateActive);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
   }, [updateActive]);
 
   useEffect(() => {
