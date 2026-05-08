@@ -203,6 +203,7 @@ function HeroAboutCard({ ready }: { ready: boolean }): React.ReactElement {
 export function ConfigHero(): React.ReactElement {
   const { status } = useStatus();
   const [ready, setReady] = useState(false);
+  const [epoch, setEpoch] = useState(0); // increments on replay to force remount
 
   const { scrollY } = useScroll();
   const orbY1 = useTransform(scrollY, [0, 800], [0, 120]);
@@ -224,8 +225,8 @@ export function ConfigHero(): React.ReactElement {
     const onReady = (): void => { setTimeout(() => setReady(true), 800); };
     window.addEventListener("agent-button-ready", onReady);
 
-    // On replay, reset ready so hero re-streams after boot
-    const onReplay = (): void => { setReady(false); };
+    // On replay, reset ready + bump epoch to force framer-motion remount
+    const onReplay = (): void => { setReady(false); setEpoch((e) => e + 1); };
     window.addEventListener("replay-intro", onReplay);
 
     // Fallback for edge cases
