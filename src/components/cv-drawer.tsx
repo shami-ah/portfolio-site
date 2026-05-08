@@ -29,7 +29,7 @@ const AMBER = "var(--accent-secondary, #8ba4c4)";
 
 function printCV(s: ReturnType<typeof useStatus>["status"]): void {
   const flow = ["Ingest", "Classify", "Orchestrate", "Review", "Execute", "Observe"]
-    .map((step, i, a) => `<span style="font-family:monospace;font-size:8px;font-weight:500;padding:2px 7px;border-radius:4px;border:1px solid #d0d0d0;color:#4a6fa5;background:#f0f0ec">${step}</span>${i < a.length - 1 ? ' <span style="color:#ccc;font-size:8px">\u2192</span> ' : ""}`)
+    .map((step, i, a) => `<span style="font-family:monospace;font-size:10px;font-weight:500;padding:3px 10px;border-radius:5px;border:1px solid #d0d0d0;color:#4a6fa5;background:#f0f0ec">${step}</span>${i < a.length - 1 ? ' <span style="color:#ccc;font-size:10px">\u2192</span> ' : ""}`)
     .join("");
 
   const skills = [
@@ -38,10 +38,10 @@ function printCV(s: ReturnType<typeof useStatus>["status"]): void {
     { title: "Infrastructure", items: [["GitHub Actions / CI", 88], ["Docker / Cloudflare", 83], ["Stripe Integration", 78], ["Playwright / n8n", 73]] },
     { title: "Process", items: [["Architecture-First Dev", 90], ["Team Leadership (3-10)", 85], ["Client Comms & SOWs", 80], ["Code Review (CodeLens)", 75]] },
   ].map(sec => `
-    <p style="font-family:monospace;font-size:8px;text-transform:uppercase;letter-spacing:1.5px;color:#aaa;margin:6px 0 3px"><span style="color:#4a6fa5">\u25B8</span> ${sec.title}</p>
+    <p style="font-family:monospace;font-size:10px;text-transform:uppercase;letter-spacing:2px;color:#aaa;margin:10px 0 5px"><span style="color:#4a6fa5">\u25B8</span> ${sec.title}</p>
     ${(sec.items as [string, number][]).map(([n, l]) => `
-      <div style="display:flex;justify-content:space-between;margin-bottom:1px"><span style="font-size:8px;color:#555">${n}</span><span style="font-family:monospace;font-size:8px;color:#bbb">${l}%</span></div>
-      <div style="height:2px;background:#eee;border-radius:1px;margin-bottom:3px"><div style="height:100%;width:${l}%;background:#4a6fa5;border-radius:1px"></div></div>
+      <div style="display:flex;justify-content:space-between;margin-bottom:2px"><span style="font-size:10px;color:#555">${n}</span><span style="font-family:monospace;font-size:10px;color:#bbb">${l}%</span></div>
+      <div style="height:3px;background:#eee;border-radius:2px;margin-bottom:5px"><div style="height:100%;width:${l}%;background:#4a6fa5;border-radius:2px"></div></div>
     `).join("")}
   `).join("");
 
@@ -59,18 +59,18 @@ function printCV(s: ReturnType<typeof useStatus>["status"]): void {
     { t: "Freelance AI & Full-Stack Engineer", c: "Upwork \u00b7 Fiverr \u00b7 Direct Clients \u00b7 Remote", p: "2019 \u2013 Present", items: ["50+ production systems shipped; 40+ clients, 100% job success on Upwork"] },
     { t: "Co-Founder & AI Engineer", c: "Wadware House \u00b7 Remote", p: "2023 \u2013 Present", items: ["AI automation agency for scoped client engagements"] },
   ].map(r => `
-    <div style="display:flex;gap:6px;margin-bottom:4px">
-      <div style="display:flex;flex-direction:column;align-items:center;padding-top:2px">
-        <div style="width:6px;height:6px;border-radius:50%;border:1.5px solid #4a6fa5;background:${r.a ? "rgba(74,111,165,0.15)" : "#fafaf8"}"></div>
-        <div style="flex:1;width:1px;background:#e0e0dc;margin-top:2px"></div>
+    <div style="display:flex;gap:8px;margin-bottom:6px">
+      <div style="display:flex;flex-direction:column;align-items:center;padding-top:3px">
+        <div style="width:8px;height:8px;border-radius:50%;border:2px solid #4a6fa5;background:${r.a ? "rgba(74,111,165,0.15)" : "#fafaf8"}"></div>
+        <div style="flex:1;width:1px;background:#e0e0dc;margin-top:3px"></div>
       </div>
       <div style="flex:1">
         <div style="display:flex;justify-content:space-between;align-items:baseline">
-          <p style="font-size:9px;font-weight:600">${r.t}</p>
-          <p style="font-family:monospace;font-size:8px;color:#aaa">${r.p}</p>
+          <p style="font-size:11.5px;font-weight:600">${r.t}</p>
+          <p style="font-family:monospace;font-size:10px;color:#aaa">${r.p}</p>
         </div>
-        <p style="font-size:8px;color:#999">${r.c}</p>
-        <ul style="list-style:none;margin-top:2px;padding:0">${r.items.map(i => `<li style="font-size:8px;color:#666;line-height:1.4;padding-left:8px;position:relative;margin-bottom:0"><span style="position:absolute;left:0;color:rgba(74,111,165,0.4);font-size:6px">\u25B8</span>${i}</li>`).join("")}</ul>
+        <p style="font-size:10px;color:#999">${r.c}</p>
+        <ul style="list-style:none;margin-top:3px;padding:0">${r.items.map(i => `<li style="font-size:10px;color:#666;line-height:1.45;padding-left:10px;position:relative;margin-bottom:1px"><span style="position:absolute;left:0;color:rgba(74,111,165,0.4);font-size:7px">\u25B8</span>${i}</li>`).join("")}</ul>
       </div>
     </div>
   `).join("");
@@ -83,55 +83,55 @@ function printCV(s: ReturnType<typeof useStatus>["status"]): void {
     { n: "Gluten-Free Deals & Dining", tag: "Cross-Platform", tc: "#8b5cf6", d: "React Native + Next.js. LLM queries, 40+ retailer scraping, GPS finder, AI recipes." },
     { n: "AI Agent System", tag: "Multi-Agent", tc: "#ec4899", d: "5 agents with tool-calling on HuggingFace Spaces. Groq + Tavily + GitHub API." },
   ].map(p => `
-    <div style="padding:3px 7px;border-radius:4px;border:1px solid #e8e8e4;background:#f5f5f1;margin-bottom:2px">
-      <div style="display:flex;align-items:baseline;gap:4px">
-        <span style="font-size:8.5px;font-weight:600">${p.n}</span>
-        <span style="font-family:monospace;font-size:7px;padding:0 4px;border-radius:10px;color:${p.tc};border:1px solid ${p.tc}40">${p.tag}</span>
+    <div style="padding:5px 9px;border-radius:5px;border:1px solid #e8e8e4;background:#f5f5f1;margin-bottom:3px">
+      <div style="display:flex;align-items:baseline;gap:5px;margin-bottom:1px">
+        <span style="font-size:10.5px;font-weight:600">${p.n}</span>
+        <span style="font-family:monospace;font-size:9px;padding:1px 5px;border-radius:10px;color:${p.tc};border:1px solid ${p.tc}40">${p.tag}</span>
       </div>
-      <p style="font-size:8px;color:#777;line-height:1.35">${p.d}</p>
+      <p style="font-size:10px;color:#777;line-height:1.4">${p.d}</p>
     </div>
   `).join("");
 
   const html = `<!DOCTYPE html><html><head><meta charset="utf-8"><title>CV - Ahtesham Ahmad</title>
-<style>@page{size:A4;margin:8mm 10mm}*{margin:0;padding:0;box-sizing:border-box}body{-webkit-print-color-adjust:exact;print-color-adjust:exact;font-family:system-ui,-apple-system,sans-serif;background:#fafaf8;color:#1a1a2e;font-size:8.5px;line-height:1.4}</style>
+<style>@page{size:A4;margin:8mm 10mm}*{margin:0;padding:0;box-sizing:border-box}body{-webkit-print-color-adjust:exact;print-color-adjust:exact;font-family:system-ui,-apple-system,sans-serif;background:#fafaf8;color:#1a1a2e;font-size:10px;line-height:1.45}</style>
 </head><body>
 <div>
-  <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:6px">
+  <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:8px">
     <div>
-      <p style="font-family:monospace;font-size:7px;text-transform:uppercase;letter-spacing:2.5px;color:#aaa;margin-bottom:2px">Curriculum Vitae</p>
-      <h1 style="font-size:30px;font-weight:bold;letter-spacing:-1px;line-height:1;color:#1a1a2e">Ahtesham <span style="color:#4a6fa5">Ahmad</span></h1>
-      <p style="font-size:11px;font-weight:300;color:#888;margin-top:2px">AI Engineer</p>
-      <p style="font-size:8px;color:#777;margin-top:4px;max-width:320px;line-height:1.5">AI engineer building production AI systems end-to-end: multi-agent orchestration, RAG pipelines, and full-stack AI-powered SaaS. I architect solutions where AI agents classify, execute, and learn while humans stay in control.</p>
+      <p style="font-family:monospace;font-size:9px;text-transform:uppercase;letter-spacing:3px;color:#aaa;margin-bottom:3px">Curriculum Vitae</p>
+      <h1 style="font-size:38px;font-weight:bold;letter-spacing:-1px;line-height:1;color:#1a1a2e">Ahtesham <span style="color:#4a6fa5">Ahmad</span></h1>
+      <p style="font-size:14px;font-weight:300;color:#888;margin-top:3px">AI Engineer</p>
+      <p style="font-size:10px;color:#777;margin-top:5px;max-width:380px;line-height:1.55">AI engineer building production AI systems end-to-end: multi-agent orchestration, RAG pipelines, and full-stack AI-powered SaaS. I architect solutions where AI agents classify, execute, and learn while humans stay in control.</p>
     </div>
-    <div style="font-family:monospace;font-size:8px;color:#999;text-align:right;line-height:1.6">
+    <div style="font-family:monospace;font-size:10px;color:#999;text-align:right;line-height:1.7">
       shami8024@gmail.com<br><span style="color:#4a6fa5">github.com/shami-ah</span><br><span style="color:#4a6fa5">linkedin.com/in/ahtesham</span><br><span style="color:#4a6fa5">ahtesham.dev.wadwarehouse.com</span><br>Islamabad, PK \u00b7 Remote
     </div>
   </div>
-  <div style="display:flex;align-items:center;gap:4px;flex-wrap:wrap">${flow}</div>
-  <div style="height:1px;background:linear-gradient(90deg,transparent,#4a6fa5,transparent);margin:5px 0"></div>
-  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:6px">
-    ${[{ n: "50+", l: "Production Systems" }, { n: "5+", l: "Years Experience" }, { n: "100%", l: "Client Satisfaction" }, { n: String(s.gogaa.tests), l: "Gogaa Tests", a: true }].map(st => `<div style="padding:6px;border-radius:5px;border:1px solid #e8e8e4;background:#f5f5f1;text-align:center"><p style="font-family:monospace;font-size:14px;font-weight:bold;color:${st.a ? "#b8860b" : "#4a6fa5"};line-height:1">${st.n}</p><p style="font-size:7px;text-transform:uppercase;letter-spacing:1px;color:#aaa;margin-top:2px">${st.l}</p></div>`).join("")}
+  <div style="display:flex;align-items:center;gap:5px;flex-wrap:wrap">${flow}</div>
+  <div style="height:1px;background:linear-gradient(90deg,transparent,#4a6fa5,transparent);margin:7px 0"></div>
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:8px">
+    ${[{ n: "50+", l: "Production Systems" }, { n: "5+", l: "Years Experience" }, { n: "100%", l: "Client Satisfaction" }, { n: String(s.gogaa.tests), l: "Gogaa Tests", a: true }].map(st => `<div style="padding:8px;border-radius:6px;border:1px solid #e8e8e4;background:#f5f5f1;text-align:center"><p style="font-family:monospace;font-size:18px;font-weight:bold;color:${st.a ? "#b8860b" : "#4a6fa5"};line-height:1">${st.n}</p><p style="font-size:8px;text-transform:uppercase;letter-spacing:1.5px;color:#aaa;margin-top:3px">${st.l}</p></div>`).join("")}
   </div>
-  <div style="display:grid;grid-template-columns:1fr 210px;gap:14px">
+  <div style="display:grid;grid-template-columns:1fr 250px;gap:18px">
     <div>
-      <p style="font-family:monospace;font-size:8px;text-transform:uppercase;letter-spacing:2px;color:#aaa;margin-bottom:4px"><span style="color:#4a6fa5">\u25B8</span> Experience</p>
+      <p style="font-family:monospace;font-size:10px;text-transform:uppercase;letter-spacing:3px;color:#aaa;margin-bottom:6px"><span style="color:#4a6fa5">\u25B8</span> Experience</p>
       ${roles}
-      <p style="font-family:monospace;font-size:8px;text-transform:uppercase;letter-spacing:2px;color:#aaa;margin:4px 0"><span style="color:#4a6fa5">\u25C6</span> Key Projects</p>
+      <p style="font-family:monospace;font-size:10px;text-transform:uppercase;letter-spacing:3px;color:#aaa;margin:6px 0"><span style="color:#4a6fa5">\u25C6</span> Key Projects</p>
       ${projects}
-      <p style="font-family:monospace;font-size:8px;text-transform:uppercase;letter-spacing:2px;color:#aaa;margin:4px 0 3px"><span style="color:#4a6fa5">\u25C8</span> Education</p>
-      <div style="padding:4px 7px;border-radius:4px;border:1px solid #e8e8e4;background:#f5f5f1;display:flex;justify-content:space-between;align-items:baseline">
-        <div><p style="font-size:8.5px;font-weight:600">B.Eng in Electrical & Electronics Engineering</p><p style="font-size:8px;color:#999">Sukkur IBA University</p></div>
-        <p style="font-family:monospace;font-size:8px;color:#aaa">2017 \u2013 2020 \u00b7 Grade A</p>
+      <p style="font-family:monospace;font-size:10px;text-transform:uppercase;letter-spacing:3px;color:#aaa;margin:6px 0 5px"><span style="color:#4a6fa5">\u25C8</span> Education</p>
+      <div style="padding:6px 9px;border-radius:5px;border:1px solid #e8e8e4;background:#f5f5f1;display:flex;justify-content:space-between;align-items:baseline">
+        <div><p style="font-size:10.5px;font-weight:600">B.Eng in Electrical & Electronics Engineering</p><p style="font-size:10px;color:#999">Sukkur IBA University</p></div>
+        <p style="font-family:monospace;font-size:10px;color:#aaa">2017 \u2013 2020 \u00b7 Grade A</p>
       </div>
     </div>
     <div>
       ${skills}
-      <p style="font-family:monospace;font-size:8px;text-transform:uppercase;letter-spacing:1.5px;color:#aaa;margin:6px 0 3px"><span style="color:#4a6fa5">\u25B8</span> Certifications</p>
-      ${["Generative AI & LLMs \u00b7 IBM", "Project Management \u00b7 Google", "Gen AI for PMs \u00b7 PMI"].map(c => `<p style="font-size:8px;color:#888;padding-left:6px;border-left:1.5px solid #e8e8e4;margin-bottom:2px;line-height:1.35">${c}</p>`).join("")}
-      <p style="font-family:monospace;font-size:8px;text-transform:uppercase;letter-spacing:1.5px;color:#aaa;margin:6px 0 3px"><span style="color:#4a6fa5">\u25B8</span> Languages</p>
-      <div style="display:flex;gap:4px;flex-wrap:wrap">${["English \u00b7 Pro", "Urdu \u00b7 Native", "Pashtu \u00b7 Native", "Sindhi \u00b7 Conv", "Arabic \u00b7 Conv"].map(l => `<span style="font-size:7px;padding:1px 5px;border-radius:3px;background:#f0f0ec;color:#888;border:1px solid #e4e4e0">${l}</span>`).join("")}</div>
-      <p style="font-family:monospace;font-size:8px;text-transform:uppercase;letter-spacing:1.5px;color:#aaa;margin:6px 0 2px"><span style="color:#4a6fa5">\u25B8</span> Building Next</p>
-      <p style="font-size:8px;color:#888;line-height:1.4">Gogaa Architect Mode \u00b7 Spec-to-Code Traceability \u00b7 CodeLens v0.4 (AST)</p>
+      <p style="font-family:monospace;font-size:10px;text-transform:uppercase;letter-spacing:2px;color:#aaa;margin:10px 0 5px"><span style="color:#4a6fa5">\u25B8</span> Certifications</p>
+      ${["Generative AI & LLMs \u00b7 IBM", "Project Management \u00b7 Google", "Gen AI for PMs \u00b7 PMI"].map(c => `<p style="font-size:10px;color:#888;padding-left:8px;border-left:2px solid #e8e8e4;margin-bottom:4px;line-height:1.4">${c}</p>`).join("")}
+      <p style="font-family:monospace;font-size:10px;text-transform:uppercase;letter-spacing:2px;color:#aaa;margin:10px 0 5px"><span style="color:#4a6fa5">\u25B8</span> Languages</p>
+      <div style="display:flex;gap:5px;flex-wrap:wrap">${["English \u00b7 Pro", "Urdu \u00b7 Native", "Pashtu \u00b7 Native", "Sindhi \u00b7 Conv", "Arabic \u00b7 Conv"].map(l => `<span style="font-size:9px;padding:2px 6px;border-radius:3px;background:#f0f0ec;color:#888;border:1px solid #e4e4e0">${l}</span>`).join("")}</div>
+      <p style="font-family:monospace;font-size:10px;text-transform:uppercase;letter-spacing:2px;color:#aaa;margin:10px 0 4px"><span style="color:#4a6fa5">\u25B8</span> Building Next</p>
+      <p style="font-size:10px;color:#888;line-height:1.45">Gogaa Architect Mode \u00b7 Spec-to-Code Traceability \u00b7 CodeLens v0.4 (AST)</p>
     </div>
   </div>
 </div></body></html>`;
