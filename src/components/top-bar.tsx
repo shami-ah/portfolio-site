@@ -145,31 +145,31 @@ export function TopBar(): React.ReactElement {
       {/* ── Journey meteor — glowing dot with trail rising from bottom to journey button ── */}
       {btnCenterX > 0 && (
         <div className="fixed inset-0 z-30 pointer-events-none" style={{ opacity: meteorProgress > 0 ? 1 : 0, transition: "opacity 0.8s ease" }}>
-          {/* Outer glow — wide soft ambient light along the path */}
+          {/* Outer glow — wide ambient light along the path */}
           {!meteorLanded && (
             <div
               className="absolute"
               style={{
-                left: btnCenterX - 20,
+                left: btnCenterX - 30,
                 bottom: 0,
-                width: 40,
+                width: 60,
                 height: `${meteorProgress}%`,
-                background: "linear-gradient(to top, transparent 0%, rgba(74,222,128,0.03) 30%, rgba(74,222,128,0.06) 70%, rgba(74,222,128,0.12) 100%)",
-                filter: "blur(8px)",
+                background: "linear-gradient(to top, transparent 0%, rgba(74,222,128,0.06) 20%, rgba(74,222,128,0.15) 60%, rgba(74,222,128,0.25) 100%)",
+                filter: "blur(12px)",
                 transition: "height 0.8s cubic-bezier(0.22, 1, 0.36, 1)",
               }}
             />
           )}
-          {/* Core trail — visible line from bottom to meteor */}
+          {/* Core trail — bright visible line from bottom to meteor */}
           {!meteorLanded && (
             <div
               className="absolute"
               style={{
-                left: btnCenterX - 1.5,
+                left: btnCenterX - 2,
                 bottom: 0,
-                width: 3,
+                width: 4,
                 height: `${meteorProgress}%`,
-                background: "linear-gradient(to top, transparent 0%, rgba(74,222,128,0.1) 10%, rgba(74,222,128,0.35) 60%, rgba(74,222,128,0.7) 100%)",
+                background: "linear-gradient(to top, rgba(74,222,128,0.05) 0%, rgba(74,222,128,0.3) 15%, rgba(74,222,128,0.6) 60%, rgba(74,222,128,0.9) 100%)",
                 borderRadius: 2,
                 transition: "height 0.8s cubic-bezier(0.22, 1, 0.36, 1)",
               }}
@@ -180,28 +180,28 @@ export function TopBar(): React.ReactElement {
             <div
               className="absolute"
               style={{
-                left: btnCenterX - 7,
+                left: btnCenterX - 9,
                 bottom: `${meteorProgress}%`,
-                width: 14,
-                height: 14,
+                width: 18,
+                height: 18,
                 borderRadius: "50%",
-                background: "radial-gradient(circle, rgba(74,222,128,1) 0%, rgba(74,222,128,0.7) 30%, rgba(74,222,128,0.2) 60%, transparent 80%)",
-                boxShadow: "0 0 16px 6px rgba(74,222,128,0.5), 0 0 40px 12px rgba(74,222,128,0.2), 0 0 60px 20px rgba(74,222,128,0.08)",
+                background: "radial-gradient(circle, #fff 0%, rgba(74,222,128,1) 20%, rgba(74,222,128,0.6) 50%, transparent 75%)",
+                boxShadow: "0 0 20px 8px rgba(74,222,128,0.7), 0 0 50px 16px rgba(74,222,128,0.35), 0 0 80px 30px rgba(74,222,128,0.15)",
                 transition: "bottom 0.8s cubic-bezier(0.22, 1, 0.36, 1)",
               }}
             />
           )}
-          {/* Post-landing — ambient glow pulses from bottom to button */}
+          {/* Post-landing — bright glow pulses from bottom to button */}
           {meteorLanded && (
             <>
               <div
                 className="absolute"
                 style={{
-                  left: btnCenterX - 1.5,
+                  left: btnCenterX - 2,
                   bottom: 0,
-                  width: 3,
+                  width: 4,
                   height: "100%",
-                  background: "linear-gradient(to top, transparent 0%, transparent 50%, rgba(74,222,128,0.2) 80%, rgba(74,222,128,0.5) 100%)",
+                  background: "linear-gradient(to top, transparent 0%, rgba(74,222,128,0.15) 30%, rgba(74,222,128,0.4) 70%, rgba(74,222,128,0.8) 100%)",
                   borderRadius: 2,
                   animation: "glow-rise 2.5s ease-in-out infinite",
                 }}
@@ -209,12 +209,12 @@ export function TopBar(): React.ReactElement {
               <div
                 className="absolute"
                 style={{
-                  left: btnCenterX - 15,
+                  left: btnCenterX - 25,
                   bottom: 0,
-                  width: 30,
+                  width: 50,
                   height: "100%",
-                  background: "linear-gradient(to top, transparent 0%, transparent 60%, rgba(74,222,128,0.04) 80%, rgba(74,222,128,0.1) 100%)",
-                  filter: "blur(10px)",
+                  background: "linear-gradient(to top, transparent 0%, transparent 40%, rgba(74,222,128,0.08) 70%, rgba(74,222,128,0.2) 100%)",
+                  filter: "blur(14px)",
                   animation: "glow-rise 2.5s ease-in-out infinite",
                 }}
               />
