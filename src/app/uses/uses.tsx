@@ -508,19 +508,17 @@ export function Uses(): React.ReactElement {
   return (
     <div className="h-screen flex flex-col bg-background overflow-hidden">
       {/* Title bar */}
-      <div className="border-b border-card-border bg-card/60 shrink-0">
-        <div className="max-w-5xl mx-auto px-5 md:px-6 py-3 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="flex gap-1.5">
-              <Link href="/" aria-label="Close" className="w-3 h-3 rounded-full bg-red-500/60 hover:bg-red-500 transition-colors cursor-pointer" />
-              <span className="w-3 h-3 rounded-full bg-yellow-500/60" />
-              <span className="w-3 h-3 rounded-full bg-green-500/60" />
-            </div>
-          </div>
+      <div className="border-b border-card-border bg-card/60 shrink-0 relative">
+        <div className="flex gap-1.5 absolute left-3 top-1/2 -translate-y-1/2">
+          <Link href="/" aria-label="Close" className="w-3 h-3 rounded-full bg-red-500/60 hover:bg-red-500 transition-colors cursor-pointer" />
+          <span className="w-3 h-3 rounded-full bg-yellow-500/60" />
+          <span className="w-3 h-3 rounded-full bg-green-500/60" />
+        </div>
+        <div className="max-w-5xl mx-auto px-5 md:px-6 py-3 flex items-center justify-center">
           <span className="text-small font-mono text-muted/40">shami-toolkit</span>
           <Link
             href="/"
-            className="text-xs font-mono text-muted hover:text-accent transition-colors"
+            className="text-xs font-mono text-muted hover:text-accent transition-colors absolute right-5 md:right-6"
           >
             ← back to portfolio
           </Link>
