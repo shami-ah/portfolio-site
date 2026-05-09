@@ -376,6 +376,7 @@ export function ChatWidget(): React.ReactElement {
       {/* ── Chat panel ── */}
       <AnimatePresence>
         {state === "open" && (
+          <div className="fixed bottom-5 right-3 md:right-6 z-50">
           <motion.div
             ref={tilt.ref}
             onMouseMove={tilt.onMouseMove}
@@ -385,7 +386,7 @@ export function ChatWidget(): React.ReactElement {
             initial="hidden"
             animate="visible"
             exit="exit"
-            className="fixed bottom-5 right-3 md:right-6 z-50 w-[calc(100vw-2rem)] sm:w-[400px] h-[min(560px,calc(100vh-7rem))] flex flex-col rounded-2xl overflow-hidden card-gradient-border"
+            className="w-[calc(100vw-2rem)] sm:w-[400px] h-[min(560px,calc(100vh-7rem))] flex flex-col rounded-2xl overflow-hidden card-gradient-border"
           >
             {/* Glass background layer */}
             <div className="absolute inset-0 bg-card/75 backdrop-blur-2xl rounded-2xl" />
@@ -548,6 +549,7 @@ export function ChatWidget(): React.ReactElement {
               </div>
             </form>
           </motion.div>
+          </div>
         )}
       </AnimatePresence>
     </>
