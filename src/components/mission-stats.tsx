@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
 import { FadeUp } from "./motion";
+import { TiltCard } from "./tilt-card";
 import { TypeLabel } from "./type-label";
 import { useStatus } from "@/lib/use-status";
 
@@ -86,16 +87,11 @@ export function MissionStats(): React.ReactElement {
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 items-stretch">
           {widgets.map((w, i) => (
-            <motion.div
+            <TiltCard
               key={w.key}
-              initial={false}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              viewport={{ once: true, margin: "-50px" }}
-              transition={{ duration: 0.5, delay: i * 0.1, ease: [0.22, 1, 0.36, 1] }}
-              whileHover={{ y: -4, transition: { duration: 0.2 } }}
               className="h-full"
             >
-              <div className="card-glow card-gradient-border p-4 md:p-5 rounded-xl bg-card border border-card-border h-full flex flex-col group hover:border-transparent transition-colors duration-300">
+              <div className="card-glow card-gradient-border p-4 md:p-5 rounded-xl bg-card border border-card-border h-full flex flex-col group hover:border-transparent hover:-translate-y-1 transition-all duration-300">
                 <div className="flex items-center gap-2 mb-3">
                   <span className="w-1.5 h-1.5 rounded-full bg-accent-status animate-pulse group-hover:scale-150 transition-transform" />
                   <span className="text-caption font-mono text-muted/60 uppercase tracking-wider group-hover:text-accent/80 transition-colors">
@@ -109,7 +105,7 @@ export function MissionStats(): React.ReactElement {
                   {w.desc}
                 </p>
               </div>
-            </motion.div>
+            </TiltCard>
           ))}
         </div>
       </div>

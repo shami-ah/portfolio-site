@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FadeUp } from "./motion";
+import { TiltCard } from "./tilt-card";
 import { TypeLabel } from "./type-label";
 import { Calendar, Star } from "lucide-react";
 import { openCvDrawer } from "@/components/cv-drawer";
@@ -126,7 +127,7 @@ export function ConfigContact(): React.ReactElement {
 
         {/* CTA card */}
         <FadeUp delay={0.15}>
-          <div className="rounded-xl border border-accent/20 bg-gradient-to-br from-card via-card to-accent/[0.03] p-6 md:p-8">
+          <TiltCard className="rounded-xl border border-accent/20 bg-gradient-to-br from-card via-card to-accent/[0.03] p-6 md:p-8">
             <div className="grid md:grid-cols-[1fr_auto] gap-8 items-center">
               <div>
                 <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent-status/10 border border-accent-status/20 text-accent-status text-caption md:text-xs font-mono mb-4">
@@ -172,7 +173,7 @@ export function ConfigContact(): React.ReactElement {
                 Book a 15-min call
               </a>
             </div>
-          </div>
+          </TiltCard>
         </FadeUp>
 
       </div>

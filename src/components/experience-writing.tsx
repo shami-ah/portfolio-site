@@ -3,6 +3,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { FadeUp } from "./motion";
+import { TiltCard } from "./tilt-card";
 import { TypeLabel } from "./type-label";
 import { useStatus } from "@/lib/use-status";
 import { getFeaturedArticles } from "@/data/writing";
@@ -139,6 +140,7 @@ export function ExperienceAndWriting(): React.ReactElement {
                     i === 1 ? "border-accent-secondary" :
                     "border-accent-status"
                   }`} />
+                  <TiltCard className="h-full">
                   <div className="card-glow card-gradient-border rounded-lg bg-card border border-card-border p-3 md:p-4 h-full flex flex-col font-mono hover:border-transparent transition-colors duration-300">
                     {/* Hash + branch + period */}
                     <div className="flex flex-wrap items-center gap-x-1.5 gap-y-0.5 mb-1.5 text-caption">
@@ -163,6 +165,7 @@ export function ExperienceAndWriting(): React.ReactElement {
                       <span className="text-red-400/60">-{role.stats.deletions.toLocaleString()}</span>
                     </div>
                   </div>
+                  </TiltCard>
                 </motion.div>
 
                 {/* Right: Writing .md card */}
@@ -173,6 +176,7 @@ export function ExperienceAndWriting(): React.ReactElement {
                     viewport={{ once: true, margin: "-50px" }}
                     transition={{ duration: 0.6, delay: i * 0.1, ease: [0.22, 1, 0.36, 1] }}
                   >
+                    <TiltCard className="h-full">
                     <Link
                       href={`/writing#${article.slug}`}
                       className="group card-glow card-gradient-border rounded-lg bg-card border border-card-border p-3 md:p-4 h-full flex flex-col font-mono hover:border-transparent transition-colors duration-300"
@@ -197,6 +201,7 @@ export function ExperienceAndWriting(): React.ReactElement {
                         <span className="ml-auto text-muted/30 group-hover:text-accent transition-colors">→</span>
                       </div>
                     </Link>
+                    </TiltCard>
                   </motion.div>
                 ) : <div />}
               </React.Fragment>

@@ -1,9 +1,10 @@
 "use client";
 
-import { useRef, useCallback, useEffect, useState } from "react";
-import { motion, useScroll, useTransform, useMotionValue, useSpring } from "framer-motion";
+import { useEffect, useState } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { useStatus } from "@/lib/use-status";
 import { openCvDrawer } from "@/components/cv-drawer";
+import { useTilt } from "@/lib/use-tilt";
 
 /* ------------------------------------------------------------------ */
 /*  Terminal About Card — char-by-char typing + response streaming     */
@@ -26,29 +27,14 @@ const TERM_STEPS: TermStep[] = [
 ];
 
 function HeroAboutCard(): React.ReactElement {
-  const ref = useRef<HTMLDivElement>(null);
-
-  // 3D tilt
-  const rx = useMotionValue(0);
-  const ry = useMotionValue(0);
-  const rotateX = useSpring(rx, { stiffness: 200, damping: 20 });
-  const rotateY = useSpring(ry, { stiffness: 200, damping: 20 });
-
-  const onMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>): void => {
-    const rect = ref.current?.getBoundingClientRect();
-    if (!rect) return;
-    ry.set(((e.clientX - rect.left) / rect.width - 0.5) * 10);
-    rx.set((0.5 - (e.clientY - rect.top) / rect.height) * 10);
-  }, [rx, ry]);
-
-  const onMouseLeave = useCallback((): void => { rx.set(0); ry.set(0); }, [rx, ry]);
+  const tilt = useTilt(10);
 
   return (
     <motion.div
-      ref={ref}
-      onMouseMove={onMouseMove}
-      onMouseLeave={onMouseLeave}
-      style={{ rotateX, rotateY, transformPerspective: 900, transformStyle: "preserve-3d" }}
+      ref={tilt.ref}
+      onMouseMove={tilt.onMouseMove}
+      onMouseLeave={tilt.onMouseLeave}
+      style={tilt.style}
       whileHover={{ scale: 1.02, boxShadow: "0 25px 50px rgba(0,0,0,0.4), 0 0 40px rgba(212,168,83,0.06)" }}
       transition={{ duration: 0.2 }}
       className="rounded-xl bg-card border border-card-border overflow-hidden flex flex-col shadow-2xl shadow-black/20 cursor-default"
