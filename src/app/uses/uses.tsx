@@ -257,7 +257,7 @@ function PreviewReadme(): React.ReactElement {
           <span key={t} className="px-2 py-0.5 text-caption font-mono bg-accent/5 text-accent/80 rounded border border-accent/20">{t}</span>
         ))}
       </div>
-      <div className="p-3 rounded-lg bg-background/40 border border-card-border/40 font-mono text-caption">
+      <div className="p-3 rounded-lg bg-card border border-card-border font-mono text-caption">
         <div className="text-muted/40 mb-1">$ npm install shami-toolkit</div>
         <div className="text-accent-status/60">+ shami-toolkit@1.0.0</div>
       </div>
@@ -269,8 +269,8 @@ function PreviewReadme(): React.ReactElement {
 function PreviewEcosystem(): React.ReactElement {
   return (
     <div className="p-5">
-      <div className="rounded-xl border border-accent/20 bg-gradient-to-br from-card via-card to-accent/[0.03] p-5">
-        <p className="text-caption font-mono text-accent uppercase tracking-[0.2em] mb-3">The loop nobody else has</p>
+      <div className="card-glow card-gradient-border rounded-xl bg-card border border-card-border p-5">
+        <p className="text-caption font-mono text-accent uppercase tracking-wider mb-3">The loop nobody else has</p>
         <p className="text-sm font-medium mb-1">I built an ecosystem where each tool makes the others better.</p>
         <p className="text-caption text-muted leading-relaxed mb-5">Gogaa writes code. CodeLens reviews it. Patterns feed back via Guardian mode. Rasad monitors every session.</p>
         {/* Globe diagram with orbital pillars */}
@@ -287,8 +287,8 @@ function PreviewEcosystem(): React.ReactElement {
           <div className="absolute w-[100px] h-[160px] rounded-full border border-dashed border-accent/10" />
           {/* Center label */}
           <div className="absolute text-center z-0">
-            <p className="text-caption font-mono text-muted/30 uppercase tracking-[0.3em]">self</p>
-            <p className="text-caption font-mono text-muted/30 uppercase tracking-[0.3em]">improving</p>
+            <p className="text-caption font-mono text-muted/30 uppercase tracking-wider">self</p>
+            <p className="text-caption font-mono text-muted/30 uppercase tracking-wider">improving</p>
           </div>
           {/* 4 pillar nodes positioned around the globe */}
           <div className="relative w-[280px] h-[280px]">
@@ -528,7 +528,7 @@ export function Uses(): React.ReactElement {
       <div className="flex flex-1 overflow-hidden">
         {/* Sidebar file tree — desktop only */}
         <div className="w-[190px] border-r border-card-border bg-card shrink-0 hidden lg:flex flex-col font-mono text-caption overflow-y-auto">
-          <div className="px-3 py-2 text-caption text-muted/20 uppercase tracking-[1.5px]">Explorer</div>
+          <div className="px-3 py-2 text-caption text-muted/20 uppercase tracking-wider">Explorer</div>
 
           {folders.map((folder) => {
             const folderFiles = files.filter((f) => f.folder === folder);
@@ -558,7 +558,7 @@ export function Uses(): React.ReactElement {
           })}
 
           <div className="mt-auto px-3 py-2 border-t border-card-border/20">
-            <div className="text-caption text-muted/20 uppercase tracking-[1px] mb-1">Git</div>
+            <div className="text-caption text-muted/20 uppercase tracking-wider mb-1">Git</div>
             <div className="text-caption text-muted/20 flex items-center gap-1"><span className="w-[3px] h-[3px] rounded-full bg-accent-status" /> main</div>
           </div>
         </div>
@@ -645,7 +645,7 @@ export function Uses(): React.ReactElement {
               <div className={`flex-1 overflow-y-auto border-r border-card-border/20 bg-background/40 ${
                 mobileView === "code" ? "block" : "hidden md:block"
               }`}>
-                <div className="sticky top-0 z-5 px-3 py-[3px] text-caption font-mono text-muted/20 uppercase tracking-[1px] border-b border-card-border/20 bg-background/90 backdrop-blur-sm">
+                <div className="sticky top-0 z-5 px-3 py-[3px] text-caption font-mono text-muted/20 uppercase tracking-wider border-b border-card-border/20 bg-background/90 backdrop-blur-sm">
                   {activeEntry.name}
                 </div>
                 <CodePanel />
@@ -654,7 +654,7 @@ export function Uses(): React.ReactElement {
               <div className={`flex-[1.1] overflow-y-auto ${
                 mobileView === "preview" ? "block" : "hidden md:block"
               }`}>
-                <div className="sticky top-0 z-5 px-3 py-[3px] text-caption font-mono text-muted/20 uppercase tracking-[1px] border-b border-card-border/20 bg-background/90 backdrop-blur-sm">
+                <div className="sticky top-0 z-5 px-3 py-[3px] text-caption font-mono text-muted/20 uppercase tracking-wider border-b border-card-border/20 bg-background/90 backdrop-blur-sm">
                   Preview
                 </div>
                 <PreviewPanel />
@@ -671,7 +671,7 @@ export function Uses(): React.ReactElement {
           )}
 
           {/* Status bar — compact on mobile */}
-          <div className="flex items-center justify-between px-3 py-[2px] border-t border-card-border bg-card/40 shrink-0 text-caption font-mono text-muted/20">
+          <div className="flex items-center justify-between px-3 py-1 border-t border-card-border bg-card/60 shrink-0 text-caption font-mono text-muted/30">
             <div className="flex items-center gap-3">
               <span className="flex items-center gap-1"><span className="w-[3px] h-[3px] rounded-full bg-accent-status" /> main</span>
               <span>{lang}</span>
