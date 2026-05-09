@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { ArrowLeft } from "lucide-react";
+
 import { TimeMachine } from "@/components/time-machine";
 
 /* ------------------------------------------------------------------ */
@@ -97,8 +97,7 @@ export function Journey(): React.ReactElement {
             href="/"
             className="inline-flex items-center gap-2 text-xs font-mono text-muted hover:text-accent transition-colors"
           >
-            back to portfolio
-            <ArrowLeft size={14} className="rotate-180" />
+            back to portfolio →
           </Link>
         </div>
       </header>
