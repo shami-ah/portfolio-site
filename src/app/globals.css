@@ -365,6 +365,11 @@ body::after {
   100% { transform: rotate(360deg); }
 }
 
+/* ── Rasad screenshot — invert in light mode ── */
+.light .rasad-screenshot {
+  filter: invert(1) hue-rotate(180deg);
+}
+
 /* ── Reboot tremor — button shakes when pressure builds ── */
 .nav-tremor {
   animation: tremor-shake 0.3s ease-in-out infinite;

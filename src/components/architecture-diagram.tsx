@@ -8,36 +8,69 @@ interface ArchitectureDiagramProps {
   title?: string;
 }
 
+const darkVars = {
+  primaryColor: "#1e3a5f",
+  primaryTextColor: "#93c5fd",
+  primaryBorderColor: "#3b82f6",
+  lineColor: "#3b82f680",
+  secondaryColor: "#18181b",
+  tertiaryColor: "#27272a",
+  fontFamily: "ui-monospace, monospace",
+  fontSize: "12px",
+  nodeBorder: "#3b82f640",
+  mainBkg: "#1e293b",
+  clusterBkg: "#0f172a",
+  clusterBorder: "#3b82f630",
+  edgeLabelBackground: "#09090b",
+  nodeTextColor: "#e2e8f0",
+};
+
+const lightVars = {
+  primaryColor: "#dbeafe",
+  primaryTextColor: "#1e3a5f",
+  primaryBorderColor: "#3b82f6",
+  lineColor: "#3b82f660",
+  secondaryColor: "#f1f5f9",
+  tertiaryColor: "#e2e8f0",
+  fontFamily: "ui-monospace, monospace",
+  fontSize: "12px",
+  nodeBorder: "#3b82f640",
+  mainBkg: "#eff6ff",
+  clusterBkg: "#f8fafc",
+  clusterBorder: "#3b82f630",
+  edgeLabelBackground: "#ffffff",
+  nodeTextColor: "#1e293b",
+};
+
 export function ArchitectureDiagram({
   chart,
   title = "System Architecture",
 }: ArchitectureDiagramProps): React.ReactElement {
   const containerRef = useRef<HTMLDivElement>(null);
   const [svg, setSvg] = useState<string>("");
+  const [theme, setTheme] = useState<"dark" | "light">("dark");
 
+  // Detect theme changes
+  useEffect(() => {
+    const detect = (): void => {
+      setTheme(document.documentElement.classList.contains("light") ? "light" : "dark");
+    };
+    detect();
+    const obs = new MutationObserver(detect);
+    obs.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
+    return () => obs.disconnect();
+  }, []);
+
+  // Re-render diagram when theme changes
   useEffect(() => {
     let cancelled = false;
     async function render(): Promise<void> {
       const mermaid = (await import("mermaid")).default;
+      const isDark = theme === "dark";
       mermaid.initialize({
         startOnLoad: false,
-        theme: "dark",
-        themeVariables: {
-          primaryColor: "#1e3a5f",
-          primaryTextColor: "#93c5fd",
-          primaryBorderColor: "#3b82f6",
-          lineColor: "#3b82f680",
-          secondaryColor: "#18181b",
-          tertiaryColor: "#27272a",
-          fontFamily: "ui-monospace, monospace",
-          fontSize: "12px",
-          nodeBorder: "#3b82f640",
-          mainBkg: "#1e293b",
-          clusterBkg: "#0f172a",
-          clusterBorder: "#3b82f630",
-          edgeLabelBackground: "#09090b",
-          nodeTextColor: "#e2e8f0",
-        },
+        theme: isDark ? "dark" : "default",
+        themeVariables: isDark ? darkVars : lightVars,
         flowchart: {
           htmlLabels: true,
           curve: "basis",
@@ -56,10 +89,8 @@ export function ArchitectureDiagram({
       }
     }
     render();
-    return () => {
-      cancelled = true;
-    };
-  }, [chart]);
+    return () => { cancelled = true; };
+  }, [chart, theme]);
 
   return (
     <FadeUp>
@@ -69,7 +100,7 @@ export function ArchitectureDiagram({
         </p>
         <div
           ref={containerRef}
-          className="p-6 rounded-xl bg-[#0c0c0f] border border-[#2a2520] overflow-x-auto"
+          className="p-6 rounded-xl bg-card border border-card-border overflow-x-auto"
         >
           {svg ? (
             <div
