@@ -216,7 +216,7 @@ export function ChatWidget(): React.ReactElement {
             exit={{ opacity: 0, scale: 0.8 }}
             transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
             data-chat-trigger
-            className={`fixed bottom-5 right-5 z-40 group flex items-center cursor-pointer glass rounded-full p-2.5 hover:px-4 hover:gap-2 transition-all duration-300 ${triggerGlow ? "ring-2 ring-accent-status/60 shadow-[0_0_20px_rgba(74,222,128,0.3)]" : ""}`}
+            className={`fixed bottom-5 right-3 md:right-6 z-40 group flex items-center cursor-pointer glass rounded-full p-2.5 hover:px-4 hover:gap-2 transition-all duration-300 ${triggerGlow ? "ring-2 ring-accent-status/60 shadow-[0_0_20px_rgba(74,222,128,0.3)]" : ""}`}
             style={{ boxShadow: triggerGlow ? undefined : "0 4px 20px rgba(0,0,0,0.4), 0 0 40px rgba(0,0,0,0.2)" }}
           >
             <span className="font-mono text-[13px] font-bold text-accent/70 group-hover:text-accent shrink-0 leading-none transition-colors">&gt;_</span>

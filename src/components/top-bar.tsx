@@ -54,17 +54,18 @@ export function TopBar(): React.ReactElement {
         }
 
         // Journey meteor: starts when contact section enters viewport,
-        // lands when contact is fully visible
+        // lands when user reaches the bottom of the page
         const contact = document.getElementById("contact");
         if (contact) {
           const vh = window.innerHeight;
+          const maxScroll = document.documentElement.scrollHeight - vh;
           // Start: when contact section top hits the bottom of the viewport
           const startScroll = contact.offsetTop - vh;
-          // End: when contact section bottom is at ~40% of viewport (fully read)
-          const endScroll = contact.offsetTop + contact.offsetHeight - vh * 0.5;
+          // End: at the very bottom of the page
+          const endScroll = maxScroll;
           const totalRange = endScroll - startScroll;
 
-          if (y < startScroll) {
+          if (y < startScroll || totalRange <= 0) {
             setMeteorProgress(0);
             setMeteorLanded(false);
           } else if (y >= endScroll) {
