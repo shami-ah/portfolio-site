@@ -41,7 +41,6 @@ interface Particle {
   focal: boolean;
 }
 
-/** Walk up to the nearest <section> so blur covers the full section */
 function findSection(id: string): HTMLElement | null {
   const el = document.getElementById(id);
   if (!el) return null;
@@ -49,9 +48,48 @@ function findSection(id: string): HTMLElement | null {
   return el.closest("section") ?? el;
 }
 
+/**
+ * Waits for scroll to stabilize (position stops changing for ~300ms),
+ * then calls the callback. Falls back after maxWait ms.
+ */
+function onScrollSettled(callback: () => void, maxWait = 2500): () => void {
+  let lastY = window.scrollY;
+  let stableCount = 0;
+  let fired = false;
+
+  const fire = (): void => {
+    if (fired) return;
+    fired = true;
+    clearInterval(poll);
+    clearTimeout(fallback);
+    callback();
+  };
+
+  const poll = setInterval(() => {
+    const y = window.scrollY;
+    if (Math.abs(y - lastY) < 2) {
+      stableCount++;
+      if (stableCount >= 3) fire(); // 300ms of stability
+    } else {
+      stableCount = 0;
+    }
+    lastY = y;
+  }, 100);
+
+  const fallback = setTimeout(fire, maxWait);
+
+  // Return cleanup function
+  return () => {
+    fired = true;
+    clearInterval(poll);
+    clearTimeout(fallback);
+  };
+}
+
 export function AgentRevealParticles(): React.ReactElement {
   const [particles, setParticles] = useState<Particle[]>([]);
   const timersRef = useRef<ReturnType<typeof setTimeout>[]>([]);
+  const cleanupRef = useRef<(() => void) | null>(null);
   const idCounter = useRef(0);
   const prevSectionRef = useRef<HTMLElement | null>(null);
 
@@ -66,17 +104,16 @@ export function AgentRevealParticles(): React.ReactElement {
       // Clean up any previous reveal
       timersRef.current.forEach(clearTimeout);
       timersRef.current = [];
-      // Reset previous section's styles if it was still mid-reveal
+      if (cleanupRef.current) cleanupRef.current();
       if (prevSectionRef.current) {
         prevSectionRef.current.style.transition = "";
         prevSectionRef.current.style.filter = "";
         prevSectionRef.current.style.opacity = "";
       }
       prevSectionRef.current = section;
-      // Clear old particles immediately
       setParticles([]);
 
-      // Step 1: Blur the section (blurs while scrolling into view)
+      // Step 1: Blur the section immediately
       section.style.transition = "none";
       section.style.filter = "blur(10px)";
       section.style.opacity = "0.15";
@@ -84,85 +121,83 @@ export function AgentRevealParticles(): React.ReactElement {
       section.style.transition =
         "filter 1s cubic-bezier(0.4,0,0.2,1), opacity 1s cubic-bezier(0.4,0,0.2,1)";
 
-      // Step 2: After scroll settles, fire particles
-      timersRef.current.push(
-        setTimeout(() => {
-          const rect = section.getBoundingClientRect();
-          const vw = window.innerWidth;
-          const vh = window.innerHeight;
-          const palette = readPalette();
+      // Step 2: Wait for scroll to fully settle, THEN fire particles
+      cleanupRef.current = onScrollSettled(() => {
+        const rect = section.getBoundingClientRect();
+        const vw = window.innerWidth;
+        const vh = window.innerHeight;
+        const palette = readPalette();
 
-          const ox = vw / 2;
-          const oy = vh - 32;
+        const ox = vw / 2;
+        const oy = vh - 32;
 
-          // Target the visible portion of the section
-          const visTop = Math.max(rect.top, 0);
-          const visBot = Math.min(rect.bottom, vh);
-          const visH = Math.max(visBot - visTop, vh * 0.3);
+        const visTop = Math.max(rect.top, 0);
+        const visBot = Math.min(rect.bottom, vh);
+        const visH = Math.max(visBot - visTop, vh * 0.3);
 
-          const count = 25;
-          const base = idCounter.current;
-          idCounter.current += count;
-          const newP: Particle[] = [];
+        const count = 25;
+        const base = idCounter.current;
+        idCounter.current += count;
+        const newP: Particle[] = [];
 
-          for (let i = 0; i < count; i++) {
-            const tx = rect.left + Math.random() * rect.width;
-            const ty = visTop + Math.random() * visH;
-            const pal = palette[Math.floor(Math.random() * palette.length)];
+        for (let i = 0; i < count; i++) {
+          const tx = rect.left + Math.random() * rect.width;
+          const ty = visTop + Math.random() * visH;
+          const pal = palette[Math.floor(Math.random() * palette.length)];
 
-            const mx = (ox + tx) / 2;
-            const my = (oy + ty) / 2;
-            const dx = tx - ox;
-            const dy = ty - oy;
-            const len = Math.sqrt(dx * dx + dy * dy) || 1;
-            const curve = (Math.random() - 0.5) * 0.45;
-            const cpx = mx + (-dy / len) * curve * Math.min(vw, vh) * 0.25;
-            const cpy = my + (dx / len) * curve * Math.min(vw, vh) * 0.25;
+          const mx = (ox + tx) / 2;
+          const my = (oy + ty) / 2;
+          const dx = tx - ox;
+          const dy = ty - oy;
+          const len = Math.sqrt(dx * dx + dy * dy) || 1;
+          const curve = (Math.random() - 0.5) * 0.45;
+          const cpx = mx + (-dy / len) * curve * Math.min(vw, vh) * 0.25;
+          const cpy = my + (dx / len) * curve * Math.min(vw, vh) * 0.25;
 
-            const focal = i < 4;
+          const focal = i < 4;
 
-            newP.push({
-              id: base + i,
-              sx: ox, sy: oy,
-              cx: cpx, cy: cpy,
-              tx, ty,
-              size: focal ? 12 + Math.random() * 10 : 3 + Math.random() * 8,
-              color: pal.color,
-              glow: pal.glow,
-              delay: Math.random() * 0.25,
-              duration: 1.3 + Math.random() * 0.8,
-              focal,
-            });
-          }
+          newP.push({
+            id: base + i,
+            sx: ox, sy: oy,
+            cx: cpx, cy: cpy,
+            tx, ty,
+            size: focal ? 12 + Math.random() * 10 : 3 + Math.random() * 8,
+            color: pal.color,
+            glow: pal.glow,
+            delay: Math.random() * 0.25,
+            duration: 1.3 + Math.random() * 0.8,
+            focal,
+          });
+        }
 
-          setParticles(newP);
+        setParticles(newP);
 
-          // Step 3: Deblur when particles arrive
-          timersRef.current.push(
-            setTimeout(() => {
-              section.style.filter = "blur(0px)";
-              section.style.opacity = "1";
-            }, 1000),
-          );
+        // Step 3: Deblur when particles arrive
+        timersRef.current.push(
+          setTimeout(() => {
+            section.style.filter = "blur(0px)";
+            section.style.opacity = "1";
+          }, 1000),
+        );
 
-          // Step 4: Cleanup particles + inline styles
-          timersRef.current.push(
-            setTimeout(() => {
-              setParticles([]);
-              section.style.transition = "";
-              section.style.filter = "";
-              section.style.opacity = "";
-              prevSectionRef.current = null;
-            }, 2800),
-          );
-        }, 600),
-      );
+        // Step 4: Cleanup
+        timersRef.current.push(
+          setTimeout(() => {
+            setParticles([]);
+            section.style.transition = "";
+            section.style.filter = "";
+            section.style.opacity = "";
+            prevSectionRef.current = null;
+          }, 2800),
+        );
+      });
     };
 
     window.addEventListener("section-reveal", onReveal);
     return () => {
       window.removeEventListener("section-reveal", onReveal);
       timersRef.current.forEach(clearTimeout);
+      if (cleanupRef.current) cleanupRef.current();
     };
   }, []);
 
