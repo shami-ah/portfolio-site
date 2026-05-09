@@ -508,21 +508,23 @@ export function Uses(): React.ReactElement {
   return (
     <div className="h-screen flex flex-col bg-background overflow-hidden">
       {/* Title bar */}
-      <div className="flex items-center justify-between px-5 md:px-6 py-3 border-b border-card-border bg-card/60 shrink-0">
-        <div className="flex items-center gap-2">
-          <div className="flex gap-1.5">
-            <Link href="/" aria-label="Close" className="w-3 h-3 rounded-full bg-red-500/60 hover:bg-red-500 transition-colors cursor-pointer" />
-            <span className="w-3 h-3 rounded-full bg-yellow-500/60" />
-            <span className="w-3 h-3 rounded-full bg-green-500/60" />
+      <div className="border-b border-card-border bg-card/60 shrink-0">
+        <div className="max-w-5xl mx-auto px-5 md:px-6 py-3 flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <div className="flex gap-1.5">
+              <Link href="/" aria-label="Close" className="w-3 h-3 rounded-full bg-red-500/60 hover:bg-red-500 transition-colors cursor-pointer" />
+              <span className="w-3 h-3 rounded-full bg-yellow-500/60" />
+              <span className="w-3 h-3 rounded-full bg-green-500/60" />
+            </div>
           </div>
+          <span className="text-small font-mono text-muted/40">shami-toolkit</span>
+          <Link
+            href="/"
+            className="text-xs font-mono text-muted hover:text-accent transition-colors"
+          >
+            ← back to portfolio
+          </Link>
         </div>
-        <span className="text-small font-mono text-muted/40">shami-toolkit</span>
-        <Link
-          href="/"
-          className="text-xs font-mono text-muted hover:text-accent transition-colors"
-        >
-          ← back to portfolio
-        </Link>
       </div>
 
       <div className="flex flex-1 overflow-hidden">
