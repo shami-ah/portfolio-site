@@ -354,10 +354,10 @@ function OpenEventBody(): React.ReactElement {
 
 function RasadBody(): React.ReactElement {
   return (
-    <>
+    <div className="bg-[#0c0c0e]">
       <BrowserChrome url="localhost:9847/xray" />
       <div className="relative overflow-hidden">
-        {/* Real screenshot */}
+        {/* Real screenshot — Rasad is dark-only, so we force dark bg */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src="/projects/rasad/xray-hero.png"
@@ -366,8 +366,8 @@ function RasadBody(): React.ReactElement {
           className="w-full h-auto object-cover object-top max-h-[320px]"
         />
         {/* Fade-out at bottom */}
-        <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-card to-transparent pointer-events-none" />
+        <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-[#0c0c0e] to-transparent pointer-events-none" />
       </div>
-    </>
+    </div>
   );
 }

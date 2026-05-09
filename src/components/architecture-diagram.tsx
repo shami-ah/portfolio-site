@@ -69,7 +69,7 @@ export function ArchitectureDiagram({
         </p>
         <div
           ref={containerRef}
-          className="p-6 rounded-xl bg-[#0c0c0f] border border-card-border overflow-x-auto"
+          className="p-6 rounded-xl bg-[#0c0c0f] border border-[#2a2520] overflow-x-auto"
         >
           {svg ? (
             <div
