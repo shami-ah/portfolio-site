@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useCallback } from "react";
+import { useRef, useCallback, useEffect, useState } from "react";
 import { motion, useScroll, useTransform, useMotionValue, useSpring } from "framer-motion";
 import { useStatus } from "@/lib/use-status";
 import { openCvDrawer } from "@/components/cv-drawer";
@@ -135,7 +135,16 @@ function HeroAboutCard(): React.ReactElement {
 
 export function ConfigHero(): React.ReactElement {
   const { status } = useStatus();
-  const epoch = 0;
+  const [epoch, setEpoch] = useState(0);
+
+  // Re-stream hero content after boot animation completes (including reboot)
+  useEffect(() => {
+    const onBootComplete = (): void => {
+      setEpoch((e) => e + 1);
+    };
+    window.addEventListener("boot-complete", onBootComplete);
+    return () => window.removeEventListener("boot-complete", onBootComplete);
+  }, []);
 
   const { scrollY } = useScroll();
   const orbY1 = useTransform(scrollY, [0, 800], [0, 120]);
@@ -169,7 +178,7 @@ export function ConfigHero(): React.ReactElement {
             {/* 1. Badge streams in first */}
             <motion.div
               key={`badge-${epoch}`}
-              initial={false}
+              initial={{ opacity: 0, scale: 0.9, y: 10 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0, ease: [0.22, 1, 0.36, 1] }}
               className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent-status/10 border border-accent-status/20 text-accent-status text-caption md:text-xs font-mono mb-6"
@@ -181,7 +190,7 @@ export function ConfigHero(): React.ReactElement {
             {/* 2. Title streams in */}
             <motion.h1
               key={`h1-${epoch}`}
-              initial={false}
+              initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
               className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight leading-[1.15] mb-5"
@@ -194,7 +203,7 @@ export function ConfigHero(): React.ReactElement {
             {/* 3. Description streams in */}
             <motion.p
               key={`desc-${epoch}`}
-              initial={false}
+              initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 1.0, ease: [0.22, 1, 0.36, 1] }}
               className="text-sm md:text-base text-muted max-w-md leading-relaxed mb-8"
@@ -206,7 +215,7 @@ export function ConfigHero(): React.ReactElement {
             {/* 4. CTA button streams in */}
             <motion.div
               key={`cta-${epoch}`}
-              initial={false}
+              initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 1.6 }}
               className="flex flex-wrap gap-3 justify-center md:justify-start"
@@ -222,7 +231,7 @@ export function ConfigHero(): React.ReactElement {
             {/* 5. Building status streams in last */}
             <motion.div
               key={`build-${epoch}`}
-              initial={false}
+              initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5, delay: 2.2 }}
               className="flex items-center gap-2 mt-6 justify-center md:justify-start"
@@ -240,7 +249,7 @@ export function ConfigHero(): React.ReactElement {
           {/* Right: about card slides in alongside the title */}
           <motion.div
             key={`card-${epoch}`}
-            initial={false}
+            initial={{ opacity: 0, y: 30, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             transition={{ duration: 1.0, delay: 0.6, ease: [0.22, 1, 0.36, 1] }}
             style={{ y: cardY, scale: cardScale }}
@@ -253,7 +262,8 @@ export function ConfigHero(): React.ReactElement {
 
       {/* Scroll indicator */}
       <motion.div
-        initial={false}
+        key={`scroll-${epoch}`}
+        initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5, delay: 2.5 }}
         className="hidden md:block absolute bottom-6 left-1/2 -translate-x-1/2"

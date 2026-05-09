@@ -222,13 +222,138 @@ body::after {
 .section-divider {
   height: 1px;
   background: linear-gradient(90deg, transparent, var(--accent), var(--accent-secondary), transparent);
-  opacity: 0.3;
-  transform: scaleX(1);
+  opacity: 0;
+  transform: scaleX(0);
   transition: opacity 0.8s ease, transform 1.2s cubic-bezier(0.22, 1, 0.36, 1);
 }
 .section-divider.visible {
   opacity: 0.3;
   transform: scaleX(1);
+}
+
+/* ── Nav action buttons ── */
+.nav-action {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  padding: 8px;
+  border-radius: 12px;
+  background: rgba(var(--card-rgb, 24,24,27), 0.8);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(var(--card-border-rgb, 42,37,32), 0.6);
+  cursor: pointer;
+  overflow: hidden;
+  transition: all 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.nav-action:hover {
+  gap: 6px;
+  padding: 8px 14px;
+  border-color: rgba(212, 168, 83, 0.4);
+  background: rgba(var(--card-rgb, 24,24,27), 1);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3), 0 0 30px rgba(212, 168, 83, 0.06);
+}
+.nav-action-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(var(--muted-rgb, 120,113,108), 0.7);
+  transition: color 0.3s, transform 0.3s;
+}
+.nav-action:hover .nav-action-icon {
+  color: var(--accent);
+}
+.nav-action-label {
+  max-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: rgba(var(--muted-rgb, 120,113,108), 0.7);
+  transition: max-width 0.35s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.25s, color 0.3s;
+  opacity: 0;
+}
+.nav-action:hover .nav-action-label {
+  max-width: 80px;
+  opacity: 1;
+  color: var(--foreground);
+}
+.nav-action-glow {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  opacity: 0;
+  background: radial-gradient(circle at 50% 50%, rgba(212, 168, 83, 0.08), transparent 70%);
+  transition: opacity 0.3s;
+  pointer-events: none;
+}
+.nav-action:hover .nav-action-glow {
+  opacity: 1;
+}
+
+/* Primary variant (How I work / Journey) */
+.nav-action-primary {
+  border-color: rgba(212, 168, 83, 0.2);
+  background: rgba(212, 168, 83, 0.06);
+}
+.nav-action-primary:hover {
+  border-color: rgba(212, 168, 83, 0.5);
+  background: rgba(212, 168, 83, 0.12);
+  box-shadow: 0 4px 24px rgba(212, 168, 83, 0.15), 0 0 40px rgba(212, 168, 83, 0.08);
+}
+.nav-action-icon-primary {
+  color: var(--accent);
+}
+.nav-action-label-primary {
+  color: var(--accent);
+}
+.nav-action-primary:hover .nav-action-label-primary {
+  color: var(--accent);
+}
+.nav-action-glow-primary {
+  background: radial-gradient(circle at 50% 50%, rgba(212, 168, 83, 0.12), transparent 70%);
+}
+.nav-action-pulse {
+  position: absolute;
+  top: -1px;
+  right: -1px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  animation: nav-pulse 2.5s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes nav-pulse {
+  0%, 100% { opacity: 0.6; transform: scale(1); box-shadow: 0 0 0 0 rgba(212, 168, 83, 0.4); }
+  50% { opacity: 1; transform: scale(1.3); box-shadow: 0 0 8px 3px rgba(212, 168, 83, 0.2); }
+}
+
+/* Reboot button — slow breathing spin + glow */
+.nav-action-reboot {
+  border-color: rgba(74, 222, 128, 0.15);
+}
+.nav-action-reboot:hover {
+  border-color: rgba(74, 222, 128, 0.4);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3), 0 0 20px rgba(74, 222, 128, 0.1);
+}
+.nav-action-reboot:hover .nav-action-icon {
+  color: #4ade80;
+}
+.nav-reboot-spin {
+  animation: reboot-breathe 3s ease-in-out infinite;
+}
+.nav-action-reboot:hover .nav-reboot-spin {
+  animation: reboot-active 0.8s ease-in-out infinite;
+}
+@keyframes reboot-breathe {
+  0%, 100% { transform: rotate(0deg); opacity: 0.5; }
+  50% { transform: rotate(30deg); opacity: 0.8; }
+}
+@keyframes reboot-active {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 
 /* Brand gradient text */

@@ -36,7 +36,6 @@ export function FadeUp({
       variants={fadeUp}
       initial={false}
       animate="visible"
-      viewport={{ once: true, margin: "-50px" }}
       transition={reduced ? instant : { duration: 0.5, delay, ease: "easeOut" }}
       className={className}
     >
@@ -60,7 +59,6 @@ export function FadeIn({
       variants={fadeIn}
       initial={false}
       animate="visible"
-      viewport={{ once: true, margin: "-50px" }}
       transition={reduced ? instant : { duration: 0.6, delay }}
       className={className}
     >
@@ -82,7 +80,6 @@ export function StaggerContainer({
       variants={reduced ? undefined : staggerContainer}
       initial={false}
       animate={reduced ? undefined : "visible"}
-      viewport={{ once: true, margin: "-50px" }}
       className={className}
     >
       {children}
@@ -107,7 +104,6 @@ export function SlideIn({
     <motion.div
       initial={false}
       animate={{ opacity: 1, x: 0 }}
-      viewport={{ once: true, margin: "-50px" }}
       transition={reduced ? instant : { duration: 0.5, delay, ease: "easeOut" }}
       className={className}
     >

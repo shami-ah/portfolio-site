@@ -426,12 +426,15 @@ const commands: AgentCommand[] = [
 /* ------------------------------------------------------------------ */
 
 // Chips match homepage section scroll order (one line)
-const CHIPS = [
-  { label: "Impact", command: "impact" },
-  { label: "Projects", command: "projects" },
-  { label: "Career", command: "experience" },
-  { label: "Contact", command: "contact" },
+// All suggestion chips mapped to section scroll order
+const ALL_CHIPS = [
+  { label: "Impact", command: "impact", section: "mission" },
+  { label: "Projects", command: "projects", section: "projects" },
+  { label: "Career", command: "experience", section: "log" },
+  { label: "Contact", command: "contact", section: "contact" },
 ];
+
+const SECTION_ORDER = ["hero", "mission", "projects", "log", "contact"] as const;
 
 /* ------------------------------------------------------------------ */
 /*  AgentBar — Button / Panel / Flying-to-Chat                        */
@@ -450,8 +453,37 @@ export function AgentBar(): React.ReactElement {
   const [showBuildPopup, setShowBuildPopup] = useState(false);
   const [showTooltip, setShowTooltip] = useState(false);
   const [buttonReady, setButtonReady] = useState(false);
+  const [activeSection, setActiveSection] = useState("hero");
   const inputRef = useRef<HTMLInputElement>(null);
   const flyRef = useRef<HTMLDivElement>(null);
+
+  // Track which section the user is currently viewing
+  useEffect(() => {
+    let ticking = false;
+    const onScroll = (): void => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        const probeY = window.scrollY + window.innerHeight * 0.5;
+        let current = "hero";
+        for (const id of SECTION_ORDER) {
+          const el = document.getElementById(id);
+          if (el && el.offsetTop <= probeY) current = id;
+        }
+        setActiveSection(current);
+        ticking = false;
+      });
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  // Filter chips to show only sections ahead of current scroll position
+  const currentIdx = SECTION_ORDER.indexOf(activeSection as typeof SECTION_ORDER[number]);
+  const visibleChips = ALL_CHIPS.filter((chip) => {
+    const chipIdx = SECTION_ORDER.indexOf(chip.section as typeof SECTION_ORDER[number]);
+    return chipIdx > currentIdx;
+  });
 
   // Listen for build popup trigger
   useEffect(() => {
@@ -802,7 +834,7 @@ export function AgentBar(): React.ReactElement {
                   transition={{ duration: 0.3 }}
                   className="flex justify-center gap-1.5 mb-2 flex-wrap px-2"
                 >
-                  {CHIPS.map((chip, i) => (
+                  {visibleChips.map((chip, i) => (
                     <motion.button
                       key={chip.command}
                       type="button"

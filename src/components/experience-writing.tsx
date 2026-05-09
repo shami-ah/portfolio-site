@@ -98,7 +98,7 @@ export function ExperienceAndWriting(): React.ReactElement {
           <FadeUp>
             <div className="flex items-center gap-2" id="experience">
               <span className="w-1.5 h-1.5 rounded-full bg-accent" />
-              <span className="text-caption font-mono text-accent uppercase tracking-[0.15em]">
+              <span className="text-caption font-mono text-accent uppercase tracking-wider">
                 $ git log --graph
               </span>
             </div>
@@ -106,7 +106,7 @@ export function ExperienceAndWriting(): React.ReactElement {
           <FadeUp>
             <div className="flex items-center gap-2" id="writing">
               <span className="w-1.5 h-1.5 rounded-full bg-accent-secondary" />
-              <span className="text-caption font-mono text-accent-secondary uppercase tracking-[0.15em]">
+              <span className="text-caption font-mono text-accent-secondary uppercase tracking-wider">
                 $ cat ~/writing/*.md
               </span>
             </div>

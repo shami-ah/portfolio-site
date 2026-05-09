@@ -37,7 +37,7 @@ export function WritingPage(): React.ReactElement {
     <main className="min-h-screen bg-background">
       {/* Sticky nav */}
       <header className="fixed top-0 left-0 right-0 z-40 bg-background/60 backdrop-blur-xl border-b border-card-border">
-        <div className="max-w-3xl mx-auto px-5 md:px-6 py-3 flex items-center justify-between">
+        <div className="max-w-5xl mx-auto px-5 md:px-6 py-3 flex items-center justify-between">
           <p className="text-caption md:text-xs font-mono text-muted/80 text-center truncate hidden sm:block">
             <span className="text-accent">writing</span> · thinking in public
           </p>

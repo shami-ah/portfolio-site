@@ -82,42 +82,45 @@ export function TopBar(): React.ReactElement {
           pointerEvents: modalOpen ? "none" : "auto",
         }}
         transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-        className="fixed top-0 right-0 z-40 px-3 md:px-6 py-3 md:py-4 flex items-center gap-2 md:gap-3"
+        className="fixed top-0 right-0 z-40 px-3 md:px-6 py-3 md:py-4 flex items-center gap-3 md:gap-4"
       >
         {/* Reboot */}
         <button
           type="button"
           onClick={reboot}
           aria-label="Reboot system — replay intro"
-          className="group relative inline-flex items-center gap-2 px-3 md:px-4 py-2 md:py-2.5 rounded-lg bg-card/80 backdrop-blur-md border border-card-border hover:border-accent/40 hover:bg-card transition-all duration-200 shadow-md"
+          className="group flex items-center cursor-pointer glass rounded-full p-2.5 hover:px-4 hover:gap-2 transition-all duration-300"
+          style={{ boxShadow: "0 4px 20px rgba(0,0,0,0.4), 0 0 40px rgba(0,0,0,0.2)" }}
         >
-          <RefreshCcw size={14} className="text-muted group-hover:text-accent transition-colors shrink-0" />
-          <span className="hidden sm:inline text-xs md:text-sm text-muted group-hover:text-foreground transition-colors whitespace-nowrap">
-            Reboot System
+          <RefreshCcw size={14} className="text-muted/60 group-hover:text-accent-status shrink-0 nav-reboot-spin" />
+          <span className="max-w-0 overflow-hidden group-hover:max-w-[60px] transition-all duration-300 whitespace-nowrap font-mono text-small text-muted/60">
+            reboot
           </span>
         </button>
 
-        {/* My setup — hidden on small mobile to avoid crowding */}
+        {/* My setup */}
         <Link
           href="/uses"
           aria-label="Tools, stack, and workflow"
-          className="group relative hidden sm:inline-flex items-center gap-1.5 md:gap-2 px-3 md:px-4 py-2 md:py-2.5 rounded-lg bg-card/80 backdrop-blur-md border border-card-border hover:border-accent/40 hover:bg-card transition-all duration-200 shadow-md"
+          className="group hidden sm:flex items-center cursor-pointer glass rounded-full p-2.5 hover:px-4 hover:gap-2 transition-all duration-300"
+          style={{ boxShadow: "0 4px 20px rgba(0,0,0,0.4), 0 0 40px rgba(0,0,0,0.2)" }}
         >
-          <Wrench size={14} className="text-muted group-hover:text-accent transition-colors shrink-0" />
-          <span className="hidden sm:inline text-xs md:text-sm text-muted group-hover:text-foreground transition-colors whitespace-nowrap">
-            My setup
+          <Wrench size={14} className="text-muted/60 group-hover:text-accent shrink-0 group-hover:rotate-[-15deg] transition-all duration-300" />
+          <span className="max-w-0 overflow-hidden group-hover:max-w-[60px] transition-all duration-300 whitespace-nowrap font-mono text-small text-muted/60">
+            setup
           </span>
         </Link>
 
-        {/* How I work */}
+        {/* How I work — accent variant */}
         <Link
           href="/journey"
           aria-label="Walk through my career"
-          className="group relative inline-flex items-center gap-1.5 md:gap-2 px-3 md:px-4 py-2 md:py-2.5 rounded-lg bg-accent/10 border border-accent/20 text-accent hover:bg-accent/20 hover:border-accent/60 hover:shadow-lg hover:shadow-accent/20 transition-all duration-200 font-medium"
+          className="group flex items-center cursor-pointer glass rounded-full p-2.5 hover:px-4 hover:gap-2 transition-all duration-300 border-accent/20"
+          style={{ boxShadow: "0 4px 20px rgba(0,0,0,0.4), 0 0 40px rgba(0,0,0,0.2)" }}
         >
-          <TrendingUp size={14} className="shrink-0" />
-          <span className="hidden sm:inline text-xs md:text-sm whitespace-nowrap">
-            How I work
+          <TrendingUp size={14} className="text-accent/70 group-hover:text-accent shrink-0 transition-colors" />
+          <span className="max-w-0 overflow-hidden group-hover:max-w-[70px] transition-all duration-300 whitespace-nowrap font-mono text-small text-accent/60">
+            journey
           </span>
         </Link>
       </motion.div>

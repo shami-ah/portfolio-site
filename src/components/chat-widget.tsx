@@ -215,13 +215,12 @@ export function ChatWidget(): React.ReactElement {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.8 }}
             transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-            title="Chat with Shami's AI"
-            className={`fixed bottom-5 right-5 z-40 group flex items-center justify-center w-11 h-11 rounded-full bg-accent/20 border border-accent/20 text-accent hover:bg-accent/30 hover:border-accent/40 hover:shadow-lg hover:shadow-accent/15 transition-all duration-200 backdrop-blur-sm cursor-pointer ${triggerGlow ? "ring-2 ring-accent-status/60 shadow-[0_0_20px_rgba(74,222,128,0.3)]" : ""}`}
+            className={`fixed bottom-5 right-5 z-40 group flex items-center justify-center cursor-pointer rounded-full p-2.5 bg-accent/20 border border-accent/20 hover:bg-accent/30 hover:border-accent/40 backdrop-blur-sm transition-all duration-300 ${triggerGlow ? "ring-2 ring-accent-status/60 shadow-[0_0_20px_rgba(74,222,128,0.3)]" : "shadow-lg hover:shadow-xl hover:shadow-accent/15"}`}
           >
-            <span className="font-mono text-sm font-bold">&gt;_</span>
+            <span className="font-mono text-sm font-bold text-accent shrink-0">&gt;_</span>
 
-            {/* Tooltip */}
-            <span className="absolute right-full mr-3 px-2.5 py-1.5 rounded-lg bg-card/90 backdrop-blur-md border border-card-border text-small font-mono text-foreground whitespace-nowrap opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity duration-150 shadow-lg">
+            {/* Label — appears on hover to the left */}
+            <span className="absolute right-full mr-3 px-3 py-1.5 rounded-xl glass text-small font-mono text-foreground whitespace-nowrap shadow-lg opacity-0 pointer-events-none group-hover:opacity-100 translate-x-2 group-hover:translate-x-0 transition-all duration-200">
               Chat with my AI
             </span>
           </motion.button>
