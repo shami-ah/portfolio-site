@@ -102,15 +102,37 @@ export function TerminalBoot({ force = false, onDone }: BootProps): React.ReactE
     };
     window.addEventListener("replay-intro", onReplay);
 
+    const closeRestoredOverlay = (): void => {
+      const complete = sessionStorage.getItem("boot-complete") === "1";
+      const alreadySeen = localStorage.getItem("boot-ever-seen") === "1";
+      if (!complete && !alreadySeen) return;
+
+      setVisible(false);
+      sessionStorage.setItem("boot-complete", "1");
+      window.dispatchEvent(new CustomEvent("boot-complete"));
+      window.dispatchEvent(new CustomEvent("agent-button-ready"));
+    };
+
+    window.addEventListener("pageshow", closeRestoredOverlay);
+    document.addEventListener("visibilitychange", closeRestoredOverlay);
+
     if (force || !seen) {
       setVisible(true);
-      return () => window.removeEventListener("replay-intro", onReplay);
+      return () => {
+        window.removeEventListener("replay-intro", onReplay);
+        window.removeEventListener("pageshow", closeRestoredOverlay);
+        document.removeEventListener("visibilitychange", closeRestoredOverlay);
+      };
     }
 
     // Already seen — signal complete immediately so Hero etc. can proceed
     sessionStorage.setItem("boot-complete", "1");
     window.dispatchEvent(new CustomEvent("boot-complete"));
-    return () => window.removeEventListener("replay-intro", onReplay);
+    return () => {
+      window.removeEventListener("replay-intro", onReplay);
+      window.removeEventListener("pageshow", closeRestoredOverlay);
+      document.removeEventListener("visibilitychange", closeRestoredOverlay);
+    };
   }, [force]);
 
   const dismiss = (): void => {

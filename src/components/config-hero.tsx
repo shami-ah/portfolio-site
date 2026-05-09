@@ -289,8 +289,8 @@ export function ConfigHero(): React.ReactElement {
             {/* 1. Badge streams in first */}
             <motion.div
               key={`badge-${epoch}`}
-              initial={{ opacity: 0, scale: 0.9, y: 8 }}
-              animate={ready ? { opacity: 1, scale: 1, y: 0 } : {}}
+              initial={false}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0, ease: [0.22, 1, 0.36, 1] }}
               className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent-status/10 border border-accent-status/20 text-accent-status text-caption md:text-xs font-mono mb-6"
             >
@@ -301,8 +301,8 @@ export function ConfigHero(): React.ReactElement {
             {/* 2. Title streams in */}
             <motion.h1
               key={`h1-${epoch}`}
-              initial={{ opacity: 0, y: 24 }}
-              animate={ready ? { opacity: 1, y: 0 } : {}}
+              initial={false}
+              animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
               className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight leading-[1.15] mb-5"
             >
@@ -314,8 +314,8 @@ export function ConfigHero(): React.ReactElement {
             {/* 3. Description streams in */}
             <motion.p
               key={`desc-${epoch}`}
-              initial={{ opacity: 0, y: 16 }}
-              animate={ready ? { opacity: 1, y: 0 } : {}}
+              initial={false}
+              animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 1.0, ease: [0.22, 1, 0.36, 1] }}
               className="text-sm md:text-base text-muted max-w-md leading-relaxed mb-8"
             >
@@ -326,8 +326,8 @@ export function ConfigHero(): React.ReactElement {
             {/* 4. CTA button streams in */}
             <motion.div
               key={`cta-${epoch}`}
-              initial={{ opacity: 0, y: 12 }}
-              animate={ready ? { opacity: 1, y: 0 } : {}}
+              initial={false}
+              animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 1.6 }}
               className="flex flex-wrap gap-3 justify-center md:justify-start"
             >
@@ -342,8 +342,8 @@ export function ConfigHero(): React.ReactElement {
             {/* 5. Building status streams in last */}
             <motion.div
               key={`build-${epoch}`}
-              initial={{ opacity: 0 }}
-              animate={ready ? { opacity: 1 } : {}}
+              initial={false}
+              animate={{ opacity: 1 }}
               transition={{ duration: 0.5, delay: 2.2 }}
               className="flex items-center gap-2 mt-6 justify-center md:justify-start"
             >
@@ -360,8 +360,8 @@ export function ConfigHero(): React.ReactElement {
           {/* Right: about card slides in alongside the title */}
           <motion.div
             key={`card-${epoch}`}
-            initial={{ opacity: 0, y: 40, scale: 0.95 }}
-            animate={ready ? { opacity: 1, y: 0, scale: 1 } : {}}
+            initial={false}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
             transition={{ duration: 1.0, delay: 0.6, ease: [0.22, 1, 0.36, 1] }}
             style={{ y: cardY, scale: cardScale }}
           >
@@ -373,8 +373,8 @@ export function ConfigHero(): React.ReactElement {
 
       {/* Scroll indicator */}
       <motion.div
-        initial={{ opacity: 0 }}
-        animate={ready ? { opacity: 1 } : {}}
+        initial={false}
+        animate={{ opacity: 1 }}
         transition={{ duration: 0.5, delay: 2.5 }}
         className="hidden md:block absolute bottom-6 left-1/2 -translate-x-1/2"
       >

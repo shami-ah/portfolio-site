@@ -22,10 +22,26 @@ function scrollToCurrentHash(): boolean {
 
 export function HomeHashScroll(): null {
   useLayoutEffect(() => {
+    const reloadKey = `home-bfcache-reload:${window.location.pathname}${window.location.search}${window.location.hash}`;
+    const reloadIfRestoredFromCache = (event: PageTransitionEvent): void => {
+      if (!event.persisted) {
+        sessionStorage.removeItem(reloadKey);
+        return;
+      }
+
+      if (sessionStorage.getItem(reloadKey) === "1") return;
+      sessionStorage.setItem(reloadKey, "1");
+      window.location.reload();
+    };
+
+    window.addEventListener("pageshow", reloadIfRestoredFromCache);
+
     sessionStorage.setItem("boot-complete", "1");
     window.dispatchEvent(new CustomEvent("boot-complete"));
 
-    if (!window.location.hash) return;
+    if (!window.location.hash) {
+      return () => window.removeEventListener("pageshow", reloadIfRestoredFromCache);
+    }
 
     const previousRestoration = window.history.scrollRestoration;
     window.history.scrollRestoration = "manual";
@@ -45,6 +61,7 @@ export function HomeHashScroll(): null {
     return () => {
       timers.forEach(window.clearTimeout);
       window.removeEventListener("pageshow", onPageShow);
+      window.removeEventListener("pageshow", reloadIfRestoredFromCache);
       window.history.scrollRestoration = previousRestoration;
     };
   }, []);
