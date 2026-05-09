@@ -508,7 +508,7 @@ export function Uses(): React.ReactElement {
   return (
     <div className="h-screen flex flex-col bg-background overflow-hidden">
       {/* Title bar */}
-      <div className="flex items-center justify-between px-3 py-[5px] border-b border-card-border bg-card/60 shrink-0">
+      <div className="flex items-center justify-between px-5 md:px-6 py-3 border-b border-card-border bg-card/60 shrink-0">
         <div className="flex items-center gap-2">
           <div className="flex gap-1.5">
             <Link href="/" aria-label="Close" className="w-3 h-3 rounded-full bg-red-500/60 hover:bg-red-500 transition-colors cursor-pointer" />
