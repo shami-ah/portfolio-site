@@ -82,16 +82,6 @@ export function Journey(): React.ReactElement {
       {/* Top bar */}
       <header className="fixed top-0 left-0 right-0 z-40 bg-background/60 backdrop-blur-xl border-b border-card-border">
         <div className="max-w-5xl mx-auto px-5 md:px-6 py-3 flex items-center justify-between">
-          <Link
-            href="/"
-            className="inline-flex items-center gap-2 text-xs font-mono text-muted hover:text-accent transition-colors"
-          >
-            <ArrowLeft size={14} />
-            back to portfolio
-          </Link>
-          <p className="text-caption md:text-xs font-mono text-muted/80 text-center truncate hidden sm:block">
-            <span className="text-accent">how I work</span> · behind the systems
-          </p>
           <a
             href="https://ahtesham.dev.wadwarehouse.com/book"
             target="_blank"
@@ -100,6 +90,16 @@ export function Journey(): React.ReactElement {
           >
             book a call →
           </a>
+          <p className="text-caption md:text-xs font-mono text-muted/80 text-center truncate hidden sm:block">
+            <span className="text-accent">how I work</span> · behind the systems
+          </p>
+          <Link
+            href="/"
+            className="inline-flex items-center gap-2 text-xs font-mono text-muted hover:text-accent transition-colors"
+          >
+            back to portfolio
+            <ArrowLeft size={14} className="rotate-180" />
+          </Link>
         </div>
       </header>
 
