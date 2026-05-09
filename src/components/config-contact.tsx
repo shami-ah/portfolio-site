@@ -106,7 +106,7 @@ function TestimonialCarousel(): React.ReactElement {
 
 export function ConfigContact(): React.ReactElement {
   return (
-    <section id="contact" className="relative overflow-hidden py-20 md:py-32 bg-card/20">
+    <section id="contact" className="relative overflow-hidden py-20 md:py-32">
       <div className="absolute -top-40 left-1/2 -translate-x-1/2 w-[36rem] h-[36rem] bg-accent/[0.04] rounded-full blur-3xl pointer-events-none" />
 
       <div className="relative max-w-5xl mx-auto px-5 md:px-6">

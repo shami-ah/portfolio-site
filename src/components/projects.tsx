@@ -915,11 +915,16 @@ function OtherDeployments({
   return (
     <FadeUp>
       <div className="flex flex-col items-center">
-        <p className="text-lg md:text-xl font-semibold mb-1">
-          Other deployments
-          <span className="text-muted font-normal text-sm ml-2">{others.length} systems</span>
-        </p>
-        <p className="text-xs md:text-sm text-muted/60 mb-8">Side projects and tools that made it to production</p>
+        <div className="flex items-center gap-2 mb-2">
+          <span className="w-1.5 h-1.5 rounded-full bg-accent" />
+          <span className="text-caption font-mono text-accent uppercase tracking-wider">
+            $ ls deployments/
+          </span>
+        </div>
+        <h3 className="text-lg md:text-xl font-bold mb-1">
+          Side projects that made it to production
+        </h3>
+        <p className="text-xs md:text-sm text-muted/60 mb-8">{others.length} systems shipped and running</p>
 
         <div className="relative w-[400px] sm:w-[440px] h-[360px] sm:h-[380px]">
           {others.map((project, i) => {
