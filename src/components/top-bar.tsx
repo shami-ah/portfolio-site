@@ -22,6 +22,7 @@ export function TopBar(): React.ReactElement {
   const [meteorLanded, setMeteorLanded] = useState(false);
   const journeyBtnRef = useRef<HTMLAnchorElement>(null);
   const [btnCenterX, setBtnCenterX] = useState(0);
+  const [btnBottomY, setBtnBottomY] = useState(0); // px from viewport top to button bottom edge
 
   const updatePressure = useCallback(() => {
     setPressure((p) => Math.min(p + 1, 100));
@@ -81,6 +82,7 @@ export function TopBar(): React.ReactElement {
         if (journeyBtnRef.current) {
           const r = journeyBtnRef.current.getBoundingClientRect();
           setBtnCenterX(r.left + r.width / 2);
+          setBtnBottomY(r.bottom);
         }
       });
     };
@@ -146,84 +148,97 @@ export function TopBar(): React.ReactElement {
         </Link>
       </motion.div>
 
-      {/* ── Journey meteor — glowing dot with trail rising from bottom to journey button ── */}
+      {/* ── Journey meteor — glowing dot rises from bottom to journey button ── */}
       {btnCenterX > 0 && (
-        <div className="fixed inset-0 z-30 pointer-events-none" style={{ opacity: meteorProgress > 0 ? 1 : 0, transition: "opacity 0.8s ease" }}>
-          {/* Outer glow — wide ambient light along the path */}
-          {!meteorLanded && (
-            <div
-              className="absolute"
-              style={{
-                left: btnCenterX - 30,
-                bottom: 0,
-                width: 60,
-                height: `${meteorProgress}%`,
-                background: "linear-gradient(to top, transparent 0%, rgba(74,222,128,0.06) 20%, rgba(74,222,128,0.15) 60%, rgba(74,222,128,0.25) 100%)",
-                filter: "blur(12px)",
-                transition: "none",
-              }}
-            />
-          )}
-          {/* Core trail — bright visible line from bottom to meteor */}
-          {!meteorLanded && (
-            <div
-              className="absolute"
-              style={{
-                left: btnCenterX - 2,
-                bottom: 0,
-                width: 4,
-                height: `${meteorProgress}%`,
-                background: "linear-gradient(to top, rgba(74,222,128,0.05) 0%, rgba(74,222,128,0.3) 15%, rgba(74,222,128,0.6) 60%, rgba(74,222,128,0.9) 100%)",
-                borderRadius: 2,
-                transition: "none",
-              }}
-            />
-          )}
-          {/* Meteor head — bright glowing orb at the tip */}
-          {!meteorLanded && (
-            <div
-              className="absolute"
-              style={{
-                left: btnCenterX - 9,
-                bottom: `${meteorProgress}%`,
-                width: 18,
-                height: 18,
-                borderRadius: "50%",
-                background: "radial-gradient(circle, #fff 0%, rgba(74,222,128,1) 20%, rgba(74,222,128,0.6) 50%, transparent 75%)",
-                boxShadow: "0 0 20px 8px rgba(74,222,128,0.7), 0 0 50px 16px rgba(74,222,128,0.35), 0 0 80px 30px rgba(74,222,128,0.15)",
-                transition: "none",
-              }}
-            />
-          )}
-          {/* Post-landing — bright glow pulses from bottom to button */}
-          {meteorLanded && (
-            <>
-              <div
-                className="absolute"
-                style={{
-                  left: btnCenterX - 2,
-                  bottom: 0,
-                  width: 4,
-                  height: "100%",
-                  background: "linear-gradient(to top, transparent 0%, rgba(74,222,128,0.15) 30%, rgba(74,222,128,0.4) 70%, rgba(74,222,128,0.8) 100%)",
-                  borderRadius: 2,
-                  animation: "glow-rise 2.5s ease-in-out infinite",
-                }}
-              />
-              <div
-                className="absolute"
-                style={{
-                  left: btnCenterX - 25,
-                  bottom: 0,
-                  width: 50,
-                  height: "100%",
-                  background: "linear-gradient(to top, transparent 0%, transparent 40%, rgba(74,222,128,0.08) 70%, rgba(74,222,128,0.2) 100%)",
-                  filter: "blur(14px)",
-                  animation: "glow-rise 2.5s ease-in-out infinite",
-                }}
-              />
-            </>
-          )}
+        <div className="fixed inset-0 z-30 pointer-events-none" style={{ opacity: meteorProgress > 0 ? 1 : 0, transition: "opacity 0.6s ease" }}>
+          {(() => {
+            const vh = typeof window !== "undefined" ? window.innerHeight : 800;
+            // Meteor travels from viewport bottom to the button's bottom edge
+            const travelDistance = vh - btnBottomY;
+            // Current position: how far the meteor head is from the bottom
+            const meteorHeadFromBottom = (meteorProgress / 100) * travelDistance;
+            // Top position of the meteor head (from viewport top)
+            const meteorTop = vh - meteorHeadFromBottom;
+
+            return (
+              <>
+                {/* Ambient glow — wide soft light */}
+                {!meteorLanded && (
+                  <div
+                    className="absolute"
+                    style={{
+                      left: btnCenterX - 30,
+                      top: meteorTop,
+                      bottom: 0,
+                      width: 60,
+                      background: "linear-gradient(to top, transparent 0%, rgba(74,222,128,0.06) 30%, rgba(74,222,128,0.15) 70%, rgba(74,222,128,0.25) 100%)",
+                      filter: "blur(12px)",
+                    }}
+                  />
+                )}
+                {/* Core trail — solid line from bottom to meteor head */}
+                {!meteorLanded && (
+                  <div
+                    className="absolute"
+                    style={{
+                      left: btnCenterX - 2,
+                      top: meteorTop,
+                      bottom: 0,
+                      width: 4,
+                      borderRadius: 2,
+                      background: "linear-gradient(to top, rgba(74,222,128,0.05) 0%, rgba(74,222,128,0.3) 20%, rgba(74,222,128,0.6) 60%, rgba(74,222,128,0.9) 100%)",
+                    }}
+                  />
+                )}
+                {/* Meteor head — bright orb at the tip */}
+                {!meteorLanded && (
+                  <div
+                    className="absolute"
+                    style={{
+                      left: btnCenterX - 9,
+                      top: meteorTop - 9,
+                      width: 18,
+                      height: 18,
+                      borderRadius: "50%",
+                      background: "radial-gradient(circle, #fff 0%, rgba(74,222,128,1) 20%, rgba(74,222,128,0.6) 50%, transparent 75%)",
+                      boxShadow: "0 0 20px 8px rgba(74,222,128,0.7), 0 0 50px 16px rgba(74,222,128,0.35), 0 0 80px 30px rgba(74,222,128,0.15)",
+                    }}
+                  />
+                )}
+                {/* Post-landing — glow signal pulses travel from bottom to button */}
+                {meteorLanded && (
+                  <>
+                    {/* Static faint line from bottom to button */}
+                    <div
+                      className="absolute"
+                      style={{
+                        left: btnCenterX - 1.5,
+                        top: btnBottomY,
+                        bottom: 0,
+                        width: 3,
+                        borderRadius: 2,
+                        background: "linear-gradient(to top, transparent 0%, rgba(74,222,128,0.1) 40%, rgba(74,222,128,0.3) 100%)",
+                      }}
+                    />
+                    {/* Traveling glow pulse — moves from bottom to button repeatedly */}
+                    <div
+                      className="absolute nav-signal-pulse"
+                      style={{
+                        left: btnCenterX - 6,
+                        width: 12,
+                        height: 12,
+                        borderRadius: "50%",
+                        background: "radial-gradient(circle, rgba(74,222,128,0.9) 0%, rgba(74,222,128,0.3) 50%, transparent 75%)",
+                        boxShadow: "0 0 12px 4px rgba(74,222,128,0.4)",
+                        // Animation moves from bottom of viewport to button position
+                        "--signal-target": `${btnBottomY}px`,
+                      } as React.CSSProperties}
+                    />
+                  </>
+                )}
+              </>
+            );
+          })()}
         </div>
       )}
 
@@ -257,7 +272,7 @@ export function TopBar(): React.ReactElement {
             style={{ height: `${fillPct}%`, transition: "height 2s ease-out" }}
           />
           <RefreshCcw
-            size={14}
+            size={13}
             className={`relative z-10 shrink-0 transition-colors duration-500 ${
               heavy ? "text-accent-status" : tremor ? "text-accent-status/70" : "text-muted/60 group-hover:text-accent-status"
             }`}
@@ -284,7 +299,7 @@ export function TopBar(): React.ReactElement {
           <span className={`absolute w-[2px] h-[2px] rounded-full nav-orbit pointer-events-none ${setupGlow ? "bg-accent-secondary/60" : "bg-accent-secondary/20"}`} style={{ animationDuration: setupGlow ? "3s" : "6s", animationDelay: "-2s" }} />
           <span className={`absolute w-[2px] h-[2px] rounded-full nav-orbit pointer-events-none ${setupGlow ? "bg-accent/50" : "bg-accent/15"}`} style={{ animationDuration: setupGlow ? "2.5s" : "5s", animationDelay: "-3.5s" }} />
           <Wrench
-            size={14}
+            size={13}
             className={`shrink-0 transition-all duration-500 group-hover:rotate-[-20deg] ${
               setupGlow ? "text-accent" : "text-muted/60 group-hover:text-accent"
             }`}
@@ -309,7 +324,7 @@ export function TopBar(): React.ReactElement {
           }}
         >
           <TrendingUp
-            size={14}
+            size={13}
             className={`shrink-0 transition-colors duration-500 ${
               meteorLanded ? "text-accent-status" : "text-accent/70 group-hover:text-accent"
             }`}
