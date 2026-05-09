@@ -163,6 +163,9 @@ interface AgentCommand {
 }
 
 function scrollTo(id: string): void {
+  // Dispatch reveal event — AgentRevealParticles blurs the section,
+  // fires particles after scroll settles, then deblurs on arrival
+  window.dispatchEvent(new CustomEvent("section-reveal", { detail: { sectionId: id } }));
   document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
@@ -456,6 +459,7 @@ export function AgentBar(): React.ReactElement {
   const [activeSection, setActiveSection] = useState("hero");
   const inputRef = useRef<HTMLInputElement>(null);
   const flyRef = useRef<HTMLDivElement>(null);
+  const navTimerRef = useRef<ReturnType<typeof setTimeout>>(undefined);
 
   // Track which section the user is currently viewing
   useEffect(() => {
@@ -497,9 +501,9 @@ export function AgentBar(): React.ReactElement {
     const onReady = (): void => {
       setButtonReady(true);
       setUiState("button");
-      // Show tooltip after particles settle (~1.5s after agent appears)
-      setTimeout(() => setShowTooltip(true), 1500);
-      setTimeout(() => setShowTooltip(false), 4500);
+      // Show tooltip after all hero content has fully streamed in
+      setTimeout(() => setShowTooltip(true), 4000);
+      setTimeout(() => setShowTooltip(false), 10000);
     };
     window.addEventListener("agent-button-ready", onReady);
 
@@ -595,11 +599,14 @@ export function AgentBar(): React.ReactElement {
     return () => clearTimeout(t);
   }, [uiState, activeCmd, shownSteps]);
 
-  // After response, execute action + return to panel
+  // Clean up nav timer on unmount
+  useEffect(() => () => { if (navTimerRef.current) clearTimeout(navTimerRef.current); }, []);
+
+  // After response, close panel → return to button → fire action with particles
   useEffect(() => {
     if (uiState !== "responding" || !activeCmd) return;
 
-    // Special handling for "chat" command — fly to chat widget
+    // Chat command — fly to chat widget (separate flow)
     if (activeCmd.keyword === "chat") {
       const flyTimer = setTimeout(() => {
         setUiState("flying-to-chat");
@@ -607,26 +614,26 @@ export function AgentBar(): React.ReactElement {
       return () => clearTimeout(flyTimer);
     }
 
-    const actionTimer = setTimeout(() => {
-      // Tour command uses client-side navigation
-      if (activeCmd.keyword === "tour") {
-        router.push("/journey");
-      } else {
-        activeCmd.action?.();
-      }
-    }, 300);
-    // After showing response briefly, hide the agent (reappear handled by separate effect)
-    const hideTimer = setTimeout(() => {
+    const cmd = activeCmd;
+
+    // Close panel after brief response display
+    const closeTimer = setTimeout(() => {
       setActiveCmd(null);
       setShownSteps(0);
       setShowResponse(false);
       setInput("");
-      setUiState("hidden");
-    }, 3000);
-    return () => {
-      clearTimeout(actionTimer);
-      clearTimeout(hideTimer);
-    };
+      setUiState("button");
+    }, 800);
+
+    // Fire navigation action after panel is fully closed — stored in ref
+    // so it survives the state-change cleanup cycle
+    if (navTimerRef.current) clearTimeout(navTimerRef.current);
+    navTimerRef.current = setTimeout(() => {
+      if (cmd.keyword === "tour") router.push("/journey");
+      else cmd.action?.();
+    }, 1200);
+
+    return () => clearTimeout(closeTimer);
   }, [uiState, activeCmd]);
 
   // Reappear as button after being hidden (post-command)
@@ -705,15 +712,30 @@ export function AgentBar(): React.ReactElement {
             <AnimatePresence>
               {showTooltip && (
                 <div className="fixed z-[101] bottom-[68px] left-1/2 -translate-x-1/2 pointer-events-none">
+                  {/* Entrance/exit wrapper */}
                   <motion.div
-                    initial={{ opacity: 0, y: 4 }}
+                    initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 4 }}
-                    transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-                    className="font-mono text-small text-foreground whitespace-nowrap px-4 py-2 rounded-xl bg-card border border-card-border shadow-lg relative"
+                    exit={{ opacity: 0, y: 6 }}
+                    transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
                   >
-                    ask me anything — <span className="text-accent">I&apos;m live</span>
-                    <span className="absolute -bottom-[5px] left-1/2 -translate-x-1/2 w-2.5 h-2.5 bg-card border-r border-b border-card-border rotate-45" />
+                    {/* Pulsing inner — breathes to grab attention */}
+                    <motion.div
+                      animate={{
+                        scale: [1, 1.05, 1],
+                        y: [0, -3, 0],
+                      }}
+                      transition={{
+                        duration: 2,
+                        repeat: Infinity,
+                        ease: "easeInOut",
+                      }}
+                      className="font-mono text-small text-foreground whitespace-nowrap px-4 py-2 rounded-xl bg-card border border-accent/30 shadow-lg relative"
+                      style={{ boxShadow: "0 4px 20px rgba(0,0,0,0.15), 0 0 15px var(--accent-glow)" }}
+                    >
+                      ask me anything — <span className="text-accent">I&apos;m live</span>
+                      <span className="absolute -bottom-[5px] left-1/2 -translate-x-1/2 w-2.5 h-2.5 bg-card border-r border-b border-accent/30 rotate-45" />
+                    </motion.div>
                   </motion.div>
                 </div>
               )}
@@ -728,10 +750,10 @@ export function AgentBar(): React.ReactElement {
                   setUiState("panel");
                   setTimeout(() => inputRef.current?.focus(), 150);
                 }}
-                initial={{ opacity: 0, scale: 0.3 }}
+                initial={{ opacity: 0, scale: 0.5 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.8 }}
-                transition={{ duration: 0.5, ease: [0.34, 1.56, 0.64, 1] }}
+                transition={{ duration: 0.3, ease: [0.34, 1.56, 0.64, 1] }}
                 className="group flex items-center cursor-pointer glass rounded-full p-2.5 hover:px-4 hover:gap-2 transition-all duration-300"
                 style={{
                   boxShadow: "0 4px 12px rgba(0,0,0,0.12), 0 0 4px rgba(0,0,0,0.06)",

@@ -93,7 +93,7 @@ export function MissionStats(): React.ReactElement {
             >
               <div className="card-glow card-gradient-border p-4 md:p-5 rounded-xl bg-card border border-card-border h-full flex flex-col group hover:border-transparent hover:-translate-y-1 transition-all duration-300">
                 <div className="flex items-center gap-2 mb-3">
-                  <span className="w-1.5 h-1.5 rounded-full bg-accent-status animate-pulse group-hover:scale-150 transition-transform" />
+                  <span className="relative z-10 w-1.5 h-1.5 shrink-0 rounded-full bg-accent-status animate-pulse group-hover:scale-150 transition-transform" />
                   <span className="text-caption font-mono text-muted/60 uppercase tracking-wider group-hover:text-accent/80 transition-colors">
                     {w.label}
                   </span>

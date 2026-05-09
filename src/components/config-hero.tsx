@@ -1,13 +1,118 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useStatus } from "@/lib/use-status";
 import { openCvDrawer } from "@/components/cv-drawer";
 import { useTilt } from "@/lib/use-tilt";
 
 /* ------------------------------------------------------------------ */
-/*  Terminal About Card — char-by-char typing + response streaming     */
+/*  StreamingWords — reveals text word-by-word with a typing cursor    */
+/* ------------------------------------------------------------------ */
+
+interface WordSegment {
+  text: string;
+  className?: string;
+}
+
+function StreamingWords({
+  segments,
+  active,
+  immediate,
+  speed = 100,
+  showCursor = false,
+}: {
+  segments: WordSegment[];
+  active: boolean;
+  immediate: boolean;
+  speed?: number;
+  showCursor?: boolean;
+}): React.ReactElement {
+  const [count, setCount] = useState(0);
+  const [cursorOn, setCursorOn] = useState(false);
+
+  useEffect(() => {
+    // Returning visitor — show everything instantly
+    if (immediate) {
+      setCount(segments.length);
+      setCursorOn(false);
+      return;
+    }
+    // Replay reset
+    if (!active) {
+      setCount(0);
+      setCursorOn(false);
+      return;
+    }
+    // Done streaming — blink cursor briefly then hide
+    if (count >= segments.length) {
+      if (showCursor) {
+        setCursorOn(true);
+        const t = setTimeout(() => setCursorOn(false), 1200);
+        return () => clearTimeout(t);
+      }
+      return;
+    }
+    // Stream next word
+    setCursorOn(showCursor);
+    const t = setTimeout(
+      () => setCount((c) => c + 1),
+      speed + Math.random() * speed * 0.5,
+    );
+    return () => clearTimeout(t);
+  }, [active, immediate, count, segments.length, speed, showCursor]);
+
+  return (
+    <>
+      {segments.map((seg, i) => (
+        <motion.span
+          key={i}
+          animate={{
+            opacity: i < count ? 1 : 0,
+            filter: i < count ? "blur(0px)" : "blur(3px)",
+            y: i < count ? 0 : 2,
+          }}
+          transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
+          className={seg.className}
+          style={{ display: "inline" }}
+        >
+          {seg.text}
+          {i < segments.length - 1 ? " " : ""}
+        </motion.span>
+      ))}
+      {cursorOn && count > 0 && (
+        <motion.span
+          className="inline-block w-[2px] h-[0.8em] bg-accent/80 ml-0.5 translate-y-[3px] rounded-full"
+          animate={{ opacity: [1, 0.15, 1] }}
+          transition={{ duration: 0.6, repeat: Infinity, ease: "easeInOut" }}
+        />
+      )}
+    </>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  Text Segments                                                      */
+/* ------------------------------------------------------------------ */
+
+const TITLE_SEGMENTS: WordSegment[] = [
+  { text: "I" },
+  { text: "architect" },
+  { text: "AI systems", className: "text-gradient" },
+  { text: "and" },
+  { text: "ship" },
+  { text: "them" },
+  { text: "to" },
+  { text: "production." },
+];
+
+const DESC_SEGMENTS: WordSegment[] =
+  "From multi-agent orchestration and RAG pipelines to full-stack AI-powered SaaS. I design the architecture, build the product, and own the delivery."
+    .split(" ")
+    .map((text) => ({ text }));
+
+/* ------------------------------------------------------------------ */
+/*  Terminal About Card                                                */
 /* ------------------------------------------------------------------ */
 
 interface TermStep {
@@ -26,8 +131,26 @@ const TERM_STEPS: TermStep[] = [
   { cmd: "cat philosophy.md", output: "Build the tool when none exists", green: true },
 ];
 
-function HeroAboutCard(): React.ReactElement {
+function HeroAboutCard({ active, immediate }: { active: boolean; immediate: boolean }): React.ReactElement {
   const tilt = useTilt(10);
+  const [visibleLines, setVisibleLines] = useState(0);
+
+  useEffect(() => {
+    if (immediate) {
+      setVisibleLines(TERM_STEPS.length);
+      return;
+    }
+    if (!active) {
+      setVisibleLines(0);
+      return;
+    }
+    if (visibleLines >= TERM_STEPS.length) return;
+    const t = setTimeout(
+      () => setVisibleLines((v) => v + 1),
+      180 + Math.random() * 100,
+    );
+    return () => clearTimeout(t);
+  }, [active, immediate, visibleLines]);
 
   return (
     <motion.div
@@ -49,7 +172,7 @@ function HeroAboutCard(): React.ReactElement {
         <span className="ml-1 text-caption font-mono text-muted/60">shami ~ zsh</span>
       </div>
 
-      {/* Mobile photo — small, centered above commands */}
+      {/* Mobile photo */}
       <div className="flex sm:hidden flex-col items-center pt-4 pb-2">
         <div className="relative">
           <div className="absolute -inset-2 bg-gradient-to-br from-accent/20 to-accent-secondary/12 rounded-full blur-xl pointer-events-none" />
@@ -62,8 +185,16 @@ function HeroAboutCard(): React.ReactElement {
       <div className="flex flex-1 overflow-hidden">
         {/* Terminal commands — left side */}
         <div className="flex-1 px-4 py-3 font-mono text-small leading-[1.9] overflow-hidden">
-          {TERM_STEPS.map((step) => (
-            <div key={step.cmd} className="mb-1">
+          {TERM_STEPS.map((step, idx) => (
+            <motion.div
+              key={step.cmd}
+              className="mb-1"
+              animate={{
+                opacity: idx < visibleLines ? 1 : 0,
+                y: idx < visibleLines ? 0 : 5,
+              }}
+              transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
+            >
               <div><span className="text-accent">❯</span> <span className="text-foreground/80">{step.cmd}</span></div>
               {step.type === "identity" ? (
                 <div className="pl-3 py-0.5">
@@ -75,7 +206,7 @@ function HeroAboutCard(): React.ReactElement {
                   {step.output}
                 </div>
               )}
-            </div>
+            </motion.div>
           ))}
 
           <div>
@@ -84,7 +215,7 @@ function HeroAboutCard(): React.ReactElement {
           </div>
         </div>
 
-        {/* Photo — right side, fills 80% of card height, vertically centered */}
+        {/* Photo — right side */}
         <div className="hidden sm:flex items-center justify-center px-8 border-l border-card-border/30">
           <div className="relative">
             <div className="absolute -inset-6 bg-gradient-to-br from-accent/15 to-accent-secondary/10 rounded-full blur-3xl pointer-events-none" />
@@ -119,17 +250,62 @@ function HeroAboutCard(): React.ReactElement {
 /*  Hero Section                                                       */
 /* ------------------------------------------------------------------ */
 
+const ALL_TARGETS = ["badge", "title", "card", "desc", "cta", "build", "scroll"];
+const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
+
 export function ConfigHero(): React.ReactElement {
   const { status } = useStatus();
-  const [epoch, setEpoch] = useState(0);
 
-  // Re-stream hero content after boot animation completes (including reboot)
+  // Materialization state — driven by particle arrival events
+  const [materialized, setMaterialized] = useState<Set<string>>(new Set());
+
   useEffect(() => {
-    const onBootComplete = (): void => {
-      setEpoch((e) => e + 1);
+    // Returning visitor — show everything immediately
+    const isComplete = sessionStorage.getItem("boot-complete") === "1";
+    if (isComplete) {
+      setMaterialized(new Set(ALL_TARGETS));
+    }
+
+    // Particle-driven reveals
+    const onReveal = (e: Event): void => {
+      const target = (e as CustomEvent<{ target: string }>).detail?.target;
+      if (!target) return;
+      setMaterialized((prev) => {
+        const next = new Set(prev);
+        next.add(target);
+        return next;
+      });
+      // CTA triggers build + scroll
+      if (target === "cta") {
+        setTimeout(() => {
+          setMaterialized((prev) => new Set([...prev, "build", "scroll"]));
+        }, 500);
+      }
     };
+
+    // Fallback for returning visitors (boot-complete without particles)
+    const onBootComplete = (): void => {
+      setTimeout(() => {
+        setMaterialized((prev) => {
+          if (prev.size === 0) return new Set(ALL_TARGETS);
+          return prev;
+        });
+      }, 3000);
+    };
+
+    // Replay resets
+    const onReplay = (): void => {
+      setMaterialized(new Set());
+    };
+
+    window.addEventListener("hero-reveal", onReveal);
     window.addEventListener("boot-complete", onBootComplete);
-    return () => window.removeEventListener("boot-complete", onBootComplete);
+    window.addEventListener("replay-intro", onReplay);
+    return () => {
+      window.removeEventListener("hero-reveal", onReveal);
+      window.removeEventListener("boot-complete", onBootComplete);
+      window.removeEventListener("replay-intro", onReplay);
+    };
   }, []);
 
   const { scrollY } = useScroll();
@@ -138,6 +314,12 @@ export function ConfigHero(): React.ReactElement {
   const orbOpacity = useTransform(scrollY, [0, 600], [1, 0.3]);
   const cardY = useTransform(scrollY, [0, 600], [0, -40]);
   const cardScale = useTransform(scrollY, [0, 600], [1, 0.97]);
+
+  const m = useCallback(
+    (name: string): boolean => materialized.has(name),
+    [materialized],
+  );
+  const immediate = materialized.size === ALL_TARGETS.length;
 
   return (
     <section
@@ -161,49 +343,61 @@ export function ConfigHero(): React.ReactElement {
 
           {/* Left: tagline + CTA */}
           <div className="text-center md:text-left">
-            {/* 1. Badge streams in first */}
+
+            {/* 1. Badge — quick pop-in */}
             <motion.div
-              key={`badge-${epoch}`}
-              initial={{ opacity: 0, scale: 0.9, y: 10 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0, ease: [0.22, 1, 0.36, 1] }}
+              data-hero="badge"
+              initial={false}
+              animate={{
+                opacity: m("badge") ? 1 : 0,
+                scale: m("badge") ? 1 : 0.85,
+                y: m("badge") ? 0 : 8,
+                filter: m("badge") ? "blur(0px)" : "blur(6px)",
+              }}
+              transition={{ duration: immediate ? 0 : 0.6, ease: EASE }}
               className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent-status/10 border border-accent-status/20 text-accent-status text-caption md:text-xs font-mono mb-6"
             >
               <span className="w-1.5 h-1.5 bg-accent-status rounded-full animate-pulse" />
               Open to opportunities
             </motion.div>
 
-            {/* 2. Title streams in */}
-            <motion.h1
-              key={`h1-${epoch}`}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
+            {/* 2. Title — word-by-word streaming with cursor */}
+            <h1
+              data-hero="title"
               className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight leading-[1.15] mb-5"
             >
-              I architect{" "}
-              <span className="text-gradient">AI systems</span>
-              {" "}and ship them to production.
-            </motion.h1>
+              <StreamingWords
+                segments={TITLE_SEGMENTS}
+                active={m("title")}
+                immediate={immediate}
+                speed={120}
+                showCursor
+              />
+            </h1>
 
-            {/* 3. Description streams in */}
-            <motion.p
-              key={`desc-${epoch}`}
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 1.0, ease: [0.22, 1, 0.36, 1] }}
+            {/* 3. Description — word-by-word streaming (faster, no cursor) */}
+            <p
+              data-hero="desc"
               className="text-sm md:text-base text-muted max-w-md leading-relaxed mb-8"
             >
-              From multi-agent orchestration and RAG pipelines to full-stack
-              AI-powered SaaS. I design the architecture, build the product, and own the delivery.
-            </motion.p>
+              <StreamingWords
+                segments={DESC_SEGMENTS}
+                active={m("desc")}
+                immediate={immediate}
+                speed={60}
+              />
+            </p>
 
-            {/* 4. CTA button streams in */}
+            {/* 4. CTA — slide up */}
             <motion.div
-              key={`cta-${epoch}`}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 1.6 }}
+              data-hero="cta"
+              initial={false}
+              animate={{
+                opacity: m("cta") ? 1 : 0,
+                y: m("cta") ? 0 : 12,
+                filter: m("cta") ? "blur(0px)" : "blur(6px)",
+              }}
+              transition={{ duration: immediate ? 0 : 0.7, ease: EASE }}
               className="flex flex-wrap gap-3 justify-center md:justify-start"
             >
               <a
@@ -214,12 +408,11 @@ export function ConfigHero(): React.ReactElement {
               </a>
             </motion.div>
 
-            {/* 5. Building status streams in last */}
+            {/* 5. Building status */}
             <motion.div
-              key={`build-${epoch}`}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.5, delay: 2.2 }}
+              initial={false}
+              animate={{ opacity: m("build") ? 1 : 0 }}
+              transition={{ duration: immediate ? 0 : 0.5 }}
               className="flex items-center gap-2 mt-6 justify-center md:justify-start"
             >
               <span className="w-1.5 h-1.5 bg-accent rounded-full animate-pulse" />
@@ -232,15 +425,19 @@ export function ConfigHero(): React.ReactElement {
             </motion.div>
           </div>
 
-          {/* Right: about card slides in alongside the title */}
+          {/* Right: about card — blur materialize + line-by-line terminal */}
           <motion.div
-            key={`card-${epoch}`}
-            initial={{ opacity: 0, y: 30, scale: 0.95 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            transition={{ duration: 1.0, delay: 0.6, ease: [0.22, 1, 0.36, 1] }}
-            style={{ y: cardY, scale: cardScale }}
+            data-hero="card"
+            initial={false}
+            animate={{
+              opacity: m("card") ? 1 : 0,
+              filter: m("card") ? "blur(0px)" : "blur(14px)",
+            }}
+            transition={{ duration: immediate ? 0 : 1.2, ease: EASE }}
           >
-            <HeroAboutCard />
+            <motion.div style={{ y: cardY, scale: cardScale }}>
+              <HeroAboutCard active={m("card")} immediate={immediate} />
+            </motion.div>
           </motion.div>
 
         </div>
@@ -248,10 +445,9 @@ export function ConfigHero(): React.ReactElement {
 
       {/* Scroll indicator */}
       <motion.div
-        key={`scroll-${epoch}`}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.5, delay: 2.5 }}
+        initial={false}
+        animate={{ opacity: m("scroll") ? 1 : 0 }}
+        transition={{ duration: immediate ? 0 : 0.5 }}
         className="hidden md:block absolute bottom-6 left-1/2 -translate-x-1/2"
       >
         <motion.div

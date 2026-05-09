@@ -11,6 +11,7 @@ import { AgentBar } from "@/components/agent-bar";
 import { SkillsModal } from "@/components/skills-modal";
 import { CursorGlow } from "@/components/cursor-glow";
 import { BootParticles } from "@/components/boot-particles";
+import { AgentRevealParticles } from "@/components/agent-reveal-particles";
 import { HomeHashScroll } from "@/components/home-hash-scroll";
 
 export default function Home(): React.ReactElement {
@@ -31,6 +32,7 @@ export default function Home(): React.ReactElement {
       <Footer />
       <AgentBar />
       <BootParticles />
+      <AgentRevealParticles />
       <SkillsModal />
     </main>
   );
