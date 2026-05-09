@@ -1,12 +1,21 @@
-/** Knowledge base for the Chat-as-CV page. Each entry has keywords that
- *  are scored against the user's query; the highest-scoring entry wins.
+/** Knowledge base for the portfolio chat widget. Each entry has keywords
+ *  scored against the user query; highest-scoring entry wins.
  *  Uses word-boundary matching (so "hi" doesn't match "which"). */
+
+const BOOK_URL = "https://ahtesham.dev.wadwarehouse.com/book";
+
+export interface KbAction {
+  label: string;
+  href?: string;
+  event?: string; // dispatches window custom event
+}
 
 export interface KbEntry {
   id: string;
   keywords: string[];
   response: string;
   tags?: string[];
+  actions?: KbAction[];
 }
 
 export const starters = [
@@ -41,8 +50,11 @@ export const kb: KbEntry[] = [
       "expensive", "cheap", "affordable", "hourly", "per hour",
     ],
     response:
-      "Project work is tier-based, starting around $3k for scoped deliveries and scaling with complexity. Full-time roles are flexible depending on scope, equity, and impact. Easiest way to dial in the number is a 15-min call.",
+      "Project work is tier-based, starting around $3k for scoped deliveries and scaling with complexity. Full-time roles are flexible depending on scope, equity, and impact. Easiest way to dial in the number is a quick call.",
     tags: ["commercial"],
+    actions: [
+      { label: "Book a 15-min call", href: BOOK_URL },
+    ],
   },
   {
     id: "availability",
@@ -52,8 +64,12 @@ export const kb: KbEntry[] = [
       "can you work", "take on", "new project", "new work",
     ],
     response:
-      "Open to both full-time remote roles and 90-day project engagements. Use the Book a Call button to pick any open slot.",
+      "Open to both full-time remote roles and 90-day project engagements. Currently available to start within a week.",
     tags: ["commercial"],
+    actions: [
+      { label: "Book a 15-min call", href: BOOK_URL },
+      { label: "View CV", event: "open-cv-drawer" },
+    ],
   },
   {
     id: "timezone",
@@ -214,6 +230,9 @@ export const kb: KbEntry[] = [
     response:
       "Engineering since 2019, deep into AI since 2022. 50+ production systems shipped for real businesses across 250+ total client projects on Upwork and direct clients. Director of IT & R&D at Rouelite Techno 2022-2024, where I introduced AI into operations, reducing manual work by 70%. 500+ RLHF/SFT evaluation sessions on frontier models at Outlier/RWS/Translated. Since Sep 2025: Lead AI Developer at More Life Hospitality GmbH, shipping OpenEvent to 100+ clients.",
     tags: ["background"],
+    actions: [
+      { label: "View CV", event: "open-cv-drawer" },
+    ],
   },
   {
     id: "team",
@@ -234,6 +253,9 @@ export const kb: KbEntry[] = [
     response:
       "Usually under 24 hours. Faster if you book a call directly, that lands in my calendar with a reminder.",
     tags: ["working"],
+    actions: [
+      { label: "Book a 15-min call", href: BOOK_URL },
+    ],
   },
   {
     id: "open-source",
@@ -252,15 +274,22 @@ export const kb: KbEntry[] = [
       "how to contact", "how can i", "reach out", "connect",
     ],
     response:
-      "Email: shami8024@gmail.com · LinkedIn: linkedin.com/in/ahtesham · GitHub: github.com/shami-ah. Fastest path is the Book a Call button above.",
+      "Email: shami8024@gmail.com · LinkedIn: linkedin.com/in/ahtesham · GitHub: github.com/shami-ah",
     tags: ["commercial"],
+    actions: [
+      { label: "Book a 15-min call", href: BOOK_URL },
+      { label: "View CV", event: "open-cv-drawer" },
+    ],
   },
   {
     id: "booking",
     keywords: ["book", "booking", "schedule", "call", "meeting", "meet", "calendly"],
     response:
-      "Use the Book a Call button to schedule a 15-min intro call. Google Meet, open slots weekdays, no commitment.",
+      "15-min intro call, Google Meet, weekday open slots, no commitment. Pick any slot that works for you.",
     tags: ["commercial"],
+    actions: [
+      { label: "Book a 15-min call", href: BOOK_URL },
+    ],
   },
   {
     id: "linkedin",
@@ -294,6 +323,9 @@ export const kb: KbEntry[] = [
     response:
       "Testimonials from River Soellner (More Life founder, hired full-time after Upwork), Mouad B. (project management work, France), and META AI course client are on the portfolio. Happy to connect you directly with any of them after a call.",
     tags: ["background"],
+    actions: [
+      { label: "Book a 15-min call", href: BOOK_URL },
+    ],
   },
   {
     id: "why-hire",
@@ -301,6 +333,10 @@ export const kb: KbEntry[] = [
     response:
       "Because you don't just need someone who writes code. You need someone who designs the system, holds it accountable to real production failure modes (taint tracking, human gates, RLS, feature flags), and owns the outcome. Most AI demos break in production. Mine don't.",
     tags: ["commercial"],
+    actions: [
+      { label: "Book a 15-min call", href: BOOK_URL },
+      { label: "See the work", event: "scroll-projects" },
+    ],
   },
   {
     id: "english",
@@ -344,6 +380,65 @@ export const kb: KbEntry[] = [
       "React Native via Expo for cross-platform. Shipped a gluten-free deals/dining app with Next.js web + RN mobile. PWA is my default when possible (installable, push notifications, no app store).",
     tags: ["technical"],
   },
+
+  /* ── New entries ── */
+
+  {
+    id: "portfolio",
+    keywords: [
+      "portfolio", "this website", "this site", "how did you build",
+      "built this", "website", "site tech", "what powers",
+    ],
+    response:
+      "This portfolio is Next.js 16 + React 19 + TypeScript + Tailwind + Framer Motion + Supabase. The boot sequence, particle system, and word-by-word streaming are all custom. The AI agent bar processes commands locally, and this chat uses Groq's Llama 3.3 70B with a portfolio-scoped system prompt. Deployed on Cloudflare Pages.",
+    tags: ["technical"],
+  },
+  {
+    id: "education",
+    keywords: [
+      "education", "degree", "university", "college", "certification",
+      "certifications", "school", "study", "studied", "qualification",
+    ],
+    response:
+      "BSc Engineering. Self-taught in AI/ML beyond formal education. 500+ RLHF evaluation sessions on frontier models (practical, hands-on AI training). I believe in learning by shipping, not collecting certificates.",
+    tags: ["background"],
+  },
+  {
+    id: "freelance",
+    keywords: [
+      "freelance", "freelancer", "upwork", "fiverr", "contract",
+      "contractor", "consulting", "consultant", "independent",
+    ],
+    response:
+      "250+ projects on Upwork with 100% job success score and 40+ returning clients. Open to both short contracts and long-term engagements. Typical project: scoped architecture doc → sprint delivery → production handoff.",
+    tags: ["commercial"],
+    actions: [
+      { label: "Book a 15-min call", href: BOOK_URL },
+    ],
+  },
+  {
+    id: "ai-safety",
+    keywords: [
+      "ai safety", "responsible ai", "ethical", "ethics", "bias",
+      "alignment", "guardrails", "trust", "responsible",
+    ],
+    response:
+      "Human-in-the-loop is non-negotiable for anything touching money, commitments, or personal data. Every AI action is auditable. I build approval gates, confidence thresholds, and fallback paths into every system. No black boxes in production.",
+    tags: ["technical"],
+  },
+  {
+    id: "trial",
+    keywords: [
+      "trial", "trial project", "test project", "proof of concept",
+      "poc", "pilot", "sample", "demo project",
+    ],
+    response:
+      "Happy to start with a scoped proof of concept. Typical POC is 1-2 weeks, fixed scope, clear deliverable. If it works, we scale. If it doesn't, you've lost a week, not a quarter.",
+    tags: ["commercial"],
+    actions: [
+      { label: "Book a 15-min call", href: BOOK_URL },
+    ],
+  },
 ];
 
 function tokenize(s: string): string[] {
@@ -369,28 +464,24 @@ export function findAnswer(query: string): KbEntry | null {
   for (const entry of kb) {
     let score = 0;
     for (const kw of entry.keywords) {
-      const kwLower = kw.toLowerCase();
       const kwTokens = tokenize(kw);
       if (kwTokens.length === 0) continue;
 
       if (kwTokens.length === 1) {
-        // Single-word keyword: require exact token match (word-boundary safe)
         if (tokens.includes(kwTokens[0])) {
           score += 3;
         }
       } else {
-        // Multi-word keyword: require exact phrase match with word boundaries
-        const re = new RegExp(`\\b${escapeRegex(kwLower)}\\b`);
+        const re = new RegExp(`\\b${escapeRegex(kw.toLowerCase())}\\b`);
         if (re.test(lowered)) {
           score += kwTokens.length * 3;
         }
-        // Partial credit: count how many of its tokens are in the query
         let partialHits = 0;
         for (const kt of kwTokens) {
           if (tokens.includes(kt)) partialHits += 1;
         }
         if (partialHits === kwTokens.length) {
-          score += kwTokens.length; // all tokens present, even out of order
+          score += kwTokens.length;
         } else {
           score += partialHits * 0.5;
         }

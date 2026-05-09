@@ -2,8 +2,10 @@
 
 import { useState, useEffect, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Minus, Maximize2, Send } from "lucide-react";
+import { X, Minus, Maximize2, Send, Calendar, FileText, ArrowRight } from "lucide-react";
 import { findAnswer, starters } from "@/lib/kb";
+import type { KbAction } from "@/lib/kb";
+import { openCvDrawer } from "@/components/cv-drawer";
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
@@ -14,6 +16,7 @@ interface Message {
   role: "user" | "assistant";
   content: string;
   streaming?: boolean;
+  actions?: KbAction[];
 }
 
 type WidgetState = "closed" | "open" | "minimized";
@@ -25,15 +28,98 @@ const MODELS = [
   { id: "nvidia", label: "Nemotron", provider: "NVIDIA" },
 ] as const;
 
+const BOOK_URL = "https://ahtesham.dev.wadwarehouse.com/book";
+
 const FALLBACK =
-  "Hmm, that's outside what I know well. Ahtesham would answer it better on a call. Try rephrasing — I know about rate, stack, availability, his tools, and how he works with clients.";
+  "That's outside what I know about Ahtesham's work right now. Try asking about his rate, stack, availability, tools, or how he works with clients.";
+
+/* ------------------------------------------------------------------ */
+/*  Rich text — clickable URLs and emails                              */
+/* ------------------------------------------------------------------ */
+
+const URL_REGEX =
+  /(https?:\/\/\S+|[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}|(?:linkedin|github)\.com\/\S+)/g;
+
+function RichText({ text }: { text: string }): React.ReactElement {
+  const parts = text.split(URL_REGEX);
+  return (
+    <>
+      {parts.map((part, i) => {
+        if (!part) return null;
+        if (/^https?:\/\//.test(part)) {
+          return (
+            <a key={i} href={part} target="_blank" rel="noopener noreferrer"
+              className="text-accent hover:underline break-all">
+              {part}
+            </a>
+          );
+        }
+        if (/@/.test(part) && /\./.test(part) && !/\s/.test(part)) {
+          return (
+            <a key={i} href={`mailto:${part}`} className="text-accent hover:underline">
+              {part}
+            </a>
+          );
+        }
+        if (/(?:linkedin|github)\.com\//.test(part)) {
+          return (
+            <a key={i} href={`https://${part}`} target="_blank" rel="noopener noreferrer"
+              className="text-accent hover:underline break-all">
+              {part}
+            </a>
+          );
+        }
+        return <span key={i}>{part}</span>;
+      })}
+    </>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  Action buttons (Book a Call, View CV, etc.)                        */
+/* ------------------------------------------------------------------ */
+
+function ActionButtons({ actions }: { actions: KbAction[] }): React.ReactElement {
+  const handleAction = (action: KbAction): void => {
+    if (action.href) {
+      window.open(action.href, "_blank", "noopener,noreferrer");
+    }
+    if (action.event) {
+      if (action.event === "open-cv-drawer") {
+        openCvDrawer();
+      } else if (action.event === "scroll-projects") {
+        document.getElementById("projects")?.scrollIntoView({ behavior: "smooth", block: "start" });
+      } else {
+        window.dispatchEvent(new CustomEvent(action.event));
+      }
+    }
+  };
+
+  return (
+    <div className="flex flex-wrap gap-1.5 mt-2">
+      {actions.map((a) => (
+        <button
+          key={a.label}
+          type="button"
+          onClick={() => handleAction(a)}
+          className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-caption font-mono border border-accent/20 bg-accent/5 text-accent/80 hover:bg-accent/15 hover:border-accent/40 hover:text-accent transition-all cursor-pointer"
+        >
+          {a.label.includes("Call") && <Calendar size={11} />}
+          {a.label.includes("CV") && <FileText size={11} />}
+          {!a.label.includes("Call") && !a.label.includes("CV") && <ArrowRight size={11} />}
+          {a.label}
+        </button>
+      ))}
+    </div>
+  );
+}
 
 /* ------------------------------------------------------------------ */
 /*  Panel spring + overlay                                             */
 /* ------------------------------------------------------------------ */
 
 const panelVariants = {
-  hidden: { opacity: 0, y: 20, scale: 0.95 },
+  hidden: { opacity: 0, y: 24, scale: 0.95 },
   visible: {
     opacity: 1,
     y: 0,
@@ -71,16 +157,15 @@ export function ChatWidget(): React.ReactElement {
   const [activeModel, setActiveModel] = useState("groq");
   const [showTrigger, setShowTrigger] = useState(false);
   const [triggerGlow, setTriggerGlow] = useState(false);
+  const [showFallbackChips, setShowFallbackChips] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  // Delay trigger appearance so it doesn't compete with page load
   useEffect(() => {
     const timer = setTimeout(() => setShowTrigger(true), 2500);
     return () => clearTimeout(timer);
   }, []);
 
-  // Listen for agent flying-to-chat event — add glow pulse before opening
   useEffect(() => {
     const handler = (): void => {
       setTriggerGlow(true);
@@ -90,29 +175,25 @@ export function ChatWidget(): React.ReactElement {
     return () => window.removeEventListener("agent-flying-to-chat", handler);
   }, []);
 
-  // Listen for custom event from other components (e.g. agent-bar)
   useEffect(() => {
     const handler = (): void => setState("open");
     window.addEventListener("open-chat-widget", handler);
     return () => window.removeEventListener("open-chat-widget", handler);
   }, []);
 
-  // Notify agent bar when chat closes
   useEffect(() => {
     if (state === "closed" || state === "minimized") {
       window.dispatchEvent(new CustomEvent("close-chat-widget"));
     }
   }, [state]);
 
-  // Auto-scroll on new messages
   useEffect(() => {
     scrollRef.current?.scrollTo({
       top: scrollRef.current.scrollHeight,
       behavior: "smooth",
     });
-  }, [messages, isThinking]);
+  }, [messages, isThinking, showFallbackChips]);
 
-  // Focus input when panel opens
   useEffect(() => {
     if (state === "open") {
       setTimeout(() => inputRef.current?.focus(), 100);
@@ -144,14 +225,17 @@ export function ChatWidget(): React.ReactElement {
   const streamAnswer = useCallback(
     async (query: string): Promise<void> => {
       setIsThinking(true);
+      setShowFallbackChips(false);
       const id = `a-${Date.now()}`;
       let answer = "";
+      let actions: KbAction[] | undefined;
 
+      // Try API with selected model
       try {
         const res = await fetch("/api/chat", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ message: query }),
+          body: JSON.stringify({ message: query, model: activeModel }),
         });
         if (res.ok) {
           const data = (await res.json()) as { answer: string };
@@ -161,25 +245,46 @@ export function ChatWidget(): React.ReactElement {
         // silent fallback to KB
       }
 
+      // If API returned an answer, detect if booking action should be added
+      if (answer) {
+        const lower = answer.toLowerCase();
+        if (
+          lower.includes("book a call") ||
+          lower.includes("schedule") ||
+          lower.includes("15-min") ||
+          lower.includes("intro call")
+        ) {
+          actions = [{ label: "Book a 15-min call", href: BOOK_URL }];
+        }
+      }
+
+      // Fallback to KB
       if (!answer) {
         const entry = findAnswer(query);
-        answer = entry ? entry.response : FALLBACK;
+        if (entry) {
+          answer = entry.response;
+          actions = entry.actions;
+        } else {
+          answer = FALLBACK;
+          setShowFallbackChips(true);
+        }
       }
 
       setIsThinking(false);
       setMessages((prev) => [
         ...prev,
-        { id, role: "assistant", content: "", streaming: true },
+        { id, role: "assistant", content: "", streaming: true, actions },
       ]);
       await streamWords(id, answer);
     },
-    [streamWords],
+    [streamWords, activeModel],
   );
 
   const send = useCallback(
     (q: string): void => {
       const query = q.trim();
       if (!query) return;
+      setShowFallbackChips(false);
       setMessages((prev) => [
         ...prev,
         { id: `u-${Date.now()}`, role: "user", content: query },
@@ -197,8 +302,6 @@ export function ChatWidget(): React.ReactElement {
 
   const msgCount = messages.filter((m) => m.role === "user").length;
   const model = MODELS.find((m) => m.id === activeModel) ?? MODELS[0];
-
-  /* ── Render ── */
 
   return (
     <>
@@ -220,7 +323,6 @@ export function ChatWidget(): React.ReactElement {
             style={{ boxShadow: triggerGlow ? undefined : "0 4px 12px rgba(0,0,0,0.12), 0 0 4px rgba(0,0,0,0.06)" }}
           >
             <span className="font-mono text-[13px] font-bold text-accent/70 group-hover:text-accent shrink-0 leading-none transition-colors">&gt;_</span>
-
             <span className="max-w-0 overflow-hidden group-hover:max-w-[140px] transition-all duration-300 whitespace-nowrap font-mono text-small text-accent/60">
               Chat with my AI
             </span>
@@ -241,23 +343,14 @@ export function ChatWidget(): React.ReactElement {
             className="fixed bottom-5 right-3 md:right-6 z-50 flex items-center gap-2.5 px-4 py-2.5 rounded-xl bg-card/70 backdrop-blur-2xl border border-card-border shadow-[0_15px_40px_rgba(0,0,0,0.25),0_0_20px_rgba(212,168,83,0.03)] cursor-pointer hover:border-accent/30 transition-colors group"
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="/ahtesham.jpg"
-              alt="Ahtesham"
-              className="w-6 h-6 rounded-full border border-card-border object-cover"
-            />
-            <span className="font-mono text-small text-foreground/80">
-              Chat with Shami&apos;s AI
-            </span>
+            <img src="/ahtesham.jpg" alt="Ahtesham" className="w-6 h-6 rounded-full border border-card-border object-cover" />
+            <span className="font-mono text-small text-foreground/80">Chat with Shami&apos;s AI</span>
             {msgCount > 0 && (
               <span className="text-caption font-mono text-accent/60">
                 {msgCount} msg{msgCount !== 1 ? "s" : ""}
               </span>
             )}
-            <Maximize2
-              size={13}
-              className="text-muted/40 group-hover:text-accent/60 transition-colors ml-1"
-            />
+            <Maximize2 size={13} className="text-muted/40 group-hover:text-accent/60 transition-colors ml-1" />
           </motion.button>
         )}
       </AnimatePresence>
@@ -270,8 +363,6 @@ export function ChatWidget(): React.ReactElement {
             initial="hidden"
             animate="visible"
             exit="exit"
-            whileHover={{ scale: 1.01 }}
-            transition={{ duration: 0.2 }}
             className="fixed bottom-5 right-3 md:right-6 z-50 w-[calc(100vw-2rem)] sm:w-[400px] h-[min(560px,calc(100vh-7rem))] flex flex-col rounded-2xl bg-card/80 backdrop-blur-2xl border border-card-border/60 overflow-hidden shadow-[0_25px_60px_rgba(0,0,0,0.35),0_0_40px_rgba(212,168,83,0.04)] hover:border-accent/20 hover:shadow-[0_25px_60px_rgba(0,0,0,0.4),0_0_50px_rgba(212,168,83,0.06)] transition-[border-color,box-shadow] duration-300"
           >
             {/* ── Header ── */}
@@ -279,39 +370,20 @@ export function ChatWidget(): React.ReactElement {
               <div className="flex items-center justify-between px-4 py-3">
                 <div className="flex items-center gap-2.5">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src="/ahtesham.jpg"
-                    alt="Ahtesham"
-                    className="w-8 h-8 rounded-full border border-accent/20 object-cover"
-                  />
+                  <img src="/ahtesham.jpg" alt="Ahtesham" className="w-8 h-8 rounded-full border border-accent/20 object-cover" />
                   <div>
                     <div className="flex items-center gap-1.5">
-                      <span className="font-mono text-sm font-semibold text-foreground">
-                        shami.ai
-                      </span>
+                      <span className="font-mono text-sm font-semibold text-foreground">shami.ai</span>
                       <span className="w-1.5 h-1.5 rounded-full bg-accent-status animate-pulse" />
                     </div>
-                    <span className="text-caption font-mono text-muted/50">
-                      portfolio agent · {model.label}
-                    </span>
+                    <span className="text-caption font-mono text-muted/50">portfolio agent · {model.label}</span>
                   </div>
                 </div>
-
                 <div className="flex items-center gap-1">
-                  <button
-                    type="button"
-                    onClick={() => setState("minimized")}
-                    className="p-1.5 rounded-lg text-muted/40 hover:text-foreground/70 hover:bg-card-hover transition-colors"
-                    title="Minimize"
-                  >
+                  <button type="button" onClick={() => setState("minimized")} className="p-1.5 rounded-lg text-muted/40 hover:text-foreground/70 hover:bg-card-hover transition-colors" title="Minimize">
                     <Minus size={14} />
                   </button>
-                  <button
-                    type="button"
-                    onClick={() => setState("closed")}
-                    className="p-1.5 rounded-lg text-muted/40 hover:text-foreground/70 hover:bg-card-hover transition-colors"
-                    title="Close"
-                  >
+                  <button type="button" onClick={() => setState("closed")} className="p-1.5 rounded-lg text-muted/40 hover:text-foreground/70 hover:bg-card-hover transition-colors" title="Close">
                     <X size={14} />
                   </button>
                 </div>
@@ -337,50 +409,40 @@ export function ChatWidget(): React.ReactElement {
             </div>
 
             {/* ── Body ── */}
-            <div
-              ref={scrollRef}
-              className="flex-1 overflow-y-auto px-4 py-4 space-y-3"
-            >
+            <div ref={scrollRef} className="flex-1 overflow-y-auto px-4 py-4 space-y-3">
               {/* Welcome card — only when no messages */}
               {messages.length === 0 && (
                 <div className="space-y-3">
-                  {/* Compact profile */}
                   <div className="rounded-xl bg-background/50 border border-card-border/60 p-3.5">
                     <div className="flex items-center gap-3 mb-2.5">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img
-                        src="/ahtesham.jpg"
-                        alt="Ahtesham Ahmad"
-                        className="w-10 h-10 rounded-xl border border-accent/20 object-cover shrink-0"
-                      />
+                      <img src="/ahtesham.jpg" alt="Ahtesham Ahmad" className="w-10 h-10 rounded-xl border border-accent/20 object-cover shrink-0" />
                       <div className="min-w-0">
-                        <p className="text-foreground font-semibold font-sans text-sm">
-                          Ahtesham Ahmad
-                        </p>
-                        <p className="text-muted/60 text-caption">
-                          AI Engineer · Open to opportunities
-                        </p>
+                        <p className="text-foreground font-semibold font-sans text-sm">Ahtesham Ahmad</p>
+                        <p className="text-muted/60 text-caption">AI Engineer · Open to opportunities</p>
                       </div>
                     </div>
                     <div className="flex flex-wrap gap-1">
-                      {[
-                        "Multi-Agent Systems",
-                        "TypeScript",
-                        "React",
-                        "Supabase",
-                      ].map((t) => (
-                        <span
-                          key={t}
-                          className="px-1.5 py-0.5 text-caption bg-accent/5 text-accent/70 rounded border border-accent/15"
-                        >
+                      {["Multi-Agent Systems", "TypeScript", "React", "Supabase"].map((t) => (
+                        <span key={t} className="px-1.5 py-0.5 text-caption bg-accent/5 text-accent/70 rounded border border-accent/15">
                           {t}
                         </span>
                       ))}
                     </div>
                     <p className="mt-2.5 text-caption text-muted/50 font-sans leading-relaxed">
-                      Ask me about his rate, stack, availability, tools, or how
-                      you&apos;d work together.
+                      Ask me about his rate, stack, availability, tools, or how you&apos;d work together.
                     </p>
+
+                    {/* Quick action — Book a Call */}
+                    <a
+                      href={BOOK_URL}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="mt-3 flex items-center justify-center gap-2 px-3 py-2 rounded-lg bg-accent/10 border border-accent/20 text-accent text-caption font-mono hover:bg-accent/15 hover:border-accent/35 transition-all"
+                    >
+                      <Calendar size={12} />
+                      Book a 15-min call
+                    </a>
                   </div>
 
                   {/* Starter chips */}
@@ -406,17 +468,45 @@ export function ChatWidget(): React.ReactElement {
 
               {/* Thinking */}
               {isThinking && <WidgetThinking />}
+
+              {/* Fallback suggestion chips — shown when KB returns no match */}
+              {showFallbackChips && !isThinking && (
+                <motion.div
+                  initial={{ opacity: 0, y: 6 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.3, delay: 0.3 }}
+                  className="space-y-2"
+                >
+                  <p className="text-caption text-muted/40 font-mono">Try one of these:</p>
+                  <div className="flex flex-wrap gap-1.5">
+                    {starters.slice(0, 4).map((s) => (
+                      <button
+                        key={s}
+                        type="button"
+                        onClick={() => send(s)}
+                        className="text-caption px-2.5 py-1.5 rounded-lg border border-card-border bg-background/40 hover:border-accent/30 hover:bg-accent/5 hover:text-accent transition-all font-sans cursor-pointer"
+                      >
+                        {s}
+                      </button>
+                    ))}
+                  </div>
+                  <a
+                    href={BOOK_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 text-caption font-mono text-accent/60 hover:text-accent transition-colors"
+                  >
+                    <Calendar size={11} />
+                    Or book a call to ask directly
+                  </a>
+                </motion.div>
+              )}
             </div>
 
             {/* ── Input ── */}
-            <form
-              onSubmit={onSubmit}
-              className="shrink-0 border-t border-card-border/40 bg-card/20"
-            >
+            <form onSubmit={onSubmit} className="shrink-0 border-t border-card-border/40 bg-card/20">
               <div className="flex items-center gap-2 px-3 py-2.5">
-                <span className="text-accent font-mono text-sm shrink-0">
-                  $
-                </span>
+                <span className="text-accent font-mono text-sm shrink-0">$</span>
                 <input
                   ref={inputRef}
                   type="text"
@@ -451,7 +541,7 @@ export function ChatWidget(): React.ReactElement {
 }
 
 /* ------------------------------------------------------------------ */
-/*  Message bubble                                                     */
+/*  Message bubble with rich text + action buttons                     */
 /* ------------------------------------------------------------------ */
 
 function WidgetMessage({ msg }: { msg: Message }): React.ReactElement {
@@ -480,12 +570,22 @@ function WidgetMessage({ msg }: { msg: Message }): React.ReactElement {
           <div className="min-w-0 max-w-[88%]">
             <div className="px-3 py-2 rounded-xl rounded-tl-sm bg-background/60 border border-card-border/60 text-small font-sans text-foreground/80 leading-relaxed">
               <p className="whitespace-pre-wrap">
-                {msg.content}
+                <RichText text={msg.content} />
                 {msg.streaming && (
                   <span className="inline-block w-[2px] h-[12px] bg-accent ml-0.5 translate-y-[1px] animate-pulse" />
                 )}
               </p>
             </div>
+            {/* Action buttons — shown after streaming completes */}
+            {!msg.streaming && msg.actions && msg.actions.length > 0 && (
+              <motion.div
+                initial={{ opacity: 0, y: 4 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3, delay: 0.2 }}
+              >
+                <ActionButtons actions={msg.actions} />
+              </motion.div>
+            )}
           </div>
         </div>
       )}

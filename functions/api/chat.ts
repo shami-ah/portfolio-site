@@ -81,6 +81,22 @@ Timezone: UTC+5, overlaps EU mornings + Gulf business hours
 Response time: <24h, faster via booking page
 `.trim();
 
+// Per-model personality injected into the system prompt so switching
+// models produces visibly different response styles.
+const MODEL_VOICES: Record<string, string> = {
+  groq: "\n\nVOICE: Be concise and direct. Short sentences. Get to the point. No fluff.",
+  claude: "\n\nVOICE: Be thoughtful and nuanced. Consider angles. Use phrases like 'I think' or 'that depends on'. Slightly longer, more reflective answers.",
+  gpt4: "\n\nVOICE: Be well-structured. Use bullet points or numbered lists when helpful. Professional and organized tone.",
+  nvidia: "\n\nVOICE: Be technically precise. Include specific numbers, metrics, and benchmarks when available. Engineering-focused and data-driven.",
+};
+
+const MODEL_TEMPS: Record<string, number> = {
+  groq: 0.25,
+  claude: 0.5,
+  gpt4: 0.2,
+  nvidia: 0.15,
+};
+
 export const onRequestPost: PagesFunction<Env> = async (context) => {
   const { request, env } = context;
 
@@ -95,9 +111,11 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
   }
 
   let message = "";
+  let modelId = "groq";
   try {
-    const body = (await request.json()) as { message?: string };
+    const body = (await request.json()) as { message?: string; model?: string };
     message = body.message?.trim() ?? "";
+    modelId = body.model ?? "groq";
   } catch {
     return new Response(JSON.stringify({ answer: "Invalid request." }), {
       status: 400,
@@ -124,11 +142,11 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
         body: JSON.stringify({
           model: "llama-3.3-70b-versatile",
           messages: [
-            { role: "system", content: PORTFOLIO_CONTEXT },
+            { role: "system", content: PORTFOLIO_CONTEXT + MODEL_VOICES[modelId as keyof typeof MODEL_VOICES] },
             { role: "user", content: message },
           ],
-          temperature: 0.3,
-          max_tokens: 350,
+          temperature: MODEL_TEMPS[modelId as keyof typeof MODEL_TEMPS] ?? 0.3,
+          max_tokens: 400,
         }),
       },
     );
