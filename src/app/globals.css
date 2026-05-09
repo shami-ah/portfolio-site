@@ -356,6 +356,40 @@ body::after {
   100% { transform: rotate(360deg); }
 }
 
+/* Wrench — gentle tilt back and forth */
+.nav-wrench-tilt {
+  animation: wrench-idle 4s ease-in-out infinite;
+}
+.group:hover .nav-wrench-tilt {
+  animation: wrench-active 0.5s ease-in-out infinite alternate;
+}
+@keyframes wrench-idle {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(-8deg); }
+  75% { transform: rotate(8deg); }
+}
+@keyframes wrench-active {
+  0% { transform: rotate(-15deg); }
+  100% { transform: rotate(15deg); }
+}
+
+/* Arrow — subtle float upward */
+.nav-arrow-rise {
+  animation: arrow-float 3s ease-in-out infinite;
+}
+.group:hover .nav-arrow-rise {
+  animation: arrow-launch 0.6s ease-out forwards;
+}
+@keyframes arrow-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-2px); }
+}
+@keyframes arrow-launch {
+  0% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-4px) scale(1.15); }
+  100% { transform: translateY(-1px) scale(1.05); }
+}
+
 /* Brand gradient text */
 .text-gradient {
   background: var(--gradient-brand);
