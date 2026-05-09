@@ -123,7 +123,7 @@ export function WritingPage(): React.ReactElement {
                 {article.body.map((section, si) => (
                   <div key={si}>
                     {section.heading && (
-                      <h3 className="text-base md:text-lg font-bold mb-3 text-accent-secondary">
+                      <h3 className="text-sm md:text-base font-bold mb-3 text-accent-secondary">
                         {section.heading}
                       </h3>
                     )}

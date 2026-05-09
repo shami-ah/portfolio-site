@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 
+import { TiltCard } from "@/components/tilt-card";
 import { TimeMachine } from "@/components/time-machine";
 
 /* ------------------------------------------------------------------ */
@@ -174,12 +175,10 @@ export function Journey(): React.ReactElement {
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-80px" }}
-                transition={{ duration: 0.5, delay: i * 0.06, ease: [0.22, 1, 0.36, 1] }}
-                className="group p-6 md:p-7 rounded-xl bg-card/60 border border-card-border hover:border-accent/20 transition-all duration-500 relative overflow-hidden"
+                transition={{ duration: 0.5, delay: i * 0.1, ease: [0.22, 1, 0.36, 1] }}
               >
-                <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-accent/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-
-                <p className="text-caption font-mono uppercase tracking-[0.25em] text-accent/80 mb-3">
+              <TiltCard className="group card-glow card-gradient-border p-6 md:p-7 rounded-xl bg-card border border-card-border hover:border-transparent transition-all duration-300 relative overflow-hidden h-full">
+                <p className="text-caption font-mono uppercase tracking-wider text-accent/80 mb-3">
                   {p.tag}
                 </p>
                 <h3 className="text-lg md:text-xl font-bold mb-3 leading-tight">
@@ -189,13 +188,14 @@ export function Journey(): React.ReactElement {
                   {p.body}
                 </p>
                 <div className="pt-3 border-t border-card-border">
-                  <p className="text-caption font-mono uppercase tracking-[0.2em] text-muted/60 mb-1.5">
+                  <p className="text-caption font-mono uppercase tracking-wider text-muted/60 mb-1.5">
                     real example
                   </p>
                   <p className="text-xs text-foreground/80 leading-relaxed">
                     {p.example}
                   </p>
                 </div>
+              </TiltCard>
               </motion.div>
             ))}
           </div>
@@ -203,7 +203,7 @@ export function Journey(): React.ReactElement {
       </section>
 
       {/* DAY IN THE LIFE — interactive TimeMachine */}
-      <section className="py-20 md:py-32 px-5 md:px-6 bg-card/20 relative">
+      <section className="py-20 md:py-32 px-5 md:px-6 relative">
         <div className="max-w-4xl mx-auto">
           <div className="mb-8 md:mb-10 text-center">
             <p className="text-sm font-mono text-accent mb-3 uppercase tracking-[0.3em]">
@@ -237,9 +237,9 @@ export function Journey(): React.ReactElement {
               href="https://ahtesham.dev.wadwarehouse.com/book"
               target="_blank"
               rel="noopener noreferrer"
-              className="px-6 py-3 bg-accent text-white font-medium rounded-lg hover:bg-accent/90 hover:shadow-lg hover:shadow-accent/20 transition-all"
+              className="px-6 py-3 bg-accent text-background font-medium rounded-lg hover:brightness-110 hover:shadow-lg hover:shadow-accent/20 transition-all text-sm"
             >
-              Book a 15-min call →
+              Book a 15-min call
             </a>
             <Link
               href="/#projects"
