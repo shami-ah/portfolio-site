@@ -511,7 +511,7 @@ export function Uses(): React.ReactElement {
       <div className="flex items-center justify-between px-3 py-[5px] border-b border-card-border bg-card/60 shrink-0">
         <div className="flex items-center gap-2">
           <div className="flex gap-1.5">
-            <span className="w-3 h-3 rounded-full bg-red-500/60" />
+            <Link href="/" aria-label="Close" className="w-3 h-3 rounded-full bg-red-500/60 hover:bg-red-500 transition-colors cursor-pointer" />
             <span className="w-3 h-3 rounded-full bg-yellow-500/60" />
             <span className="w-3 h-3 rounded-full bg-green-500/60" />
           </div>
