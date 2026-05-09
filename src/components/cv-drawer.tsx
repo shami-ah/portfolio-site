@@ -5,6 +5,7 @@ import { motion, AnimatePresence, useMotionValue, useSpring } from "framer-motio
 import { X, Download, Zap, Rocket, Building2, Link2, TreePine, GraduationCap, Globe, Cog, Cloud, ArrowRight } from "lucide-react";
 import { useCvHit } from "@/components/cv-counter";
 import { useStatus } from "@/lib/use-status";
+import { useScrollLock } from "@/lib/use-scroll-lock";
 
 /* ------------------------------------------------------------------ */
 /*  Global event bus for opening the drawer from anywhere              */
@@ -405,30 +406,13 @@ export function CVDrawer(): React.ReactElement {
     return () => window.removeEventListener(OPEN_EVENT, handler);
   }, []);
 
-  // Scroll lock (iOS-safe) + Escape key
+  // Scroll lock + Escape key
+  useScrollLock(open);
   useEffect(() => {
     if (!open) return;
-    const scrollY = window.scrollY;
-    document.body.style.position = "fixed";
-    document.body.style.top = `-${scrollY}px`;
-    document.body.style.left = "0";
-    document.body.style.right = "0";
-    document.body.style.overflow = "hidden";
-    document.body.setAttribute("data-modal-open", "true");
-
     const onKey = (e: KeyboardEvent): void => { if (e.key === "Escape") close(); };
     window.addEventListener("keydown", onKey);
-
-    return () => {
-      document.body.style.position = "";
-      document.body.style.top = "";
-      document.body.style.left = "";
-      document.body.style.right = "";
-      document.body.style.overflow = "";
-      document.body.removeAttribute("data-modal-open");
-      window.scrollTo(0, scrollY);
-      window.removeEventListener("keydown", onKey);
-    };
+    return () => window.removeEventListener("keydown", onKey);
   }, [open, close]);
 
   return (

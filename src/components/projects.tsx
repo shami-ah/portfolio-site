@@ -1,15 +1,23 @@
 "use client";
 
-import Link from "next/link";
-import { useCallback, useState } from "react";
-import { motion } from "framer-motion";
+import { useCallback, useEffect, useRef, useState } from "react";
+import ReactDOM from "react-dom";
+import { motion, AnimatePresence } from "framer-motion";
 import { projects, type ProjectData } from "@/data/projects";
-import { FadeUp, SlideIn } from "./motion";
+import { diagrams } from "@/data/diagrams";
+import { FadeUp } from "./motion";
 import { TypeLabel } from "./type-label";
 import { ProjectModal } from "./project-modal";
 import { ProjectMockup, type MockupKind } from "./project-mockup";
+import { AccessRequestModal } from "./access-request-modal";
+import { DecisionTree } from "./decision-tree";
 import { useStatus } from "@/lib/use-status";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useScrollLock } from "@/lib/use-scroll-lock";
+import { ChevronLeft, ChevronRight, X, Maximize2 } from "lucide-react";
+
+/* ------------------------------------------------------------------ */
+/*  Flagship config                                                    */
+/* ------------------------------------------------------------------ */
 
 const FLAGSHIP_SLUGS: { slug: string; mockup: MockupKind }[] = [
   { slug: "openevent", mockup: "openevent" },
@@ -67,80 +75,415 @@ function useFlagshipMeta(): Record<string, FlagshipMeta> {
 }
 
 /* ------------------------------------------------------------------ */
-/*  Flagship project card (right column)                               */
+/*  Per-project content for the scrollytelling panels                  */
 /* ------------------------------------------------------------------ */
 
-function FlagshipCard({
+interface PanelContent {
+  title: string;
+  oneLiner: string;
+  problem: string;
+  solution: string;
+  glow: string;
+}
+
+const PANEL_CONTENT: Record<string, PanelContent> = {
+  openevent: {
+    title: "OpenEvent",
+    oneLiner: "AI turns client emails into approved bookings, invoices, and CRM updates.",
+    problem: "Event teams waste 90 min/day on email to CRM data entry.",
+    solution: "AI reads emails, creates bookings, detects conflicts, updates CRM. Zero manual entry.",
+    glow: "radial-gradient(ellipse at 30% 50%, rgba(74,222,128,0.06), transparent 70%)",
+  },
+  codelens: {
+    title: "CodeLens",
+    oneLiner: "430 bug patterns mined from 600+ real PRs. Reviews in under one second.",
+    problem: "Code review misses bugs that patterns catch in milliseconds.",
+    solution: "430 patterns from 600+ real PRs. Scans in <1s. Your code never leaves your machine.",
+    glow: "radial-gradient(ellipse at 70% 40%, rgba(139,164,196,0.06), transparent 70%)",
+  },
+  "gogaa-cli": {
+    title: "Gogaa CLI",
+    oneLiner: "11 AI providers behind one interface. If one goes down, you don't stop working.",
+    problem: "AI providers go down. Your work stops.",
+    solution: "11 providers behind one interface. Auto-fallback. 1,400+ tests. Zero lock-in.",
+    glow: "radial-gradient(ellipse at 40% 60%, rgba(139,164,196,0.04), transparent 70%)",
+  },
+  rasad: {
+    title: "Rasad",
+    oneLiner: "Every tool call, every file touch, graded A-F. 656 sessions analyzed. 100% local.",
+    problem: "AI coding sessions are black boxes — no way to know what worked.",
+    solution: "Every tool call, every file touch, graded A-F. 656 sessions analyzed. 100% local.",
+    glow: "radial-gradient(ellipse at 50% 50%, rgba(212,168,83,0.06), transparent 70%)",
+  },
+};
+
+/* ------------------------------------------------------------------ */
+/*  Scrollytelling panel — one full-viewport sticky card               */
+/* ------------------------------------------------------------------ */
+
+/* ------------------------------------------------------------------ */
+/*  Inline mermaid renderer (lazy-loaded)                              */
+/* ------------------------------------------------------------------ */
+
+function MermaidDiagram({ chart, className }: { chart: string; className?: string }): React.ReactElement {
+  const [svg, setSvg] = useState("");
+
+  useEffect(() => {
+    let cancelled = false;
+    async function render(): Promise<void> {
+      const mermaid = (await import("mermaid")).default;
+      mermaid.initialize({
+        startOnLoad: false,
+        theme: "dark",
+        themeVariables: {
+          primaryColor: "#1e3a5f",
+          primaryTextColor: "#93c5fd",
+          primaryBorderColor: "#3b82f6",
+          lineColor: "#3b82f680",
+          secondaryColor: "#18181b",
+          tertiaryColor: "#27272a",
+          fontFamily: "ui-monospace, monospace",
+          fontSize: "11px",
+          nodeBorder: "#3b82f640",
+          mainBkg: "#1e293b",
+          clusterBkg: "#0f172a",
+          clusterBorder: "#3b82f630",
+          edgeLabelBackground: "#09090b",
+          nodeTextColor: "#e2e8f0",
+        },
+        flowchart: { htmlLabels: true, curve: "basis", padding: 8, nodeSpacing: 20, rankSpacing: 30 },
+      });
+      const id = `mermaid-${Math.random().toString(36).slice(2)}`;
+      try {
+        const { svg: rendered } = await mermaid.render(id, chart);
+        if (!cancelled) {
+          setSvg(rendered);
+        }
+      } catch { /* silent */ }
+    }
+    render();
+    return () => { cancelled = true; };
+  }, [chart]);
+
+  return (
+    <div className={className}>
+      {svg ? (
+        <div
+          className="flex items-center justify-center h-full w-full overflow-auto p-2 [&_svg]:max-w-full [&_svg]:max-h-full [&_svg]:w-auto [&_svg]:h-auto [&_svg]:m-auto [&_svg]:block"
+          dangerouslySetInnerHTML={{ __html: svg }}
+        />
+      ) : (
+        <div className="flex items-center justify-center h-full text-caption text-muted/30 font-mono">
+          Loading diagram...
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  Expand modal — full-screen view for mockup or diagram              */
+/* ------------------------------------------------------------------ */
+
+function ExpandModal({
+  open,
+  onClose,
+  title,
+  children,
+}: {
+  open: boolean;
+  onClose: () => void;
+  title: string;
+  children: React.ReactNode;
+}): React.ReactElement {
+  useScrollLock(open);
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent): void => { if (e.key === "Escape") onClose(); };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [open, onClose]);
+
+  // Portal to document.body so modal sits above all fixed elements (nav, sidebar, agent, chat)
+  if (typeof document === "undefined") return <></>;
+
+  return ReactDOM.createPortal(
+    <AnimatePresence>
+      {open && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.2 }}
+          className="fixed inset-0 z-[9999] flex items-center justify-center bg-background p-4 md:p-8"
+          onClick={onClose}
+        >
+          <motion.div
+            initial={{ scale: 0.95, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 0.95, opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="relative w-full max-w-5xl max-h-[90vh] rounded-2xl border border-card-border bg-card overflow-auto overscroll-contain"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="sticky top-0 z-10 flex items-center justify-between px-5 py-3 border-b border-card-border/50 bg-card/90 backdrop-blur-sm">
+              <p className="text-sm font-mono text-muted">{title}</p>
+              <button type="button" onClick={onClose} className="text-muted hover:text-foreground transition-colors cursor-pointer">
+                <X size={18} />
+              </button>
+            </div>
+            <div className="p-5 md:p-8">
+              {children}
+            </div>
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>,
+    document.body,
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  Scrollytelling panel                                               */
+/* ------------------------------------------------------------------ */
+
+function ScrollPanel({
   project,
   mockup,
   meta,
+  content,
   index,
+  total,
 }: {
   project: ProjectData;
   mockup: MockupKind;
   meta: FlagshipMeta;
+  content: PanelContent;
   index: number;
+  total: number;
 }): React.ReactElement {
+  const num = String(index + 1).padStart(2, "0");
+  const [expandMockup, setExpandMockup] = useState(false);
+  const [expandDiagram, setExpandDiagram] = useState(false);
+  const [accessModalOpen, setAccessModalOpen] = useState(false);
+
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 40 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-50px" }}
-      transition={{ duration: 0.6, delay: index * 0.1, ease: [0.22, 1, 0.36, 1] }}
-    >
-      <div className="rounded-xl bg-card border border-card-border overflow-hidden hover:border-accent/20 transition-colors duration-300">
-        {/* Header */}
-        <div className="flex items-center gap-2.5 px-5 py-3 border-b border-card-border/40">
-          <span className={`flex items-center gap-1.5 text-caption font-mono ${meta.statusColor}`}>
-            <span className="w-1.5 h-1.5 rounded-full bg-current animate-pulse" />
-            {meta.status}
-          </span>
-          <h3 className="font-semibold text-lg">{project.title}</h3>
-        </div>
+    <>
+      {/* Sticky panel — slides over previous via z-index */}
+      <div
+        className="sticky top-0 h-screen w-full overflow-hidden bg-background scroll-snap-align-start"
+        style={{ zIndex: (index + 1) * 10 }}
+      >
+        {/* Top shadow for smooth slide-over visual */}
+        <div
+          aria-hidden
+          className="absolute top-0 left-0 right-0 h-20 pointer-events-none z-20"
+          style={{ background: "linear-gradient(to bottom, var(--background), transparent)", boxShadow: "0 -20px 40px var(--background)" }}
+        />
+        {/* Subtle per-project glow */}
+        <div
+          aria-hidden
+          className="absolute inset-0 pointer-events-none"
+          style={{ background: content.glow }}
+        />
 
-        {/* Mockup -- no height cap */}
-        <div className="border-b border-card-border/20 p-3 bg-background/30">
-          <ProjectMockup kind={mockup} className="shadow-none border-card-border/40" />
-        </div>
-
-        {/* Content */}
-        <div className="p-5">
-          <p className="text-sm text-muted leading-relaxed mb-5">
-            {project.oneLiner ?? project.cardSummary ?? project.impact}
-          </p>
-
-          {/* Metrics */}
-          <div className="flex gap-7 mb-5">
-            {meta.metrics.map((m) => (
-              <div key={m.label}>
-                <p className="text-xl font-bold font-mono text-foreground">{m.value}</p>
-                <p className="text-caption font-mono text-muted/50 uppercase">{m.label}</p>
-              </div>
-            ))}
+        <div className="relative z-10 h-full flex flex-col px-5 md:px-8 lg:px-16 py-6 md:py-10 max-w-[1400px] mx-auto">
+          {/* Top row: status + title left, big number right */}
+          <div className="flex items-start justify-between gap-4 mb-4 md:mb-5">
+            <div className="flex-1 min-w-0">
+              <span className={`inline-flex items-center gap-1.5 text-caption font-mono uppercase tracking-wider ${meta.statusColor} mb-2`}>
+                <span className="w-1.5 h-1.5 rounded-full bg-current animate-pulse" />
+                {meta.status}
+              </span>
+              <h3 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-[1.1] tracking-tight mb-2 md:mb-3">
+                {content.title}<span className="text-muted">.</span>
+              </h3>
+              <p className="text-xs md:text-sm text-muted leading-relaxed max-w-lg">
+                {content.oneLiner}
+              </p>
+            </div>
+            <span className="hidden sm:block text-[7rem] md:text-[9rem] lg:text-[11rem] font-bold leading-none text-foreground/[0.04] select-none tracking-tighter shrink-0">
+              {num}
+            </span>
           </div>
 
-          {/* Links */}
-          <div className="flex items-center gap-4 pt-4 border-t border-card-border/30">
-            <Link
-              href={`/projects/${project.slug}`}
-              className="text-small font-mono text-accent hover:text-accent/80 transition-colors"
+          {/* Problem → Solution — single row, inline */}
+          <div className="p-3 md:p-4 rounded-xl border border-card-border/50 bg-card/30 mb-4 md:mb-5">
+            <p className="text-xs md:text-sm text-muted leading-relaxed">
+              <span className="font-mono uppercase tracking-wider text-muted/60 text-caption">Problem: </span>
+              {content.problem}
+              <span className="mx-2 text-accent/40">→</span>
+              <span className="font-mono uppercase tracking-wider text-accent/60 text-caption">Solution: </span>
+              <span className="text-foreground/80">{content.solution}</span>
+            </p>
+          </div>
+
+          {/* Live Preview + Architecture — clearly labeled, full width */}
+          <div className="flex-1 min-h-0 grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
+            {/* Mockup */}
+            <button
+              type="button"
+              onClick={() => setExpandMockup(true)}
+              className="relative group min-h-0 overflow-hidden rounded-xl border border-card-border/40 bg-card/20 cursor-pointer hover:border-accent/30 transition-colors text-left"
             >
-              case study &rarr;
-            </Link>
-            {project.live && (
-              <a
-                href={project.live}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-small font-mono text-muted hover:text-accent-status transition-colors"
-              >
-                demo {"\u2197"}
-              </a>
-            )}
+              <ProjectMockup kind={mockup} className="shadow-none border-card-border/40 h-full" />
+              <div className="absolute top-2 right-2 flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-background/80 backdrop-blur-sm border border-card-border/50 opacity-60 group-hover:opacity-100 transition-opacity">
+                <Maximize2 size={11} className="text-accent" />
+                <span className="text-caption font-mono text-muted">full details</span>
+              </div>
+            </button>
+            {/* Architecture diagram */}
+            <button
+              type="button"
+              onClick={() => setExpandDiagram(true)}
+              className="relative group min-h-0 overflow-hidden rounded-xl border border-card-border/40 bg-[#0c0c0f] cursor-pointer hover:border-accent/30 transition-colors"
+            >
+              <p className="text-caption font-mono uppercase tracking-wider text-muted/40 pt-3 text-center">architecture</p>
+              <MermaidDiagram chart={diagrams[project.slug] ?? ""} className="h-[calc(100%-2rem)] p-3" />
+              <div className="absolute top-2 right-2 flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-background/80 backdrop-blur-sm border border-card-border/50 opacity-60 group-hover:opacity-100 transition-opacity">
+                <Maximize2 size={11} className="text-accent" />
+                <span className="text-caption font-mono text-muted">expand</span>
+              </div>
+            </button>
+          </div>
+
+          {/* Metrics + stack + links */}
+          <div className="flex flex-col gap-2 mt-3 md:mt-4 shrink-0">
+            <div className="flex items-end justify-between gap-4">
+              <div className="flex gap-6 md:gap-8">
+                {meta.metrics.map((m) => (
+                  <div key={m.label}>
+                    <p className="text-lg md:text-xl font-bold font-mono text-foreground">{m.value}</p>
+                    <p className="text-caption font-mono text-muted/50 uppercase tracking-wider">{m.label}</p>
+                  </div>
+                ))}
+              </div>
+              <div className="flex items-center gap-3">
+                {project.requestAccess && (
+                  <button type="button" onClick={() => setAccessModalOpen(true)} className="text-caption font-mono px-2.5 py-1 rounded-lg border border-amber-500/30 bg-amber-500/10 text-amber-400 hover:bg-amber-500/20 transition-colors cursor-pointer">
+                    request access
+                  </button>
+                )}
+                {project.live && (
+                  <a href={project.live} target="_blank" rel="noopener noreferrer" className="text-caption font-mono text-accent-status hover:text-accent-status/80 transition-colors">
+                    live demo ↗
+                  </a>
+                )}
+                {project.github && (
+                  <a href={project.github} target="_blank" rel="noopener noreferrer" className="text-caption font-mono text-muted hover:text-foreground transition-colors">
+                    github ↗
+                  </a>
+                )}
+                <span className="text-caption font-mono text-muted/30">
+                  {num} / {String(total).padStart(2, "0")}
+                </span>
+              </div>
+            </div>
+            {/* Tech stack tags */}
+            <div className="flex flex-wrap gap-1.5">
+              {project.stack.slice(0, 8).map((tech) => (
+                <span key={tech} className="px-2 py-0.5 text-caption font-mono rounded bg-card/50 border border-card-border/40 text-muted/60">
+                  {tech}
+                </span>
+              ))}
+            </div>
           </div>
         </div>
       </div>
-    </motion.div>
+
+      {/* Expand modals — rendered outside sticky context */}
+      <ExpandModal open={expandMockup} onClose={() => setExpandMockup(false)} title={`${content.title} — Details`}>
+        <ProjectMockup kind={mockup} />
+
+        {/* Decision Tree — interactive architectural challenge */}
+        {project.decision && (
+          <DecisionTree decision={project.decision} />
+        )}
+
+        {/* Features */}
+        {project.features.length > 0 && (
+          <div className="mt-8 pt-6 border-t border-card-border/30">
+            <p className="text-xs font-mono text-accent mb-4 uppercase tracking-wider">Key Features</p>
+            <ul className="space-y-2">
+              {project.features.map((f) => (
+                <li key={f.slice(0, 30)} className="flex gap-2.5 text-sm text-muted leading-relaxed">
+                  <span className="text-accent shrink-0 mt-1 text-xs">&#9654;</span>
+                  {f}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        {/* Technical Decisions */}
+        {project.techDecisions && project.techDecisions.length > 0 && (
+          <div className="mt-8 pt-6 border-t border-card-border/30">
+            <p className="text-xs font-mono text-accent mb-4 uppercase tracking-wider">Key Technical Decisions</p>
+            <div className="grid md:grid-cols-2 gap-3">
+              {project.techDecisions.map((d) => (
+                <div key={d.title} className="p-4 rounded-xl bg-card/50 border border-card-border">
+                  <h4 className="font-bold text-sm mb-1.5">{d.title}</h4>
+                  <p className="text-xs text-muted leading-relaxed">{d.description}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Results */}
+        {project.results.length > 0 && (
+          <div className="mt-8 pt-6 border-t border-card-border/30">
+            <p className="text-xs font-mono text-accent mb-4 uppercase tracking-wider">Results</p>
+            <div className="grid sm:grid-cols-2 gap-2">
+              {project.results.map((r) => (
+                <div key={r.slice(0, 30)} className="flex items-start gap-2.5 p-3 rounded-lg bg-card/50 border border-card-border">
+                  <span className="text-accent mt-0.5 text-xs">&#10003;</span>
+                  <span className="text-xs text-muted leading-relaxed">{r}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+      </ExpandModal>
+      <ExpandModal open={expandDiagram} onClose={() => setExpandDiagram(false)} title={`${content.title} — Architecture`}>
+        <MermaidDiagram chart={diagrams[project.slug] ?? ""} className="min-h-[60vh] flex items-center justify-center" />
+      </ExpandModal>
+      <AccessRequestModal open={accessModalOpen} onClose={() => setAccessModalOpen(false)} />
+    </>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  Scroll progress indicator                                          */
+/* ------------------------------------------------------------------ */
+
+function ScrollProgress({ containerRef }: { containerRef: React.RefObject<HTMLElement | null> }): React.ReactElement {
+  const [progress, setProgress] = useState(0);
+
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const onScroll = (): void => {
+      const rect = container.getBoundingClientRect();
+      const total = container.scrollHeight - window.innerHeight;
+      const scrolled = -rect.top;
+      setProgress(Math.max(0, Math.min(100, (scrolled / total) * 100)));
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [containerRef]);
+
+  if (progress <= 0) return <></>;
+
+  return (
+    <div className="fixed top-0 left-0 right-0 z-[200] h-[3px] bg-card-border/30 pointer-events-none">
+      <div
+        className="h-full bg-gradient-to-r from-accent to-accent-secondary transition-[width] duration-200 ease-out"
+        style={{ width: `${progress}%` }}
+      />
+    </div>
   );
 }
 
@@ -154,11 +497,6 @@ const STACK_TRANSFORMS = [
   "translate-y-5 translate-x-3 rotate-[3deg] scale-[0.94] opacity-30 z-[5]",
 ] as const;
 
-/* ------------------------------------------------------------------ */
-/*  Platform-native cards for "Other Deployments"                      */
-/*  Each card IS the platform the product runs on                      */
-/* ------------------------------------------------------------------ */
-
 type FrameKind = "phone" | "pwa" | "docker" | "huggingface" | "streamlit" | "dag";
 
 const CARD_FRAMES: Record<string, FrameKind> = {
@@ -169,7 +507,6 @@ const CARD_FRAMES: Record<string, FrameKind> = {
   "agent-system":       "huggingface",
 };
 
-/** Shared props for every card frame */
 interface FrameProps {
   project: ProjectData;
   onOpen: (p: ProjectData) => void;
@@ -177,14 +514,22 @@ interface FrameProps {
   className: string;
 }
 
-/** Footer row — same for all frames */
 function CardFooter({ project, onOpen, counter }: { project: ProjectData; onOpen: (p: ProjectData) => void; counter: string }): React.ReactElement {
   return (
-    <div className="flex items-center justify-between pt-2.5 mt-auto border-t border-card-border/30">
-      <button type="button" onClick={() => onOpen(project)} className="text-small font-mono text-accent hover:text-accent/80 transition-colors">
-        view &rarr;
-      </button>
-      <span className="text-caption font-mono text-muted/30">{counter}</span>
+    <div className="mt-auto">
+      {/* Top result */}
+      {project.results.length > 0 && (
+        <p className="flex gap-1.5 text-caption text-muted/60 leading-snug mb-2.5">
+          <span className="text-accent/50 shrink-0">&#10003;</span>
+          <span className="line-clamp-1">{project.results[0]}</span>
+        </p>
+      )}
+      <div className="flex items-center justify-between pt-2.5 border-t border-card-border/30">
+        <button type="button" onClick={() => onOpen(project)} className="text-small font-mono text-accent hover:text-accent/80 transition-colors">
+          view details &rarr;
+        </button>
+        <span className="text-caption font-mono text-muted/30">{counter}</span>
+      </div>
     </div>
   );
 }
@@ -194,11 +539,9 @@ function PhoneCard({ project, onOpen, counter, className }: FrameProps): React.R
   return (
     <motion.div className={className} layout>
       <div className="w-full h-full rounded-[24px] border-2 border-card-border bg-card flex flex-col overflow-hidden">
-        {/* Dynamic Island */}
         <div className="flex items-center justify-center pt-2 pb-1">
           <div className="w-20 h-[5px] rounded-full bg-card-border/60" />
         </div>
-        {/* Status bar */}
         <div className="flex items-center justify-between px-4 pb-1">
           <span className="text-caption text-muted/40 font-mono">9:41</span>
           <div className="flex items-center gap-1">
@@ -210,16 +553,19 @@ function PhoneCard({ project, onOpen, counter, className }: FrameProps): React.R
             </div>
           </div>
         </div>
-        {/* App content */}
         <div className="flex-1 px-4 pb-2 flex flex-col">
           <p className="font-bold text-base mb-1">{project.title}</p>
           <span className="inline-block text-caption font-mono px-2 py-0.5 rounded-full bg-accent/8 text-accent border border-accent/15 mb-2 self-start">
             {project.type}
           </span>
-          <p className="text-small text-muted leading-relaxed line-clamp-2">{project.cardSummary ?? project.subtitle}</p>
+          <p className="text-small text-muted leading-relaxed mb-2">{project.cardSummary ?? project.subtitle}</p>
+          <div className="flex flex-wrap gap-1 mb-2">
+            {project.stack.slice(0, 4).map((t) => (
+              <span key={t} className="px-1.5 py-0.5 text-caption font-mono rounded bg-card-border/20 text-muted/50">{t}</span>
+            ))}
+          </div>
           <CardFooter project={project} onOpen={onOpen} counter={counter} />
         </div>
-        {/* Home indicator */}
         <div className="flex justify-center pb-2">
           <div className="w-28 h-1 rounded-full bg-muted/20" />
         </div>
@@ -233,7 +579,6 @@ function PwaCard({ project, onOpen, counter, className }: FrameProps): React.Rea
   return (
     <motion.div className={className} layout>
       <div className="w-full h-full rounded-xl border border-card-border bg-card flex flex-col overflow-hidden">
-        {/* Browser chrome */}
         <div className="flex items-center gap-2 px-3 py-2 border-b border-card-border/50 bg-background/40">
           <div className="flex gap-1.5">
             <span className="w-2 h-2 rounded-full bg-red-500/40" />
@@ -245,7 +590,6 @@ function PwaCard({ project, onOpen, counter, className }: FrameProps): React.Rea
             <span className="text-caption font-mono text-muted/50 truncate">command-center.app</span>
           </div>
         </div>
-        {/* PWA install banner */}
         <div className="mx-3 mt-2.5 px-2.5 py-1.5 rounded-lg bg-accent/8 border border-accent/15 flex items-center gap-2">
           <span className="text-caption">⬇</span>
           <span className="text-caption text-accent/80">Install as app</span>
@@ -253,7 +597,12 @@ function PwaCard({ project, onOpen, counter, className }: FrameProps): React.Rea
         </div>
         <div className="flex-1 p-4 pt-2.5 flex flex-col">
           <p className="font-bold text-base mb-1">{project.title}</p>
-          <p className="text-small text-muted leading-relaxed line-clamp-2 mb-1">{project.cardSummary ?? project.subtitle}</p>
+          <p className="text-small text-muted leading-relaxed mb-2">{project.cardSummary ?? project.subtitle}</p>
+          <div className="flex flex-wrap gap-1 mb-2">
+            {project.stack.slice(0, 4).map((t) => (
+              <span key={t} className="px-1.5 py-0.5 text-caption font-mono rounded bg-card-border/20 text-muted/50">{t}</span>
+            ))}
+          </div>
           <CardFooter project={project} onOpen={onOpen} counter={counter} />
         </div>
       </div>
@@ -266,7 +615,6 @@ function DockerCard({ project, onOpen, counter, className }: FrameProps): React.
   return (
     <motion.div className={className} layout>
       <div className="w-full h-full rounded-xl border border-card-border bg-card flex flex-col overflow-hidden">
-        {/* Docker Desktop header */}
         <div className="flex items-center gap-2 px-3 py-2 border-b border-card-border/50 bg-background/40">
           <div className="flex gap-1.5">
             <span className="w-2 h-2 rounded-full bg-red-500/40" />
@@ -276,12 +624,10 @@ function DockerCard({ project, onOpen, counter, className }: FrameProps): React.
           <span className="text-caption font-semibold text-muted/60 ml-1">Docker Desktop</span>
           <span className="text-caption text-muted/30 ml-auto">Containers</span>
         </div>
-        {/* Container list */}
         <div className="px-3 pt-2 space-y-1.5">
           {[
             { name: "dev-env", status: "Running", port: "3000", color: "bg-green-400" },
             { name: "postgres-15", status: "Running", port: "5432", color: "bg-green-400" },
-            { name: "redis-7", status: "Running", port: "6379", color: "bg-green-400" },
           ].map((c) => (
             <div key={c.name} className="flex items-center gap-2 px-2 py-1 rounded bg-background/40 border border-card-border/30">
               <span className={`w-1.5 h-1.5 rounded-full ${c.color} shrink-0`} />
@@ -292,7 +638,12 @@ function DockerCard({ project, onOpen, counter, className }: FrameProps): React.
         </div>
         <div className="flex-1 px-4 pt-2 pb-4 flex flex-col">
           <p className="font-bold text-base mb-1">{project.title}</p>
-          <p className="text-small text-muted leading-relaxed line-clamp-2">{project.cardSummary ?? project.subtitle}</p>
+          <p className="text-small text-muted leading-relaxed mb-2">{project.cardSummary ?? project.subtitle}</p>
+          <div className="flex flex-wrap gap-1 mb-2">
+            {project.stack.slice(0, 4).map((t) => (
+              <span key={t} className="px-1.5 py-0.5 text-caption font-mono rounded bg-card-border/20 text-muted/50">{t}</span>
+            ))}
+          </div>
           <CardFooter project={project} onOpen={onOpen} counter={counter} />
         </div>
       </div>
@@ -305,7 +656,6 @@ function HuggingFaceCard({ project, onOpen, counter, className }: FrameProps): R
   return (
     <motion.div className={className} layout>
       <div className="w-full h-full rounded-xl border border-card-border bg-card flex flex-col overflow-hidden">
-        {/* HF gradient header */}
         <div className="px-3 py-2.5 bg-gradient-to-r from-yellow-500/15 via-orange-500/10 to-red-500/10 border-b border-card-border/50">
           <div className="flex items-center gap-2">
             <span className="text-base">🤗</span>
@@ -322,7 +672,12 @@ function HuggingFaceCard({ project, onOpen, counter, className }: FrameProps): R
         </div>
         <div className="flex-1 p-4 pt-3 flex flex-col">
           <p className="font-bold text-base mb-1">{project.title}</p>
-          <p className="text-small text-muted leading-relaxed line-clamp-2">{project.cardSummary ?? project.subtitle}</p>
+          <p className="text-small text-muted leading-relaxed mb-2">{project.cardSummary ?? project.subtitle}</p>
+          <div className="flex flex-wrap gap-1 mb-2">
+            {project.stack.slice(0, 4).map((t) => (
+              <span key={t} className="px-1.5 py-0.5 text-caption font-mono rounded bg-card-border/20 text-muted/50">{t}</span>
+            ))}
+          </div>
           <CardFooter project={project} onOpen={onOpen} counter={counter} />
         </div>
       </div>
@@ -336,7 +691,6 @@ function StreamlitCard({ project, onOpen, counter, className }: FrameProps): Rea
   return (
     <motion.div className={className} layout>
       <div className="w-full h-full rounded-xl border border-card-border bg-card flex flex-col overflow-hidden">
-        {/* Streamlit header */}
         <div className="flex items-center gap-2 px-3 py-2 border-b border-card-border/50 bg-background/40">
           <div className="w-4 h-4 rounded bg-gradient-to-br from-red-500/60 to-pink-500/60 flex items-center justify-center">
             <span className="text-[8px] text-white font-bold">S</span>
@@ -347,7 +701,6 @@ function StreamlitCard({ project, onOpen, counter, className }: FrameProps): Rea
             Live
           </span>
         </div>
-        {/* Mini chat / query UI */}
         <div className="px-3 pt-2.5 space-y-1.5">
           {isVqa ? (
             <>
@@ -386,12 +739,10 @@ function DagCard({ project, onOpen, counter, className }: FrameProps): React.Rea
   return (
     <motion.div className={className} layout>
       <div className="w-full h-full rounded-xl border border-card-border bg-card flex flex-col overflow-hidden">
-        {/* Agent header */}
         <div className="flex items-center gap-2 px-3 py-2 border-b border-card-border/50 bg-background/40">
           <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
           <span className="text-caption font-mono text-muted/60">orchestrator · task DAG</span>
         </div>
-        {/* Mini DAG visualization */}
         <div className="px-3 pt-2.5 flex items-center gap-1">
           {[
             { label: "Plan", color: "bg-accent/20 text-accent border-accent/30" },
@@ -407,7 +758,6 @@ function DagCard({ project, onOpen, counter, className }: FrameProps): React.Rea
               : <span key={i} className={`px-1.5 py-0.5 rounded text-caption font-mono border ${n.color}`}>{n.label}</span>
           ))}
         </div>
-        {/* Task state */}
         <div className="px-3 pt-1.5 flex items-center gap-2">
           <span className="text-caption text-muted/40 font-mono">state:</span>
           <span className="text-caption text-green-500/70 font-mono">completed</span>
@@ -415,7 +765,12 @@ function DagCard({ project, onOpen, counter, className }: FrameProps): React.Rea
         </div>
         <div className="flex-1 px-4 pt-2 pb-4 flex flex-col">
           <p className="font-bold text-base mb-1">{project.title}</p>
-          <p className="text-small text-muted leading-relaxed line-clamp-2">{project.cardSummary ?? project.subtitle}</p>
+          <p className="text-small text-muted leading-relaxed mb-2">{project.cardSummary ?? project.subtitle}</p>
+          <div className="flex flex-wrap gap-1 mb-2">
+            {project.stack.slice(0, 4).map((t) => (
+              <span key={t} className="px-1.5 py-0.5 text-caption font-mono rounded bg-card-border/20 text-muted/50">{t}</span>
+            ))}
+          </div>
           <CardFooter project={project} onOpen={onOpen} counter={counter} />
         </div>
       </div>
@@ -452,14 +807,14 @@ function OtherDeployments({
 
   return (
     <FadeUp>
-      <div className="flex flex-col items-center pt-16 md:pt-24">
-        <p className="text-base font-semibold mb-1">
+      <div className="flex flex-col items-center">
+        <p className="text-lg md:text-xl font-semibold mb-1">
           Other deployments
-          <span className="text-muted font-normal text-small ml-2">{others.length} systems</span>
+          <span className="text-muted font-normal text-sm ml-2">{others.length} systems</span>
         </p>
+        <p className="text-xs md:text-sm text-muted/60 mb-8">Side projects and tools that made it to production</p>
 
-        {/* Card stack */}
-        <div className="relative w-[340px] h-[300px] mt-8">
+        <div className="relative w-[400px] sm:w-[440px] h-[360px] sm:h-[380px]">
           {others.map((project, i) => {
             const pos = (i - current + others.length) % others.length;
             const transformClass = pos < 3
@@ -473,13 +828,12 @@ function OtherDeployments({
                 project={project}
                 onOpen={onOpen}
                 counter={counter}
-                className={`absolute top-0 left-0 w-[340px] h-[280px] cursor-pointer transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${transformClass}`}
+                className={`absolute top-0 left-0 w-[400px] sm:w-[440px] h-[340px] sm:h-[360px] cursor-pointer transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${transformClass}`}
               />
             );
           })}
         </div>
 
-        {/* Navigation arrows */}
         <div className="flex gap-2.5 mt-4">
           <button
             type="button"
@@ -510,6 +864,7 @@ function OtherDeployments({
 export function Projects(): React.ReactElement {
   const [activeProject, setActiveProject] = useState<ProjectData | null>(null);
   const flagshipMeta = useFlagshipMeta();
+  const sectionRef = useRef<HTMLElement>(null);
 
   const flagships = FLAGSHIP_SLUGS.map(({ slug, mockup }) => ({
     project: projects.find((p) => p.slug === slug),
@@ -533,45 +888,43 @@ export function Projects(): React.ReactElement {
   );
 
   return (
-    <section id="projects" className="py-20 md:py-32">
-      <div className="max-w-7xl mx-auto px-5 md:px-8 lg:pl-24">
-        {/* Sticky scroll: heading left, cards right */}
-        <div className="grid md:grid-cols-2 gap-12 lg:gap-16">
-          {/* Left: sticky column */}
-          <div className="md:sticky md:top-[15vh] self-start">
-            <FadeUp>
-              <TypeLabel
-                text="$ systemctl status --all"
-                className="text-sm font-mono text-accent mb-4 uppercase tracking-wider"
-              />
-              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold leading-[1.08] tracking-tight mb-5">
-                Systems I&apos;ve<br />shipped<span className="text-muted">.</span>
-              </h2>
-              <p className="text-sm md:text-base text-muted leading-relaxed max-w-sm">
-                Production AI systems, developer tools, and SaaS products. Each one links to a full case study with architecture decisions and results.
-              </p>
-            </FadeUp>
-          </div>
+    <section id="projects" ref={sectionRef}>
+      <ScrollProgress containerRef={sectionRef} />
 
-          {/* Right: scrolling flagship cards */}
-          <div className="flex flex-col gap-6">
-            {flagships.map(({ project, mockup }, i) => (
-              <FlagshipCard
-                key={project.slug}
-                project={project}
-                mockup={mockup}
-                meta={flagshipMeta[project.slug] ?? {
-                  status: "SHIPPED",
-                  statusColor: "text-muted",
-                  metrics: [],
-                }}
-                index={i}
-              />
-            ))}
-          </div>
-        </div>
+      {/* Section intro */}
+      <div className="min-h-[60vh] flex flex-col items-center justify-center text-center px-5 md:px-8 py-20">
+        <FadeUp>
+          <p className="text-sm font-mono text-accent mb-4 uppercase tracking-[0.3em]">
+            what I&apos;ve shipped
+          </p>
+          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-[1.08] tracking-tight mb-5">
+            4 production systems<span className="text-muted">.</span>
+            <br />
+            <span className="text-muted">Scroll to explore</span><span className="text-accent">.</span>
+          </h2>
+          <p className="text-sm md:text-base text-muted leading-relaxed max-w-md mx-auto">
+            Each one built from scratch, solving a real problem, running in production. Click the mockup or diagram to expand.
+          </p>
+        </FadeUp>
+      </div>
 
-        {/* Stacked card carousel for other deployments */}
+      {/* Scrollytelling panels — scroll-snap for smooth snapping */}
+      <div className="scroll-snap-projects">
+        {flagships.map(({ project, mockup }, i) => (
+          <ScrollPanel
+            key={project.slug}
+            project={project}
+            mockup={mockup}
+            meta={flagshipMeta[project.slug] ?? { status: "SHIPPED", statusColor: "text-muted", metrics: [] }}
+            content={PANEL_CONTENT[project.slug] ?? { title: project.title, oneLiner: project.impact, problem: project.problem, solution: project.solution, glow: "none", mermaid: "" }}
+            index={i}
+            total={flagships.length}
+          />
+        ))}
+      </div>
+
+      {/* Other deployments carousel */}
+      <div className="py-12 md:py-16 px-5 md:px-8">
         <OtherDeployments others={others} onOpen={setActiveProject} />
       </div>
 

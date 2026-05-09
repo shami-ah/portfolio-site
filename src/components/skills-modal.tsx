@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useScrollLock } from "@/lib/use-scroll-lock";
 import ReactDOM from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { X } from "lucide-react";
@@ -24,14 +25,7 @@ export function SkillsModal(): React.ReactElement {
     return () => window.removeEventListener("show-skills-modal", handler);
   }, []);
 
-  useEffect(() => {
-    if (open) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
-    return () => { document.body.style.overflow = ""; };
-  }, [open]);
+  useScrollLock(open);
 
   useEffect(() => {
     if (!open) return;

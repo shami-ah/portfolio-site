@@ -22,7 +22,7 @@ export default function NotFound(): React.ReactElement {
             Back to portfolio
           </Link>
           <Link
-            href="/projects/gogaa-cli"
+            href="/#projects"
             className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-card border border-card-border text-sm text-muted hover:text-foreground hover:border-accent/20 transition-colors"
           >
             View projects

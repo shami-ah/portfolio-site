@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Check, Loader2 } from "lucide-react";
+import { useScrollLock } from "@/lib/use-scroll-lock";
 
 const REGISTRY_URL = "https://ahtesham.dev.wadwarehouse.com/gogaa-registry";
 
@@ -37,6 +38,7 @@ const COUNTRIES = [
 ];
 
 export function AccessRequestModal({ open, onClose }: AccessRequestModalProps): React.ReactElement {
+  useScrollLock(open);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [country, setCountry] = useState("");

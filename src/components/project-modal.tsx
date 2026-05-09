@@ -1,9 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useScrollLock } from "@/lib/use-scroll-lock";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronLeft, ChevronRight, X, Lock, BookOpen } from "lucide-react";
+import { ChevronLeft, ChevronRight, X, Lock } from "lucide-react";
 import type { ProjectData } from "@/data/projects";
+import { diagrams } from "@/data/diagrams";
+import { ArchitectureDiagram } from "./architecture-diagram";
 import { AccessRequestModal } from "./access-request-modal";
 
 interface ProjectModalProps {
@@ -84,6 +87,7 @@ export function ProjectModal({
     setAccessModalOpen(false);
   }, [project?.slug]);
 
+  useScrollLock(!!project);
   useEffect(() => {
     if (!project) return;
     const onKey = (e: KeyboardEvent): void => {
@@ -91,25 +95,8 @@ export function ProjectModal({
       if (e.key === "ArrowRight" && onNavigate) onNavigate(1);
       if (e.key === "ArrowLeft" && onNavigate) onNavigate(-1);
     };
-    // Lock background scroll (iOS-safe: position fixed + restore scroll)
-    const scrollY = window.scrollY;
-    document.body.style.position = "fixed";
-    document.body.style.top = `-${scrollY}px`;
-    document.body.style.left = "0";
-    document.body.style.right = "0";
-    document.body.style.overflow = "hidden";
-    document.body.setAttribute("data-modal-open", "true");
     window.addEventListener("keydown", onKey);
-    return () => {
-      document.body.style.position = "";
-      document.body.style.top = "";
-      document.body.style.left = "";
-      document.body.style.right = "";
-      document.body.style.overflow = "";
-      document.body.removeAttribute("data-modal-open");
-      window.scrollTo(0, scrollY);
-      window.removeEventListener("keydown", onKey);
-    };
+    return () => window.removeEventListener("keydown", onKey);
   }, [project, onClose, onNavigate]);
 
   return (
@@ -178,7 +165,7 @@ export function ProjectModal({
             </button>
 
             {/* Scrollable content */}
-            <div className="overflow-y-auto flex-1 px-5 md:px-10 pt-6 md:pt-10 pb-24 md:pb-28">
+            <div className="overflow-y-auto overscroll-contain flex-1 px-5 md:px-10 pt-6 md:pt-10 pb-24 md:pb-28">
               {/* Header: type + title + impact */}
               <motion.div
                 initial={{ opacity: 0, y: 8 }}
@@ -308,6 +295,17 @@ export function ProjectModal({
                   </AnimatePresence>
                 </div>
               </motion.div>
+
+              {/* Mermaid architecture diagram */}
+              {diagrams[project.slug] && (
+                <motion.div
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.35, duration: 0.35 }}
+                >
+                  <ArchitectureDiagram chart={diagrams[project.slug]} />
+                </motion.div>
+              )}
 
               {/* OpenEvent-only: Before / After impact panel */}
               {project.slug === "openevent" && (
@@ -461,7 +459,7 @@ export function ProjectModal({
                 <div className="flex items-center gap-2 text-caption md:text-xs font-mono text-muted/60">
                   <span className="w-1.5 h-1.5 rounded-full bg-accent/60" />
                   <span className="truncate hidden sm:inline">
-                    {onNavigate ? "← → to browse projects" : "Quick overview · full case study for the deep dive"}
+                    {onNavigate ? "← → to browse projects" : "Full project details"}
                   </span>
                   <span className="truncate sm:hidden">Swipe cards or tap below</span>
                 </div>
@@ -486,15 +484,6 @@ export function ProjectModal({
                       GitHub
                     </a>
                   )}
-                  {project.giteaRepo && (
-                    <a
-                      href={`/projects/${project.slug}/readme`}
-                      className="inline-flex items-center gap-1.5 px-3 md:px-4 py-2 text-xs md:text-sm border border-accent/20 bg-accent/5 rounded-lg hover:border-accent/40 hover:bg-accent/10 transition-all duration-200 text-accent/80 hover:text-accent"
-                    >
-                      <BookOpen size={14} />
-                      Repo
-                    </a>
-                  )}
                   {project.live && (
                     <a
                       href={project.live}
@@ -506,13 +495,6 @@ export function ProjectModal({
                       Try live
                     </a>
                   )}
-                  <a
-                    href={`/projects/${project.slug}`}
-                    className="inline-flex items-center gap-2 px-4 md:px-5 py-2 text-xs md:text-sm bg-accent text-white font-medium rounded-lg hover:bg-accent/90 transition-all duration-200 hover:shadow-lg hover:shadow-accent/20 group"
-                  >
-                    Read full case study
-                    <span className="transition-transform duration-300 group-hover:translate-x-0.5">→</span>
-                  </a>
                 </div>
               </div>
             </div>
