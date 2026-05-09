@@ -406,6 +406,19 @@ export function CVDrawer(): React.ReactElement {
     return () => window.removeEventListener(OPEN_EVENT, handler);
   }, []);
 
+  useEffect(() => {
+    const onDocumentClick = (event: MouseEvent): void => {
+      const trigger = event.target instanceof Element
+        ? event.target.closest("[data-cv-open]")
+        : null;
+      if (!trigger) return;
+      setOpen(true);
+    };
+
+    document.addEventListener("click", onDocumentClick, true);
+    return () => document.removeEventListener("click", onDocumentClick, true);
+  }, []);
+
   // Scroll lock + Escape key
   useScrollLock(open);
   useEffect(() => {

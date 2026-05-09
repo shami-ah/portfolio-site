@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useRef, useCallback } from "react";
+import { useRef, useCallback } from "react";
 import { motion, useScroll, useTransform, useMotionValue, useSpring } from "framer-motion";
 import { useStatus } from "@/lib/use-status";
 import { openCvDrawer } from "@/components/cv-drawer";
@@ -25,60 +25,8 @@ const TERM_STEPS: TermStep[] = [
   { cmd: "cat philosophy.md", output: "Build the tool when none exists", green: true },
 ];
 
-function HeroAboutCard({ ready }: { ready: boolean }): React.ReactElement {
+function HeroAboutCard(): React.ReactElement {
   const ref = useRef<HTMLDivElement>(null);
-
-  // Phase machine: type command char by char → show output → next command
-  const [stepIdx, setStepIdx] = useState(0);
-  const [cmdChars, setCmdChars] = useState(0);
-  const [showOutput, setShowOutput] = useState(false);
-  const [outputChars, setOutputChars] = useState(0);
-  const [completedSteps, setCompletedSteps] = useState<TermStep[]>([]);
-
-  const currentStep = TERM_STEPS[stepIdx] as TermStep | undefined;
-  const isTypingCmd = currentStep && cmdChars < currentStep.cmd.length;
-  const isStreamingOutput = currentStep && showOutput && currentStep.output && outputChars < currentStep.output.length;
-  const allDone = stepIdx >= TERM_STEPS.length;
-
-  // Advance to next step helper
-  const advanceStep = useCallback((): void => {
-    setCompletedSteps((prev) => [...prev, TERM_STEPS[stepIdx]]);
-    setStepIdx((i) => i + 1);
-    setCmdChars(0);
-    setShowOutput(false);
-    setOutputChars(0);
-  }, [stepIdx]);
-
-  // Type command characters — slight randomness for human feel
-  useEffect(() => {
-    if (!ready || !currentStep || allDone) return;
-    if (cmdChars < currentStep.cmd.length) {
-      const jitter = 30 + Math.random() * 40; // 30-70ms, feels human
-      const timer = setTimeout(() => setCmdChars((c) => c + 1), jitter);
-      return () => clearTimeout(timer);
-    }
-    // Command fully typed — pause before showing output
-    const timer = setTimeout(() => setShowOutput(true), 350);
-    return () => clearTimeout(timer);
-  }, [ready, cmdChars, currentStep, allDone]);
-
-  // Stream output characters — faster than typing, like terminal response
-  useEffect(() => {
-    if (!showOutput || !currentStep) return;
-    if (currentStep.type === "identity") {
-      const timer = setTimeout(advanceStep, 600);
-      return () => clearTimeout(timer);
-    }
-    if (currentStep.output && outputChars < currentStep.output.length) {
-      // Batch 2-3 chars at once for smoother output feel
-      const batch = Math.random() > 0.3 ? 2 : 1;
-      const timer = setTimeout(() => setOutputChars((c) => Math.min(c + batch, currentStep.output!.length)), 12);
-      return () => clearTimeout(timer);
-    }
-    // Output done — pause before next command
-    const timer = setTimeout(advanceStep, 500);
-    return () => clearTimeout(timer);
-  }, [showOutput, outputChars, currentStep, advanceStep]);
 
   // 3D tilt
   const rx = useMotionValue(0);
@@ -128,7 +76,7 @@ function HeroAboutCard({ ready }: { ready: boolean }): React.ReactElement {
       <div className="flex flex-1 overflow-hidden">
         {/* Terminal commands — left side */}
         <div className="flex-1 px-4 py-3 font-mono text-small leading-[1.9] overflow-hidden">
-          {completedSteps.map((step) => (
+          {TERM_STEPS.map((step) => (
             <div key={step.cmd} className="mb-1">
               <div><span className="text-accent">❯</span> <span className="text-foreground/80">{step.cmd}</span></div>
               {step.type === "identity" ? (
@@ -144,34 +92,10 @@ function HeroAboutCard({ ready }: { ready: boolean }): React.ReactElement {
             </div>
           ))}
 
-          {currentStep && !allDone && (
-            <div className="mb-1">
-              <div>
-                <span className="text-accent">❯</span>{" "}
-                <span className="text-foreground/80">{currentStep.cmd.slice(0, cmdChars)}</span>
-                {isTypingCmd && <span className="inline-block w-[6px] h-[12px] bg-accent/80 ml-px translate-y-[2px] animate-pulse" />}
-              </div>
-              {showOutput && currentStep.type === "identity" && (
-                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="pl-3 py-0.5">
-                  <span className="text-foreground font-bold">Ahtesham Ahmad</span>
-                  <span className="text-accent/60 ml-2">AI Engineer</span>
-                </motion.div>
-              )}
-              {showOutput && currentStep.output && currentStep.type !== "identity" && (
-                <div className={`pl-3 ${currentStep.green ? "text-accent-status/70" : "text-foreground/60"}`}>
-                  {currentStep.output.slice(0, outputChars)}
-                  {isStreamingOutput && <span className="inline-block w-[5px] h-[10px] bg-foreground/30 ml-px translate-y-[1px] animate-pulse" />}
-                </div>
-              )}
-            </div>
-          )}
-
-          {allDone && (
-            <div>
-              <span className="text-accent">❯</span>{" "}
-              <span className="inline-block w-[6px] h-[12px] bg-accent/60 translate-y-[2px] animate-pulse" />
-            </div>
-          )}
+          <div>
+            <span className="text-accent">❯</span>{" "}
+            <span className="inline-block w-[6px] h-[12px] bg-accent/60 translate-y-[2px] animate-pulse" />
+          </div>
         </div>
 
         {/* Photo — right side, fills 80% of card height, vertically centered */}
@@ -192,6 +116,7 @@ function HeroAboutCard({ ready }: { ready: boolean }): React.ReactElement {
         </div>
         <button
           type="button"
+          data-cv-open="true"
           onClick={openCvDrawer}
           className="group flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-caption font-mono border border-accent/25 bg-accent/8 text-accent/70 hover:bg-accent/15 hover:text-accent hover:border-accent/40 transition-all duration-200 cursor-pointer"
           style={{ animation: "cv-glow 3s ease-in-out infinite" }}
@@ -210,8 +135,7 @@ function HeroAboutCard({ ready }: { ready: boolean }): React.ReactElement {
 
 export function ConfigHero(): React.ReactElement {
   const { status } = useStatus();
-  const [ready, setReady] = useState(true);
-  const [epoch, setEpoch] = useState(0); // increments on replay to force remount
+  const epoch = 0;
 
   const { scrollY } = useScroll();
   const orbY1 = useTransform(scrollY, [0, 800], [0, 120]);
@@ -219,50 +143,6 @@ export function ConfigHero(): React.ReactElement {
   const orbOpacity = useTransform(scrollY, [0, 600], [1, 0.3]);
   const cardY = useTransform(scrollY, [0, 600], [0, -40]);
   const cardScale = useTransform(scrollY, [0, 600], [1, 0.97]);
-
-  const ensureReady = useCallback((): void => {
-    if (typeof window === "undefined") return;
-    if (sessionStorage.getItem("boot-complete") === "1") {
-      setReady(true);
-    }
-  }, []);
-
-  // Wait for agent-button-ready (fires after boot collapse + button pop)
-  // This ensures hero content cascades in AFTER the boot animation completes
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    const initialReadyCheck = window.setTimeout(ensureReady, 0);
-
-    // Breathe for 0.8s after agent button pops before hero streams in
-    const onReady = (): void => { setTimeout(() => setReady(true), 800); };
-    window.addEventListener("agent-button-ready", onReady);
-
-    // On replay, reset ready + bump epoch to force framer-motion remount
-    const onReplay = (): void => { setReady(false); setEpoch((e) => e + 1); };
-    window.addEventListener("replay-intro", onReplay);
-
-    // Fallback for edge cases
-    const onBoot = (): void => { setTimeout(() => setReady(true), 2000); };
-    window.addEventListener("boot-complete", onBoot);
-
-    const onPageShow = (): void => ensureReady();
-    const onVisibilityChange = (): void => {
-      if (document.visibilityState === "visible") ensureReady();
-    };
-    window.addEventListener("pageshow", onPageShow);
-    document.addEventListener("visibilitychange", onVisibilityChange);
-
-    const fallback = setTimeout(() => setReady(true), 6000);
-    return () => {
-      window.removeEventListener("agent-button-ready", onReady);
-      window.removeEventListener("replay-intro", onReplay);
-      window.removeEventListener("boot-complete", onBoot);
-      window.removeEventListener("pageshow", onPageShow);
-      document.removeEventListener("visibilitychange", onVisibilityChange);
-      clearTimeout(initialReadyCheck);
-      clearTimeout(fallback);
-    };
-  }, [ensureReady]);
 
   return (
     <section
@@ -365,7 +245,7 @@ export function ConfigHero(): React.ReactElement {
             transition={{ duration: 1.0, delay: 0.6, ease: [0.22, 1, 0.36, 1] }}
             style={{ y: cardY, scale: cardScale }}
           >
-            <HeroAboutCard ready={ready} />
+            <HeroAboutCard />
           </motion.div>
 
         </div>

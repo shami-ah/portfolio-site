@@ -4,7 +4,6 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowLeft } from "lucide-react";
 import { TimeMachine } from "@/components/time-machine";
-import { returnWithinPortfolio } from "@/lib/home-navigation";
 
 /* ------------------------------------------------------------------ */
 /*  Content — the "how" behind the "what" on the home page.           */
@@ -85,10 +84,6 @@ export function Journey(): React.ReactElement {
         <div className="max-w-5xl mx-auto px-5 md:px-6 py-3 flex items-center justify-between">
           <Link
             href="/"
-            onClick={(event) => {
-              if (!returnWithinPortfolio()) return;
-              event.preventDefault();
-            }}
             className="inline-flex items-center gap-2 text-xs font-mono text-muted hover:text-accent transition-colors"
           >
             <ArrowLeft size={14} />

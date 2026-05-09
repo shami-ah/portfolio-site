@@ -4,7 +4,6 @@ import Link from "next/link";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { FadeUp } from "@/components/motion";
-import { returnWithinPortfolio } from "@/lib/home-navigation";
 
 /* ------------------------------------------------------------------ */
 /*  Helpers                                                            */
@@ -519,10 +518,6 @@ export function Uses(): React.ReactElement {
         </div>
         <Link
           href="/"
-          onClick={(event) => {
-            if (!returnWithinPortfolio()) return;
-            event.preventDefault();
-          }}
           className="text-caption font-mono text-accent/60 hover:text-accent transition-colors"
         >
           &larr; portfolio

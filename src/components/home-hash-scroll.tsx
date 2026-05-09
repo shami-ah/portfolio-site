@@ -22,46 +22,23 @@ function scrollToCurrentHash(): boolean {
 
 export function HomeHashScroll(): null {
   useLayoutEffect(() => {
-    const reloadKey = `home-bfcache-reload:${window.location.pathname}${window.location.search}${window.location.hash}`;
-    const reloadIfRestoredFromCache = (event: PageTransitionEvent): void => {
-      if (!event.persisted) {
-        sessionStorage.removeItem(reloadKey);
-        return;
-      }
-
-      if (sessionStorage.getItem(reloadKey) === "1") return;
-      sessionStorage.setItem(reloadKey, "1");
-      window.location.reload();
-    };
-
-    window.addEventListener("pageshow", reloadIfRestoredFromCache);
-
+    // Signal boot complete for returning visitors
     sessionStorage.setItem("boot-complete", "1");
     window.dispatchEvent(new CustomEvent("boot-complete"));
 
-    if (!window.location.hash) {
-      return () => window.removeEventListener("pageshow", reloadIfRestoredFromCache);
-    }
+    if (!window.location.hash) return;
 
     const previousRestoration = window.history.scrollRestoration;
     window.history.scrollRestoration = "manual";
 
     scrollToCurrentHash();
-    const timers = [50, 150, 350, 700].map((delay) =>
+    // Retry after layout paints to handle lazy-rendered sections
+    const timers = [50, 150, 350].map((delay) =>
       window.setTimeout(scrollToCurrentHash, delay),
     );
 
-    const onPageShow = (): void => {
-      scrollToCurrentHash();
-      window.setTimeout(scrollToCurrentHash, 50);
-    };
-
-    window.addEventListener("pageshow", onPageShow);
-
     return () => {
       timers.forEach(window.clearTimeout);
-      window.removeEventListener("pageshow", onPageShow);
-      window.removeEventListener("pageshow", reloadIfRestoredFromCache);
       window.history.scrollRestoration = previousRestoration;
     };
   }, []);

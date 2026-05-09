@@ -88,8 +88,8 @@ export function MissionStats(): React.ReactElement {
           {widgets.map((w, i) => (
             <motion.div
               key={w.key}
-              initial={{ opacity: 0, y: 30, scale: 0.95 }}
-              whileInView={{ opacity: 1, y: 0, scale: 1 }}
+              initial={false}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
               viewport={{ once: true, margin: "-50px" }}
               transition={{ duration: 0.5, delay: i * 0.1, ease: [0.22, 1, 0.36, 1] }}
               whileHover={{ y: -4, transition: { duration: 0.2 } }}
@@ -116,4 +116,3 @@ export function MissionStats(): React.ReactElement {
     </section>
   );
 }
-

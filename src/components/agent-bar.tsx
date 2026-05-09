@@ -1,11 +1,11 @@
 "use client";
 
 import { useEffect, useRef, useState, useCallback } from "react";
+import { useRouter } from "next/navigation";
 import ReactDOM from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Check, X } from "lucide-react";
 import { openCvDrawer } from "@/components/cv-drawer";
-import { markHomeSectionReturn } from "@/lib/home-navigation";
 
 /* ------------------------------------------------------------------ */
 /*  Build pipeline popup — 5-second centered overlay                  */
@@ -215,10 +215,7 @@ const commands: AgentCommand[] = [
       { name: "execute", detail: "target: /journey", ms: 45 },
     ],
     response: "Launching immersive journey. Timeline + a day in my life + parallel systems.",
-    action: () => {
-      markHomeSectionReturn();
-      setTimeout(() => { window.location.href = "/journey"; }, 450);
-    },
+    // action is handled specially in the component for client-side navigation
   },
   {
     keyword: "call",
@@ -443,6 +440,7 @@ const CHIPS = [
 type UIState = "hidden" | "button" | "panel" | "processing" | "responding" | "flying-to-chat";
 
 export function AgentBar(): React.ReactElement {
+  const router = useRouter();
   const [uiState, setUiState] = useState<UIState>("hidden");
   const [input, setInput] = useState("");
   const [buffer, setBuffer] = useState("");
@@ -578,7 +576,12 @@ export function AgentBar(): React.ReactElement {
     }
 
     const actionTimer = setTimeout(() => {
-      activeCmd.action?.();
+      // Tour command uses client-side navigation
+      if (activeCmd.keyword === "tour") {
+        router.push("/journey");
+      } else {
+        activeCmd.action?.();
+      }
     }, 300);
     // After showing response briefly, hide the agent (reappear handled by separate effect)
     const hideTimer = setTimeout(() => {

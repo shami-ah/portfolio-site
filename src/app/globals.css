@@ -222,8 +222,8 @@ body::after {
 .section-divider {
   height: 1px;
   background: linear-gradient(90deg, transparent, var(--accent), var(--accent-secondary), transparent);
-  opacity: 0;
-  transform: scaleX(0);
+  opacity: 0.3;
+  transform: scaleX(1);
   transition: opacity 0.8s ease, transform 1.2s cubic-bezier(0.22, 1, 0.36, 1);
 }
 .section-divider.visible {

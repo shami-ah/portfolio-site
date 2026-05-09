@@ -110,7 +110,7 @@ export function SidebarNav(): React.ReactElement {
 
   return (
     <motion.nav
-      initial={{ opacity: 0, x: -16 }}
+      initial={false}
       animate={{
         opacity: modalOpen ? 0 : 1,
         x: modalOpen ? -16 : 0,

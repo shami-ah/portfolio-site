@@ -73,8 +73,8 @@ function CodeLensBody(): React.ReactElement {
       <div className="p-4 md:p-5 font-sans text-small leading-relaxed min-h-[240px]">
         {/* PR header */}
         <motion.div
-          initial={{ opacity: 0, y: 4 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={false}
+          animate={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-40px" }}
           transition={{ duration: 0.35 }}
           className="flex items-center gap-2 mb-3 pb-2.5 border-b border-card-border"
@@ -86,8 +86,8 @@ function CodeLensBody(): React.ReactElement {
 
         {/* Review summary badge */}
         <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
+          initial={false}
+          animate={{ opacity: 1 }}
           viewport={{ once: true, margin: "-40px" }}
           transition={{ duration: 0.3, delay: 0.15 }}
           className="flex items-center gap-2 mb-3"
@@ -104,8 +104,8 @@ function CodeLensBody(): React.ReactElement {
 
         {/* Inline review comment — like a GitHub PR comment */}
         <motion.div
-          initial={{ opacity: 0, y: 4 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={false}
+          animate={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-40px" }}
           transition={{ duration: 0.35, delay: 0.3 }}
           className="rounded-lg border border-red-500/30 overflow-hidden mb-3"
@@ -135,8 +135,8 @@ function CodeLensBody(): React.ReactElement {
 
         {/* Second finding — compact */}
         <motion.div
-          initial={{ opacity: 0, y: 4 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={false}
+          animate={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-40px" }}
           transition={{ duration: 0.35, delay: 0.5 }}
           className="rounded-lg border border-amber-500/25 overflow-hidden mb-3"
@@ -150,8 +150,8 @@ function CodeLensBody(): React.ReactElement {
 
         {/* Risk score bar */}
         <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
+          initial={false}
+          animate={{ opacity: 1 }}
           viewport={{ once: true, margin: "-40px" }}
           transition={{ duration: 0.4, delay: 0.7 }}
           className="pt-3 border-t border-card-border"
@@ -186,8 +186,8 @@ function GogaaBody(): React.ReactElement {
       <div className="p-4 md:p-5 font-mono text-small leading-relaxed min-h-[240px]">
         {/* Block-art logo + title */}
         <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
+          initial={false}
+          animate={{ opacity: 1 }}
           viewport={{ once: true, margin: "-40px" }}
           transition={{ duration: 0.4 }}
           className="flex gap-3 items-start"
@@ -209,8 +209,8 @@ function GogaaBody(): React.ReactElement {
 
         {/* Streaming agent output */}
         <motion.div
-          initial={{ opacity: 0, y: 4 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={false}
+          animate={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-40px" }}
           transition={{ duration: 0.4, delay: 0.2 }}
           className="mt-4 pl-1 space-y-1"
@@ -225,8 +225,8 @@ function GogaaBody(): React.ReactElement {
 
         {/* Status footer */}
         <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
+          initial={false}
+          animate={{ opacity: 1 }}
           viewport={{ once: true, margin: "-40px" }}
           transition={{ duration: 0.4, delay: 0.5 }}
           className="mt-4 pt-3 border-t border-card-border flex items-center justify-between text-caption"
@@ -253,8 +253,8 @@ function OpenEventBody(): React.ReactElement {
       <div className="p-4 md:p-5 font-sans text-small leading-relaxed min-h-[240px]">
         {/* Inbox header */}
         <motion.div
-          initial={{ opacity: 0, y: 4 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={false}
+          animate={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-40px" }}
           transition={{ duration: 0.35, delay: 0.1 }}
           className="flex items-center justify-between text-caption mb-3 pb-2 border-b border-card-border"
@@ -267,8 +267,8 @@ function OpenEventBody(): React.ReactElement {
 
         {/* Top email thread */}
         <motion.div
-          initial={{ opacity: 0, x: -4 }}
-          whileInView={{ opacity: 1, x: 0 }}
+          initial={false}
+          animate={{ opacity: 1, x: 0 }}
           viewport={{ once: true, margin: "-40px" }}
           transition={{ duration: 0.35, delay: 0.25 }}
           className="flex items-start gap-2.5 py-2 px-2 rounded bg-accent/5 border-l-2 border-accent mb-3"
@@ -299,8 +299,8 @@ function OpenEventBody(): React.ReactElement {
           ].map((a) => (
             <motion.div
               key={a.text}
-              initial={{ opacity: 0, x: -6 }}
-              whileInView={{ opacity: 1, x: 0 }}
+              initial={false}
+              animate={{ opacity: 1, x: 0 }}
               viewport={{ once: true, margin: "-40px" }}
               transition={{ duration: 0.35, delay: a.delay, ease: [0.22, 1, 0.36, 1] }}
               className="flex items-center gap-2 rounded-lg bg-amber-500/15 border border-amber-500/25 px-2.5 py-1.5"
@@ -318,8 +318,8 @@ function OpenEventBody(): React.ReactElement {
 
         {/* Conflict detection */}
         <motion.div
-          initial={{ opacity: 0, y: 6 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={false}
+          animate={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-40px" }}
           transition={{ duration: 0.4, delay: 1.0 }}
           className="mt-3 p-2.5 rounded-lg border border-red-500/30 bg-red-500/[0.06]"

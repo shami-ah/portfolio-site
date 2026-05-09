@@ -6,7 +6,7 @@ import { FadeUp } from "./motion";
 import { TypeLabel } from "./type-label";
 import { useStatus } from "@/lib/use-status";
 import { getFeaturedArticles } from "@/data/writing";
-import { markHomeSectionReturn } from "@/lib/home-navigation";
+import Link from "next/link";
 
 /* ------------------------------------------------------------------ */
 /*  Roles data (same as git-log.tsx)                                   */
@@ -125,8 +125,8 @@ export function ExperienceAndWriting(): React.ReactElement {
               <React.Fragment key={role.hash}>
                 {/* Left: Git commit card with branch line */}
                 <motion.div
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
+                  initial={false}
+                  animate={{ opacity: 1, x: 0 }}
                   viewport={{ once: true, margin: "-50px" }}
                   transition={{ duration: 0.6, delay: i * 0.1, ease: [0.22, 1, 0.36, 1] }}
                   className="relative pl-8"
@@ -168,14 +168,13 @@ export function ExperienceAndWriting(): React.ReactElement {
                 {/* Right: Writing .md card */}
                 {article ? (
                   <motion.div
-                    initial={{ opacity: 0, x: 20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
+                    initial={false}
+                    animate={{ opacity: 1, x: 0 }}
                     viewport={{ once: true, margin: "-50px" }}
                     transition={{ duration: 0.6, delay: i * 0.1, ease: [0.22, 1, 0.36, 1] }}
                   >
-                    <a
+                    <Link
                       href={`/writing#${article.slug}`}
-                      onClick={() => markHomeSectionReturn("writing")}
                       className="group card-glow card-gradient-border rounded-lg bg-card border border-card-border px-3 py-2.5 h-full flex flex-col font-mono hover:border-transparent transition-colors duration-300"
                     >
                       {/* File path + date */}
@@ -197,7 +196,7 @@ export function ExperienceAndWriting(): React.ReactElement {
                         <span>{article.readTime}</span>
                         <span className="ml-auto text-muted/30 group-hover:text-accent transition-colors">→</span>
                       </div>
-                    </a>
+                    </Link>
                   </motion.div>
                 ) : <div />}
               </React.Fragment>
@@ -206,8 +205,8 @@ export function ExperienceAndWriting(): React.ReactElement {
 
           {/* Bottom row: branches (left) + view all (right) */}
           <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
+            initial={false}
+            animate={{ opacity: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.2 }}
             className="relative pl-8"
@@ -224,15 +223,15 @@ export function ExperienceAndWriting(): React.ReactElement {
             <div className="text-caption font-mono text-muted/30">Initial Commit · 2019</div>
           </motion.div>
           <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
+            initial={false}
+            animate={{ opacity: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.2 }}
             className="flex items-start pt-1"
           >
-            <a href="/writing" onClick={() => markHomeSectionReturn("writing")} className="inline-flex items-center gap-1.5 font-mono text-caption text-muted/40 hover:text-accent-secondary transition-colors">
+            <Link href="/writing" className="inline-flex items-center gap-1.5 font-mono text-caption text-muted/40 hover:text-accent-secondary transition-colors">
               View all articles →
-            </a>
+            </Link>
           </motion.div>
         </div>
       </div>

@@ -34,8 +34,8 @@ export function FadeUp({
   return (
     <motion.div
       variants={fadeUp}
-      initial={reduced ? "visible" : "hidden"}
-      whileInView="visible"
+      initial={false}
+      animate="visible"
       viewport={{ once: true, margin: "-50px" }}
       transition={reduced ? instant : { duration: 0.5, delay, ease: "easeOut" }}
       className={className}
@@ -58,8 +58,8 @@ export function FadeIn({
   return (
     <motion.div
       variants={fadeIn}
-      initial={reduced ? "visible" : "hidden"}
-      whileInView="visible"
+      initial={false}
+      animate="visible"
       viewport={{ once: true, margin: "-50px" }}
       transition={reduced ? instant : { duration: 0.6, delay }}
       className={className}
@@ -80,8 +80,8 @@ export function StaggerContainer({
   return (
     <motion.div
       variants={reduced ? undefined : staggerContainer}
-      initial={reduced ? undefined : "hidden"}
-      whileInView={reduced ? undefined : "visible"}
+      initial={false}
+      animate={reduced ? undefined : "visible"}
       viewport={{ once: true, margin: "-50px" }}
       className={className}
     >
@@ -102,10 +102,11 @@ export function SlideIn({
   className?: string;
 }): React.ReactElement {
   const reduced = useReducedMotion();
+  void direction;
   return (
     <motion.div
-      initial={reduced ? { opacity: 1, x: 0 } : { opacity: 0, x: direction === "left" ? -40 : 40 }}
-      whileInView={{ opacity: 1, x: 0 }}
+      initial={false}
+      animate={{ opacity: 1, x: 0 }}
       viewport={{ once: true, margin: "-50px" }}
       transition={reduced ? instant : { duration: 0.5, delay, ease: "easeOut" }}
       className={className}

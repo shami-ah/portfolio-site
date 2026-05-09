@@ -58,7 +58,7 @@ function TestimonialCarousel(): React.ReactElement {
         <AnimatePresence mode="wait">
           <motion.div
             key={idx}
-            initial={{ opacity: 0, y: 8 }}
+            initial={false}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.3 }}
@@ -144,6 +144,7 @@ export function ConfigContact(): React.ReactElement {
                       <button
                         key={link.key}
                         type="button"
+                        data-cv-open="true"
                         onClick={openCvDrawer}
                         className="hover:text-accent transition-colors"
                       >

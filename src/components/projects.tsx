@@ -1,8 +1,9 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useId, useMemo, useRef, useState } from "react";
 import ReactDOM from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
+import mermaid from "mermaid";
 import { projects, type ProjectData } from "@/data/projects";
 import { diagrams } from "@/data/diagrams";
 import { FadeUp } from "./motion";
@@ -86,6 +87,8 @@ interface PanelContent {
   glow: string;
 }
 
+type ExpandedPanel = { kind: "mockup" | "diagram"; project: ProjectData; mockup: MockupKind; content: PanelContent } | null;
+
 const PANEL_CONTENT: Record<string, PanelContent> = {
   openevent: {
     title: "OpenEvent",
@@ -122,16 +125,103 @@ const PANEL_CONTENT: Record<string, PanelContent> = {
 /* ------------------------------------------------------------------ */
 
 /* ------------------------------------------------------------------ */
-/*  Inline mermaid renderer (lazy-loaded)                              */
+/*  Inline diagram renderer                                             */
 /* ------------------------------------------------------------------ */
 
+interface DiagramNode {
+  id: string;
+  label: string;
+}
+
+interface DiagramEdge {
+  from: string;
+  to: string;
+}
+
+function cleanDiagramLabel(label: string): string {
+  return label.replace(/\\n/g, " ").replace(/\s+/g, " ").trim();
+}
+
+function parseDiagram(chart: string): { nodes: DiagramNode[]; edges: DiagramEdge[] } {
+  const nodes = new Map<string, string>();
+  const edges: DiagramEdge[] = [];
+  const nodePattern = /([A-Za-z][A-Za-z0-9_-]*)\s*(?:\[[^\]]+\]|\{[^}]+\})/g;
+  const edgePattern = /([A-Za-z][A-Za-z0-9_-]*)\s*(?:-->|-.->|&)\s*([A-Za-z][A-Za-z0-9_-]*)/g;
+  let match: RegExpExecArray | null;
+
+  while ((match = nodePattern.exec(chart)) !== null) {
+    const token = match[0];
+    const id = match[1];
+    const label = token.slice(id.length).replace(/^[\s[{]+|[\]}]+$/g, "");
+    nodes.set(id, cleanDiagramLabel(label || id));
+  }
+
+  while ((match = edgePattern.exec(chart)) !== null) {
+    edges.push({ from: match[1], to: match[2] });
+    if (!nodes.has(match[1])) nodes.set(match[1], match[1]);
+    if (!nodes.has(match[2])) nodes.set(match[2], match[2]);
+  }
+
+  return {
+    nodes: Array.from(nodes, ([id, label]) => ({ id, label })).slice(0, 14),
+    edges: edges.slice(0, 18),
+  };
+}
+
+function DiagramFallback({ chart }: { chart: string }): React.ReactElement {
+  const parsed = useMemo(() => parseDiagram(chart), [chart]);
+  const nodes = parsed.nodes.length > 0 ? parsed.nodes : [{ id: "diagram", label: "Architecture diagram" }];
+  const edgeLabels = parsed.edges
+    .map((edge) => {
+      const from = nodes.find((node) => node.id === edge.from)?.label ?? edge.from;
+      const to = nodes.find((node) => node.id === edge.to)?.label ?? edge.to;
+      return `${from} -> ${to}`;
+    })
+    .slice(0, 5);
+
+  return (
+    <div className="h-full w-full overflow-auto p-3">
+      <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+        {nodes.slice(0, 9).map((node, index) => (
+          <div
+            key={`${node.id}-${index}`}
+            className="min-h-12 rounded-lg border border-accent/20 bg-accent/[0.04] px-2.5 py-2 text-left"
+          >
+            <p className="text-[10px] font-mono uppercase tracking-wider text-accent/50">{String(index + 1).padStart(2, "0")}</p>
+            <p className="mt-1 text-[11px] leading-snug text-foreground/80">{node.label}</p>
+          </div>
+        ))}
+      </div>
+      {edgeLabels.length > 0 && (
+        <div className="mt-3 space-y-1.5">
+          {edgeLabels.map((label) => (
+            <p key={label} className="truncate text-[10px] font-mono text-muted/45">
+              {label}
+            </p>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 function MermaidDiagram({ chart, className }: { chart: string; className?: string }): React.ReactElement {
+  const reactId = useId();
   const [svg, setSvg] = useState("");
+  const [showFallback, setShowFallback] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
+    const fallbackTimer = window.setTimeout(() => {
+      if (!cancelled) setShowFallback(true);
+    }, 2500);
+
     async function render(): Promise<void> {
-      const mermaid = (await import("mermaid")).default;
+      setSvg("");
+      setShowFallback(false);
+      if (!chart.trim()) {
+        return;
+      }
       mermaid.initialize({
         startOnLoad: false,
         theme: "dark",
@@ -153,17 +243,31 @@ function MermaidDiagram({ chart, className }: { chart: string; className?: strin
         },
         flowchart: { htmlLabels: true, curve: "basis", padding: 8, nodeSpacing: 20, rankSpacing: 30 },
       });
-      const id = `mermaid-${Math.random().toString(36).slice(2)}`;
+      const safeId = reactId.replace(/[^a-zA-Z0-9_-]/g, "") || "diagram";
+      const randomId = typeof crypto !== "undefined" && "randomUUID" in crypto
+        ? crypto.randomUUID()
+        : `${Date.now()}-${Math.random().toString(36).slice(2)}`;
+      const id = `mermaid-${safeId}-${randomId.replace(/[^a-zA-Z0-9_-]/g, "")}`;
       try {
         const { svg: rendered } = await mermaid.render(id, chart);
         if (!cancelled) {
+          window.clearTimeout(fallbackTimer);
           setSvg(rendered);
+          setShowFallback(false);
         }
-      } catch { /* silent */ }
+      } catch (err) {
+        if (!cancelled) {
+          window.clearTimeout(fallbackTimer);
+          setShowFallback(true);
+        }
+      }
     }
     render();
-    return () => { cancelled = true; };
-  }, [chart]);
+    return () => {
+      cancelled = true;
+      window.clearTimeout(fallbackTimer);
+    };
+  }, [chart, reactId]);
 
   return (
     <div className={className}>
@@ -172,6 +276,8 @@ function MermaidDiagram({ chart, className }: { chart: string; className?: strin
           className="flex items-center justify-center h-full w-full overflow-auto p-2 [&_svg]:max-w-full [&_svg]:max-h-full [&_svg]:w-auto [&_svg]:h-auto [&_svg]:m-auto [&_svg]:block"
           dangerouslySetInnerHTML={{ __html: svg }}
         />
+      ) : showFallback ? (
+        <DiagramFallback chart={chart} />
       ) : (
         <div className="flex items-center justify-center h-full text-caption text-muted/30 font-mono">
           Loading diagram...
@@ -254,6 +360,7 @@ function ScrollPanel({
   content,
   index,
   total,
+  onExpand,
 }: {
   project: ProjectData;
   mockup: MockupKind;
@@ -261,11 +368,11 @@ function ScrollPanel({
   content: PanelContent;
   index: number;
   total: number;
+  onExpand: (panel: Exclude<ExpandedPanel, null>) => void;
 }): React.ReactElement {
   const num = String(index + 1).padStart(2, "0");
-  const [expandMockup, setExpandMockup] = useState(false);
-  const [expandDiagram, setExpandDiagram] = useState(false);
   const [accessModalOpen, setAccessModalOpen] = useState(false);
+  const panelPayload = { project, mockup, content };
 
   return (
     <>
@@ -323,7 +430,9 @@ function ScrollPanel({
             {/* Mockup */}
             <button
               type="button"
-              onClick={() => setExpandMockup(true)}
+              data-project-expand="mockup"
+              data-project-slug={project.slug}
+              onClick={() => onExpand({ kind: "mockup", ...panelPayload })}
               className="relative group min-h-0 overflow-hidden rounded-xl border border-card-border/40 bg-card/20 cursor-pointer hover:border-accent/30 transition-colors text-left"
             >
               <ProjectMockup kind={mockup} className="shadow-none border-card-border/40 h-full" />
@@ -335,7 +444,9 @@ function ScrollPanel({
             {/* Architecture diagram */}
             <button
               type="button"
-              onClick={() => setExpandDiagram(true)}
+              data-project-expand="diagram"
+              data-project-slug={project.slug}
+              onClick={() => onExpand({ kind: "diagram", ...panelPayload })}
               className="relative group min-h-0 overflow-hidden rounded-xl border border-card-border/40 bg-[#0c0c0f] cursor-pointer hover:border-accent/30 transition-colors"
             >
               <p className="text-caption font-mono uppercase tracking-wider text-muted/40 pt-3 text-center">architecture</p>
@@ -390,65 +501,61 @@ function ScrollPanel({
           </div>
         </div>
       </div>
-
-      {/* Expand modals — rendered outside sticky context */}
-      <ExpandModal open={expandMockup} onClose={() => setExpandMockup(false)} title={`${content.title} — Details`}>
-        <ProjectMockup kind={mockup} />
-
-        {/* Decision Tree — interactive architectural challenge */}
-        {project.decision && (
-          <DecisionTree decision={project.decision} />
-        )}
-
-        {/* Features */}
-        {project.features.length > 0 && (
-          <div className="mt-8 pt-6 border-t border-card-border/30">
-            <p className="text-xs font-mono text-accent mb-4 uppercase tracking-wider">Key Features</p>
-            <ul className="space-y-2">
-              {project.features.map((f) => (
-                <li key={f.slice(0, 30)} className="flex gap-2.5 text-sm text-muted leading-relaxed">
-                  <span className="text-accent shrink-0 mt-1 text-xs">&#9654;</span>
-                  {f}
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
-
-        {/* Technical Decisions */}
-        {project.techDecisions && project.techDecisions.length > 0 && (
-          <div className="mt-8 pt-6 border-t border-card-border/30">
-            <p className="text-xs font-mono text-accent mb-4 uppercase tracking-wider">Key Technical Decisions</p>
-            <div className="grid md:grid-cols-2 gap-3">
-              {project.techDecisions.map((d) => (
-                <div key={d.title} className="p-4 rounded-xl bg-card/50 border border-card-border">
-                  <h4 className="font-bold text-sm mb-1.5">{d.title}</h4>
-                  <p className="text-xs text-muted leading-relaxed">{d.description}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* Results */}
-        {project.results.length > 0 && (
-          <div className="mt-8 pt-6 border-t border-card-border/30">
-            <p className="text-xs font-mono text-accent mb-4 uppercase tracking-wider">Results</p>
-            <div className="grid sm:grid-cols-2 gap-2">
-              {project.results.map((r) => (
-                <div key={r.slice(0, 30)} className="flex items-start gap-2.5 p-3 rounded-lg bg-card/50 border border-card-border">
-                  <span className="text-accent mt-0.5 text-xs">&#10003;</span>
-                  <span className="text-xs text-muted leading-relaxed">{r}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-      </ExpandModal>
-      <ExpandModal open={expandDiagram} onClose={() => setExpandDiagram(false)} title={`${content.title} — Architecture`}>
-        <MermaidDiagram chart={diagrams[project.slug] ?? ""} className="min-h-[60vh] flex items-center justify-center" />
-      </ExpandModal>
       <AccessRequestModal open={accessModalOpen} onClose={() => setAccessModalOpen(false)} />
+    </>
+  );
+}
+
+function ProjectDetailsContent({ project, mockup }: { project: ProjectData; mockup: MockupKind }): React.ReactElement {
+  return (
+    <>
+      <ProjectMockup kind={mockup} />
+
+      {project.decision && (
+        <DecisionTree decision={project.decision} />
+      )}
+
+      {project.features.length > 0 && (
+        <div className="mt-8 pt-6 border-t border-card-border/30">
+          <p className="text-xs font-mono text-accent mb-4 uppercase tracking-wider">Key Features</p>
+          <ul className="space-y-2">
+            {project.features.map((f) => (
+              <li key={f.slice(0, 30)} className="flex gap-2.5 text-sm text-muted leading-relaxed">
+                <span className="text-accent shrink-0 mt-1 text-xs">&#9654;</span>
+                {f}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {project.techDecisions && project.techDecisions.length > 0 && (
+        <div className="mt-8 pt-6 border-t border-card-border/30">
+          <p className="text-xs font-mono text-accent mb-4 uppercase tracking-wider">Key Technical Decisions</p>
+          <div className="grid md:grid-cols-2 gap-3">
+            {project.techDecisions.map((d) => (
+              <div key={d.title} className="p-4 rounded-xl bg-card/50 border border-card-border">
+                <h4 className="font-bold text-sm mb-1.5">{d.title}</h4>
+                <p className="text-xs text-muted leading-relaxed">{d.description}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {project.results.length > 0 && (
+        <div className="mt-8 pt-6 border-t border-card-border/30">
+          <p className="text-xs font-mono text-accent mb-4 uppercase tracking-wider">Results</p>
+          <div className="grid sm:grid-cols-2 gap-2">
+            {project.results.map((r) => (
+              <div key={r.slice(0, 30)} className="flex items-start gap-2.5 p-3 rounded-lg bg-card/50 border border-card-border">
+                <span className="text-accent mt-0.5 text-xs">&#10003;</span>
+                <span className="text-xs text-muted leading-relaxed">{r}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
     </>
   );
 }
@@ -863,6 +970,7 @@ function OtherDeployments({
 
 export function Projects(): React.ReactElement {
   const [activeProject, setActiveProject] = useState<ProjectData | null>(null);
+  const [expandedPanel, setExpandedPanel] = useState<ExpandedPanel>(null);
   const flagshipMeta = useFlagshipMeta();
   const sectionRef = useRef<HTMLElement>(null);
 
@@ -873,6 +981,39 @@ export function Projects(): React.ReactElement {
 
   const flagshipSlugs = new Set(FLAGSHIP_SLUGS.map((s) => s.slug));
   const others = projects.filter((p) => !flagshipSlugs.has(p.slug));
+  const expandBySlug = useCallback((slug: string, kind: "mockup" | "diagram") => {
+    const flagship = FLAGSHIP_SLUGS.find((item) => item.slug === slug);
+    const project = projects.find((item) => item.slug === slug);
+    if (!flagship || !project) return;
+    const content = PANEL_CONTENT[project.slug] ?? {
+      title: project.title,
+      oneLiner: project.impact,
+      problem: project.problem,
+      solution: project.solution,
+      glow: "none",
+    };
+    setExpandedPanel({ kind, project, mockup: flagship.mockup, content });
+  }, []);
+
+  useEffect(() => {
+    const section = sectionRef.current;
+    if (!section) return;
+
+    const onClick = (event: MouseEvent): void => {
+      const target = event.target instanceof Element
+        ? event.target.closest<HTMLElement>("[data-project-expand][data-project-slug]")
+        : null;
+      if (!target || !section.contains(target)) return;
+      const kind = target.dataset.projectExpand;
+      const slug = target.dataset.projectSlug;
+      if ((kind === "mockup" || kind === "diagram") && slug) {
+        expandBySlug(slug, kind);
+      }
+    };
+
+    section.addEventListener("click", onClick, true);
+    return () => section.removeEventListener("click", onClick, true);
+  }, [expandBySlug]);
 
   const navigate = useCallback(
     (dir: 1 | -1) => {
@@ -919,6 +1060,7 @@ export function Projects(): React.ReactElement {
             content={PANEL_CONTENT[project.slug] ?? { title: project.title, oneLiner: project.impact, problem: project.problem, solution: project.solution, glow: "none", mermaid: "" }}
             index={i}
             total={flagships.length}
+            onExpand={setExpandedPanel}
           />
         ))}
       </div>
@@ -933,6 +1075,13 @@ export function Projects(): React.ReactElement {
         onClose={() => setActiveProject(null)}
         onNavigate={navigate}
       />
+      <ExpandModal open={!!expandedPanel} onClose={() => setExpandedPanel(null)} title={expandedPanel ? `${expandedPanel.content.title} — ${expandedPanel.kind === "mockup" ? "Details" : "Architecture"}` : ""}>
+        {expandedPanel?.kind === "mockup" ? (
+          <ProjectDetailsContent project={expandedPanel.project} mockup={expandedPanel.mockup} />
+        ) : expandedPanel ? (
+          <MermaidDiagram chart={diagrams[expandedPanel.project.slug] ?? ""} className="min-h-[60vh] flex items-center justify-center" />
+        ) : null}
+      </ExpandModal>
     </section>
   );
 }
