@@ -411,25 +411,25 @@ body::after {
   50% { border-color: rgba(74, 222, 128, 0.6); }
 }
 
-/* Signal pulse — travels from bottom of viewport up to the button */
+/* Signal pulse — travels from chat button up to journey button */
 .nav-signal-pulse {
-  animation: signal-travel 2s ease-in-out infinite;
+  animation: signal-travel 2.5s ease-in infinite;
 }
 @keyframes signal-travel {
-  0% { top: 100vh; opacity: 0; }
-  10% { opacity: 1; }
-  80% { opacity: 1; }
-  100% { top: var(--signal-target, 40px); opacity: 0; }
+  0% { top: var(--signal-start, 90vh); opacity: 0; transform: scale(0.5); }
+  8% { opacity: 1; transform: scale(1); }
+  85% { opacity: 1; transform: scale(1); }
+  100% { top: var(--signal-target, 40px); opacity: 0; transform: scale(1.5); }
 }
 
-/* Journey button glow pulse when signal lands */
+/* Journey button glow — spreads light when signal arrives */
 .nav-journey-active {
-  animation: journey-beckon 2s ease-in-out infinite !important;
+  animation: journey-spread 2.5s ease-in-out infinite !important;
 }
-@keyframes journey-receive {
-  0%, 70% { box-shadow: 0 0 20px rgba(74,222,128,0.3), 0 0 40px rgba(74,222,128,0.15); }
-  85% { box-shadow: 0 0 30px rgba(74,222,128,0.5), 0 0 60px rgba(74,222,128,0.25); }
-  100% { box-shadow: 0 0 20px rgba(74,222,128,0.3), 0 0 40px rgba(74,222,128,0.15); }
+@keyframes journey-spread {
+  0%, 60% { box-shadow: 0 0 15px rgba(74,222,128,0.2), 0 0 30px rgba(74,222,128,0.1); }
+  80% { box-shadow: 0 0 30px rgba(74,222,128,0.6), 0 0 60px rgba(74,222,128,0.3), 0 0 100px rgba(74,222,128,0.15); }
+  100% { box-shadow: 0 0 15px rgba(74,222,128,0.2), 0 0 30px rgba(74,222,128,0.1); }
 }
 
 /* Journey pulse dot */

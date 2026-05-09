@@ -215,6 +215,7 @@ export function ChatWidget(): React.ReactElement {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.8 }}
             transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+            data-chat-trigger
             className={`fixed bottom-5 right-5 z-40 group flex items-center cursor-pointer rounded-full p-2.5 hover:px-4 hover:gap-2 bg-accent/20 border border-accent/20 hover:bg-accent/30 hover:border-accent/40 backdrop-blur-sm transition-all duration-300 ${triggerGlow ? "ring-2 ring-accent-status/60 shadow-[0_0_20px_rgba(74,222,128,0.3)]" : "shadow-lg hover:shadow-xl hover:shadow-accent/15"}`}
           >
             <span className="w-2.5 h-2.5 flex items-center justify-center font-mono text-[10px] font-bold text-accent leading-none shrink-0">&gt;_</span>

@@ -21,8 +21,8 @@ export function TopBar(): React.ReactElement {
   const [meteorProgress, setMeteorProgress] = useState(0); // 0-100
   const [meteorLanded, setMeteorLanded] = useState(false);
   const journeyBtnRef = useRef<HTMLAnchorElement>(null);
-  const [btnCenterX, setBtnCenterX] = useState(0);
-  const [btnBottomY, setBtnBottomY] = useState(0); // px from viewport top to button bottom edge
+  const [journeyPos, setJourneyPos] = useState({ cx: 0, cy: 0, bottom: 0 });
+  const [chatPos, setChatPos] = useState({ cx: 0, cy: 0, top: 0 });
 
   const updatePressure = useCallback(() => {
     setPressure((p) => Math.min(p + 1, 100));
@@ -78,11 +78,15 @@ export function TopBar(): React.ReactElement {
           }
         }
 
-        // Track journey button position
+        // Track both button positions
         if (journeyBtnRef.current) {
           const r = journeyBtnRef.current.getBoundingClientRect();
-          setBtnCenterX(r.left + r.width / 2);
-          setBtnBottomY(r.bottom);
+          setJourneyPos({ cx: r.left + r.width / 2, cy: r.top + r.height / 2, bottom: r.bottom });
+        }
+        const chatBtn = document.querySelector("[data-chat-trigger]");
+        if (chatBtn) {
+          const r = chatBtn.getBoundingClientRect();
+          setChatPos({ cx: r.left + r.width / 2, cy: r.top + r.height / 2, top: r.top });
         }
       });
     };
@@ -148,55 +152,55 @@ export function TopBar(): React.ReactElement {
         </Link>
       </motion.div>
 
-      {/* ── Journey meteor — glowing dot rises from bottom to journey button ── */}
-      {btnCenterX > 0 && (
+      {/* ── Journey meteor — connects chat button (bottom) to journey button (top) ── */}
+      {journeyPos.cx > 0 && chatPos.cx > 0 && (
         <div className="fixed inset-0 z-30 pointer-events-none" style={{ opacity: meteorProgress > 0 ? 1 : 0, transition: "opacity 0.6s ease" }}>
           {(() => {
-            const vh = typeof window !== "undefined" ? window.innerHeight : 800;
-            // Meteor travels from viewport bottom to the button's bottom edge
-            const travelDistance = vh - btnBottomY;
-            // Current position: how far the meteor head is from the bottom
-            const meteorHeadFromBottom = (meteorProgress / 100) * travelDistance;
-            // Top position of the meteor head (from viewport top)
-            const meteorTop = vh - meteorHeadFromBottom;
+            // Line runs from chat button center to journey button center
+            const lineX = (journeyPos.cx + chatPos.cx) / 2;
+            const lineTop = journeyPos.cy;
+            const lineBottom = chatPos.cy;
+            const lineHeight = lineBottom - lineTop;
+            // Meteor head position (interpolate from chat to journey)
+            const meteorY = lineBottom - (meteorProgress / 100) * lineHeight;
 
             return (
               <>
-                {/* Ambient glow — wide soft light */}
+                {/* Ambient glow along the path */}
                 {!meteorLanded && (
                   <div
                     className="absolute"
                     style={{
-                      left: btnCenterX - 30,
-                      top: meteorTop,
-                      bottom: 0,
+                      left: lineX - 30,
+                      top: meteorY,
+                      height: lineBottom - meteorY,
                       width: 60,
                       background: "linear-gradient(to top, transparent 0%, rgba(74,222,128,0.06) 30%, rgba(74,222,128,0.15) 70%, rgba(74,222,128,0.25) 100%)",
                       filter: "blur(12px)",
                     }}
                   />
                 )}
-                {/* Core trail — solid line from bottom to meteor head */}
+                {/* Core trail */}
                 {!meteorLanded && (
                   <div
                     className="absolute"
                     style={{
-                      left: btnCenterX - 2,
-                      top: meteorTop,
-                      bottom: 0,
+                      left: lineX - 2,
+                      top: meteorY,
+                      height: lineBottom - meteorY,
                       width: 4,
                       borderRadius: 2,
                       background: "linear-gradient(to top, rgba(74,222,128,0.05) 0%, rgba(74,222,128,0.3) 20%, rgba(74,222,128,0.6) 60%, rgba(74,222,128,0.9) 100%)",
                     }}
                   />
                 )}
-                {/* Meteor head — bright orb at the tip */}
-                {!meteorLanded && (
+                {/* Meteor head */}
+                {!meteorLanded && meteorProgress > 0 && (
                   <div
                     className="absolute"
                     style={{
-                      left: btnCenterX - 9,
-                      top: meteorTop - 9,
+                      left: lineX - 9,
+                      top: meteorY - 9,
                       width: 18,
                       height: 18,
                       borderRadius: "50%",
@@ -205,33 +209,33 @@ export function TopBar(): React.ReactElement {
                     }}
                   />
                 )}
-                {/* Post-landing — glow signal pulses travel from bottom to button */}
+                {/* Post-landing: static line + signal pulses + button glow */}
                 {meteorLanded && (
                   <>
-                    {/* Static faint line from bottom to button */}
+                    {/* Faint static line between the two buttons */}
                     <div
                       className="absolute"
                       style={{
-                        left: btnCenterX - 1.5,
-                        top: btnBottomY,
-                        bottom: 0,
+                        left: lineX - 1.5,
+                        top: lineTop,
+                        height: lineHeight,
                         width: 3,
                         borderRadius: 2,
-                        background: "linear-gradient(to top, transparent 0%, rgba(74,222,128,0.1) 40%, rgba(74,222,128,0.3) 100%)",
+                        background: "linear-gradient(to top, rgba(74,222,128,0.05) 0%, rgba(74,222,128,0.15) 50%, rgba(74,222,128,0.3) 100%)",
                       }}
                     />
-                    {/* Traveling glow pulse — moves from bottom to button repeatedly */}
+                    {/* Signal pulse — travels from chat to journey */}
                     <div
                       className="absolute nav-signal-pulse"
                       style={{
-                        left: btnCenterX - 6,
-                        width: 12,
-                        height: 12,
+                        left: lineX - 8,
+                        width: 16,
+                        height: 16,
                         borderRadius: "50%",
-                        background: "radial-gradient(circle, rgba(74,222,128,0.9) 0%, rgba(74,222,128,0.3) 50%, transparent 75%)",
-                        boxShadow: "0 0 12px 4px rgba(74,222,128,0.4)",
-                        // Animation moves from bottom of viewport to button position
-                        "--signal-target": `${btnBottomY}px`,
+                        background: "radial-gradient(circle, rgba(74,222,128,0.9) 0%, rgba(74,222,128,0.4) 40%, transparent 70%)",
+                        boxShadow: "0 0 16px 6px rgba(74,222,128,0.5), 0 0 30px 10px rgba(74,222,128,0.2)",
+                        "--signal-start": `${lineBottom}px`,
+                        "--signal-target": `${lineTop}px`,
                       } as React.CSSProperties}
                     />
                   </>
