@@ -28,10 +28,7 @@ export function TopBar(): React.ReactElement {
   }, []);
 
   useEffect(() => {
-    let ticking = false;
     const onScroll = (): void => {
-      if (ticking) return;
-      ticking = true;
       requestAnimationFrame(() => {
         const y = window.scrollY;
         setScrolled(y > 40);
@@ -56,30 +53,27 @@ export function TopBar(): React.ReactElement {
           setSetupGlow(missionTop < window.innerHeight * 0.6 && projectsBottom > 0);
         }
 
-        // Journey meteor: starts when experience section enters, lands at contact bottom
-        const logSection = document.getElementById("log");
+        // Journey meteor: starts when contact section enters viewport,
+        // lands when contact is fully visible
         const contact = document.getElementById("contact");
-        if (logSection && contact) {
-          const logTop = logSection.getBoundingClientRect().top;
-          const contactBottom = contact.getBoundingClientRect().bottom;
+        if (contact) {
           const vh = window.innerHeight;
+          // Start: when contact section top hits the bottom of the viewport
+          const startScroll = contact.offsetTop - vh;
+          // End: when contact section bottom is at ~40% of viewport (fully read)
+          const endScroll = contact.offsetTop + contact.offsetHeight - vh * 0.5;
+          const totalRange = endScroll - startScroll;
 
-          // Not scrolled far enough — experience section not in view yet
-          if (logTop > vh * 0.6) {
+          if (y < startScroll) {
             setMeteorProgress(0);
             setMeteorLanded(false);
+          } else if (y >= endScroll) {
+            setMeteorProgress(100);
+            setMeteorLanded(true);
           } else {
-            // Map scroll range: from when log enters viewport to when contact is fully visible
-            // logTop goes from vh*0.6 → negative (scrolled past)
-            // contactBottom goes from way below → vh → 0 (scrolled past)
-            // We use the total scroll from log entering to contact bottom leaving
-            const logEnterY = logSection.offsetTop - vh * 0.6;
-            const contactEndY = contact.offsetTop + contact.offsetHeight - vh * 0.3;
-            const totalScroll = contactEndY - logEnterY;
-            const currentScroll = y - logEnterY;
-            const progress = Math.max(0, Math.min(100, (currentScroll / totalScroll) * 100));
+            const progress = ((y - startScroll) / totalRange) * 100;
             setMeteorProgress(progress);
-            setMeteorLanded(progress >= 95);
+            setMeteorLanded(false);
           }
         }
 
@@ -88,8 +82,6 @@ export function TopBar(): React.ReactElement {
           const r = journeyBtnRef.current.getBoundingClientRect();
           setBtnCenterX(r.left + r.width / 2);
         }
-
-        ticking = false;
       });
     };
 
@@ -168,7 +160,7 @@ export function TopBar(): React.ReactElement {
                 height: `${meteorProgress}%`,
                 background: "linear-gradient(to top, transparent 0%, rgba(74,222,128,0.06) 20%, rgba(74,222,128,0.15) 60%, rgba(74,222,128,0.25) 100%)",
                 filter: "blur(12px)",
-                transition: "height 0.15s linear",
+                transition: "none",
               }}
             />
           )}
@@ -183,7 +175,7 @@ export function TopBar(): React.ReactElement {
                 height: `${meteorProgress}%`,
                 background: "linear-gradient(to top, rgba(74,222,128,0.05) 0%, rgba(74,222,128,0.3) 15%, rgba(74,222,128,0.6) 60%, rgba(74,222,128,0.9) 100%)",
                 borderRadius: 2,
-                transition: "height 0.15s linear",
+                transition: "none",
               }}
             />
           )}
@@ -199,7 +191,7 @@ export function TopBar(): React.ReactElement {
                 borderRadius: "50%",
                 background: "radial-gradient(circle, #fff 0%, rgba(74,222,128,1) 20%, rgba(74,222,128,0.6) 50%, transparent 75%)",
                 boxShadow: "0 0 20px 8px rgba(74,222,128,0.7), 0 0 50px 16px rgba(74,222,128,0.35), 0 0 80px 30px rgba(74,222,128,0.15)",
-                transition: "bottom 0.15s linear",
+                transition: "none",
               }}
             />
           )}
