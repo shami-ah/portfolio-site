@@ -56,16 +56,26 @@ export function TopBar(): React.ReactElement {
           setSetupGlow(missionTop < window.innerHeight * 0.6 && projectsBottom > 0);
         }
 
-        // Journey meteor: tied to contact section visibility
+        // Journey meteor: starts at experience/writing, lands at contact
+        const logSection = document.getElementById("log");
         const contact = document.getElementById("contact");
-        if (contact) {
-          const rect = contact.getBoundingClientRect();
-          const visibility = 1 - Math.max(0, Math.min(1, rect.top / window.innerHeight));
-          if (visibility > 0.2) {
-            const progress = Math.min(100, ((visibility - 0.2) / 0.6) * 100);
+        if (logSection && contact) {
+          const logTop = logSection.getBoundingClientRect().top;
+          const contactBottom = contact.getBoundingClientRect().bottom;
+          // Start when experience section enters bottom half of viewport
+          const startThreshold = window.innerHeight * 0.6;
+          // End when contact bottom reaches top quarter of viewport
+          const endThreshold = window.innerHeight * 0.3;
+
+          if (logTop < startThreshold && contactBottom > endThreshold) {
+            // Linear interpolation between start and end
+            const totalRange = startThreshold - endThreshold;
+            // Use contact bottom as the progress driver (it moves from below viewport to above)
+            const contactProgress = (startThreshold - contactBottom) / totalRange;
+            const progress = Math.max(0, Math.min(100, contactProgress * 100));
             setMeteorProgress(progress);
-            setMeteorLanded(progress >= 98);
-          } else {
+            setMeteorLanded(progress >= 95);
+          } else if (logTop >= startThreshold) {
             setMeteorProgress(0);
             setMeteorLanded(false);
           }
@@ -156,7 +166,7 @@ export function TopBar(): React.ReactElement {
                 height: `${meteorProgress}%`,
                 background: "linear-gradient(to top, transparent 0%, rgba(74,222,128,0.06) 20%, rgba(74,222,128,0.15) 60%, rgba(74,222,128,0.25) 100%)",
                 filter: "blur(12px)",
-                transition: "height 0.8s cubic-bezier(0.22, 1, 0.36, 1)",
+                transition: "height 0.15s linear",
               }}
             />
           )}
@@ -171,7 +181,7 @@ export function TopBar(): React.ReactElement {
                 height: `${meteorProgress}%`,
                 background: "linear-gradient(to top, rgba(74,222,128,0.05) 0%, rgba(74,222,128,0.3) 15%, rgba(74,222,128,0.6) 60%, rgba(74,222,128,0.9) 100%)",
                 borderRadius: 2,
-                transition: "height 0.8s cubic-bezier(0.22, 1, 0.36, 1)",
+                transition: "height 0.15s linear",
               }}
             />
           )}
@@ -187,7 +197,7 @@ export function TopBar(): React.ReactElement {
                 borderRadius: "50%",
                 background: "radial-gradient(circle, #fff 0%, rgba(74,222,128,1) 20%, rgba(74,222,128,0.6) 50%, transparent 75%)",
                 boxShadow: "0 0 20px 8px rgba(74,222,128,0.7), 0 0 50px 16px rgba(74,222,128,0.35), 0 0 80px 30px rgba(74,222,128,0.15)",
-                transition: "bottom 0.8s cubic-bezier(0.22, 1, 0.36, 1)",
+                transition: "bottom 0.15s linear",
               }}
             />
           )}
