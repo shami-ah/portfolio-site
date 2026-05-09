@@ -22,6 +22,9 @@ function scrollToCurrentHash(): boolean {
 
 export function HomeHashScroll(): null {
   useLayoutEffect(() => {
+    sessionStorage.setItem("boot-complete", "1");
+    window.dispatchEvent(new CustomEvent("boot-complete"));
+
     if (!window.location.hash) return;
 
     const previousRestoration = window.history.scrollRestoration;

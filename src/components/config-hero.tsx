@@ -220,14 +220,18 @@ export function ConfigHero(): React.ReactElement {
   const cardY = useTransform(scrollY, [0, 600], [0, -40]);
   const cardScale = useTransform(scrollY, [0, 600], [1, 0.97]);
 
+  const ensureReady = useCallback((): void => {
+    if (typeof window === "undefined") return;
+    if (sessionStorage.getItem("boot-complete") === "1") {
+      setReady(true);
+    }
+  }, []);
+
   // Wait for agent-button-ready (fires after boot collapse + button pop)
   // This ensures hero content cascades in AFTER the boot animation completes
   useEffect(() => {
     if (typeof window === "undefined") return;
-    const done = sessionStorage.getItem("boot-complete");
-    if (done) {
-      setReady(true);
-    }
+    const initialReadyCheck = window.setTimeout(ensureReady, 0);
 
     // Breathe for 0.8s after agent button pops before hero streams in
     const onReady = (): void => { setTimeout(() => setReady(true), 800); };
@@ -241,14 +245,24 @@ export function ConfigHero(): React.ReactElement {
     const onBoot = (): void => { setTimeout(() => setReady(true), 2000); };
     window.addEventListener("boot-complete", onBoot);
 
+    const onPageShow = (): void => ensureReady();
+    const onVisibilityChange = (): void => {
+      if (document.visibilityState === "visible") ensureReady();
+    };
+    window.addEventListener("pageshow", onPageShow);
+    document.addEventListener("visibilitychange", onVisibilityChange);
+
     const fallback = setTimeout(() => setReady(true), 6000);
     return () => {
       window.removeEventListener("agent-button-ready", onReady);
       window.removeEventListener("replay-intro", onReplay);
       window.removeEventListener("boot-complete", onBoot);
+      window.removeEventListener("pageshow", onPageShow);
+      document.removeEventListener("visibilitychange", onVisibilityChange);
+      clearTimeout(initialReadyCheck);
       clearTimeout(fallback);
     };
-  }, []);
+  }, [ensureReady]);
 
   return (
     <section
