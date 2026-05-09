@@ -190,7 +190,15 @@ function HeroAboutCard({ ready }: { ready: boolean }): React.ReactElement {
           <span className="w-1.5 h-1.5 rounded-full bg-accent-status animate-pulse" />
           <span className="text-accent-status/70">available for hire</span>
         </div>
-        <button type="button" onClick={openCvDrawer} className="text-caption font-mono text-muted/40 hover:text-accent transition-colors">cv &rarr;</button>
+        <button
+          type="button"
+          onClick={openCvDrawer}
+          className="group flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-caption font-mono border border-accent/25 bg-accent/8 text-accent/70 hover:bg-accent/15 hover:text-accent hover:border-accent/40 transition-all duration-200 cursor-pointer"
+          style={{ animation: "cv-glow 3s ease-in-out infinite" }}
+        >
+          <span className="w-1 h-1 rounded-full bg-accent/60 group-hover:bg-accent transition-colors" />
+          View CV
+        </button>
       </div>
     </motion.div>
   );

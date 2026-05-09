@@ -1,25 +1,59 @@
 "use client";
 
+import { useEffect } from "react";
 import Link from "next/link";
-import { motion } from "framer-motion";
 import { FadeUp } from "@/components/motion";
 import { TypeLabel } from "@/components/type-label";
 import { articles } from "@/data/writing";
 import { ArrowLeft, Calendar, Clock, Hash } from "lucide-react";
 
 export function WritingPage(): React.ReactElement {
+  // Scroll to hash anchor instantly on mount — suppress visible scroll
+  useEffect(() => {
+    const hash = window.location.hash.slice(1);
+    if (!hash) {
+      // "View all" — start at top
+      window.scrollTo(0, 0);
+      return;
+    }
+    // Disable smooth scroll temporarily, jump to anchor, re-enable
+    const html = document.documentElement;
+    html.style.scrollBehavior = "auto";
+    const tryScroll = (): void => {
+      const el = document.getElementById(hash);
+      if (el) {
+        el.scrollIntoView({ block: "start" });
+        // Re-enable after jump
+        requestAnimationFrame(() => { html.style.scrollBehavior = ""; });
+      }
+    };
+    // Try immediately, then again after render
+    tryScroll();
+    const timer = setTimeout(tryScroll, 100);
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <main className="min-h-screen bg-background">
-      {/* Header */}
-      <div className="border-b border-card-border/40 bg-card/20">
-        <div className="max-w-3xl mx-auto px-5 md:px-6 py-8 md:py-12">
+      {/* Sticky nav */}
+      <header className="fixed top-0 left-0 right-0 z-40 bg-background/60 backdrop-blur-xl border-b border-card-border">
+        <div className="max-w-3xl mx-auto px-5 md:px-6 py-3 flex items-center justify-between">
           <Link
-            href="/"
-            className="inline-flex items-center gap-1.5 text-caption font-mono text-muted/60 hover:text-accent transition-colors mb-6"
+            href="/#writing"
+            className="inline-flex items-center gap-2 text-xs font-mono text-muted hover:text-accent transition-colors"
           >
-            <ArrowLeft size={12} />
+            <ArrowLeft size={14} />
             cd ~
           </Link>
+          <p className="text-caption md:text-xs font-mono text-muted/80 text-center truncate hidden sm:block">
+            <span className="text-accent">writing</span> · thinking in public
+          </p>
+        </div>
+      </header>
+
+      {/* Header */}
+      <div className="border-b border-card-border/40 bg-card/20 pt-16">
+        <div className="max-w-3xl mx-auto px-5 md:px-6 py-8 md:py-12">
           <TypeLabel
             text="$ ls ~/writing/"
             className="text-sm font-mono text-accent mb-4 uppercase tracking-wider"
@@ -38,18 +72,10 @@ export function WritingPage(): React.ReactElement {
       <div className="max-w-3xl mx-auto px-5 md:px-6 py-12 md:py-16">
         <div className="space-y-20 md:space-y-28">
           {articles.map((article, i) => (
-            <motion.article
+            <article
               key={article.slug}
               id={article.slug}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-80px" }}
-              transition={{
-                duration: 0.6,
-                delay: i === 0 ? 0.2 : 0,
-                ease: [0.22, 1, 0.36, 1],
-              }}
-              className="scroll-mt-24"
+              className="scroll-mt-20"
             >
               {/* Article header */}
               <div className="mb-6">
@@ -70,7 +96,7 @@ export function WritingPage(): React.ReactElement {
                   {article.title}
                 </h2>
 
-                {/* Meta */}
+                {/* Meta + read link */}
                 <div className="flex items-center gap-4 text-small font-mono text-muted/60">
                   <span className="flex items-center gap-1.5">
                     <Calendar size={12} />
@@ -84,6 +110,12 @@ export function WritingPage(): React.ReactElement {
                     <Clock size={12} />
                     {article.readTime}
                   </span>
+                  <a
+                    href={`#${article.slug}`}
+                    className="ml-auto flex items-center gap-1.5 text-accent/70 hover:text-accent transition-colors"
+                  >
+                    read <span className="transition-transform group-hover:translate-x-0.5">&rarr;</span>
+                  </a>
                 </div>
               </div>
 
@@ -114,7 +146,7 @@ export function WritingPage(): React.ReactElement {
                   <div className="h-px bg-gradient-to-r from-transparent via-card-border to-transparent" />
                 </div>
               )}
-            </motion.article>
+            </article>
           ))}
         </div>
 

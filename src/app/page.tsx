@@ -11,10 +11,12 @@ import { AgentBar } from "@/components/agent-bar";
 import { SkillsModal } from "@/components/skills-modal";
 import { CursorGlow } from "@/components/cursor-glow";
 import { SectionDivider } from "@/components/section-divider";
+import { HomeHashScroll } from "@/components/home-hash-scroll";
 
 export default function Home(): React.ReactElement {
   return (
     <main id="main-content">
+      <HomeHashScroll />
       <TerminalBoot />
       <TopBar />
       <SidebarNav />

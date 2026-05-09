@@ -1,7 +1,6 @@
 "use client";
 
 import React from "react";
-import Link from "next/link";
 import { motion } from "framer-motion";
 import { FadeUp } from "./motion";
 import { TypeLabel } from "./type-label";
@@ -70,6 +69,15 @@ function getRoles(oe: { clients: number; events: number }): Role[] {
 /* ------------------------------------------------------------------ */
 /*  Combined Section                                                   */
 /* ------------------------------------------------------------------ */
+
+function markWritingReturn(): void {
+  if (typeof window === "undefined") return;
+  window.history.replaceState(
+    window.history.state,
+    "",
+    `${window.location.pathname}${window.location.search}#writing`,
+  );
+}
 
 export function ExperienceAndWriting(): React.ReactElement {
   const { status } = useStatus();
@@ -173,8 +181,9 @@ export function ExperienceAndWriting(): React.ReactElement {
                     viewport={{ once: true, margin: "-50px" }}
                     transition={{ duration: 0.6, delay: i * 0.1, ease: [0.22, 1, 0.36, 1] }}
                   >
-                    <Link
+                    <a
                       href={`/writing#${article.slug}`}
+                      onClick={markWritingReturn}
                       className="group card-glow card-gradient-border rounded-lg bg-card border border-card-border px-3 py-2.5 h-full flex flex-col font-mono hover:border-transparent transition-colors duration-300"
                     >
                       {/* File path + date */}
@@ -196,7 +205,7 @@ export function ExperienceAndWriting(): React.ReactElement {
                         <span>{article.readTime}</span>
                         <span className="ml-auto text-muted/30 group-hover:text-accent transition-colors">→</span>
                       </div>
-                    </Link>
+                    </a>
                   </motion.div>
                 ) : <div />}
               </React.Fragment>
@@ -229,9 +238,9 @@ export function ExperienceAndWriting(): React.ReactElement {
             transition={{ duration: 0.5, delay: 0.2 }}
             className="flex items-start pt-1"
           >
-            <Link href="/writing" className="inline-flex items-center gap-1.5 font-mono text-caption text-muted/40 hover:text-accent-secondary transition-colors">
+            <a href="/writing" onClick={markWritingReturn} className="inline-flex items-center gap-1.5 font-mono text-caption text-muted/40 hover:text-accent-secondary transition-colors">
               View all articles →
-            </Link>
+            </a>
           </motion.div>
         </div>
       </div>

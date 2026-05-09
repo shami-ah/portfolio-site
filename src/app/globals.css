@@ -410,6 +410,11 @@ html {
   50% { box-shadow: 0 0 14px rgba(74, 222, 128, 0.7); opacity: 0.4; transform: scale(0.75); }
 }
 
+@keyframes cv-glow {
+  0%, 100% { box-shadow: 0 0 0 rgba(212, 168, 83, 0); }
+  50% { box-shadow: 0 0 8px rgba(212, 168, 83, 0.25), 0 0 16px rgba(212, 168, 83, 0.1); }
+}
+
 /* ── Scroll-snap for project panels ── */
 .scroll-snap-projects {
   scroll-snap-type: y proximity;
