@@ -56,28 +56,30 @@ export function TopBar(): React.ReactElement {
           setSetupGlow(missionTop < window.innerHeight * 0.6 && projectsBottom > 0);
         }
 
-        // Journey meteor: starts at experience/writing, lands at contact
+        // Journey meteor: starts when experience section enters, lands at contact bottom
         const logSection = document.getElementById("log");
         const contact = document.getElementById("contact");
         if (logSection && contact) {
           const logTop = logSection.getBoundingClientRect().top;
           const contactBottom = contact.getBoundingClientRect().bottom;
-          // Start when experience section enters bottom half of viewport
-          const startThreshold = window.innerHeight * 0.6;
-          // End when contact bottom reaches top quarter of viewport
-          const endThreshold = window.innerHeight * 0.3;
+          const vh = window.innerHeight;
 
-          if (logTop < startThreshold && contactBottom > endThreshold) {
-            // Linear interpolation between start and end
-            const totalRange = startThreshold - endThreshold;
-            // Use contact bottom as the progress driver (it moves from below viewport to above)
-            const contactProgress = (startThreshold - contactBottom) / totalRange;
-            const progress = Math.max(0, Math.min(100, contactProgress * 100));
-            setMeteorProgress(progress);
-            setMeteorLanded(progress >= 95);
-          } else if (logTop >= startThreshold) {
+          // Not scrolled far enough — experience section not in view yet
+          if (logTop > vh * 0.6) {
             setMeteorProgress(0);
             setMeteorLanded(false);
+          } else {
+            // Map scroll range: from when log enters viewport to when contact is fully visible
+            // logTop goes from vh*0.6 → negative (scrolled past)
+            // contactBottom goes from way below → vh → 0 (scrolled past)
+            // We use the total scroll from log entering to contact bottom leaving
+            const logEnterY = logSection.offsetTop - vh * 0.6;
+            const contactEndY = contact.offsetTop + contact.offsetHeight - vh * 0.3;
+            const totalScroll = contactEndY - logEnterY;
+            const currentScroll = y - logEnterY;
+            const progress = Math.max(0, Math.min(100, (currentScroll / totalScroll) * 100));
+            setMeteorProgress(progress);
+            setMeteorLanded(progress >= 95);
           }
         }
 
