@@ -411,6 +411,13 @@ body::after {
   50% { border-color: rgba(74, 222, 128, 0.6); }
 }
 
+/* Post-landing glow pulse rising along the line */
+@keyframes glow-rise {
+  0% { opacity: 0.3; }
+  50% { opacity: 0.8; }
+  100% { opacity: 0.3; }
+}
+
 /* Journey pulse dot */
 .nav-dot-pulse {
   animation: dot-breathe 2.5s ease-in-out infinite;

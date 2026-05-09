@@ -20,6 +20,8 @@ export function TopBar(): React.ReactElement {
   // ── Journey: meteor rises from bottom to button ──
   const [meteorProgress, setMeteorProgress] = useState(0); // 0-100
   const [meteorLanded, setMeteorLanded] = useState(false);
+  const journeyBtnRef = useRef<HTMLAnchorElement>(null);
+  const [btnCenterX, setBtnCenterX] = useState(0);
 
   const updatePressure = useCallback(() => {
     setPressure((p) => Math.min(p + 1, 100));
@@ -69,6 +71,12 @@ export function TopBar(): React.ReactElement {
           }
         }
 
+        // Track journey button position
+        if (journeyBtnRef.current) {
+          const r = journeyBtnRef.current.getBoundingClientRect();
+          setBtnCenterX(r.left + r.width / 2);
+        }
+
         ticking = false;
       });
     };
@@ -105,10 +113,6 @@ export function TopBar(): React.ReactElement {
   const heavy = pressure >= 92;
   const fillPct = Math.min(pressure, 100);
 
-  // Meteor position: 0% = bottom of screen, 100% = at the button
-  // Button is ~40px from top, screen bottom to there is ~calc(100vh - 40px)
-  const meteorY = meteorProgress > 0 ? `${100 - meteorProgress}%` : "100%";
-
   return (
     <>
       {/* Signature — top-left corner */}
@@ -138,27 +142,51 @@ export function TopBar(): React.ReactElement {
         </Link>
       </motion.div>
 
-      {/* ── Journey meteor — glowing dot with trail rising to button ── */}
-      {meteorProgress > 0 && !meteorLanded && (
-        <div className="fixed right-[26px] md:right-[38px] z-30 pointer-events-none" style={{ inset: 0 }}>
-          {/* Trail — fades from bottom to meteor position */}
-          <div
-            className="absolute right-0 w-[2px] transition-all duration-300"
-            style={{
-              bottom: 0,
-              top: meteorY,
-              background: "linear-gradient(to top, transparent, rgba(74,222,128,0.1) 30%, rgba(74,222,128,0.3))",
-            }}
-          />
-          {/* Meteor head — the bright glowing dot */}
-          <div
-            className="absolute right-[-3px] w-[8px] h-[8px] rounded-full transition-all duration-300"
-            style={{
-              top: meteorY,
-              background: "radial-gradient(circle, rgba(74,222,128,1) 0%, rgba(74,222,128,0.6) 40%, transparent 70%)",
-              boxShadow: "0 0 12px rgba(74,222,128,0.8), 0 0 24px rgba(74,222,128,0.4), 0 4px 16px rgba(74,222,128,0.3)",
-            }}
-          />
+      {/* ── Journey meteor — glowing dot with trail rising from bottom to journey button ── */}
+      {meteorProgress > 0 && btnCenterX > 0 && (
+        <div className="fixed inset-0 z-30 pointer-events-none">
+          {/* Trail — fading line from bottom up to the meteor head */}
+          {!meteorLanded && (
+            <div
+              className="absolute w-[2px]"
+              style={{
+                left: btnCenterX - 1,
+                bottom: 0,
+                height: `${meteorProgress}%`,
+                background: "linear-gradient(to top, transparent 0%, rgba(74,222,128,0.08) 20%, rgba(74,222,128,0.25) 80%, rgba(74,222,128,0.5) 100%)",
+                transition: "height 0.4s ease-out",
+              }}
+            />
+          )}
+          {/* Meteor head — bright glowing dot at the tip */}
+          {!meteorLanded && (
+            <div
+              className="absolute"
+              style={{
+                left: btnCenterX - 5,
+                bottom: `${meteorProgress}%`,
+                width: 10,
+                height: 10,
+                borderRadius: "50%",
+                background: "radial-gradient(circle, rgba(74,222,128,1) 0%, rgba(74,222,128,0.5) 50%, transparent 70%)",
+                boxShadow: "0 0 14px 4px rgba(74,222,128,0.6), 0 0 30px 8px rgba(74,222,128,0.25)",
+                transition: "bottom 0.4s ease-out",
+              }}
+            />
+          )}
+          {/* Post-landing glow — pulse rising from bottom to button after meteor lands */}
+          {meteorLanded && (
+            <div
+              className="absolute w-[2px]"
+              style={{
+                left: btnCenterX - 1,
+                bottom: 0,
+                height: "100%",
+                background: "linear-gradient(to top, transparent 0%, transparent 60%, rgba(74,222,128,0.15) 85%, rgba(74,222,128,0.4) 100%)",
+                animation: "glow-rise 2s ease-in-out infinite",
+              }}
+            />
+          )}
         </div>
       )}
 
@@ -231,6 +259,7 @@ export function TopBar(): React.ReactElement {
 
         {/* ── Journey ── */}
         <Link
+          ref={journeyBtnRef}
           href="/journey"
           aria-label="Walk through my career"
           className={`group relative flex items-center cursor-pointer rounded-full p-2.5 hover:px-4 hover:gap-2 backdrop-blur-md transition-all duration-500 ${
