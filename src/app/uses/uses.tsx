@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import { motion } from "framer-motion";
+import { ArrowLeft } from "lucide-react";
 import { FadeUp } from "@/components/motion";
 
 /* ------------------------------------------------------------------ */
@@ -509,19 +510,21 @@ export function Uses(): React.ReactElement {
       {/* Title bar */}
       <div className="flex items-center justify-between px-3 py-[5px] border-b border-card-border bg-card/60 shrink-0">
         <div className="flex items-center gap-2">
-          <div className="flex gap-1.5">
-            <span className="w-3 h-3 rounded-full bg-red-500/60" />
-            <span className="w-3 h-3 rounded-full bg-yellow-500/60" />
-            <span className="w-3 h-3 rounded-full bg-green-500/60" />
-          </div>
-          <span className="ml-2 text-small font-mono text-muted/40">shami-toolkit</span>
+          <Link
+            href="/"
+            className="text-caption font-mono text-accent/60 hover:text-accent transition-colors inline-flex items-center gap-1.5"
+          >
+            <ArrowLeft size={12} />
+            portfolio
+          </Link>
+          <span className="text-muted/20">|</span>
+          <span className="text-small font-mono text-muted/40">shami-toolkit</span>
         </div>
-        <Link
-          href="/"
-          className="text-caption font-mono text-accent/60 hover:text-accent transition-colors"
-        >
-          &larr; portfolio
-        </Link>
+        <div className="flex gap-1.5">
+          <span className="w-3 h-3 rounded-full bg-red-500/60" />
+          <span className="w-3 h-3 rounded-full bg-yellow-500/60" />
+          <span className="w-3 h-3 rounded-full bg-green-500/60" />
+        </div>
       </div>
 
       <div className="flex flex-1 overflow-hidden">
