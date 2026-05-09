@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { ArrowLeft } from "lucide-react";
+
 import { FadeUp } from "@/components/motion";
 
 /* ------------------------------------------------------------------ */
@@ -515,14 +515,13 @@ export function Uses(): React.ReactElement {
             <span className="w-3 h-3 rounded-full bg-yellow-500/60" />
             <span className="w-3 h-3 rounded-full bg-green-500/60" />
           </div>
-          <span className="ml-2 text-small font-mono text-muted/40">shami-toolkit</span>
         </div>
+        <span className="text-small font-mono text-muted/40">shami-toolkit</span>
         <Link
           href="/"
-          className="text-caption font-mono text-accent/60 hover:text-accent transition-colors inline-flex items-center gap-1.5"
+          className="text-xs font-mono text-muted hover:text-accent transition-colors"
         >
-          <ArrowLeft size={12} />
-          portfolio
+          ← back to portfolio
         </Link>
       </div>
 

@@ -5,7 +5,7 @@ import Link from "next/link";
 import { FadeUp } from "@/components/motion";
 import { TypeLabel } from "@/components/type-label";
 import { articles } from "@/data/writing";
-import { ArrowLeft, Calendar, Clock, Hash } from "lucide-react";
+import { Calendar, Clock, Hash } from "lucide-react";
 
 export function WritingPage(): React.ReactElement {
   // Scroll to hash anchor instantly on mount — suppress visible scroll
@@ -38,16 +38,15 @@ export function WritingPage(): React.ReactElement {
       {/* Sticky nav */}
       <header className="fixed top-0 left-0 right-0 z-40 bg-background/60 backdrop-blur-xl border-b border-card-border">
         <div className="max-w-3xl mx-auto px-5 md:px-6 py-3 flex items-center justify-between">
-          <Link
-            href="/#writing"
-            className="inline-flex items-center gap-2 text-xs font-mono text-muted hover:text-accent transition-colors"
-          >
-            <ArrowLeft size={14} />
-            cd ~
-          </Link>
           <p className="text-caption md:text-xs font-mono text-muted/80 text-center truncate hidden sm:block">
             <span className="text-accent">writing</span> · thinking in public
           </p>
+          <Link
+            href="/"
+            className="text-xs font-mono text-muted hover:text-accent transition-colors"
+          >
+            ← back to portfolio
+          </Link>
         </div>
       </header>
 
