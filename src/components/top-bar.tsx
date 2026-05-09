@@ -22,7 +22,6 @@ export function TopBar(): React.ReactElement {
   const [meteorLanded, setMeteorLanded] = useState(false);
   const journeyBtnRef = useRef<HTMLAnchorElement>(null);
   const [journeyPos, setJourneyPos] = useState({ cx: 0, cy: 0, bottom: 0 });
-  const [chatPos, setChatPos] = useState({ cx: 0, cy: 0, top: 0 });
 
   const updatePressure = useCallback(() => {
     setPressure((p) => Math.min(p + 1, 100));
@@ -78,15 +77,10 @@ export function TopBar(): React.ReactElement {
           }
         }
 
-        // Track both button positions
+        // Track journey button position
         if (journeyBtnRef.current) {
           const r = journeyBtnRef.current.getBoundingClientRect();
           setJourneyPos({ cx: r.left + r.width / 2, cy: r.top + r.height / 2, bottom: r.bottom });
-        }
-        const chatBtn = document.querySelector("[data-chat-trigger]");
-        if (chatBtn) {
-          const r = chatBtn.getBoundingClientRect();
-          setChatPos({ cx: r.left + r.width / 2, cy: r.top + r.height / 2, top: r.top });
         }
       });
     };
@@ -152,28 +146,27 @@ export function TopBar(): React.ReactElement {
         </Link>
       </motion.div>
 
-      {/* ── Journey meteor — connects chat button (bottom) to journey button (top) ── */}
-      {journeyPos.cx > 0 && chatPos.cx > 0 && (
+      {/* ── Journey meteor — rises from viewport bottom to journey button ── */}
+      {journeyPos.cx > 0 && (
         <div className="fixed inset-0 z-30 pointer-events-none" style={{ opacity: meteorProgress > 0 ? 1 : 0, transition: "opacity 0.6s ease" }}>
           {(() => {
-            // Line runs from chat button center to journey button center
-            const lineX = (journeyPos.cx + chatPos.cx) / 2;
-            const lineTop = journeyPos.cy;
-            const lineBottom = chatPos.cy;
-            const lineHeight = lineBottom - lineTop;
-            // Meteor head position (interpolate from chat to journey)
-            const meteorY = lineBottom - (meteorProgress / 100) * lineHeight;
+            const vh = typeof window !== "undefined" ? window.innerHeight : 800;
+            const lineX = journeyPos.cx;
+            const targetY = journeyPos.cy; // meteor merges into button center
+            const startY = vh; // bottom of viewport
+            const travelDist = startY - targetY;
+            const meteorY = startY - (meteorProgress / 100) * travelDist;
 
             return (
               <>
-                {/* Ambient glow along the path */}
+                {/* Ambient glow */}
                 {!meteorLanded && (
                   <div
                     className="absolute"
                     style={{
                       left: lineX - 30,
                       top: meteorY,
-                      height: lineBottom - meteorY,
+                      bottom: 0,
                       width: 60,
                       background: "linear-gradient(to top, transparent 0%, rgba(74,222,128,0.06) 30%, rgba(74,222,128,0.15) 70%, rgba(74,222,128,0.25) 100%)",
                       filter: "blur(12px)",
@@ -187,7 +180,7 @@ export function TopBar(): React.ReactElement {
                     style={{
                       left: lineX - 2,
                       top: meteorY,
-                      height: lineBottom - meteorY,
+                      bottom: 0,
                       width: 4,
                       borderRadius: 2,
                       background: "linear-gradient(to top, rgba(74,222,128,0.05) 0%, rgba(74,222,128,0.3) 20%, rgba(74,222,128,0.6) 60%, rgba(74,222,128,0.9) 100%)",
@@ -209,22 +202,20 @@ export function TopBar(): React.ReactElement {
                     }}
                   />
                 )}
-                {/* Post-landing: static line + signal pulses + button glow */}
+                {/* Post-landing: faint line + signal pulses */}
                 {meteorLanded && (
                   <>
-                    {/* Faint static line between the two buttons */}
                     <div
                       className="absolute"
                       style={{
                         left: lineX - 1.5,
-                        top: lineTop,
-                        height: lineHeight,
+                        top: targetY,
+                        bottom: 0,
                         width: 3,
                         borderRadius: 2,
                         background: "linear-gradient(to top, rgba(74,222,128,0.05) 0%, rgba(74,222,128,0.15) 50%, rgba(74,222,128,0.3) 100%)",
                       }}
                     />
-                    {/* Signal pulse — travels from chat to journey */}
                     <div
                       className="absolute nav-signal-pulse"
                       style={{
@@ -234,8 +225,8 @@ export function TopBar(): React.ReactElement {
                         borderRadius: "50%",
                         background: "radial-gradient(circle, rgba(74,222,128,0.9) 0%, rgba(74,222,128,0.4) 40%, transparent 70%)",
                         boxShadow: "0 0 16px 6px rgba(74,222,128,0.5), 0 0 30px 10px rgba(74,222,128,0.2)",
-                        "--signal-start": `${lineBottom}px`,
-                        "--signal-target": `${lineTop}px`,
+                        "--signal-start": `${vh}px`,
+                        "--signal-target": `${targetY}px`,
                       } as React.CSSProperties}
                     />
                   </>
