@@ -88,7 +88,7 @@ export function Journey(): React.ReactElement {
             rel="noopener noreferrer"
             className="text-caption md:text-xs font-mono px-3 py-1.5 rounded-lg bg-accent/10 text-accent border border-accent/20 hover:bg-accent/20 transition-all"
           >
-            book a call →
+            book a call
           </a>
           <p className="text-caption md:text-xs font-mono text-muted/80 text-center truncate hidden sm:block">
             <span className="text-accent">how I work</span> · behind the systems
@@ -97,7 +97,7 @@ export function Journey(): React.ReactElement {
             href="/"
             className="inline-flex items-center gap-2 text-xs font-mono text-muted hover:text-accent transition-colors"
           >
-            back to portfolio →
+            ← back to portfolio
           </Link>
         </div>
       </header>
