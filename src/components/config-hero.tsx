@@ -210,7 +210,7 @@ function HeroAboutCard({ ready }: { ready: boolean }): React.ReactElement {
 
 export function ConfigHero(): React.ReactElement {
   const { status } = useStatus();
-  const [ready, setReady] = useState(false);
+  const [ready, setReady] = useState(true);
   const [epoch, setEpoch] = useState(0); // increments on replay to force remount
 
   const { scrollY } = useScroll();
