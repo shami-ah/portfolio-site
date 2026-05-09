@@ -133,7 +133,15 @@ export function TopBar(): React.ReactElement {
   }, []);
 
   const reboot = (): void => {
-    markSeen("reboot");
+    // Reset all signal flags — reboot is a full system restart
+    setSeenReboot(false);
+    setSeenSetup(false);
+    setSeenJourney(false);
+    if (typeof sessionStorage !== "undefined") {
+      sessionStorage.removeItem("seen-reboot");
+      sessionStorage.removeItem("seen-setup");
+      sessionStorage.removeItem("seen-journey");
+    }
     setPressure(0);
     scrollDistance.current = 0;
     window.scrollTo({ top: 0, behavior: "smooth" });
