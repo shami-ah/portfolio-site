@@ -6,6 +6,7 @@ import { FadeUp } from "./motion";
 import { TypeLabel } from "./type-label";
 import { getFeaturedArticles } from "@/data/writing";
 import { ArrowRight, Clock } from "lucide-react";
+import { markHomeSectionReturn } from "@/lib/home-navigation";
 
 export function Writing(): React.ReactElement {
   const featured = getFeaturedArticles();
@@ -40,6 +41,7 @@ export function Writing(): React.ReactElement {
             >
               <Link
                 href={`/writing#${article.slug}`}
+                onClick={() => markHomeSectionReturn("writing")}
                 className="group flex flex-col h-full card-glow card-gradient-border rounded-xl bg-card border border-card-border p-4 md:p-5 hover:border-transparent transition-colors duration-300"
               >
                 {/* Tags */}
@@ -77,6 +79,7 @@ export function Writing(): React.ReactElement {
           <div className="mt-6 text-center">
             <Link
               href="/writing"
+              onClick={() => markHomeSectionReturn("writing")}
               className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg border border-card-border text-sm font-mono text-muted hover:text-accent hover:border-accent/30 transition-colors duration-200"
             >
               View all articles

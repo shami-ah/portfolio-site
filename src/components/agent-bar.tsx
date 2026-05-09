@@ -5,6 +5,7 @@ import ReactDOM from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Check, X } from "lucide-react";
 import { openCvDrawer } from "@/components/cv-drawer";
+import { markHomeSectionReturn } from "@/lib/home-navigation";
 
 /* ------------------------------------------------------------------ */
 /*  Build pipeline popup — 5-second centered overlay                  */
@@ -214,7 +215,10 @@ const commands: AgentCommand[] = [
       { name: "execute", detail: "target: /journey", ms: 45 },
     ],
     response: "Launching immersive journey. Timeline + a day in my life + parallel systems.",
-    action: () => { setTimeout(() => { window.location.href = "/journey"; }, 450); },
+    action: () => {
+      markHomeSectionReturn();
+      setTimeout(() => { window.location.href = "/journey"; }, 450);
+    },
   },
   {
     keyword: "call",

@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { RefreshCcw, Wrench, TrendingUp } from "lucide-react";
+import { markHomeSectionReturn } from "@/lib/home-navigation";
 
 export function TopBar(): React.ReactElement {
   const [scrolled, setScrolled] = useState(false);
@@ -98,6 +99,7 @@ export function TopBar(): React.ReactElement {
         {/* My setup — hidden on small mobile to avoid crowding */}
         <a
           href="/uses"
+          onClick={() => markHomeSectionReturn()}
           aria-label="Tools, stack, and workflow"
           className="group relative hidden sm:inline-flex items-center gap-1.5 md:gap-2 px-3 md:px-4 py-2 md:py-2.5 rounded-lg bg-card/80 backdrop-blur-md border border-card-border hover:border-accent/40 hover:bg-card transition-all duration-200 shadow-md"
         >
@@ -110,6 +112,7 @@ export function TopBar(): React.ReactElement {
         {/* How I work */}
         <a
           href="/journey"
+          onClick={() => markHomeSectionReturn()}
           aria-label="Walk through my career"
           className="group relative inline-flex items-center gap-1.5 md:gap-2 px-3 md:px-4 py-2 md:py-2.5 rounded-lg bg-accent/10 border border-accent/20 text-accent hover:bg-accent/20 hover:border-accent/60 hover:shadow-lg hover:shadow-accent/20 transition-all duration-200 font-medium"
         >

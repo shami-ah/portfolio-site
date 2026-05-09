@@ -1,3 +1,7 @@
+"use client";
+
+import { markHomeSectionReturn } from "@/lib/home-navigation";
+
 export function Footer(): React.ReactElement {
   const years = new Date().getFullYear() - 2019;
   return (
@@ -14,6 +18,7 @@ export function Footer(): React.ReactElement {
         <div className="flex items-center gap-5">
           <a
             href="/uses"
+            onClick={() => markHomeSectionReturn("contact")}
             className="text-small font-mono text-muted/40 hover:text-accent transition-colors"
           >
             &gt; Uses

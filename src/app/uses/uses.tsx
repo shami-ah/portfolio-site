@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { FadeUp } from "@/components/motion";
+import { returnWithinPortfolio } from "@/lib/home-navigation";
 
 /* ------------------------------------------------------------------ */
 /*  Helpers                                                            */
@@ -516,7 +517,16 @@ export function Uses(): React.ReactElement {
           </div>
           <span className="ml-2 text-small font-mono text-muted/40">shami-toolkit</span>
         </div>
-        <Link href="/" className="text-caption font-mono text-accent/60 hover:text-accent transition-colors">&larr; portfolio</Link>
+        <Link
+          href="/"
+          onClick={(event) => {
+            if (!returnWithinPortfolio()) return;
+            event.preventDefault();
+          }}
+          className="text-caption font-mono text-accent/60 hover:text-accent transition-colors"
+        >
+          &larr; portfolio
+        </Link>
       </div>
 
       <div className="flex flex-1 overflow-hidden">
