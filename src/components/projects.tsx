@@ -447,7 +447,7 @@ function ScrollPanel({
               data-project-expand="diagram"
               data-project-slug={project.slug}
               onClick={() => onExpand({ kind: "diagram", ...panelPayload })}
-              className="relative group min-h-0 overflow-hidden rounded-xl border border-card-border/40 bg-[#0c0c0f] cursor-pointer hover:border-accent/30 transition-colors"
+              className="relative group min-h-0 overflow-hidden rounded-xl border border-card-border/40 bg-card cursor-pointer hover:border-accent/30 transition-colors"
             >
               <p className="text-caption font-mono uppercase tracking-wider text-muted/40 pt-3 text-center">architecture</p>
               <MermaidDiagram chart={diagrams[project.slug] ?? ""} className="h-[calc(100%-2rem)] p-3" />

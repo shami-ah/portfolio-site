@@ -772,7 +772,7 @@ export function AgentBar(): React.ReactElement {
                   style={{ boxShadow: "0 8px 32px rgba(0,0,0,0.3)" }}
                 >
                   <div className="px-4 py-3 font-mono text-small space-y-1">
-                    <p className="text-caption font-mono text-accent uppercase tracking-[0.15em] mb-2">
+                    <p className="text-caption font-mono text-accent uppercase tracking-wider mb-2">
                       shami.agent
                     </p>
                     <p className="text-foreground/80">

@@ -238,7 +238,7 @@ export function ChatWidget(): React.ReactElement {
             initial="hidden"
             animate="visible"
             exit="exit"
-            className="fixed bottom-5 right-5 z-50 flex items-center gap-2.5 px-4 py-2.5 rounded-xl bg-card/70 backdrop-blur-2xl border border-card-border shadow-[0_15px_40px_rgba(0,0,0,0.25),0_0_20px_rgba(212,168,83,0.03)] cursor-pointer hover:border-accent/30 transition-colors group"
+            className="fixed bottom-5 right-3 md:right-6 z-50 flex items-center gap-2.5 px-4 py-2.5 rounded-xl bg-card/70 backdrop-blur-2xl border border-card-border shadow-[0_15px_40px_rgba(0,0,0,0.25),0_0_20px_rgba(212,168,83,0.03)] cursor-pointer hover:border-accent/30 transition-colors group"
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
@@ -272,7 +272,7 @@ export function ChatWidget(): React.ReactElement {
             exit="exit"
             whileHover={{ scale: 1.01 }}
             transition={{ duration: 0.2 }}
-            className="fixed bottom-5 right-5 z-50 w-[calc(100vw-2rem)] sm:w-[400px] h-[min(560px,calc(100vh-7rem))] flex flex-col rounded-2xl bg-card/80 backdrop-blur-2xl border border-card-border/60 overflow-hidden shadow-[0_25px_60px_rgba(0,0,0,0.35),0_0_40px_rgba(212,168,83,0.04)] hover:border-accent/20 hover:shadow-[0_25px_60px_rgba(0,0,0,0.4),0_0_50px_rgba(212,168,83,0.06)] transition-[border-color,box-shadow] duration-300"
+            className="fixed bottom-5 right-3 md:right-6 z-50 w-[calc(100vw-2rem)] sm:w-[400px] h-[min(560px,calc(100vh-7rem))] flex flex-col rounded-2xl bg-card/80 backdrop-blur-2xl border border-card-border/60 overflow-hidden shadow-[0_25px_60px_rgba(0,0,0,0.35),0_0_40px_rgba(212,168,83,0.04)] hover:border-accent/20 hover:shadow-[0_25px_60px_rgba(0,0,0,0.4),0_0_50px_rgba(212,168,83,0.06)] transition-[border-color,box-shadow] duration-300"
           >
             {/* ── Header ── */}
             <div className="shrink-0 border-b border-card-border/40 bg-card/30">

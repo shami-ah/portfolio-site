@@ -344,7 +344,7 @@ function PreviewEcosystem(): React.ReactElement {
 function PreviewWisc(): React.ReactElement {
   return (
     <div className="p-5">
-      <p className="text-caption font-mono text-accent uppercase tracking-[0.15em] mb-3">WISC Framework</p>
+      <p className="text-caption font-mono text-accent uppercase tracking-wider mb-3">WISC Framework</p>
       <p className="text-caption text-muted leading-relaxed mb-4">A methodology for managing AI agent context. Cuts 35-40K tokens down to what you need per turn.</p>
       <div className="grid grid-cols-2 gap-2">
         {[
@@ -375,7 +375,7 @@ function PreviewWisc(): React.ReactElement {
 function PreviewStack(): React.ReactElement {
   return (
     <div className="p-5">
-      <p className="text-caption font-mono text-accent uppercase tracking-[0.15em] mb-3">Stack</p>
+      <p className="text-caption font-mono text-accent uppercase tracking-wider mb-3">Stack</p>
       <div className="space-y-0.5">
         <Line label="TypeScript" value="types prevent prod bugs, no any ever" />
         <Line label="React 19" value="component model, server components" />
@@ -393,7 +393,7 @@ function PreviewStack(): React.ReactElement {
 function PreviewWorkflow(): React.ReactElement {
   return (
     <div className="p-5">
-      <p className="text-caption font-mono text-accent uppercase tracking-[0.15em] mb-3">How every feature ships</p>
+      <p className="text-caption font-mono text-accent uppercase tracking-wider mb-3">How every feature ships</p>
       <div className="space-y-2">
         {[
           { n: "01", l: "Product", d: "Pin the outcome. What does the user see when this works?" },
@@ -419,7 +419,7 @@ function PreviewWorkflow(): React.ReactElement {
 function PreviewEnvironment(): React.ReactElement {
   return (
     <div className="p-5">
-      <p className="text-caption font-mono text-accent uppercase tracking-[0.15em] mb-3">Hardware &amp; Environment</p>
+      <p className="text-caption font-mono text-accent uppercase tracking-wider mb-3">Hardware &amp; Environment</p>
       <div className="space-y-0.5 mb-4">
         <Line label="machine" value="MacBook Pro M-series, 16GB" />
         <Line label="server" value="Ubuntu VPS, Docker + Traefik + Gitea" />
@@ -427,7 +427,7 @@ function PreviewEnvironment(): React.ReactElement {
         <Line label="container" value="Node 24, Python, Deno, Playwright" />
         <Line label="onboarding" value="clone, setup.sh, start.sh. 10 minutes" />
       </div>
-      <p className="text-caption font-mono text-accent uppercase tracking-[0.15em] mb-3">Terminal</p>
+      <p className="text-caption font-mono text-accent uppercase tracking-wider mb-3">Terminal</p>
       <div className="space-y-0.5">
         <Line label="shell" value="zsh + oh-my-zsh + Powerlevel10k" />
         <Line label="fonts" value="JetBrains Mono, Inter, Space Grotesk" />
@@ -441,7 +441,7 @@ function PreviewEnvironment(): React.ReactElement {
 function PreviewPhilosophy(): React.ReactElement {
   return (
     <div className="p-5">
-      <p className="text-caption font-mono text-accent uppercase tracking-[0.15em] mb-3">Principles</p>
+      <p className="text-caption font-mono text-accent uppercase tracking-wider mb-3">Principles</p>
       <div className="space-y-2">
         {[
           { h: "f4a9c2d", m: "ship it, then improve it", b: "Perfection is the enemy of production." },
