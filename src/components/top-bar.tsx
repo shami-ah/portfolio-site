@@ -143,49 +143,82 @@ export function TopBar(): React.ReactElement {
       </motion.div>
 
       {/* ── Journey meteor — glowing dot with trail rising from bottom to journey button ── */}
-      {meteorProgress > 0 && btnCenterX > 0 && (
-        <div className="fixed inset-0 z-30 pointer-events-none">
-          {/* Trail — fading line from bottom up to the meteor head */}
-          {!meteorLanded && (
-            <div
-              className="absolute w-[2px]"
-              style={{
-                left: btnCenterX - 1,
-                bottom: 0,
-                height: `${meteorProgress}%`,
-                background: "linear-gradient(to top, transparent 0%, rgba(74,222,128,0.08) 20%, rgba(74,222,128,0.25) 80%, rgba(74,222,128,0.5) 100%)",
-                transition: "height 0.4s ease-out",
-              }}
-            />
-          )}
-          {/* Meteor head — bright glowing dot at the tip */}
+      {btnCenterX > 0 && (
+        <div className="fixed inset-0 z-30 pointer-events-none" style={{ opacity: meteorProgress > 0 ? 1 : 0, transition: "opacity 0.8s ease" }}>
+          {/* Outer glow — wide soft ambient light along the path */}
           {!meteorLanded && (
             <div
               className="absolute"
               style={{
-                left: btnCenterX - 5,
-                bottom: `${meteorProgress}%`,
-                width: 10,
-                height: 10,
-                borderRadius: "50%",
-                background: "radial-gradient(circle, rgba(74,222,128,1) 0%, rgba(74,222,128,0.5) 50%, transparent 70%)",
-                boxShadow: "0 0 14px 4px rgba(74,222,128,0.6), 0 0 30px 8px rgba(74,222,128,0.25)",
-                transition: "bottom 0.4s ease-out",
+                left: btnCenterX - 20,
+                bottom: 0,
+                width: 40,
+                height: `${meteorProgress}%`,
+                background: "linear-gradient(to top, transparent 0%, rgba(74,222,128,0.03) 30%, rgba(74,222,128,0.06) 70%, rgba(74,222,128,0.12) 100%)",
+                filter: "blur(8px)",
+                transition: "height 0.8s cubic-bezier(0.22, 1, 0.36, 1)",
               }}
             />
           )}
-          {/* Post-landing glow — pulse rising from bottom to button after meteor lands */}
-          {meteorLanded && (
+          {/* Core trail — visible line from bottom to meteor */}
+          {!meteorLanded && (
             <div
-              className="absolute w-[2px]"
+              className="absolute"
               style={{
-                left: btnCenterX - 1,
+                left: btnCenterX - 1.5,
                 bottom: 0,
-                height: "100%",
-                background: "linear-gradient(to top, transparent 0%, transparent 60%, rgba(74,222,128,0.15) 85%, rgba(74,222,128,0.4) 100%)",
-                animation: "glow-rise 2s ease-in-out infinite",
+                width: 3,
+                height: `${meteorProgress}%`,
+                background: "linear-gradient(to top, transparent 0%, rgba(74,222,128,0.1) 10%, rgba(74,222,128,0.35) 60%, rgba(74,222,128,0.7) 100%)",
+                borderRadius: 2,
+                transition: "height 0.8s cubic-bezier(0.22, 1, 0.36, 1)",
               }}
             />
+          )}
+          {/* Meteor head — bright glowing orb at the tip */}
+          {!meteorLanded && (
+            <div
+              className="absolute"
+              style={{
+                left: btnCenterX - 7,
+                bottom: `${meteorProgress}%`,
+                width: 14,
+                height: 14,
+                borderRadius: "50%",
+                background: "radial-gradient(circle, rgba(74,222,128,1) 0%, rgba(74,222,128,0.7) 30%, rgba(74,222,128,0.2) 60%, transparent 80%)",
+                boxShadow: "0 0 16px 6px rgba(74,222,128,0.5), 0 0 40px 12px rgba(74,222,128,0.2), 0 0 60px 20px rgba(74,222,128,0.08)",
+                transition: "bottom 0.8s cubic-bezier(0.22, 1, 0.36, 1)",
+              }}
+            />
+          )}
+          {/* Post-landing — ambient glow pulses from bottom to button */}
+          {meteorLanded && (
+            <>
+              <div
+                className="absolute"
+                style={{
+                  left: btnCenterX - 1.5,
+                  bottom: 0,
+                  width: 3,
+                  height: "100%",
+                  background: "linear-gradient(to top, transparent 0%, transparent 50%, rgba(74,222,128,0.2) 80%, rgba(74,222,128,0.5) 100%)",
+                  borderRadius: 2,
+                  animation: "glow-rise 2.5s ease-in-out infinite",
+                }}
+              />
+              <div
+                className="absolute"
+                style={{
+                  left: btnCenterX - 15,
+                  bottom: 0,
+                  width: 30,
+                  height: "100%",
+                  background: "linear-gradient(to top, transparent 0%, transparent 60%, rgba(74,222,128,0.04) 80%, rgba(74,222,128,0.1) 100%)",
+                  filter: "blur(10px)",
+                  animation: "glow-rise 2.5s ease-in-out infinite",
+                }}
+              />
+            </>
           )}
         </div>
       )}
