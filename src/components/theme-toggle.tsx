@@ -43,9 +43,9 @@ export function ThemeToggle(): React.ReactElement {
       style={{ boxShadow: "0 4px 20px rgba(0,0,0,0.4), 0 0 40px rgba(0,0,0,0.2)" }}
     >
       {theme === "dark" ? (
-        <Sun size={14} className="text-muted/60 group-hover:text-amber-400 shrink-0 transition-colors" />
+        <Sun size={13} className="text-muted/60 group-hover:text-amber-400 shrink-0 transition-colors" />
       ) : (
-        <Moon size={14} className="text-muted/60 group-hover:text-blue-400 shrink-0 transition-colors" />
+        <Moon size={13} className="text-muted/60 group-hover:text-blue-400 shrink-0 transition-colors" />
       )}
       <span className="max-w-0 overflow-hidden group-hover:max-w-[50px] transition-all duration-300 whitespace-nowrap font-mono text-small text-muted/60">
         {theme === "dark" ? "light" : "dark"}

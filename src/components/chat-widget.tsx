@@ -216,9 +216,10 @@ export function ChatWidget(): React.ReactElement {
             exit={{ opacity: 0, scale: 0.8 }}
             transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
             data-chat-trigger
-            className={`fixed bottom-5 right-5 z-40 group flex items-center cursor-pointer rounded-full p-2.5 hover:px-4 hover:gap-2 bg-accent/20 border border-accent/20 hover:bg-accent/30 hover:border-accent/40 backdrop-blur-sm transition-all duration-300 ${triggerGlow ? "ring-2 ring-accent-status/60 shadow-[0_0_20px_rgba(74,222,128,0.3)]" : "shadow-lg hover:shadow-xl hover:shadow-accent/15"}`}
+            className={`fixed bottom-5 right-5 z-40 group flex items-center cursor-pointer glass rounded-full p-2.5 hover:px-4 hover:gap-2 transition-all duration-300 ${triggerGlow ? "ring-2 ring-accent-status/60 shadow-[0_0_20px_rgba(74,222,128,0.3)]" : ""}`}
+            style={{ boxShadow: triggerGlow ? undefined : "0 4px 20px rgba(0,0,0,0.4), 0 0 40px rgba(0,0,0,0.2)" }}
           >
-            <span className="w-2.5 h-2.5 flex items-center justify-center font-mono text-[10px] font-bold text-accent leading-none shrink-0">&gt;_</span>
+            <span className="font-mono text-[13px] font-bold text-accent/70 group-hover:text-accent shrink-0 leading-none transition-colors">&gt;_</span>
 
             <span className="max-w-0 overflow-hidden group-hover:max-w-[140px] transition-all duration-300 whitespace-nowrap font-mono text-small text-accent/60">
               Chat with my AI
