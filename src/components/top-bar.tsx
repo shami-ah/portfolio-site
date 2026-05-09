@@ -7,6 +7,7 @@ import { RefreshCcw, Wrench, TrendingUp } from "lucide-react";
 
 export function TopBar(): React.ReactElement {
   const [scrolled, setScrolled] = useState(false);
+  const [onProjects, setOnProjects] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
 
   // ── Per-button signal suppression ──
@@ -51,6 +52,14 @@ export function TopBar(): React.ReactElement {
       requestAnimationFrame(() => {
         const y = window.scrollY;
         setScrolled(y > 40);
+
+        // Detect if we're on the projects section (full-bleed scrollytelling)
+        const projectsEl = document.getElementById("projects");
+        if (projectsEl) {
+          const pt = projectsEl.getBoundingClientRect().top;
+          const pb = projectsEl.getBoundingClientRect().bottom;
+          setOnProjects(pt < 60 && pb > 0);
+        }
 
         // Accumulate total scroll distance for pressure (very gradual)
         const delta = Math.abs(y - lastScrollY.current);
@@ -151,7 +160,7 @@ export function TopBar(): React.ReactElement {
         }}
         transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
         className={`fixed top-0 left-0 z-40 px-4 md:px-6 py-3 md:py-4 transition-all duration-300 ${
-          scrolled ? "bg-background/70 backdrop-blur-md" : ""
+          scrolled && !onProjects ? "bg-background/70 backdrop-blur-md" : ""
         }`}
       >
         <Link href="/">
@@ -279,7 +288,7 @@ export function TopBar(): React.ReactElement {
           style={{
             boxShadow: heavy
               ? "0 6px 25px rgba(74,222,128,0.25), 0 0 40px rgba(74,222,128,0.15)"
-              : "0 4px 20px rgba(0,0,0,0.4), 0 0 40px rgba(0,0,0,0.2)",
+              : "0 4px 12px rgba(0,0,0,0.12), 0 0 4px rgba(0,0,0,0.06)",
             transform: heavy ? "translateY(3px)" : "translateY(0)",
             transition: "transform 1s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.8s",
           }}
@@ -310,7 +319,7 @@ export function TopBar(): React.ReactElement {
           style={{
             boxShadow: setupGlow
               ? "0 4px 20px rgba(212,168,83,0.15), 0 0 30px rgba(212,168,83,0.1)"
-              : "0 4px 20px rgba(0,0,0,0.4), 0 0 40px rgba(0,0,0,0.2)",
+              : "0 4px 12px rgba(0,0,0,0.12), 0 0 4px rgba(0,0,0,0.06)",
           }}
         >
           <span className={`absolute w-[3px] h-[3px] rounded-full nav-orbit pointer-events-none ${setupGlow ? "bg-accent/60" : "bg-accent/20"}`} style={{ animationDuration: setupGlow ? "2s" : "4s" }} />
@@ -339,7 +348,7 @@ export function TopBar(): React.ReactElement {
           style={{
             boxShadow: meteorLanded
               ? "0 0 20px rgba(74,222,128,0.3), 0 0 40px rgba(74,222,128,0.15)"
-              : "0 4px 20px rgba(0,0,0,0.4), 0 0 30px rgba(212,168,83,0.08)",
+              : "0 4px 12px rgba(0,0,0,0.12), 0 0 4px rgba(212,168,83,0.04)",
           }}
         >
           <TrendingUp

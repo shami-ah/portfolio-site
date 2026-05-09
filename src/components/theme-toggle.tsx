@@ -40,7 +40,7 @@ export function ThemeToggle(): React.ReactElement {
       onClick={toggle}
       aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
       className="group flex items-center cursor-pointer glass rounded-full p-2.5 hover:px-4 hover:gap-2 transition-all duration-300"
-      style={{ boxShadow: "0 4px 20px rgba(0,0,0,0.4), 0 0 40px rgba(0,0,0,0.2)" }}
+      style={{ boxShadow: "0 4px 12px rgba(0,0,0,0.12), 0 0 4px rgba(0,0,0,0.06)" }}
     >
       {theme === "dark" ? (
         <Sun size={13} className="text-muted/60 group-hover:text-amber-400 shrink-0 transition-colors" />

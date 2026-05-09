@@ -734,7 +734,7 @@ export function AgentBar(): React.ReactElement {
                 transition={{ duration: 0.5, ease: [0.34, 1.56, 0.64, 1] }}
                 className="group flex items-center cursor-pointer glass rounded-full p-2.5 hover:px-4 hover:gap-2 transition-all duration-300"
                 style={{
-                  boxShadow: "0 4px 20px rgba(0,0,0,0.4), 0 0 40px rgba(0,0,0,0.2)",
+                  boxShadow: "0 4px 12px rgba(0,0,0,0.12), 0 0 4px rgba(0,0,0,0.06)",
                 }}
               >
               <span
