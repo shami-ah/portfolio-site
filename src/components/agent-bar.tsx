@@ -497,9 +497,9 @@ export function AgentBar(): React.ReactElement {
     const onReady = (): void => {
       setButtonReady(true);
       setUiState("button");
-      // Show tooltip for 2.5s
-      setTimeout(() => setShowTooltip(true), 500);
-      setTimeout(() => setShowTooltip(false), 3000);
+      // Show tooltip after particles settle (~1.5s after agent appears)
+      setTimeout(() => setShowTooltip(true), 1500);
+      setTimeout(() => setShowTooltip(false), 4500);
     };
     window.addEventListener("agent-button-ready", onReady);
 

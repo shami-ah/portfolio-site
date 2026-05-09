@@ -137,19 +137,33 @@ export function TerminalBoot({ force = false, onDone }: BootProps): React.ReactE
 
   const dismiss = (): void => {
     setPhase("exit");
-    // Content fades (0.5s), then overlay collapses (1.4s)
-    // Fire boot-complete early so hero starts streaming while overlay collapses
+
+    // Timeline:
+    // 0ms      — content starts fading, terminal starts shrinking
+    // 800ms    — terminal nearly collapsed, fire hero streaming
+    // 1200ms   — terminal fully collapsed into orb at agent position
+    // 1300ms   — agent button appears, particles burst outward
+    // 1500ms   — hero elements start materializing
+    // 2200ms   — cleanup
+
+    // Hero starts streaming while terminal is still collapsing
     setTimeout(() => {
       sessionStorage.setItem("boot-complete", "1");
       window.dispatchEvent(new CustomEvent("boot-complete"));
-    }, 700);
-    // Cleanup after full exit animation
+    }, 800);
+
+    // Agent button ready + particle burst
+    setTimeout(() => {
+      window.dispatchEvent(new CustomEvent("agent-button-ready"));
+      window.dispatchEvent(new CustomEvent("boot-particles"));
+    }, 1300);
+
+    // Cleanup
     setTimeout(() => {
       setVisible(false);
       localStorage.setItem("boot-ever-seen", "1");
-      window.dispatchEvent(new CustomEvent("agent-button-ready"));
       onDone?.();
-    }, 1900);
+    }, 2200);
   };
 
   // Speed multiplier: 1x for first visit, 2.5x for replay (slower so user can read)
@@ -228,7 +242,7 @@ export function TerminalBoot({ force = false, onDone }: BootProps): React.ReactE
           style={
             phase === "exit"
               ? {
-                  animation: "boot-collapse 1.4s cubic-bezier(0.4, 0, 0.2, 1) 0.5s forwards",
+                  animation: "boot-collapse 1.2s cubic-bezier(0.22, 1, 0.36, 1) 0.4s forwards",
                 }
               : undefined
           }
@@ -266,7 +280,7 @@ export function TerminalBoot({ force = false, onDone }: BootProps): React.ReactE
             className="relative w-full max-w-xl rounded-xl border border-accent/20 bg-card/80 backdrop-blur-md shadow-2xl shadow-accent/20 font-mono text-sm overflow-hidden"
             style={
               phase === "exit"
-                ? { animation: "boot-content-fade 0.5s ease-out forwards" }
+                ? { animation: "boot-content-fade 0.35s ease-out forwards" }
                 : undefined
             }
           >
