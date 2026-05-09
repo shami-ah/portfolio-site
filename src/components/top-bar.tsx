@@ -9,22 +9,20 @@ export function TopBar(): React.ReactElement {
   const [scrolled, setScrolled] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
 
-  // ── Reboot: interaction pressure builds up ──
-  const [pressure, setPressure] = useState(0); // 0-100
-  const interactionCount = useRef(0);
+  // ── Reboot: pressure builds slowly, sacred animations ──
+  const [pressure, setPressure] = useState(0);
+  const scrollDistance = useRef(0);
   const lastScrollY = useRef(0);
 
   // ── Setup: glow when relevant section is in view ──
   const [setupGlow, setSetupGlow] = useState(false);
 
-  // ── Journey: green line rises when contact section reached ──
-  const [journeyLine, setJourneyLine] = useState(0); // 0-100 (line height %)
-  const journeyBtnRef = useRef<HTMLAnchorElement>(null);
+  // ── Journey: meteor rises from bottom to button ──
+  const [meteorProgress, setMeteorProgress] = useState(0); // 0-100
+  const [meteorLanded, setMeteorLanded] = useState(false);
 
   const updatePressure = useCallback(() => {
-    interactionCount.current += 1;
-    // Pressure builds with interactions, caps at 100
-    setPressure((p) => Math.min(p + 3, 100));
+    setPressure((p) => Math.min(p + 1, 100));
   }, []);
 
   useEffect(() => {
@@ -36,11 +34,15 @@ export function TopBar(): React.ReactElement {
         const y = window.scrollY;
         setScrolled(y > 40);
 
-        // Track scroll distance for pressure
+        // Accumulate total scroll distance for pressure (very gradual)
         const delta = Math.abs(y - lastScrollY.current);
-        if (delta > 200) {
+        scrollDistance.current += delta;
+        lastScrollY.current = y;
+
+        // Only add pressure every ~2000px of scrolling
+        if (scrollDistance.current > 2000) {
           updatePressure();
-          lastScrollY.current = y;
+          scrollDistance.current = 0;
         }
 
         // Setup glow: activate near mission/stats or projects section
@@ -52,15 +54,18 @@ export function TopBar(): React.ReactElement {
           setSetupGlow(missionTop < window.innerHeight * 0.6 && projectsBottom > 0);
         }
 
-        // Journey line: activate when contact section is visible
+        // Journey meteor: tied to contact section visibility
         const contact = document.getElementById("contact");
         if (contact) {
           const rect = contact.getBoundingClientRect();
           const visibility = 1 - Math.max(0, Math.min(1, rect.top / window.innerHeight));
-          if (visibility > 0.3) {
-            setJourneyLine(Math.min(100, (visibility - 0.3) / 0.5 * 100));
+          if (visibility > 0.2) {
+            const progress = Math.min(100, ((visibility - 0.2) / 0.6) * 100);
+            setMeteorProgress(progress);
+            setMeteorLanded(progress >= 98);
           } else {
-            setJourneyLine(0);
+            setMeteorProgress(0);
+            setMeteorLanded(false);
           }
         }
 
@@ -68,15 +73,8 @@ export function TopBar(): React.ReactElement {
       });
     };
 
-    // Track clicks as interactions for pressure
-    const onClick = (): void => updatePressure();
-
     window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("click", onClick);
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("click", onClick);
-    };
+    return () => window.removeEventListener("scroll", onScroll);
   }, [updatePressure]);
 
   useEffect(() => {
@@ -94,21 +92,22 @@ export function TopBar(): React.ReactElement {
   }, []);
 
   const reboot = (): void => {
-    // Reset pressure on reboot
     setPressure(0);
-    interactionCount.current = 0;
+    scrollDistance.current = 0;
     window.scrollTo({ top: 0, behavior: "smooth" });
     setTimeout(() => {
       window.dispatchEvent(new CustomEvent("replay-intro", { detail: { slow: true } }));
     }, 300);
   };
 
-  // Reboot tremor kicks in above 40% pressure
-  const tremor = pressure > 40;
-  // Reboot drops from position above 70%
-  const heavy = pressure > 70;
-  // Fill percentage for the visual fill effect
+  // Sacred thresholds — tremor only at 80%, heavy at 92%
+  const tremor = pressure >= 80;
+  const heavy = pressure >= 92;
   const fillPct = Math.min(pressure, 100);
+
+  // Meteor position: 0% = bottom of screen, 100% = at the button
+  // Button is ~40px from top, screen bottom to there is ~calc(100vh - 40px)
+  const meteorY = meteorProgress > 0 ? `${100 - meteorProgress}%` : "100%";
 
   return (
     <>
@@ -139,18 +138,28 @@ export function TopBar(): React.ReactElement {
         </Link>
       </motion.div>
 
-      {/* ── Journey rising line — draws from contact section to button ── */}
-      {journeyLine > 0 && (
-        <div
-          className="fixed right-[26px] md:right-[38px] z-30 pointer-events-none transition-all duration-700"
-          style={{
-            bottom: 0,
-            height: `${journeyLine}%`,
-            width: "2px",
-            background: `linear-gradient(to top, transparent, rgba(74,222,128,0.6) 30%, rgba(74,222,128,0.8))`,
-            opacity: journeyLine > 10 ? 1 : 0,
-          }}
-        />
+      {/* ── Journey meteor — glowing dot with trail rising to button ── */}
+      {meteorProgress > 0 && !meteorLanded && (
+        <div className="fixed right-[26px] md:right-[38px] z-30 pointer-events-none" style={{ inset: 0 }}>
+          {/* Trail — fades from bottom to meteor position */}
+          <div
+            className="absolute right-0 w-[2px] transition-all duration-300"
+            style={{
+              bottom: 0,
+              top: meteorY,
+              background: "linear-gradient(to top, transparent, rgba(74,222,128,0.1) 30%, rgba(74,222,128,0.3))",
+            }}
+          />
+          {/* Meteor head — the bright glowing dot */}
+          <div
+            className="absolute right-[-3px] w-[8px] h-[8px] rounded-full transition-all duration-300"
+            style={{
+              top: meteorY,
+              background: "radial-gradient(circle, rgba(74,222,128,1) 0%, rgba(74,222,128,0.6) 40%, transparent 70%)",
+              boxShadow: "0 0 12px rgba(74,222,128,0.8), 0 0 24px rgba(74,222,128,0.4), 0 4px 16px rgba(74,222,128,0.3)",
+            }}
+          />
+        </div>
       )}
 
       {/* Actions — top-right */}
@@ -165,29 +174,27 @@ export function TopBar(): React.ReactElement {
         className="fixed top-0 right-0 z-40 px-3 md:px-6 py-3 md:py-4 flex items-center gap-3 md:gap-4"
       >
         {/* ── Reboot ── */}
-        {/* Fills with color as user interacts, trembles, drops when heavy */}
         <button
           type="button"
           onClick={reboot}
           aria-label="Reboot system — replay intro"
-          className={`group relative flex items-center cursor-pointer glass rounded-full p-2.5 hover:px-4 hover:gap-2 transition-all duration-300 overflow-hidden ${tremor ? "nav-tremor" : ""}`}
+          className={`group relative flex items-center cursor-pointer glass rounded-full p-2.5 hover:px-4 hover:gap-2 transition-all overflow-hidden ${tremor ? "nav-tremor" : "duration-300"}`}
           style={{
             boxShadow: heavy
-              ? "0 6px 25px rgba(74,222,128,0.2), 0 0 40px rgba(74,222,128,0.1)"
+              ? "0 6px 25px rgba(74,222,128,0.25), 0 0 40px rgba(74,222,128,0.15)"
               : "0 4px 20px rgba(0,0,0,0.4), 0 0 40px rgba(0,0,0,0.2)",
             transform: heavy ? "translateY(3px)" : "translateY(0)",
-            transition: "transform 0.8s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.5s",
+            transition: "transform 1s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.8s",
           }}
         >
-          {/* Fill indicator — rises from bottom */}
           <span
-            className="absolute bottom-0 left-0 right-0 bg-accent-status/15 transition-all duration-1000 rounded-full pointer-events-none"
-            style={{ height: `${fillPct}%` }}
+            className="absolute bottom-0 left-0 right-0 bg-accent-status/15 rounded-full pointer-events-none"
+            style={{ height: `${fillPct}%`, transition: "height 2s ease-out" }}
           />
           <RefreshCcw
             size={14}
             className={`relative z-10 shrink-0 transition-colors duration-500 ${
-              heavy ? "text-accent-status" : "text-muted/60 group-hover:text-accent-status"
+              heavy ? "text-accent-status" : tremor ? "text-accent-status/70" : "text-muted/60 group-hover:text-accent-status"
             }`}
           />
           <span className="relative z-10 max-w-0 overflow-hidden group-hover:max-w-[60px] transition-all duration-300 whitespace-nowrap font-mono text-small text-muted/60">
@@ -196,7 +203,6 @@ export function TopBar(): React.ReactElement {
         </button>
 
         {/* ── Setup ── */}
-        {/* Glows when mission/projects section is in view */}
         <Link
           href="/uses"
           aria-label="Tools, stack, and workflow"
@@ -209,7 +215,6 @@ export function TopBar(): React.ReactElement {
               : "0 4px 20px rgba(0,0,0,0.4), 0 0 40px rgba(0,0,0,0.2)",
           }}
         >
-          {/* Orbiting particles — speed up when glowing */}
           <span className={`absolute w-[3px] h-[3px] rounded-full nav-orbit pointer-events-none ${setupGlow ? "bg-accent/60" : "bg-accent/20"}`} style={{ animationDuration: setupGlow ? "2s" : "4s" }} />
           <span className={`absolute w-[2px] h-[2px] rounded-full nav-orbit pointer-events-none ${setupGlow ? "bg-accent-secondary/60" : "bg-accent-secondary/20"}`} style={{ animationDuration: setupGlow ? "3s" : "6s", animationDelay: "-2s" }} />
           <span className={`absolute w-[2px] h-[2px] rounded-full nav-orbit pointer-events-none ${setupGlow ? "bg-accent/50" : "bg-accent/15"}`} style={{ animationDuration: setupGlow ? "2.5s" : "5s", animationDelay: "-3.5s" }} />
@@ -225,33 +230,26 @@ export function TopBar(): React.ReactElement {
         </Link>
 
         {/* ── Journey ── */}
-        {/* Green line connects to this button when contact section is reached */}
         <Link
-          ref={journeyBtnRef}
           href="/journey"
           aria-label="Walk through my career"
           className={`group relative flex items-center cursor-pointer rounded-full p-2.5 hover:px-4 hover:gap-2 backdrop-blur-md transition-all duration-500 ${
-            journeyLine > 50 ? "nav-journey-active" : "nav-journey-idle"
+            meteorLanded ? "nav-journey-active" : "nav-journey-idle"
           }`}
           style={{
-            boxShadow: journeyLine > 50
-              ? "0 4px 20px rgba(74,222,128,0.2), 0 0 30px rgba(74,222,128,0.1)"
+            boxShadow: meteorLanded
+              ? "0 0 20px rgba(74,222,128,0.3), 0 0 40px rgba(74,222,128,0.15)"
               : "0 4px 20px rgba(0,0,0,0.4), 0 0 30px rgba(212,168,83,0.08)",
           }}
         >
-          {/* Pulse dot — turns green when line connects */}
-          <span
-            className="absolute -top-0.5 -right-0.5 w-1.5 h-1.5 rounded-full nav-dot-pulse transition-colors duration-500"
-            style={{ backgroundColor: journeyLine > 50 ? "rgb(74,222,128)" : "rgb(212,168,83)" }}
-          />
           <TrendingUp
             size={14}
             className={`shrink-0 transition-colors duration-500 ${
-              journeyLine > 50 ? "text-accent-status" : "text-accent/70 group-hover:text-accent"
+              meteorLanded ? "text-accent-status" : "text-accent/70 group-hover:text-accent"
             }`}
           />
           <span className={`max-w-0 overflow-hidden group-hover:max-w-[70px] transition-all duration-300 whitespace-nowrap font-mono text-small ${
-            journeyLine > 50 ? "text-accent-status/60" : "text-accent/60"
+            meteorLanded ? "text-accent-status/60" : "text-accent/60"
           }`}>
             journey
           </span>
