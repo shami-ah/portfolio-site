@@ -137,13 +137,16 @@ export function TerminalBoot({ force = false, onDone }: BootProps): React.ReactE
 
   const dismiss = (): void => {
     setPhase("exit");
-    // Boot content fades first (0.5s), then overlay collapses (1.4s)
-    // Total: ~1.9s before cleanup
+    // Content fades (0.5s), then overlay collapses (1.4s)
+    // Fire boot-complete early so hero starts streaming while overlay collapses
+    setTimeout(() => {
+      sessionStorage.setItem("boot-complete", "1");
+      window.dispatchEvent(new CustomEvent("boot-complete"));
+    }, 700);
+    // Cleanup after full exit animation
     setTimeout(() => {
       setVisible(false);
       localStorage.setItem("boot-ever-seen", "1");
-      sessionStorage.setItem("boot-complete", "1");
-      window.dispatchEvent(new CustomEvent("boot-complete"));
       window.dispatchEvent(new CustomEvent("agent-button-ready"));
       onDone?.();
     }, 1900);
