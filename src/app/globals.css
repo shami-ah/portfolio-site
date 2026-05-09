@@ -356,17 +356,16 @@ body::after {
   100% { transform: rotate(360deg); }
 }
 
-/* ── Reboot glitch — brief CRT distortion ── */
-.nav-glitch {
-  animation: glitch-flash 0.2s steps(2) forwards;
+/* ── Reboot tremor — button shakes when pressure builds ── */
+.nav-tremor {
+  animation: tremor-shake 0.3s ease-in-out infinite;
 }
-@keyframes glitch-flash {
-  0% { transform: translate(0); filter: none; }
-  20% { transform: translate(-2px, 1px); filter: hue-rotate(90deg) brightness(1.5); }
-  40% { transform: translate(2px, -1px); filter: hue-rotate(-90deg) brightness(0.8); }
-  60% { transform: translate(-1px, -1px); filter: hue-rotate(45deg); }
-  80% { transform: translate(1px, 1px); filter: none; }
-  100% { transform: translate(0); filter: none; }
+@keyframes tremor-shake {
+  0%, 100% { transform: translateX(0) translateY(0); }
+  20% { transform: translateX(-0.5px) translateY(0.5px); }
+  40% { transform: translateX(0.8px) translateY(-0.3px); }
+  60% { transform: translateX(-0.6px) translateY(0.2px); }
+  80% { transform: translateX(0.4px) translateY(-0.4px); }
 }
 
 /* ── Setup orbiting particles ── */
@@ -382,39 +381,34 @@ body::after {
   100% { transform: rotate(360deg) translateX(16px) rotate(-360deg); opacity: 0.4; }
 }
 
-/* ── Journey animated gradient border ── */
-.nav-journey-border {
+/* ── Setup glow — pulses when relevant section is in view ── */
+.nav-setup-glow {
+  border-color: rgba(212, 168, 83, 0.3) !important;
+  animation: setup-glow-pulse 2s ease-in-out infinite;
+}
+@keyframes setup-glow-pulse {
+  0%, 100% { border-color: rgba(212, 168, 83, 0.2); }
+  50% { border-color: rgba(212, 168, 83, 0.5); }
+}
+
+/* ── Journey idle — subtle accent tint ── */
+.nav-journey-idle {
   background: rgba(212, 168, 83, 0.06);
-  border: 1px solid transparent;
-  background-clip: padding-box;
-  position: relative;
+  border: 1px solid rgba(212, 168, 83, 0.15);
 }
-.nav-journey-border::before {
-  content: "";
-  position: absolute;
-  inset: -1px;
-  border-radius: 9999px;
-  padding: 1px;
-  background: conic-gradient(
-    from var(--journey-angle, 0deg),
-    rgba(212, 168, 83, 0.5),
-    transparent 40%,
-    transparent 80%,
-    rgba(212, 168, 83, 0.3)
-  );
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  animation: journey-trace 3s linear infinite;
-  pointer-events: none;
+.nav-journey-idle:hover {
+  border-color: rgba(212, 168, 83, 0.4);
 }
-@keyframes journey-trace {
-  to { --journey-angle: 360deg; }
+
+/* ── Journey active — green glow when line connects ── */
+.nav-journey-active {
+  background: rgba(74, 222, 128, 0.08);
+  border: 1px solid rgba(74, 222, 128, 0.3);
+  animation: journey-beckon 1.5s ease-in-out infinite;
 }
-@property --journey-angle {
-  syntax: "<angle>";
-  initial-value: 0deg;
-  inherits: false;
+@keyframes journey-beckon {
+  0%, 100% { border-color: rgba(74, 222, 128, 0.3); }
+  50% { border-color: rgba(74, 222, 128, 0.6); }
 }
 
 /* Journey pulse dot */
