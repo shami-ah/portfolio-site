@@ -93,7 +93,9 @@ export function TopBar(): React.ReactElement {
           const endScroll = maxScroll;
           const totalRange = endScroll - startScroll;
 
-          if (y < startScroll || totalRange <= 0) {
+          // Suppress meteor animation during agent-triggered scrolls
+          const agentScrolling = (globalThis as Record<string, unknown>).__agentScrolling === true;
+          if (y < startScroll || totalRange <= 0 || agentScrolling) {
             setMeteorProgress(0);
             setMeteorLanded(false);
           } else if (y >= endScroll) {

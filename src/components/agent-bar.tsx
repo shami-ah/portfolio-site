@@ -1,5 +1,10 @@
 "use client";
 
+declare global {
+  // eslint-disable-next-line no-var
+  var __agentScrolling: boolean | undefined;
+}
+
 import { useEffect, useRef, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import ReactDOM from "react-dom";
@@ -163,6 +168,9 @@ interface AgentCommand {
 }
 
 function scrollTo(id: string): void {
+  // Flag programmatic scroll so top-bar meteor animation doesn't trigger
+  window.__agentScrolling = true;
+  setTimeout(() => { window.__agentScrolling = false; }, 2000);
   // Dispatch reveal event — AgentRevealParticles blurs the section,
   // fires particles after scroll settles, then deblurs on arrival
   window.dispatchEvent(new CustomEvent("section-reveal", { detail: { sectionId: id } }));
