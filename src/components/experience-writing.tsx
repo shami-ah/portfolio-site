@@ -139,7 +139,7 @@ export function ExperienceAndWriting(): React.ReactElement {
                     i === 1 ? "border-accent-secondary" :
                     "border-accent-status"
                   }`} />
-                  <div className="card-glow card-gradient-border rounded-lg bg-card border border-card-border px-3 py-2.5 h-full flex flex-col font-mono hover:border-transparent transition-colors duration-300">
+                  <div className="card-glow card-gradient-border rounded-lg bg-card border border-card-border p-3 md:p-4 h-full flex flex-col font-mono hover:border-transparent transition-colors duration-300">
                     {/* Hash + branch + period */}
                     <div className="flex flex-wrap items-center gap-x-1.5 gap-y-0.5 mb-1.5 text-caption">
                       <span className="text-accent-secondary">{role.hash}</span>
@@ -175,7 +175,7 @@ export function ExperienceAndWriting(): React.ReactElement {
                   >
                     <Link
                       href={`/writing#${article.slug}`}
-                      className="group card-glow card-gradient-border rounded-lg bg-card border border-card-border px-3 py-2.5 h-full flex flex-col font-mono hover:border-transparent transition-colors duration-300"
+                      className="group card-glow card-gradient-border rounded-lg bg-card border border-card-border p-3 md:p-4 h-full flex flex-col font-mono hover:border-transparent transition-colors duration-300"
                     >
                       {/* File path + date */}
                       <div className="flex flex-wrap items-center gap-x-1.5 gap-y-0.5 mb-1.5 text-caption">

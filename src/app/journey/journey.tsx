@@ -156,7 +156,7 @@ export function Journey(): React.ReactElement {
       </section>
 
       {/* PRINCIPLES */}
-      <section className="py-20 md:py-28 px-5 md:px-6 relative">
+      <section className="py-20 md:py-32 px-5 md:px-6 relative">
         <div className="max-w-5xl mx-auto">
           <div className="mb-12 md:mb-16 text-center">
             <p className="text-sm font-mono text-accent mb-4 uppercase tracking-[0.3em]">
@@ -203,7 +203,7 @@ export function Journey(): React.ReactElement {
       </section>
 
       {/* DAY IN THE LIFE — interactive TimeMachine */}
-      <section className="py-20 md:py-28 px-5 md:px-6 bg-card/20 relative">
+      <section className="py-20 md:py-32 px-5 md:px-6 bg-card/20 relative">
         <div className="max-w-4xl mx-auto">
           <div className="mb-8 md:mb-10 text-center">
             <p className="text-sm font-mono text-accent mb-3 uppercase tracking-[0.3em]">

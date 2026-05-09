@@ -9,6 +9,25 @@ export function TopBar(): React.ReactElement {
   const [scrolled, setScrolled] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
 
+  // ── Per-button signal suppression ──
+  const [seenReboot, setSeenReboot] = useState(false);
+  const [seenSetup, setSeenSetup] = useState(false);
+  const [seenJourney, setSeenJourney] = useState(false);
+
+  useEffect(() => {
+    if (typeof sessionStorage === "undefined") return;
+    if (sessionStorage.getItem("seen-reboot") === "1") setSeenReboot(true);
+    if (sessionStorage.getItem("seen-setup") === "1") setSeenSetup(true);
+    if (sessionStorage.getItem("seen-journey") === "1") setSeenJourney(true);
+  }, []);
+
+  const markSeen = useCallback((key: "reboot" | "setup" | "journey"): void => {
+    if (typeof sessionStorage !== "undefined") sessionStorage.setItem(`seen-${key}`, "1");
+    if (key === "reboot") setSeenReboot(true);
+    if (key === "setup") setSeenSetup(true);
+    if (key === "journey") setSeenJourney(true);
+  }, []);
+
   // ── Reboot: pressure builds slowly, sacred animations ──
   const [pressure, setPressure] = useState(0);
   const scrollDistance = useRef(0);
@@ -105,6 +124,7 @@ export function TopBar(): React.ReactElement {
   }, []);
 
   const reboot = (): void => {
+    markSeen("reboot");
     setPressure(0);
     scrollDistance.current = 0;
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -113,10 +133,11 @@ export function TopBar(): React.ReactElement {
     }, 300);
   };
 
-  // Sacred thresholds — tremor only at 80%, heavy at 92%
-  const tremor = pressure >= 80;
-  const heavy = pressure >= 92;
-  const fillPct = Math.min(pressure, 100);
+  // Sacred thresholds — only apply when signals are active
+  const tremor = !seenReboot && pressure >= 80;
+  const heavy = !seenReboot && pressure >= 92;
+  const fillPct = !seenReboot ? Math.min(pressure, 100) : 0;
+  const showMeteor = !seenJourney && meteorProgress > 0;
 
   return (
     <>
@@ -149,7 +170,7 @@ export function TopBar(): React.ReactElement {
 
       {/* ── Journey meteor — rises from viewport bottom to journey button ── */}
       {journeyPos.cx > 0 && (
-        <div className="fixed inset-0 z-30 pointer-events-none" style={{ opacity: meteorProgress > 0 ? 1 : 0, transition: "opacity 0.6s ease" }}>
+        <div className="fixed inset-0 z-30 pointer-events-none" style={{ opacity: showMeteor ? 1 : 0, transition: "opacity 0.6s ease" }}>
           {(() => {
             const vh = typeof window !== "undefined" ? window.innerHeight : 800;
             const lineX = journeyPos.cx;
@@ -281,9 +302,10 @@ export function TopBar(): React.ReactElement {
         {/* ── Setup ── */}
         <Link
           href="/uses"
+          onClick={() => markSeen("setup")}
           aria-label="Tools, stack, and workflow"
           className={`group relative hidden sm:flex items-center cursor-pointer glass rounded-full p-2.5 hover:px-4 hover:gap-2 transition-all duration-500 ${
-            setupGlow ? "nav-setup-glow" : ""
+            !seenSetup && setupGlow ? "nav-setup-glow" : ""
           }`}
           style={{
             boxShadow: setupGlow
@@ -309,6 +331,7 @@ export function TopBar(): React.ReactElement {
         <Link
           ref={journeyBtnRef}
           href="/journey"
+          onClick={() => markSeen("journey")}
           aria-label="Walk through my career"
           className={`group relative flex items-center cursor-pointer rounded-full p-2.5 hover:px-4 hover:gap-2 backdrop-blur-md transition-all duration-500 ${
             meteorLanded ? "nav-journey-active" : "nav-journey-idle"

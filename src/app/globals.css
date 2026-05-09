@@ -15,6 +15,15 @@
   --card-border: #2a2520;
   --card-hover: #1c1a16;
 
+  /* Z-index layers (low → high) */
+  --z-content: 10;       /* in-page content */
+  --z-meteor: 30;        /* meteor trail */
+  --z-nav: 40;           /* top bar, sidebar, page headers */
+  --z-floating: 50;      /* theme toggle, chat minimized */
+  --z-drawer: 100;       /* CV drawer, project modal, agent bar */
+  --z-overlay: 200;      /* boot screen, access modal, scroll progress */
+  --z-modal: 9999;       /* skills modal, project expand — top of everything */
+
   /* Gradient tokens */
   --gradient-brand: linear-gradient(135deg, #d4a853, #8ba4c4);
   --gradient-brand-subtle: linear-gradient(135deg, rgba(212, 168, 83, 0.12), rgba(139, 164, 196, 0.12));
