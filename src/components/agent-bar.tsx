@@ -1161,93 +1161,20 @@ export function AgentBar(): React.ReactElement {
     // 2. Fuzzy intent match — instant
     const fuzzy = fuzzyMatch(q, commands);
     if (fuzzy) { runCommand(fuzzy.command); return; }
-    // 3. LLM classification — async, with real pipeline timings
-    classifyWithLLM(q);
-  };
-
-  const classifyWithLLM = useCallback(async (query: string): Promise<void> => {
-    const t0 = performance.now();
-
-    // Show "thinking" state with first step
-    const thinkingCmd: AgentCommand = {
-      keyword: query,
-      intent: "classifying",
-      confidence: 0,
+    // 3. Any free-text prompt → route to chat (it has full RAG context)
+    runCommand({
+      keyword: q,
+      intent: "route_to_chat",
+      confidence: 0.90,
       steps: [
-        { name: "tokenize", detail: `${query.split(/\s+/).length} tokens`, ms: 3 },
-        { name: "classify_intent", detail: "llm: llama-3.3-70b", ms: 0 },
+        { name: "tokenize", detail: `${q.split(/\s+/).length} tokens`, ms: 3 },
+        { name: "classify_intent", detail: "free-text query detected", ms: 18 },
+        { name: "route_to_chat", detail: "→ chat agent (full context)", ms: 6 },
       ],
-      response: "",
-    };
-    setActiveCmd(thinkingCmd);
-    setShownSteps(0);
-    setShowResponse(false);
-    setUiState("processing");
-
-    try {
-      const controller = new AbortController();
-      const timeout = setTimeout(() => controller.abort(), 4000);
-      const res = await fetch("/api/classify", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ query }),
-        signal: controller.signal,
-      });
-      clearTimeout(timeout);
-      const data = (await res.json()) as {
-        command: string | null;
-        confidence: number;
-        response?: string;
-      };
-      const classifyMs = Math.round(performance.now() - t0);
-
-      if (data.command) {
-        // LLM mapped to a known command — run it with real timings
-        const matched = commands.find((c) => c.keyword === data.command);
-        if (matched) {
-          runCommand({
-            ...matched,
-            confidence: data.confidence,
-            steps: [
-              { name: "tokenize", detail: `${query.split(/\s+/).length} tokens`, ms: 3 },
-              { name: "classify_intent", detail: `llm: ${data.command} · conf ${data.confidence.toFixed(2)}`, ms: classifyMs },
-              ...(matched.steps.slice(1)),
-            ],
-          });
-          return;
-        }
-      }
-
-      // No command matched — show branded redirect response
-      const response = data.response || "Ahtesham works across a wide range of tech. Book a quick call to discuss.";
-      runCommand({
-        keyword: query,
-        intent: "redirect",
-        confidence: data.confidence,
-        steps: [
-          { name: "tokenize", detail: `${query.split(/\s+/).length} tokens`, ms: 3 },
-          { name: "classify_intent", detail: `llm: no exact match · conf ${data.confidence.toFixed(2)}`, ms: classifyMs },
-          { name: "compose_redirect", detail: "→ personal response", ms: 8 },
-        ],
-        response,
-        action: () => scrollTo("contact"),
-      });
-    } catch (err) {
-      const isTimeout = err instanceof DOMException && err.name === "AbortError";
-      const classifyMs = Math.round(performance.now() - t0);
-      runCommand({
-        keyword: query,
-        intent: "redirect",
-        confidence: 0,
-        steps: [
-          { name: "classify_intent", detail: isTimeout ? `timeout after ${classifyMs}ms` : "network error", ms: classifyMs },
-          { name: "compose_redirect", detail: "→ personal response", ms: 4 },
-        ],
-        response: "That's a great question for a direct conversation. Ahtesham picks up anything fast — book a 15-min call and he'll give you a straight answer.",
-        action: () => scrollTo("contact"),
-      });
-    }
-  }, [runCommand]);
+      response: "Routing to chat — ask anything there.",
+      routeToChat: q,
+    });
+  };
 
   const onChipClick = (command: string): void => {
     const match = commands.find((c) => c.keyword === command);
