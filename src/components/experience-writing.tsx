@@ -115,7 +115,7 @@ export function ExperienceAndWriting(): React.ReactElement {
         </div>
 
         {/* Paired rows — CSS grid forces each row's left + right card to same height */}
-        <div className="grid md:grid-cols-2 gap-x-12 gap-y-4 relative">
+        <div className="grid md:grid-cols-2 gap-x-12 gap-y-6 md:gap-y-4 relative">
           {/* Vertical divider */}
           <div className="hidden md:block absolute left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-card-border/60 to-transparent" />
 
@@ -130,7 +130,7 @@ export function ExperienceAndWriting(): React.ReactElement {
                   animate={{ opacity: 1, x: 0 }}
                   viewport={{ once: true, margin: "-50px" }}
                   transition={{ duration: 0.6, delay: i * 0.1, ease: [0.22, 1, 0.36, 1] }}
-                  className="relative pl-8"
+                  className="relative md:pl-8"
                 >
                   {/* Branch line — full height through gap */}
                   <div className="hidden md:block absolute left-[7px] top-0 -bottom-5 w-[2px] bg-gradient-to-b from-accent via-accent-secondary to-accent-secondary/40" />
@@ -214,7 +214,7 @@ export function ExperienceAndWriting(): React.ReactElement {
             animate={{ opacity: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.2 }}
-            className="relative pl-8"
+            className="relative md:pl-8"
           >
             {/* Branch line continues to footer */}
             <div className="hidden md:block absolute left-[7px] top-0 bottom-0 w-[2px] bg-gradient-to-b from-accent-secondary/40 to-muted/10" />
