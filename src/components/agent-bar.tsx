@@ -175,10 +175,11 @@ interface FuzzyMatch {
 }
 
 const PROJECT_KEYWORDS: Record<string, string[]> = {
-  projects: ["event", "management", "booking", "openevent", "client", "crm", "invoice", "show me your work", "your work", "your projects", "portfolio", "what you built", "what have you built"],
-  projects_codelens: ["code review", "lint", "pattern", "bug", "security", "pr review", "codelens", "static analysis"],
-  projects_gogaa: ["cli", "coding agent", "ai coding", "terminal", "provider", "gogaa", "llm tool"],
-  projects_rasad: ["observability", "session analytics", "cost tracking", "token usage", "rasad", "monitoring ai"],
+  projects: ["show me your work", "your work", "your projects", "portfolio", "what you built", "what have you built"],
+  openevent: ["event", "management", "booking", "openevent", "open event", "client", "crm", "invoice", "email automation", "event platform"],
+  codelens: ["code review", "lint", "pattern", "bug", "security", "pr review", "codelens", "code lens", "static analysis", "code quality"],
+  gogaa: ["coding agent", "ai coding", "terminal agent", "provider", "gogaa", "llm tool", "ai cli", "coding cli"],
+  rasad: ["observability", "session analytics", "cost tracking", "token usage", "rasad", "monitoring ai", "ai observatory", "session replay"],
   rate: ["rate", "price", "pricing", "cost", "charge", "budget", "hourly", "salary", "pay", "compensation", "how much", "expensive", "fee", "quote"],
   hire: ["hire", "hiring", "recruit", "work with", "engage", "freelance", "contract", "full-time", "looking for", "need a developer", "need an engineer"],
   cv: ["resume", "cv", "qualification", "education", "degree"],
@@ -211,35 +212,9 @@ function fuzzyMatch(query: string, cmds: AgentCommand[]): FuzzyMatch | null {
       }
     }
     if (score > 0) {
-      // Map compound keys like "projects_codelens" back to "projects"
-      const cmdKey = keyword.includes("_") ? keyword.split("_")[0] : keyword;
-      const cmd = cmds.find((c) => c.keyword === cmdKey);
+      const cmd = cmds.find((c) => c.keyword === keyword);
       if (cmd && (!best || score > best.score)) {
-        // Build a contextual response for project-specific queries
-        const projectName = keyword.includes("codelens") ? "CodeLens"
-          : keyword.includes("gogaa") ? "Gogaa CLI"
-          : keyword.includes("rasad") ? "Rasad"
-          : null;
-
-        if (projectName) {
-          best = {
-            score,
-            command: {
-              ...cmd,
-              intent: "project_match",
-              confidence: Math.min(0.95, 0.6 + score * 0.05),
-              steps: [
-                { name: "tokenize", detail: `${tokens.length} tokens`, ms: 3 },
-                { name: "fuzzy_match", detail: `best: ${projectName} · score ${score}`, ms: 38 },
-                { name: "route_to_tool", detail: "→ scroll_to_section", ms: 5 },
-                { name: "execute", detail: "target: #projects", ms: 110 },
-              ],
-              response: `Matched "${projectName}" — scrolling to projects. Click the card for the full case study.`,
-            },
-          };
-        } else {
-          best = { score, command: { ...cmd, confidence: Math.min(0.95, 0.6 + score * 0.05) } };
-        }
+        best = { score, command: { ...cmd, confidence: Math.min(0.95, 0.6 + score * 0.05) } };
       }
     }
   }
@@ -394,6 +369,50 @@ const commands: AgentCommand[] = [
       { name: "execute", detail: "target: #projects", ms: 110 },
     ],
     response: "9 case studies below. Click any card for architecture + results.",
+    action: () => scrollTo("projects"),
+  },
+  {
+    keyword: "openevent",
+    intent: "project_detail",
+    confidence: 0.97,
+    steps: [
+      { name: "classify_intent", detail: "label: project_detail · conf 0.97", ms: 24 },
+      { name: "retrieve_context", detail: "openevent: production SaaS", ms: 18 },
+    ],
+    response: "OpenEvent — AI-powered event management. 100+ clients, 150+ events, saves ~1.5hrs/day. AI reads emails, proposes actions, humans approve. Scroll down to the card and click for the full case study.",
+    action: () => scrollTo("projects"),
+  },
+  {
+    keyword: "codelens",
+    intent: "project_detail",
+    confidence: 0.97,
+    steps: [
+      { name: "classify_intent", detail: "label: project_detail · conf 0.97", ms: 24 },
+      { name: "retrieve_context", detail: "codelens: AI code review", ms: 18 },
+    ],
+    response: "CodeLens — AI code review engine. 430 patterns from 600+ real PRs, reviews in <1s, zero deps (351KB). Beat a commercial AI reviewer head-to-head. Scroll down for the full case study.",
+    action: () => scrollTo("projects"),
+  },
+  {
+    keyword: "gogaa",
+    intent: "project_detail",
+    confidence: 0.97,
+    steps: [
+      { name: "classify_intent", detail: "label: project_detail · conf 0.97", ms: 24 },
+      { name: "retrieve_context", detail: "gogaa: AI coding agent", ms: 18 },
+    ],
+    response: "Gogaa CLI — AI coding agent with 11 providers and auto-fallback. 1,400+ tests, WAL persistence, React Ink TUI. If one provider goes down, you don't stop working. Scroll down for the full case study.",
+    action: () => scrollTo("projects"),
+  },
+  {
+    keyword: "rasad",
+    intent: "project_detail",
+    confidence: 0.97,
+    steps: [
+      { name: "classify_intent", detail: "label: project_detail · conf 0.97", ms: 24 },
+      { name: "retrieve_context", detail: "rasad: AI observability", ms: 18 },
+    ],
+    response: "Rasad — AI session observatory. 656 sessions analyzed, every tool call graded A-F, 100% local. Found that routine tasks on Opus cost 18x more than Sonnet. Scroll down for the full case study.",
     action: () => scrollTo("projects"),
   },
   {
