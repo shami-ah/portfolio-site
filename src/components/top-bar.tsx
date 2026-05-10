@@ -42,6 +42,10 @@ export function TopBar(): React.ReactElement {
   const [meteorLanded, setMeteorLanded] = useState(false);
   const journeyBtnRef = useRef<HTMLAnchorElement>(null);
   const [journeyPos, setJourneyPos] = useState({ cx: 0, cy: 0, bottom: 0 });
+  const meteorTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const meteorAnimRef = useRef<number | null>(null);
+  const meteorAutoMode = useRef(false); // true = time-based animation active
+  const meteorProgressRef = useRef(0);
 
   const updatePressure = useCallback(() => {
     setPressure((p) => Math.min(p + 1, 100));
@@ -81,30 +85,37 @@ export function TopBar(): React.ReactElement {
           setSetupGlow(missionTop < window.innerHeight * 0.6 && projectsBottom > 0);
         }
 
-        // Journey meteor: starts when contact section enters viewport,
-        // lands when user reaches the bottom of the page
+        // Journey meteor: time-based when entering contact, scroll-based on retraction
         const contact = document.getElementById("contact");
         if (contact) {
           const vh = window.innerHeight;
-          const maxScroll = document.documentElement.scrollHeight - vh;
-          // Start: when contact section top hits the bottom of the viewport
           const startScroll = contact.offsetTop - vh;
-          // End: at the very bottom of the page
-          const endScroll = maxScroll;
-          const totalRange = endScroll - startScroll;
 
           // Suppress meteor animation during agent-triggered scrolls
           const agentScrolling = (globalThis as Record<string, unknown>).__agentScrolling === true;
-          if (y < startScroll || totalRange <= 0 || agentScrolling) {
+
+          if (y < startScroll || agentScrolling) {
+            // Scrolled above contact — cancel any pending timer/animation and retract
+            if (meteorTimerRef.current) { clearTimeout(meteorTimerRef.current); meteorTimerRef.current = null; }
+            if (meteorAnimRef.current) { cancelAnimationFrame(meteorAnimRef.current); meteorAnimRef.current = null; }
+            meteorAutoMode.current = false;
             setMeteorProgress(0);
             setMeteorLanded(false);
-          } else if (y >= endScroll) {
-            setMeteorProgress(100);
-            setMeteorLanded(true);
           } else {
-            const progress = ((y - startScroll) / totalRange) * 100;
-            setMeteorProgress(progress);
-            setMeteorLanded(false);
+            // In contact zone — scroll-based retraction (scroll up pulls the line back)
+            const maxScroll = document.documentElement.scrollHeight - vh;
+            const totalRange = maxScroll - startScroll;
+            if (totalRange > 0) {
+              const scrollProgress = ((y - startScroll) / totalRange) * 100;
+              // Only retract (never increase via scroll — the timer handles forward motion)
+              if (scrollProgress < meteorProgressRef.current) {
+                // Cancel any in-progress auto-animation
+                if (meteorAnimRef.current) { cancelAnimationFrame(meteorAnimRef.current); meteorAnimRef.current = null; }
+                meteorAutoMode.current = false;
+                setMeteorProgress(scrollProgress);
+                setMeteorLanded(false);
+              }
+            }
           }
         }
 
@@ -119,6 +130,68 @@ export function TopBar(): React.ReactElement {
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, [updatePressure]);
+
+  // Keep ref in sync with state for scroll handler access
+  useEffect(() => { meteorProgressRef.current = meteorProgress; }, [meteorProgress]);
+
+  // ── Journey meteor: 3-second timer triggers auto-animation when contact is visible ──
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const contact = document.getElementById("contact");
+    if (!contact) return;
+
+    const DELAY_MS = 3000;
+    const ANIM_DURATION_MS = 1200;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          // Contact section visible — start 3s countdown
+          if (!meteorTimerRef.current && !meteorAutoMode.current && meteorProgressRef.current < 100) {
+            meteorTimerRef.current = setTimeout(() => {
+              meteorTimerRef.current = null;
+              meteorAutoMode.current = true;
+
+              // Smooth 0→100 animation over ANIM_DURATION_MS
+              const startTime = performance.now();
+              const startProgress = meteorProgressRef.current;
+              const animate = (now: number): void => {
+                const elapsed = now - startTime;
+                const t = Math.min(elapsed / ANIM_DURATION_MS, 1);
+                // Ease-out cubic for natural deceleration
+                const eased = 1 - Math.pow(1 - t, 3);
+                const p = startProgress + (100 - startProgress) * eased;
+                setMeteorProgress(p);
+                if (t < 1) {
+                  meteorAnimRef.current = requestAnimationFrame(animate);
+                } else {
+                  meteorAnimRef.current = null;
+                  setMeteorProgress(100);
+                  setMeteorLanded(true);
+                }
+              };
+              meteorAnimRef.current = requestAnimationFrame(animate);
+            }, DELAY_MS);
+          }
+        } else {
+          // Contact section left viewport — cancel pending timer
+          if (meteorTimerRef.current) {
+            clearTimeout(meteorTimerRef.current);
+            meteorTimerRef.current = null;
+          }
+        }
+      },
+      { threshold: 0.1 },
+    );
+
+    observer.observe(contact);
+    return () => {
+      observer.disconnect();
+      if (meteorTimerRef.current) clearTimeout(meteorTimerRef.current);
+      if (meteorAnimRef.current) cancelAnimationFrame(meteorAnimRef.current);
+    };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     if (typeof document === "undefined") return;
