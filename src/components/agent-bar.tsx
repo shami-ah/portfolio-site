@@ -53,12 +53,13 @@ function BuildPopup({ onDone }: { onDone: () => void }): React.ReactElement {
       style={{ position: "fixed", inset: 0, zIndex: 9999, display: "flex", alignItems: "center", justifyContent: "center", padding: "1.5rem" }}
       onClick={onDone}
     >
-      <div style={{ position: "absolute", inset: 0, background: "rgba(9,9,11,0.88)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)" }} />
+      <div className="absolute inset-0 bg-background/88 backdrop-blur-[20px]" />
       <motion.div
         initial={{ scale: 0, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-        style={{ position: "absolute", width: "380px", height: "380px", borderRadius: "50%", background: "radial-gradient(circle, rgba(59,130,246,0.15) 0%, transparent 70%)", pointerEvents: "none" }}
+        className="absolute w-[380px] h-[380px] rounded-full pointer-events-none"
+        style={{ background: "radial-gradient(circle, rgba(59,130,246,0.15) 0%, transparent 70%)" }}
       />
       <motion.div
         initial={{ scale: 0, opacity: 0 }}
@@ -66,25 +67,12 @@ function BuildPopup({ onDone }: { onDone: () => void }): React.ReactElement {
         exit={{ scale: 0, opacity: 0 }}
         transition={{ type: "spring", stiffness: 300, damping: 22, mass: 0.8 }}
         onClick={(e) => e.stopPropagation()}
+        className="relative w-full max-w-[340px] rounded-[28px] bg-card/95 backdrop-blur-[24px] border border-accent-secondary/25 p-7 overflow-hidden"
         style={{
-          position: "relative",
-          width: "100%",
-          maxWidth: "340px",
-          borderRadius: "28px",
-          background: "rgba(24,24,27,0.85)",
-          backdropFilter: "blur(24px)",
-          WebkitBackdropFilter: "blur(24px)",
-          border: "1px solid rgba(59,130,246,0.25)",
           boxShadow: "0 0 60px rgba(59,130,246,0.15), 0 0 120px rgba(59,130,246,0.05), inset 0 1px 0 rgba(255,255,255,0.05)",
-          padding: "28px",
-          overflow: "hidden",
         }}
       >
-        <div style={{
-          position: "absolute", top: "-30%", left: "-20%", width: "140%", height: "60%",
-          background: "radial-gradient(ellipse at center, rgba(255,255,255,0.04) 0%, transparent 70%)",
-          pointerEvents: "none", borderRadius: "50%",
-        }} />
+        <div className="absolute -top-[30%] -left-[20%] w-[140%] h-[60%] rounded-full pointer-events-none" style={{ background: "radial-gradient(ellipse at center, rgba(128,128,128,0.04) 0%, transparent 70%)" }} />
         <p className="text-caption font-mono text-accent uppercase tracking-[0.25em] mb-5 flex items-center justify-center gap-2 relative">
           <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
           how I ship every feature
@@ -187,22 +175,22 @@ interface FuzzyMatch {
 }
 
 const PROJECT_KEYWORDS: Record<string, string[]> = {
-  projects: ["event", "management", "booking", "email", "openevent", "client", "crm", "invoice"],
+  projects: ["event", "management", "booking", "openevent", "client", "crm", "invoice", "show me your work", "your work", "your projects", "portfolio", "what you built", "what have you built"],
   projects_codelens: ["code review", "lint", "pattern", "bug", "security", "pr review", "codelens", "static analysis"],
-  projects_gogaa: ["cli", "coding agent", "ai coding", "terminal", "provider", "model", "gogaa", "llm"],
-  projects_rasad: ["observability", "session", "analytics", "cost", "token", "rasad", "monitoring"],
-  rate: ["rate", "price", "pricing", "cost", "charge", "budget", "hourly", "salary", "pay", "compensation", "how much", "expensive"],
-  hire: ["hire", "hiring", "recruit", "work with", "engage", "freelance", "contract", "full-time", "available", "looking for"],
-  cv: ["resume", "cv", "background", "qualification", "education", "experience", "portfolio"],
-  skills: ["skills", "skill", "tech stack", "technology", "what do you know", "expertise", "proficient"],
-  contact: ["contact", "reach", "email", "call", "talk", "connect", "meet", "book"],
-  chat: ["chat", "ask", "question", "tell me", "explain", "help me", "more info", "details"],
-  build: ["build", "ship", "deliver", "process", "workflow", "methodology", "how do you work"],
-  tour: ["tour", "journey", "story", "about you", "who are you", "background"],
-  stack: ["stack", "tools", "framework", "language", "react", "typescript", "supabase", "next"],
-  availability: ["available", "availability", "when", "start", "timeline", "capacity"],
+  projects_gogaa: ["cli", "coding agent", "ai coding", "terminal", "provider", "gogaa", "llm tool"],
+  projects_rasad: ["observability", "session analytics", "cost tracking", "token usage", "rasad", "monitoring ai"],
+  rate: ["rate", "price", "pricing", "cost", "charge", "budget", "hourly", "salary", "pay", "compensation", "how much", "expensive", "fee", "quote"],
+  hire: ["hire", "hiring", "recruit", "work with", "engage", "freelance", "contract", "full-time", "looking for", "need a developer", "need an engineer"],
+  cv: ["resume", "cv", "qualification", "education", "degree"],
+  contact: ["contact", "reach", "email", "call", "talk", "connect", "meet", "book a call", "get in touch"],
+  chat: ["chat", "question", "explain", "help me", "more info", "tell me more"],
+  build: ["build process", "ship", "deliver", "methodology", "how do you work", "development process"],
+  tour: ["tour", "journey", "story", "who are you", "about you", "about yourself", "what do you do"],
+  stack: ["stack", "tools", "framework", "language", "react", "typescript", "supabase", "next", "python", "docker", "react native"],
+  availability: ["available", "availability", "when can you start", "timeline", "capacity", "schedule"],
   impact: ["impact", "results", "numbers", "metrics", "achievement"],
-  experience: ["experience", "career", "worked", "company", "job", "role", "position"],
+  experience: ["career", "worked at", "company", "job history", "role", "position", "years of experience"],
+  skills: ["skills", "tech stack", "technology", "what do you know", "expertise", "proficient", "capable"],
 };
 
 function fuzzyMatch(query: string, cmds: AgentCommand[]): FuzzyMatch | null {
@@ -260,6 +248,33 @@ function fuzzyMatch(query: string, cmds: AgentCommand[]): FuzzyMatch | null {
 }
 
 const commands: AgentCommand[] = [
+  {
+    keyword: "hi",
+    intent: "greeting",
+    confidence: 0.99,
+    steps: [
+      { name: "classify_intent", detail: "label: greeting · conf 0.99", ms: 12 },
+    ],
+    response: "Hey! I'm Ahtesham's portfolio agent. Try: projects, rate, skills, or just ask anything.",
+  },
+  {
+    keyword: "hello",
+    intent: "greeting",
+    confidence: 0.99,
+    steps: [
+      { name: "classify_intent", detail: "label: greeting · conf 0.99", ms: 12 },
+    ],
+    response: "Hey! I'm Ahtesham's portfolio agent. Try: projects, rate, skills, or just ask anything.",
+  },
+  {
+    keyword: "hey",
+    intent: "greeting",
+    confidence: 0.99,
+    steps: [
+      { name: "classify_intent", detail: "label: greeting · conf 0.99", ms: 12 },
+    ],
+    response: "Hey! I'm Ahtesham's portfolio agent. Try: projects, rate, skills, or just ask anything.",
+  },
   {
     keyword: "hire",
     label: "Hire",
@@ -557,7 +572,7 @@ const SECTION_PERSONALITY: Record<string, AgentPersonality> = {
     dotColor: "bg-blue-400",
     glowColor: "rgba(96,165,250,0.4)",
     hoverLabel: "explore",
-    tooltip: "click any project, then <accent>ask me why</accent>",
+    tooltip: "type <accent>projects</accent> or ask about any tech",
   },
   log: {
     dotColor: "bg-purple-400",
@@ -809,29 +824,30 @@ export function AgentBar(): React.ReactElement {
     ],
   };
 
-  // Section-specific chip suggestions — contextual to where the visitor is
+  // Section-specific chip suggestions:
+  // Pattern: relevant to THIS section + one nudge toward NEXT section (last chip)
   const SECTION_CHIPS: Record<string, { label: string; command: string }[]> = {
     hero: [
-      { label: "Impact", command: "impact" },
-      { label: "Projects", command: "projects" },
+      { label: "Skills", command: "skills" },
       { label: "How I ship", command: "build" },
+      { label: "See impact →", command: "impact" },        // nudge → mission
     ],
     mission: [
-      { label: "Projects", command: "projects" },
       { label: "How I ship", command: "build" },
-      { label: "Skills", command: "skills" },
+      { label: "Stack", command: "stack" },
+      { label: "See projects →", command: "projects" },     // nudge → projects
     ],
     projects: [
-      { label: "How I ship", command: "build" },
       { label: "Rate", command: "rate" },
-      { label: "Stack", command: "stack" },
+      { label: "How I ship", command: "build" },
       { label: "Chat", command: "chat" },
+      { label: "See career →", command: "experience" },     // nudge → career
     ],
     log: [
       { label: "View CV", command: "cv" },
-      { label: "Projects", command: "projects" },
-      { label: "Rate", command: "rate" },
       { label: "Full journey", command: "tour" },
+      { label: "Rate", command: "rate" },
+      { label: "Get in touch →", command: "contact" },      // nudge → contact
     ],
     contact: [
       { label: "Rate", command: "rate" },
@@ -1149,11 +1165,15 @@ export function AgentBar(): React.ReactElement {
     setUiState("processing");
 
     try {
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 4000);
       const res = await fetch("/api/classify", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ query }),
+        signal: controller.signal,
       });
+      clearTimeout(timeout);
       const data = (await res.json()) as {
         command: string | null;
         confidence: number;
@@ -1192,16 +1212,19 @@ export function AgentBar(): React.ReactElement {
         response,
         action: () => scrollTo("contact"),
       });
-    } catch {
-      // Network error — graceful fallback
+    } catch (err) {
+      const isTimeout = err instanceof DOMException && err.name === "AbortError";
+      const classifyMs = Math.round(performance.now() - t0);
       runCommand({
         keyword: query,
-        intent: "offline_redirect",
+        intent: "redirect",
         confidence: 0,
         steps: [
-          { name: "classify_intent", detail: "agent offline", ms: 0 },
+          { name: "classify_intent", detail: isTimeout ? `timeout after ${classifyMs}ms` : "network error", ms: classifyMs },
+          { name: "compose_redirect", detail: "→ personal response", ms: 4 },
         ],
-        response: "Agent is thinking slower than usual. Try 'projects', 'rate', or 'cv' — or book a call to talk directly.",
+        response: "That's a great question for a direct conversation. Ahtesham picks up anything fast — book a 15-min call and he'll give you a straight answer.",
+        action: () => scrollTo("contact"),
       });
     }
   }, [runCommand]);
