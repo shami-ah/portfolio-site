@@ -35,6 +35,7 @@ export function TerminalBoot({ force = false, onDone }: BootProps): React.ReactE
   const exitDistRef = useRef(300);
   const exitAccentRef = useRef("#d4a853");
   const exitStatusRef = useRef("#4ade80");
+  const exitBgRef = useRef("#0c0c0e");
 
   const introText = "$ shami init --mode=command-center";
 
@@ -143,6 +144,7 @@ export function TerminalBoot({ force = false, onDone }: BootProps): React.ReactE
     const cs = getComputedStyle(document.documentElement);
     exitAccentRef.current = cs.getPropertyValue("--accent").trim() || "#d4a853";
     exitStatusRef.current = cs.getPropertyValue("--accent-status").trim() || "#4ade80";
+    exitBgRef.current = cs.getPropertyValue("--background").trim() || "#0c0c0e";
     setPhase("exit");
 
     // Timeline:
@@ -245,6 +247,7 @@ export function TerminalBoot({ force = false, onDone }: BootProps): React.ReactE
   const dist = exitDistRef.current;
   const ac = exitAccentRef.current;
   const st = exitStatusRef.current;
+  const bg = exitBgRef.current;
 
   return (
     <AnimatePresence>
@@ -311,7 +314,7 @@ export function TerminalBoot({ force = false, onDone }: BootProps): React.ReactE
                         `0 0 15px ${hexToRgba(st, 0.3)}`,
                       ],
                       backgroundColor: [
-                        "rgba(21,21,21,0.8)",
+                        hexToRgba(bg, 0.8),
                         hexToRgba(ac, 0.3),
                         hexToRgba(st, 0.45),
                         hexToRgba(st, 0.55),
