@@ -55,7 +55,7 @@ function TestimonialCarousel(): React.ReactElement {
 
   return (
     <div className="mb-10 md:mb-14">
-      <div className="relative min-h-[80px]">
+      <div className="relative h-[120px] sm:h-[100px] md:h-[90px]">
         <AnimatePresence mode="wait">
           <motion.div
             key={idx}
@@ -63,6 +63,7 @@ function TestimonialCarousel(): React.ReactElement {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.3 }}
+            className="absolute inset-0"
           >
             <p className="text-sm md:text-base text-muted italic leading-relaxed max-w-2xl">
               &ldquo;{t.quote}&rdquo;
