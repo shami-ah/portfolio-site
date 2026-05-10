@@ -111,6 +111,34 @@ export default function RootLayout({
             __html: `(function(){try{var t=localStorage.getItem('theme')||((document.cookie.match(/(?:^|;)\\s*theme=([^;]*)/)||[])[1]);if(t==='light'){document.documentElement.classList.remove('dark');document.documentElement.classList.add('light')}}catch(e){}})()`,
           }}
         />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Person",
+              name: "Ahtesham Ahmad",
+              url: "https://ahtesham.dev.wadwarehouse.com",
+              image: "https://ahtesham.dev.wadwarehouse.com/ahtesham.jpg",
+              jobTitle: "AI Engineer",
+              description:
+                "AI engineer building production AI systems end-to-end. 50+ production systems, AI-powered SaaS with 100+ clients, and open-source developer tools.",
+              sameAs: [
+                "https://github.com/shami-ah",
+                "https://www.linkedin.com/in/muhammad-ahtesham-ahmad-a153801b5",
+                "https://www.upwork.com/freelancers/~01bd0ab6e093ea2d49",
+              ],
+              knowsAbout: [
+                "Artificial Intelligence",
+                "Large Language Models",
+                "Multi-Agent Systems",
+                "TypeScript",
+                "React",
+                "Full Stack Development",
+              ],
+            }),
+          }}
+        />
       </head>
       <body className="min-h-full flex flex-col bg-background text-foreground">
         <a href="#main-content" className="skip-to-content">

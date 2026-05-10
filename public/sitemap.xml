@@ -6,63 +6,18 @@
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://ahtesham.dev.wadwarehouse.com/cv</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://ahtesham.dev.wadwarehouse.com/journey</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://ahtesham.dev.wadwarehouse.com/chat</loc>
+    <loc>https://ahtesham.dev.wadwarehouse.com/uses</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://ahtesham.dev.wadwarehouse.com/projects/codelens</loc>
+    <loc>https://ahtesham.dev.wadwarehouse.com/writing</loc>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://ahtesham.dev.wadwarehouse.com/projects/openevent</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://ahtesham.dev.wadwarehouse.com/projects/gogaa-cli</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://ahtesham.dev.wadwarehouse.com/projects/command-center</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>https://ahtesham.dev.wadwarehouse.com/projects/agent-system</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>https://ahtesham.dev.wadwarehouse.com/projects/dev-env</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.4</priority>
-  </url>
-  <url>
-    <loc>https://ahtesham.dev.wadwarehouse.com/projects/rag-pipeline</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.4</priority>
-  </url>
-  <url>
-    <loc>https://ahtesham.dev.wadwarehouse.com/projects/vqa-agent</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.4</priority>
-  </url>
-  <url>
-    <loc>https://ahtesham.dev.wadwarehouse.com/projects/gluten-free</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.4</priority>
+    <priority>0.6</priority>
   </url>
 </urlset>
