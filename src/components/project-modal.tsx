@@ -7,6 +7,7 @@ import { ChevronLeft, ChevronRight, X, Lock } from "lucide-react";
 import type { ProjectData } from "@/data/projects";
 import { diagrams } from "@/data/diagrams";
 import { ArchitectureDiagram } from "./architecture-diagram";
+import { DecisionTree } from "./decision-tree";
 import { AccessRequestModal } from "./access-request-modal";
 
 interface ProjectModalProps {
@@ -88,6 +89,17 @@ export function ProjectModal({
   }, [project?.slug]);
 
   useScrollLock(!!project);
+
+  // Signal sidebar/topbar to hide when modal is open
+  useEffect(() => {
+    if (project) {
+      document.body.setAttribute("data-modal-open", "true");
+    } else {
+      document.body.removeAttribute("data-modal-open");
+    }
+    return () => document.body.removeAttribute("data-modal-open");
+  }, [project]);
+
   useEffect(() => {
     if (!project) return;
     const onKey = (e: KeyboardEvent): void => {
@@ -223,6 +235,17 @@ export function ProjectModal({
                 </div>
               </motion.div>
 
+              {/* Decision tree — interactive "test yourself" */}
+              {project.decision && (
+                <motion.div
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.25, duration: 0.35 }}
+                >
+                  <DecisionTree decision={project.decision} />
+                </motion.div>
+              )}
+
               {/* Architecture flow — clickable */}
               <motion.div
                 initial={{ opacity: 0, y: 8 }}
@@ -307,8 +330,8 @@ export function ProjectModal({
                 </motion.div>
               )}
 
-              {/* OpenEvent-only: Before / After impact panel */}
-              {project.slug === "openevent" && (
+              {/* Before / After impact panel — any project with measuredImpact */}
+              {project.measuredImpact && (
                 <motion.div
                   initial={{ opacity: 0, y: 8 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -324,10 +347,13 @@ export function ProjectModal({
                         before
                       </p>
                       <p className="text-3xl md:text-5xl font-bold text-muted font-mono leading-none">
-                        ~1.5<span className="text-muted/40 text-lg md:text-2xl">hrs</span>
+                        {project.measuredImpact.before.value}
+                        {project.measuredImpact.before.unit && (
+                          <span className="text-muted/40 text-lg md:text-2xl">{project.measuredImpact.before.unit}</span>
+                        )}
                       </p>
                       <p className="text-caption md:text-xs text-muted/80 mt-2">
-                        per team, per day, reading &amp; triaging email
+                        {project.measuredImpact.before.context}
                       </p>
                     </div>
                     <div className="relative p-4 md:p-5 rounded-xl bg-gradient-to-br from-accent/10 via-background/50 to-background/50 border border-accent/20 overflow-hidden">
@@ -337,30 +363,29 @@ export function ProjectModal({
                         after
                       </p>
                       <p className="text-3xl md:text-5xl font-bold text-accent font-mono leading-none">
-                        ~15<span className="text-accent/60 text-lg md:text-2xl">min</span>
+                        {project.measuredImpact.after.value}
+                        {project.measuredImpact.after.unit && (
+                          <span className="text-accent/60 text-lg md:text-2xl">{project.measuredImpact.after.unit}</span>
+                        )}
                       </p>
                       <p className="text-caption md:text-xs text-muted mt-2">
-                        review AI-drafted actions &amp; approve
+                        {project.measuredImpact.after.context}
                       </p>
                     </div>
                   </div>
                   <div className="grid grid-cols-3 gap-2 mt-2">
-                    {[
-                      { n: "100+", l: "active clients" },
-                      { n: "150+", l: "events run" },
-                      { n: "83%", l: "time saved" },
-                    ].map((s, i) => (
+                    {project.measuredImpact.highlights.map((s, i) => (
                       <div
                         key={s.l}
                         className={`p-2.5 rounded-lg text-center ${
-                          i === 2
+                          i === project.measuredImpact!.highlights.length - 1
                             ? "bg-accent/10 border border-accent/20"
                             : "bg-background/50 border border-card-border"
                         }`}
                       >
                         <p
                           className={`text-base md:text-lg font-bold font-mono tabular-nums ${
-                            i === 2 ? "text-accent" : "text-foreground/80"
+                            i === project.measuredImpact!.highlights.length - 1 ? "text-accent" : "text-foreground/80"
                           }`}
                         >
                           {s.n}
@@ -399,6 +424,53 @@ export function ProjectModal({
                       </motion.li>
                     ))}
                   </ul>
+                </motion.div>
+              )}
+
+              {/* My approach vs standard */}
+              {project.vs && (
+                <motion.div
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.45, duration: 0.35 }}
+                  className="mt-8 md:mt-10"
+                >
+                  <p className="text-caption md:text-xs font-mono text-accent/80 uppercase tracking-[0.2em] mb-3">
+                    Approach Comparison
+                  </p>
+                  <div className="grid md:grid-cols-2 gap-3">
+                    {/* My approach */}
+                    <div className="p-4 md:p-5 rounded-xl bg-gradient-to-br from-green-500/5 via-background/50 to-background/50 border border-green-500/20 relative overflow-hidden">
+                      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-green-400 to-transparent" />
+                      <p className="text-caption font-mono text-green-400 uppercase tracking-[0.2em] mb-3 flex items-center gap-1.5">
+                        <span className="w-1.5 h-1.5 rounded-full bg-green-400" />
+                        {project.vs.mine.title}
+                      </p>
+                      <ul className="space-y-2">
+                        {project.vs.mine.bullets.map((b) => (
+                          <li key={b} className="flex gap-2 text-xs md:text-sm text-foreground/80 leading-relaxed">
+                            <span className="text-green-400/80 shrink-0 mt-0.5">▸</span>
+                            <span>{b}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                    {/* Standard approach */}
+                    <div className="p-4 md:p-5 rounded-xl bg-background/50 border border-card-border relative overflow-hidden">
+                      <p className="text-caption font-mono text-muted/60 uppercase tracking-[0.2em] mb-3 flex items-center gap-1.5">
+                        <span className="w-1.5 h-1.5 rounded-full bg-muted/40" />
+                        {project.vs.standard.title}
+                      </p>
+                      <ul className="space-y-2">
+                        {project.vs.standard.bullets.map((b) => (
+                          <li key={b} className="flex gap-2 text-xs md:text-sm text-muted leading-relaxed">
+                            <span className="text-muted/40 shrink-0 mt-0.5">▸</span>
+                            <span>{b}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
                 </motion.div>
               )}
 

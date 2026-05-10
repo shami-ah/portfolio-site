@@ -515,6 +515,50 @@ function ProjectDetailsContent({ project, mockup }: { project: ProjectData; mock
         <DecisionTree decision={project.decision} />
       )}
 
+      {/* Measured Impact — before/after */}
+      {project.measuredImpact && (
+        <div className="mt-8 pt-6 border-t border-card-border/30">
+          <p className="text-xs font-mono text-accent mb-4 uppercase tracking-wider">Measured Impact</p>
+          <div className="grid grid-cols-2 gap-2 md:gap-3">
+            <div className="p-4 md:p-5 rounded-xl bg-background/50 border border-card-border">
+              <p className="text-caption font-mono text-muted/60 uppercase tracking-[0.2em] mb-1.5">before</p>
+              <p className="text-3xl md:text-5xl font-bold text-muted font-mono leading-none">
+                {project.measuredImpact.before.value}
+                {project.measuredImpact.before.unit && <span className="text-muted/40 text-lg md:text-2xl">{project.measuredImpact.before.unit}</span>}
+              </p>
+              <p className="text-caption md:text-xs text-muted/80 mt-2">{project.measuredImpact.before.context}</p>
+            </div>
+            <div className="relative p-4 md:p-5 rounded-xl bg-gradient-to-br from-accent/10 via-background/50 to-background/50 border border-accent/20 overflow-hidden">
+              <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-accent to-transparent" />
+              <p className="text-caption font-mono text-accent uppercase tracking-[0.2em] mb-1.5 flex items-center gap-1.5">
+                <span className="w-1 h-1 rounded-full bg-green-400 animate-pulse" />
+                after
+              </p>
+              <p className="text-3xl md:text-5xl font-bold text-accent font-mono leading-none">
+                {project.measuredImpact.after.value}
+                {project.measuredImpact.after.unit && <span className="text-accent/60 text-lg md:text-2xl">{project.measuredImpact.after.unit}</span>}
+              </p>
+              <p className="text-caption md:text-xs text-muted mt-2">{project.measuredImpact.after.context}</p>
+            </div>
+          </div>
+          <div className="grid grid-cols-3 gap-2 mt-2">
+            {project.measuredImpact.highlights.map((s, i) => (
+              <div
+                key={s.l}
+                className={`p-2.5 rounded-lg text-center ${
+                  i === project.measuredImpact!.highlights.length - 1
+                    ? "bg-accent/10 border border-accent/20"
+                    : "bg-background/50 border border-card-border"
+                }`}
+              >
+                <p className={`text-base md:text-lg font-bold font-mono tabular-nums ${i === project.measuredImpact!.highlights.length - 1 ? "text-accent" : "text-foreground/80"}`}>{s.n}</p>
+                <p className="text-caption text-muted/60 uppercase tracking-wider">{s.l}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
       {project.features.length > 0 && (
         <div className="mt-8 pt-6 border-t border-card-border/30">
           <p className="text-xs font-mono text-accent mb-4 uppercase tracking-wider">Key Features</p>
@@ -526,6 +570,44 @@ function ProjectDetailsContent({ project, mockup }: { project: ProjectData; mock
               </li>
             ))}
           </ul>
+        </div>
+      )}
+
+      {/* Approach comparison */}
+      {project.vs && (
+        <div className="mt-8 pt-6 border-t border-card-border/30">
+          <p className="text-xs font-mono text-accent mb-4 uppercase tracking-wider">Approach Comparison</p>
+          <div className="grid md:grid-cols-2 gap-3">
+            <div className="p-4 md:p-5 rounded-xl bg-gradient-to-br from-green-500/5 via-background/50 to-background/50 border border-green-500/20 relative overflow-hidden">
+              <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-green-400 to-transparent" />
+              <p className="text-caption font-mono text-green-400 uppercase tracking-[0.2em] mb-3 flex items-center gap-1.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-green-400" />
+                {project.vs.mine.title}
+              </p>
+              <ul className="space-y-2">
+                {project.vs.mine.bullets.map((b) => (
+                  <li key={b} className="flex gap-2 text-xs md:text-sm text-foreground/80 leading-relaxed">
+                    <span className="text-green-400/80 shrink-0 mt-0.5">▸</span>
+                    <span>{b}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className="p-4 md:p-5 rounded-xl bg-background/50 border border-card-border relative overflow-hidden">
+              <p className="text-caption font-mono text-muted/60 uppercase tracking-[0.2em] mb-3 flex items-center gap-1.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-muted/40" />
+                {project.vs.standard.title}
+              </p>
+              <ul className="space-y-2">
+                {project.vs.standard.bullets.map((b) => (
+                  <li key={b} className="flex gap-2 text-xs md:text-sm text-muted leading-relaxed">
+                    <span className="text-muted/40 shrink-0 mt-0.5">▸</span>
+                    <span>{b}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
         </div>
       )}
 
@@ -974,7 +1056,16 @@ function OtherDeployments({
 /* ------------------------------------------------------------------ */
 
 export function Projects(): React.ReactElement {
-  const [activeProject, setActiveProject] = useState<ProjectData | null>(null);
+  const [activeProject, setActiveProjectRaw] = useState<ProjectData | null>(null);
+  const setActiveProject = useCallback((p: ProjectData | null | ((prev: ProjectData | null) => ProjectData | null)) => {
+    setActiveProjectRaw((prev) => {
+      const next = typeof p === "function" ? p(prev) : p;
+      if (next) {
+        window.dispatchEvent(new CustomEvent("project-opened", { detail: next.slug }));
+      }
+      return next;
+    });
+  }, []);
   const [expandedPanel, setExpandedPanel] = useState<ExpandedPanel>(null);
   const flagshipMeta = useFlagshipMeta();
   const sectionRef = useRef<HTMLElement>(null);
@@ -1024,13 +1115,13 @@ export function Projects(): React.ReactElement {
     (dir: 1 | -1) => {
       setActiveProject((current) => {
         if (!current) return current;
-        const idx = projects.findIndex((p) => p.slug === current.slug);
+        const idx = others.findIndex((p) => p.slug === current.slug);
         if (idx === -1) return current;
-        const next = (idx + dir + projects.length) % projects.length;
-        return projects[next];
+        const next = (idx + dir + others.length) % others.length;
+        return others[next];
       });
     },
-    [],
+    [others],
   );
 
   return (

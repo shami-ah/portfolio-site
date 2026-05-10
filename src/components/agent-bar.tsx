@@ -177,6 +177,88 @@ function scrollTo(id: string): void {
   document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
+/* ------------------------------------------------------------------ */
+/*  Fuzzy intent matching for free-text queries                        */
+/* ------------------------------------------------------------------ */
+
+interface FuzzyMatch {
+  command: AgentCommand;
+  score: number;
+}
+
+const PROJECT_KEYWORDS: Record<string, string[]> = {
+  projects: ["event", "management", "booking", "email", "openevent", "client", "crm", "invoice"],
+  projects_codelens: ["code review", "lint", "pattern", "bug", "security", "pr review", "codelens", "static analysis"],
+  projects_gogaa: ["cli", "coding agent", "ai coding", "terminal", "provider", "model", "gogaa", "llm"],
+  projects_rasad: ["observability", "session", "analytics", "cost", "token", "rasad", "monitoring"],
+  rate: ["rate", "price", "pricing", "cost", "charge", "budget", "hourly", "salary", "pay", "compensation", "how much", "expensive"],
+  hire: ["hire", "hiring", "recruit", "work with", "engage", "freelance", "contract", "full-time", "available", "looking for"],
+  cv: ["resume", "cv", "background", "qualification", "education", "experience", "portfolio"],
+  skills: ["skills", "skill", "tech stack", "technology", "what do you know", "expertise", "proficient"],
+  contact: ["contact", "reach", "email", "call", "talk", "connect", "meet", "book"],
+  chat: ["chat", "ask", "question", "tell me", "explain", "help me", "more info", "details"],
+  build: ["build", "ship", "deliver", "process", "workflow", "methodology", "how do you work"],
+  tour: ["tour", "journey", "story", "about you", "who are you", "background"],
+  stack: ["stack", "tools", "framework", "language", "react", "typescript", "supabase", "next"],
+  availability: ["available", "availability", "when", "start", "timeline", "capacity"],
+  impact: ["impact", "results", "numbers", "metrics", "achievement"],
+  experience: ["experience", "career", "worked", "company", "job", "role", "position"],
+};
+
+function fuzzyMatch(query: string, cmds: AgentCommand[]): FuzzyMatch | null {
+  const q = query.toLowerCase();
+  const tokens = q.split(/\s+/);
+
+  let best: FuzzyMatch | null = null;
+
+  for (const [keyword, phrases] of Object.entries(PROJECT_KEYWORDS)) {
+    let score = 0;
+    for (const phrase of phrases) {
+      if (q.includes(phrase)) {
+        score += phrase.split(/\s+/).length * 2;
+      } else {
+        for (const token of tokens) {
+          if (token.length >= 3 && phrase.includes(token)) score += 1;
+        }
+      }
+    }
+    if (score > 0) {
+      // Map compound keys like "projects_codelens" back to "projects"
+      const cmdKey = keyword.includes("_") ? keyword.split("_")[0] : keyword;
+      const cmd = cmds.find((c) => c.keyword === cmdKey);
+      if (cmd && (!best || score > best.score)) {
+        // Build a contextual response for project-specific queries
+        const projectName = keyword.includes("codelens") ? "CodeLens"
+          : keyword.includes("gogaa") ? "Gogaa CLI"
+          : keyword.includes("rasad") ? "Rasad"
+          : null;
+
+        if (projectName) {
+          best = {
+            score,
+            command: {
+              ...cmd,
+              intent: "project_match",
+              confidence: Math.min(0.95, 0.6 + score * 0.05),
+              steps: [
+                { name: "tokenize", detail: `${tokens.length} tokens`, ms: 3 },
+                { name: "fuzzy_match", detail: `best: ${projectName} · score ${score}`, ms: 38 },
+                { name: "route_to_tool", detail: "→ scroll_to_section", ms: 5 },
+                { name: "execute", detail: "target: #projects", ms: 110 },
+              ],
+              response: `Matched "${projectName}" — scrolling to projects. Click the card for the full case study.`,
+            },
+          };
+        } else {
+          best = { score, command: { ...cmd, confidence: Math.min(0.95, 0.6 + score * 0.05) } };
+        }
+      }
+    }
+  }
+
+  return best && best.score >= 2 ? best : null;
+}
+
 const commands: AgentCommand[] = [
   {
     keyword: "hire",
@@ -448,10 +530,94 @@ const ALL_CHIPS = [
 const SECTION_ORDER = ["hero", "mission", "projects", "log", "contact"] as const;
 
 /* ------------------------------------------------------------------ */
+/*  Section-aware agent personality                                    */
+/* ------------------------------------------------------------------ */
+
+interface AgentPersonality {
+  dotColor: string;
+  glowColor: string;
+  hoverLabel: string;
+  tooltip: string;
+}
+
+const SECTION_PERSONALITY: Record<string, AgentPersonality> = {
+  hero: {
+    dotColor: "bg-green-400",
+    glowColor: "rgba(74,222,128,0.4)",
+    hoverLabel: "agent",
+    tooltip: "ask me anything — <accent>I'm live</accent>",
+  },
+  mission: {
+    dotColor: "bg-accent",
+    glowColor: "rgba(212,168,67,0.4)",
+    hoverLabel: "impact",
+    tooltip: "50+ systems shipped — <accent>ask me about any</accent>",
+  },
+  projects: {
+    dotColor: "bg-blue-400",
+    glowColor: "rgba(96,165,250,0.4)",
+    hoverLabel: "explore",
+    tooltip: "click any project, then <accent>ask me why</accent>",
+  },
+  log: {
+    dotColor: "bg-purple-400",
+    glowColor: "rgba(192,132,252,0.4)",
+    hoverLabel: "career",
+    tooltip: "been building since 2019 — <accent>ask anything</accent>",
+  },
+  contact: {
+    dotColor: "bg-accent",
+    glowColor: "rgba(212,168,67,0.5)",
+    hoverLabel: "connect",
+    tooltip: "ready when you are — <accent>hire</accent> or <accent>rate</accent>",
+  },
+};
+
+/* ------------------------------------------------------------------ */
 /*  AgentBar — Button / Panel / Flying-to-Chat                        */
 /* ------------------------------------------------------------------ */
 
 type UIState = "hidden" | "button" | "panel" | "processing" | "responding" | "flying-to-chat";
+
+/* ------------------------------------------------------------------ */
+/*  Visitor memory — persists in sessionStorage                        */
+/* ------------------------------------------------------------------ */
+const MEMORY_KEY = "agent-visitor-memory";
+
+interface VisitorMemory {
+  sectionsViewed: string[];
+  commandsUsed: string[];
+  projectsOpened: string[];
+  visitCount: number;
+}
+
+function loadMemory(): VisitorMemory {
+  try {
+    const raw = sessionStorage.getItem(MEMORY_KEY);
+    if (raw) return JSON.parse(raw) as VisitorMemory;
+  } catch { /* noop */ }
+  return { sectionsViewed: [], commandsUsed: [], projectsOpened: [], visitCount: 0 };
+}
+
+function saveMemory(mem: VisitorMemory): void {
+  try { sessionStorage.setItem(MEMORY_KEY, JSON.stringify(mem)); } catch { /* noop */ }
+}
+
+function recordSection(id: string): void {
+  const mem = loadMemory();
+  if (!mem.sectionsViewed.includes(id)) {
+    mem.sectionsViewed.push(id);
+    saveMemory(mem);
+  }
+}
+
+function recordCommand(keyword: string): void {
+  const mem = loadMemory();
+  if (!mem.commandsUsed.includes(keyword)) {
+    mem.commandsUsed.push(keyword);
+    saveMemory(mem);
+  }
+}
 
 export function AgentBar(): React.ReactElement {
   const router = useRouter();
@@ -463,11 +629,14 @@ export function AgentBar(): React.ReactElement {
   const [showResponse, setShowResponse] = useState(false);
   const [showBuildPopup, setShowBuildPopup] = useState(false);
   const [showTooltip, setShowTooltip] = useState(false);
+  const [tooltipText, setTooltipText] = useState<string>("ask me anything — <accent>I'm live</accent>");
   const [buttonReady, setButtonReady] = useState(false);
   const [activeSection, setActiveSection] = useState("hero");
+  const [viewingProject, setViewingProject] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const flyRef = useRef<HTMLDivElement>(null);
   const navTimerRef = useRef<ReturnType<typeof setTimeout>>(undefined);
+  const shownTooltips = useRef<Set<string>>(new Set());
 
   // Track which section the user is currently viewing
   useEffect(() => {
@@ -483,6 +652,7 @@ export function AgentBar(): React.ReactElement {
           if (el && el.offsetTop <= probeY) current = id;
         }
         setActiveSection(current);
+        recordSection(current);
         ticking = false;
       });
     };
@@ -490,18 +660,195 @@ export function AgentBar(): React.ReactElement {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Filter chips to show only sections ahead of current scroll position
+  // Context-aware tooltips — show once per section with conversational personality
+  useEffect(() => {
+    if (uiState !== "button" || !buttonReady) return;
+    // Skip hero — boot tooltip already handles it
+    if (activeSection === "hero") return;
+    const key = `section-${activeSection}`;
+    if (shownTooltips.current.has(key)) return;
+
+    const personality = SECTION_PERSONALITY[activeSection];
+    if (!personality) return;
+
+    shownTooltips.current.add(key);
+    const showTimer = setTimeout(() => {
+      setTooltipText(personality.tooltip);
+      setShowTooltip(true);
+    }, 1800);
+    const hideTimer = setTimeout(() => setShowTooltip(false), 8000);
+
+    return () => { clearTimeout(showTimer); clearTimeout(hideTimer); };
+  }, [activeSection, uiState, buttonReady]);
+
+  // Tooltip after a project modal is opened — nudge toward methodology chips
+  useEffect(() => {
+    if (!viewingProject) return;
+    const hasMethodology = !!(PROJECT_METHODOLOGY[viewingProject]?.length);
+    if (!hasMethodology) return;
+    if (shownTooltips.current.has(`method-${viewingProject}`)) return;
+    shownTooltips.current.add(`method-${viewingProject}`);
+    const showTimer = setTimeout(() => {
+      setTooltipText("ask <accent>why</accent> I built it this way");
+      setShowTooltip(true);
+    }, 2500);
+    const hideTimer = setTimeout(() => setShowTooltip(false), 8500);
+    return () => { clearTimeout(showTimer); clearTimeout(hideTimer); };
+  }, [viewingProject]);
+
+  /* ── Methodology chips per project ── */
+  const PROJECT_METHODOLOGY: Record<string, { label: string; command: AgentCommand }[]> = {
+    openevent: [
+      { label: "Why human-in-the-loop?", command: {
+        keyword: "why-hitl", intent: "methodology_query", confidence: 0.97,
+        steps: [
+          { name: "classify_intent", detail: "label: methodology_query · conf 0.97", ms: 31 },
+          { name: "load_principle", detail: "principle_1: trust_boundary", ms: 12 },
+          { name: "retrieve_evidence", detail: "openevent: 100+ clients", ms: 28 },
+          { name: "compose_response", detail: "linking principle to outcome", ms: 8 },
+        ],
+        response: "Full automation fails on the first misread. Event coordination is full of ambiguity. I designed AI to handle extraction and proposal — humans approve before anything touches money. That trust boundary is why 100+ clients adopted in 8 months with zero AI errors.",
+      }},
+      { label: "Why this architecture?", command: {
+        keyword: "why-arch", intent: "architecture_query", confidence: 0.95,
+        steps: [
+          { name: "classify_intent", detail: "label: architecture_query · conf 0.95", ms: 29 },
+          { name: "load_principle", detail: "principle_2: architect_first", ms: 14 },
+          { name: "retrieve_evidence", detail: "declarative workflows + pgvector", ms: 22 },
+        ],
+        response: "JSON/YAML workflows so non-engineers can add steps without deploys. pgvector inside Postgres — no separate vector DB, zero sync lag. Every component is replaceable without rewriting the pipeline.",
+      }},
+      { label: "How was this shipped?", command: {
+        keyword: "how-ship", intent: "process_query", confidence: 0.96,
+        steps: [
+          { name: "classify_intent", detail: "label: process_query · conf 0.96", ms: 26 },
+          { name: "load_principle", detail: "principle_6: feature_flags", ms: 10 },
+          { name: "retrieve_evidence", detail: "8 months, 100+ clients, zero downtime", ms: 18 },
+        ],
+        response: "Architecture doc first (3 days). Sprint-based delivery. Every PR through CodeLens. Dark deploy → 10% rollout → full launch. 8 months from zero to 100+ clients with zero-downtime deploys.",
+        action: () => window.dispatchEvent(new CustomEvent("show-build-popup")),
+      }},
+    ],
+    codelens: [
+      { label: "Why patterns over AI?", command: {
+        keyword: "why-patterns", intent: "methodology_query", confidence: 0.96,
+        steps: [
+          { name: "classify_intent", detail: "label: methodology_query · conf 0.96", ms: 28 },
+          { name: "load_principle", detail: "deterministic_first", ms: 11 },
+          { name: "retrieve_evidence", detail: "430 patterns, <1s, 8%→100%", ms: 24 },
+        ],
+        response: "AI catches novel bugs but hallucinates on known ones. 430 hand-crafted patterns from real PRs run in <1s with zero false positives. AI layer runs after — only for what patterns can't express. When Greptile caught 12 issues I missed, I ran a gap analysis and closed all 12. Coverage: 8% → 100%.",
+      }},
+      { label: "Why build your own?", command: {
+        keyword: "why-build-own", intent: "methodology_query", confidence: 0.94,
+        steps: [
+          { name: "classify_intent", detail: "label: methodology_query · conf 0.94", ms: 30 },
+          { name: "load_principle", detail: "principle_4: consumer_producer", ms: 13 },
+          { name: "retrieve_evidence", detail: "351KB, zero deps, runs anywhere", ms: 20 },
+        ],
+        response: "I'm both consumer and producer of dev tooling. SonarQube needs Java + a server. Commercial SaaS sends your code to a third party. CodeLens is one 351KB file — runs as a pre-commit hook, no cloud dependency, no vendor lock-in.",
+      }},
+    ],
+    "gogaa-cli": [
+      { label: "Why 11 providers?", command: {
+        keyword: "why-providers", intent: "methodology_query", confidence: 0.95,
+        steps: [
+          { name: "classify_intent", detail: "label: methodology_query · conf 0.95", ms: 27 },
+          { name: "load_principle", detail: "no_vendor_lock", ms: 12 },
+          { name: "retrieve_evidence", detail: "11 providers, auto-fallback", ms: 19 },
+        ],
+        response: "If your provider rate-limits, you stop working. I made the provider a variable — 11 providers behind one streaming interface with automatic fallback. When Claude goes down, it switches to GPT. When GPT goes down, it switches to Groq. You never stop working.",
+      }},
+      { label: "Why build from scratch?", command: {
+        keyword: "why-scratch", intent: "methodology_query", confidence: 0.93,
+        steps: [
+          { name: "classify_intent", detail: "label: methodology_query · conf 0.93", ms: 32 },
+          { name: "load_principle", detail: "principle_4: consumer_producer", ms: 14 },
+          { name: "retrieve_evidence", detail: "1,400+ tests, WAL persistence", ms: 21 },
+        ],
+        response: "Forking means inheriting vendor assumptions. Wrapping means fighting their architecture. I built from scratch so every subsystem — provider, TUI, git, tools, session — is first-class and swappable. 1,400+ tests prove it works.",
+      }},
+    ],
+    rasad: [
+      { label: "Why local-first?", command: {
+        keyword: "why-local", intent: "methodology_query", confidence: 0.96,
+        steps: [
+          { name: "classify_intent", detail: "label: methodology_query · conf 0.96", ms: 25 },
+          { name: "load_principle", detail: "principle_3: strict_boundaries", ms: 11 },
+          { name: "retrieve_evidence", detail: "zero outbound requests", ms: 16 },
+        ],
+        response: "AI session data contains your code, your prompts, your costs. That data should never leave your machine. Rasad runs 100% local — SQLite, localhost API, zero outbound requests. Your observability data stays yours.",
+      }},
+      { label: "Why unified observatory?", command: {
+        keyword: "why-unified", intent: "methodology_query", confidence: 0.94,
+        steps: [
+          { name: "classify_intent", detail: "label: methodology_query · conf 0.94", ms: 29 },
+          { name: "retrieve_evidence", detail: "4 tools, 656 sessions, one dashboard", ms: 23 },
+        ],
+        response: "Billing dashboards show cost, not behavior. Custom logging means modifying each tool. Rasad reads session files directly from Claude Code, Gogaa, and Codex — one dashboard for 656 sessions, 38K messages, 14K tool calls. No tool modifications needed.",
+      }},
+    ],
+  };
+
+  // Filter chips: show sections ahead of scroll + contextual suggestions based on visitor memory
   const currentIdx = SECTION_ORDER.indexOf(activeSection as typeof SECTION_ORDER[number]);
-  const visibleChips = ALL_CHIPS.filter((chip) => {
+  const mem = loadMemory();
+
+  // When viewing a project, show methodology chips instead of section chips
+  const methodologyChips = viewingProject ? PROJECT_METHODOLOGY[viewingProject] ?? [] : [];
+
+  const baseChips = methodologyChips.length > 0 ? [] : ALL_CHIPS.filter((chip) => {
     const chipIdx = SECTION_ORDER.indexOf(chip.section as typeof SECTION_ORDER[number]);
     return chipIdx > currentIdx;
   });
+  // Add contextual chips based on what visitor has explored
+  const contextChips: { label: string; command: string; section: string }[] = [];
+  if (!viewingProject) {
+    if (mem.sectionsViewed.includes("projects") && !mem.commandsUsed.includes("build")) {
+      contextChips.push({ label: "How I ship", command: "build", section: "" });
+    }
+    if (mem.sectionsViewed.includes("contact") && !mem.commandsUsed.includes("cv")) {
+      contextChips.push({ label: "View CV", command: "cv", section: "" });
+    }
+    if (mem.commandsUsed.length >= 3 && !mem.commandsUsed.includes("chat")) {
+      contextChips.push({ label: "Ask anything", command: "chat", section: "" });
+    }
+    if (!mem.commandsUsed.includes("tour") && mem.sectionsViewed.length >= 3) {
+      contextChips.push({ label: "Full journey", command: "tour", section: "" });
+    }
+  }
+  const visibleChips = [...baseChips, ...contextChips].slice(0, 5);
 
   // Listen for build popup trigger
   useEffect(() => {
     const handler = (): void => setShowBuildPopup(true);
     window.addEventListener("show-build-popup", handler);
     return () => window.removeEventListener("show-build-popup", handler);
+  }, []);
+
+  // Track project modal opens for visitor memory + set viewing context
+  useEffect(() => {
+    const onOpen = (e: Event): void => {
+      const slug = (e as CustomEvent<string>).detail;
+      if (slug) {
+        setViewingProject(slug);
+        const m = loadMemory();
+        if (!m.projectsOpened.includes(slug)) {
+          m.projectsOpened.push(slug);
+          saveMemory(m);
+        }
+      }
+    };
+    const onClose = (): void => setViewingProject(null);
+    window.addEventListener("project-opened", onOpen);
+    // Listen for modal close via body attribute change
+    const obs = new MutationObserver(() => {
+      if (document.body.getAttribute("data-modal-open") !== "true") {
+        setViewingProject(null);
+      }
+    });
+    obs.observe(document.body, { attributes: true, attributeFilter: ["data-modal-open"] });
+    return () => { window.removeEventListener("project-opened", onOpen); obs.disconnect(); };
   }, []);
 
   // Listen for agent-button-ready from boot animation
@@ -610,7 +957,8 @@ export function AgentBar(): React.ReactElement {
   // Clean up nav timer on unmount
   useEffect(() => () => { if (navTimerRef.current) clearTimeout(navTimerRef.current); }, []);
 
-  // After response, close panel → return to button → fire action with particles
+  // After response, keep panel visible until user interacts (mouse move / click / scroll)
+  // Commands with navigation actions (scroll/navigate) auto-dismiss after a brief read delay
   useEffect(() => {
     if (uiState !== "responding" || !activeCmd) return;
 
@@ -623,25 +971,49 @@ export function AgentBar(): React.ReactElement {
     }
 
     const cmd = activeCmd;
+    const hasAction = !!cmd.action || cmd.keyword === "tour";
 
-    // Close panel after brief response display
-    const closeTimer = setTimeout(() => {
+    const dismiss = (): void => {
       setActiveCmd(null);
       setShownSteps(0);
       setShowResponse(false);
       setInput("");
       setUiState("button");
-    }, 800);
+      // Fire navigation action after panel closes
+      if (navTimerRef.current) clearTimeout(navTimerRef.current);
+      navTimerRef.current = setTimeout(() => {
+        if (cmd.keyword === "tour") router.push("/journey");
+        else cmd.action?.();
+      }, 400);
+    };
 
-    // Fire navigation action after panel is fully closed — stored in ref
-    // so it survives the state-change cleanup cycle
-    if (navTimerRef.current) clearTimeout(navTimerRef.current);
-    navTimerRef.current = setTimeout(() => {
-      if (cmd.keyword === "tour") router.push("/journey");
-      else cmd.action?.();
-    }, 1200);
+    // For commands with a navigation action, auto-dismiss after 2s read time
+    // For info-only commands (rate, stack, availability), wait for user interaction
+    let autoTimer: ReturnType<typeof setTimeout> | undefined;
+    if (hasAction) {
+      autoTimer = setTimeout(dismiss, 2000);
+    }
 
-    return () => clearTimeout(closeTimer);
+    // Always dismiss on mouse move, click, or scroll (after a 600ms grace period)
+    let armed = false;
+    const armTimer = setTimeout(() => { armed = true; }, 600);
+
+    const onInteract = (): void => {
+      if (!armed) return;
+      dismiss();
+    };
+
+    window.addEventListener("mousemove", onInteract, { once: true });
+    window.addEventListener("click", onInteract, { once: true });
+    window.addEventListener("scroll", onInteract, { once: true, passive: true });
+
+    return () => {
+      clearTimeout(armTimer);
+      if (autoTimer) clearTimeout(autoTimer);
+      window.removeEventListener("mousemove", onInteract);
+      window.removeEventListener("click", onInteract);
+      window.removeEventListener("scroll", onInteract);
+    };
   }, [uiState, activeCmd]);
 
   // Reappear as button after being hidden (post-command)
@@ -674,6 +1046,7 @@ export function AgentBar(): React.ReactElement {
   }, [uiState]);
 
   const runCommand = useCallback((cmd: AgentCommand): void => {
+    recordCommand(cmd.keyword);
     setActiveCmd(cmd);
     setShownSteps(0);
     setShowResponse(false);
@@ -684,22 +1057,92 @@ export function AgentBar(): React.ReactElement {
     e.preventDefault();
     const q = input.trim().toLowerCase();
     if (!q) return;
-    const match = commands.find((c) => c.keyword === q);
-    if (match) {
-      runCommand(match);
-    } else {
+    // 1. Exact keyword match — instant
+    const exact = commands.find((c) => c.keyword === q);
+    if (exact) { runCommand(exact); return; }
+    // 2. Fuzzy intent match — instant
+    const fuzzy = fuzzyMatch(q, commands);
+    if (fuzzy) { runCommand(fuzzy.command); return; }
+    // 3. LLM classification — async, with real pipeline timings
+    classifyWithLLM(q);
+  };
+
+  const classifyWithLLM = useCallback(async (query: string): Promise<void> => {
+    const t0 = performance.now();
+
+    // Show "thinking" state with first step
+    const thinkingCmd: AgentCommand = {
+      keyword: query,
+      intent: "classifying",
+      confidence: 0,
+      steps: [
+        { name: "tokenize", detail: `${query.split(/\s+/).length} tokens`, ms: 3 },
+        { name: "classify_intent", detail: "llm: llama-3.3-70b", ms: 0 },
+      ],
+      response: "",
+    };
+    setActiveCmd(thinkingCmd);
+    setShownSteps(0);
+    setShowResponse(false);
+    setUiState("processing");
+
+    try {
+      const res = await fetch("/api/classify", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ query }),
+      });
+      const data = (await res.json()) as {
+        command: string | null;
+        confidence: number;
+        response?: string;
+      };
+      const classifyMs = Math.round(performance.now() - t0);
+
+      if (data.command) {
+        // LLM mapped to a known command — run it with real timings
+        const matched = commands.find((c) => c.keyword === data.command);
+        if (matched) {
+          runCommand({
+            ...matched,
+            confidence: data.confidence,
+            steps: [
+              { name: "tokenize", detail: `${query.split(/\s+/).length} tokens`, ms: 3 },
+              { name: "classify_intent", detail: `llm: ${data.command} · conf ${data.confidence.toFixed(2)}`, ms: classifyMs },
+              ...(matched.steps.slice(1)),
+            ],
+          });
+          return;
+        }
+      }
+
+      // No command matched — show branded redirect response
+      const response = data.response || "Ahtesham works across a wide range of tech. Book a quick call to discuss.";
       runCommand({
-        keyword: q,
-        intent: "unknown",
-        confidence: 0.12,
+        keyword: query,
+        intent: "redirect",
+        confidence: data.confidence,
         steps: [
-          { name: "classify_intent", detail: "label: unknown · conf 0.12", ms: 28 },
-          { name: "fallback", detail: "no matching tool", ms: 12 },
+          { name: "tokenize", detail: `${query.split(/\s+/).length} tokens`, ms: 3 },
+          { name: "classify_intent", detail: `llm: no exact match · conf ${data.confidence.toFixed(2)}`, ms: classifyMs },
+          { name: "compose_redirect", detail: "→ personal response", ms: 8 },
         ],
-        response: `No tool matched "${q}". Try: projects · cv · rate · skills · chat`,
+        response,
+        action: () => scrollTo("contact"),
+      });
+    } catch {
+      // Network error — graceful fallback
+      runCommand({
+        keyword: query,
+        intent: "offline_redirect",
+        confidence: 0,
+        steps: [
+          { name: "classify_intent", detail: "agent offline", ms: 0 },
+        ],
+        response: "Agent is thinking slower than usual. Try 'projects', 'rate', or 'cv' — or book a call to talk directly.",
       });
     }
-  };
+  }, [runCommand]);
 
   const onChipClick = (command: string): void => {
     const match = commands.find((c) => c.keyword === command);
@@ -741,7 +1184,7 @@ export function AgentBar(): React.ReactElement {
                       className="font-mono text-small text-foreground whitespace-nowrap px-4 py-2 rounded-xl bg-card border border-accent/30 shadow-lg relative"
                       style={{ boxShadow: "0 4px 20px rgba(0,0,0,0.15), 0 0 15px var(--accent-glow)" }}
                     >
-                      ask me anything — <span className="text-accent">I&apos;m live</span>
+                      <span dangerouslySetInnerHTML={{ __html: tooltipText.replace(/<accent>/g, '<span class="text-accent">').replace(/<\/accent>/g, '</span>') }} />
                       <span className="absolute -bottom-[5px] left-1/2 -translate-x-1/2 w-2.5 h-2.5 bg-card border-r border-b border-accent/30 rotate-45" />
                     </motion.div>
                   </motion.div>
@@ -749,32 +1192,37 @@ export function AgentBar(): React.ReactElement {
               )}
             </AnimatePresence>
 
-            {/* Button — small pulsing dot, expands on hover */}
+            {/* Button — section-aware pulsing dot, transforms per context */}
             <div className="fixed z-[100] bottom-5 left-1/2 -translate-x-1/2">
-              <motion.button
-                type="button"
-                onClick={() => {
-                  setShowTooltip(false);
-                  setUiState("panel");
-                  setTimeout(() => inputRef.current?.focus(), 150);
-                }}
-                initial={{ opacity: 0, scale: 0.5 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.8 }}
-                transition={{ duration: 0.3, ease: [0.34, 1.56, 0.64, 1] }}
-                className="group flex items-center cursor-pointer glass rounded-full p-2.5 hover:px-4 hover:gap-2 transition-all duration-300"
-                style={{
-                  boxShadow: "0 4px 12px rgba(0,0,0,0.12), 0 0 4px rgba(0,0,0,0.06)",
-                }}
-              >
-              <span
-                className="w-2.5 h-2.5 rounded-full bg-accent-status shrink-0"
-                style={{ animation: "green-pulse 2s infinite" }}
-              />
-              <span className="max-w-0 overflow-hidden group-hover:max-w-[60px] transition-all duration-300 whitespace-nowrap font-mono text-small text-muted/60">
-                agent
-              </span>
-              </motion.button>
+              {(() => {
+                const p = SECTION_PERSONALITY[activeSection] ?? SECTION_PERSONALITY.hero;
+                return (
+                  <motion.button
+                    type="button"
+                    onClick={() => {
+                      setShowTooltip(false);
+                      setUiState("panel");
+                      setTimeout(() => inputRef.current?.focus(), 150);
+                    }}
+                    initial={{ opacity: 0, scale: 0.5 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.8 }}
+                    transition={{ duration: 0.3, ease: [0.34, 1.56, 0.64, 1] }}
+                    className="group flex items-center cursor-pointer glass rounded-full p-2.5 hover:px-4 hover:gap-2 transition-all duration-300"
+                    style={{
+                      boxShadow: `0 4px 12px rgba(0,0,0,0.12), 0 0 8px ${p.glowColor}`,
+                    }}
+                  >
+                    <span
+                      className={`w-2.5 h-2.5 rounded-full ${p.dotColor} shrink-0 transition-colors duration-700`}
+                      style={{ animation: "green-pulse 2s infinite" }}
+                    />
+                    <span className="max-w-0 overflow-hidden group-hover:max-w-[80px] transition-all duration-300 whitespace-nowrap font-mono text-small text-muted/60">
+                      {p.hoverLabel}
+                    </span>
+                  </motion.button>
+                );
+              })()}
             </div>
           </>
         )}
@@ -854,7 +1302,7 @@ export function AgentBar(): React.ReactElement {
               )}
             </AnimatePresence>
 
-            {/* Suggestion chips — only show when idle (panel state, no active command) */}
+            {/* Suggestion chips — methodology chips when viewing project, section chips otherwise */}
             <AnimatePresence>
               {uiState === "panel" && !activeCmd && (
                 <motion.div
@@ -864,19 +1312,34 @@ export function AgentBar(): React.ReactElement {
                   transition={{ duration: 0.3 }}
                   className="flex justify-center gap-1.5 mb-2 flex-wrap px-2"
                 >
-                  {visibleChips.map((chip, i) => (
-                    <motion.button
-                      key={chip.command}
-                      type="button"
-                      onClick={() => onChipClick(chip.command)}
-                      initial={{ opacity: 0, y: 8 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: i * 0.05 + 0.1, duration: 0.3 }}
-                      className="px-3 py-1.5 rounded-full glass text-small font-mono text-muted/70 hover:text-accent hover:border-accent/30 transition-all cursor-pointer"
-                    >
-                      {chip.label}
-                    </motion.button>
-                  ))}
+                  {methodologyChips.length > 0
+                    ? methodologyChips.map((mc, i) => (
+                        <motion.button
+                          key={mc.command.keyword}
+                          type="button"
+                          onClick={() => runCommand(mc.command)}
+                          initial={{ opacity: 0, y: 8 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: i * 0.05 + 0.1, duration: 0.3 }}
+                          className="px-3 py-1.5 rounded-full glass text-small font-mono text-green-400/70 border-green-500/20 hover:text-green-400 hover:border-green-500/40 hover:bg-green-500/5 transition-all cursor-pointer"
+                        >
+                          {mc.label}
+                        </motion.button>
+                      ))
+                    : visibleChips.map((chip, i) => (
+                        <motion.button
+                          key={chip.command}
+                          type="button"
+                          onClick={() => onChipClick(chip.command)}
+                          initial={{ opacity: 0, y: 8 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: i * 0.05 + 0.1, duration: 0.3 }}
+                          className="px-3 py-1.5 rounded-full glass text-small font-mono text-muted/70 hover:text-accent hover:border-accent/30 transition-all cursor-pointer"
+                        >
+                          {chip.label}
+                        </motion.button>
+                      ))
+                  }
                 </motion.div>
               )}
             </AnimatePresence>

@@ -33,6 +33,12 @@ export interface ProjectData {
     myChoice: number;
     reasoning: string;
   };
+  /** Before/after impact metrics for the case study */
+  measuredImpact?: {
+    before: { value: string; unit: string; context: string };
+    after: { value: string; unit: string; context: string };
+    highlights: { n: string; l: string }[];
+  };
   /** Split comparison: my approach vs the standard approach */
   vs?: {
     mine: { title: string; bullets: string[] };
@@ -95,6 +101,15 @@ export const projects: ProjectData[] = [
     ],
     live: "https://openevent.io",
     featured: true,
+    measuredImpact: {
+      before: { value: "~1.5", unit: "hrs", context: "per team, per day, reading & triaging email" },
+      after: { value: "~15", unit: "min", context: "review AI-drafted actions & approve" },
+      highlights: [
+        { n: "100+", l: "active clients" },
+        { n: "150+", l: "events run" },
+        { n: "83%", l: "time saved" },
+      ],
+    },
     decision: {
       scenario: "An event company gets 100+ ambiguous client emails daily. They want AI to handle it.",
       question: "How do you design the system?",
@@ -184,6 +199,15 @@ export const projects: ProjectData[] = [
     ],
     giteaRepo: "shami/codelens",
     featured: true,
+    measuredImpact: {
+      before: { value: "8%", unit: "", context: "coverage vs commercial AI reviewer (Greptile)" },
+      after: { value: "100%", unit: "", context: "all 12 gaps closed after gap analysis" },
+      highlights: [
+        { n: "430", l: "patterns" },
+        { n: "<1s", l: "review time" },
+        { n: "351KB", l: "zero deps" },
+      ],
+    },
     decision: {
       scenario: "Production bugs keep slipping past SonarQube + ESLint + AI review. They span multiple files with user input reaching DB queries unvalidated.",
       question: "What do you build?",
@@ -274,6 +298,15 @@ export const projects: ProjectData[] = [
       "Intent-based lazy context: 3,909 → 24 tokens for simple prompts",
     ],
     giteaRepo: "shami/gogaa-ts",
+    measuredImpact: {
+      before: { value: "~70%", unit: "", context: "tool call success rate with raw model JSON" },
+      after: { value: "~95%", unit: "", context: "after 5-strategy progressive JSON parser" },
+      highlights: [
+        { n: "1,400+", l: "tests passing" },
+        { n: "11", l: "providers" },
+        { n: "84%", l: "context saved" },
+      ],
+    },
     decision: {
       scenario: "Every AI coding CLI is locked to one vendor. If the API goes down, you stop working.",
       question: "What would you build?",
@@ -363,6 +396,15 @@ export const projects: ProjectData[] = [
       "Zero outbound requests — 100% local-first",
     ],
     github: "https://github.com/shami-ah/rasad",
+    measuredImpact: {
+      before: { value: "$0", unit: "", context: "visibility into AI tool behavior and cost" },
+      after: { value: "656", unit: "", context: "sessions analyzed with action-level replay" },
+      highlights: [
+        { n: "38K", l: "messages indexed" },
+        { n: "14K", l: "tool calls tracked" },
+        { n: "6.2s", l: "first sync (700MB)" },
+      ],
+    },
     decision: {
       scenario: "You're spending $500+/day on AI tools with zero visibility into what the AI is doing or whether sessions are efficient.",
       question: "How do you get observability?",
