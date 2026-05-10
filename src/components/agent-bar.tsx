@@ -370,7 +370,7 @@ const commands: AgentCommand[] = [
       { name: "route_to_tool", detail: "→ scroll_to_section", ms: 5 },
       { name: "execute", detail: "target: #projects", ms: 110 },
     ],
-    response: "9 case studies below. Click any card for architecture + results.",
+    response: "4 flagship projects + 5 side projects below. Click any card for the full case study.",
     action: () => scrollTo("projects"),
   },
   {

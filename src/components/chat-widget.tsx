@@ -426,10 +426,10 @@ export function ChatWidget(): React.ReactElement {
                   </div>
                 </div>
                 <div className="flex items-center gap-1">
-                  <button type="button" onClick={() => setState("minimized")} className="p-1.5 rounded-lg text-muted/40 hover:text-foreground/70 hover:bg-foreground/5 transition-colors" title="Minimize">
+                  <button type="button" onClick={() => setState("minimized")} className="p-1.5 rounded-lg text-muted/40 hover:text-foreground/70 hover:bg-foreground/5 transition-colors" aria-label="Minimize chat">
                     <Minus size={14} />
                   </button>
-                  <button type="button" onClick={() => setState("closed")} className="p-1.5 rounded-lg text-muted/40 hover:text-foreground/70 hover:bg-foreground/5 transition-colors" title="Close">
+                  <button type="button" onClick={() => setState("closed")} className="p-1.5 rounded-lg text-muted/40 hover:text-foreground/70 hover:bg-foreground/5 transition-colors" aria-label="Close chat">
                     <X size={14} />
                   </button>
                 </div>
