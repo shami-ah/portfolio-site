@@ -312,10 +312,10 @@ export function TerminalBoot({ force = false, onDone }: BootProps): React.ReactE
                       ],
                       backgroundColor: [
                         "rgba(21,21,21,0.8)",
-                        hexToRgba(ac, 0.2),
-                        hexToRgba(st, 0.3),
-                        hexToRgba(st, 0.4),
-                        hexToRgba(st, 0.15),
+                        hexToRgba(ac, 0.3),
+                        hexToRgba(st, 0.45),
+                        hexToRgba(st, 0.55),
+                        hexToRgba(st, 0.35),
                       ],
                     }
                   : { opacity: 1, scale: 1, y: 0 }
