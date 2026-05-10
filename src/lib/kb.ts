@@ -50,7 +50,7 @@ export const kb: KbEntry[] = [
       "expensive", "cheap", "affordable", "hourly", "per hour",
     ],
     response:
-      "Project work is tier-based, starting around $3k for scoped deliveries and scaling with complexity. Full-time roles are flexible depending on scope, equity, and impact. Easiest way to dial in the number is a quick call.",
+      "Hourly: $80–120/hr for contract work. Project-based: starting from $3k for scoped deliveries, scales with complexity — nothing below $3k. Full-time: flexible depending on scope, equity, and impact. Best way to dial in the number is a quick call.",
     tags: ["commercial"],
     actions: [
       { label: "Book a 15-min call", href: BOOK_URL },

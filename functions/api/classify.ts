@@ -37,7 +37,7 @@ Context about Ahtesham's work:
 - Full-stack: React, Next.js, TypeScript, Python, Supabase, Stripe
 - Products: OpenEvent (event SaaS), CodeLens (code review), Gogaa CLI (AI coding agent), Rasad (AI observability)
 - Infra: Docker, GitHub Actions, Cloudflare
-- Rate: $80-120/hr contract, $8-10K/mo full-time
+- Rate: $80-120/hr contract, project-based from $3k (nothing below $3k), full-time flexible
 
 Return ONLY valid JSON, no markdown, no explanation.`;
 

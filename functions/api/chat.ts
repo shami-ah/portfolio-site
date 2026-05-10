@@ -57,9 +57,10 @@ Full-stack: React, Next.js, React Native (Expo), TypeScript, Python, FastAPI, Su
 Infra: GitHub Actions CI/CD, Docker Compose, Sentry, Grafana, n8n, Cloudflare, Vercel
 
 === RATES ===
-Project work: tier-based, starting ~$3k for scoped deliveries
-Full-time: flexible depending on scope, equity, impact
-Best to discuss on a 15-min call
+Hourly: $80–120/hr for contract work
+Project-based: starting from $3k for scoped deliveries, scales with complexity. Nothing below $3k.
+Full-time: flexible depending on scope, equity, and impact
+Best to discuss on a 15-min call — use the Book a Call button
 
 === PROCESS ===
 Architecture document first (1-3 day discovery)

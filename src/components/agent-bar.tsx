@@ -153,6 +153,8 @@ interface AgentCommand {
   steps: AgentStep[];
   response: string;
   action?: () => void;
+  /** If set, agent shows pipeline then routes this query to chat widget */
+  routeToChat?: string;
 }
 
 function scrollTo(id: string): void {
@@ -377,10 +379,10 @@ const commands: AgentCommand[] = [
     confidence: 0.97,
     steps: [
       { name: "classify_intent", detail: "label: project_detail · conf 0.97", ms: 24 },
-      { name: "retrieve_context", detail: "openevent: production SaaS", ms: 18 },
+      { name: "route_to_chat", detail: "→ chat agent (RAG)", ms: 8 },
     ],
-    response: "OpenEvent — AI-powered event management. 100+ clients, 150+ events, saves ~1.5hrs/day. AI reads emails, proposes actions, humans approve. Scroll down to the card and click for the full case study.",
-    action: () => scrollTo("projects"),
+    response: "Routing to chat — full context on OpenEvent loaded.",
+    routeToChat: "Tell me about OpenEvent — the AI event management platform",
   },
   {
     keyword: "codelens",
@@ -388,10 +390,10 @@ const commands: AgentCommand[] = [
     confidence: 0.97,
     steps: [
       { name: "classify_intent", detail: "label: project_detail · conf 0.97", ms: 24 },
-      { name: "retrieve_context", detail: "codelens: AI code review", ms: 18 },
+      { name: "route_to_chat", detail: "→ chat agent (RAG)", ms: 8 },
     ],
-    response: "CodeLens — AI code review engine. 430 patterns from 600+ real PRs, reviews in <1s, zero deps (351KB). Beat a commercial AI reviewer head-to-head. Scroll down for the full case study.",
-    action: () => scrollTo("projects"),
+    response: "Routing to chat — full context on CodeLens loaded.",
+    routeToChat: "Tell me about CodeLens — the AI code review engine",
   },
   {
     keyword: "gogaa",
@@ -399,10 +401,10 @@ const commands: AgentCommand[] = [
     confidence: 0.97,
     steps: [
       { name: "classify_intent", detail: "label: project_detail · conf 0.97", ms: 24 },
-      { name: "retrieve_context", detail: "gogaa: AI coding agent", ms: 18 },
+      { name: "route_to_chat", detail: "→ chat agent (RAG)", ms: 8 },
     ],
-    response: "Gogaa CLI — AI coding agent with 11 providers and auto-fallback. 1,400+ tests, WAL persistence, React Ink TUI. If one provider goes down, you don't stop working. Scroll down for the full case study.",
-    action: () => scrollTo("projects"),
+    response: "Routing to chat — full context on Gogaa CLI loaded.",
+    routeToChat: "Tell me about Gogaa CLI — the AI coding agent with 11 providers",
   },
   {
     keyword: "rasad",
@@ -410,10 +412,10 @@ const commands: AgentCommand[] = [
     confidence: 0.97,
     steps: [
       { name: "classify_intent", detail: "label: project_detail · conf 0.97", ms: 24 },
-      { name: "retrieve_context", detail: "rasad: AI observability", ms: 18 },
+      { name: "route_to_chat", detail: "→ chat agent (RAG)", ms: 8 },
     ],
-    response: "Rasad — AI session observatory. 656 sessions analyzed, every tool call graded A-F, 100% local. Found that routine tasks on Opus cost 18x more than Sonnet. Scroll down for the full case study.",
-    action: () => scrollTo("projects"),
+    response: "Routing to chat — full context on Rasad loaded.",
+    routeToChat: "Tell me about Rasad — the AI session observatory",
   },
   {
     keyword: "writing",
@@ -449,17 +451,6 @@ const commands: AgentCommand[] = [
     response: "That's the feeling. Every interaction here is wired to something real. Keep poking.",
   },
   {
-    keyword: "presence",
-    intent: "toggle_presence",
-    confidence: 0.98,
-    steps: [
-      { name: "classify_intent", detail: "label: toggle_presence · conf 0.98", ms: 24 },
-      { name: "dispatch_event", detail: "toggle-presence", ms: 3 },
-    ],
-    response: "Toggled visitor presence. Fake cursors from other cities moving around.",
-    action: () => window.dispatchEvent(new CustomEvent("toggle-presence")),
-  },
-  {
     keyword: "skills",
     intent: "show_skills",
     confidence: 0.96,
@@ -489,9 +480,10 @@ const commands: AgentCommand[] = [
     confidence: 0.95,
     steps: [
       { name: "classify_intent", detail: "label: pricing_query · conf 0.95", ms: 28 },
-      { name: "retrieve_context", detail: "pricing_card", ms: 12 },
+      { name: "route_to_chat", detail: "→ chat agent (pricing context)", ms: 6 },
     ],
-    response: "$80-120/hr contract · $8-10K/mo full-time. Full stack ownership — architecture to deployed SaaS.",
+    response: "Routing to chat — detailed pricing breakdown.",
+    routeToChat: "What are Ahtesham's rates for contract and full-time work?",
   },
   {
     keyword: "stack",
@@ -499,9 +491,10 @@ const commands: AgentCommand[] = [
     confidence: 0.94,
     steps: [
       { name: "classify_intent", detail: "label: tech_stack · conf 0.94", ms: 30 },
-      { name: "retrieve_context", detail: "stack_card", ms: 14 },
+      { name: "route_to_chat", detail: "→ chat agent (stack context)", ms: 6 },
     ],
-    response: "TypeScript · React · Next.js · Supabase · Claude API · Docker · GitHub Actions · Cloudflare",
+    response: "Routing to chat — full stack details.",
+    routeToChat: "What is Ahtesham's tech stack?",
   },
   {
     keyword: "availability",
@@ -509,9 +502,10 @@ const commands: AgentCommand[] = [
     confidence: 0.93,
     steps: [
       { name: "classify_intent", detail: "label: availability_check · conf 0.93", ms: 26 },
-      { name: "retrieve_context", detail: "status_card", ms: 10 },
+      { name: "route_to_chat", detail: "→ chat agent (availability)", ms: 6 },
     ],
-    response: "Open to opportunities. Available for full-time, contract, or consulting. Gulf/remote preferred.",
+    response: "Routing to chat — availability details.",
+    routeToChat: "Is Ahtesham available for work? What's his availability?",
   },
   {
     keyword: "impact",
@@ -544,7 +538,7 @@ const commands: AgentCommand[] = [
     steps: [
       { name: "introspect", detail: "loading command registry", ms: 18 },
     ],
-    response: "Commands: projects · writing · contact · cv · impact · experience · rate · stack · skills · availability · chat · build · tour · call · help",
+    response: "Navigate: projects · impact · experience · contact · cv · skills · build · tour. Ask anything else — I'll route to the chat agent.",
   },
 ];
 
@@ -1043,10 +1037,17 @@ export function AgentBar(): React.ReactElement {
   useEffect(() => {
     if (uiState !== "responding" || !activeCmd) return;
 
-    // Chat command — fly to chat widget (separate flow)
-    if (activeCmd.keyword === "chat") {
+    // Chat command or routeToChat — fly to chat widget
+    if (activeCmd.keyword === "chat" || activeCmd.routeToChat) {
+      const query = activeCmd.routeToChat;
       const flyTimer = setTimeout(() => {
         setUiState("flying-to-chat");
+        // If routing with a query, dispatch it after the fly animation lands
+        if (query) {
+          setTimeout(() => {
+            window.dispatchEvent(new CustomEvent("chat-with-query", { detail: query }));
+          }, 1100);
+        }
       }, 800);
       return () => clearTimeout(flyTimer);
     }

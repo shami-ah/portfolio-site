@@ -231,6 +231,9 @@ export function ChatWidget(): React.ReactElement {
     return () => window.removeEventListener("open-chat-widget", handler);
   }, []);
 
+  // Accept pre-filled query from agent bar → open + auto-send (ref avoids declaration order issue)
+  const sendRef = useRef<(q: string) => void>(() => {});
+
   useEffect(() => {
     if (state === "closed" || state === "minimized") {
       window.dispatchEvent(new CustomEvent("close-chat-widget"));
@@ -319,6 +322,20 @@ export function ChatWidget(): React.ReactElement {
     },
     [streamAnswer],
   );
+
+  // Keep sendRef in sync for the event listener
+  sendRef.current = send;
+
+  useEffect(() => {
+    const handler = (e: Event): void => {
+      const query = (e as CustomEvent<string>).detail;
+      if (!query) return;
+      setState("open");
+      setTimeout(() => sendRef.current(query), 400);
+    };
+    window.addEventListener("chat-with-query", handler);
+    return () => window.removeEventListener("chat-with-query", handler);
+  }, []);
 
   const onSubmit = (e: React.FormEvent): void => {
     e.preventDefault();
