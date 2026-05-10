@@ -661,25 +661,44 @@ export function AgentBar(): React.ReactElement {
   }, []);
 
   // Context-aware tooltips — show once per section with conversational personality
+  // Defers if panel is open, fires when visitor returns to button state
+  const pendingTooltip = useRef<string | null>(null);
+
   useEffect(() => {
-    if (uiState !== "button" || !buttonReady) return;
-    // Skip hero — boot tooltip already handles it
     if (activeSection === "hero") return;
     const key = `section-${activeSection}`;
     if (shownTooltips.current.has(key)) return;
+    shownTooltips.current.add(key);
 
     const personality = SECTION_PERSONALITY[activeSection];
     if (!personality) return;
 
-    shownTooltips.current.add(key);
-    const showTimer = setTimeout(() => {
-      setTooltipText(personality.tooltip);
-      setShowTooltip(true);
-    }, 1800);
-    const hideTimer = setTimeout(() => setShowTooltip(false), 8000);
-
-    return () => { clearTimeout(showTimer); clearTimeout(hideTimer); };
+    if (uiState === "button" && buttonReady) {
+      // Show immediately
+      const showTimer = setTimeout(() => {
+        setTooltipText(personality.tooltip);
+        setShowTooltip(true);
+      }, 1800);
+      const hideTimer = setTimeout(() => setShowTooltip(false), 8000);
+      return () => { clearTimeout(showTimer); clearTimeout(hideTimer); };
+    } else {
+      // Defer — will fire when uiState returns to "button"
+      pendingTooltip.current = personality.tooltip;
+    }
   }, [activeSection, uiState, buttonReady]);
+
+  // Fire deferred tooltip when returning to button state
+  useEffect(() => {
+    if (uiState !== "button" || !buttonReady || !pendingTooltip.current) return;
+    const tip = pendingTooltip.current;
+    pendingTooltip.current = null;
+    const showTimer = setTimeout(() => {
+      setTooltipText(tip);
+      setShowTooltip(true);
+    }, 800);
+    const hideTimer = setTimeout(() => setShowTooltip(false), 7000);
+    return () => { clearTimeout(showTimer); clearTimeout(hideTimer); };
+  }, [uiState, buttonReady]);
 
   // Tooltip after a project modal is opened — nudge toward methodology chips
   useEffect(() => {
@@ -790,34 +809,71 @@ export function AgentBar(): React.ReactElement {
     ],
   };
 
-  // Filter chips: show sections ahead of scroll + contextual suggestions based on visitor memory
-  const currentIdx = SECTION_ORDER.indexOf(activeSection as typeof SECTION_ORDER[number]);
+  // Section-specific chip suggestions — contextual to where the visitor is
+  const SECTION_CHIPS: Record<string, { label: string; command: string }[]> = {
+    hero: [
+      { label: "Impact", command: "impact" },
+      { label: "Projects", command: "projects" },
+      { label: "How I ship", command: "build" },
+    ],
+    mission: [
+      { label: "Projects", command: "projects" },
+      { label: "How I ship", command: "build" },
+      { label: "Skills", command: "skills" },
+    ],
+    projects: [
+      { label: "How I ship", command: "build" },
+      { label: "Rate", command: "rate" },
+      { label: "Stack", command: "stack" },
+      { label: "Chat", command: "chat" },
+    ],
+    log: [
+      { label: "View CV", command: "cv" },
+      { label: "Projects", command: "projects" },
+      { label: "Rate", command: "rate" },
+      { label: "Full journey", command: "tour" },
+    ],
+    contact: [
+      { label: "Rate", command: "rate" },
+      { label: "View CV", command: "cv" },
+      { label: "Availability", command: "availability" },
+      { label: "Book a call", command: "call" },
+    ],
+  };
+
+  // Section-aware placeholder and hints for the input bar
+  const SECTION_INPUT: Record<string, { placeholder: string; hints: string }> = {
+    hero: { placeholder: "ask anything...", hints: "projects · rate · skills · chat" },
+    mission: { placeholder: "ask about impact...", hints: "projects · build · skills" },
+    projects: { placeholder: "ask about any project...", hints: "build · rate · stack · chat" },
+    log: { placeholder: "ask about experience...", hints: "cv · rate · tour · chat" },
+    contact: { placeholder: "rate, availability, or just say hi...", hints: "rate · cv · call · chat" },
+  };
+
   const mem = loadMemory();
 
   // When viewing a project, show methodology chips instead of section chips
   const methodologyChips = viewingProject ? PROJECT_METHODOLOGY[viewingProject] ?? [] : [];
 
-  const baseChips = methodologyChips.length > 0 ? [] : ALL_CHIPS.filter((chip) => {
-    const chipIdx = SECTION_ORDER.indexOf(chip.section as typeof SECTION_ORDER[number]);
-    return chipIdx > currentIdx;
-  });
-  // Add contextual chips based on what visitor has explored
-  const contextChips: { label: string; command: string; section: string }[] = [];
-  if (!viewingProject) {
-    if (mem.sectionsViewed.includes("projects") && !mem.commandsUsed.includes("build")) {
-      contextChips.push({ label: "How I ship", command: "build", section: "" });
-    }
-    if (mem.sectionsViewed.includes("contact") && !mem.commandsUsed.includes("cv")) {
-      contextChips.push({ label: "View CV", command: "cv", section: "" });
+  // Section-aware chips (replaces the old "sections ahead" logic)
+  const sectionChips = methodologyChips.length > 0
+    ? []
+    : (SECTION_CHIPS[activeSection] ?? SECTION_CHIPS.hero)
+        .filter((chip) => !mem.commandsUsed.includes(chip.command));
+
+  // Add memory-driven contextual chips
+  const contextChips: { label: string; command: string }[] = [];
+  if (!viewingProject && sectionChips.length < 4) {
+    if (mem.sectionsViewed.length >= 3 && !mem.commandsUsed.includes("tour")) {
+      contextChips.push({ label: "Full journey", command: "tour" });
     }
     if (mem.commandsUsed.length >= 3 && !mem.commandsUsed.includes("chat")) {
-      contextChips.push({ label: "Ask anything", command: "chat", section: "" });
-    }
-    if (!mem.commandsUsed.includes("tour") && mem.sectionsViewed.length >= 3) {
-      contextChips.push({ label: "Full journey", command: "tour", section: "" });
+      contextChips.push({ label: "Ask anything", command: "chat" });
     }
   }
-  const visibleChips = [...baseChips, ...contextChips].slice(0, 5);
+  const visibleChips = [...sectionChips, ...contextChips].slice(0, 5);
+
+  const inputConfig = SECTION_INPUT[activeSection] ?? SECTION_INPUT.hero;
 
   // Listen for build popup trigger
   useEffect(() => {
@@ -1057,6 +1113,22 @@ export function AgentBar(): React.ReactElement {
     e.preventDefault();
     const q = input.trim().toLowerCase();
     if (!q) return;
+
+    // 0. Project-context queries — "why", "how", "architecture" map to methodology chips
+    if (viewingProject && methodologyChips.length > 0) {
+      const contextKeywords: Record<string, number> = {
+        why: 0, "why this": 0, "why not": 0, reason: 0,
+        how: 2, "how did": 2, ship: 2, process: 2, shipped: 2,
+        architecture: 1, arch: 1, design: 1, "why this architecture": 1,
+      };
+      for (const [kw, idx] of Object.entries(contextKeywords)) {
+        if (q.includes(kw) && methodologyChips[idx]) {
+          runCommand(methodologyChips[idx].command);
+          return;
+        }
+      }
+    }
+
     // 1. Exact keyword match — instant
     const exact = commands.find((c) => c.keyword === q);
     if (exact) { runCommand(exact); return; }
@@ -1359,13 +1431,13 @@ export function AgentBar(): React.ReactElement {
                   type="text"
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
-                  placeholder="ask anything..."
+                  placeholder={viewingProject ? `ask about this project...` : inputConfig.placeholder}
                   disabled={uiState === "processing" || uiState === "responding"}
                   className="flex-1 min-w-0 bg-transparent outline-none font-mono text-small placeholder:text-muted/35 text-foreground disabled:opacity-50"
                 />
                 {!input && (
                   <span className="hidden sm:flex items-center gap-1 shrink-0 font-mono text-caption text-muted/30">
-                    writing · cv · rate · skills · chat · help
+                    {viewingProject ? "why · how · chat" : inputConfig.hints}
                   </span>
                 )}
                 <button
