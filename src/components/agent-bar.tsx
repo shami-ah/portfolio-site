@@ -855,23 +855,13 @@ export function AgentBar(): React.ReactElement {
   // When viewing a project, show methodology chips instead of section chips
   const methodologyChips = viewingProject ? PROJECT_METHODOLOGY[viewingProject] ?? [] : [];
 
-  // Section-aware chips (replaces the old "sections ahead" logic)
+  // Section-aware chips — always show relevant suggestions for current section
+  // Never filter these out based on usage; they're contextual navigation aids
   const sectionChips = methodologyChips.length > 0
     ? []
-    : (SECTION_CHIPS[activeSection] ?? SECTION_CHIPS.hero)
-        .filter((chip) => !mem.commandsUsed.includes(chip.command));
+    : (SECTION_CHIPS[activeSection] ?? SECTION_CHIPS.hero);
 
-  // Add memory-driven contextual chips
-  const contextChips: { label: string; command: string }[] = [];
-  if (!viewingProject && sectionChips.length < 4) {
-    if (mem.sectionsViewed.length >= 3 && !mem.commandsUsed.includes("tour")) {
-      contextChips.push({ label: "Full journey", command: "tour" });
-    }
-    if (mem.commandsUsed.length >= 3 && !mem.commandsUsed.includes("chat")) {
-      contextChips.push({ label: "Ask anything", command: "chat" });
-    }
-  }
-  const visibleChips = [...sectionChips, ...contextChips].slice(0, 5);
+  const visibleChips = sectionChips.slice(0, 5);
 
   const inputConfig = SECTION_INPUT[activeSection] ?? SECTION_INPUT.hero;
 
