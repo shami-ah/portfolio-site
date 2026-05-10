@@ -403,10 +403,10 @@ export function ChatWidget(): React.ReactElement {
             initial="hidden"
             animate="visible"
             exit="exit"
-            className="w-[calc(100vw-2rem)] sm:w-[400px] h-[min(560px,calc(100vh-7rem))] flex flex-col rounded-2xl overflow-hidden card-gradient-border"
+            className="w-[calc(100vw-2rem)] sm:w-[400px] h-[min(560px,calc(100vh-7rem))] flex flex-col rounded-xl overflow-hidden card-gradient-border"
           >
             {/* Glass background layer — opaque on mobile, translucent on desktop */}
-            <div className="absolute inset-0 bg-card md:bg-card/75 backdrop-blur-2xl rounded-2xl" />
+            <div className="absolute inset-0 bg-card md:bg-card/75 backdrop-blur-2xl rounded-xl" />
 
             {/* Ambient floating motes */}
             <AmbientMotes />

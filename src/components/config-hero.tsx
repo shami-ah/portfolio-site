@@ -177,7 +177,7 @@ function HeroAboutCard({ active, immediate }: { active: boolean; immediate: bool
         <div className="relative">
           <div className="absolute -inset-2 bg-gradient-to-br from-accent/20 to-accent-secondary/12 rounded-full blur-xl pointer-events-none" />
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/ahtesham.jpg" loading="eager" fetchPriority="high" alt="Ahtesham Ahmad" className="relative w-16 h-16 rounded-full object-cover border-2 border-accent/30 shadow-lg shadow-accent/10" />
+          <img src="/ahtesham.jpg" loading="eager" fetchPriority="high" alt="Ahtesham Ahmad" className="relative w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-full object-cover border-2 border-accent/30 shadow-lg shadow-accent/10" />
         </div>
       </div>
 
@@ -364,7 +364,7 @@ export function ConfigHero(): React.ReactElement {
             {/* 2. Title — word-by-word streaming with cursor */}
             <h1
               data-hero="title"
-              className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight leading-[1.15] mb-5"
+              className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight leading-[1.2] sm:leading-[1.15] mb-5"
             >
               <StreamingWords
                 segments={TITLE_SEGMENTS}

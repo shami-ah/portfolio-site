@@ -67,7 +67,7 @@ function BuildPopup({ onDone }: { onDone: () => void }): React.ReactElement {
         exit={{ scale: 0, opacity: 0 }}
         transition={{ type: "spring", stiffness: 300, damping: 22, mass: 0.8 }}
         onClick={(e) => e.stopPropagation()}
-        className="relative w-full max-w-[340px] rounded-[28px] bg-card/95 backdrop-blur-[24px] border border-accent-secondary/25 p-7 overflow-hidden"
+        className="relative w-full max-w-[340px] rounded-xl bg-card/95 backdrop-blur-[24px] border border-accent-secondary/25 p-7 overflow-hidden"
         style={{
           boxShadow: "0 0 60px rgba(59,130,246,0.15), 0 0 120px rgba(59,130,246,0.05), inset 0 1px 0 rgba(255,255,255,0.05)",
         }}

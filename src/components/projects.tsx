@@ -214,7 +214,7 @@ function MermaidDiagram({ chart, className }: { chart: string; className?: strin
     let cancelled = false;
     const fallbackTimer = window.setTimeout(() => {
       if (!cancelled) setShowFallback(true);
-    }, 2500);
+    }, 1500);
 
     async function render(): Promise<void> {
       setSvg("");
@@ -329,7 +329,7 @@ function ExpandModal({
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.95, opacity: 0 }}
             transition={{ duration: 0.2 }}
-            className="relative w-full max-w-5xl max-h-[90vh] rounded-2xl border border-card-border bg-card overflow-auto overscroll-contain"
+            className="relative w-full max-w-5xl max-h-[90vh] rounded-xl border border-card-border bg-card overflow-auto overscroll-contain"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="sticky top-0 z-10 flex items-center justify-between px-5 py-3 border-b border-card-border/50 bg-card/90 backdrop-blur-sm">

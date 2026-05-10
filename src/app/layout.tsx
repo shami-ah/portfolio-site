@@ -35,11 +35,11 @@ export const metadata: Metadata = {
     template: "%s | Ahtesham Ahmad",
   },
   description:
-    "AI engineer building production AI systems end-to-end. Multi-agent orchestration, RAG pipelines, AI-powered SaaS with 100+ clients, and open-source developer tools.",
+    "AI engineer building production AI systems end-to-end. 50+ production systems, AI-powered SaaS with 100+ clients, and open-source developer tools.",
   keywords: [
     "Ahtesham Ahmad",
     "AI Engineer",
-    "AI Engineer",
+    "AI Automation",
     "LLM",
     "Multi-Agent Systems",
     "Full Stack Developer",
@@ -57,7 +57,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Ahtesham Ahmad | AI Engineer",
     description:
-      "I turn business workflows into AI-powered products. 50+ production systems, production SaaS with 100+ clients, open-source developer tools.",
+      "AI engineer building production AI systems end-to-end. 50+ production systems, AI-powered SaaS with 100+ clients, and open-source developer tools.",
     type: "website",
     url: "https://ahtesham.dev.wadwarehouse.com",
     siteName: "Ahtesham Ahmad Portfolio",
