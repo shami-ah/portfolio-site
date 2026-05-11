@@ -43,32 +43,35 @@ export function SidebarNav(): React.ReactElement {
   const [wireProgress, setWireProgress] = useState(0);
 
   const updateActive = useCallback(() => {
-    const scrollY = window.scrollY + window.innerHeight * 0.35;
-    let current: string = pipelineSteps[0].id;
-    let currentIdx = 0;
+    const scrollY = window.scrollY;
+    const lookAhead = scrollY + window.innerHeight * 0.35;
 
-    /* Find the active section AND compute fractional progress between sections */
+    /* Collect section offsets */
     const offsets: number[] = [];
     for (const { id } of pipelineSteps) {
       const el = document.getElementById(id);
       offsets.push(el ? el.offsetTop : 0);
     }
 
-    for (let i = 0; i < pipelineSteps.length; i++) {
-      if (offsets[i] <= scrollY) {
-        current = pipelineSteps[i].id;
-        currentIdx = i;
-      }
+    /* Active section detection — uses lookahead for snappy nav highlight */
+    let current: string = pipelineSteps[0].id;
+    for (const { id } of pipelineSteps) {
+      const el = document.getElementById(id);
+      if (el && el.offsetTop <= lookAhead) current = id;
     }
 
-    /* Fractional progress: how far between currentIdx and currentIdx+1 */
-    let fractional = currentIdx;
-    if (currentIdx < pipelineSteps.length - 1) {
-      const sectionStart = offsets[currentIdx];
-      const sectionEnd = offsets[currentIdx + 1];
-      const range = sectionEnd - sectionStart;
-      if (range > 0) {
-        fractional = currentIdx + Math.min(1, Math.max(0, (scrollY - sectionStart) / range));
+    /* Wire fill — uses RAW scroll position, no lookahead.
+       At page top (scrollY=0), first section offset is ~0, so fill starts at 0. */
+    let fractional = 0;
+    for (let i = 0; i < pipelineSteps.length; i++) {
+      if (offsets[i] <= scrollY) {
+        fractional = i;
+        if (i < pipelineSteps.length - 1) {
+          const range = offsets[i + 1] - offsets[i];
+          if (range > 0) {
+            fractional = i + Math.min(1, Math.max(0, (scrollY - offsets[i]) / range));
+          }
+        }
       }
     }
     scrollProgress.set(fractional);
