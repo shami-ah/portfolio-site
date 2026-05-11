@@ -31,43 +31,19 @@ function formatTime(seconds: number): string {
   return `${m}m ${s}s`;
 }
 
-/** Floating highlight that smoothly glides between nav nodes based on scroll */
-function ActiveHighlight({ progress }: { progress: ReturnType<typeof useSpring> }): React.ReactElement {
-  /* Interpolate x/y position from fractional scroll progress */
-  /* Center the 46px highlight around each 38px node: offset = (46-38)/2 = 4 */
-  const xPositions = pipelineSteps.map((s) => s.x - 4);
-  const yPositions = pipelineSteps.map((s) => s.y - 4);
+/** Smooth-traveling glow dot between nav nodes */
+function TravelingDot({ progress }: { progress: ReturnType<typeof useSpring> }): React.ReactElement {
   const indices = pipelineSteps.map((_, i) => i);
-
-  const x = useTransform(progress, indices, xPositions);
-  const y = useTransform(progress, indices, yPositions);
-
   return (
-    <>
-      <motion.div
-        className="rounded-[14px] pointer-events-none"
-        style={{
-          position: "absolute",
-          left: useTransform(progress, indices, pipelineSteps.map((s) => s.x - 4)),
-          top: useTransform(progress, indices, pipelineSteps.map((s) => s.y - 4)),
-          width: 46,
-          height: 46,
-          background: "rgba(201,160,78,0.12)",
-          boxShadow: "0 4px 24px rgba(201,160,78,0.2), inset 0 1px 0 rgba(255,255,255,0.06)",
-          border: "1px solid rgba(201,160,78,0.15)",
-        }}
-      />
-      {/* Star glow dot — follows the highlight */}
-      <motion.span
-        className="w-[5px] h-[5px] rounded-full bg-accent pointer-events-none animate-[star-breathe_2s_ease-in-out_infinite_alternate]"
-        style={{
-          position: "absolute",
-          left: useTransform(progress, indices, pipelineSteps.map((s) => s.x + 38)),
-          top: useTransform(progress, indices, pipelineSteps.map((s) => s.y - 3)),
-          boxShadow: "0 0 10px var(--accent), 0 0 20px rgba(201,160,78,0.3)",
-        }}
-      />
-    </>
+    <motion.span
+      className="w-[5px] h-[5px] rounded-full bg-accent pointer-events-none animate-[star-breathe_2s_ease-in-out_infinite_alternate]"
+      style={{
+        position: "absolute",
+        left: useTransform(progress, indices, pipelineSteps.map((s) => s.x + 38)),
+        top: useTransform(progress, indices, pipelineSteps.map((s) => s.y - 3)),
+        boxShadow: "0 0 10px var(--accent), 0 0 20px rgba(201,160,78,0.3)",
+      }}
+    />
   );
 }
 
@@ -236,8 +212,8 @@ export function SidebarNav(): React.ReactElement {
         </defs>
       </svg>
 
-      {/* Floating active highlight — smoothly follows scroll */}
-      <ActiveHighlight progress={smoothProgress} />
+      {/* Glow dot smoothly travels between nodes */}
+      <TravelingDot progress={smoothProgress} />
 
       {/* Nav nodes in constellation layout */}
       {pipelineSteps.map(({ id, label, icon: Icon, x, y }, i) => {
@@ -252,17 +228,31 @@ export function SidebarNav(): React.ReactElement {
             type="button"
             onClick={() => scrollTo(id)}
             aria-label={label}
-            className="group absolute flex items-center justify-center cursor-pointer"
+            className="group absolute flex items-center justify-center cursor-pointer transition-all duration-[400ms] ease-[cubic-bezier(0.22,1,0.36,1)]"
             style={{
               left: x,
               top: y,
-              width: 38,
-              height: 38,
+              width: isActive ? 46 : 38,
+              height: isActive ? 46 : 38,
+              marginLeft: isActive ? -4 : 0,
+              marginTop: isActive ? -4 : 0,
               borderRadius: 14,
+              background: isActive ? "rgba(201,160,78,0.12)" : "transparent",
+              boxShadow: isActive
+                ? "0 4px 24px rgba(201,160,78,0.2), inset 0 1px 0 rgba(255,255,255,0.06)"
+                : "none",
+              border: isActive ? "1px solid rgba(201,160,78,0.15)" : "1px solid transparent",
             }}
           >
+            {/* Pulse ring on active */}
+            {isActive && (
+              <span
+                className="absolute inset-0 rounded-[14px] border border-accent/30 animate-[pulse-expand_2.5s_ease-out_infinite]"
+              />
+            )}
+
             <Icon
-              size={isActive ? 18 : 15}
+              size={isActive ? 20 : 15}
               strokeWidth={isActive ? 2 : 1.5}
               className={`transition-all duration-500 ${
                 isActive
