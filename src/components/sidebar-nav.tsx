@@ -34,6 +34,7 @@ function formatTime(seconds: number): string {
 /** Floating highlight that smoothly glides between nav nodes based on scroll */
 function ActiveHighlight({ progress }: { progress: ReturnType<typeof useSpring> }): React.ReactElement {
   /* Interpolate x/y position from fractional scroll progress */
+  /* Center the 46px highlight around each 38px node: offset = (46-38)/2 = 4 */
   const xPositions = pipelineSteps.map((s) => s.x - 4);
   const yPositions = pipelineSteps.map((s) => s.y - 4);
   const indices = pipelineSteps.map((_, i) => i);
@@ -44,12 +45,11 @@ function ActiveHighlight({ progress }: { progress: ReturnType<typeof useSpring> 
   return (
     <>
       <motion.div
-        className="absolute rounded-[14px] pointer-events-none"
+        className="rounded-[14px] pointer-events-none"
         style={{
-          top: 0,
-          left: 0,
-          x,
-          y,
+          position: "absolute",
+          left: useTransform(progress, indices, pipelineSteps.map((s) => s.x - 4)),
+          top: useTransform(progress, indices, pipelineSteps.map((s) => s.y - 4)),
           width: 46,
           height: 46,
           background: "rgba(201,160,78,0.12)",
@@ -59,12 +59,11 @@ function ActiveHighlight({ progress }: { progress: ReturnType<typeof useSpring> 
       />
       {/* Star glow dot — follows the highlight */}
       <motion.span
-        className="absolute w-[5px] h-[5px] rounded-full bg-accent pointer-events-none animate-[star-breathe_2s_ease-in-out_infinite_alternate]"
+        className="w-[5px] h-[5px] rounded-full bg-accent pointer-events-none animate-[star-breathe_2s_ease-in-out_infinite_alternate]"
         style={{
-          top: 0,
-          left: 0,
-          x: useTransform(progress, indices, xPositions.map((v) => v + 42)),
-          y: useTransform(progress, indices, yPositions.map((v) => v - 1)),
+          position: "absolute",
+          left: useTransform(progress, indices, pipelineSteps.map((s) => s.x + 38)),
+          top: useTransform(progress, indices, pipelineSteps.map((s) => s.y - 3)),
           boxShadow: "0 0 10px var(--accent), 0 0 20px rgba(201,160,78,0.3)",
         }}
       />
