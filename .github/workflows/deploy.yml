@@ -51,6 +51,6 @@ jobs:
             mkdir -p api
             tar -xzf api.tar.gz -C api/
             rm api.tar.gz
-            docker restart shami
-            docker compose -f /home/team/docker-compose.yml up -d --build shami-api
+            sudo docker restart shami
+            sudo docker compose -f /home/team/docker-compose.yml up -d --build shami-api
             echo "Deploy complete: $(date)"
