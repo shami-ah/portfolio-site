@@ -46,18 +46,23 @@ function ActiveHighlight({ progress }: { progress: ReturnType<typeof useSpring> 
       <motion.div
         className="absolute rounded-[14px] pointer-events-none"
         style={{
+          top: 0,
+          left: 0,
           x,
           y,
           width: 46,
           height: 46,
-          background: "rgba(201,160,78,0.10)",
-          boxShadow: "0 4px 24px rgba(201,160,78,0.15), inset 0 1px 0 rgba(255,255,255,0.04)",
+          background: "rgba(201,160,78,0.12)",
+          boxShadow: "0 4px 24px rgba(201,160,78,0.2), inset 0 1px 0 rgba(255,255,255,0.06)",
+          border: "1px solid rgba(201,160,78,0.15)",
         }}
       />
       {/* Star glow dot — follows the highlight */}
       <motion.span
         className="absolute w-[5px] h-[5px] rounded-full bg-accent pointer-events-none animate-[star-breathe_2s_ease-in-out_infinite_alternate]"
         style={{
+          top: 0,
+          left: 0,
           x: useTransform(progress, indices, xPositions.map((v) => v + 42)),
           y: useTransform(progress, indices, yPositions.map((v) => v - 1)),
           boxShadow: "0 0 10px var(--accent), 0 0 20px rgba(201,160,78,0.3)",
