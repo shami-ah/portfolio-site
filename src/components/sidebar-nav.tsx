@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, useCallback, useRef } from "react";
-import { motion, useMotionValue } from "framer-motion";
+import { motion, useMotionValue, useSpring } from "framer-motion";
 import { User, Zap, FolderOpen, GitCommit, PenLine, Mail } from "lucide-react";
 
 const L = 2;   // left position
@@ -40,7 +40,14 @@ export function SidebarNav(): React.ReactElement {
 
   /* Smooth scroll progress — fractional index (0.0 → 4.0) */
   const scrollProgress = useMotionValue(0);
+  const smoothWire = useSpring(scrollProgress, { stiffness: 80, damping: 20, mass: 0.5 });
   const [wireProgress, setWireProgress] = useState(0);
+
+  /* Subscribe to spring output for re-renders */
+  useEffect(() => {
+    const unsub = smoothWire.on("change", (v: number) => setWireProgress(v));
+    return unsub;
+  }, [smoothWire]);
 
   const updateActive = useCallback(() => {
     const scrollY = window.scrollY;
@@ -80,7 +87,6 @@ export function SidebarNav(): React.ReactElement {
       }
     }
     scrollProgress.set(fractional);
-    setWireProgress(fractional);
 
     if (current !== activeRef.current) {
       setActive(current);
@@ -192,7 +198,6 @@ export function SidebarNav(): React.ReactElement {
                   strokeLinecap="round"
                   strokeDasharray={pathLen}
                   strokeDashoffset={pathLen * (1 - w.fill)}
-                  style={{ transition: "stroke-dashoffset 0.1s linear" }}
                 />
               )}
 
