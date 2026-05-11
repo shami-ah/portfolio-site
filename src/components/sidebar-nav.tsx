@@ -212,8 +212,7 @@ export function SidebarNav(): React.ReactElement {
         </defs>
       </svg>
 
-      {/* Glow dot smoothly travels between nodes */}
-      <TravelingDot progress={smoothProgress} />
+      {/* TODO: next session — scroll-driven wire fill + energy particle */}
 
       {/* Nav nodes in constellation layout */}
       {pipelineSteps.map(({ id, label, icon: Icon, x, y }, i) => {
