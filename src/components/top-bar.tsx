@@ -367,7 +367,7 @@ export function TopBar(): React.ReactElement {
           type="button"
           onClick={reboot}
           aria-label="Reboot system — replay intro"
-          className={`group relative flex items-center cursor-pointer glass rounded-full p-2.5 hover:px-4 hover:gap-2 transition-all overflow-hidden ${tremor ? "nav-tremor" : "duration-300"}`}
+          className={`group relative flex items-center cursor-pointer glass rounded-full p-2.5 hover:px-4 hover:gap-2 transition-all overflow-hidden border border-transparent ${tremor ? "nav-tremor" : "duration-300"}`}
           style={{
             boxShadow: heavy
               ? "0 6px 25px rgba(74,222,128,0.25), 0 0 40px rgba(74,222,128,0.15)"
@@ -381,7 +381,7 @@ export function TopBar(): React.ReactElement {
             style={{ height: `${fillPct}%`, transition: "height 2s ease-out" }}
           />
           <RefreshCcw
-            size={13}
+            size={10}
             className={`relative z-10 shrink-0 transition-colors duration-500 ${
               heavy ? "text-accent-status" : tremor ? "text-accent-status/70" : "text-muted/60 group-hover:text-accent-status"
             }`}
@@ -396,7 +396,7 @@ export function TopBar(): React.ReactElement {
           href="/uses"
           onClick={() => markSeen("setup")}
           aria-label="Tools, stack, and workflow"
-          className={`group relative hidden sm:flex items-center cursor-pointer glass rounded-full p-2.5 hover:px-4 hover:gap-2 transition-all duration-500 ${
+          className={`group relative hidden sm:flex items-center cursor-pointer glass rounded-full p-2.5 hover:px-4 hover:gap-2 transition-all duration-500 border border-transparent ${
             !seenSetup && setupGlow ? "nav-setup-glow" : ""
           }`}
           style={{
@@ -409,7 +409,7 @@ export function TopBar(): React.ReactElement {
           <span className={`absolute w-[2px] h-[2px] rounded-full nav-orbit pointer-events-none ${setupGlow ? "bg-accent-secondary/60" : "bg-accent-secondary/20"}`} style={{ animationDuration: setupGlow ? "3s" : "6s", animationDelay: "-2s" }} />
           <span className={`absolute w-[2px] h-[2px] rounded-full nav-orbit pointer-events-none ${setupGlow ? "bg-accent/50" : "bg-accent/15"}`} style={{ animationDuration: setupGlow ? "2.5s" : "5s", animationDelay: "-3.5s" }} />
           <Wrench
-            size={13}
+            size={10}
             className={`shrink-0 transition-all duration-500 group-hover:rotate-[-20deg] ${
               setupGlow ? "text-accent" : "text-muted/60 group-hover:text-accent"
             }`}
@@ -425,7 +425,7 @@ export function TopBar(): React.ReactElement {
           href="/journey"
           onClick={() => markSeen("journey")}
           aria-label="Walk through my career"
-          className={`group relative flex items-center cursor-pointer rounded-full p-2.5 hover:px-4 hover:gap-2 backdrop-blur-md transition-all duration-500 ${
+          className={`group relative flex items-center cursor-pointer glass rounded-full p-2.5 hover:px-4 hover:gap-2 transition-all duration-500 ${
             meteorLanded ? "nav-journey-active" : "nav-journey-idle"
           }`}
           style={{
@@ -435,7 +435,7 @@ export function TopBar(): React.ReactElement {
           }}
         >
           <TrendingUp
-            size={13}
+            size={10}
             className={`shrink-0 transition-colors duration-500 ${
               meteorLanded ? "text-accent-status" : "text-accent/70 group-hover:text-accent"
             }`}

@@ -1061,7 +1061,7 @@ export function Projects(): React.ReactElement {
     setActiveProjectRaw((prev) => {
       const next = typeof p === "function" ? p(prev) : p;
       if (next) {
-        window.dispatchEvent(new CustomEvent("project-opened", { detail: next.slug }));
+        queueMicrotask(() => window.dispatchEvent(new CustomEvent("project-opened", { detail: next.slug })));
       }
       return next;
     });

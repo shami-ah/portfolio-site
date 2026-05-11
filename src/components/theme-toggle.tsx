@@ -32,21 +32,23 @@ export function ThemeToggle(): React.ReactElement {
     applyTheme(next);
   }
 
-  if (!mounted) return <div className="w-[38px] h-[38px]" />;
+  if (!mounted) return <div className="w-11 h-11 rounded-full" />;
 
   return (
     <button
       type="button"
       onClick={toggle}
       aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
-      className="group flex items-center cursor-pointer glass rounded-full p-2.5 hover:px-4 hover:gap-2 transition-all duration-300"
+      className="group flex items-center cursor-pointer glass rounded-full p-[5px] hover:pr-4 hover:gap-2 transition-all duration-300"
       style={{ boxShadow: "0 4px 12px rgba(0,0,0,0.12), 0 0 4px rgba(0,0,0,0.06)" }}
     >
-      {theme === "dark" ? (
-        <Sun size={13} className="text-muted/60 group-hover:text-amber-400 shrink-0 transition-colors" />
-      ) : (
-        <Moon size={13} className="text-muted/60 group-hover:text-blue-400 shrink-0 transition-colors" />
-      )}
+      <span className="flex items-center justify-center w-[34px] h-[34px] rounded-full shrink-0">
+        {theme === "dark" ? (
+          <Sun size={18} className="text-muted/60 group-hover:text-amber-400 transition-colors" />
+        ) : (
+          <Moon size={18} className="text-muted/60 group-hover:text-blue-400 transition-colors" />
+        )}
+      </span>
       <span className="max-w-0 overflow-hidden group-hover:max-w-[50px] transition-all duration-300 whitespace-nowrap font-mono text-small text-muted/60">
         {theme === "dark" ? "light" : "dark"}
       </span>

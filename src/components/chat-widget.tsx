@@ -350,20 +350,26 @@ export function ChatWidget(): React.ReactElement {
       {/* ── Floating trigger button ── */}
       <AnimatePresence>
         {showTrigger && state === "closed" && (
-          <motion.button
-            type="button"
-            onClick={() => { window.dispatchEvent(new CustomEvent("open-chat-widget")); setState("open"); }}
+          <motion.div
             initial={{ opacity: 0, scale: 0.8, y: 10 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.8 }}
             transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-            data-chat-trigger
-            className={`fixed bottom-5 right-3 md:right-6 z-40 group flex items-center cursor-pointer glass rounded-full p-2.5 hover:px-4 hover:gap-2 transition-all duration-300 ${triggerGlow ? "ring-2 ring-accent-status/60 shadow-[0_0_20px_rgba(74,222,128,0.3)]" : ""}`}
-            style={{ boxShadow: triggerGlow ? undefined : "0 4px 12px rgba(0,0,0,0.12), 0 0 4px rgba(0,0,0,0.06)" }}
+            className="fixed bottom-5 right-3 md:right-6 z-40"
           >
-            <span className="font-mono text-[13px] font-bold text-accent/70 group-hover:text-accent shrink-0 leading-none transition-colors">&gt;_</span>
-            <span className="max-w-0 overflow-hidden group-hover:max-w-[140px] transition-all duration-300 whitespace-nowrap font-mono text-small text-accent/60">Chat with my AI</span>
-          </motion.button>
+            <button
+              type="button"
+              onClick={() => { window.dispatchEvent(new CustomEvent("open-chat-widget")); setState("open"); }}
+              data-chat-trigger
+              className="chat-glow group relative flex items-center cursor-pointer glass rounded-full p-[5px] hover:pr-4 hover:gap-2 transition-all duration-300"
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/ahtesham.jpg" alt="Chat with Shami's AI" className="w-[34px] h-[34px] rounded-full object-cover shrink-0" />
+              <span className="max-w-0 overflow-hidden group-hover:max-w-[140px] transition-all duration-300 whitespace-nowrap font-mono text-small text-accent/60">Chat with my AI</span>
+            </button>
+            {/* Online dot */}
+            <span className="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-accent-status border-[1.5px] border-background pointer-events-none" style={{ animation: "green-pulse 2s infinite" }} />
+          </motion.div>
         )}
       </AnimatePresence>
 
