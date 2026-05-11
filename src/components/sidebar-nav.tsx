@@ -130,15 +130,15 @@ export function SidebarNav(): React.ReactElement {
 
   const activeIdx = pipelineSteps.findIndex((s) => s.id === active);
 
-  /* scrollFraction: 0→1 progress within the current section's wire */
-  const scrollFraction = wireProgress - Math.floor(wireProgress);
-
-  // Build wire segments with scroll-driven state
+  /* Wire fill: use wireProgress to determine how much of each wire is green.
+     wireProgress = 0.0 at top of page, 1.0 at second section, etc.
+     Wire i connects section i → i+1.
+     Wire i fill = clamp(wireProgress - i, 0, 1) */
   const wires = pipelineSteps.slice(0, -1).map((_, i) => {
     const path = wirePath(i, i + 1);
-    const completed = i < activeIdx;           // fully lit
-    const filling = i === activeIdx;           // currently being filled by scroll
-    const fill = filling ? scrollFraction : 0; // 0→1 how much of this wire is filled
+    const fill = Math.min(1, Math.max(0, wireProgress - i));
+    const completed = fill >= 1;
+    const filling = fill > 0 && fill < 1;
     return { path, completed, filling, fill };
   });
 
@@ -162,36 +162,40 @@ export function SidebarNav(): React.ReactElement {
         fill="none"
       >
         {wires.map((w, i) => {
-          /* Approximate path length for dashoffset calculations */
           const pathLen = 80;
           return (
             <g key={i}>
-              {/* Base wire — dashed when inactive, hidden when filled */}
-              {!w.completed && (
-                <path
-                  d={w.path}
-                  stroke="rgba(42,37,32,0.6)"
-                  strokeWidth={1}
-                  strokeDasharray={w.filling ? "none" : "6 4"}
-                />
-              )}
+              {/* Base dashed wire — always visible underneath */}
+              <path
+                d={w.path}
+                stroke="rgba(42,37,32,0.6)"
+                strokeWidth={1}
+                strokeDasharray="6 4"
+                opacity={w.completed ? 0 : 1}
+                style={{ transition: "opacity 0.3s" }}
+              />
 
-              {/* Green fill — completed: solid, filling: proportional */}
-              {(w.completed || w.filling) && (
+              {/* Green solid overlay — grows from start to end via dashoffset */}
+              {w.fill > 0 && (
                 <path
                   d={w.path}
-                  stroke="rgba(74,222,128,0.25)"
+                  stroke="rgba(74,222,128,0.3)"
                   strokeWidth={1.5}
                   strokeLinecap="round"
-                  strokeDasharray={w.completed ? "none" : pathLen}
-                  strokeDashoffset={w.completed ? 0 : pathLen * (1 - w.fill)}
-                  style={{ transition: w.filling ? "stroke-dashoffset 0.15s ease-out" : "none" }}
+                  strokeDasharray={pathLen}
+                  strokeDashoffset={pathLen * (1 - w.fill)}
+                  style={{ transition: "stroke-dashoffset 0.1s linear" }}
                 />
               )}
 
-              {/* Energy particle — scroll-driven on filling wire */}
-              {w.filling && w.fill > 0.08 && (
-                <circle r="2.5" fill="#4ade80" filter="url(#glow-green)" opacity={Math.min(1, w.fill * 3)}>
+              {/* Scroll-driven energy dot — travels along filling wire */}
+              {w.filling && w.fill > 0.05 && (
+                <circle
+                  r="2.5"
+                  fill="#4ade80"
+                  filter="url(#glow-green)"
+                  opacity={Math.min(1, w.fill * 4)}
+                >
                   <animateMotion
                     dur="0.001s"
                     fill="freeze"
