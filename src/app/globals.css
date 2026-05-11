@@ -413,19 +413,11 @@ html {
 
 /* Custom scrollbar — adapts to theme via CSS vars */
 ::-webkit-scrollbar {
-  width: 5px;
+  width: 0px;
+  display: none;
 }
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-::-webkit-scrollbar-thumb {
-  background: var(--accent);
-  border-radius: 99px;
-  opacity: 0.4;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: var(--accent);
-  opacity: 0.7;
+html {
+  scrollbar-width: none;
 }
 
 /* Light mode card glow override */
