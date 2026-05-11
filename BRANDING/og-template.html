@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  body {
+    width: 1200px;
+    height: 630px;
+    background: #0c0c0e;
+    font-family: 'Inter', sans-serif;
+    color: #ede8e1;
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* Subtle gradient overlay */
+  .bg-glow {
+    position: absolute;
+    top: -100px;
+    right: -100px;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(212, 168, 83, 0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .bg-glow-2 {
+    position: absolute;
+    bottom: -80px;
+    left: -80px;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(212, 168, 83, 0.05) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .container {
+    position: relative;
+    z-index: 1;
+    padding: 64px 72px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .top-bar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: #7a7067;
+    letter-spacing: 0.08em;
+  }
+
+  .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #34d399;
+    box-shadow: 0 0 8px rgba(52, 211, 153, 0.5);
+  }
+
+  .main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 20px;
+  }
+
+  .name {
+    font-size: 72px;
+    font-weight: 900;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+  }
+
+  .name .gold {
+    color: #d4a853;
+  }
+
+  .title {
+    font-size: 28px;
+    font-weight: 500;
+    color: #d4a853;
+    letter-spacing: 0.01em;
+  }
+
+  .desc {
+    font-size: 20px;
+    color: #8a8279;
+    line-height: 1.5;
+    max-width: 700px;
+  }
+
+  .bottom-bar {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    padding-top: 24px;
+    border-top: 1px solid rgba(212, 168, 83, 0.15);
+  }
+
+  .stat {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: #7a7067;
+    letter-spacing: 0.03em;
+  }
+
+  .stat strong {
+    color: #ede8e1;
+    font-weight: 500;
+  }
+
+  .divider {
+    width: 1px;
+    height: 16px;
+    background: rgba(212, 168, 83, 0.2);
+  }
+
+  .agent-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(212, 168, 83, 0.1);
+    border: 1px solid rgba(212, 168, 83, 0.2);
+    border-radius: 100px;
+    padding: 4px 14px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: #d4a853;
+  }
+
+  .agent-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #d4a853;
+    box-shadow: 0 0 6px rgba(212, 168, 83, 0.6);
+  }
+</style>
+</head>
+<body>
+  <div class="bg-glow"></div>
+  <div class="bg-glow-2"></div>
+  <div class="container">
+    <div class="top-bar">
+      <div class="dot"></div>
+      <span>PORTFOLIO</span>
+      <span style="margin-left: auto;">
+        <span class="agent-badge"><span class="agent-dot"></span> live AI agent</span>
+      </span>
+    </div>
+
+    <div class="main">
+      <div class="name">Ahtesham <span class="gold">Ahmad</span></div>
+      <div class="title">AI Engineer</div>
+      <div class="desc">I architect AI systems and ship them to production. Multi-agent orchestration, developer tools, and AI-powered SaaS.</div>
+    </div>
+
+    <div class="bottom-bar">
+      <div class="stat"><strong>50+</strong> production systems</div>
+      <div class="divider"></div>
+      <div class="stat"><strong>100+</strong> clients on OpenEvent</div>
+      <div class="divider"></div>
+      <div class="stat"><strong>430+</strong> code review patterns</div>
+      <div class="divider"></div>
+      <div class="stat"><strong>5+</strong> years shipping AI</div>
+    </div>
+  </div>
+</body>
+</html>
