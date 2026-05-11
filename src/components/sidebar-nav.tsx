@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, useCallback, useRef } from "react";
-import { motion } from "framer-motion";
+import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { User, Zap, FolderOpen, GitCommit, PenLine, Mail } from "lucide-react";
 
 const L = 2;   // left position
@@ -31,6 +31,42 @@ function formatTime(seconds: number): string {
   return `${m}m ${s}s`;
 }
 
+/** Floating highlight that smoothly glides between nav nodes based on scroll */
+function ActiveHighlight({ progress }: { progress: ReturnType<typeof useSpring> }): React.ReactElement {
+  /* Interpolate x/y position from fractional scroll progress */
+  const xPositions = pipelineSteps.map((s) => s.x - 4);
+  const yPositions = pipelineSteps.map((s) => s.y - 4);
+  const indices = pipelineSteps.map((_, i) => i);
+
+  const x = useTransform(progress, indices, xPositions);
+  const y = useTransform(progress, indices, yPositions);
+
+  return (
+    <>
+      <motion.div
+        className="absolute rounded-[14px] pointer-events-none"
+        style={{
+          x,
+          y,
+          width: 46,
+          height: 46,
+          background: "rgba(201,160,78,0.10)",
+          boxShadow: "0 4px 24px rgba(201,160,78,0.15), inset 0 1px 0 rgba(255,255,255,0.04)",
+        }}
+      />
+      {/* Star glow dot — follows the highlight */}
+      <motion.span
+        className="absolute w-[5px] h-[5px] rounded-full bg-accent pointer-events-none animate-[star-breathe_2s_ease-in-out_infinite_alternate]"
+        style={{
+          x: useTransform(progress, indices, xPositions.map((v) => v + 42)),
+          y: useTransform(progress, indices, yPositions.map((v) => v - 1)),
+          boxShadow: "0 0 10px var(--accent), 0 0 20px rgba(201,160,78,0.3)",
+        }}
+      />
+    </>
+  );
+}
+
 export function SidebarNav(): React.ReactElement {
   const [active, setActive] = useState("hero");
   const [modalOpen, setModalOpen] = useState(false);
@@ -38,19 +74,46 @@ export function SidebarNav(): React.ReactElement {
   const activeRef = useRef("hero");
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
+  /* Smooth scroll progress — fractional index (0.0 → 4.0) */
+  const scrollProgress = useMotionValue(0);
+  const smoothProgress = useSpring(scrollProgress, { stiffness: 120, damping: 24, mass: 0.8 });
+
   const updateActive = useCallback(() => {
     const scrollY = window.scrollY + window.innerHeight * 0.35;
     let current: string = pipelineSteps[0].id;
+    let currentIdx = 0;
+
+    /* Find the active section AND compute fractional progress between sections */
+    const offsets: number[] = [];
     for (const { id } of pipelineSteps) {
       const el = document.getElementById(id);
-      if (!el) continue;
-      if (el.offsetTop <= scrollY) current = id;
+      offsets.push(el ? el.offsetTop : 0);
     }
+
+    for (let i = 0; i < pipelineSteps.length; i++) {
+      if (offsets[i] <= scrollY) {
+        current = pipelineSteps[i].id;
+        currentIdx = i;
+      }
+    }
+
+    /* Fractional progress: how far between currentIdx and currentIdx+1 */
+    let fractional = currentIdx;
+    if (currentIdx < pipelineSteps.length - 1) {
+      const sectionStart = offsets[currentIdx];
+      const sectionEnd = offsets[currentIdx + 1];
+      const range = sectionEnd - sectionStart;
+      if (range > 0) {
+        fractional = currentIdx + Math.min(1, Math.max(0, (scrollY - sectionStart) / range));
+      }
+    }
+    scrollProgress.set(fractional);
+
     if (current !== activeRef.current) {
       setActive(current);
       activeRef.current = current;
     }
-  }, []);
+  }, [scrollProgress]);
 
   // Track time per section — 1s interval (display only shows m:s)
   useEffect(() => {
@@ -169,6 +232,9 @@ export function SidebarNav(): React.ReactElement {
         </defs>
       </svg>
 
+      {/* Floating active highlight — smoothly follows scroll */}
+      <ActiveHighlight progress={smoothProgress} />
+
       {/* Nav nodes in constellation layout */}
       {pipelineSteps.map(({ id, label, icon: Icon, x, y }, i) => {
         const isDone = i < activeIdx;
@@ -182,57 +248,30 @@ export function SidebarNav(): React.ReactElement {
             type="button"
             onClick={() => scrollTo(id)}
             aria-label={label}
-            className="group absolute flex items-center justify-center cursor-pointer transition-all duration-[400ms] ease-[cubic-bezier(0.22,1,0.36,1)]"
+            className="group absolute flex items-center justify-center cursor-pointer"
             style={{
               left: x,
               top: y,
-              width: isActive ? 46 : 38,
-              height: isActive ? 46 : 38,
-              marginLeft: isActive ? -4 : 0,
-              marginTop: isActive ? -4 : 0,
+              width: 38,
+              height: 38,
               borderRadius: 14,
-              background: isActive ? "rgba(212,168,83,0.10)" : "transparent",
-              boxShadow: isActive
-                ? "0 4px 24px rgba(212,168,83,0.2), inset 0 1px 0 rgba(255,255,255,0.06)"
-                : "none",
             }}
           >
-            {/* Pulse ring on active */}
-            {isActive && (
-              <span
-                className="absolute inset-0 rounded-[14px] border border-accent/30 animate-[pulse-expand_2.5s_ease-out_infinite]"
-              />
-            )}
-
-            {/* Star glow dot on active */}
-            {isActive && (
-              <span
-                className="absolute -top-1 -right-1 w-[5px] h-[5px] rounded-full bg-accent animate-[star-breathe_2s_ease-in-out_infinite_alternate]"
-                style={{
-                  boxShadow: "0 0 10px var(--accent), 0 0 20px rgba(212,168,83,0.3)",
-                }}
-              />
-            )}
-
             <Icon
-              size={isActive ? 20 : 15}
+              size={isActive ? 18 : 15}
               strokeWidth={isActive ? 2 : 1.5}
-              className={`transition-all duration-300 ${
+              className={`transition-all duration-500 ${
                 isActive
-                  ? "text-accent drop-shadow-[0_0_6px_rgba(212,168,83,0.5)]"
+                  ? "text-accent drop-shadow-[0_0_6px_rgba(201,160,78,0.5)]"
                   : isDone
                     ? "text-accent-status/70 group-hover:text-accent-status"
                     : "text-muted/25 group-hover:text-muted/50"
               }`}
-              style={{
-                filter: isActive ? "drop-shadow(0 0 6px rgba(212,168,83,0.5))" : undefined,
-              }}
             />
 
             {/* Time badge — beside the wire between this node and the next */}
             {showTime && i < pipelineSteps.length - 1 && (() => {
               const goesRight = pipelineSteps[i + 1].x > x;
-              // Place on the opposite side of the wire curve
               return (
                 <span
                   className="absolute text-[7px] leading-none text-accent-status/45 tabular-nums font-medium whitespace-nowrap pointer-events-none"
@@ -262,8 +301,8 @@ export function SidebarNav(): React.ReactElement {
           100% { transform: scale(1.6); opacity: 0; }
         }
         @keyframes star-breathe {
-          0% { box-shadow: 0 0 6px var(--accent), 0 0 12px rgba(212,168,83,0.2); }
-          100% { box-shadow: 0 0 14px var(--accent), 0 0 28px rgba(212,168,83,0.4); }
+          0% { box-shadow: 0 0 6px var(--accent), 0 0 12px rgba(201,160,78,0.2); }
+          100% { box-shadow: 0 0 14px var(--accent), 0 0 28px rgba(201,160,78,0.4); }
         }
       `}</style>
     </motion.nav>
