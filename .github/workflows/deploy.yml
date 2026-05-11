@@ -22,7 +22,9 @@ jobs:
         run: npm run build
 
       - name: Package output
-        run: tar -czf out.tar.gz -C out .
+        run: |
+          tar -czf out.tar.gz -C out .
+          tar -czf api.tar.gz -C api server.mjs Dockerfile
 
       - name: Upload to server
         uses: appleboy/scp-action@v0.1.7
@@ -31,7 +33,7 @@ jobs:
           port: 2202
           username: team
           key: ${{ secrets.SERVER_SSH_KEY }}
-          source: out.tar.gz
+          source: out.tar.gz,api.tar.gz
           target: /home/team/shami/
 
       - name: Deploy on server
@@ -46,5 +48,9 @@ jobs:
             rm -rf out/*
             tar -xzf out.tar.gz -C out/
             rm out.tar.gz
+            mkdir -p api
+            tar -xzf api.tar.gz -C api/
+            rm api.tar.gz
             docker restart shami
+            docker compose -f /home/team/docker-compose.yml up -d --build shami-api
             echo "Deploy complete: $(date)"
