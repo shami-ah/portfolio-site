@@ -25,6 +25,17 @@ function wirePath(a: number, b: number): string {
   return `M ${ax} ${ay} Q ${(ax + bx) / 2 + 4} ${midY} ${bx} ${by}`;
 }
 
+/** Get point at t (0→1) along the quadratic bezier between two nodes */
+function wirePoint(a: number, b: number, t: number): { x: number; y: number } {
+  const ax = cx(a), ay = cy(a), bx = cx(b), by = cy(b);
+  const qx = (ax + bx) / 2 + 4, qy = (ay + by) / 2;
+  const u = 1 - t;
+  return {
+    x: u * u * ax + 2 * u * t * qx + t * t * bx,
+    y: u * u * ay + 2 * u * t * qy + t * t * by,
+  };
+}
+
 function formatTime(seconds: number): string {
   const m = Math.floor(seconds / 60);
   const s = Math.floor(seconds % 60);
@@ -201,24 +212,20 @@ export function SidebarNav(): React.ReactElement {
                 />
               )}
 
-              {/* Scroll-driven energy dot — travels along filling wire */}
-              {w.filling && w.fill > 0.05 && (
-                <circle
-                  r="2.5"
-                  fill="#4ade80"
-                  filter="url(#glow-green)"
-                  opacity={Math.min(1, w.fill * 4)}
-                >
-                  <animateMotion
-                    dur="0.001s"
-                    fill="freeze"
-                    path={w.path}
-                    keyTimes="0;1"
-                    keyPoints={`${w.fill};${w.fill}`}
-                    calcMode="linear"
+              {/* Scroll-driven energy dot — positioned along bezier curve */}
+              {w.fill > 0.01 && w.fill < 0.99 && (() => {
+                const pt = wirePoint(i, i + 1, w.fill);
+                return (
+                  <circle
+                    cx={pt.x}
+                    cy={pt.y}
+                    r="2.5"
+                    fill="#4ade80"
+                    filter="url(#glow-green)"
+                    opacity={Math.min(1, Math.min(w.fill, 1 - w.fill) * 6)}
                   />
-                </circle>
-              )}
+                );
+              })()}
 
               {/* Looping energy particles on completed wires */}
               {w.completed && (
