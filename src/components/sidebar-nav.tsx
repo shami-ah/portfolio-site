@@ -166,29 +166,31 @@ export function SidebarNav(): React.ReactElement {
           const pathLen = 80;
           return (
             <g key={i}>
-              {/* Base wire — always visible */}
-              <path
-                d={w.path}
-                stroke="rgba(42,37,32,0.6)"
-                strokeWidth={1}
-                strokeDasharray="6 4"
-              />
+              {/* Base wire — dashed when inactive, hidden when filled */}
+              {!w.completed && (
+                <path
+                  d={w.path}
+                  stroke="rgba(42,37,32,0.6)"
+                  strokeWidth={1}
+                  strokeDasharray={w.filling ? "none" : "6 4"}
+                />
+              )}
 
-              {/* Green fill — completed wires: full, filling wire: proportional */}
+              {/* Green fill — completed: solid, filling: proportional */}
               {(w.completed || w.filling) && (
                 <path
                   d={w.path}
                   stroke="rgba(74,222,128,0.25)"
                   strokeWidth={1.5}
                   strokeLinecap="round"
-                  strokeDasharray={pathLen}
+                  strokeDasharray={w.completed ? "none" : pathLen}
                   strokeDashoffset={w.completed ? 0 : pathLen * (1 - w.fill)}
                   style={{ transition: w.filling ? "stroke-dashoffset 0.15s ease-out" : "none" }}
                 />
               )}
 
               {/* Energy particle — scroll-driven on filling wire */}
-              {w.filling && w.fill > 0.02 && (
+              {w.filling && w.fill > 0.08 && (
                 <circle r="2.5" fill="#4ade80" filter="url(#glow-green)" opacity={Math.min(1, w.fill * 3)}>
                   <animateMotion
                     dur="0.001s"
