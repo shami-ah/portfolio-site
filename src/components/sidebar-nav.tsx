@@ -60,17 +60,22 @@ export function SidebarNav(): React.ReactElement {
       if (el && el.offsetTop <= lookAhead) current = id;
     }
 
-    /* Wire fill — uses RAW scroll position, no lookahead.
-       At page top (scrollY=0), first section offset is ~0, so fill starts at 0. */
+    /* Wire fill — maps total scroll range to 0→N fractional progress.
+       First wire fills from scrollY=0 to offsets[1].
+       Wire i fills from offsets[i] to offsets[i+1]. */
     let fractional = 0;
-    for (let i = 0; i < pipelineSteps.length; i++) {
-      if (offsets[i] <= scrollY) {
-        fractional = i;
-        if (i < pipelineSteps.length - 1) {
-          const range = offsets[i + 1] - offsets[i];
-          if (range > 0) {
-            fractional = i + Math.min(1, Math.max(0, (scrollY - offsets[i]) / range));
-          }
+    if (offsets.length > 1) {
+      for (let i = 0; i < offsets.length - 1; i++) {
+        const start = offsets[i];
+        const end = offsets[i + 1];
+        if (scrollY >= end) {
+          fractional = i + 1;
+        } else if (scrollY >= start) {
+          const range = end - start;
+          fractional = i + (range > 0 ? (scrollY - start) / range : 0);
+          break;
+        } else {
+          break;
         }
       }
     }
