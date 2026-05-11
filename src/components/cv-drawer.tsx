@@ -21,7 +21,7 @@ export function openCvDrawer(): void {
 /*  Shared constants                                                   */
 /* ------------------------------------------------------------------ */
 
-const ACCENT = "var(--accent, #d4a853)";
+const ACCENT = "var(--accent, #c9a04e)";
 const AMBER = "var(--accent-secondary, #8ba4c4)";
 
 /* ------------------------------------------------------------------ */

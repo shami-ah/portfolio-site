@@ -5,7 +5,7 @@ import { type ReactNode } from "react";
 import { useReducedMotion } from "@/lib/use-reduced-motion";
 
 const fadeUp: Variants = {
-  hidden: { opacity: 0, y: 30 },
+  hidden: { opacity: 0, y: 24 },
   visible: { opacity: 1, y: 0 },
 };
 
@@ -16,10 +16,15 @@ const fadeIn: Variants = {
 
 const staggerContainer: Variants = {
   hidden: {},
-  visible: { transition: { staggerChildren: 0.1 } },
+  visible: { transition: { staggerChildren: 0.12 } },
 };
 
 const instant = { duration: 0 };
+
+/* Spring configs with personality — not identical easings everywhere */
+const springSnap = { type: "spring" as const, stiffness: 200, damping: 22, mass: 0.8 };
+const springSettle = { type: "spring" as const, stiffness: 140, damping: 18, mass: 1 };
+const springBounce = { type: "spring" as const, stiffness: 260, damping: 16, mass: 0.6 };
 
 export function FadeUp({
   children,
@@ -36,7 +41,7 @@ export function FadeUp({
       variants={fadeUp}
       initial={false}
       animate="visible"
-      transition={reduced ? instant : { duration: 0.5, delay, ease: "easeOut" }}
+      transition={reduced ? instant : { ...springSnap, delay }}
       className={className}
     >
       {children}
@@ -59,7 +64,7 @@ export function FadeIn({
       variants={fadeIn}
       initial={false}
       animate="visible"
-      transition={reduced ? instant : { duration: 0.6, delay }}
+      transition={reduced ? instant : { ...springSettle, delay }}
       className={className}
     >
       {children}
@@ -104,7 +109,7 @@ export function SlideIn({
     <motion.div
       initial={false}
       animate={{ opacity: 1, x: 0 }}
-      transition={reduced ? instant : { duration: 0.5, delay, ease: "easeOut" }}
+      transition={reduced ? instant : { ...springBounce, delay }}
       className={className}
     >
       {children}
