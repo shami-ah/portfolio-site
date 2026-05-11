@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, useCallback, useRef } from "react";
-import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { motion, useMotionValue } from "framer-motion";
 import { User, Zap, FolderOpen, GitCommit, PenLine, Mail } from "lucide-react";
 
 const L = 2;   // left position
@@ -31,22 +31,6 @@ function formatTime(seconds: number): string {
   return `${m}m ${s}s`;
 }
 
-/** Smooth-traveling glow dot between nav nodes */
-function TravelingDot({ progress }: { progress: ReturnType<typeof useSpring> }): React.ReactElement {
-  const indices = pipelineSteps.map((_, i) => i);
-  return (
-    <motion.span
-      className="w-[5px] h-[5px] rounded-full bg-accent pointer-events-none animate-[star-breathe_2s_ease-in-out_infinite_alternate]"
-      style={{
-        position: "absolute",
-        left: useTransform(progress, indices, pipelineSteps.map((s) => s.x + 38)),
-        top: useTransform(progress, indices, pipelineSteps.map((s) => s.y - 3)),
-        boxShadow: "0 0 10px var(--accent), 0 0 20px rgba(201,160,78,0.3)",
-      }}
-    />
-  );
-}
-
 export function SidebarNav(): React.ReactElement {
   const [active, setActive] = useState("hero");
   const [modalOpen, setModalOpen] = useState(false);
@@ -56,7 +40,7 @@ export function SidebarNav(): React.ReactElement {
 
   /* Smooth scroll progress — fractional index (0.0 → 4.0) */
   const scrollProgress = useMotionValue(0);
-  const smoothProgress = useSpring(scrollProgress, { stiffness: 120, damping: 24, mass: 0.8 });
+  const [wireProgress, setWireProgress] = useState(0);
 
   const updateActive = useCallback(() => {
     const scrollY = window.scrollY + window.innerHeight * 0.35;
@@ -88,6 +72,7 @@ export function SidebarNav(): React.ReactElement {
       }
     }
     scrollProgress.set(fractional);
+    setWireProgress(fractional);
 
     if (current !== activeRef.current) {
       setActive(current);
@@ -145,11 +130,17 @@ export function SidebarNav(): React.ReactElement {
 
   const activeIdx = pipelineSteps.findIndex((s) => s.id === active);
 
-  // Build wire segments
-  const wires = pipelineSteps.slice(0, -1).map((_, i) => ({
-    path: wirePath(i, i + 1),
-    lit: i < activeIdx, // completed wire
-  }));
+  /* scrollFraction: 0→1 progress within the current section's wire */
+  const scrollFraction = wireProgress - Math.floor(wireProgress);
+
+  // Build wire segments with scroll-driven state
+  const wires = pipelineSteps.slice(0, -1).map((_, i) => {
+    const path = wirePath(i, i + 1);
+    const completed = i < activeIdx;           // fully lit
+    const filling = i === activeIdx;           // currently being filled by scroll
+    const fill = filling ? scrollFraction : 0; // 0→1 how much of this wire is filled
+    return { path, completed, filling, fill };
+  });
 
   return (
     <motion.nav
@@ -170,37 +161,70 @@ export function SidebarNav(): React.ReactElement {
         viewBox="0 0 56 320"
         fill="none"
       >
-        {wires.map((w, i) => (
-          <g key={i}>
-            <path
-              d={w.path}
-              stroke={w.lit ? "rgba(74,222,128,0.2)" : "rgba(42,37,32,0.6)"}
-              strokeWidth={w.lit ? 1.5 : 1}
-              strokeDasharray={w.lit ? "none" : "6 4"}
-            />
-            {/* Energy particle on completed wires */}
-            {w.lit && (
-              <circle r="2" fill="#4ade80" filter="url(#glow-green)">
-                <animateMotion
-                  dur={`${1.8 + i * 0.4}s`}
-                  repeatCount="indefinite"
-                  path={w.path}
-                  keyTimes="0;1"
-                  calcMode="spline"
-                  keySplines="0.4 0 0.2 1"
-                  begin={`${i * 0.6}s`}
+        {wires.map((w, i) => {
+          /* Approximate path length for dashoffset calculations */
+          const pathLen = 80;
+          return (
+            <g key={i}>
+              {/* Base wire — always visible */}
+              <path
+                d={w.path}
+                stroke="rgba(42,37,32,0.6)"
+                strokeWidth={1}
+                strokeDasharray="6 4"
+              />
+
+              {/* Green fill — completed wires: full, filling wire: proportional */}
+              {(w.completed || w.filling) && (
+                <path
+                  d={w.path}
+                  stroke="rgba(74,222,128,0.25)"
+                  strokeWidth={1.5}
+                  strokeLinecap="round"
+                  strokeDasharray={pathLen}
+                  strokeDashoffset={w.completed ? 0 : pathLen * (1 - w.fill)}
+                  style={{ transition: w.filling ? "stroke-dashoffset 0.15s ease-out" : "none" }}
                 />
-                <animate
-                  attributeName="opacity"
-                  values="0;1;1;0"
-                  dur={`${1.8 + i * 0.4}s`}
-                  repeatCount="indefinite"
-                  begin={`${i * 0.6}s`}
-                />
-              </circle>
-            )}
-          </g>
-        ))}
+              )}
+
+              {/* Energy particle — scroll-driven on filling wire */}
+              {w.filling && w.fill > 0.02 && (
+                <circle r="2.5" fill="#4ade80" filter="url(#glow-green)" opacity={Math.min(1, w.fill * 3)}>
+                  <animateMotion
+                    dur="0.001s"
+                    fill="freeze"
+                    path={w.path}
+                    keyTimes="0;1"
+                    keyPoints={`${w.fill};${w.fill}`}
+                    calcMode="linear"
+                  />
+                </circle>
+              )}
+
+              {/* Looping energy particles on completed wires */}
+              {w.completed && (
+                <circle r="2" fill="#4ade80" filter="url(#glow-green)">
+                  <animateMotion
+                    dur={`${1.8 + i * 0.4}s`}
+                    repeatCount="indefinite"
+                    path={w.path}
+                    keyTimes="0;1"
+                    calcMode="spline"
+                    keySplines="0.4 0 0.2 1"
+                    begin={`${i * 0.6}s`}
+                  />
+                  <animate
+                    attributeName="opacity"
+                    values="0;1;1;0"
+                    dur={`${1.8 + i * 0.4}s`}
+                    repeatCount="indefinite"
+                    begin={`${i * 0.6}s`}
+                  />
+                </circle>
+              )}
+            </g>
+          );
+        })}
         <defs>
           <filter id="glow-green" x="-50%" y="-50%" width="200%" height="200%">
             <feGaussianBlur stdDeviation="3" result="blur" />
@@ -212,7 +236,6 @@ export function SidebarNav(): React.ReactElement {
         </defs>
       </svg>
 
-      {/* TODO: next session — scroll-driven wire fill + energy particle */}
 
       {/* Nav nodes in constellation layout */}
       {pipelineSteps.map(({ id, label, icon: Icon, x, y }, i) => {
