@@ -177,7 +177,7 @@ export function SidebarNav(): React.ReactElement {
       }}
       transition={{ duration: 0.4, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
       aria-label="Pipeline navigation"
-      className="fixed left-3 top-1/2 -translate-y-1/2 z-40 hidden xl:flex font-mono"
+      className="fixed left-3 top-1/2 -translate-y-1/2 z-40 hidden md:flex font-mono"
       style={{ width: 56, height: 320 }}
     >
       {/* Constellation wires */}
