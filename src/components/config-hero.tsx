@@ -402,7 +402,7 @@ export function ConfigHero(): React.ReactElement {
             >
               <a
                 href="#projects"
-                className="px-6 py-2.5 bg-accent text-background font-medium rounded-lg hover:brightness-110 hover:shadow-lg hover:shadow-accent/20 transition-all duration-200 text-sm"
+                className="px-6 py-2.5 btn-gradient font-medium rounded-lg hover:shadow-lg hover:shadow-accent/20 transition-all duration-200 text-sm"
               >
                 See the work
               </a>

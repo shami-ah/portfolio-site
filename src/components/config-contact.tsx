@@ -168,7 +168,7 @@ export function ConfigContact(): React.ReactElement {
                 href="https://ahtesham.dev.wadwarehouse.com/book"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-7 py-3.5 rounded-lg bg-accent text-background font-semibold hover:brightness-110 hover:shadow-lg hover:shadow-accent/25 transition-all duration-200 text-sm whitespace-nowrap shrink-0"
+                className="inline-flex items-center gap-2 px-7 py-3.5 rounded-lg btn-gradient font-semibold hover:shadow-lg hover:shadow-accent/25 transition-all duration-200 text-sm whitespace-nowrap shrink-0"
               >
                 <Calendar size={16} strokeWidth={1.5} />
                 Book a 15-min call

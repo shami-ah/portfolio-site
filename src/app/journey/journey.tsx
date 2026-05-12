@@ -237,7 +237,7 @@ export function Journey(): React.ReactElement {
               href="https://ahtesham.dev.wadwarehouse.com/book"
               target="_blank"
               rel="noopener noreferrer"
-              className="px-6 py-3 bg-accent text-background font-medium rounded-lg hover:brightness-110 hover:shadow-lg hover:shadow-accent/20 transition-all text-sm"
+              className="px-6 py-3 btn-gradient font-medium rounded-lg hover:shadow-lg hover:shadow-accent/20 transition-all text-sm"
             >
               Book a 15-min call
             </a>

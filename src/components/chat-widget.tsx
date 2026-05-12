@@ -217,12 +217,16 @@ export function ChatWidget(): React.ReactElement {
   }, []);
 
   useEffect(() => {
+    let glowTimer: ReturnType<typeof setTimeout>;
     const handler = (): void => {
       setTriggerGlow(true);
-      setTimeout(() => setTriggerGlow(false), 600);
+      glowTimer = setTimeout(() => setTriggerGlow(false), 600);
     };
     window.addEventListener("agent-flying-to-chat", handler);
-    return () => window.removeEventListener("agent-flying-to-chat", handler);
+    return () => {
+      window.removeEventListener("agent-flying-to-chat", handler);
+      clearTimeout(glowTimer);
+    };
   }, []);
 
   useEffect(() => {

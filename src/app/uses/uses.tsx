@@ -47,7 +47,7 @@ function K({ children }: { children: React.ReactNode }): React.ReactElement { re
 function S({ children }: { children: React.ReactNode }): React.ReactElement { return <span className="text-accent-secondary">{children}</span>; }
 function V({ children }: { children: React.ReactNode }): React.ReactElement { return <span className="text-foreground/60">{children}</span>; }
 function C({ children }: { children: React.ReactNode }): React.ReactElement { return <span className="text-muted/40">{children}</span>; }
-function G({ children }: { children: React.ReactNode }): React.ReactElement { return <span className="text-accent-status">{children}</span>; }
+function G({ children }: { children: React.ReactNode }): React.ReactElement { return <span className="text-accent">{children}</span>; }
 function P({ children }: { children: React.ReactNode }): React.ReactElement { return <span className="text-muted/20">{children}</span>; }
 
 /* ------------------------------------------------------------------ */
@@ -69,7 +69,7 @@ const files: FileEntry[] = [
   { id: "stack", name: "stack.yaml", path: "config/stack.yaml", iconColor: "text-accent-secondary/40", folder: "config" },
   { id: "workflow", name: "workflow.yaml", path: "config/workflow.yaml", iconColor: "text-accent/40", folder: "config" },
   { id: "environment", name: "environment.yaml", path: "config/environment.yaml", iconColor: "text-muted/40", folder: "config" },
-  { id: "philosophy", name: "philosophy.md", path: "docs/philosophy.md", iconColor: "text-accent-status/40", folder: "docs" },
+  { id: "philosophy", name: "philosophy.md", path: "docs/philosophy.md", iconColor: "text-accent/40", folder: "docs" },
 ];
 
 /* ------------------------------------------------------------------ */
@@ -243,7 +243,7 @@ function CodePhilosophy(): React.ReactElement {
 const loopNodes = [
   { label: "Gogaa CLI", stat: "writes code", color: "border-accent/40 text-accent" },
   { label: "CodeLens", stat: "reviews it", color: "border-accent-secondary/40 text-accent-secondary" },
-  { label: "Patterns", stat: "feed back in", color: "border-accent-status/40 text-accent-status" },
+  { label: "Patterns", stat: "feed back in", color: "border-accent/40 text-accent" },
   { label: "Rasad", stat: "monitors all", color: "border-accent/40 text-accent" },
 ];
 
@@ -259,7 +259,7 @@ function PreviewReadme(): React.ReactElement {
       </div>
       <div className="p-3 rounded-lg bg-card border border-card-border font-mono text-caption">
         <div className="text-muted/40 mb-1">$ npm install shami-toolkit</div>
-        <div className="text-accent-status/60">+ shami-toolkit@1.0.0</div>
+        <div className="text-accent/60">+ shami-toolkit@1.0.0</div>
       </div>
       <p className="text-caption text-muted/40 mt-4 font-mono">Ahtesham Ahmad · AI Engineer</p>
     </div>
@@ -324,7 +324,7 @@ function PreviewEcosystem(): React.ReactElement {
             {[
               { t: "9:00", a: "Gogaa scaffolds", c: "text-accent" },
               { t: "9:04", a: "CodeLens reviews", c: "text-accent-secondary" },
-              { t: "9:05", a: "2 caught", c: "text-accent-status" },
+              { t: "9:05", a: "2 caught", c: "text-accent" },
               { t: "9:06", a: "push", c: "text-foreground/60" },
             ].map((s, i, arr) => (
               <span key={s.t} className="flex items-center gap-1">
@@ -364,7 +364,7 @@ function PreviewWisc(): React.ReactElement {
       </div>
       <div className="mt-3 pt-2 border-t border-card-border/40 flex items-center gap-2 text-caption font-mono">
         <span className="text-muted/60">result:</span>
-        <span className="text-accent-status">72KB &rarr; 11.7KB</span>
+        <span className="text-accent">72KB &rarr; 11.7KB</span>
         <span className="text-muted/40">&middot;</span>
         <span className="text-muted/60">84% reduction</span>
       </div>

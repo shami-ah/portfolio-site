@@ -95,28 +95,28 @@ const PANEL_CONTENT: Record<string, PanelContent> = {
     oneLiner: "AI turns client emails into approved bookings, invoices, and CRM updates.",
     problem: "Event teams waste 90 min/day on email to CRM data entry.",
     solution: "AI reads emails, creates bookings, detects conflicts, updates CRM. Zero manual entry.",
-    glow: "radial-gradient(ellipse at 30% 50%, rgba(74,222,128,0.06), transparent 70%)",
+    glow: "radial-gradient(ellipse at 30% 50%, rgba(160,120,104,0.06), transparent 70%)",
   },
   codelens: {
     title: "CodeLens",
     oneLiner: "430 bug patterns mined from 600+ real PRs. Reviews in under one second.",
     problem: "Code review misses bugs that patterns catch in milliseconds.",
     solution: "430 patterns from 600+ real PRs. Scans in <1s. Your code never leaves your machine.",
-    glow: "radial-gradient(ellipse at 70% 40%, rgba(139,164,196,0.06), transparent 70%)",
+    glow: "radial-gradient(ellipse at 70% 40%, rgba(74,85,120,0.06), transparent 70%)",
   },
   "gogaa-cli": {
     title: "Gogaa CLI",
     oneLiner: "11 AI providers behind one interface. If one goes down, you don't stop working.",
     problem: "AI providers go down. Your work stops.",
     solution: "11 providers behind one interface. Auto-fallback. 1,400+ tests. Zero lock-in.",
-    glow: "radial-gradient(ellipse at 40% 60%, rgba(139,164,196,0.04), transparent 70%)",
+    glow: "radial-gradient(ellipse at 40% 60%, rgba(74,85,120,0.04), transparent 70%)",
   },
   rasad: {
     title: "Rasad",
     oneLiner: "Every tool call, every file touch, graded A-F. 656 sessions analyzed. 100% local.",
     problem: "AI coding sessions are black boxes — no way to know what worked.",
     solution: "Every tool call, every file touch, graded A-F. 656 sessions analyzed. 100% local.",
-    glow: "radial-gradient(ellipse at 50% 50%, rgba(212,168,83,0.06), transparent 70%)",
+    glow: "radial-gradient(ellipse at 50% 50%, rgba(160,120,104,0.06), transparent 70%)",
   },
 };
 

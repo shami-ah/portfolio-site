@@ -145,6 +145,7 @@ export default function RootLayout({
           Skip to content
         </a>
         {children}
+        <div className="grain-overlay" aria-hidden="true" />
         <div className="fixed bottom-5 left-5 z-50 print:hidden">
           <ThemeToggle />
         </div>

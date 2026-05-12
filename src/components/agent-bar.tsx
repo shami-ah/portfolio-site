@@ -939,12 +939,14 @@ export function AgentBar(): React.ReactElement {
 
   // Listen for agent-button-ready from boot animation
   useEffect(() => {
+    let showTimer: ReturnType<typeof setTimeout>;
+    let hideTimer: ReturnType<typeof setTimeout>;
     const onReady = (): void => {
       setButtonReady(true);
       setUiState("button");
       // Show tooltip after all hero content has fully streamed in
-      setTimeout(() => setShowTooltip(true), 4000);
-      setTimeout(() => setShowTooltip(false), 10000);
+      showTimer = setTimeout(() => setShowTooltip(true), 4000);
+      hideTimer = setTimeout(() => setShowTooltip(false), 10000);
     };
     window.addEventListener("agent-button-ready", onReady);
 
@@ -954,7 +956,11 @@ export function AgentBar(): React.ReactElement {
       setUiState("button");
     }
 
-    return () => window.removeEventListener("agent-button-ready", onReady);
+    return () => {
+      window.removeEventListener("agent-button-ready", onReady);
+      clearTimeout(showTimer);
+      clearTimeout(hideTimer);
+    };
   }, []);
 
   // Listen for replay-intro to hide button

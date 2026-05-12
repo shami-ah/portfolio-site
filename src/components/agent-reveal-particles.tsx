@@ -15,8 +15,8 @@ function hexToRgba(hex: string, a: number): string {
 
 function readPalette(): { color: string; glow: string }[] {
   const s = getComputedStyle(document.documentElement);
-  const ac = s.getPropertyValue("--accent").trim() || "#c9a04e";
-  const sc = s.getPropertyValue("--accent-secondary").trim() || "#8ba4c4";
+  const ac = s.getPropertyValue("--accent").trim() || "#a07868";
+  const sc = s.getPropertyValue("--accent-secondary").trim() || "#4a5578";
   const st = s.getPropertyValue("--accent-status").trim() || "#4ade80";
   const fg = s.getPropertyValue("--foreground").trim() || "#ede8e0";
   return [

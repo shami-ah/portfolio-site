@@ -4,16 +4,16 @@
 /* ── Dark Theme (default) ── */
 :root,
 .dark {
-  --background: #0d0b09;
-  --foreground: #ede8e0;
-  --muted: #7a756d;
-  --accent: #c9a04e;
-  --accent-glow: rgba(201, 160, 78, 0.08);
-  --accent-secondary: #7e99b8;
+  --background: #0c0d10;
+  --foreground: #e4dfd6;
+  --muted: #6e6b66;
+  --accent: #a07868;
+  --accent-glow: rgba(160, 120, 104, 0.08);
+  --accent-secondary: #4a5578;
   --accent-status: #4ade80;
-  --card: #141210;
-  --card-border: #28231c;
-  --card-hover: #1a1814;
+  --card: #111218;
+  --card-border: #232530;
+  --card-hover: #181a22;
 
   /* Z-index layers (low → high) */
   --z-content: 10;       /* in-page content */
@@ -25,28 +25,28 @@
   --z-modal: 9999;       /* skills modal, project expand — top of everything */
 
   /* Gradient tokens */
-  --gradient-brand: linear-gradient(135deg, #c9a04e, #7e99b8);
-  --gradient-brand-subtle: linear-gradient(135deg, rgba(201, 160, 78, 0.12), rgba(126, 153, 184, 0.12));
-  --gradient-glow: radial-gradient(ellipse at 45% -5%, rgba(201, 160, 78, 0.07) 0%, rgba(126, 153, 184, 0.03) 45%, transparent 70%);
+  --gradient-brand: linear-gradient(135deg, #a07868, #4a5578);
+  --gradient-brand-subtle: linear-gradient(135deg, rgba(160, 120, 104, 0.12), rgba(74, 85, 120, 0.12));
+  --gradient-glow: radial-gradient(ellipse at 45% -5%, rgba(160, 120, 104, 0.07) 0%, rgba(74, 85, 120, 0.03) 45%, transparent 70%);
   color-scheme: dark;
 }
 
 /* ── Light Theme ── */
 .light {
-  --background: #fafaf8;
-  --foreground: #1a1a2e;
-  --muted: #6b7280;
-  --accent: #a67c1a;
-  --accent-glow: rgba(166, 124, 26, 0.06);
-  --accent-secondary: #5a7fa0;
+  --background: #e6e3da;
+  --foreground: #1a1b18;
+  --muted: #706d65;
+  --accent: #6d4e3e;
+  --accent-glow: rgba(109, 78, 62, 0.08);
+  --accent-secondary: #344058;
   --accent-status: #16a34a;
-  --card: #ffffff;
-  --card-border: #e5e5e0;
-  --card-hover: #f5f5f1;
+  --card: #f4f2ec;
+  --card-border: #c4c0b6;
+  --card-hover: #eae7e0;
 
-  --gradient-brand: linear-gradient(135deg, #a67c1a, #5a7fa0);
-  --gradient-brand-subtle: linear-gradient(135deg, rgba(166, 124, 26, 0.08), rgba(90, 127, 160, 0.08));
-  --gradient-glow: radial-gradient(ellipse at 45% -5%, rgba(166, 124, 26, 0.04) 0%, rgba(90, 127, 160, 0.02) 45%, transparent 70%);
+  --gradient-brand: linear-gradient(135deg, #6d4e3e, #344058);
+  --gradient-brand-subtle: linear-gradient(135deg, rgba(109, 78, 62, 0.1), rgba(52, 64, 88, 0.1));
+  --gradient-glow: radial-gradient(ellipse at 45% -5%, rgba(109, 78, 62, 0.05) 0%, rgba(52, 64, 88, 0.03) 45%, transparent 70%);
   color-scheme: light;
 }
 
@@ -123,44 +123,35 @@ body {
   transform: translateZ(0);
 }
 
-/* Irregular dot scatter — handcrafted paper texture */
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 0;
-  background-image: radial-gradient(circle at 23% 17%, rgba(201, 160, 78, 0.025) 1px, transparent 1px),
-    radial-gradient(circle at 78% 42%, rgba(201, 160, 78, 0.02) 1px, transparent 1px),
-    radial-gradient(circle at 45% 73%, rgba(201, 160, 78, 0.018) 1px, transparent 1px),
-    radial-gradient(circle at 91% 8%, rgba(201, 160, 78, 0.022) 1px, transparent 1px),
-    radial-gradient(circle at 12% 89%, rgba(201, 160, 78, 0.015) 1px, transparent 1px),
-    radial-gradient(circle at 67% 55%, rgba(201, 160, 78, 0.02) 1px, transparent 1px);
-  background-size: 180px 160px, 220px 190px, 150px 200px, 200px 170px, 170px 210px, 190px 180px;
-}
-.light body::before {
-  background-image: radial-gradient(circle at 23% 17%, rgba(184, 134, 11, 0.035) 1px, transparent 1px),
-    radial-gradient(circle at 78% 42%, rgba(184, 134, 11, 0.03) 1px, transparent 1px),
-    radial-gradient(circle at 45% 73%, rgba(184, 134, 11, 0.025) 1px, transparent 1px),
-    radial-gradient(circle at 91% 8%, rgba(184, 134, 11, 0.03) 1px, transparent 1px),
-    radial-gradient(circle at 12% 89%, rgba(184, 134, 11, 0.02) 1px, transparent 1px),
-    radial-gradient(circle at 67% 55%, rgba(184, 134, 11, 0.025) 1px, transparent 1px);
-  background-size: 180px 160px, 220px 190px, 150px 200px, 200px 170px, 170px 210px, 190px 180px;
+/* Texture overlays use a dedicated .grain-overlay div (added in layout.tsx)
+   instead of body pseudo-elements, because overflow-x:clip on html/body
+   clips fixed pseudo-elements in some browsers. */
+body::before, body::after {
+  display: none;
 }
 
-/* Subtle noise grain for depth */
-body::after {
-  content: "";
+/* ── Grain film — noise-only overlay on top of everything ── */
+.grain-overlay {
   position: fixed;
   inset: 0;
+  z-index: 10000;
   pointer-events: none;
-  z-index: 0;
-  opacity: 0.025;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  background-size: 256px 256px;
+  opacity: 0.09;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 200px 200px;
 }
-.light body::after {
-  opacity: 0.03;
+.light .grain-overlay {
+  opacity: 0.08;
+}
+
+/* Gradient CTA — leather→navy brand gradient */
+.btn-gradient {
+  background: var(--gradient-brand);
+  color: #fff;
+}
+.btn-gradient:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
 }
 
 /* Glow effect for interactive cards — cursor-following radial highlight */
@@ -180,7 +171,7 @@ body::after {
   transition: opacity 0.4s ease;
   background: radial-gradient(
     400px circle at var(--glow-x) var(--glow-y),
-    rgba(201, 160, 78, 0.07),
+    rgba(160, 120, 104, 0.07),
     transparent 60%
   );
   pointer-events: none;
@@ -190,8 +181,8 @@ body::after {
   opacity: 1;
 }
 .card-glow:hover {
-  box-shadow: 0 0 0 1px rgba(201, 160, 78, 0.25), 0 0 30px rgba(201, 160, 78, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.03);
-  border-color: rgba(201, 160, 78, 0.3);
+  box-shadow: 0 0 0 1px rgba(160, 120, 104, 0.25), 0 0 30px rgba(160, 120, 104, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.03);
+  border-color: rgba(160, 120, 104, 0.3);
 }
 
 /* Rotating gradient border — the "Linear card" effect */
@@ -281,21 +272,21 @@ body::after {
 
 /* ── Setup glow — pulses when relevant section is in view ── */
 .nav-setup-glow {
-  border-color: rgba(201, 160, 78, 0.3) !important;
+  border-color: rgba(160, 120, 104, 0.3) !important;
   animation: setup-glow-pulse 2s ease-in-out infinite;
 }
 @keyframes setup-glow-pulse {
-  0%, 100% { border-color: rgba(201, 160, 78, 0.2); }
-  50% { border-color: rgba(201, 160, 78, 0.5); }
+  0%, 100% { border-color: rgba(160, 120, 104, 0.2); }
+  50% { border-color: rgba(160, 120, 104, 0.5); }
 }
 
 /* ── Journey idle — subtle accent tint ── */
 .nav-journey-idle {
-  background: rgba(201, 160, 78, 0.06);
-  border: 1px solid rgba(201, 160, 78, 0.15);
+  background: rgba(160, 120, 104, 0.06);
+  border: 1px solid rgba(160, 120, 104, 0.15);
 }
 .nav-journey-idle:hover {
-  border-color: rgba(201, 160, 78, 0.4);
+  border-color: rgba(160, 120, 104, 0.4);
 }
 
 /* ── Journey active — green glow when line connects ── */
@@ -335,8 +326,8 @@ body::after {
   animation: dot-breathe 2.5s ease-in-out infinite;
 }
 @keyframes dot-breathe {
-  0%, 100% { opacity: 0.5; box-shadow: 0 0 0 0 rgba(201, 160, 78, 0.4); }
-  50% { opacity: 1; box-shadow: 0 0 8px 2px rgba(201, 160, 78, 0.3); }
+  0%, 100% { opacity: 0.5; box-shadow: 0 0 0 0 rgba(160, 120, 104, 0.4); }
+  50% { opacity: 1; box-shadow: 0 0 8px 2px rgba(160, 120, 104, 0.3); }
 }
 
 /* Brand gradient text */
@@ -369,12 +360,12 @@ h1, h2, h3, h4, h5, h6 {
 
 ::selection {
   background: var(--accent);
-  color: #0d0b09;
+  color: #0c0d10;
 }
 
 ::-moz-selection {
   background: var(--accent);
-  color: #0d0b09;
+  color: #0c0d10;
 }
 
 /* Smooth scroll — disabled for users who prefer reduced motion */
@@ -494,8 +485,8 @@ html {
 }
 
 @keyframes cv-glow {
-  0%, 100% { box-shadow: 0 0 0 rgba(201, 160, 78, 0); }
-  50% { box-shadow: 0 0 8px rgba(201, 160, 78, 0.25), 0 0 16px rgba(201, 160, 78, 0.1); }
+  0%, 100% { box-shadow: 0 0 0 rgba(160, 120, 104, 0); }
+  50% { box-shadow: 0 0 8px rgba(160, 120, 104, 0.25), 0 0 16px rgba(160, 120, 104, 0.1); }
 }
 
 /* ── Scroll-snap for project panels ── */

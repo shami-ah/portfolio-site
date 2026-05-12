@@ -21,8 +21,8 @@ export function openCvDrawer(): void {
 /*  Shared constants                                                   */
 /* ------------------------------------------------------------------ */
 
-const ACCENT = "var(--accent, #c9a04e)";
-const AMBER = "var(--accent-secondary, #8ba4c4)";
+const ACCENT = "var(--accent, #a07868)";
+const AMBER = "var(--accent-secondary, #4a5578)";
 
 /* ------------------------------------------------------------------ */
 /*  Print CV — standalone HTML in popup window                         */

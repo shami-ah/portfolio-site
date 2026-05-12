@@ -79,7 +79,7 @@ function CodeLensBody(): React.ReactElement {
           transition={{ duration: 0.35 }}
           className="flex items-center gap-2 mb-3 pb-2.5 border-b border-card-border"
         >
-          <GitPullRequest size={14} className="text-green-400" />
+          <GitPullRequest size={14} className="text-accent-status" />
           <span className="font-semibold text-foreground text-small">feat: add payment dashboard</span>
           <span className="text-caption text-muted/50 ml-auto">#142</span>
         </motion.div>
@@ -92,12 +92,12 @@ function CodeLensBody(): React.ReactElement {
           transition={{ duration: 0.3, delay: 0.15 }}
           className="flex items-center gap-2 mb-3"
         >
-          <span className="flex items-center gap-1.5 px-2 py-1 rounded-md bg-amber-500/15 border border-amber-500/25 text-caption font-mono">
-            <AlertTriangle size={10} className="text-amber-400" />
-            <span className="text-amber-300">2 critical</span>
+          <span className="flex items-center gap-1.5 px-2 py-1 rounded-md bg-accent/10 border border-accent/20 text-caption font-mono">
+            <AlertTriangle size={10} className="text-accent" />
+            <span className="text-accent">2 critical</span>
           </span>
-          <span className="flex items-center gap-1.5 px-2 py-1 rounded-md bg-yellow-500/10 border border-yellow-500/20 text-caption font-mono">
-            <span className="text-yellow-300">4 warnings</span>
+          <span className="flex items-center gap-1.5 px-2 py-1 rounded-md bg-accent-secondary/10 border border-accent-secondary/20 text-caption font-mono">
+            <span className="text-accent-secondary">4 warnings</span>
           </span>
           <span className="text-caption text-muted/50 font-mono ml-auto">113ms</span>
         </motion.div>
@@ -108,23 +108,23 @@ function CodeLensBody(): React.ReactElement {
           animate={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-40px" }}
           transition={{ duration: 0.35, delay: 0.3 }}
-          className="rounded-lg border border-red-500/30 overflow-hidden mb-3"
+          className="rounded-lg border border-accent/25 overflow-hidden mb-3"
         >
           {/* Code context */}
-          <div className="px-3 py-2 bg-background/60 font-mono text-caption border-b border-red-500/20">
+          <div className="px-3 py-2 bg-background/60 font-mono text-caption border-b border-accent/15">
             <div className="flex items-center gap-2 text-muted/50 mb-1">
               <span>dashboard.tsx</span>
               <span className="text-muted/30">:19</span>
             </div>
-            <div className="text-red-300/80">
-              &lt;div <span className="text-red-400 font-semibold">dangerouslySetInnerHTML</span>=&#123;...&#125; /&gt;
+            <div className="text-accent/80">
+              &lt;div <span className="text-accent font-semibold">dangerouslySetInnerHTML</span>=&#123;...&#125; /&gt;
             </div>
           </div>
           {/* Comment */}
-          <div className="px-3 py-2.5 bg-red-500/[0.06]">
+          <div className="px-3 py-2.5 bg-accent/[0.06]">
             <div className="flex items-center gap-2 mb-1">
-              <Shield size={11} className="text-red-400" />
-              <span className="text-caption font-semibold text-red-300">XSS Vulnerability</span>
+              <Shield size={11} className="text-accent" />
+              <span className="text-caption font-semibold text-accent">XSS Vulnerability</span>
               <span className="text-caption text-muted/40 font-mono ml-auto">CWE-79</span>
             </div>
             <p className="text-caption text-muted/80">
@@ -139,12 +139,12 @@ function CodeLensBody(): React.ReactElement {
           animate={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-40px" }}
           transition={{ duration: 0.35, delay: 0.5 }}
-          className="rounded-lg border border-amber-500/25 overflow-hidden mb-3"
+          className="rounded-lg border border-accent-secondary/20 overflow-hidden mb-3"
         >
-          <div className="px-3 py-2 bg-amber-500/[0.04] flex items-center gap-2">
-            <MessageSquare size={11} className="text-amber-400" />
+          <div className="px-3 py-2 bg-accent-secondary/[0.04] flex items-center gap-2">
+            <MessageSquare size={11} className="text-accent-secondary" />
             <span className="text-caption text-foreground/80">api/payments.ts:45</span>
-            <span className="text-caption text-amber-300 ml-auto">Missing .limit()</span>
+            <span className="text-caption text-accent-secondary ml-auto">Missing .limit()</span>
           </div>
         </motion.div>
 
@@ -158,7 +158,7 @@ function CodeLensBody(): React.ReactElement {
         >
           <div className="flex items-center justify-between mb-1.5">
             <span className="text-caption text-muted/60 font-mono">PR Risk Score</span>
-            <span className="text-caption text-amber-300 font-bold font-mono">5 / 10</span>
+            <span className="text-caption text-accent font-bold font-mono">5 / 10</span>
           </div>
           <div className="h-1.5 bg-background/50 rounded-full overflow-hidden">
             <motion.div
@@ -166,7 +166,7 @@ function CodeLensBody(): React.ReactElement {
               whileInView={{ width: "50%" }}
               viewport={{ once: true, margin: "-40px" }}
               transition={{ duration: 1, delay: 0.9, ease: "easeOut" }}
-              className="h-full bg-gradient-to-r from-amber-500 to-red-500/80"
+              className="h-full" style={{ background: "var(--gradient-brand)" }}
             />
           </div>
         </motion.div>
@@ -273,7 +273,7 @@ function OpenEventBody(): React.ReactElement {
           transition={{ duration: 0.35, delay: 0.25 }}
           className="flex items-start gap-2.5 py-2 px-2 rounded bg-accent/5 border-l-2 border-accent mb-3"
         >
-          <div className="w-7 h-7 rounded-full bg-gradient-to-br from-accent/80 to-purple-500/80 flex items-center justify-center text-caption text-white font-bold shrink-0">
+          <div className="w-7 h-7 rounded-full bg-gradient-to-br from-accent/80 to-accent-secondary/80 flex items-center justify-center text-caption text-white font-bold shrink-0">
             SJ
           </div>
           <div className="flex-1 min-w-0">
@@ -303,9 +303,9 @@ function OpenEventBody(): React.ReactElement {
               animate={{ opacity: 1, x: 0 }}
               viewport={{ once: true, margin: "-40px" }}
               transition={{ duration: 0.35, delay: a.delay, ease: [0.22, 1, 0.36, 1] }}
-              className="flex items-center gap-2 rounded-lg bg-amber-500/15 border border-amber-500/25 px-2.5 py-1.5"
+              className="flex items-center gap-2 rounded-lg bg-accent/10 border border-accent/20 px-2.5 py-1.5"
             >
-              <Check size={10} strokeWidth={3} className="text-amber-400 shrink-0" />
+              <Check size={10} strokeWidth={3} className="text-accent shrink-0" />
               <p className="text-small text-foreground/80 font-medium flex-1 truncate">
                 {a.text}
               </p>
@@ -322,11 +322,11 @@ function OpenEventBody(): React.ReactElement {
           animate={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-40px" }}
           transition={{ duration: 0.4, delay: 1.0 }}
-          className="mt-3 p-2.5 rounded-lg border border-red-500/30 bg-red-500/[0.06]"
+          className="mt-3 p-2.5 rounded-lg border border-accent-secondary/25 bg-accent-secondary/[0.06]"
         >
           <div className="flex items-center gap-1.5 mb-1">
-            <span className="w-1 h-1 rounded-full bg-red-400" />
-            <p className="text-caption uppercase tracking-widest text-red-300 font-semibold">
+            <span className="w-1 h-1 rounded-full bg-accent-secondary" />
+            <p className="text-caption uppercase tracking-widest text-accent-secondary font-semibold">
               date conflict detected
             </p>
           </div>

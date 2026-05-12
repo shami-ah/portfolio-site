@@ -33,9 +33,9 @@ export function TerminalBoot({ force = false, onDone }: BootProps): React.ReactE
   const [soundOn, setSoundOn] = useState(false);
   const audioCtxRef = useRef<AudioContext | null>(null);
   const exitDistRef = useRef(300);
-  const exitAccentRef = useRef("#c9a04e");
+  const exitAccentRef = useRef("#a07868");
   const exitStatusRef = useRef("#4ade80");
-  const exitBgRef = useRef("#0d0b09");
+  const exitBgRef = useRef("#0c0d10");
 
   const introText = "$ shami init --mode=command-center";
 
@@ -142,9 +142,9 @@ export function TerminalBoot({ force = false, onDone }: BootProps): React.ReactE
     exitDistRef.current = window.innerHeight / 2 - 36;
     // Read theme colors for a visible, theme-aware bubble
     const cs = getComputedStyle(document.documentElement);
-    exitAccentRef.current = cs.getPropertyValue("--accent").trim() || "#c9a04e";
+    exitAccentRef.current = cs.getPropertyValue("--accent").trim() || "#a07868";
     exitStatusRef.current = cs.getPropertyValue("--accent-status").trim() || "#4ade80";
-    exitBgRef.current = cs.getPropertyValue("--background").trim() || "#0d0b09";
+    exitBgRef.current = cs.getPropertyValue("--background").trim() || "#0c0d10";
     setPhase("exit");
 
     // Timeline:
