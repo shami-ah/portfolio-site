@@ -177,7 +177,7 @@ interface FuzzyMatch {
 }
 
 const PROJECT_KEYWORDS: Record<string, string[]> = {
-  projects: ["show me your work", "your work", "your projects", "portfolio", "what you built", "what have you built"],
+  projects: ["show me your projects", "your projects", "portfolio", "what you built", "what have you built"],
   openevent: ["event", "management", "booking", "openevent", "open event", "client", "crm", "invoice", "email automation", "event platform"],
   codelens: ["code review", "lint", "pattern", "bug", "security", "pr review", "codelens", "code lens", "static analysis", "code quality"],
   gogaa: ["coding agent", "ai coding", "terminal agent", "provider", "gogaa", "llm tool", "ai cli", "coding cli"],
@@ -192,7 +192,7 @@ const PROJECT_KEYWORDS: Record<string, string[]> = {
   stack: ["stack", "tools", "framework", "language", "react", "typescript", "supabase", "next", "python", "docker", "react native"],
   availability: ["available", "availability", "when can you start", "timeline", "capacity", "schedule"],
   impact: ["impact", "results", "numbers", "metrics", "achievement"],
-  experience: ["career", "worked at", "company", "job history", "role", "position", "years of experience"],
+  experience: ["career", "worked at", "work at", "work in", "worked in", "company", "job history", "role", "position", "years of experience", "your work", "rouelite", "rouelite techno", "more life", "more life hospitality", "wadware", "wadware house", "outlier", "rws", "translated"],
   skills: ["skills", "tech stack", "technology", "what do you know", "expertise", "proficient", "capable"],
 };
 
@@ -521,10 +521,21 @@ const commands: AgentCommand[] = [
   },
   {
     keyword: "experience",
-    intent: "browse_experience",
+    intent: "career_query",
+    confidence: 0.95,
+    steps: [
+      { name: "classify_intent", detail: "label: career_query · conf 0.95", ms: 28 },
+      { name: "route_to_chat", detail: "→ chat agent (career context)", ms: 6 },
+    ],
+    response: "Routing to chat — full career context loaded.",
+    routeToChat: "Tell me about Ahtesham's career and work experience",
+  },
+  {
+    keyword: "career",
+    intent: "browse_career",
     confidence: 0.93,
     steps: [
-      { name: "classify_intent", detail: "label: browse_experience · conf 0.93", ms: 32 },
+      { name: "classify_intent", detail: "label: browse_career · conf 0.93", ms: 32 },
       { name: "route_to_tool", detail: "→ scroll_to_section", ms: 5 },
       { name: "execute", detail: "target: #log", ms: 100 },
     ],
@@ -551,7 +562,7 @@ const commands: AgentCommand[] = [
 const ALL_CHIPS = [
   { label: "Impact", command: "impact", section: "mission" },
   { label: "Projects", command: "projects", section: "projects" },
-  { label: "Career", command: "experience", section: "log" },
+  { label: "Career", command: "career", section: "log" },
   { label: "Contact", command: "contact", section: "contact" },
 ];
 

@@ -22,8 +22,8 @@ export const starters = [
   "What's your rate?",
   "Which stack do you use?",
   "Tell me about CodeLens",
+  "Tell me about Rasad",
   "Are you available right now?",
-  "Have you worked with Stripe?",
   "How do you work with clients?",
 ];
 
@@ -122,7 +122,7 @@ export const kb: KbEntry[] = [
       "linter", "static analysis", "analyze code", "code quality",
     ],
     response:
-      "CodeLens is my AI code review engine. 305 hand-crafted patterns across 9 stacks, source-to-sink taint tracking, PR risk scoring, and Guardian mode that injects rules into Claude Code / Cursor / Copilot so bugs are caught at generation time, not review time. Runs fully local, sub-second, zero runtime deps.",
+      "CodeLens is my AI code review engine. 430 hand-crafted patterns across 9 stacks, source-to-sink taint tracking, PR risk scoring, and Guardian mode that injects rules into Claude Code / Cursor / Copilot so bugs are caught at generation time, not review time. Runs fully local, sub-second, zero runtime deps.",
     tags: ["product"],
   },
   {
@@ -132,7 +132,7 @@ export const kb: KbEntry[] = [
       "terminal agent", "ai cli",
     ],
     response:
-      "Gogaa CLI is my open-source AI coding agent. 11 providers with auto-fallback, full Aider parity (repo map, SEARCH/REPLACE, watch mode, LLM commits), plugin marketplace, parallel panes, scheduled triggers. 1,418 tests passing. Built it because every other tool made you choose between provider freedom and deep integration.",
+      "Gogaa CLI is my open-source AI coding agent. 11 providers with auto-fallback, full Aider parity (repo map, SEARCH/REPLACE, watch mode, LLM commits), plugin marketplace, parallel panes, scheduled triggers. 1,400+ tests passing. Built it because every other tool made you choose between provider freedom and deep integration.",
     tags: ["product"],
   },
   {
@@ -226,6 +226,9 @@ export const kb: KbEntry[] = [
     keywords: [
       "experience", "years", "background", "history", "past", "career",
       "journey", "cv", "resume", "bio",
+      "rouelite", "rouelite techno", "more life", "more life hospitality",
+      "wadware", "wadware house", "outlier", "rws", "translated",
+      "worked at", "work at", "work in",
     ],
     response:
       "Engineering since 2019, deep into AI since 2022. 50+ production systems shipped for real businesses across 250+ total client projects on Upwork and direct clients. Director of IT & R&D at Rouelite Techno 2022-2024, where I introduced AI into operations, reducing manual work by 70%. 500+ RLHF/SFT evaluation sessions on frontier models at Outlier/RWS/Translated. Since Sep 2025: Lead AI Developer at More Life Hospitality GmbH, shipping OpenEvent to 100+ clients.",
@@ -356,7 +359,7 @@ export const kb: KbEntry[] = [
     id: "testing",
     keywords: ["test", "testing", "tests", "qa", "ci", "coverage"],
     response:
-      "Gogaa runs 1,418 tests. Every OpenEvent PR must pass CI (CodeLens + unit + e2e). Test-first for regressions; pragmatic scaffold-first for new features. Playwright for browser e2e.",
+      "Gogaa runs 1,400+ tests. Every OpenEvent PR must pass CI (CodeLens + unit + e2e). Test-first for regressions; pragmatic scaffold-first for new features. Playwright for browser e2e.",
     tags: ["technical"],
   },
   {
@@ -379,6 +382,69 @@ export const kb: KbEntry[] = [
     response:
       "React Native via Expo for cross-platform. Shipped a gluten-free deals/dining app with Next.js web + RN mobile. PWA is my default when possible (installable, push notifications, no app store).",
     tags: ["technical"],
+  },
+
+  {
+    id: "rasad",
+    keywords: [
+      "rasad", "observatory", "observability", "session", "sessions",
+      "x-ray", "xray", "token cost", "token usage", "ai cost",
+      "grading", "session quality",
+    ],
+    response:
+      "Rasad is an AI session observatory. 656 sessions analyzed across 4 tools, 38K messages, 14K tool calls — every action replayed, every session graded A-F. Found that Opus costs 18x more than Sonnet for routine tasks. X-Ray mode replays sessions action-by-action. 100% local, zero outbound requests. Open-source on GitHub.",
+    tags: ["product"],
+  },
+  {
+    id: "command-center",
+    keywords: [
+      "command center", "command-center", "pwa", "inbox", "triage",
+      "gmail", "calendar", "personal dashboard",
+    ],
+    response:
+      "Command Center is a personal AI operations PWA. Pulls Gmail and Calendar via API, applies dual-AI triage (Claude for reasoning, Gemini for classification), surfaces everything in one dashboard. Installable on desktop and mobile, works offline, syncs across devices via Supabase. Replaces 4+ separate tools, reduces inbox processing by 60%.",
+    tags: ["product"],
+  },
+  {
+    id: "gluten-free",
+    keywords: [
+      "gluten", "gluten-free", "gluten free", "deals", "dining",
+      "restaurant", "recipe", "food", "consumer app",
+    ],
+    response:
+      "Gluten-Free Deals & Dining is a cross-platform consumer app. An LLM generates 200+ targeted search queries, concurrent scrapers aggregate deals from 40+ retailers, GPS finds nearby safe restaurants, and AI generates personalized recipes. Shared React Native + Next.js codebase serves Web, iOS, and Android.",
+    tags: ["product"],
+  },
+  {
+    id: "dev-env",
+    keywords: [
+      "dev environment", "dev env", "portable", "containerized",
+      "workspace", "onboarding", "wisc", "context engineering",
+    ],
+    response:
+      "Portable Dev Environment: a Docker container packaging the full toolchain with WISC context engineering. Cut Claude Code context from 72KB to 11.7KB (84% reduction) with zero capability loss. One-command onboarding in 10 minutes, identical setup across Mac, Linux VPS, and phone SSH.",
+    tags: ["product"],
+  },
+  {
+    id: "agent-orchestrator",
+    keywords: [
+      "orchestrator", "camel", "multi-agent framework", "planner",
+      "validator", "task state", "critique",
+    ],
+    response:
+      "AI Agent Orchestrator implements the CAMEL multi-agent framework. 4 roles (Planner, Worker, Validator, Orchestrator), iterative critique loops (70% → 95% accuracy in 3 rounds), cross-task learning via error pattern memory. Clean 18-file architecture, fully open-source on GitHub.",
+    tags: ["product"],
+  },
+  {
+    id: "agent-system",
+    keywords: [
+      "agent system", "deep agents", "huggingface", "hugging face",
+      "job search agent", "research agent", "proposal agent",
+      "5 agents", "five agents",
+    ],
+    response:
+      "AI Agent System: 5 purpose-built agents deployed on HuggingFace Spaces. Job Search, Research, Code Review, Upwork Proposal, and n8n Webhook agents — each with real tool-calling (Tavily, GitHub API). Groq inference at $0/month hosting cost. Live and operational.",
+    tags: ["product"],
   },
 
   /* ── New entries ── */

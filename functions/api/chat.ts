@@ -42,7 +42,7 @@ Available: full-time remote roles + 90-day project engagements
   500+ RLHF/SFT evaluation sessions on frontier models (Outlier, RWS, Translated)
 
 === PRODUCTS ===
-CodeLens (v0.3.3): AI code review engine, 305 hand-crafted patterns across 9 stacks
+CodeLens (v0.3.3): AI code review engine, 430 hand-crafted patterns across 9 stacks
   Source-to-sink taint tracking, PR risk scoring, Guardian mode (injects rules into Claude Code/Cursor/Copilot)
   Zero deps, <1s reviews, single 351KB file, Docker distribution via GHCR
   Private beta, evaluating commercial release
@@ -51,13 +51,50 @@ Gogaa CLI (v1.0.0): open-source AI coding agent
   11 LLM providers with auto-fallback, full Aider parity (repo map, SEARCH/REPLACE, watch mode, LLM commits)
   Full Claude Code UI parity, REPL tool, ultrathink detection, multi-provider robustness
   Plugin marketplace, parallel panes, scheduled triggers, WAL session persistence
-  1,418 tests passing, React Ink TUI with 22 themes
+  1,400+ tests passing, React Ink TUI with 22 themes
   Gogaa Web: companion browser-based terminal with PTY over WebSocket
 
 OpenEvent: production SaaS for event management
   Email→AI classification→entity extraction→human approval→workflow execution→audit log
   100+ clients, 150+ events, saves 1.5hrs/day per team
   pgvector, Edge Functions, Stripe, multi-tenant, live at openevent.io
+
+Rasad (v1.0.0): AI session observatory for developers
+  Observability layer for AI-assisted development — 656 sessions across 4 tools, 38K messages, 14K tool calls
+  X-Ray: action-by-action session replay with phase labels and timing
+  Session quality grading (A-F), model cost comparison (found Opus costs 18x more than Sonnet for routine tasks)
+  SQLite with FTS5, streaming parsers handle 700MB+ without memory overflow
+  100% local — zero outbound requests, data never leaves your machine
+  Open-source on GitHub: github.com/shami-ah/rasad
+
+Command Center: personal AI operations PWA
+  Unified inbox pulling Gmail and Calendar via API with dual-AI triage (Claude + Gemini)
+  AI-powered intent classification and priority scoring
+  Real-time sync across devices via Supabase, installable as PWA (desktop + mobile, works offline)
+  Replaces 4+ separate tools in daily workflow, reduces inbox processing by 60%
+
+Gluten-Free Deals & Dining: cross-platform consumer app
+  LLM generates 200+ targeted search queries per category, concurrent scrapers aggregate deals from 40+ retailers
+  GPS-based restaurant finder with allergy-safe filtering, AI recipe generation
+  Cross-platform: React Native + Next.js for Web, iOS, Android from shared codebase
+
+Portable Dev Environment: containerized full-stack workspace
+  Docker container with full toolchain (Node, Python, Deno, Playwright, 10+ CLIs)
+  WISC context engineering cut Claude Code context from 72KB to 11.7KB (84% reduction), zero capability loss
+  One-command onboarding in 10 minutes, identical environment across Mac, Linux VPS, and phone SSH
+  ARM + x86 builds, secrets mounted at runtime, never baked into images
+
+AI Agent Orchestrator: CAMEL multi-agent framework
+  4 agent roles (Planner, Worker, Validator, Orchestrator) with formal task state machine
+  Iterative CAMEL critique: structured feedback loops, 3 rounds per task (70% → 95% accuracy)
+  Cross-task learning via error pattern memory, task DAG with dependency resolution
+  Clean 18-file architecture, fully open-source: github.com/shami-ah/ai-agent-orchestrator
+
+AI Agent System: 5 purpose-built AI agents on HuggingFace Spaces
+  Job Search Agent, Research Agent, Code Review Agent, Upwork Proposal Agent, n8n Webhook Agent
+  Real tool-calling (Tavily, GitHub API, URL fetcher), Groq inference at $0/month
+  1-8 tool calls per request, API-first (callable from n8n, PWA, any HTTP client)
+  Live at shami96-deep-agent.hf.space
 
 === STACK ===
 AI: Claude (Opus/Sonnet), OpenAI (GPT-4o, o1), RAG (pgvector, Pinecone), LangChain, multi-agent orchestration, human-in-the-loop
