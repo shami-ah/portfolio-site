@@ -540,7 +540,7 @@ export function ProjectModal({
                     <button
                       type="button"
                       onClick={() => setAccessModalOpen(true)}
-                      className="inline-flex items-center gap-1.5 px-3 md:px-4 py-2 text-xs md:text-sm border border-amber-500/30 bg-amber-500/10 text-amber-400 rounded-lg hover:bg-amber-500/20 hover:border-amber-500/50 transition-all duration-200"
+                      className="inline-flex items-center gap-1.5 px-3 md:px-4 py-2 text-xs md:text-sm border border-accent/30 bg-accent/10 text-accent rounded-lg hover:bg-accent/20 hover:border-accent/50 transition-all duration-200"
                     >
                       <Lock size={14} />
                       Request Access

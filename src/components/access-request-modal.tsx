@@ -188,7 +188,7 @@ export function AccessRequestModal({ open, onClose }: AccessRequestModalProps): 
                   <button
                     type="button"
                     onClick={onClose}
-                    className="mt-6 px-5 py-2 text-sm bg-accent text-white rounded-lg hover:bg-accent/90 transition-all"
+                    className="mt-6 px-5 py-2 text-sm btn-gradient rounded-lg transition-all"
                   >
                     Done
                   </button>
@@ -301,7 +301,7 @@ export function AccessRequestModal({ open, onClose }: AccessRequestModalProps): 
                   <button
                     type="submit"
                     disabled={!isValid || formState === "submitting"}
-                    className="w-full py-2.5 text-sm font-medium bg-accent text-white rounded-lg hover:bg-accent/90 transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed hover:shadow-lg hover:shadow-accent/20"
+                    className="w-full py-2.5 text-sm font-medium btn-gradient rounded-lg transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed hover:shadow-lg hover:shadow-accent/20"
                   >
                     {formState === "submitting" ? (
                       <span className="flex items-center justify-center gap-2">
