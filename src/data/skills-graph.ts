@@ -98,5 +98,5 @@ export const groupColors: Record<SkillNode["group"], string> = {
   frontend: "#7dd3fc", // accent-secondary
   backend: "#34d399",  // emerald
   infra: "#a78bfa",    // violet
-  tools: "#fbbf24",    // amber/gold
+  tools: "#a07868",    // leather accent
 };

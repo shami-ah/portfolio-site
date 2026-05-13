@@ -471,7 +471,7 @@ function ScrollPanel({
               </div>
               <div className="flex items-center gap-3">
                 {project.requestAccess && (
-                  <button type="button" onClick={() => setAccessModalOpen(true)} className="text-caption font-mono px-2.5 py-1 rounded-lg border border-amber-500/30 bg-amber-500/10 text-amber-400 hover:bg-amber-500/20 transition-colors cursor-pointer">
+                  <button type="button" onClick={() => setAccessModalOpen(true)} className="text-caption font-mono px-2.5 py-1 rounded-lg border border-accent/30 bg-accent/10 text-accent hover:bg-accent/20 transition-colors cursor-pointer">
                     request access
                   </button>
                 )}
@@ -938,7 +938,7 @@ function DagCard({ project, onOpen, counter, className }: FrameProps): React.Rea
             { label: "→", color: "text-muted/30" },
             { label: "Worker", color: "bg-green-500/15 text-green-500 border-green-500/25" },
             { label: "→", color: "text-muted/30" },
-            { label: "Validate", color: "bg-amber-500/15 text-amber-400 border-amber-500/25" },
+            { label: "Validate", color: "bg-accent/15 text-accent border-accent/25" },
             { label: "→", color: "text-muted/30" },
             { label: "✓", color: "bg-green-500/15 text-green-500 border-green-500/25" },
           ].map((n, i) => (

@@ -401,7 +401,7 @@ export function TopBar(): React.ReactElement {
           }`}
           style={{
             boxShadow: setupGlow
-              ? "0 4px 20px rgba(212,168,83,0.15), 0 0 30px rgba(212,168,83,0.1)"
+              ? "0 4px 20px rgba(160,120,104,0.15), 0 0 30px rgba(160,120,104,0.1)"
               : "0 4px 12px rgba(0,0,0,0.12), 0 0 4px rgba(0,0,0,0.06)",
           }}
         >
@@ -431,7 +431,7 @@ export function TopBar(): React.ReactElement {
           style={{
             boxShadow: meteorLanded
               ? "0 0 20px rgba(74,222,128,0.3), 0 0 40px rgba(74,222,128,0.15)"
-              : "0 4px 12px rgba(0,0,0,0.12), 0 0 4px rgba(212,168,83,0.04)",
+              : "0 4px 12px rgba(0,0,0,0.12), 0 0 4px rgba(160,120,104,0.04)",
           }}
         >
           <TrendingUp

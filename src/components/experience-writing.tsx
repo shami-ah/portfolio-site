@@ -241,7 +241,7 @@ export function ExperienceAndWriting(): React.ReactElement {
                     <div className="absolute left-[7px] top-0 -bottom-5 w-[2px] bg-gradient-to-b from-accent via-accent-secondary to-accent-secondary/40" />
                     {/* Commit dot */}
                     <div className={`absolute left-0 top-3 w-[16px] h-[16px] rounded-full border-[2.5px] bg-background z-10 ${
-                      i === 0 ? "border-accent shadow-[0_0_6px_rgba(212,168,83,0.4)]" :
+                      i === 0 ? "border-accent shadow-[0_0_6px_rgba(160,120,104,0.4)]" :
                       i === 1 ? "border-accent-secondary" :
                       "border-accent-status"
                     }`} />

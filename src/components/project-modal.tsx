@@ -18,7 +18,7 @@ interface ProjectModalProps {
 
 const typeColors: Record<string, string> = {
   "AI Dev Tool": "text-accent border-accent/20 bg-accent/10",
-  "Production SaaS": "text-amber-400 border-amber-500/30 bg-amber-500/10",
+  "Production SaaS": "text-accent border-accent/20 bg-accent/10",
   "Developer Tool": "text-green-400 border-green-500/30 bg-green-500/10",
   "Developer Tool / CLI": "text-green-400 border-green-500/30 bg-green-500/10",
   "Cross-Platform": "text-purple-400 border-purple-500/30 bg-purple-500/10",

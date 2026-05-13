@@ -284,11 +284,11 @@ export function SidebarNav(): React.ReactElement {
               marginLeft: isActive ? -4 : 0,
               marginTop: isActive ? -4 : 0,
               borderRadius: 14,
-              background: isActive ? "rgba(201,160,78,0.12)" : "transparent",
+              background: isActive ? "rgba(160,120,104,0.12)" : "transparent",
               boxShadow: isActive
-                ? "0 4px 24px rgba(201,160,78,0.2), inset 0 1px 0 rgba(255,255,255,0.06)"
+                ? "0 4px 24px rgba(160,120,104,0.2), inset 0 1px 0 rgba(255,255,255,0.06)"
                 : "none",
-              border: isActive ? "1px solid rgba(201,160,78,0.15)" : "1px solid transparent",
+              border: isActive ? "1px solid rgba(160,120,104,0.15)" : "1px solid transparent",
             }}
           >
             {/* Pulse ring on active */}
@@ -303,7 +303,7 @@ export function SidebarNav(): React.ReactElement {
               strokeWidth={isActive ? 2 : 1.5}
               className={`transition-all duration-500 ${
                 isActive
-                  ? "text-accent drop-shadow-[0_0_6px_rgba(201,160,78,0.5)]"
+                  ? "text-accent drop-shadow-[0_0_6px_rgba(160,120,104,0.5)]"
                   : isDone
                     ? "text-accent-status/70 group-hover:text-accent-status"
                     : "text-muted/25 group-hover:text-muted/50"
@@ -342,8 +342,8 @@ export function SidebarNav(): React.ReactElement {
           100% { transform: scale(1.6); opacity: 0; }
         }
         @keyframes star-breathe {
-          0% { box-shadow: 0 0 6px var(--accent), 0 0 12px rgba(201,160,78,0.2); }
-          100% { box-shadow: 0 0 14px var(--accent), 0 0 28px rgba(201,160,78,0.4); }
+          0% { box-shadow: 0 0 6px var(--accent), 0 0 12px rgba(160,120,104,0.2); }
+          100% { box-shadow: 0 0 14px var(--accent), 0 0 28px rgba(160,120,104,0.4); }
         }
       `}</style>
     </motion.nav>

@@ -55,7 +55,7 @@ export function DecisionTree({ decision }: { decision: Decision }): React.ReactE
                     : isPicked
                       ? "border-accent/40 bg-accent/10"
                       : isCommon
-                        ? "border-amber-500/30 bg-amber-500/5"
+                        ? "border-accent-secondary/30 bg-accent-secondary/5"
                         : "border-card-border bg-card/20 opacity-60"
               }`}
             >
@@ -68,7 +68,7 @@ export function DecisionTree({ decision }: { decision: Decision }): React.ReactE
                       : isPicked
                         ? "border-accent text-accent bg-accent/10"
                         : isCommon
-                          ? "border-amber-500/50 text-amber-400"
+                          ? "border-accent-secondary/50 text-accent-secondary"
                           : "border-muted/20 text-muted/40"
                 }`}
               >
@@ -85,7 +85,7 @@ export function DecisionTree({ decision }: { decision: Decision }): React.ReactE
                     </span>
                   )}
                   {isCommon && !isMine && (
-                    <span className="text-caption font-mono text-amber-400 px-1.5 py-0.5 rounded border border-amber-500/30 bg-amber-500/10">
+                    <span className="text-caption font-mono text-accent-secondary px-1.5 py-0.5 rounded border border-accent-secondary/30 bg-accent-secondary/10">
                       common pick
                     </span>
                   )}

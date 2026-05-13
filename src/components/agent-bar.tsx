@@ -827,7 +827,7 @@ const SECTION_PERSONALITY: Record<string, AgentPersonality> = {
   },
   contact: {
     dotColor: "bg-accent",
-    glowColor: "rgba(212,168,67,0.5)",
+    glowColor: "rgba(160,120,104,0.5)",
     hoverLabel: "connect",
   },
 };

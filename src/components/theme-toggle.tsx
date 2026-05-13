@@ -44,7 +44,7 @@ export function ThemeToggle(): React.ReactElement {
     >
       <span className="flex items-center justify-center w-[34px] h-[34px] rounded-full shrink-0">
         {theme === "dark" ? (
-          <Sun size={18} className="text-muted/60 group-hover:text-amber-400 transition-colors" />
+          <Sun size={18} className="text-muted/60 group-hover:text-accent transition-colors" />
         ) : (
           <Moon size={18} className="text-muted/60 group-hover:text-blue-400 transition-colors" />
         )}

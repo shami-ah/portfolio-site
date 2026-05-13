@@ -96,7 +96,7 @@ export function GitLog(): React.ReactElement {
               >
                 {/* Git commit dot on the branch line */}
                 <div className={`hidden md:block absolute left-[13px] top-6 w-[21px] h-[21px] rounded-full border-[3px] bg-background z-10 ${
-                  i === 0 ? "border-accent shadow-[0_0_8px_rgba(212,168,83,0.4)]" :
+                  i === 0 ? "border-accent shadow-[0_0_8px_rgba(160,120,104,0.4)]" :
                   i === 1 ? "border-accent-secondary" :
                   "border-accent-status"
                 }`} />
