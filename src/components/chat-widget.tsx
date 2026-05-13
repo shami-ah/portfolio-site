@@ -24,10 +24,10 @@ interface Message {
 type WidgetState = "closed" | "open" | "minimized";
 
 const MODELS = [
-  { id: "groq", label: "Llama 3.3", provider: "Groq" },
-  { id: "claude", label: "Claude 4", provider: "Anthropic" },
-  { id: "gpt4", label: "GPT-4o", provider: "OpenAI" },
-  { id: "nvidia", label: "Nemotron", provider: "NVIDIA" },
+  { id: "groq", label: "Concise", provider: "Llama 3.3" },
+  { id: "claude", label: "Thoughtful", provider: "Llama 3.3" },
+  { id: "gpt4", label: "Structured", provider: "Llama 3.3" },
+  { id: "nvidia", label: "Technical", provider: "Llama 3.3" },
 ] as const;
 
 const BOOK_URL = "https://ahtesham.dev.wadwarehouse.com/book";
@@ -199,9 +199,40 @@ const minimizedVariants = {
 /*  ChatWidget                                                         */
 /* ------------------------------------------------------------------ */
 
+const CHAT_STORAGE_KEY = "portfolio-chat-history";
+const CHAT_MAX_AGE = 30 * 60 * 1000; // 30 minutes
+
+function loadChatHistory(): Message[] {
+  try {
+    const raw = localStorage.getItem(CHAT_STORAGE_KEY);
+    if (!raw) return [];
+    const { messages, timestamp } = JSON.parse(raw) as { messages: Message[]; timestamp: number };
+    if (Date.now() - timestamp > CHAT_MAX_AGE) {
+      localStorage.removeItem(CHAT_STORAGE_KEY);
+      return [];
+    }
+    return messages.map((m) => ({ ...m, streaming: false }));
+  } catch {
+    return [];
+  }
+}
+
+function saveChatHistory(messages: Message[]): void {
+  try {
+    const finished = messages.filter((m) => !m.streaming);
+    if (finished.length === 0) {
+      localStorage.removeItem(CHAT_STORAGE_KEY);
+      return;
+    }
+    localStorage.setItem(CHAT_STORAGE_KEY, JSON.stringify({ messages: finished, timestamp: Date.now() }));
+  } catch {
+    // quota exceeded — ignore
+  }
+}
+
 export function ChatWidget(): React.ReactElement {
   const [state, setState] = useState<WidgetState>("closed");
-  const [messages, setMessages] = useState<Message[]>([]);
+  const [messages, setMessages] = useState<Message[]>(() => loadChatHistory());
   const [input, setInput] = useState("");
   const [isThinking, setIsThinking] = useState(false);
   const [activeModel, setActiveModel] = useState("groq");
@@ -211,6 +242,17 @@ export function ChatWidget(): React.ReactElement {
   const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const tilt = useTilt(4); // subtle 3D tilt on the chat panel
+
+  // Persist chat history on change
+  useEffect(() => {
+    saveChatHistory(messages);
+  }, [messages]);
+
+  // Auto-reopen if there's a restored conversation
+  useEffect(() => {
+    const restored = loadChatHistory();
+    if (restored.length > 0) setState("minimized");
+  }, []);
 
   // No auto-show trigger — chat opens from agent bar only
   useEffect(() => {
@@ -421,7 +463,7 @@ export function ChatWidget(): React.ReactElement {
                   </div>
                   <div>
                     <span className="font-mono text-sm font-semibold text-foreground">shami.ai</span>
-                    <p className="text-caption font-mono text-muted/50">portfolio agent · {model.label}</p>
+                    <p className="text-caption font-mono text-muted/50">portfolio agent · {model.label} voice</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-1">
@@ -560,7 +602,7 @@ export function ChatWidget(): React.ReactElement {
                 </button>
               </div>
               <div className="px-3 pb-2 flex items-center justify-between">
-                <span className="text-caption font-mono text-muted/20">{model.label} via {model.provider}</span>
+                <span className="text-caption font-mono text-muted/20">{model.label} voice · {model.provider}</span>
                 <span className="text-caption font-mono text-muted/20">{msgCount}/20</span>
               </div>
             </form>

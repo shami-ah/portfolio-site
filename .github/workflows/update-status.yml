@@ -1,0 +1,51 @@
+name: Update status.json
+
+on:
+  schedule:
+    - cron: "0 6 * * 1" # Every Monday at 6 AM UTC
+  workflow_dispatch: # Manual trigger
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Update status.json
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Fetch gogaa-ts package.json for version
+          GOGAA_VERSION=$(gh api repos/shami-ah/gogaa-ts/contents/package.json \
+            --jq '.content' | base64 -d | jq -r '.version' 2>/dev/null || echo "")
+
+          # Update status.json if we got data
+          if [ -n "$GOGAA_VERSION" ]; then
+            jq --arg v "$GOGAA_VERSION" --arg d "$(date +%Y-%m-%d)" \
+              '.gogaa.version = $v | .updated = $d' \
+              public/status.json > /tmp/status.json && mv /tmp/status.json public/status.json
+          else
+            # At minimum update the date
+            jq --arg d "$(date +%Y-%m-%d)" '.updated = $d' \
+              public/status.json > /tmp/status.json && mv /tmp/status.json public/status.json
+          fi
+
+          cat public/status.json
+
+      - name: Check for changes
+        id: check
+        run: |
+          if git diff --quiet public/status.json; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Commit and push
+        if: steps.check.outputs.changed == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add public/status.json
+          git commit -m "chore: auto-update status.json [skip ci]"
+          git push

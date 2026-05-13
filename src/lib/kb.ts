@@ -476,7 +476,7 @@ export const kb: KbEntry[] = [
       "contractor", "consulting", "consultant", "independent",
     ],
     response:
-      "250+ projects on Upwork with 100% job success score and 40+ returning clients. Open to both short contracts and long-term engagements. Typical project: scoped architecture doc → sprint delivery → production handoff.",
+      "250+ projects on Upwork with 100% job success score and 40+ returning clients. Upwork rate is set lower for platform discovery — direct contract rate is $80–120/hr. Open to both short contracts and long-term engagements. Typical project: scoped architecture doc → sprint delivery → production handoff.",
     tags: ["commercial"],
     actions: [
       { label: "Book a 15-min call", href: BOOK_URL },

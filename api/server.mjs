@@ -43,7 +43,7 @@ Available: full-time remote roles + 90-day project engagements
   500+ RLHF/SFT evaluation sessions on frontier models (Outlier, RWS, Translated)
 
 === PRODUCTS ===
-CodeLens (v0.3.3): AI code review engine, 305 hand-crafted patterns across 9 stacks
+CodeLens (v0.3.5): AI code review engine, 430 hand-crafted patterns across 9 stacks
   Source-to-sink taint tracking, PR risk scoring, Guardian mode (injects rules into Claude Code/Cursor/Copilot)
   Zero deps, <1s reviews, single 351KB file, Docker distribution via GHCR
   Private beta, evaluating commercial release
@@ -59,6 +59,20 @@ OpenEvent: production SaaS for event management
   Email→AI classification→entity extraction→human approval→workflow execution→audit log
   100+ clients, 150+ events, saves 1.5hrs/day per team
   pgvector, Edge Functions, Stripe, multi-tenant, live at openevent.io
+
+Rasad (v1.0.0): AI session observatory for developers
+  656 sessions across 4 tools, 38K messages, 14K tool calls
+  X-Ray: action-by-action session replay with phase labels and timing
+  Session quality grading (A-F), model cost comparison
+  100% local — zero outbound requests. Open-source on GitHub
+
+Command Center: personal AI operations PWA
+  Gmail + Calendar via API, dual-AI triage (Claude + Gemini)
+  Real-time sync via Supabase, installable as PWA, works offline
+
+AI Agent System: 5 purpose-built AI agents on HuggingFace Spaces
+  Job Search, Research, Code Review, Upwork Proposal, n8n Webhook agents
+  Groq inference at $0/month hosting. Live at shami96-deep-agent.hf.space
 
 === STACK ===
 AI: Claude (Opus/Sonnet), OpenAI (GPT-4o, o1), RAG (pgvector, Pinecone), LangChain, multi-agent orchestration, human-in-the-loop
