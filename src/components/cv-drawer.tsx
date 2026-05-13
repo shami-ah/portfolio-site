@@ -137,20 +137,13 @@ function printCV(s: ReturnType<typeof useStatus>["status"]): void {
   </div>
 </div></body></html>`;
 
-  const id = "cv-print-frame";
-  let frame = document.getElementById(id) as HTMLIFrameElement | null;
-  if (!frame) {
-    frame = document.createElement("iframe");
-    frame.id = id;
-    frame.style.cssText = "position:fixed;width:794px;height:1123px;border:none;left:-9999px;top:-9999px";
-    document.body.appendChild(frame);
-  }
-  const doc = frame.contentDocument || frame.contentWindow?.document;
-  if (!doc) return;
-  doc.open();
-  doc.write(html);
-  doc.close();
-  setTimeout(() => frame?.contentWindow?.print(), 300);
+  const win = window.open("", "_blank", "width=794,height=1123");
+  if (!win) return;
+  win.document.open();
+  win.document.write(html);
+  win.document.close();
+  win.addEventListener("afterprint", () => win.close());
+  setTimeout(() => win.print(), 300);
 }
 
 /* ------------------------------------------------------------------ */
