@@ -265,7 +265,7 @@ export function ConfigHero(): React.ReactElement {
             filter: m("agent") ? "blur(0px)" : "blur(6px)",
           }}
           transition={{ duration: immediate ? 0 : 0.7, ease: EASE }}
-          className="mt-2"
+          className="mt-2 max-w-[700px] mx-auto"
         />
 
         {/* Building status */}
