@@ -2098,7 +2098,7 @@ export function AgentBar(): React.ReactElement {
                       animate={{ opacity: 1, y: 0, scale: 1 }}
                       exit={{ opacity: 0, y: 12, scale: 0.95 }}
                       transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-                      className="flex items-center gap-3 glass-strong rounded-full px-4 py-2.5 cursor-pointer w-[380px]"
+                      className="flex items-center gap-3 glass-strong rounded-full px-4 py-2.5 cursor-pointer w-[calc(100vw-2rem)] max-w-[380px]"
                       style={{
                         boxShadow: `0 4px 20px rgba(0,0,0,0.3), 0 0 12px ${p.glowColor}`,
                       }}

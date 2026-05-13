@@ -3,12 +3,14 @@
 import { useEffect, useState, useRef, useCallback } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { RefreshCcw, Wrench, TrendingUp } from "lucide-react";
+import { RefreshCcw, Wrench, TrendingUp, Sun, Moon } from "lucide-react";
 
 export function TopBar(): React.ReactElement {
   const [scrolled, setScrolled] = useState(false);
   const [onProjects, setOnProjects] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
+  const [theme, setThemeState] = useState<"dark" | "light">("dark");
+  const [themeMounted, setThemeMounted] = useState(false);
 
   // ── Per-button signal suppression ──
   const [seenReboot, setSeenReboot] = useState(false);
@@ -206,6 +208,22 @@ export function TopBar(): React.ReactElement {
     });
     return () => obs.disconnect();
   }, []);
+
+  // Theme toggle (mobile inline version)
+  useEffect(() => {
+    setThemeMounted(true);
+    const stored = localStorage.getItem("theme") as "dark" | "light" | null;
+    if (stored) setThemeState(stored);
+  }, []);
+
+  const toggleTheme = (): void => {
+    const next = theme === "dark" ? "light" : "dark";
+    setThemeState(next);
+    localStorage.setItem("theme", next);
+    document.cookie = `theme=${next};path=/;max-age=31536000;SameSite=Lax`;
+    document.documentElement.classList.remove("dark", "light");
+    document.documentElement.classList.add(next);
+  };
 
   const reboot = (): void => {
     // Reset all signal flags — reboot is a full system restart
@@ -446,6 +464,26 @@ export function TopBar(): React.ReactElement {
             journey
           </span>
         </Link>
+
+        {/* ── Theme toggle (mobile — matches other buttons; desktop uses fixed bottom-left) ── */}
+        {themeMounted && (
+          <button
+            type="button"
+            onClick={toggleTheme}
+            aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
+            className="group relative flex md:hidden items-center cursor-pointer glass rounded-full p-2.5 hover:px-4 hover:gap-2 transition-all duration-300"
+            style={{ boxShadow: "0 4px 12px rgba(0,0,0,0.12), 0 0 4px rgba(0,0,0,0.06)" }}
+          >
+            {theme === "dark" ? (
+              <Sun size={10} className="shrink-0 text-muted/60 group-hover:text-accent transition-colors duration-500" />
+            ) : (
+              <Moon size={10} className="shrink-0 text-muted/60 group-hover:text-blue-400 transition-colors duration-500" />
+            )}
+            <span className="max-w-0 overflow-hidden group-hover:max-w-[50px] transition-all duration-300 whitespace-nowrap font-mono text-small text-muted/60">
+              {theme === "dark" ? "light" : "dark"}
+            </span>
+          </button>
+        )}
       </motion.div>
     </>
   );

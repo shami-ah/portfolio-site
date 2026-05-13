@@ -146,7 +146,7 @@ export default function RootLayout({
         </a>
         {children}
         <div className="grain-overlay" aria-hidden="true" />
-        <div className="fixed bottom-5 left-5 z-50 print:hidden">
+        <div className="fixed bottom-5 left-5 z-50 print:hidden hidden md:block">
           <ThemeToggle />
         </div>
         <CVDrawer />
