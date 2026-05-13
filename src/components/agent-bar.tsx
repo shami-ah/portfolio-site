@@ -137,6 +137,90 @@ function BuildPopup({ onDone }: { onDone: () => void }): React.ReactElement {
 }
 
 /* ------------------------------------------------------------------ */
+/*  Agent self-introduction — types out a greeting, then shows CTA     */
+/* ------------------------------------------------------------------ */
+
+const INTRO_LINES = [
+  "I'm Ahtesham's portfolio agent.",
+  "Ask me anything — rate, stack, projects, or how he works.",
+];
+
+function AgentIntro({ hovered }: { hovered: boolean }): React.ReactElement {
+  const [lineIdx, setLineIdx] = useState(0);
+  const [charIdx, setCharIdx] = useState(0);
+  const [done, setDone] = useState(false);
+  const [introSeen] = useState(() => {
+    if (typeof sessionStorage === "undefined") return false;
+    return sessionStorage.getItem("agent-intro-seen") === "1";
+  });
+
+  useEffect(() => {
+    if (introSeen) {
+      setDone(true);
+      setLineIdx(INTRO_LINES.length);
+      return;
+    }
+    if (lineIdx >= INTRO_LINES.length) {
+      setDone(true);
+      try { sessionStorage.setItem("agent-intro-seen", "1"); } catch { /* noop */ }
+      return;
+    }
+    const line = INTRO_LINES[lineIdx];
+    if (charIdx < line.length) {
+      const t = setTimeout(() => setCharIdx((c) => c + 1), 25 + Math.random() * 15);
+      return () => clearTimeout(t);
+    }
+    // Pause between lines
+    const t = setTimeout(() => {
+      setLineIdx((l) => l + 1);
+      setCharIdx(0);
+    }, 800);
+    return () => clearTimeout(t);
+  }, [lineIdx, charIdx, introSeen]);
+
+  if (hovered) {
+    return (
+      <motion.p
+        key="hover-cta"
+        initial={{ opacity: 0, y: 4 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="font-mono text-xs text-accent"
+      >
+        click to talk
+      </motion.p>
+    );
+  }
+
+  if (done) {
+    return (
+      <motion.p
+        key="intro-done"
+        className="font-mono text-xs text-muted/50 max-w-[240px] text-center leading-relaxed"
+        animate={{ opacity: [0.5, 0.8, 0.5] }}
+        transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+      >
+        {INTRO_LINES[INTRO_LINES.length - 1]}
+      </motion.p>
+    );
+  }
+
+  const currentLine = INTRO_LINES[lineIdx] ?? "";
+  const typed = currentLine.slice(0, charIdx);
+
+  return (
+    <motion.div
+      key="intro-typing"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      className="font-mono text-xs text-accent-status/80 max-w-[260px] text-center leading-relaxed"
+    >
+      <span>{typed}</span>
+      <span className="inline-block w-[2px] h-[10px] bg-accent-status/60 ml-0.5 translate-y-[1px] animate-pulse" />
+    </motion.div>
+  );
+}
+
+/* ------------------------------------------------------------------ */
 /*  Agent emoji face — shared between hero and pill bar                */
 /* ------------------------------------------------------------------ */
 
@@ -1120,7 +1204,7 @@ export function AgentBar(): React.ReactElement {
     }
     const cycle = bubbleCycleRef.current;
     if (cycle >= 4) return; // stop after 4 mood picker cycles
-    const delay = 3000 + cycle * 3000; // 3s, 6s, 9s, 12s
+    const delay = 6000 + cycle * 6000; // 6s, 12s, 18s, 24s
     // Show dance hint on cycle 1 if not tried yet
     const showDance = cycle === 1 && !danceTried && !danceHintShown;
     bubbleTimerRef.current = setTimeout(() => {
@@ -1779,6 +1863,12 @@ export function AgentBar(): React.ReactElement {
             transition={{ type: "spring", stiffness: 300, damping: 20 }}
             className="flex flex-col items-center gap-3"
           >
+            {/* Agent online badge — positioned above emoji */}
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent-status/10 border border-accent-status/20 text-accent-status text-caption md:text-xs font-mono">
+              <span className="w-1.5 h-1.5 bg-accent-status rounded-full animate-pulse" />
+              agent online
+            </div>
+
             <div
               onClick={() => {
                 if (emojiMoodOverride === "dancing") return; // don't open input while dancing
@@ -1943,15 +2033,8 @@ export function AgentBar(): React.ReactElement {
                   psst... change my mood
                 </motion.p>
               ) : (
-                /* ── Default hint ── */
-                <motion.p
-                  key="default-hint"
-                  className="font-mono text-caption text-accent-status/70"
-                  animate={{ opacity: [0.5, 1, 0.5] }}
-                  transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-                >
-                  {emojiHovered ? "let\u2019s talk!" : "I\u2019m alive \u2014 click me"}
-                </motion.p>
+                /* ── Agent self-introduction ── */
+                <AgentIntro hovered={emojiHovered} />
               )}
             </AnimatePresence>
           </motion.div>

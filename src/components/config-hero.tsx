@@ -114,7 +114,7 @@ const DESC_SEGMENTS: WordSegment[] =
 /*  Hero Section — Agent-first centered layout                         */
 /* ------------------------------------------------------------------ */
 
-const ALL_TARGETS = ["badge", "title", "desc", "agent", "scroll"];
+const ALL_TARGETS = ["title", "desc", "agent", "scroll"];
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
 export function ConfigHero(): React.ReactElement {
@@ -207,29 +207,12 @@ export function ConfigHero(): React.ReactElement {
         />
       </div>
 
-      <div className="relative w-full max-w-3xl mx-auto px-5 md:px-6 text-center">
+      <div className="relative w-full max-w-4xl mx-auto px-5 md:px-6 text-center">
 
-        {/* 1. Badge — quick pop-in */}
-        <motion.div
-          data-hero="badge"
-          initial={false}
-          animate={{
-            opacity: m("badge") ? 1 : 0,
-            scale: m("badge") ? 1 : 0.85,
-            y: m("badge") ? 0 : 8,
-            filter: m("badge") ? "blur(0px)" : "blur(6px)",
-          }}
-          transition={{ duration: immediate ? 0 : 0.6, ease: EASE }}
-          className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent-status/10 border border-accent-status/20 text-accent-status text-caption md:text-xs font-mono mb-6"
-        >
-          <span className="w-1.5 h-1.5 bg-accent-status rounded-full animate-pulse" />
-          agent online
-        </motion.div>
-
-        {/* 2. Title — word-by-word streaming with cursor */}
+        {/* 1. Title — word-by-word streaming with cursor */}
         <h1
           data-hero="title"
-          className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight leading-[1.15] mb-6"
+          className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-[1.1] mb-6"
         >
           <StreamingWords
             segments={TITLE_SEGMENTS}
@@ -243,7 +226,7 @@ export function ConfigHero(): React.ReactElement {
         {/* 3. Description — word-by-word streaming (faster, no cursor) */}
         <p
           data-hero="desc"
-          className="text-sm md:text-base text-muted max-w-lg mx-auto leading-relaxed mb-6"
+          className="text-base md:text-lg text-muted max-w-xl mx-auto leading-relaxed mb-6"
         >
           <StreamingWords
             segments={DESC_SEGMENTS}
@@ -262,7 +245,7 @@ export function ConfigHero(): React.ReactElement {
             y: m("desc") ? 0 : 8,
           }}
           transition={{ duration: immediate ? 0 : 0.6, delay: immediate ? 0 : 0.3, ease: EASE }}
-          className="flex items-center justify-center gap-4 md:gap-6 mb-8 font-mono text-caption md:text-xs"
+          className="flex items-center justify-center gap-4 md:gap-6 mb-8 font-mono text-xs md:text-sm"
         >
           <span className="text-foreground font-semibold">{status.portfolio.productionSystems}+ <span className="text-muted/50 font-normal">systems shipped</span></span>
           <span className="text-muted/20">/</span>

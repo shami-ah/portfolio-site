@@ -108,7 +108,7 @@ export function Footer(): React.ReactElement {
   return (
     <footer id="contact">
       {/* Contact section — merged into footer */}
-      <div className="max-w-3xl mx-auto px-5 md:px-6 pt-16 md:pt-24 pb-56">
+      <div className="max-w-4xl mx-auto px-5 md:px-6 pt-16 md:pt-24 pb-56">
         <FadeUp>
           <div className="text-center mb-8">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent-status/10 border border-accent-status/20 text-accent-status text-caption md:text-xs font-mono mb-5">

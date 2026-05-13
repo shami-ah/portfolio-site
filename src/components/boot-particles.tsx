@@ -63,18 +63,11 @@ interface WaveConfig {
 
 const WAVES: WaveConfig[] = [
   {
-    target: "badge",
-    xRange: [0.30, 0.70], yRange: [0.28, 0.36],
-    count: 6, sizes: [3, 7], focalCount: 1,
-    baseDelay: 0, durationRange: [1.3, 1.8],
-    paletteIndices: [3, 4, 5],              // green tones
-  },
-  {
     target: "title",
-    xRange: [0.18, 0.82], yRange: [0.34, 0.48],
-    count: 14, sizes: [3, 10], focalCount: 3,
-    baseDelay: 0.15, durationRange: [1.5, 2.3],
-    paletteIndices: [0, 1, 5, 0],           // gold dominant
+    xRange: [0.18, 0.82], yRange: [0.28, 0.48],
+    count: 18, sizes: [3, 10], focalCount: 3,
+    baseDelay: 0, durationRange: [1.3, 2.3],
+    paletteIndices: [0, 1, 3, 5],           // gold + green blend
   },
   {
     target: "desc",
