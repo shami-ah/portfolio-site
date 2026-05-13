@@ -522,6 +522,7 @@ const PROJECT_KEYWORDS: Record<string, string[]> = {
   impact: ["impact", "results", "numbers", "metrics", "achievement"],
   experience: ["career", "worked at", "work at", "work in", "worked in", "company", "job history", "role", "position", "years of experience", "your work", "rouelite", "rouelite techno", "more life", "more life hospitality", "wadware", "wadware house", "outlier", "rws", "translated"],
   skills: ["skills", "tech stack", "technology", "what do you know", "expertise", "proficient", "capable"],
+  agent: ["what is this", "what are you", "who are you", "what can you do", "what's this agent", "what is this agent", "what does this do", "how does this work", "what's the purpose", "purpose of this", "use of this", "what's this for", "help", "what can i do", "what can i ask", "instructions", "guide", "how to use"],
 };
 
 function fuzzyMatch(query: string, cmds: AgentCommand[]): FuzzyMatch | null {
@@ -590,6 +591,25 @@ const commands: AgentCommand[] = [
       { name: "classify_intent", detail: "label: greeting · conf 0.99", ms: 12 },
     ],
     response: "Hey! I'm Ahtesham's portfolio agent. Try: projects, rate, skills, or just ask anything.",
+  },
+  {
+    keyword: "agent",
+    intent: "meta_query",
+    confidence: 0.99,
+    steps: [
+      { name: "classify_intent", detail: "label: meta_query · conf 0.99", ms: 5 },
+      { name: "load_context", detail: "agent_identity", ms: 8 },
+    ],
+    response: "I'm Ahtesham's portfolio agent — built into this site. I can show you his projects, explain his architecture decisions, share his rates and availability, walk you through his career, or answer anything about his work. Try: projects, rate, hire, skills, or ask a question.",
+  },
+  {
+    keyword: "help",
+    intent: "meta_query",
+    confidence: 0.99,
+    steps: [
+      { name: "classify_intent", detail: "label: meta_query · conf 0.99", ms: 5 },
+    ],
+    response: "Here's what I can do: projects → see what he's built, rate → pricing, hire → work together, skills → tech stack, whoami → quick bio, tour → his journey. Or just ask a question — I'll answer it.",
   },
   {
     keyword: "hire",
