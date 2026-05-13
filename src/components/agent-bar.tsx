@@ -1111,38 +1111,41 @@ export function AgentBar(): React.ReactElement {
     } catch { /* noop */ }
   }, []);
 
-  // Show mood suggestions — increasing intervals (3s, 6s, 9s, 12s), max 4 mood cycles
-  // Dance hint shows once (after 2nd mood cycle) if visitor hasn't tried it
+  // Phase 1: Show intro message immediately when emoji settles, then transition to default
   useEffect(() => {
-    if (emojiPhase !== "settled" || heroAgentOpen || !inHeroViewport || emojiMoodOverride) {
-      setBubblePhase("hidden");
-      return;
-    }
+    if (emojiPhase !== "settled" || heroAgentOpen || !inHeroViewport) return;
+    // Show intro immediately on settle
+    setBubblePhase("intro");
+    // After 3s, switch to default "I'm alive — click me"
+    const t = setTimeout(() => setBubblePhase("hidden"), 3000);
+    return () => clearTimeout(t);
+  }, [emojiPhase]); // only run once on settle — not on heroAgentOpen/inHeroViewport changes
+
+  // Phase 2: Mood suggestions — start 6s after intro ends, max 4 cycles
+  // Dance hint shows once (after 1st mood cycle) if visitor hasn't tried it
+  useEffect(() => {
+    // Don't start mood cycles until intro has finished (bubblePhase went to "hidden" after "intro")
+    if (emojiPhase !== "settled" || heroAgentOpen || !inHeroViewport || emojiMoodOverride) return;
+    if (bubblePhase !== "hidden") return;
     const cycle = bubbleCycleRef.current;
-    if (cycle >= 4) return; // stop after 4 mood picker cycles
-    const delay = 6000 + cycle * 6000; // 6s, 12s, 18s, 24s
-    // Show dance hint on cycle 1 if not tried yet
-    const showDance = cycle === 1 && !danceTried && !danceHintShown;
+    if (cycle >= 4) return;
+    // First mood cycle waits 6s after intro fades; subsequent cycles wait 6s each
+    const delay = cycle === 0 ? 6000 : 6000;
+    const showDance = cycle === 0 && !danceTried && !danceHintShown;
     bubbleTimerRef.current = setTimeout(() => {
       setBubblePhase("dots");
-      if (cycle === 0) {
-        // First cycle: intro message (what the agent can do)
-        setTimeout(() => setBubblePhase("intro"), 600);
-        setTimeout(() => setBubblePhase("hidden"), 5000);
-      } else {
-        setTimeout(() => setBubblePhase("hint"), 600);
-        setTimeout(() => {
-          if (showDance) {
-            setBubblePhase("dance-hint");
-            setDanceHintShown(true);
-          } else {
-            setBubblePhase("chips");
-          }
-        }, 1600);
-      }
+      setTimeout(() => setBubblePhase("hint"), 600);
+      setTimeout(() => {
+        if (showDance) {
+          setBubblePhase("dance-hint");
+          setDanceHintShown(true);
+        } else {
+          setBubblePhase("chips");
+        }
+      }, 1600);
     }, delay);
     return () => { if (bubbleTimerRef.current) clearTimeout(bubbleTimerRef.current); };
-  }, [emojiPhase, heroAgentOpen, inHeroViewport, emojiMoodOverride, persistentMood, danceTried, danceHintShown]); // re-trigger after mood changes
+  }, [emojiPhase, heroAgentOpen, inHeroViewport, emojiMoodOverride, bubblePhase, persistentMood, danceTried, danceHintShown]);
 
   /* ── Methodology chips per project ── */
   const PROJECT_METHODOLOGY: Record<string, { label: string; command: AgentCommand }[]> = {
@@ -1944,15 +1947,15 @@ export function AgentBar(): React.ReactElement {
                   ))}
                 </motion.div>
               ) : bubblePhase === "intro" ? (
-                /* ── Agent intro — what it can do ── */
+                /* ── First impression — agent introduces itself ── */
                 <motion.p
                   key="intro"
                   initial={{ opacity: 0, y: 6 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -6 }}
-                  className="font-mono text-caption text-accent-status/70"
+                  className="font-mono text-caption text-accent-status/70 max-w-[220px] text-center leading-relaxed"
                 >
-                  ask about rate, stack, or projects
+                  I&apos;m an AI agent — ask me about Ahtesham&apos;s work
                 </motion.p>
               ) : bubblePhase === "hint" ? (
                 /* ── "psst..." text ── */
