@@ -2,17 +2,16 @@
 
 import { useEffect, useState, useCallback, useRef } from "react";
 import { motion, useMotionValue, useSpring } from "framer-motion";
-import { User, Zap, FolderOpen, GitCommit, PenLine, Mail } from "lucide-react";
+import { User, FolderOpen, GitCommit, Mail } from "lucide-react";
 
 const L = 2;   // left position
 const R = 16;  // right position
 
 const pipelineSteps = [
   { id: "hero", label: "About", icon: User, x: L, y: 0 },
-  { id: "mission", label: "Impact", icon: Zap, x: R, y: 70 },
-  { id: "projects", label: "Work", icon: FolderOpen, x: L, y: 140 },
-  { id: "log", label: "Career", icon: GitCommit, x: R, y: 210 },
-  { id: "contact", label: "Connect", icon: Mail, x: L, y: 280 },
+  { id: "projects", label: "Work", icon: FolderOpen, x: R, y: 93 },
+  { id: "log", label: "Career", icon: GitCommit, x: L, y: 186 },
+  { id: "contact", label: "Connect", icon: Mail, x: R, y: 280 },
 ] as const;
 
 /** SVG center of each node (icon center = x + 19, y + 19 for a 38px box) */

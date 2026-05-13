@@ -1,10 +1,8 @@
 import { TopBar } from "@/components/top-bar";
 import { ConfigHero } from "@/components/config-hero";
 import { SidebarNav } from "@/components/sidebar-nav";
-import { MissionStats } from "@/components/mission-stats";
 import { Projects } from "@/components/projects";
 import { ExperienceAndWriting } from "@/components/experience-writing";
-import { ConfigContact } from "@/components/config-contact";
 import { Footer } from "@/components/footer";
 import { TerminalBoot } from "@/components/terminal-boot";
 import { AgentBar } from "@/components/agent-bar";
@@ -22,14 +20,12 @@ export default function Home(): React.ReactElement {
       <TopBar />
       <SidebarNav />
       <CursorGlow />
-      <div className="relative z-10 lg:pl-16">
+      <div className="relative z-10">
         <ConfigHero />
-        <MissionStats />
         <Projects />
         <ExperienceAndWriting />
-        <ConfigContact />
+        <Footer />
       </div>
-      <Footer />
       <AgentBar />
       <BootParticles />
       <AgentRevealParticles />

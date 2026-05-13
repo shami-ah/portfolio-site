@@ -11,6 +11,7 @@ import ReactDOM from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Check, X } from "lucide-react";
 import { openCvDrawer } from "@/components/cv-drawer";
+import { useTilt } from "@/lib/use-tilt";
 
 /* ------------------------------------------------------------------ */
 /*  Build pipeline popup — 5-second centered overlay                  */
@@ -136,6 +137,226 @@ function BuildPopup({ onDone }: { onDone: () => void }): React.ReactElement {
 }
 
 /* ------------------------------------------------------------------ */
+/*  Agent emoji face — shared between hero and pill bar                */
+/* ------------------------------------------------------------------ */
+
+function AgentEmoji({ size = 40, hovered = false }: { size?: number; hovered?: boolean }): React.ReactElement {
+  const s = size;
+  // Use accent-status (green) for a prominent, theme-safe look
+  const fc = "fill-accent-status";
+  const sc = "stroke-accent-status";
+  return (
+    <svg viewBox="0 0 48 48" width={s} height={s} fill="none" className="shrink-0" style={{ filter: s > 24 ? "drop-shadow(0 0 6px rgba(74,222,128,0.3))" : "none" }}>
+      {/* Eyes — wink on hover, blink periodically */}
+      <motion.circle
+        cx="16" cy="19" r={2.5 * (s > 24 ? 1 : 0.9)}
+        className={fc}
+        animate={hovered ? { scaleY: [1, 0.1, 1, 0.1, 1] } : { scaleY: [1, 0.1, 1] }}
+        transition={hovered
+          ? { duration: 0.5, ease: "easeInOut" }
+          : { duration: 0.3, delay: 2, repeat: Infinity, repeatDelay: 3.5 }
+        }
+      />
+      <motion.circle
+        cx="32" cy="19" r={2.5 * (s > 24 ? 1 : 0.9)}
+        className={fc}
+        animate={{ scaleY: [1, 0.1, 1] }}
+        transition={{ duration: 0.3, delay: 2, repeat: Infinity, repeatDelay: 3.5 }}
+      />
+      {/* Nose */}
+      {s > 24 && (
+        <line x1="24" y1="22" x2="24" y2="27" className={sc} strokeWidth="1.5" strokeLinecap="round" opacity="0.3" />
+      )}
+      {/* Mouth — bigger smile on hover */}
+      <motion.path
+        d={hovered ? "M 14 29 Q 24 40 34 29" : "M 16 32 Q 24 32 32 32"}
+        className={sc}
+        strokeWidth={s > 24 ? 2 : 1.5}
+        strokeLinecap="round"
+        fill="none"
+        animate={hovered ? {} : {
+          d: [
+            "M 16 32 Q 24 32 32 32",
+            "M 16 30 Q 24 38 32 30",
+            "M 16 30 Q 24 38 32 30",
+            "M 16 32 Q 24 32 32 32",
+          ],
+        }}
+        transition={hovered ? {} : { duration: 2, repeat: Infinity, repeatDelay: 1, ease: "easeInOut" }}
+      />
+    </svg>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  Whoami popup — full-screen overlay with about card                 */
+/* ------------------------------------------------------------------ */
+
+const TERM_STEPS = [
+  { cmd: "whoami", type: "identity" as const },
+  { cmd: "cat location", output: "Islamabad, PK · remote-first" },
+  { cmd: "echo $LANGUAGES", output: "EN, UR, PS, SD, AR" },
+  { cmd: "cat interests.txt", output: "Snooker, cricket, history, technology" },
+  { cmd: "cat superpower.txt", output: "Picks up anything fast" },
+  { cmd: "cat philosophy.md", output: "Build the tool when none exists", green: true },
+];
+
+function WhoamiPopup({ onDone }: { onDone: () => void }): React.ReactElement {
+  const tilt = useTilt(10);
+  const [visibleLines, setVisibleLines] = useState(0);
+
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
+    return () => { document.body.style.overflow = ""; };
+  }, []);
+
+  // Line-by-line reveal
+  useEffect(() => {
+    if (visibleLines >= TERM_STEPS.length) return;
+    const t = setTimeout(
+      () => setVisibleLines((v) => v + 1),
+      180 + Math.random() * 100,
+    );
+    return () => clearTimeout(t);
+  }, [visibleLines]);
+
+  // Close on Escape
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent): void => {
+      if (e.key === "Escape") onDone();
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [onDone]);
+
+  if (typeof document === "undefined") return <></>;
+
+  const el = (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.35 }}
+      style={{ position: "fixed", inset: 0, zIndex: 9999, display: "flex", alignItems: "center", justifyContent: "center", padding: "1.5rem" }}
+      onClick={onDone}
+    >
+      <div className="absolute inset-0 bg-background/88 backdrop-blur-[20px]" />
+      {/* Ambient glow */}
+      <motion.div
+        initial={{ scale: 0, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+        className="absolute w-[380px] h-[380px] rounded-full pointer-events-none"
+        style={{ background: "radial-gradient(circle, rgba(160,120,104,0.12) 0%, transparent 70%)" }}
+      />
+      <motion.div
+        ref={tilt.ref}
+        onMouseMove={tilt.onMouseMove}
+        onMouseLeave={tilt.onMouseLeave}
+        style={tilt.style}
+        initial={{ scale: 0, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        exit={{ scale: 0, opacity: 0 }}
+        whileHover={{ scale: 1.02, boxShadow: "0 25px 50px rgba(0,0,0,0.4), 0 0 40px rgba(160,120,104,0.06)" }}
+        transition={{ type: "spring", stiffness: 300, damping: 22, mass: 0.8 }}
+        onClick={(e) => e.stopPropagation()}
+        className="relative w-full max-w-[720px] rounded-xl bg-card/95 backdrop-blur-[24px] border border-card-border overflow-hidden shadow-2xl shadow-black/30 cursor-default"
+      >
+        {/* Chrome */}
+        <div className="flex items-center justify-between px-3 py-2 border-b border-card-border bg-card/40">
+          <div className="flex items-center gap-2">
+            <div className="flex gap-1.5">
+              <span className="w-2.5 h-2.5 rounded-full bg-red-500/60" />
+              <span className="w-2.5 h-2.5 rounded-full bg-yellow-500/60" />
+              <span className="w-2.5 h-2.5 rounded-full bg-green-500/60" />
+            </div>
+            <span className="ml-1 text-caption font-mono text-muted/60">shami.agent — whoami</span>
+          </div>
+          <button
+            type="button"
+            onClick={onDone}
+            className="text-muted/40 hover:text-foreground transition-colors cursor-pointer"
+            aria-label="Close"
+          >
+            <X size={14} strokeWidth={2.5} />
+          </button>
+        </div>
+
+        {/* Mobile photo */}
+        <div className="flex sm:hidden flex-col items-center pt-4 pb-2">
+          <div className="relative">
+            <div className="absolute -inset-2 bg-gradient-to-br from-accent/20 to-accent-secondary/12 rounded-full blur-xl pointer-events-none" />
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/ahtesham.jpg" loading="eager" fetchPriority="high" alt="Ahtesham Ahmad" className="relative w-16 h-16 rounded-full object-cover border-2 border-accent/30 shadow-lg shadow-accent/10" />
+          </div>
+        </div>
+
+        {/* Card body — terminal left, photo right */}
+        <div className="flex flex-1 overflow-hidden">
+          <div className="flex-1 px-4 py-3 font-mono text-small leading-[1.9] overflow-hidden">
+            {TERM_STEPS.map((step, idx) => (
+              <motion.div
+                key={step.cmd}
+                className="mb-1"
+                animate={{
+                  opacity: idx < visibleLines ? 1 : 0,
+                  y: idx < visibleLines ? 0 : 5,
+                }}
+                transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
+              >
+                <div><span className="text-accent">❯</span> <span className="text-foreground/80">{step.cmd}</span></div>
+                {step.type === "identity" ? (
+                  <div className="pl-3 py-0.5">
+                    <span className="text-foreground font-bold">Ahtesham Ahmad</span>
+                    <span className="text-accent/60 ml-2">AI Engineer</span>
+                  </div>
+                ) : (
+                  <div className={`pl-3 ${step.green ? "text-accent-status/70" : "text-foreground/60"}`}>
+                    {step.output}
+                  </div>
+                )}
+              </motion.div>
+            ))}
+            <div>
+              <span className="text-accent">❯</span>{" "}
+              <span className="inline-block w-[6px] h-[12px] bg-accent/60 translate-y-[2px] animate-pulse" />
+            </div>
+          </div>
+
+          {/* Photo — right side */}
+          <div className="hidden sm:flex items-center justify-center px-8 border-l border-card-border/30">
+            <div className="relative">
+              <div className="absolute -inset-6 bg-gradient-to-br from-accent/15 to-accent-secondary/10 rounded-full blur-3xl pointer-events-none" />
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/ahtesham.jpg" loading="eager" fetchPriority="high" alt="Ahtesham Ahmad" className="relative aspect-square h-[80%] min-h-[180px] max-h-[240px] w-auto rounded-full object-cover border-3 border-accent/25 shadow-2xl shadow-accent/15" />
+            </div>
+          </div>
+        </div>
+
+        {/* Status bar */}
+        <div className="px-3 py-1.5 border-t border-card-border/40 flex items-center justify-between bg-card/20">
+          <div className="flex items-center gap-2 text-caption font-mono">
+            <span className="w-1.5 h-1.5 rounded-full bg-accent-status animate-pulse" />
+            <span className="text-accent-status/70">available for hire</span>
+          </div>
+          <button
+            type="button"
+            data-cv-open="true"
+            onClick={() => { onDone(); openCvDrawer(); }}
+            className="group flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-caption font-mono border border-accent/25 bg-accent/8 text-accent/70 hover:bg-accent/15 hover:text-accent hover:border-accent/40 transition-all duration-200 cursor-pointer"
+          >
+            <span className="w-1 h-1 rounded-full bg-accent/60 group-hover:bg-accent transition-colors" />
+            View CV
+          </button>
+        </div>
+      </motion.div>
+    </motion.div>
+  );
+
+  return ReactDOM.createPortal(el, document.body);
+}
+
+/* ------------------------------------------------------------------ */
 /*  Commands                                                           */
 /* ------------------------------------------------------------------ */
 
@@ -225,6 +446,17 @@ function fuzzyMatch(query: string, cmds: AgentCommand[]): FuzzyMatch | null {
 }
 
 const commands: AgentCommand[] = [
+  {
+    keyword: "whoami",
+    intent: "identity_query",
+    confidence: 0.99,
+    steps: [
+      { name: "classify_intent", detail: "label: identity_query · conf 0.99", ms: 8 },
+      { name: "retrieve_context", detail: "identity_card", ms: 12 },
+    ],
+    response: "Ahtesham Ahmad — Full-Stack + AI Engineer. Islamabad, remote-first.",
+    action: () => window.dispatchEvent(new CustomEvent("show-whoami")),
+  },
   {
     keyword: "hi",
     intent: "greeting",
@@ -517,7 +749,7 @@ const commands: AgentCommand[] = [
       { name: "execute", detail: "target: #mission", ms: 100 },
     ],
     response: "50+ production systems, 100+ teams on OpenEvent, 150+ events managed.",
-    action: () => scrollTo("mission"),
+    action: () => scrollTo("projects"),
   },
   {
     keyword: "experience",
@@ -560,13 +792,12 @@ const commands: AgentCommand[] = [
 // Chips match homepage section scroll order (one line)
 // All suggestion chips mapped to section scroll order
 const ALL_CHIPS = [
-  { label: "Impact", command: "impact", section: "mission" },
   { label: "Projects", command: "projects", section: "projects" },
   { label: "Career", command: "career", section: "log" },
   { label: "Contact", command: "contact", section: "contact" },
 ];
 
-const SECTION_ORDER = ["hero", "mission", "projects", "log", "contact"] as const;
+const SECTION_ORDER = ["hero", "projects", "log", "contact"] as const;
 
 /* ------------------------------------------------------------------ */
 /*  Section-aware agent personality                                    */
@@ -576,7 +807,6 @@ interface AgentPersonality {
   dotColor: string;
   glowColor: string;
   hoverLabel: string;
-  tooltip: string;
 }
 
 const SECTION_PERSONALITY: Record<string, AgentPersonality> = {
@@ -584,31 +814,21 @@ const SECTION_PERSONALITY: Record<string, AgentPersonality> = {
     dotColor: "bg-green-400",
     glowColor: "rgba(74,222,128,0.4)",
     hoverLabel: "agent",
-    tooltip: "ask me anything — <accent>I'm live</accent>",
-  },
-  mission: {
-    dotColor: "bg-accent",
-    glowColor: "rgba(212,168,67,0.4)",
-    hoverLabel: "impact",
-    tooltip: "50+ systems shipped — <accent>ask me about any</accent>",
   },
   projects: {
     dotColor: "bg-blue-400",
     glowColor: "rgba(96,165,250,0.4)",
     hoverLabel: "explore",
-    tooltip: "type <accent>projects</accent> or ask about any tech",
   },
   log: {
     dotColor: "bg-purple-400",
     glowColor: "rgba(192,132,252,0.4)",
     hoverLabel: "career",
-    tooltip: "been building since 2019 — <accent>ask anything</accent>",
   },
   contact: {
     dotColor: "bg-accent",
     glowColor: "rgba(212,168,67,0.5)",
     hoverLabel: "connect",
-    tooltip: "ready when you are — <accent>hire</accent> or <accent>rate</accent>",
   },
 };
 
@@ -667,15 +887,19 @@ export function AgentBar(): React.ReactElement {
   const [shownSteps, setShownSteps] = useState(0);
   const [showResponse, setShowResponse] = useState(false);
   const [showBuildPopup, setShowBuildPopup] = useState(false);
-  const [showTooltip, setShowTooltip] = useState(false);
-  const [tooltipText, setTooltipText] = useState<string>("ask me anything — <accent>I'm live</accent>");
+  const [showWhoami, setShowWhoami] = useState(false);
   const [buttonReady, setButtonReady] = useState(false);
   const [activeSection, setActiveSection] = useState("hero");
   const [viewingProject, setViewingProject] = useState<string | null>(null);
+  const [inHeroViewport, setInHeroViewport] = useState(true);
+  const [heroAgentOpen, setHeroAgentOpen] = useState(false);
+  const [emojiHovered, setEmojiHovered] = useState(false);
+  // Emoji position phases: "hidden" → "bottom" → "settled" (in hero mount)
+  const [emojiPhase, setEmojiPhase] = useState<"hidden" | "bottom" | "settled">("hidden");
+  const emojiHasSettled = useRef(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const flyRef = useRef<HTMLDivElement>(null);
   const navTimerRef = useRef<ReturnType<typeof setTimeout>>(undefined);
-  const shownTooltips = useRef<Set<string>>(new Set());
 
   // Track which section the user is currently viewing
   useEffect(() => {
@@ -692,67 +916,23 @@ export function AgentBar(): React.ReactElement {
         }
         setActiveSection(current);
         recordSection(current);
+        // Track hero viewport — agent input lives in hero above this threshold
+        const heroEl = document.getElementById("hero");
+        if (heroEl) {
+          const wasInHero = window.scrollY < heroEl.offsetHeight * 0.7;
+          setInHeroViewport(wasInHero);
+          // Reset emoji when leaving hero — always show emoji on return
+          if (!wasInHero) {
+            setHeroAgentOpen(false);
+            setEmojiPhase("settled");
+          }
+        }
         ticking = false;
       });
     };
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
-
-  // Context-aware tooltips — show once per section with conversational personality
-  // Defers if panel is open, fires when visitor returns to button state
-  const pendingTooltip = useRef<string | null>(null);
-
-  useEffect(() => {
-    if (activeSection === "hero") return;
-    const key = `section-${activeSection}`;
-    if (shownTooltips.current.has(key)) return;
-    shownTooltips.current.add(key);
-
-    const personality = SECTION_PERSONALITY[activeSection];
-    if (!personality) return;
-
-    if (uiState === "button" && buttonReady) {
-      // Show immediately
-      const showTimer = setTimeout(() => {
-        setTooltipText(personality.tooltip);
-        setShowTooltip(true);
-      }, 1800);
-      const hideTimer = setTimeout(() => setShowTooltip(false), 8000);
-      return () => { clearTimeout(showTimer); clearTimeout(hideTimer); };
-    } else {
-      // Defer — will fire when uiState returns to "button"
-      pendingTooltip.current = personality.tooltip;
-    }
-  }, [activeSection, uiState, buttonReady]);
-
-  // Fire deferred tooltip when returning to button state
-  useEffect(() => {
-    if (uiState !== "button" || !buttonReady || !pendingTooltip.current) return;
-    const tip = pendingTooltip.current;
-    pendingTooltip.current = null;
-    const showTimer = setTimeout(() => {
-      setTooltipText(tip);
-      setShowTooltip(true);
-    }, 800);
-    const hideTimer = setTimeout(() => setShowTooltip(false), 7000);
-    return () => { clearTimeout(showTimer); clearTimeout(hideTimer); };
-  }, [uiState, buttonReady]);
-
-  // Tooltip after a project modal is opened — nudge toward methodology chips
-  useEffect(() => {
-    if (!viewingProject) return;
-    const hasMethodology = !!(PROJECT_METHODOLOGY[viewingProject]?.length);
-    if (!hasMethodology) return;
-    if (shownTooltips.current.has(`method-${viewingProject}`)) return;
-    shownTooltips.current.add(`method-${viewingProject}`);
-    const showTimer = setTimeout(() => {
-      setTooltipText("ask <accent>why</accent> I built it this way");
-      setShowTooltip(true);
-    }, 2500);
-    const hideTimer = setTimeout(() => setShowTooltip(false), 8500);
-    return () => { clearTimeout(showTimer); clearTimeout(hideTimer); };
-  }, [viewingProject]);
 
   /* ── Methodology chips per project ── */
   const PROJECT_METHODOLOGY: Record<string, { label: string; command: AgentCommand }[]> = {
@@ -852,42 +1032,33 @@ export function AgentBar(): React.ReactElement {
   // Pattern: relevant to THIS section + one nudge toward NEXT section (last chip)
   const SECTION_CHIPS: Record<string, { label: string; command: string }[]> = {
     hero: [
-      { label: "Skills", command: "skills" },
+      { label: "whoami", command: "whoami" },
+      { label: "Projects", command: "projects" },
       { label: "How I ship", command: "build" },
-      { label: "See impact →", command: "impact" },        // nudge → mission
-    ],
-    mission: [
-      { label: "How I ship", command: "build" },
-      { label: "Stack", command: "stack" },
-      { label: "See projects →", command: "projects" },     // nudge → projects
     ],
     projects: [
-      { label: "Rate", command: "rate" },
-      { label: "How I ship", command: "build" },
+      { label: "Skills", command: "skills" },
       { label: "Chat", command: "chat" },
-      { label: "See career →", command: "experience" },     // nudge → career
+      { label: "See career →", command: "career" },
     ],
     log: [
-      { label: "View CV", command: "cv" },
-      { label: "Full journey", command: "tour" },
       { label: "Rate", command: "rate" },
-      { label: "Get in touch →", command: "contact" },      // nudge → contact
+      { label: "Full journey", command: "tour" },
+      { label: "Get in touch →", command: "contact" },
     ],
     contact: [
-      { label: "Rate", command: "rate" },
-      { label: "View CV", command: "cv" },
-      { label: "Availability", command: "availability" },
       { label: "Book a call", command: "call" },
+      { label: "Availability", command: "availability" },
+      { label: "View CV", command: "cv" },
     ],
   };
 
   // Section-aware placeholder and hints for the input bar
-  const SECTION_INPUT: Record<string, { placeholder: string; hints: string }> = {
-    hero: { placeholder: "ask anything...", hints: "projects · rate · skills · chat" },
-    mission: { placeholder: "ask about impact...", hints: "projects · build · skills" },
-    projects: { placeholder: "ask about any project...", hints: "build · rate · stack · chat" },
-    log: { placeholder: "ask about experience...", hints: "cv · rate · tour · chat" },
-    contact: { placeholder: "rate, availability, or just say hi...", hints: "rate · cv · call · chat" },
+  const SECTION_INPUT: Record<string, { placeholder: string }> = {
+    hero: { placeholder: "ask anything about Ahtesham's work..." },
+    projects: { placeholder: "ask about any project..." },
+    log: { placeholder: "ask about experience..." },
+    contact: { placeholder: "ask about availability, rate..." },
   };
 
   const mem = loadMemory();
@@ -910,6 +1081,13 @@ export function AgentBar(): React.ReactElement {
     const handler = (): void => setShowBuildPopup(true);
     window.addEventListener("show-build-popup", handler);
     return () => window.removeEventListener("show-build-popup", handler);
+  }, []);
+
+  // Listen for whoami popup trigger
+  useEffect(() => {
+    const handler = (): void => setShowWhoami(true);
+    window.addEventListener("show-whoami", handler);
+    return () => window.removeEventListener("show-whoami", handler);
   }, []);
 
   // Track project modal opens for visitor memory + set viewing context
@@ -939,27 +1117,41 @@ export function AgentBar(): React.ReactElement {
 
   // Listen for agent-button-ready from boot animation
   useEffect(() => {
-    let showTimer: ReturnType<typeof setTimeout>;
-    let hideTimer: ReturnType<typeof setTimeout>;
     const onReady = (): void => {
       setButtonReady(true);
       setUiState("button");
-      // Show tooltip after all hero content has fully streamed in
-      showTimer = setTimeout(() => setShowTooltip(true), 4000);
-      hideTimer = setTimeout(() => setShowTooltip(false), 10000);
+      // Emoji appears at bottom center ONLY on first boot (never again)
+      if (!emojiHasSettled.current) {
+        setEmojiPhase("bottom");
+      }
     };
     window.addEventListener("agent-button-ready", onReady);
 
-    // If boot was already seen (returning visitor), show button immediately
+    // When hero is fully written by particles → emoji floats up to hero position
+    const onHeroReady = (): void => {
+      setTimeout(() => {
+        setEmojiPhase("settled");
+        emojiHasSettled.current = true;
+        try { sessionStorage.setItem("emoji-settled", "1"); } catch { /* noop */ }
+      }, 400);
+    };
+    window.addEventListener("hero-fully-written", onHeroReady);
+
+    // If boot was already seen this session, skip bottom animation
     if (sessionStorage.getItem("boot-complete") === "1") {
       setButtonReady(true);
       setUiState("button");
+      // If boot played this session already, emoji settles immediately
+      // If fresh page load (new session), boot will play and trigger bottom→settled
+      if (sessionStorage.getItem("emoji-settled") === "1") {
+        setEmojiPhase("settled");
+        emojiHasSettled.current = true;
+      }
     }
 
     return () => {
       window.removeEventListener("agent-button-ready", onReady);
-      clearTimeout(showTimer);
-      clearTimeout(hideTimer);
+      window.removeEventListener("hero-fully-written", onHeroReady);
     };
   }, []);
 
@@ -968,6 +1160,10 @@ export function AgentBar(): React.ReactElement {
     const onReplay = (): void => {
       setUiState("hidden");
       setButtonReady(false);
+      setHeroAgentOpen(false);
+      setEmojiPhase("hidden");
+      emojiHasSettled.current = false;
+      try { sessionStorage.removeItem("emoji-settled"); } catch { /* noop */ }
     };
     window.addEventListener("replay-intro", onReplay);
     return () => window.removeEventListener("replay-intro", onReplay);
@@ -1202,241 +1398,356 @@ export function AgentBar(): React.ReactElement {
 
   const totalMs = activeCmd?.steps.reduce((s, x) => s + x.ms, 0) ?? 0;
 
-  return (
-    <>
-      {/* ── Agent Button (pill at bottom center) ── */}
-      <AnimatePresence>
-        {uiState === "button" && buttonReady && (
-          <>
-            {/* Tooltip — wrapper centers, inner animates */}
+  // Hero portal mount point
+  const heroMount = typeof document !== "undefined" ? document.getElementById("hero-agent-mount") : null;
+
+  // When in hero viewport, the agent panel renders inline in the hero via portal.
+  // The button state is skipped — we go straight to panel appearance in the hero.
+  // When scrolled past hero, it renders as the fixed bottom pill/panel.
+  const isHeroInline = inHeroViewport && heroMount;
+
+  // In hero viewport, auto-show panel if button state (agent is always "open" in hero)
+  const effectiveUiState = isHeroInline && uiState === "button" ? "panel" : uiState;
+
+  // ── Shared processing/response area (used by both hero and fixed modes) ──
+  const processingContent = (
+    <AnimatePresence>
+      {(effectiveUiState === "processing" || effectiveUiState === "responding") && activeCmd && (
+        <motion.div
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: 8 }}
+          transition={{ duration: 0.3 }}
+          className="mb-2 rounded-xl glass-strong overflow-hidden"
+          style={{ boxShadow: "0 8px 32px rgba(0,0,0,0.3)" }}
+        >
+          <div className="px-4 py-3 font-mono text-small space-y-1">
+            <p className="text-caption font-mono text-accent uppercase tracking-wider mb-2">
+              shami.agent
+            </p>
+            <p className="text-foreground/80">
+              <span className="text-accent">&#10095; parse</span>
+              <span className="text-muted/60">(&ldquo;</span>
+              <span className="text-foreground">{activeCmd.keyword}</span>
+              <span className="text-muted/60">&rdquo;)</span>
+            </p>
+            {activeCmd.steps.slice(0, shownSteps).map((s, i) => {
+              const isLast = i === activeCmd.steps.length - 1;
+              return (
+                <motion.div
+                  key={s.name}
+                  initial={{ opacity: 0, x: -6 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.25 }}
+                  className="flex items-baseline gap-2"
+                >
+                  <span className="text-muted/40">{isLast ? "└─" : "├─"}</span>
+                  <span className="text-foreground/80">{s.name}</span>
+                  <span className="text-green-400 ml-auto shrink-0">&#10003;</span>
+                  <span className="text-muted/40 text-caption tabular-nums">{s.ms}ms</span>
+                </motion.div>
+              );
+            })}
             <AnimatePresence>
-              {showTooltip && (
-                <div className="fixed z-[101] bottom-[68px] left-1/2 -translate-x-1/2 pointer-events-none">
-                  {/* Entrance/exit wrapper */}
-                  <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 6 }}
-                    transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-                  >
-                    {/* Pulsing inner — breathes to grab attention */}
-                    <motion.div
-                      animate={{
-                        scale: [1, 1.05, 1],
-                        y: [0, -3, 0],
-                      }}
-                      transition={{
-                        duration: 2,
-                        repeat: Infinity,
-                        ease: "easeInOut",
-                      }}
-                      className="font-mono text-small text-foreground whitespace-nowrap px-4 py-2 rounded-xl bg-card border border-accent/30 shadow-lg relative"
-                      style={{ boxShadow: "0 4px 20px rgba(0,0,0,0.15), 0 0 15px var(--accent-glow)" }}
-                    >
-                      <span dangerouslySetInnerHTML={{ __html: tooltipText.replace(/<accent>/g, '<span class="text-accent">').replace(/<\/accent>/g, '</span>') }} />
-                      <span className="absolute -bottom-[5px] left-1/2 -translate-x-1/2 w-2.5 h-2.5 bg-card border-r border-b border-accent/30 rotate-45" />
-                    </motion.div>
-                  </motion.div>
-                </div>
+              {showResponse && (
+                <motion.div
+                  initial={{ opacity: 0, y: 4 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.35 }}
+                  className="pt-2 mt-2 border-t border-card-border/60"
+                >
+                  <p className="text-foreground leading-relaxed">
+                    <span className="text-accent">&#10095; response</span>
+                    <span className="text-muted/60">:</span>{" "}
+                    <span>{activeCmd.response}</span>
+                  </p>
+                  <p className="text-caption text-muted/40 mt-1 tabular-nums">
+                    completed in {totalMs}ms
+                  </p>
+                </motion.div>
               )}
             </AnimatePresence>
+          </div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
 
-            {/* Button — section-aware pulsing dot, transforms per context */}
-            <div className="fixed z-[100] bottom-5 left-1/2 -translate-x-1/2">
-              {(() => {
-                const p = SECTION_PERSONALITY[activeSection] ?? SECTION_PERSONALITY.hero;
-                return (
-                  <motion.button
-                    type="button"
-                    onClick={() => {
-                      setShowTooltip(false);
-                      setUiState("panel");
-                      setTimeout(() => inputRef.current?.focus(), 150);
-                    }}
-                    initial={{ opacity: 0, scale: 0.5 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.8 }}
-                    transition={{ duration: 0.3, ease: [0.34, 1.56, 0.64, 1] }}
-                    className="group flex items-center cursor-pointer glass rounded-full p-2.5 hover:px-4 hover:gap-2 transition-all duration-300"
-                    style={{
-                      boxShadow: `0 4px 12px rgba(0,0,0,0.12), 0 0 8px ${p.glowColor}`,
-                    }}
-                  >
-                    <span
-                      className={`w-2.5 h-2.5 rounded-full ${p.dotColor} shrink-0 transition-colors duration-700`}
-                      style={{ animation: "green-pulse 2s infinite" }}
-                    />
-                    <span className="max-w-0 overflow-hidden group-hover:max-w-[80px] transition-all duration-300 whitespace-nowrap font-mono text-small text-muted/60">
-                      {p.hoverLabel}
-                    </span>
-                  </motion.button>
-                );
-              })()}
-            </div>
-          </>
-        )}
-      </AnimatePresence>
-
-      {/* ── Panel (expanded command bar) ── */}
-      <AnimatePresence>
-        {(uiState === "panel" || uiState === "processing" || uiState === "responding") && (
-          <div className="fixed z-[100] bottom-5 left-1/2 -translate-x-1/2 w-[calc(100vw-1.5rem)] max-w-[620px]">
-          <motion.div
-            initial={{ opacity: 0, y: 20, scale: 0.95 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 20, scale: 0.95 }}
-            transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-          >
-            {/* Response area (when processing/responding) */}
-            <AnimatePresence>
-              {(uiState === "processing" || uiState === "responding") && activeCmd && (
-                <motion.div
+  // ── Shared suggestion chips ──
+  const chipsContent = (
+    <AnimatePresence>
+      {effectiveUiState === "panel" && !activeCmd && (
+        <motion.div
+          initial={{ opacity: 0, y: 6 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: 6 }}
+          transition={{ duration: 0.3 }}
+          className="flex justify-center gap-1.5 flex-wrap px-2"
+        >
+          {methodologyChips.length > 0
+            ? methodologyChips.map((mc, i) => (
+                <motion.button
+                  key={mc.command.keyword}
+                  type="button"
+                  onClick={() => runCommand(mc.command)}
                   initial={{ opacity: 0, y: 8 }}
                   animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: 8 }}
-                  transition={{ duration: 0.3 }}
-                  className="mb-2 rounded-xl glass-strong overflow-hidden"
-                  style={{ boxShadow: "0 8px 32px rgba(0,0,0,0.3)" }}
+                  transition={{ delay: i * 0.05 + 0.1, duration: 0.3 }}
+                  className="px-3 py-1.5 rounded-full glass text-small font-mono text-green-400/70 border-green-500/20 hover:text-green-400 hover:border-green-500/40 hover:bg-green-500/5 transition-all cursor-pointer"
                 >
-                  <div className="px-4 py-3 font-mono text-small space-y-1">
-                    <p className="text-caption font-mono text-accent uppercase tracking-wider mb-2">
-                      shami.agent
-                    </p>
-                    <p className="text-foreground/80">
-                      <span className="text-accent">&#10095; parse</span>
-                      <span className="text-muted/60">(&ldquo;</span>
-                      <span className="text-foreground">{activeCmd.keyword}</span>
-                      <span className="text-muted/60">&rdquo;)</span>
-                    </p>
-
-                    {activeCmd.steps.slice(0, shownSteps).map((s, i) => {
-                      const isLast = i === activeCmd.steps.length - 1;
-                      return (
-                        <motion.div
-                          key={s.name}
-                          initial={{ opacity: 0, x: -6 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          transition={{ duration: 0.25 }}
-                          className="flex items-baseline gap-2"
-                        >
-                          <span className="text-muted/40">{isLast ? "└─" : "├─"}</span>
-                          <span className="text-foreground/80">{s.name}</span>
-                          <span className="text-green-400 ml-auto shrink-0">&#10003;</span>
-                          <span className="text-muted/40 text-caption tabular-nums">{s.ms}ms</span>
-                        </motion.div>
-                      );
-                    })}
-
-                    <AnimatePresence>
-                      {showResponse && (
-                        <motion.div
-                          initial={{ opacity: 0, y: 4 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          transition={{ duration: 0.35 }}
-                          className="pt-2 mt-2 border-t border-card-border/60"
-                        >
-                          <p className="text-foreground leading-relaxed">
-                            <span className="text-accent">&#10095; response</span>
-                            <span className="text-muted/60">:</span>{" "}
-                            <span>{activeCmd.response}</span>
-                          </p>
-                          <p className="text-caption text-muted/40 mt-1 tabular-nums">
-                            completed in {totalMs}ms
-                          </p>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
-
-            {/* Suggestion chips — methodology chips when viewing project, section chips otherwise */}
-            <AnimatePresence>
-              {uiState === "panel" && !activeCmd && (
-                <motion.div
-                  initial={{ opacity: 0, y: 6 }}
+                  {mc.label}
+                </motion.button>
+              ))
+            : visibleChips.map((chip, i) => (
+                <motion.button
+                  key={chip.command}
+                  type="button"
+                  onClick={() => onChipClick(chip.command)}
+                  initial={{ opacity: 0, y: 8 }}
                   animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: 6 }}
-                  transition={{ duration: 0.3 }}
-                  className="flex justify-center gap-1.5 mb-2 flex-wrap px-2"
+                  transition={{ delay: i * 0.05 + 0.1, duration: 0.3 }}
+                  className="px-3 py-1.5 rounded-full glass text-small font-mono text-muted/70 hover:text-accent hover:border-accent/30 transition-all cursor-pointer"
                 >
-                  {methodologyChips.length > 0
-                    ? methodologyChips.map((mc, i) => (
-                        <motion.button
-                          key={mc.command.keyword}
-                          type="button"
-                          onClick={() => runCommand(mc.command)}
-                          initial={{ opacity: 0, y: 8 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          transition={{ delay: i * 0.05 + 0.1, duration: 0.3 }}
-                          className="px-3 py-1.5 rounded-full glass text-small font-mono text-green-400/70 border-green-500/20 hover:text-green-400 hover:border-green-500/40 hover:bg-green-500/5 transition-all cursor-pointer"
-                        >
-                          {mc.label}
-                        </motion.button>
-                      ))
-                    : visibleChips.map((chip, i) => (
-                        <motion.button
-                          key={chip.command}
-                          type="button"
-                          onClick={() => onChipClick(chip.command)}
-                          initial={{ opacity: 0, y: 8 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          transition={{ delay: i * 0.05 + 0.1, duration: 0.3 }}
-                          className="px-3 py-1.5 rounded-full glass text-small font-mono text-muted/70 hover:text-accent hover:border-accent/30 transition-all cursor-pointer"
-                        >
-                          {chip.label}
-                        </motion.button>
-                      ))
-                  }
-                </motion.div>
-              )}
-            </AnimatePresence>
+                  {chip.label}
+                </motion.button>
+              ))
+          }
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
 
-            {/* Input bar */}
+  // ── Hero inline content — emoji face (closed) or agent input (open) ──
+  const heroContent = (
+    <div className="max-w-[440px] mx-auto">
+      <AnimatePresence mode="wait">
+        {!heroAgentOpen ? (
+          /* ── Agent emoji face — animated, clickable ── */
+          <motion.div
+            key="agent-emoji"
+            initial={{ opacity: 0, scale: 0.5 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.8, y: -10 }}
+            transition={{ type: "spring", stiffness: 300, damping: 20 }}
+            className="flex flex-col items-center gap-3"
+          >
+            <motion.button
+              type="button"
+              onClick={() => {
+                setHeroAgentOpen(true);
+                setTimeout(() => inputRef.current?.focus(), 200);
+              }}
+              onMouseEnter={() => setEmojiHovered(true)}
+              onMouseLeave={() => setEmojiHovered(false)}
+              className="relative w-16 h-16 rounded-full cursor-pointer"
+              whileHover={{ scale: 1.12 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              {/* Radiating glow rings */}
+              <motion.div
+                className="absolute inset-0 rounded-full"
+                animate={{
+                  boxShadow: [
+                    "0 0 0 0 rgba(74,222,128,0.3), 0 0 20px rgba(74,222,128,0.15)",
+                    "0 0 0 12px rgba(74,222,128,0), 0 0 30px rgba(160,120,104,0.2)",
+                    "0 0 0 0 rgba(74,222,128,0.3), 0 0 20px rgba(74,222,128,0.15)",
+                  ],
+                }}
+                transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
+              />
+              <div className="relative w-full h-full rounded-full bg-gradient-to-br from-card-border to-card border border-accent-status/20 flex items-center justify-center">
+                <AgentEmoji size={40} hovered={emojiHovered} />
+              </div>
+            </motion.button>
+            {/* Tooltip */}
+            <motion.p
+              className="font-mono text-caption text-accent-status/70"
+              animate={{ opacity: [0.5, 1, 0.5] }}
+              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+            >
+              {emojiHovered ? "let\u2019s talk!" : "I\u2019m alive \u2014 click me"}
+            </motion.p>
+          </motion.div>
+        ) : (
+          /* ── Agent input bar (after clicking emoji) ── */
+          <motion.div
+            key="agent-input"
+            initial={{ opacity: 0, y: 12, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ type: "spring", stiffness: 300, damping: 22 }}
+          >
+            {processingContent}
             <form
               onSubmit={onSubmit}
-              className="glass-strong rounded-xl overflow-hidden"
-              style={{
-                boxShadow: "0 4px 30px rgba(0,0,0,0.5), 0 0 60px rgba(0,0,0,0.2)",
-              }}
+              className="glass-strong rounded-2xl overflow-hidden"
+              style={{ boxShadow: "0 4px 24px rgba(0,0,0,0.25)" }}
             >
-              <div className="flex items-center gap-2 px-4 py-3">
+              <div className="flex items-center gap-3 px-5 py-4">
                 <span className="text-accent font-mono text-body font-semibold shrink-0">&#10095;</span>
                 <input
                   ref={inputRef}
                   type="text"
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
-                  placeholder={viewingProject ? `ask about this project...` : inputConfig.placeholder}
-                  disabled={uiState === "processing" || uiState === "responding"}
-                  className="flex-1 min-w-0 bg-transparent outline-none font-mono text-small placeholder:text-muted/35 text-foreground disabled:opacity-50"
+                  placeholder="ask anything about Ahtesham's work..."
+                  disabled={effectiveUiState === "processing" || effectiveUiState === "responding"}
+                  className="flex-1 min-w-0 bg-transparent outline-none font-mono text-sm placeholder:text-muted/40 text-foreground disabled:opacity-50"
                 />
-                {!input && (
-                  <span className="hidden sm:flex items-center gap-1 shrink-0 font-mono text-caption text-muted/30">
-                    {viewingProject ? "why · how · chat" : inputConfig.hints}
-                  </span>
-                )}
-                <button
-                  type="button"
-                  onClick={() => {
-                    setActiveCmd(null);
-                    setShownSteps(0);
-                    setShowResponse(false);
-                    setInput("");
-                    setUiState("button");
-                  }}
-                  aria-label="Close agent panel"
-                  className="text-muted/40 hover:text-foreground shrink-0 transition-colors cursor-pointer ml-1"
-                >
-                  <X size={14} strokeWidth={2.5} />
-                </button>
               </div>
             </form>
+            <div className="mt-4">
+              {chipsContent}
+            </div>
           </motion.div>
-          </div>
         )}
       </AnimatePresence>
+    </div>
+  );
+
+  // ── Fixed bottom panel content (❯ prompt style) ──
+  const fixedPanelContent = (
+    <>
+      {processingContent}
+      {chipsContent}
+      <form
+        onSubmit={onSubmit}
+        className="glass-strong rounded-xl overflow-hidden"
+        style={{ boxShadow: "0 4px 30px rgba(0,0,0,0.5), 0 0 60px rgba(0,0,0,0.2)" }}
+      >
+        <div className="flex items-center gap-2 px-4 py-3">
+          <span className="text-accent font-mono text-body font-semibold shrink-0">&#10095;</span>
+          <input
+            ref={inputRef}
+            type="text"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            placeholder={viewingProject ? `ask about this project...` : inputConfig.placeholder}
+            disabled={effectiveUiState === "processing" || effectiveUiState === "responding"}
+            className="flex-1 min-w-0 bg-transparent outline-none font-mono text-small placeholder:text-muted/35 text-foreground disabled:opacity-50"
+          />
+          <button
+            type="button"
+            onClick={() => {
+              setActiveCmd(null);
+              setShownSteps(0);
+              setShowResponse(false);
+              setInput("");
+              setUiState("button");
+            }}
+            aria-label="Close agent panel"
+            className="text-muted/40 hover:text-foreground shrink-0 transition-colors cursor-pointer ml-1"
+          >
+            <X size={14} strokeWidth={2.5} />
+          </button>
+        </div>
+      </form>
+    </>
+  );
+
+  return (
+    <>
+      {/* ── Emoji at fixed bottom center (born from boot bubble, throws particles) ── */}
+      <AnimatePresence>
+        {emojiPhase === "bottom" && inHeroViewport && (
+          <motion.div
+            key="emoji-bottom"
+            className="fixed z-[45] bottom-8 left-1/2"
+            initial={{ opacity: 0, scale: 0, x: "-50%" }}
+            animate={{ opacity: 1, scale: 1, x: "-50%" }}
+            exit={{
+              opacity: 0,
+              scale: 0.6,
+              y: -300,
+              x: "-50%",
+              transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] },
+            }}
+            transition={{ type: "spring", stiffness: 400, damping: 20 }}
+          >
+            <div className="flex flex-col items-center gap-3">
+              <motion.div
+                className="relative w-16 h-16 rounded-full bg-gradient-to-br from-card-border to-card border border-accent-status/20 flex items-center justify-center"
+                animate={{
+                  boxShadow: [
+                    "0 0 0 0 rgba(74,222,128,0.3), 0 0 20px rgba(74,222,128,0.15)",
+                    "0 0 0 14px rgba(74,222,128,0), 0 0 35px rgba(160,120,104,0.25)",
+                    "0 0 0 0 rgba(74,222,128,0.3), 0 0 20px rgba(74,222,128,0.15)",
+                  ],
+                }}
+                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+              >
+                <AgentEmoji size={40} />
+              </motion.div>
+              <motion.p
+                className="font-mono text-caption text-accent-status/70"
+                animate={{ opacity: [0.4, 1, 0.4] }}
+                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+              >
+                writing your story...
+              </motion.p>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* ── Hero inline agent (portal into hero section — emoji settled or agent open) ── */}
+      {isHeroInline && emojiPhase === "settled" && (effectiveUiState === "panel" || effectiveUiState === "processing" || effectiveUiState === "responding") && heroMount &&
+        ReactDOM.createPortal(heroContent, heroMount)
+      }
+
+      {/* ── Fixed bottom agent (when scrolled past hero) ── */}
+      {!isHeroInline && (
+        <>
+          {/* Agent pill bar (button state — shows label + input) */}
+          <AnimatePresence>
+            {uiState === "button" && buttonReady && (
+              <div className="fixed z-[100] bottom-5 left-1/2 -translate-x-1/2">
+                {(() => {
+                  const p = SECTION_PERSONALITY[activeSection] ?? SECTION_PERSONALITY.hero;
+                  return (
+                    <motion.div
+                      initial={{ opacity: 0, y: 12, scale: 0.95 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: 12, scale: 0.95 }}
+                      transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                      className="flex items-center gap-3 glass-strong rounded-full px-4 py-2.5 cursor-pointer w-[380px]"
+                      style={{
+                        boxShadow: `0 4px 20px rgba(0,0,0,0.3), 0 0 12px ${p.glowColor}`,
+                      }}
+                      onClick={() => {
+                        setUiState("panel");
+                        setTimeout(() => inputRef.current?.focus(), 150);
+                      }}
+                    >
+                      <div className="w-7 h-7 rounded-full bg-gradient-to-br from-card-border to-card border border-accent-status/20 flex items-center justify-center shrink-0">
+                        <AgentEmoji size={18} />
+                      </div>
+                      <span className="flex-1 font-mono text-small text-muted/25 bg-foreground/[0.03] rounded-full px-4 py-1 truncate">
+                        {inputConfig.placeholder}
+                      </span>
+                    </motion.div>
+                  );
+                })()}
+              </div>
+            )}
+          </AnimatePresence>
+
+          {/* Panel (expanded command bar — fixed bottom) */}
+          <AnimatePresence>
+            {(uiState === "panel" || uiState === "processing" || uiState === "responding") && (
+              <div className="fixed z-[100] bottom-5 left-1/2 -translate-x-1/2 w-[calc(100vw-1.5rem)] max-w-[440px]">
+              <motion.div
+                initial={{ opacity: 0, y: 20, scale: 0.95 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: 20, scale: 0.95 }}
+                transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+              >
+                {fixedPanelContent}
+              </motion.div>
+              </div>
+            )}
+          </AnimatePresence>
+        </>
+      )}
 
       {/* ── Flying-to-chat bubble animation ── */}
       <AnimatePresence>
@@ -1498,6 +1809,13 @@ export function AgentBar(): React.ReactElement {
       <AnimatePresence>
         {showBuildPopup && (
           <BuildPopup onDone={() => setShowBuildPopup(false)} />
+        )}
+      </AnimatePresence>
+
+      {/* Whoami popup */}
+      <AnimatePresence>
+        {showWhoami && (
+          <WhoamiPopup onDone={() => setShowWhoami(false)} />
         )}
       </AnimatePresence>
     </>

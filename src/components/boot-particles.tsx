@@ -64,38 +64,31 @@ interface WaveConfig {
 const WAVES: WaveConfig[] = [
   {
     target: "badge",
-    xRange: [0.08, 0.32], yRange: [0.28, 0.38],
+    xRange: [0.30, 0.70], yRange: [0.28, 0.36],
     count: 6, sizes: [3, 7], focalCount: 1,
     baseDelay: 0, durationRange: [1.3, 1.8],
     paletteIndices: [3, 4, 5],              // green tones
   },
   {
     target: "title",
-    xRange: [0.05, 0.45], yRange: [0.34, 0.5],
+    xRange: [0.18, 0.82], yRange: [0.34, 0.48],
     count: 14, sizes: [3, 10], focalCount: 3,
     baseDelay: 0.15, durationRange: [1.5, 2.3],
     paletteIndices: [0, 1, 5, 0],           // gold dominant
   },
   {
-    target: "card",
-    xRange: [0.52, 0.92], yRange: [0.22, 0.72],
-    count: 16, sizes: [3, 10], focalCount: 3,
-    baseDelay: 0.25, durationRange: [1.6, 2.8],
-    paletteIndices: [0, 2, 3, 5, 1],        // mixed
-  },
-  {
     target: "desc",
-    xRange: [0.05, 0.38], yRange: [0.52, 0.62],
+    xRange: [0.22, 0.78], yRange: [0.50, 0.58],
     count: 8, sizes: [2, 8], focalCount: 1,
-    baseDelay: 0.55, durationRange: [1.6, 2.3],
+    baseDelay: 0.30, durationRange: [1.6, 2.3],
     paletteIndices: [2, 5, 1],              // blue + subtle
   },
   {
-    target: "cta",
-    xRange: [0.05, 0.22], yRange: [0.64, 0.72],
-    count: 5, sizes: [4, 8], focalCount: 1,
-    baseDelay: 0.8, durationRange: [1.6, 2.3],
-    paletteIndices: [0, 1],                 // gold
+    target: "agent",
+    xRange: [0.22, 0.78], yRange: [0.68, 0.80],
+    count: 10, sizes: [3, 9], focalCount: 2,
+    baseDelay: 0.65, durationRange: [1.5, 2.5],
+    paletteIndices: [0, 2, 3, 5],           // mixed — agent activation
   },
 ];
 

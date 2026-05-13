@@ -1,0 +1,1948 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portfolio Redesign — Agent-First Layout Mockup</title>
+<style>
+  /* ============================================
+     DESIGN TOKENS (matching portfolio exactly)
+     ============================================ */
+  :root {
+    --bg: #0c0d10;
+    --fg: #e4dfd6;
+    --muted: #6e6b66;
+    --accent: #a07868;
+    --accent-secondary: #4a5578;
+    --accent-status: #4ade80;
+    --card: #111218;
+    --card-border: #232530;
+    --font-body: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --font-mono: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: var(--font-body);
+    overflow-x: hidden;
+    line-height: 1.6;
+  }
+
+  /* Grain overlay */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    pointer-events: none;
+    opacity: 0.04;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  /* ============================================
+     BOOT SEQUENCE OVERLAY
+     ============================================ */
+  #boot-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    background: var(--bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  #boot-overlay.exit {
+    opacity: 0;
+    transform: scale(0.95);
+    pointer-events: none;
+  }
+
+  .boot-terminal {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--muted);
+    max-width: 480px;
+    width: 90%;
+  }
+
+  .boot-line {
+    opacity: 0;
+    transform: translateY(4px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    margin-bottom: 6px;
+  }
+
+  .boot-line.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .boot-line .check { color: var(--accent-status); }
+  .boot-line .label { color: var(--fg); }
+  .boot-line .value { color: var(--accent); }
+
+  .boot-prompt {
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  /* ============================================
+     SIDEBAR NAV (wire nav)
+     ============================================ */
+  .sidebar-nav {
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 64px;
+    z-index: 30;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+  }
+
+  .wire-line {
+    width: 2px;
+    height: 40px;
+    background: var(--card-border);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .wire-line .fill {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 0%;
+    background: var(--accent);
+    transition: height 0.4s ease;
+  }
+
+  .nav-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    border: 2px solid var(--card-border);
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+  }
+
+  .nav-dot.active {
+    border-color: var(--accent);
+    background: var(--accent);
+    box-shadow: 0 0 12px rgba(160, 120, 104, 0.4);
+  }
+
+  .nav-dot .tooltip {
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-family: var(--font-mono);
+    color: var(--muted);
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+  }
+
+  .nav-dot:hover .tooltip {
+    opacity: 1;
+  }
+
+  /* ============================================
+     TOP BAR
+     ============================================ */
+  .top-bar {
+    position: fixed;
+    top: 0;
+    left: 64px;
+    right: 0;
+    height: 48px;
+    z-index: 25;
+    background: rgba(12, 13, 16, 0.8);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--card-border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 24px;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+  }
+
+  .top-bar.visible { opacity: 1; }
+
+  .top-bar .name {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--accent);
+  }
+
+  .top-bar .status {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .top-bar .status-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent-status);
+    animation: pulse-dot 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse-dot {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  /* ============================================
+     MAIN CONTENT
+     ============================================ */
+  .main {
+    margin-left: 64px;
+    padding-top: 48px;
+    min-height: 100vh;
+    position: relative;
+    z-index: 10;
+  }
+
+  /* ============================================
+     SECTION 1: AGENT HERO (replaces old Hero + Stats)
+     Boot completes → Agent IS the viewport
+     ============================================ */
+  .agent-hero {
+    min-height: calc(100vh - 48px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 60px 40px;
+    text-align: center;
+    position: relative;
+    opacity: 0;
+    transition: opacity 0.8s ease;
+  }
+
+  .agent-hero.visible { opacity: 1; }
+
+  /* Ambient orbs */
+  .orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.15;
+    pointer-events: none;
+  }
+
+  .orb-1 {
+    width: 400px;
+    height: 400px;
+    background: var(--accent);
+    top: 10%;
+    left: 15%;
+  }
+
+  .orb-2 {
+    width: 300px;
+    height: 300px;
+    background: var(--accent-secondary);
+    bottom: 20%;
+    right: 10%;
+  }
+
+  .agent-greeting {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    color: var(--accent-status);
+    margin-bottom: 12px;
+    opacity: 0;
+    transform: translateY(8px);
+    transition: all 0.5s ease 0.2s;
+  }
+
+  .agent-greeting.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .agent-hero h1 {
+    font-size: clamp(36px, 6vw, 64px);
+    font-weight: 700;
+    line-height: 1.1;
+    margin-bottom: 16px;
+    opacity: 0;
+    transform: translateY(12px);
+    transition: all 0.6s ease 0.4s;
+    max-width: 700px;
+  }
+
+  .agent-hero h1.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .agent-hero h1 .accent { color: var(--accent); }
+  .agent-hero h1 .secondary { color: var(--accent-secondary); }
+
+  .agent-subtitle {
+    font-size: 16px;
+    color: var(--muted);
+    max-width: 520px;
+    margin-bottom: 40px;
+    opacity: 0;
+    transform: translateY(8px);
+    transition: all 0.5s ease 0.6s;
+  }
+
+  .agent-subtitle.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .agent-subtitle .inline-stat {
+    color: var(--fg);
+    font-weight: 600;
+  }
+
+  /* Agent command interface (centered, prominent) */
+  .agent-interface {
+    width: 100%;
+    max-width: 560px;
+    opacity: 0;
+    transform: translateY(16px);
+    transition: all 0.6s ease 0.8s;
+  }
+
+  .agent-interface.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .agent-input-wrapper {
+    position: relative;
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: 16px;
+    overflow: hidden;
+    transition: border-color 0.3s ease;
+  }
+
+  .agent-input-wrapper:focus-within {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(160, 120, 104, 0.1);
+  }
+
+  .agent-input-top {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 18px;
+  }
+
+  .agent-dot-indicator {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--accent-status);
+    animation: pulse-dot 2s ease-in-out infinite;
+    flex-shrink: 0;
+  }
+
+  .agent-input {
+    flex: 1;
+    background: none;
+    border: none;
+    outline: none;
+    color: var(--fg);
+    font-family: var(--font-mono);
+    font-size: 14px;
+  }
+
+  .agent-input::placeholder {
+    color: var(--muted);
+  }
+
+  .agent-input-hint {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: rgba(110, 107, 102, 0.5);
+    padding: 0 18px 10px;
+  }
+
+  /* Suggestion chips */
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+    margin-top: 16px;
+  }
+
+  .chip {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--muted);
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    padding: 6px 14px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    user-select: none;
+  }
+
+  .chip:hover {
+    color: var(--fg);
+    border-color: var(--accent);
+    background: rgba(160, 120, 104, 0.08);
+  }
+
+  .chip.nav-chip {
+    color: var(--accent);
+    border-color: rgba(160, 120, 104, 0.3);
+  }
+
+  /* About card (agent response to "whoami") */
+  .about-card-response {
+    max-width: 560px;
+    width: 100%;
+    margin-top: 20px;
+    display: none;
+    opacity: 0;
+    transform: translateY(12px) scale(0.98);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+
+  .about-card-response.visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+
+  .about-card {
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: 14px;
+    overflow: hidden;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    position: relative;
+  }
+
+  .about-card-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 16px 10px;
+    border-bottom: 1px solid var(--card-border);
+    background: rgba(255,255,255,0.015);
+  }
+
+  .about-card-header .dots {
+    display: flex;
+    gap: 5px;
+  }
+
+  .about-card-header .dots span {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.08);
+  }
+
+  .about-card-header .title {
+    font-size: 11px;
+    color: var(--muted);
+    margin-left: 8px;
+  }
+
+  .about-card-body {
+    padding: 14px 16px;
+  }
+
+  .about-line {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    padding: 5px 0;
+    opacity: 0;
+    transform: translateX(-6px);
+    transition: all 0.3s ease;
+  }
+
+  .about-line.visible {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  .about-line .prompt {
+    color: var(--accent);
+    flex-shrink: 0;
+  }
+
+  .about-line .cmd {
+    color: var(--fg);
+  }
+
+  .about-line .output {
+    color: var(--muted);
+    font-size: 12px;
+    padding-left: 20px;
+  }
+
+  .about-line .output.green {
+    color: var(--accent-status);
+  }
+
+  .about-line .identity-block {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .about-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--fg);
+    flex-shrink: 0;
+  }
+
+  .about-identity-text {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+  }
+
+  .about-identity-text .name {
+    color: var(--fg);
+    font-weight: 600;
+    font-size: 14px;
+  }
+
+  .about-identity-text .role {
+    color: var(--accent);
+    font-size: 11px;
+  }
+
+  .about-cursor {
+    display: inline-block;
+    width: 7px;
+    height: 14px;
+    background: var(--accent);
+    margin-left: 4px;
+    animation: blink-cursor 1s step-end infinite;
+    vertical-align: middle;
+  }
+
+  @keyframes blink-cursor {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+  }
+
+  /* Scroll hint at bottom */
+  .scroll-hint {
+    position: absolute;
+    bottom: 32px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    opacity: 0;
+    transition: opacity 0.5s ease 1.2s;
+  }
+
+  .scroll-hint.visible { opacity: 0.4; }
+
+  .scroll-hint span {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .scroll-arrow {
+    width: 16px;
+    height: 16px;
+    border-right: 1.5px solid var(--muted);
+    border-bottom: 1.5px solid var(--muted);
+    transform: rotate(45deg);
+    animation: bounce-arrow 2s ease-in-out infinite;
+  }
+
+  @keyframes bounce-arrow {
+    0%, 100% { transform: rotate(45deg) translateY(0); }
+    50% { transform: rotate(45deg) translateY(4px); }
+  }
+
+  /* ============================================
+     SECTION 2: PROJECTS (scrollytelling, agent-introduced)
+     ============================================ */
+  .projects-section {
+    padding: 0 0 120px;
+    position: relative;
+  }
+
+  .projects-intro {
+    text-align: center;
+    padding: 80px 40px 60px;
+  }
+
+  .agent-introduces {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--accent-status);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+
+  .agent-introduces .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent-status);
+  }
+
+  .projects-intro h2 {
+    font-size: clamp(28px, 4vw, 40px);
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  .projects-intro .subtitle {
+    color: var(--muted);
+    font-size: 15px;
+  }
+
+  /* Scrollytelling project cards */
+  .project-scroll {
+    position: relative;
+  }
+
+  .project-sticky {
+    position: sticky;
+    top: 80px;
+    min-height: 70vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+  }
+
+  .project-card {
+    width: 100%;
+    max-width: 900px;
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: 16px;
+    overflow: hidden;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 400px;
+  }
+
+  .project-info {
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .project-tag {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .project-tag .live-badge {
+    color: var(--accent-status);
+    background: rgba(74, 222, 128, 0.1);
+    padding: 2px 8px;
+    border-radius: 4px;
+  }
+
+  .project-tag .stat-inline {
+    color: var(--muted);
+  }
+
+  .project-info h3 {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+
+  .project-info p {
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.7;
+    margin-bottom: 20px;
+  }
+
+  .project-tech {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .project-tech span {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--muted);
+    background: rgba(255,255,255,0.04);
+    padding: 4px 10px;
+    border-radius: 6px;
+    border: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .project-visual {
+    background: rgba(255,255,255,0.02);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .project-mockup {
+    width: 85%;
+    border-radius: 8px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--card-border);
+    aspect-ratio: 16/10;
+    position: relative;
+  }
+
+  .mockup-bar {
+    height: 28px;
+    background: rgba(255,255,255,0.03);
+    border-bottom: 1px solid var(--card-border);
+    display: flex;
+    align-items: center;
+    padding: 0 12px;
+    gap: 6px;
+  }
+
+  .mockup-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.08);
+  }
+
+  .mockup-content {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .mockup-line {
+    height: 8px;
+    border-radius: 4px;
+    background: rgba(255,255,255,0.04);
+  }
+
+  .mockup-line.short { width: 60%; }
+  .mockup-line.medium { width: 80%; }
+  .mockup-line.accent { background: rgba(160, 120, 104, 0.15); width: 40%; }
+
+  /* Project scroll spacer */
+  .project-spacer {
+    height: 50vh;
+  }
+
+  /* Side projects strip */
+  .side-projects {
+    padding: 60px 40px;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .side-projects h3 {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .side-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 12px;
+  }
+
+  .side-card {
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: 10px;
+    padding: 16px;
+    transition: border-color 0.2s ease;
+    cursor: pointer;
+  }
+
+  .side-card:hover {
+    border-color: rgba(160, 120, 104, 0.3);
+  }
+
+  .side-card .name {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+
+  .side-card .desc {
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  /* ============================================
+     SECTION 3: EXPERIENCE (career timeline — git log style)
+     ============================================ */
+  .experience-section {
+    padding: 80px 40px 120px;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .experience-section .agent-introduces {
+    justify-content: flex-start;
+  }
+
+  .experience-section h2 {
+    font-size: clamp(24px, 3vw, 36px);
+    font-weight: 700;
+    margin-bottom: 40px;
+  }
+
+  .git-log {
+    position: relative;
+    padding-left: 32px;
+  }
+
+  .git-log::before {
+    content: '';
+    position: absolute;
+    left: 7px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: var(--card-border);
+  }
+
+  .commit {
+    position: relative;
+    margin-bottom: 32px;
+  }
+
+  .commit-dot {
+    position: absolute;
+    left: -32px;
+    top: 6px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 2px solid var(--card-border);
+    background: var(--bg);
+  }
+
+  .commit.current .commit-dot {
+    border-color: var(--accent-status);
+    background: var(--accent-status);
+    box-shadow: 0 0 12px rgba(74, 222, 128, 0.3);
+  }
+
+  .commit-hash {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--accent);
+    margin-bottom: 4px;
+  }
+
+  .commit-title {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+
+  .commit-body {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  .commit-meta {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: rgba(110, 107, 102, 0.6);
+    margin-top: 6px;
+  }
+
+  /* ============================================
+     FOOTER (with agent contact state — NO separate contact section)
+     ============================================ */
+  .footer {
+    border-top: 1px solid var(--card-border);
+    padding: 40px;
+    position: relative;
+  }
+
+  .footer-agent-cta {
+    max-width: 600px;
+    margin: 0 auto 40px;
+    text-align: center;
+  }
+
+  .footer-agent-cta .agent-mode {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--accent-status);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+
+  .footer-agent-cta .agent-mode .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent-status);
+    animation: pulse-dot 2s ease-in-out infinite;
+  }
+
+  .footer-agent-cta h3 {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  .footer-agent-cta .sub {
+    color: var(--muted);
+    font-size: 14px;
+    margin-bottom: 20px;
+  }
+
+  .contact-row {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .contact-link {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--muted);
+    text-decoration: none;
+    padding: 8px 16px;
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: 10px;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .contact-link:hover {
+    border-color: var(--accent);
+    color: var(--fg);
+  }
+
+  .contact-link.primary {
+    background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
+    border: none;
+    color: var(--fg);
+    font-weight: 600;
+  }
+
+  .contact-link.primary:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+  }
+
+  /* Testimonials (inline, minimal) */
+  .testimonial-strip {
+    max-width: 600px;
+    margin: 24px auto 0;
+    text-align: center;
+  }
+
+  .testimonial-quote {
+    font-size: 14px;
+    font-style: italic;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+
+  .testimonial-author {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: rgba(110, 107, 102, 0.6);
+  }
+
+  .footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 20px;
+    border-top: 1px solid rgba(35, 37, 48, 0.5);
+  }
+
+  .footer-bottom span {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--muted);
+  }
+
+  .footer-links {
+    display: flex;
+    gap: 16px;
+  }
+
+  .footer-links a {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  .footer-links a:hover { color: var(--accent); }
+
+  /* ============================================
+     AGENT BAR (bottom — now contextual, not just a button)
+     ============================================ */
+  .agent-bar-fixed {
+    position: fixed;
+    bottom: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 40;
+    display: none;
+  }
+
+  .agent-bar-fixed.visible { display: flex; }
+
+  .agent-bar-pill {
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: 24px;
+    padding: 8px 8px 8px 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    backdrop-filter: blur(16px);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+    transition: all 0.3s ease;
+  }
+
+  .agent-bar-pill:hover {
+    border-color: rgba(160, 120, 104, 0.3);
+  }
+
+  .agent-bar-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--accent-status);
+    animation: pulse-dot 2s ease-in-out infinite;
+  }
+
+  .agent-bar-label {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  .agent-bar-input {
+    background: rgba(255,255,255,0.04);
+    border: none;
+    outline: none;
+    border-radius: 16px;
+    padding: 6px 14px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--fg);
+    width: 180px;
+  }
+
+  .agent-bar-input::placeholder {
+    color: rgba(110, 107, 102, 0.4);
+  }
+
+  /* ============================================
+     ANNOTATIONS — mockup markers
+     ============================================ */
+  .annotation {
+    position: absolute;
+    background: rgba(160, 120, 104, 0.9);
+    color: var(--fg);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    padding: 6px 12px;
+    border-radius: 6px;
+    z-index: 45;
+    pointer-events: none;
+    white-space: nowrap;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  }
+
+  .annotation::after {
+    content: '';
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background: rgba(160, 120, 104, 0.9);
+    transform: rotate(45deg);
+  }
+
+  .annotation.top::after { bottom: -4px; left: 20px; }
+  .annotation.bottom::after { top: -4px; left: 20px; }
+  .annotation.left::after { right: -4px; top: 10px; }
+  .annotation.right::after { left: -4px; top: 10px; }
+
+  /* Toggle annotations */
+  .toggle-annotations {
+    position: fixed;
+    top: 12px;
+    right: 24px;
+    z-index: 60;
+    background: var(--accent);
+    color: var(--fg);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: opacity 0.2s;
+  }
+
+  .toggle-annotations:hover { opacity: 0.8; }
+
+  .annotations-layer { transition: opacity 0.3s ease; }
+  .annotations-layer.hidden { opacity: 0; pointer-events: none; }
+
+  /* ============================================
+     COMPARISON BANNER
+     ============================================ */
+  .comparison-banner {
+    background: var(--card);
+    border-bottom: 1px solid var(--card-border);
+    padding: 20px 40px;
+    margin-left: 64px;
+    text-align: center;
+    position: relative;
+    z-index: 20;
+  }
+
+  .comparison-banner h4 {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    color: var(--accent);
+    margin-bottom: 16px;
+  }
+
+  .compare-grid {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 20px;
+    max-width: 750px;
+    margin: 0 auto;
+    align-items: start;
+  }
+
+  .compare-col h5 {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 8px;
+  }
+
+  .compare-col.before h5 { color: var(--muted); }
+  .compare-col.after h5 { color: var(--accent-status); }
+
+  .compare-col ul {
+    list-style: none;
+    font-size: 12px;
+    color: var(--muted);
+    text-align: left;
+  }
+
+  .compare-col ul li {
+    padding: 3px 0;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .compare-col.before li::before {
+    content: '×';
+    color: rgba(255,100,100,0.6);
+    font-weight: bold;
+    font-size: 14px;
+  }
+
+  .compare-col.after li::before {
+    content: '✓';
+    color: var(--accent-status);
+    font-weight: bold;
+  }
+
+  .compare-arrow {
+    font-size: 24px;
+    color: var(--accent);
+    align-self: center;
+  }
+
+  /* Processing demo */
+  .processing-demo {
+    max-width: 560px;
+    margin: 40px auto 0;
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    padding: 20px;
+    text-align: left;
+    font-family: var(--font-mono);
+    font-size: 12px;
+  }
+
+  .processing-demo .step {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 4px 0;
+    color: var(--muted);
+    opacity: 0;
+    transform: translateX(-8px);
+    transition: all 0.3s ease;
+  }
+
+  .processing-demo .step.visible {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  .processing-demo .step .icon { color: var(--accent-status); }
+  .processing-demo .step .timing { color: rgba(110,107,102,0.4); margin-left: auto; }
+
+  .processing-demo .response {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid var(--card-border);
+    color: var(--fg);
+    font-size: 13px;
+    line-height: 1.6;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+
+  .processing-demo .response.visible { opacity: 1; }
+
+  /* ============================================
+     RESPONSIVE
+     ============================================ */
+  @media (max-width: 1024px) {
+    .sidebar-nav { display: none; }
+    .main { margin-left: 0; }
+    .top-bar { left: 0; }
+    .comparison-banner { margin-left: 0; }
+  }
+
+  @media (max-width: 768px) {
+    .project-card { grid-template-columns: 1fr; }
+    .project-visual { min-height: 200px; }
+    .compare-grid { grid-template-columns: 1fr; gap: 12px; }
+    .compare-arrow { display: none; }
+    .contact-row { flex-direction: column; align-items: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- TOGGLE ANNOTATIONS -->
+<button class="toggle-annotations" onclick="toggleAnnotations()">Toggle Notes</button>
+
+<!-- ===== BOOT SEQUENCE ===== -->
+<div id="boot-overlay">
+  <div class="boot-terminal">
+    <div class="boot-line" id="b1"><span class="boot-prompt">$ </span><span class="label">shami.agent --init</span></div>
+    <div class="boot-line" id="b2"><span class="check">&#10003;</span> <span class="label">referrer:</span> <span class="value">linkedin.com/recruiter</span></div>
+    <div class="boot-line" id="b3"><span class="check">&#10003;</span> <span class="label">intent:</span> <span class="value">evaluating candidate</span></div>
+    <div class="boot-line" id="b4"><span class="check">&#10003;</span> <span class="label">persona:</span> <span class="value">decision_maker</span></div>
+    <div class="boot-line" id="b5"><span class="check">&#10003;</span> <span class="label">optimizing viewport for</span> <span class="value">hiring context</span></div>
+    <div class="boot-line" id="b6"><span class="check">&#10003;</span> <span class="label">live clients:</span> <span class="value">100+</span> <span style="color:var(--muted)">·</span> <span class="label">status:</span> <span class="value" style="color:var(--accent-status)">available</span></div>
+    <div class="boot-line" id="b7"><br><span style="color:var(--accent-status)">ready.</span> <span style="color:var(--muted)">launching agent interface...</span></div>
+  </div>
+</div>
+
+<!-- ===== TOP BAR ===== -->
+<div class="top-bar" id="topbar">
+  <span class="name">ahtesham.dev</span>
+  <span class="status">
+    <span class="status-dot"></span>
+    building: gogaa v1.3.0
+  </span>
+</div>
+
+<!-- ===== SIDEBAR NAV ===== -->
+<nav class="sidebar-nav">
+  <div class="nav-dot active" id="nd1"><span class="tooltip">agent</span></div>
+  <div class="wire-line"><div class="fill" style="height:100%"></div></div>
+  <div class="nav-dot" id="nd2"><span class="tooltip">projects</span></div>
+  <div class="wire-line"><div class="fill"></div></div>
+  <div class="nav-dot" id="nd3"><span class="tooltip">career</span></div>
+  <div class="wire-line"><div class="fill"></div></div>
+  <div class="nav-dot" id="nd4"><span class="tooltip">connect</span></div>
+</nav>
+
+<!-- ===== COMPARISON BANNER ===== -->
+<div class="comparison-banner" id="comparison" style="display:none;">
+  <h4>STRUCTURAL CHANGES — What this mockup demonstrates</h4>
+  <div class="compare-grid">
+    <div class="compare-col before">
+      <h5>Template Skeleton (before)</h5>
+      <ul>
+        <li>Hero left + terminal right</li>
+        <li>Stats grid section (4 numbers)</li>
+        <li>Project cards grid</li>
+        <li>Experience + Writing section</li>
+        <li>Contact CTA section</li>
+        <li>Agent = floating button overlay</li>
+      </ul>
+    </div>
+    <div class="compare-arrow">&rarr;</div>
+    <div class="compare-col after">
+      <h5>Agent-First (after)</h5>
+      <ul>
+        <li>Agent IS the hero viewport</li>
+        <li>Stats inlined into text + cards</li>
+        <li>Agent introduces each project</li>
+        <li>Career as git log (kept)</li>
+        <li>Contact = agent footer state</li>
+        <li>Agent = the entire interface</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ===== MAIN CONTENT ===== -->
+<main class="main">
+
+  <!-- SECTION 1: AGENT HERO
+       The agent IS the hero. No left/right split. No stats grid.
+       Boot completes → this is what you see. -->
+  <section class="agent-hero" id="hero">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+
+    <div class="agent-greeting" id="ag-greet">
+      <span style="color:var(--accent-status)">&#9679;</span>&nbsp; agent online
+    </div>
+
+    <h1 id="ag-title">
+      I'm <span class="accent">Ahtesham</span>.<br>
+      I ship AI systems<br>
+      that don't break.
+    </h1>
+
+    <p class="agent-subtitle" id="ag-sub">
+      <span class="inline-stat">50+ production systems</span> shipped.
+      <span class="inline-stat">5 years</span> building full-stack + AI.
+      Currently available for the right team.
+    </p>
+
+    <div class="agent-interface" id="ag-interface">
+      <div class="agent-input-wrapper">
+        <div class="agent-input-top">
+          <div class="agent-dot-indicator"></div>
+          <input class="agent-input" type="text" placeholder="ask me anything — projects, stack, rate, or just say hi" id="agent-cmd" />
+        </div>
+        <div class="agent-input-hint">try: projects &middot; skills &middot; hire me &middot; how do you ship?</div>
+      </div>
+      <div class="chips" id="hero-chips">
+        <span class="chip" onclick="showAboutCard()">whoami</span>
+        <span class="chip" onclick="showProcessing('projects')">Projects</span>
+        <span class="chip" onclick="showProcessing('skills')">Skills</span>
+        <span class="chip" onclick="showProcessing('rate')">Rate</span>
+        <span class="chip" onclick="showProcessing('how-i-ship')">How I ship</span>
+        <span class="chip nav-chip" onclick="showProcessing('cv')">View CV</span>
+      </div>
+
+      <!-- About card (agent response to "whoami") -->
+      <div class="about-card-response" id="about-response">
+        <div class="about-card">
+          <div class="about-card-header">
+            <div class="dots"><span></span><span></span><span></span></div>
+            <span class="title">shami.agent — whoami</span>
+          </div>
+          <div class="about-card-body">
+            <div class="about-line" id="al1">
+              <span class="prompt">$</span>
+              <span class="cmd">whoami</span>
+            </div>
+            <div class="about-line" id="al1b">
+              <span class="output">
+                <span class="identity-block">
+                  <span class="about-avatar">A</span>
+                  <span class="about-identity-text">
+                    <span class="name">Ahtesham Ahmad</span>
+                    <span class="role">Full-Stack + AI Engineer</span>
+                  </span>
+                </span>
+              </span>
+            </div>
+            <div class="about-line" id="al2">
+              <span class="prompt">$</span>
+              <span class="cmd">cat location</span>
+            </div>
+            <div class="about-line" id="al2b">
+              <span class="output">Islamabad, PK &middot; remote-first</span>
+            </div>
+            <div class="about-line" id="al3">
+              <span class="prompt">$</span>
+              <span class="cmd">echo $LANGUAGES</span>
+            </div>
+            <div class="about-line" id="al3b">
+              <span class="output">EN, UR, PS, SD, AR</span>
+            </div>
+            <div class="about-line" id="al4">
+              <span class="prompt">$</span>
+              <span class="cmd">cat interests.txt</span>
+            </div>
+            <div class="about-line" id="al4b">
+              <span class="output">Snooker, cricket, history, technology</span>
+            </div>
+            <div class="about-line" id="al5">
+              <span class="prompt">$</span>
+              <span class="cmd">cat superpower.txt</span>
+            </div>
+            <div class="about-line" id="al5b">
+              <span class="output">Picks up anything fast</span>
+            </div>
+            <div class="about-line" id="al6">
+              <span class="prompt">$</span>
+              <span class="cmd">cat philosophy.md</span>
+            </div>
+            <div class="about-line" id="al6b">
+              <span class="output green">Build the tool when none exists</span><span class="about-cursor"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Processing demo (appears when chip is clicked) -->
+      <div class="processing-demo" id="proc-demo" style="display:none;">
+        <div class="step" id="ps1"><span class="icon">&#9679;</span> shami.agent<span class="timing"></span></div>
+        <div class="step" id="ps2"><span class="icon">&#9500;</span> parse("projects")<span class="timing">12ms</span></div>
+        <div class="step" id="ps3"><span class="icon">&#9500;</span> classify_intent → navigation<span class="timing">3ms</span></div>
+        <div class="step" id="ps4"><span class="icon">&#9500;</span> resolve_section → #projects<span class="timing">1ms</span></div>
+        <div class="step" id="ps5"><span class="icon">&#9492;</span> scroll_to(projects) <span class="icon">&#10003;</span><span class="timing">18ms</span></div>
+        <div class="response" id="ps-resp">Scrolling to projects — 4 flagship systems, each solving a real problem.</div>
+      </div>
+    </div>
+
+    <div class="scroll-hint" id="scroll-hint">
+      <span>scroll to explore</span>
+      <div class="scroll-arrow"></div>
+    </div>
+  </section>
+
+  <!-- SECTION 2: PROJECTS (agent-introduced scrollytelling) -->
+  <section class="projects-section" id="projects">
+    <div class="projects-intro">
+      <div class="agent-introduces">
+        <span class="dot"></span>
+        agent.context → projects
+      </div>
+      <h2>What I've shipped</h2>
+      <p class="subtitle">Each system runs in production. Each solved a problem nobody else was solving.</p>
+    </div>
+
+    <!-- Project 1: OpenEvent -->
+    <div class="project-scroll">
+      <div class="project-sticky">
+        <div class="project-card">
+          <div class="project-info">
+            <div class="project-tag">
+              <span class="live-badge">LIVE</span>
+              <span class="stat-inline">100+ teams &middot; 150+ events &middot; saves ~90 min/day</span>
+            </div>
+            <h3>OpenEvent</h3>
+            <p>Event management platform replacing 5 separate tools. Human-in-the-loop AI handles crew scheduling, financial planning, and workflow automation for 100+ organizations.</p>
+            <div class="project-tech">
+              <span>Next.js</span>
+              <span>Supabase</span>
+              <span>Stripe</span>
+              <span>AI Workflows</span>
+            </div>
+          </div>
+          <div class="project-visual">
+            <div class="project-mockup">
+              <div class="mockup-bar">
+                <div class="mockup-dot"></div>
+                <div class="mockup-dot"></div>
+                <div class="mockup-dot"></div>
+              </div>
+              <div class="mockup-content">
+                <div class="mockup-line accent" style="width:35%"></div>
+                <div class="mockup-line medium"></div>
+                <div class="mockup-line short"></div>
+                <div class="mockup-line" style="width:90%; height:60px; margin-top:8px"></div>
+                <div class="mockup-line accent" style="width:25%"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="project-spacer"></div>
+    </div>
+
+    <!-- Project 2: CodeLens -->
+    <div class="project-scroll">
+      <div class="project-sticky">
+        <div class="project-card">
+          <div class="project-info">
+            <div class="project-tag">
+              <span class="live-badge">PRIVATE</span>
+              <span class="stat-inline">430 patterns &middot; 9 stacks</span>
+            </div>
+            <h3>CodeLens</h3>
+            <p>Static analysis tool that catches what AI code review misses. Pattern-first approach — 430 real patterns from production codebases, not LLM hallucinations.</p>
+            <div class="project-tech">
+              <span>TypeScript</span>
+              <span>AST Parsing</span>
+              <span>Pattern Engine</span>
+              <span>CLI</span>
+            </div>
+          </div>
+          <div class="project-visual">
+            <div class="project-mockup">
+              <div class="mockup-bar">
+                <div class="mockup-dot"></div>
+                <div class="mockup-dot"></div>
+                <div class="mockup-dot"></div>
+              </div>
+              <div class="mockup-content">
+                <div class="mockup-line accent" style="width:50%"></div>
+                <div class="mockup-line"></div>
+                <div class="mockup-line short"></div>
+                <div class="mockup-line medium"></div>
+                <div class="mockup-line accent" style="width:30%"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="project-spacer"></div>
+    </div>
+
+    <!-- Project 3: Gogaa -->
+    <div class="project-scroll">
+      <div class="project-sticky">
+        <div class="project-card">
+          <div class="project-info">
+            <div class="project-tag">
+              <span class="live-badge">OSS</span>
+              <span class="stat-inline">1,418 tests &middot; 11 providers</span>
+            </div>
+            <h3>Gogaa CLI</h3>
+            <p>AI coding agent that rivals Claude Code. 11 LLM providers, full terminal UI, deep agent orchestration — built because existing tools couldn't handle real workflows.</p>
+            <div class="project-tech">
+              <span>TypeScript</span>
+              <span>React Ink</span>
+              <span>11 LLM APIs</span>
+              <span>TUI</span>
+            </div>
+          </div>
+          <div class="project-visual">
+            <div class="project-mockup">
+              <div class="mockup-bar">
+                <div class="mockup-dot"></div>
+                <div class="mockup-dot"></div>
+                <div class="mockup-dot"></div>
+              </div>
+              <div class="mockup-content">
+                <div class="mockup-line accent" style="width:45%"></div>
+                <div class="mockup-line"></div>
+                <div class="mockup-line medium"></div>
+                <div class="mockup-line short"></div>
+                <div class="mockup-line accent" style="width:35%"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="project-spacer"></div>
+    </div>
+
+    <!-- Project 4: Rasad -->
+    <div class="project-scroll">
+      <div class="project-sticky">
+        <div class="project-card">
+          <div class="project-info">
+            <div class="project-tag">
+              <span class="live-badge">PUBLISHED</span>
+              <span class="stat-inline">npm: rasad-ai@1.0.0</span>
+            </div>
+            <h3>Rasad</h3>
+            <p>AI observability toolkit — X-Ray TUI for inspecting what your AI agents actually do. Built for developers who ship AI but can't see inside the black box.</p>
+            <div class="project-tech">
+              <span>TypeScript</span>
+              <span>React Ink</span>
+              <span>OpenTelemetry</span>
+              <span>TUI</span>
+            </div>
+          </div>
+          <div class="project-visual">
+            <div class="project-mockup">
+              <div class="mockup-bar">
+                <div class="mockup-dot"></div>
+                <div class="mockup-dot"></div>
+                <div class="mockup-dot"></div>
+              </div>
+              <div class="mockup-content">
+                <div class="mockup-line accent" style="width:40%"></div>
+                <div class="mockup-line medium"></div>
+                <div class="mockup-line short"></div>
+                <div class="mockup-line"></div>
+                <div class="mockup-line accent" style="width:28%"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="project-spacer"></div>
+    </div>
+
+    <!-- Side projects -->
+    <div class="side-projects">
+      <h3>Also shipped</h3>
+      <div class="side-grid">
+        <div class="side-card">
+          <div class="name">Deep Agents</div>
+          <div class="desc">5-agent system on HF Spaces</div>
+        </div>
+        <div class="side-card">
+          <div class="name">Morning Briefing</div>
+          <div class="desc">Automated daily intelligence</div>
+        </div>
+        <div class="side-card">
+          <div class="name">n8n Automations</div>
+          <div class="desc">Freelance message routing</div>
+        </div>
+        <div class="side-card">
+          <div class="name">Gogaa Web</div>
+          <div class="desc">PTY terminal in browser</div>
+        </div>
+        <div class="side-card">
+          <div class="name">Infrastructure</div>
+          <div class="desc">Docker + Traefik + Gitea CI</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 3: EXPERIENCE (git-log career timeline) -->
+  <section class="experience-section" id="career">
+    <div class="agent-introduces">
+      <span class="dot"></span>
+      agent.context → career
+    </div>
+    <h2>How I got here</h2>
+
+    <div class="git-log">
+      <div class="commit current">
+        <div class="commit-dot"></div>
+        <div class="commit-hash">HEAD → main</div>
+        <div class="commit-title">Full-Stack + AI Engineer — Independent</div>
+        <div class="commit-body">Building production AI systems. 50+ systems shipped across event management, developer tooling, observability, and automation.</div>
+        <div class="commit-meta">2024 – present &middot; remote</div>
+      </div>
+
+      <div class="commit">
+        <div class="commit-dot"></div>
+        <div class="commit-hash">a7f3c2d</div>
+        <div class="commit-title">Software Developer — OpenEvent</div>
+        <div class="commit-body">Built the platform from scratch. 100+ organizations using it daily. AI workflow layer saves teams ~90 minutes per day.</div>
+        <div class="commit-meta">2022 – 2024 &middot; Germany</div>
+      </div>
+
+      <div class="commit">
+        <div class="commit-dot"></div>
+        <div class="commit-hash">e91b4a8</div>
+        <div class="commit-title">CS Student + Freelancer</div>
+        <div class="commit-body">Started building for clients while studying. First production deploys. Learned that shipping beats studying.</div>
+        <div class="commit-meta">2019 – 2022 &middot; Pakistan → Germany</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER (contact merged into agent state — no separate CTA section) -->
+  <footer class="footer" id="connect">
+    <div class="footer-agent-cta">
+      <div class="agent-mode">
+        <span class="dot"></span>
+        agent.mode → connect
+      </div>
+      <h3>Ready when you are.</h3>
+      <p class="sub">Available for full-time &amp; contract. Based in Germany, open to Gulf &amp; remote.</p>
+
+      <div class="contact-row">
+        <a href="#" class="contact-link primary">Book a 15-min call</a>
+        <a href="#" class="contact-link">Email</a>
+        <a href="#" class="contact-link">GitHub</a>
+        <a href="#" class="contact-link">LinkedIn</a>
+        <a href="#" class="contact-link">View CV</a>
+      </div>
+
+      <div class="testimonial-strip" id="testimonial">
+        <p class="testimonial-quote">"The AI layer saves us 90 minutes a day. Worth every cent."</p>
+        <p class="testimonial-author">— River Soellner, CEO @ OpenEvent</p>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <span>&copy; 2026 Ahtesham Ahmad &middot; system uptime: 7 years</span>
+      <div class="footer-links">
+        <a href="#">/uses</a>
+        <a href="#">/journey</a>
+        <a href="#">GitHub</a>
+      </div>
+    </div>
+  </footer>
+</main>
+
+<!-- FIXED AGENT BAR (appears after scrolling past hero) -->
+<div class="agent-bar-fixed" id="agent-bar">
+  <div class="agent-bar-pill">
+    <div class="agent-bar-dot"></div>
+    <span class="agent-bar-label">agent</span>
+    <input class="agent-bar-input" type="text" placeholder="ask anything..." />
+  </div>
+</div>
+
+<!-- ===== ANNOTATIONS LAYER ===== -->
+<div class="annotations-layer" id="annotations">
+  <!-- Hero annotations -->
+  <div class="annotation top" style="top:38%; left:calc(50% + 290px); transform:translateX(-50%);">
+    CHANGE 1: Agent IS the hero.<br>No left/right split.
+  </div>
+  <div class="annotation top" style="top:52%; left:calc(50% - 260px);">
+    CHANGE 2: Stats inlined<br>into subtitle text
+  </div>
+  <div class="annotation bottom" style="top:62%; left:calc(50% + 200px);">
+    CHANGE 3: Command interface<br>is the primary CTA
+  </div>
+</div>
+
+<script>
+  // ============================================
+  // BOOT SEQUENCE ANIMATION
+  // ============================================
+  const bootLines = ['b1','b2','b3','b4','b5','b6','b7'];
+  let bootIndex = 0;
+
+  function showNextBoot() {
+    if (bootIndex >= bootLines.length) {
+      setTimeout(() => {
+        document.getElementById('boot-overlay').classList.add('exit');
+        setTimeout(revealHero, 600);
+      }, 500);
+      return;
+    }
+    document.getElementById(bootLines[bootIndex]).classList.add('visible');
+    bootIndex++;
+    setTimeout(showNextBoot, bootIndex === 1 ? 600 : 300);
+  }
+
+  function revealHero() {
+    document.getElementById('boot-overlay').style.display = 'none';
+    document.getElementById('topbar').classList.add('visible');
+    document.getElementById('comparison').style.display = 'block';
+
+    const hero = document.getElementById('hero');
+    hero.classList.add('visible');
+
+    // Stagger reveals
+    setTimeout(() => document.getElementById('ag-greet').classList.add('visible'), 200);
+    setTimeout(() => document.getElementById('ag-title').classList.add('visible'), 400);
+    setTimeout(() => document.getElementById('ag-sub').classList.add('visible'), 600);
+    setTimeout(() => document.getElementById('ag-interface').classList.add('visible'), 800);
+    setTimeout(() => document.getElementById('scroll-hint').classList.add('visible'), 1200);
+  }
+
+  // Start boot on load
+  setTimeout(showNextBoot, 400);
+
+  // ============================================
+  // AGENT BAR (appears when scrolled past hero)
+  // ============================================
+  window.addEventListener('scroll', () => {
+    const hero = document.getElementById('hero');
+    const bar = document.getElementById('agent-bar');
+    if (window.scrollY > hero.offsetHeight * 0.7) {
+      bar.classList.add('visible');
+    } else {
+      bar.classList.remove('visible');
+    }
+  });
+
+  // ============================================
+  // ABOUT CARD (whoami response)
+  // ============================================
+  let aboutShown = false;
+  function showAboutCard() {
+    const card = document.getElementById('about-response');
+    const proc = document.getElementById('proc-demo');
+
+    // Hide processing demo if visible
+    proc.style.display = 'none';
+
+    if (aboutShown) {
+      // Toggle off
+      card.classList.remove('visible');
+      setTimeout(() => card.style.display = 'none', 500);
+      aboutShown = false;
+      return;
+    }
+
+    // Show card
+    card.style.display = 'block';
+    aboutShown = true;
+
+    // Reset all lines
+    const lines = ['al1','al1b','al2','al2b','al3','al3b','al4','al4b','al5','al5b','al6','al6b'];
+    lines.forEach(id => document.getElementById(id).classList.remove('visible'));
+
+    // Reveal card container
+    requestAnimationFrame(() => {
+      card.classList.add('visible');
+
+      // Stagger each line (command + output pairs)
+      lines.forEach((id, i) => {
+        setTimeout(() => document.getElementById(id).classList.add('visible'), 150 + i * 120);
+      });
+    });
+  }
+
+  // Also trigger about card from input
+  document.getElementById('agent-cmd').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') {
+      const val = this.value.trim().toLowerCase();
+      if (val === 'whoami' || val === 'about' || val === 'who are you') {
+        showAboutCard();
+        this.value = '';
+      } else if (val) {
+        showProcessing(val);
+        this.value = '';
+      }
+    }
+  });
+
+  // ============================================
+  // PROCESSING DEMO
+  // ============================================
+  function showProcessing(cmd) {
+    // Hide about card if visible
+    const aboutCard = document.getElementById('about-response');
+    aboutCard.classList.remove('visible');
+    setTimeout(() => aboutCard.style.display = 'none', 300);
+    aboutShown = false;
+
+    const demo = document.getElementById('proc-demo');
+    demo.style.display = 'block';
+
+    // Reset
+    for (let i = 1; i <= 5; i++) {
+      document.getElementById('ps' + i).classList.remove('visible');
+    }
+    document.getElementById('ps-resp').classList.remove('visible');
+
+    // Update command text
+    document.querySelector('#ps2 .icon + span')
+    // Stagger steps
+    const delays = [100, 300, 500, 700, 900];
+    for (let i = 1; i <= 5; i++) {
+      setTimeout(() => document.getElementById('ps' + i).classList.add('visible'), delays[i-1]);
+    }
+    setTimeout(() => document.getElementById('ps-resp').classList.add('visible'), 1200);
+  }
+
+  // ============================================
+  // TOGGLE ANNOTATIONS
+  // ============================================
+  let annotationsVisible = true;
+  function toggleAnnotations() {
+    annotationsVisible = !annotationsVisible;
+    document.getElementById('annotations').classList.toggle('hidden');
+    document.getElementById('comparison').style.display = annotationsVisible ? 'block' : 'none';
+  }
+
+  // ============================================
+  // TESTIMONIAL ROTATION
+  // ============================================
+  const testimonials = [
+    { quote: '"The AI layer saves us 90 minutes a day. Worth every cent."', author: '— River Soellner, CEO @ OpenEvent' },
+    { quote: '"Technical and competent engineer, communicates clearly."', author: '— Mouad, France' },
+    { quote: '"Speedy and professional delivery."', author: '— Chloe, United States' },
+    { quote: '"Delivered with precision on a tight deadline."', author: '— Joseph, United Kingdom' },
+  ];
+  let tIdx = 0;
+  setInterval(() => {
+    tIdx = (tIdx + 1) % testimonials.length;
+    const el = document.getElementById('testimonial');
+    el.style.opacity = '0';
+    setTimeout(() => {
+      el.querySelector('.testimonial-quote').textContent = testimonials[tIdx].quote;
+      el.querySelector('.testimonial-author').textContent = testimonials[tIdx].author;
+      el.style.opacity = '1';
+    }, 300);
+  }, 5000);
+</script>
+
+</body>
+</html>

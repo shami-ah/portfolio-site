@@ -243,7 +243,7 @@ export function TopBar(): React.ReactElement {
         }}
         transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
         className={`fixed top-0 left-0 z-40 px-4 md:px-6 py-3 md:py-4 transition-all duration-300 ${
-          scrolled && !onProjects ? "bg-background/70 backdrop-blur-md" : ""
+          ""
         }`}
       >
         <Link href="/">
