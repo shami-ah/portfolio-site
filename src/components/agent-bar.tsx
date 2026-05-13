@@ -1849,7 +1849,8 @@ export function AgentBar(): React.ReactElement {
               </AnimatePresence>
             </div>
 
-            {/* Mood label / picker / hints */}
+            {/* Mood label / picker / hints — fixed height to prevent hero shift */}
+            <div className="h-8 flex items-center justify-center overflow-hidden">
             <AnimatePresence mode="wait">
               {emojiMoodOverride ? (
                 /* ── Active override label ── */
@@ -1980,6 +1981,7 @@ export function AgentBar(): React.ReactElement {
                 </motion.p>
               )}
             </AnimatePresence>
+            </div>
           </motion.div>
         ) : (
           /* ── Agent input bar (after clicking emoji) ── */
