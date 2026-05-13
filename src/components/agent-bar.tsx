@@ -1850,7 +1850,7 @@ export function AgentBar(): React.ReactElement {
             </div>
 
             {/* Mood label / picker / hints — fixed height to prevent hero shift */}
-            <div className="h-8 flex items-center justify-center overflow-hidden">
+            <div className="h-10 flex items-center justify-center overflow-hidden">
             <AnimatePresence mode="wait">
               {emojiMoodOverride ? (
                 /* ── Active override label ── */
@@ -1954,9 +1954,9 @@ export function AgentBar(): React.ReactElement {
                   initial={{ opacity: 0, y: 6 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -6 }}
-                  className="font-mono text-caption text-accent-status/70 max-w-[220px] text-center leading-relaxed"
+                  className="font-mono text-caption text-accent-status/70 text-center"
                 >
-                  I&apos;m an AI agent — ask me about Ahtesham&apos;s work
+                  I&apos;m an AI agent &mdash; ask me about Ahtesham&apos;s work
                 </motion.p>
               ) : bubblePhase === "hint" ? (
                 /* ── "psst..." text ── */
