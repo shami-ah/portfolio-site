@@ -193,7 +193,7 @@ export function ConfigHero(): React.ReactElement {
   return (
     <section
       id="hero"
-      className="relative min-h-[calc(100dvh-2rem)] md:min-h-screen flex items-start md:items-center justify-center overflow-hidden pt-20 pb-8 md:pt-20 md:pb-24"
+      className="relative md:min-h-screen flex items-start md:items-center justify-center overflow-hidden pt-20 pb-8 md:pt-20 md:pb-24"
     >
       {/* Parallax gradient orbs */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">

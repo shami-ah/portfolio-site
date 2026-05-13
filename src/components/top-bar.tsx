@@ -380,6 +380,26 @@ export function TopBar(): React.ReactElement {
         transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
         className="fixed top-0 right-0 z-40 px-3 md:px-6 py-3 md:py-4 flex items-center gap-3 md:gap-4"
       >
+        {/* ── Theme toggle (mobile only — first button so Journey stays rightmost) ── */}
+        {themeMounted && (
+          <button
+            type="button"
+            onClick={toggleTheme}
+            aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
+            className="group relative flex md:hidden items-center cursor-pointer glass rounded-full p-2.5 hover:px-4 hover:gap-2 transition-all duration-300"
+            style={{ boxShadow: "0 4px 12px rgba(0,0,0,0.12), 0 0 4px rgba(0,0,0,0.06)" }}
+          >
+            {theme === "dark" ? (
+              <Sun size={10} className="shrink-0 text-muted/60 group-hover:text-accent transition-colors duration-500" />
+            ) : (
+              <Moon size={10} className="shrink-0 text-muted/60 group-hover:text-blue-400 transition-colors duration-500" />
+            )}
+            <span className="max-w-0 overflow-hidden group-hover:max-w-[50px] transition-all duration-300 whitespace-nowrap font-mono text-small text-muted/60">
+              {theme === "dark" ? "light" : "dark"}
+            </span>
+          </button>
+        )}
+
         {/* ── Reboot ── */}
         <button
           type="button"
@@ -464,26 +484,6 @@ export function TopBar(): React.ReactElement {
             journey
           </span>
         </Link>
-
-        {/* ── Theme toggle (mobile — matches other buttons; desktop uses fixed bottom-left) ── */}
-        {themeMounted && (
-          <button
-            type="button"
-            onClick={toggleTheme}
-            aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
-            className="group relative flex md:hidden items-center cursor-pointer glass rounded-full p-2.5 hover:px-4 hover:gap-2 transition-all duration-300"
-            style={{ boxShadow: "0 4px 12px rgba(0,0,0,0.12), 0 0 4px rgba(0,0,0,0.06)" }}
-          >
-            {theme === "dark" ? (
-              <Sun size={10} className="shrink-0 text-muted/60 group-hover:text-accent transition-colors duration-500" />
-            ) : (
-              <Moon size={10} className="shrink-0 text-muted/60 group-hover:text-blue-400 transition-colors duration-500" />
-            )}
-            <span className="max-w-0 overflow-hidden group-hover:max-w-[50px] transition-all duration-300 whitespace-nowrap font-mono text-small text-muted/60">
-              {theme === "dark" ? "light" : "dark"}
-            </span>
-          </button>
-        )}
       </motion.div>
     </>
   );
