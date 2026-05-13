@@ -12,7 +12,15 @@ import { ProjectModal } from "./project-modal";
 import { ProjectMockup, type MockupKind } from "./project-mockup";
 import { AccessRequestModal } from "./access-request-modal";
 import { DecisionTree } from "./decision-tree";
+import { AgentEmoji } from "./agent-bar";
 import { useStatus } from "@/lib/use-status";
+
+const EMOJI_COMMENTARY: Record<string, { mood: "proud" | "curious" | "default" | "surprised"; text: string }> = {
+  openevent: { mood: "proud", text: "8 months, 100+ clients, zero AI errors." },
+  codelens: { mood: "curious", text: "430 patterns from real PRs, not theory." },
+  "gogaa-cli": { mood: "surprised", text: "1,418 tests. I don't ship without them." },
+  rasad: { mood: "default", text: "Built this so I could see inside the black box." },
+};
 import { useScrollLock } from "@/lib/use-scroll-lock";
 import { ChevronLeft, ChevronRight, X, Maximize2 } from "lucide-react";
 
@@ -291,24 +299,51 @@ function MermaidDiagram({ chart, className }: { chart: string; className?: strin
 /*  Expand modal — full-screen view for mockup or diagram              */
 /* ------------------------------------------------------------------ */
 
+function StreamingText({ text, delay = 600 }: { text: string; delay?: number }): React.ReactElement {
+  const [shown, setShown] = useState(0);
+  useEffect(() => {
+    setShown(0);
+    const start = setTimeout(() => {
+      let i = 0;
+      const interval = setInterval(() => {
+        i++;
+        setShown(i);
+        if (i >= text.length) clearInterval(interval);
+      }, 30);
+      return () => clearInterval(interval);
+    }, delay);
+    return () => clearTimeout(start);
+  }, [text, delay]);
+  if (shown === 0) return <span className="text-muted/40">...</span>;
+  return <>{text.slice(0, shown)}<span className="animate-pulse">|</span></>;
+}
+
 function ExpandModal({
   open,
   onClose,
   title,
+  projectSlug,
   children,
 }: {
   open: boolean;
   onClose: () => void;
   title: string;
+  projectSlug?: string;
   children: React.ReactNode;
 }): React.ReactElement {
   useScrollLock(open);
   useEffect(() => {
     if (!open) return;
+    document.body.setAttribute("data-modal-open", "true");
     const onKey = (e: KeyboardEvent): void => { if (e.key === "Escape") onClose(); };
     window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
+    return () => {
+      document.body.removeAttribute("data-modal-open");
+      window.removeEventListener("keydown", onKey);
+    };
   }, [open, onClose]);
+
+  const commentary = projectSlug ? EMOJI_COMMENTARY[projectSlug] : undefined;
 
   // Portal to document.body so modal sits above all fixed elements (nav, sidebar, agent, chat)
   if (typeof document === "undefined") return <></>;
@@ -334,9 +369,31 @@ function ExpandModal({
           >
             <div className="sticky top-0 z-10 flex items-center justify-between px-5 py-3 border-b border-card-border/50 bg-card/90 backdrop-blur-sm">
               <p className="text-sm font-mono text-muted">{title}</p>
-              <button type="button" onClick={onClose} className="text-muted hover:text-foreground transition-colors cursor-pointer">
-                <X size={18} />
-              </button>
+              <div className="flex items-center gap-3">
+                {/* Agent emoji commentary — top-right, animated */}
+                {commentary && (
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0, x: 10 }}
+                    animate={{ opacity: 1, scale: 1, x: 0 }}
+                    transition={{ type: "spring", stiffness: 400, damping: 20, delay: 0.3 }}
+                    className="flex items-center gap-2.5 px-3 py-1.5 rounded-full bg-accent/5 border border-accent/10"
+                  >
+                    <motion.div
+                      className="w-7 h-7 rounded-full bg-gradient-to-br from-card-border to-card border border-accent-status/20 flex items-center justify-center shrink-0"
+                      animate={{ rotate: [0, -5, 5, 0] }}
+                      transition={{ duration: 2, repeat: Infinity, repeatDelay: 3 }}
+                    >
+                      <AgentEmoji size={16} mood={commentary.mood} />
+                    </motion.div>
+                    <span className="font-mono text-caption text-accent/70 hidden sm:block whitespace-nowrap">
+                      <StreamingText text={commentary.text} />
+                    </span>
+                  </motion.div>
+                )}
+                <button type="button" onClick={onClose} className="text-muted hover:text-foreground transition-colors cursor-pointer">
+                  <X size={18} />
+                </button>
+              </div>
             </div>
             <div className="p-5 md:p-8">
               {children}
@@ -1171,7 +1228,7 @@ export function Projects(): React.ReactElement {
         onClose={() => setActiveProject(null)}
         onNavigate={navigate}
       />
-      <ExpandModal open={!!expandedPanel} onClose={() => setExpandedPanel(null)} title={expandedPanel ? `${expandedPanel.content.title} — ${expandedPanel.kind === "mockup" ? "Details" : "Architecture"}` : ""}>
+      <ExpandModal open={!!expandedPanel} onClose={() => setExpandedPanel(null)} title={expandedPanel ? `${expandedPanel.content.title} — ${expandedPanel.kind === "mockup" ? "Details" : "Architecture"}` : ""} projectSlug={expandedPanel?.project.slug}>
         {expandedPanel?.kind === "mockup" ? (
           <ProjectDetailsContent project={expandedPanel.project} mockup={expandedPanel.mockup} />
         ) : expandedPanel ? (

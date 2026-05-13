@@ -146,22 +146,85 @@ export function AgentEmoji({ size = 40, hovered = false, mood = "default" }: { s
   const s = size;
   const fc = "fill-accent-status";
   const sc = "stroke-accent-status";
+  const isDancing = mood === "dancing";
+  const isSleeping = mood === "sleeping";
 
-  // Mood-specific mouth paths
+  // Mood-specific mouth paths (in face-only 48x48 coordinate space)
   const mouths: Record<EmojiMood, { rest: string; animated?: string[] }> = {
     default:  { rest: "M 16 32 Q 24 32 32 32", animated: ["M 16 32 Q 24 32 32 32", "M 16 30 Q 24 38 32 30", "M 16 30 Q 24 38 32 30", "M 16 32 Q 24 32 32 32"] },
-    curious:  { rest: "M 18 32 Q 24 34 30 32" },  // slight "o" shape
-    proud:    { rest: "M 14 30 Q 24 40 34 30" },  // big grin
+    curious:  { rest: "M 18 32 Q 24 34 30 32" },
+    proud:    { rest: "M 14 30 Q 24 40 34 30" },
     waving:   { rest: "M 16 30 Q 24 37 32 30", animated: ["M 16 30 Q 24 37 32 30", "M 16 30 Q 24 38 32 30", "M 16 30 Q 24 37 32 30"] },
-    confused: { rest: "M 18 34 Q 24 30 30 34" },  // wavy frown
-    sleeping: { rest: "M 18 33 Q 24 33 30 33" },  // flat line
-    surprised:{ rest: "M 20 30 Q 24 38 28 30" },  // small O
-    dancing:  { rest: "M 14 29 Q 24 40 34 29", animated: ["M 14 29 Q 24 40 34 29", "M 16 30 Q 24 38 32 30", "M 14 29 Q 24 40 34 29"] },
+    confused: { rest: "M 18 34 Q 24 30 30 34" },
+    sleeping: { rest: "M 18 33 Q 24 33 30 33" },
+    surprised:{ rest: "M 20 30 Q 24 38 28 30" },
+    dancing:  { rest: "M 14 29 Q 24 40 34 29" },
   };
 
   const m = mouths[mood] ?? mouths.default;
-  const isSleeping = mood === "sleeping";
-  const isDancing = mood === "dancing";
+
+  // Dancing stick figure — round head (same face), body below, tilts and dances
+  if (isDancing && s > 18) {
+    return (
+      <motion.svg
+        viewBox="0 0 48 96"
+        width={s}
+        height={s * 2}
+        fill="none"
+        className="shrink-0"
+        style={{ filter: s > 24 ? "drop-shadow(0 0 6px rgba(74,222,128,0.3))" : "none" }}
+        animate={{ rotate: [0, -6, 6, -4, 4, 0] }}
+        transition={{ duration: 1, repeat: Infinity, ease: "easeInOut" }}
+      >
+        {/* === Head — round circle like normal emoji === */}
+        <circle cx="24" cy="24" r="22" className={sc} strokeWidth="1.5" opacity="0.2" fill="none" />
+        {/* Eyes — same position as normal face */}
+        <motion.circle cx="16" cy="19" r={2.5} className={fc} animate={{ scaleY: [1, 0.1, 1] }} transition={{ duration: 0.3, delay: 1.5, repeat: Infinity, repeatDelay: 2.5 }} />
+        <motion.circle cx="32" cy="19" r={2.5} className={fc} animate={{ scaleY: [1, 0.1, 1] }} transition={{ duration: 0.3, delay: 1.5, repeat: Infinity, repeatDelay: 2.5 }} />
+        {/* Nose */}
+        <line x1="24" y1="22" x2="24" y2="27" className={sc} strokeWidth="1.5" strokeLinecap="round" opacity="0.3" />
+        {/* Mouth — big grin */}
+        <motion.path d="M 14 30 Q 24 40 34 30" className={sc} strokeWidth="2" strokeLinecap="round" fill="none" animate={{ d: ["M 14 30 Q 24 40 34 30", "M 16 31 Q 24 38 32 31", "M 14 30 Q 24 40 34 30"] }} transition={{ duration: 0.6, repeat: Infinity, ease: "easeInOut" }} />
+
+        {/* === Body === */}
+        {/* Torso — from bottom of head circle */}
+        <motion.line
+          x1="24" y1="46" x2="24" y2="66"
+          className={sc} strokeWidth="2" strokeLinecap="round"
+          animate={{ x2: [24, 22, 26, 24] }}
+          transition={{ duration: 0.6, repeat: Infinity, ease: "easeInOut" }}
+        />
+        {/* Left arm */}
+        <motion.line
+          x1="24" y1="52" x2="10" y2="58"
+          className={sc} strokeWidth="2" strokeLinecap="round"
+          animate={{ x2: [10, 8, 14, 10], y2: [58, 46, 60, 58] }}
+          transition={{ duration: 0.6, repeat: Infinity, ease: "easeInOut" }}
+        />
+        {/* Right arm */}
+        <motion.line
+          x1="24" y1="52" x2="38" y2="58"
+          className={sc} strokeWidth="2" strokeLinecap="round"
+          animate={{ x2: [38, 40, 34, 38], y2: [58, 46, 60, 58] }}
+          transition={{ duration: 0.6, repeat: Infinity, ease: "easeInOut", delay: 0.15 }}
+        />
+        {/* Left leg */}
+        <motion.line
+          x1="24" y1="66" x2="14" y2="86"
+          className={sc} strokeWidth="2" strokeLinecap="round"
+          animate={{ x2: [14, 10, 18, 14], y2: [86, 84, 88, 86] }}
+          transition={{ duration: 0.6, repeat: Infinity, ease: "easeInOut" }}
+        />
+        {/* Right leg */}
+        <motion.line
+          x1="24" y1="66" x2="34" y2="86"
+          className={sc} strokeWidth="2" strokeLinecap="round"
+          animate={{ x2: [34, 38, 30, 34], y2: [86, 84, 88, 86] }}
+          transition={{ duration: 0.6, repeat: Infinity, ease: "easeInOut", delay: 0.15 }}
+        />
+      </motion.svg>
+    );
+  }
 
   return (
     <svg viewBox="0 0 48 48" width={s} height={s} fill="none" className="shrink-0" style={{ filter: s > 24 ? "drop-shadow(0 0 6px rgba(74,222,128,0.3))" : "none" }}>
@@ -197,7 +260,7 @@ export function AgentEmoji({ size = 40, hovered = false, mood = "default" }: { s
       {s > 24 && (
         <line x1="24" y1="22" x2="24" y2="27" className={sc} strokeWidth="1.5" strokeLinecap="round" opacity="0.3" />
       )}
-      {/* Waving hand (only for waving mood) */}
+      {/* Waving hand */}
       {mood === "waving" && s > 24 && (
         <motion.text
           x="38" y="16" fontSize="12"
@@ -226,10 +289,7 @@ export function AgentEmoji({ size = 40, hovered = false, mood = "default" }: { s
         strokeLinecap="round"
         fill="none"
         animate={(hovered && mood === "default") ? {} : m.animated ? { d: m.animated } : {}}
-        transition={isDancing
-          ? { duration: 0.5, repeat: Infinity, ease: "easeInOut" }
-          : { duration: 2, repeat: Infinity, repeatDelay: 1, ease: "easeInOut" }
-        }
+        transition={{ duration: 2, repeat: Infinity, repeatDelay: 1, ease: "easeInOut" }}
       />
     </svg>
   );
@@ -975,6 +1035,13 @@ export function AgentBar(): React.ReactElement {
   const [heroAgentOpen, setHeroAgentOpen] = useState(false);
   const [emojiHovered, setEmojiHovered] = useState(false);
   const [emojiMoodOverride, setEmojiMoodOverride] = useState<EmojiMood | null>(null);
+  const [persistentMood, setPersistentMood] = useState<EmojiMood>("default");
+  // Bubble suggestion phases: "hidden" → "dots" → "hint" → "chips" → "dance-hint"
+  const [bubblePhase, setBubblePhase] = useState<"hidden" | "dots" | "hint" | "chips" | "dance-hint">("hidden");
+  const bubbleTimerRef = useRef<ReturnType<typeof setTimeout>>(undefined);
+  const bubbleCycleRef = useRef(0); // 0-3 = mood picker cycles, then stops
+  const [danceHintShown, setDanceHintShown] = useState(false);
+  const [danceTried, setDanceTried] = useState(false);
   // Emoji position phases: "hidden" → "bottom" → "settled" (in hero mount)
   const [emojiPhase, setEmojiPhase] = useState<"hidden" | "bottom" | "settled">("hidden");
   const emojiHasSettled = useRef(false);
@@ -1014,6 +1081,42 @@ export function AgentBar(): React.ReactElement {
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  // Load persistent mood + dance state from sessionStorage
+  useEffect(() => {
+    try {
+      const saved = sessionStorage.getItem("agent-mood") as EmojiMood | null;
+      if (saved) setPersistentMood(saved);
+      if (sessionStorage.getItem("dance-tried") === "1") setDanceTried(true);
+    } catch { /* noop */ }
+  }, []);
+
+  // Show mood suggestions — increasing intervals (3s, 6s, 9s, 12s), max 4 mood cycles
+  // Dance hint shows once (after 2nd mood cycle) if visitor hasn't tried it
+  useEffect(() => {
+    if (emojiPhase !== "settled" || heroAgentOpen || !inHeroViewport || emojiMoodOverride) {
+      setBubblePhase("hidden");
+      return;
+    }
+    const cycle = bubbleCycleRef.current;
+    if (cycle >= 4) return; // stop after 4 mood picker cycles
+    const delay = 3000 + cycle * 3000; // 3s, 6s, 9s, 12s
+    // Show dance hint on cycle 1 if not tried yet
+    const showDance = cycle === 1 && !danceTried && !danceHintShown;
+    bubbleTimerRef.current = setTimeout(() => {
+      setBubblePhase("dots");
+      setTimeout(() => setBubblePhase("hint"), 600);
+      setTimeout(() => {
+        if (showDance) {
+          setBubblePhase("dance-hint");
+          setDanceHintShown(true);
+        } else {
+          setBubblePhase("chips");
+        }
+      }, 1600);
+    }, delay);
+    return () => { if (bubbleTimerRef.current) clearTimeout(bubbleTimerRef.current); };
+  }, [emojiPhase, heroAgentOpen, inHeroViewport, emojiMoodOverride, persistentMood, danceTried, danceHintShown]); // re-trigger after mood changes
 
   /* ── Methodology chips per project ── */
   const PROJECT_METHODOLOGY: Record<string, { label: string; command: AgentCommand }[]> = {
@@ -1164,12 +1267,20 @@ export function AgentBar(): React.ReactElement {
     return () => window.removeEventListener("show-build-popup", handler);
   }, []);
 
-  // Listen for emoji mood easter eggs — temporary mood override (resets after 4s)
+  // Listen for emoji mood changes — temporary override from easter eggs, persistent from mood chips
   useEffect(() => {
     const handler = (e: Event): void => {
-      const mood = (e as CustomEvent<string>).detail as EmojiMood;
-      setEmojiMoodOverride(mood);
-      setTimeout(() => setEmojiMoodOverride(null), 4000);
+      const detail = (e as CustomEvent<{ mood: string; persistent?: boolean }>).detail;
+      const mood = (typeof detail === "string" ? detail : detail.mood) as EmojiMood;
+      const persistent = typeof detail === "object" && detail.persistent;
+      if (persistent) {
+        setPersistentMood(mood);
+        setEmojiMoodOverride(null);
+        try { sessionStorage.setItem("agent-mood", mood); } catch { /* noop */ }
+      } else {
+        setEmojiMoodOverride(mood);
+        setTimeout(() => setEmojiMoodOverride(null), mood === "dancing" ? 5000 : 8000);
+      }
     };
     window.addEventListener("emoji-mood", handler);
     return () => window.removeEventListener("emoji-mood", handler);
@@ -1254,23 +1365,39 @@ export function AgentBar(): React.ReactElement {
       setButtonReady(false);
       setHeroAgentOpen(false);
       setEmojiPhase("hidden");
+      setBubblePhase("hidden");
+      setPersistentMood("default");
+      setDanceTried(false);
+      setDanceHintShown(false);
+      bubbleCycleRef.current = 0;
       emojiHasSettled.current = false;
-      try { sessionStorage.removeItem("emoji-settled"); } catch { /* noop */ }
+      try { sessionStorage.removeItem("emoji-settled"); sessionStorage.removeItem("agent-mood"); sessionStorage.removeItem("dance-tried"); } catch { /* noop */ }
     };
     window.addEventListener("replay-intro", onReplay);
     return () => window.removeEventListener("replay-intro", onReplay);
   }, []);
 
-  // Hide agent when chat widget is open
+  // Hide agent when chat widget is open or modal is open
   const [chatOpen, setChatOpen] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
   useEffect(() => {
     const onChatOpen = (): void => setChatOpen(true);
     const onChatClose = (): void => setChatOpen(false);
     window.addEventListener("open-chat-widget", onChatOpen);
+    window.addEventListener("chat-widget-active", onChatOpen);
     window.addEventListener("close-chat-widget", onChatClose);
+
+    // Watch for data-modal-open attribute on body (set by ProjectModal & ExpandModal)
+    const observer = new MutationObserver(() => {
+      setModalOpen(document.body.hasAttribute("data-modal-open"));
+    });
+    observer.observe(document.body, { attributes: true, attributeFilter: ["data-modal-open"] });
+
     return () => {
       window.removeEventListener("open-chat-widget", onChatOpen);
+      window.removeEventListener("chat-widget-active", onChatOpen);
       window.removeEventListener("close-chat-widget", onChatClose);
+      observer.disconnect();
     };
   }, []);
 
@@ -1366,11 +1493,11 @@ export function AgentBar(): React.ReactElement {
       setShowResponse(false);
       setInput("");
       setUiState("button");
-      // Fire navigation action after panel closes
+      // Fire navigation action after panel closes (skip easter eggs — already fired on submit)
       if (navTimerRef.current) clearTimeout(navTimerRef.current);
       navTimerRef.current = setTimeout(() => {
         if (cmd.keyword === "tour") router.push("/journey");
-        else cmd.action?.();
+        else if (cmd.intent !== "easter_egg") cmd.action?.();
       }, 400);
     };
 
@@ -1438,6 +1565,14 @@ export function AgentBar(): React.ReactElement {
     setShownSteps(0);
     setShowResponse(false);
     setUiState("processing");
+    // Easter eggs: fire mood change immediately so the hero emoji reacts while processing
+    if (cmd.intent === "easter_egg" && cmd.action) {
+      cmd.action();
+      if (cmd.keyword === "dance") {
+        setDanceTried(true);
+        try { sessionStorage.setItem("dance-tried", "1"); } catch { /* noop */ }
+      }
+    }
   }, []);
 
   const onSubmit = (e: React.FormEvent): void => {
@@ -1486,7 +1621,7 @@ export function AgentBar(): React.ReactElement {
     if (match) runCommand(match);
   };
 
-  if (uiState === "hidden" || chatOpen) return <></>;
+  if (uiState === "hidden" || modalOpen) return <></>;
 
   const totalMs = activeCmd?.steps.reduce((s, x) => s + x.ms, 0) ?? 0;
 
@@ -1500,6 +1635,9 @@ export function AgentBar(): React.ReactElement {
 
   // In hero viewport, auto-show panel if button state (agent is always "open" in hero)
   const effectiveUiState = isHeroInline && uiState === "button" ? "panel" : uiState;
+
+  // Chat open/minimized: hero emoji still visible, only pill bar hidden
+  const hidePillBar = chatOpen;
 
   // ── Shared processing/response area (used by both hero and fixed modes) ──
   const processingContent = (
@@ -1614,7 +1752,7 @@ export function AgentBar(): React.ReactElement {
     <div className="max-w-[440px] mx-auto">
       <AnimatePresence mode="wait">
         {!heroAgentOpen ? (
-          /* ── Agent emoji face — animated, clickable ── */
+          /* ── Agent emoji face — animated, clickable, with mood picker ── */
           <motion.div
             key="agent-emoji"
             initial={{ opacity: 0, scale: 0.5 }}
@@ -1623,42 +1761,181 @@ export function AgentBar(): React.ReactElement {
             transition={{ type: "spring", stiffness: 300, damping: 20 }}
             className="flex flex-col items-center gap-3"
           >
-            <motion.button
-              type="button"
+            <div
               onClick={() => {
+                if (emojiMoodOverride === "dancing") return; // don't open input while dancing
+                setBubblePhase("hidden");
                 setHeroAgentOpen(true);
+                // Hide chat widget when hero agent opens
+                window.dispatchEvent(new CustomEvent("hide-chat-widget"));
                 setTimeout(() => inputRef.current?.focus(), 200);
               }}
               onMouseEnter={() => setEmojiHovered(true)}
               onMouseLeave={() => setEmojiHovered(false)}
-              className="relative w-16 h-16 rounded-full cursor-pointer"
-              whileHover={{ scale: 1.12 }}
-              whileTap={{ scale: 0.95 }}
+              className="cursor-pointer flex items-center justify-center"
             >
-              {/* Radiating glow rings */}
-              <motion.div
-                className="absolute inset-0 rounded-full"
-                animate={{
-                  boxShadow: [
-                    "0 0 0 0 rgba(74,222,128,0.3), 0 0 20px rgba(74,222,128,0.15)",
-                    "0 0 0 12px rgba(74,222,128,0), 0 0 30px rgba(160,120,104,0.2)",
-                    "0 0 0 0 rgba(74,222,128,0.3), 0 0 20px rgba(74,222,128,0.15)",
-                  ],
-                }}
-                transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
-              />
-              <div className="relative w-full h-full rounded-full bg-gradient-to-br from-card-border to-card border border-accent-status/20 flex items-center justify-center">
-                <AgentEmoji size={40} hovered={emojiHovered} />
-              </div>
-            </motion.button>
-            {/* Tooltip */}
-            <motion.p
-              className="font-mono text-caption text-accent-status/70"
-              animate={{ opacity: [0.5, 1, 0.5] }}
-              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-            >
-              {emojiHovered ? "let\u2019s talk!" : "I\u2019m alive \u2014 click me"}
-            </motion.p>
+              <AnimatePresence mode="wait">
+                {emojiMoodOverride === "dancing" ? (
+                  /* ── Dancing stick figure ── */
+                  <motion.div
+                    key="dancing-figure"
+                    initial={{ scale: 0.3, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    exit={{ scale: 0.3, opacity: 0 }}
+                    transition={{ type: "spring", stiffness: 300, damping: 18 }}
+                    className="flex items-center justify-center"
+                  >
+                    <AgentEmoji size={40} mood="dancing" />
+                  </motion.div>
+                ) : (
+                  /* ── Normal emoji face in circle ── */
+                  <motion.div
+                    key="emoji-face"
+                    initial={{ scale: 0.5, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    exit={{ scale: 0.4, opacity: 0 }}
+                    transition={{ type: "spring", stiffness: 350, damping: 20 }}
+                    className="relative w-16 h-16 rounded-full"
+                  >
+                    <motion.div
+                      className="absolute inset-0 rounded-full"
+                      animate={{
+                        boxShadow: [
+                          "0 0 0 0 rgba(74,222,128,0.3), 0 0 20px rgba(74,222,128,0.15)",
+                          "0 0 0 12px rgba(74,222,128,0), 0 0 30px rgba(160,120,104,0.2)",
+                          "0 0 0 0 rgba(74,222,128,0.3), 0 0 20px rgba(74,222,128,0.15)",
+                        ],
+                      }}
+                      transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
+                    />
+                    <div className="relative w-full h-full rounded-full bg-gradient-to-br from-card-border to-card border border-accent-status/20 flex items-center justify-center">
+                      <AgentEmoji size={40} hovered={emojiHovered} mood={emojiMoodOverride ?? persistentMood} />
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+
+            {/* Mood label / picker / hints */}
+            <AnimatePresence mode="wait">
+              {emojiMoodOverride ? (
+                /* ── Active override label ── */
+                <motion.p
+                  key={`override-${emojiMoodOverride}`}
+                  className="font-mono text-caption text-accent"
+                  initial={{ opacity: 0, y: 6 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -6 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  {emojiMoodOverride === "dancing" ? "vibing..." : emojiMoodOverride === "sleeping" ? "zzz..." : emojiMoodOverride === "surprised" ? "whoa!" : emojiMoodOverride}
+                </motion.p>
+              ) : bubblePhase === "chips" ? (
+                /* ── Mood face picker ── */
+                <motion.div
+                  key="mood-picker"
+                  initial={{ opacity: 0, y: 8, scale: 0.9 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: 8, scale: 0.9 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 25 }}
+                  className="flex items-center gap-1"
+                >
+                  {([
+                    { mood: "default" as EmojiMood, tip: "normal" },
+                    { mood: "curious" as EmojiMood, tip: "curious" },
+                    { mood: "proud" as EmojiMood, tip: "happy" },
+                    { mood: "sleeping" as EmojiMood, tip: "sleepy" },
+                    { mood: "confused" as EmojiMood, tip: "confused" },
+                  ]).map((m, i) => (
+                    <motion.button
+                      key={m.mood}
+                      type="button"
+                      initial={{ opacity: 0, scale: 0 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ delay: i * 0.06, type: "spring", stiffness: 500, damping: 20 }}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        window.dispatchEvent(new CustomEvent("emoji-mood", { detail: { mood: m.mood, persistent: true } }));
+                        setBubblePhase("hidden");
+                        bubbleCycleRef.current++;
+                      }}
+                      title={m.tip}
+                      className={`group relative w-8 h-8 rounded-full flex items-center justify-center transition-all cursor-pointer ${
+                        persistentMood === m.mood
+                          ? "bg-accent/15 ring-1 ring-accent/40 scale-110"
+                          : "hover:bg-foreground/5 hover:scale-110"
+                      }`}
+                    >
+                      <AgentEmoji size={18} mood={m.mood} />
+                      {/* Tooltip on hover */}
+                      <span className="absolute -top-6 left-1/2 -translate-x-1/2 px-1.5 py-0.5 rounded text-[9px] font-mono text-accent bg-card border border-card-border opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap">
+                        {m.tip}
+                      </span>
+                    </motion.button>
+                  ))}
+                </motion.div>
+              ) : bubblePhase === "dance-hint" ? (
+                /* ── Dance suggestion — clickable ── */
+                <motion.p
+                  key="dance-hint"
+                  initial={{ opacity: 0, y: 6 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -6 }}
+                  className="font-mono text-caption text-accent-status/70"
+                >
+                  wanna see me{" "}
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setBubblePhase("hidden");
+                      setDanceTried(true);
+                      try { sessionStorage.setItem("dance-tried", "1"); } catch { /* noop */ }
+                      window.dispatchEvent(new CustomEvent("emoji-mood", { detail: "dancing" }));
+                      bubbleCycleRef.current++;
+                    }}
+                    className="text-accent hover:text-accent/80 underline underline-offset-2 cursor-pointer transition-colors"
+                  >
+                    dance
+                  </button>
+                  ?
+                </motion.p>
+              ) : bubblePhase === "dots" ? (
+                /* ── Typing dots ── */
+                <motion.div
+                  key="dots"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  className="flex items-center gap-1.5"
+                >
+                  {[0, 1, 2].map((i) => (
+                    <motion.span key={i} className="w-1 h-1 rounded-full bg-accent-status" animate={{ opacity: [0.3, 1, 0.3] }} transition={{ duration: 0.8, repeat: Infinity, delay: i * 0.2 }} />
+                  ))}
+                </motion.div>
+              ) : bubblePhase === "hint" ? (
+                /* ── "psst..." text ── */
+                <motion.p
+                  key="psst"
+                  initial={{ opacity: 0, y: 6 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -6 }}
+                  className="font-mono text-caption text-accent-status/70"
+                >
+                  psst... change my mood
+                </motion.p>
+              ) : (
+                /* ── Default hint ── */
+                <motion.p
+                  key="default-hint"
+                  className="font-mono text-caption text-accent-status/70"
+                  animate={{ opacity: [0.5, 1, 0.5] }}
+                  transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                >
+                  {emojiHovered ? "let\u2019s talk!" : "I\u2019m alive \u2014 click me"}
+                </motion.p>
+              )}
+            </AnimatePresence>
           </motion.div>
         ) : (
           /* ── Agent input bar (after clicking emoji) ── */
@@ -1669,6 +1946,26 @@ export function AgentBar(): React.ReactElement {
             transition={{ type: "spring", stiffness: 300, damping: 22 }}
           >
             {processingContent}
+            {/* Emoji mood popup — floats above input when easter egg fires */}
+            <AnimatePresence>
+              {emojiMoodOverride && (
+                <motion.div
+                  key={emojiMoodOverride}
+                  initial={{ opacity: 0, scale: 0.5, y: 10 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.5, y: -10 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 20 }}
+                  className="flex items-center justify-center gap-2 mb-3"
+                >
+                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-card-border to-card border border-accent-status/20 flex items-center justify-center">
+                    <AgentEmoji size={32} mood={emojiMoodOverride} />
+                  </div>
+                  <span className="font-mono text-sm text-accent">
+                    {emojiMoodOverride === "dancing" ? "vibing..." : emojiMoodOverride === "sleeping" ? "zzz..." : emojiMoodOverride === "surprised" ? "whoa!" : emojiMoodOverride}
+                  </span>
+                </motion.div>
+              )}
+            </AnimatePresence>
             <form
               onSubmit={onSubmit}
               className="glass-strong rounded-2xl overflow-hidden"
@@ -1786,8 +2083,8 @@ export function AgentBar(): React.ReactElement {
         ReactDOM.createPortal(heroContent, heroMount)
       }
 
-      {/* ── Fixed bottom agent (when scrolled past hero) ── */}
-      {!isHeroInline && (
+      {/* ── Fixed bottom agent (when scrolled past hero, hidden when chat active) ── */}
+      {!isHeroInline && !hidePillBar && (
         <>
           {/* Agent pill bar (button state — shows label + input) */}
           <AnimatePresence>
@@ -1810,9 +2107,15 @@ export function AgentBar(): React.ReactElement {
                         setTimeout(() => inputRef.current?.focus(), 150);
                       }}
                     >
-                      <div className="w-7 h-7 rounded-full bg-gradient-to-br from-card-border to-card border border-accent-status/20 flex items-center justify-center shrink-0">
-                        <AgentEmoji size={18} mood={emojiMoodOverride ?? (activeSection === "projects" ? "curious" : activeSection === "log" ? "proud" : activeSection === "contact" ? "waving" : "default")} />
-                      </div>
+                      <motion.div
+                        className="w-9 h-9 rounded-full bg-gradient-to-br from-card-border to-card border border-accent-status/20 flex items-center justify-center shrink-0"
+                        key={activeSection}
+                        initial={{ scale: 0.8 }}
+                        animate={{ scale: 1 }}
+                        transition={{ type: "spring", stiffness: 500, damping: 15 }}
+                      >
+                        <AgentEmoji size={24} mood={emojiMoodOverride ?? (activeSection === "projects" ? "curious" : activeSection === "log" ? "proud" : activeSection === "contact" ? "waving" : persistentMood)} />
+                      </motion.div>
                       <span className="flex-1 font-mono text-small text-muted/25 bg-foreground/[0.03] rounded-full px-4 py-1 truncate">
                         {inputConfig.placeholder}
                       </span>

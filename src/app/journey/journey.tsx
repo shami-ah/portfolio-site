@@ -190,8 +190,8 @@ export function Journey(): React.ReactElement {
                   <p className="text-caption font-mono uppercase tracking-wider text-accent/80">
                     {p.tag}
                   </p>
-                  <span className="w-6 h-6 rounded-full bg-gradient-to-br from-card-border to-card border border-accent-status/15 flex items-center justify-center">
-                    <AgentEmoji size={14} mood={p.mood} />
+                  <span className="w-9 h-9 rounded-full bg-gradient-to-br from-card-border to-card border border-accent-status/20 flex items-center justify-center shadow-sm shadow-accent/10">
+                    <AgentEmoji size={24} mood={p.mood} />
                   </span>
                 </div>
                 <h3 className="text-lg md:text-xl font-bold mb-3 leading-tight">

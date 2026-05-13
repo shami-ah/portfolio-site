@@ -212,9 +212,9 @@ export function ChatWidget(): React.ReactElement {
   const inputRef = useRef<HTMLInputElement>(null);
   const tilt = useTilt(4); // subtle 3D tilt on the chat panel
 
+  // No auto-show trigger — chat opens from agent bar only
   useEffect(() => {
-    const timer = setTimeout(() => setShowTrigger(true), 2500);
-    return () => clearTimeout(timer);
+    setShowTrigger(false);
   }, []);
 
   useEffect(() => {
@@ -230,18 +230,29 @@ export function ChatWidget(): React.ReactElement {
     };
   }, []);
 
+  const stateRef = useRef(state);
+  stateRef.current = state;
   useEffect(() => {
-    const handler = (): void => setState("open");
-    window.addEventListener("open-chat-widget", handler);
-    return () => window.removeEventListener("open-chat-widget", handler);
+    const onOpen = (): void => setState("open");
+    const onHide = (): void => { if (stateRef.current !== "closed") setState("minimized"); };
+    window.addEventListener("open-chat-widget", onOpen);
+    window.addEventListener("hide-chat-widget", onHide);
+    return () => {
+      window.removeEventListener("open-chat-widget", onOpen);
+      window.removeEventListener("hide-chat-widget", onHide);
+    };
   }, []);
 
   // Accept pre-filled query from agent bar → open + auto-send (ref avoids declaration order issue)
   const sendRef = useRef<(q: string) => void>(() => {});
 
   useEffect(() => {
-    if (state === "closed" || state === "minimized") {
+    if (state === "closed") {
       window.dispatchEvent(new CustomEvent("close-chat-widget"));
+    } else {
+      // Both "open" and "minimized" should hide the agent pill bar
+      // Use a separate event name to avoid re-triggering our own open listener
+      window.dispatchEvent(new CustomEvent("chat-widget-active"));
     }
   }, [state]);
 
@@ -352,34 +363,9 @@ export function ChatWidget(): React.ReactElement {
 
   return (
     <>
-      {/* ── Floating trigger button ── */}
-      <AnimatePresence>
-        {showTrigger && state === "closed" && (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8, y: 10 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.8 }}
-            transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-            className="fixed bottom-5 right-3 md:right-6 z-40"
-          >
-            <button
-              type="button"
-              onClick={() => { window.dispatchEvent(new CustomEvent("open-chat-widget")); setState("open"); }}
-              data-chat-trigger
-              className="chat-glow group relative flex items-center cursor-pointer glass rounded-full p-[5px] hover:pr-4 hover:gap-2 transition-all duration-300"
-            >
-              <span className="w-[34px] h-[34px] rounded-full bg-gradient-to-br from-card-border to-card border border-accent-status/20 flex items-center justify-center shrink-0">
-                <AgentEmoji size={22} />
-              </span>
-              <span className="max-w-0 overflow-hidden group-hover:max-w-[140px] transition-all duration-300 whitespace-nowrap font-mono text-small text-accent/60">Chat with my AI</span>
-            </button>
-            {/* Online dot */}
-            <span className="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-accent-status border-[1.5px] border-background pointer-events-none" style={{ animation: "green-pulse 2s infinite" }} />
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {/* Chat trigger removed — opens from agent bar only */}
 
-      {/* ── Minimized bar ── */}
+      {/* ── Minimized dot ── */}
       <AnimatePresence>
         {state === "minimized" && (
           <motion.button
@@ -389,15 +375,16 @@ export function ChatWidget(): React.ReactElement {
             initial="hidden"
             animate="visible"
             exit="exit"
-            className="fixed bottom-5 right-3 md:right-6 z-50 flex items-center gap-2.5 px-4 py-2.5 rounded-xl glass border border-card-border shadow-[0_15px_40px_rgba(0,0,0,0.25)] cursor-pointer hover:border-accent/30 transition-colors group"
+            className="fixed bottom-5 right-3 md:right-6 z-50 w-10 h-10 rounded-full glass border border-card-border shadow-[0_8px_24px_rgba(0,0,0,0.3)] cursor-pointer hover:border-accent/30 hover:scale-110 transition-all flex items-center justify-center"
           >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/ahtesham.jpg" alt="Ahtesham" className="w-6 h-6 rounded-full border border-card-border object-cover" />
-            <span className="font-mono text-small text-foreground/80">Chat with Shami&apos;s AI</span>
+            <AgentEmoji size={22} />
             {msgCount > 0 && (
-              <span className="text-caption font-mono text-accent/60">{msgCount} msg{msgCount !== 1 ? "s" : ""}</span>
+              <span className="absolute -top-1 -right-1 min-w-[18px] h-[18px] rounded-full bg-accent text-[10px] font-mono font-bold text-background flex items-center justify-center px-1">
+                {msgCount}
+              </span>
             )}
-            <Maximize2 size={13} className="text-muted/40 group-hover:text-accent/60 transition-colors ml-1" />
+            {/* Running indicator dot */}
+            <span className="absolute -bottom-0.5 -right-0.5 w-2 h-2 rounded-full bg-accent-status border-[1.5px] border-background" style={{ animation: "green-pulse 2s infinite" }} />
           </motion.button>
         )}
       </AnimatePresence>
