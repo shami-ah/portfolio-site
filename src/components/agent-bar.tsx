@@ -1808,6 +1808,27 @@ export function AgentBar(): React.ReactElement {
     </AnimatePresence>
   );
 
+  // ── Morph handlers (must be before JSX variables — hooks order rule) ──
+  const handleEmojiClick = useCallback((): void => {
+    if (emojiMoodOverride === "dancing") return;
+    setMorphPhase("morphing");
+    setTimeout(() => {
+      setMorphPhase("bar");
+      setHeroAgentOpen(true);
+      window.dispatchEvent(new CustomEvent("hide-chat-widget"));
+      setTimeout(() => inputRef.current?.focus(), 200);
+    }, 400);
+  }, [emojiMoodOverride]);
+
+  const handleCloseBar = useCallback((): void => {
+    setHeroAgentOpen(false);
+    setMorphPhase("stage");
+    setActiveCmd(null);
+    setShownSteps(0);
+    setShowResponse(false);
+    setInput("");
+  }, []);
+
   // ── Shared suggestion chips ──
   const chipsContent = (
     <AnimatePresence>
@@ -1851,27 +1872,6 @@ export function AgentBar(): React.ReactElement {
       )}
     </AnimatePresence>
   );
-
-  // ── Morph handlers ──
-  const handleEmojiClick = useCallback((): void => {
-    if (emojiMoodOverride === "dancing") return;
-    setMorphPhase("morphing");
-    setTimeout(() => {
-      setMorphPhase("bar");
-      setHeroAgentOpen(true);
-      window.dispatchEvent(new CustomEvent("hide-chat-widget"));
-      setTimeout(() => inputRef.current?.focus(), 200);
-    }, 400);
-  }, [emojiMoodOverride]);
-
-  const handleCloseBar = useCallback((): void => {
-    setHeroAgentOpen(false);
-    setMorphPhase("stage");
-    setActiveCmd(null);
-    setShownSteps(0);
-    setShowResponse(false);
-    setInput("");
-  }, []);
 
   // ── Hero inline content — Agent Stage (closed) or Input Bar (open) ──
   const heroContent = (
