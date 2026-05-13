@@ -168,36 +168,6 @@ export function Footer(): React.ReactElement {
           </TiltCard>
         </FadeUp>
 
-        <FadeUp delay={0.12}>
-          <a
-            href="https://www.upwork.com/freelancers/~01bd0ab6e093ea2d49"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center justify-center gap-6 mt-8 py-3 px-5 rounded-lg border border-accent/10 bg-card/40 hover:bg-card/60 transition-colors group"
-          >
-            <div className="flex items-center gap-2 text-caption md:text-xs font-mono text-muted/50 group-hover:text-muted/70 transition-colors">
-              <span className="w-1.5 h-1.5 bg-accent-status rounded-full" />
-              <span className="text-foreground/70 font-semibold">100%</span> Job Success
-            </div>
-            <span className="text-muted/15">|</span>
-            <div className="flex items-center gap-1.5 text-caption md:text-xs font-mono text-muted/50 group-hover:text-muted/70 transition-colors">
-              <div className="flex gap-0.5">
-                {[1, 2, 3, 4, 5].map((s) => (
-                  <Star key={s} size={9} className={s <= 5 ? "fill-accent/50 text-accent/50" : "fill-muted/20 text-muted/20"} />
-                ))}
-              </div>
-              <span><span className="text-foreground/70 font-semibold">19</span> reviews</span>
-            </div>
-            <span className="text-muted/15">|</span>
-            <div className="text-caption md:text-xs font-mono text-muted/50 group-hover:text-muted/70 transition-colors">
-              <span className="text-foreground/70 font-semibold">250+</span> projects
-            </div>
-            <span className="text-muted/15">|</span>
-            <div className="text-caption md:text-xs font-mono text-accent/50 group-hover:text-accent/70 transition-colors">
-              Top Rated
-            </div>
-          </a>
-        </FadeUp>
 
         <FadeUp delay={0.18}>
           <TestimonialStrip />
@@ -205,15 +175,7 @@ export function Footer(): React.ReactElement {
       </div>
 
       {/* Performance + Copyright */}
-      <div className="pl-16 md:pl-20 pb-8 space-y-2">
-        <div className="flex items-center gap-4 text-caption font-mono text-muted/25">
-          <span className="flex items-center gap-1.5">
-            <span className="w-1.5 h-1.5 rounded-full bg-accent-status/50" />
-            static &middot; edge-cached
-          </span>
-          <span>0 runtime deps</span>
-          <span>cloudflare pages</span>
-        </div>
+      <div className="pl-16 md:pl-20 pb-8">
         <p className="text-caption font-mono text-muted/30">
           &copy; {new Date().getFullYear()} Ahtesham Ahmad &middot; {years}y uptime
         </p>
