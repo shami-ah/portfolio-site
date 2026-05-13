@@ -1360,16 +1360,14 @@ export function AgentBar(): React.ReactElement {
     };
     window.addEventListener("hero-fully-written", onHeroReady);
 
-    // If boot was already seen this session, skip bottom animation
-    if (sessionStorage.getItem("boot-complete") === "1") {
+    // If boot was already seen (returning visitor or same-session navigation),
+    // skip all animation phases and settle emoji immediately
+    if (sessionStorage.getItem("boot-complete") === "1" || localStorage.getItem("boot-ever-seen") === "1") {
       setButtonReady(true);
       setUiState("button");
-      // If boot played this session already, emoji settles immediately
-      // If fresh page load (new session), boot will play and trigger bottom→settled
-      if (sessionStorage.getItem("emoji-settled") === "1") {
-        setEmojiPhase("settled");
-        emojiHasSettled.current = true;
-      }
+      setEmojiPhase("settled");
+      emojiHasSettled.current = true;
+      try { sessionStorage.setItem("emoji-settled", "1"); } catch { /* noop */ }
     }
 
     return () => {

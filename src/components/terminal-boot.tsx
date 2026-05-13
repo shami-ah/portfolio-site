@@ -131,6 +131,7 @@ export function TerminalBoot({ force = false, onDone }: BootProps): React.ReactE
 
     sessionStorage.setItem("boot-complete", "1");
     window.dispatchEvent(new CustomEvent("boot-complete"));
+    window.dispatchEvent(new CustomEvent("agent-button-ready"));
     return () => {
       window.removeEventListener("replay-intro", onReplay);
       window.removeEventListener("pageshow", closeRestoredOverlay);
