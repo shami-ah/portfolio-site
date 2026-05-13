@@ -9,6 +9,14 @@ import { diagrams } from "@/data/diagrams";
 import { ArchitectureDiagram } from "./architecture-diagram";
 import { DecisionTree } from "./decision-tree";
 import { AccessRequestModal } from "./access-request-modal";
+import { AgentEmoji } from "./agent-bar";
+
+const EMOJI_COMMENTARY: Record<string, { mood: "proud" | "curious" | "default" | "surprised"; text: string }> = {
+  openevent: { mood: "proud", text: "8 months, 100+ clients, zero AI errors." },
+  codelens: { mood: "curious", text: "430 patterns from real PRs, not theory." },
+  "gogaa-cli": { mood: "surprised", text: "1,418 tests. I don't ship without them." },
+  rasad: { mood: "default", text: "Built this so I could see inside the black box." },
+};
 
 interface ProjectModalProps {
   project: ProjectData | null;
@@ -208,6 +216,23 @@ export function ProjectModal({
                 <p className="text-sm md:text-base text-foreground/80 leading-relaxed border-l-2 border-accent pl-4">
                   {project.impact}
                 </p>
+
+                {/* Agent emoji commentary */}
+                {EMOJI_COMMENTARY[project.slug] && (
+                  <motion.div
+                    initial={{ opacity: 0, x: -8 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.5, duration: 0.4 }}
+                    className="flex items-center gap-2.5 mt-5 px-3 py-2 rounded-lg bg-accent-status/5 border border-accent-status/10 w-fit"
+                  >
+                    <span className="w-6 h-6 rounded-full bg-gradient-to-br from-card-border to-card border border-accent-status/20 flex items-center justify-center shrink-0">
+                      <AgentEmoji size={14} mood={EMOJI_COMMENTARY[project.slug].mood} />
+                    </span>
+                    <span className="font-mono text-caption text-accent-status/70">
+                      {EMOJI_COMMENTARY[project.slug].text}
+                    </span>
+                  </motion.div>
+                )}
               </motion.div>
 
               {/* Problem / Solution split */}

@@ -6,6 +6,7 @@ import { X, Minus, Maximize2, Send, Calendar, FileText, ArrowRight } from "lucid
 import { findAnswer, starters } from "@/lib/kb";
 import type { KbAction } from "@/lib/kb";
 import { openCvDrawer } from "@/components/cv-drawer";
+import { AgentEmoji } from "@/components/agent-bar";
 import { useTilt } from "@/lib/use-tilt";
 
 /* ------------------------------------------------------------------ */
@@ -367,8 +368,9 @@ export function ChatWidget(): React.ReactElement {
               data-chat-trigger
               className="chat-glow group relative flex items-center cursor-pointer glass rounded-full p-[5px] hover:pr-4 hover:gap-2 transition-all duration-300"
             >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/ahtesham.jpg" alt="Chat with Shami's AI" className="w-[34px] h-[34px] rounded-full object-cover shrink-0" />
+              <span className="w-[34px] h-[34px] rounded-full bg-gradient-to-br from-card-border to-card border border-accent-status/20 flex items-center justify-center shrink-0">
+                <AgentEmoji size={22} />
+              </span>
               <span className="max-w-0 overflow-hidden group-hover:max-w-[140px] transition-all duration-300 whitespace-nowrap font-mono text-small text-accent/60">Chat with my AI</span>
             </button>
             {/* Online dot */}

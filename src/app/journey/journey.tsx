@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 
 import { TiltCard } from "@/components/tilt-card";
 import { TimeMachine } from "@/components/time-machine";
+import { AgentEmoji } from "@/components/agent-bar";
 
 /* ------------------------------------------------------------------ */
 /*  Content — the "how" behind the "what" on the home page.           */
@@ -17,6 +18,7 @@ interface Principle {
   headline: string;
   body: string;
   example: string;
+  mood: "default" | "proud" | "curious" | "waving" | "surprised";
 }
 
 const principles: Principle[] = [
@@ -26,6 +28,7 @@ const principles: Principle[] = [
     body: "If an AI action touches money, commitments, or trust, a human approves it first. Full automation fails the first time the model misreads context.",
     example:
       "OpenEvent won't send an invoice until a human clicks approve. That single boundary is why 100+ clients stayed after the AI misfired.",
+    mood: "proud",
   },
   {
     tag: "02 · sequence",
@@ -33,6 +36,7 @@ const principles: Principle[] = [
     body: "Every feature gets an architecture doc before a single line of code. The spec is checked into the repo, then the agent scaffolds from it.",
     example:
       "Thread summarization feature: 1 day of architecture doc, 2 hours of scaffolding, 0 rewrites. If the spec is right, the code falls out.",
+    mood: "default",
   },
   {
     tag: "03 · trust-boundary",
@@ -40,6 +44,7 @@ const principles: Principle[] = [
     body: "All validation happens at system edges (user input, external APIs, webhook payloads). Internally, I trust the types and the invariants.",
     example:
       "Stripe webhooks have dual-secret verification + replay protection at the boundary. Business logic downstream assumes the payload is clean.",
+    mood: "curious",
   },
   {
     tag: "04 · tools",
@@ -47,6 +52,7 @@ const principles: Principle[] = [
     body: "When the tool I need doesn't exist, I build it. CodeLens, gogaa, a custom dev container — each started as a personal frustration that became infrastructure.",
     example:
       "No commercial AI reviewer caught the bugs I saw in real PRs. So I built 305 hand-crafted patterns across 9 stacks. Now every PR runs through it.",
+    mood: "surprised",
   },
   {
     tag: "05 · focus",
@@ -54,6 +60,7 @@ const principles: Principle[] = [
     body: "Context is sacred. I spawn a fresh agent session for each task, with scoped rules and a dedicated memory. Cross-contamination is the enemy.",
     example:
       "Reviewing an Openevent PR? That session only has OE's CLAUDE.md loaded. Drafting a gogaa feature? Different session, different memory.",
+    mood: "default",
   },
   {
     tag: "06 · output",
@@ -61,6 +68,7 @@ const principles: Principle[] = [
     body: "Shipped code is off by default. I turn it on for 10% first, watch Sentry for 24h, then roll globally. No big-bang releases.",
     example:
       "Every OpenEvent feature ships dark. A bad migration caught in staging means one hour of rollback, not a week of bug fires.",
+    mood: "waving",
   },
 ];
 
@@ -178,9 +186,14 @@ export function Journey(): React.ReactElement {
                 transition={{ duration: 0.5, delay: i * 0.1, ease: [0.22, 1, 0.36, 1] }}
               >
               <TiltCard className="group card-glow card-gradient-border p-6 md:p-7 rounded-xl bg-card border border-card-border hover:border-transparent transition-all duration-300 relative overflow-hidden h-full">
-                <p className="text-caption font-mono uppercase tracking-wider text-accent/80 mb-3">
-                  {p.tag}
-                </p>
+                <div className="flex items-center justify-between mb-3">
+                  <p className="text-caption font-mono uppercase tracking-wider text-accent/80">
+                    {p.tag}
+                  </p>
+                  <span className="w-6 h-6 rounded-full bg-gradient-to-br from-card-border to-card border border-accent-status/15 flex items-center justify-center">
+                    <AgentEmoji size={14} mood={p.mood} />
+                  </span>
+                </div>
                 <h3 className="text-lg md:text-xl font-bold mb-3 leading-tight">
                   {p.headline}
                 </h3>

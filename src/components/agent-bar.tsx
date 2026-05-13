@@ -140,49 +140,96 @@ function BuildPopup({ onDone }: { onDone: () => void }): React.ReactElement {
 /*  Agent emoji face — shared between hero and pill bar                */
 /* ------------------------------------------------------------------ */
 
-function AgentEmoji({ size = 40, hovered = false }: { size?: number; hovered?: boolean }): React.ReactElement {
+type EmojiMood = "default" | "curious" | "proud" | "waving" | "confused" | "sleeping" | "surprised" | "dancing";
+
+export function AgentEmoji({ size = 40, hovered = false, mood = "default" }: { size?: number; hovered?: boolean; mood?: EmojiMood }): React.ReactElement {
   const s = size;
-  // Use accent-status (green) for a prominent, theme-safe look
   const fc = "fill-accent-status";
   const sc = "stroke-accent-status";
+
+  // Mood-specific mouth paths
+  const mouths: Record<EmojiMood, { rest: string; animated?: string[] }> = {
+    default:  { rest: "M 16 32 Q 24 32 32 32", animated: ["M 16 32 Q 24 32 32 32", "M 16 30 Q 24 38 32 30", "M 16 30 Q 24 38 32 30", "M 16 32 Q 24 32 32 32"] },
+    curious:  { rest: "M 18 32 Q 24 34 30 32" },  // slight "o" shape
+    proud:    { rest: "M 14 30 Q 24 40 34 30" },  // big grin
+    waving:   { rest: "M 16 30 Q 24 37 32 30", animated: ["M 16 30 Q 24 37 32 30", "M 16 30 Q 24 38 32 30", "M 16 30 Q 24 37 32 30"] },
+    confused: { rest: "M 18 34 Q 24 30 30 34" },  // wavy frown
+    sleeping: { rest: "M 18 33 Q 24 33 30 33" },  // flat line
+    surprised:{ rest: "M 20 30 Q 24 38 28 30" },  // small O
+    dancing:  { rest: "M 14 29 Q 24 40 34 29", animated: ["M 14 29 Q 24 40 34 29", "M 16 30 Q 24 38 32 30", "M 14 29 Q 24 40 34 29"] },
+  };
+
+  const m = mouths[mood] ?? mouths.default;
+  const isSleeping = mood === "sleeping";
+  const isDancing = mood === "dancing";
+
   return (
     <svg viewBox="0 0 48 48" width={s} height={s} fill="none" className="shrink-0" style={{ filter: s > 24 ? "drop-shadow(0 0 6px rgba(74,222,128,0.3))" : "none" }}>
-      {/* Eyes — wink on hover, blink periodically */}
+      {/* Eyes */}
       <motion.circle
         cx="16" cy="19" r={2.5 * (s > 24 ? 1 : 0.9)}
         className={fc}
-        animate={hovered ? { scaleY: [1, 0.1, 1, 0.1, 1] } : { scaleY: [1, 0.1, 1] }}
+        animate={
+          isSleeping ? { scaleY: 0.15 }
+          : hovered ? { scaleY: [1, 0.1, 1, 0.1, 1] }
+          : { scaleY: [1, 0.1, 1] }
+        }
         transition={hovered
           ? { duration: 0.5, ease: "easeInOut" }
-          : { duration: 0.3, delay: 2, repeat: Infinity, repeatDelay: 3.5 }
+          : { duration: 0.3, delay: 2, repeat: isSleeping ? 0 : Infinity, repeatDelay: 3.5 }
         }
       />
       <motion.circle
         cx="32" cy="19" r={2.5 * (s > 24 ? 1 : 0.9)}
         className={fc}
-        animate={{ scaleY: [1, 0.1, 1] }}
-        transition={{ duration: 0.3, delay: 2, repeat: Infinity, repeatDelay: 3.5 }}
+        animate={
+          isSleeping ? { scaleY: 0.15 }
+          : mood === "curious" ? { cx: [32, 34, 32] }
+          : { scaleY: [1, 0.1, 1] }
+        }
+        transition={
+          mood === "curious"
+            ? { duration: 2, repeat: Infinity, ease: "easeInOut" }
+            : { duration: 0.3, delay: 2, repeat: isSleeping ? 0 : Infinity, repeatDelay: 3.5 }
+        }
       />
       {/* Nose */}
       {s > 24 && (
         <line x1="24" y1="22" x2="24" y2="27" className={sc} strokeWidth="1.5" strokeLinecap="round" opacity="0.3" />
       )}
-      {/* Mouth — bigger smile on hover */}
+      {/* Waving hand (only for waving mood) */}
+      {mood === "waving" && s > 24 && (
+        <motion.text
+          x="38" y="16" fontSize="12"
+          animate={{ rotate: [0, 20, -10, 20, 0] }}
+          transition={{ duration: 1, repeat: Infinity, repeatDelay: 2 }}
+          style={{ transformOrigin: "38px 14px" }}
+        >
+          👋
+        </motion.text>
+      )}
+      {/* Sleeping Zs */}
+      {isSleeping && s > 24 && (
+        <motion.text
+          x="34" y="14" fontSize="10" className={fc}
+          animate={{ opacity: [0, 1, 0], y: [14, 8, 2] }}
+          transition={{ duration: 2, repeat: Infinity }}
+        >
+          z
+        </motion.text>
+      )}
+      {/* Mouth */}
       <motion.path
-        d={hovered ? "M 14 29 Q 24 40 34 29" : "M 16 32 Q 24 32 32 32"}
+        d={hovered && mood === "default" ? "M 14 29 Q 24 40 34 29" : m.rest}
         className={sc}
         strokeWidth={s > 24 ? 2 : 1.5}
         strokeLinecap="round"
         fill="none"
-        animate={hovered ? {} : {
-          d: [
-            "M 16 32 Q 24 32 32 32",
-            "M 16 30 Q 24 38 32 30",
-            "M 16 30 Q 24 38 32 30",
-            "M 16 32 Q 24 32 32 32",
-          ],
-        }}
-        transition={hovered ? {} : { duration: 2, repeat: Infinity, repeatDelay: 1, ease: "easeInOut" }}
+        animate={(hovered && mood === "default") ? {} : m.animated ? { d: m.animated } : {}}
+        transition={isDancing
+          ? { duration: 0.5, repeat: Infinity, ease: "easeInOut" }
+          : { duration: 2, repeat: Infinity, repeatDelay: 1, ease: "easeInOut" }
+        }
       />
     </svg>
   );
@@ -662,6 +709,39 @@ const commands: AgentCommand[] = [
     action: () => scrollTo("writing"),
   },
   {
+    keyword: "dance",
+    intent: "easter_egg",
+    confidence: 0.99,
+    steps: [
+      { name: "classify_intent", detail: "label: easter_egg · conf 0.99", ms: 5 },
+      { name: "activate_mood", detail: "mood: dancing", ms: 3 },
+    ],
+    response: "Can't stop, won't stop.",
+    action: () => window.dispatchEvent(new CustomEvent("emoji-mood", { detail: "dancing" })),
+  },
+  {
+    keyword: "sleep",
+    intent: "easter_egg",
+    confidence: 0.99,
+    steps: [
+      { name: "classify_intent", detail: "label: easter_egg · conf 0.99", ms: 5 },
+      { name: "activate_mood", detail: "mood: sleeping", ms: 3 },
+    ],
+    response: "zzz... wake me when you need me.",
+    action: () => window.dispatchEvent(new CustomEvent("emoji-mood", { detail: "sleeping" })),
+  },
+  {
+    keyword: "surprise",
+    intent: "easter_egg",
+    confidence: 0.99,
+    steps: [
+      { name: "classify_intent", detail: "label: easter_egg · conf 0.99", ms: 5 },
+      { name: "activate_mood", detail: "mood: surprised", ms: 3 },
+    ],
+    response: "Wait — you found this?!",
+    action: () => window.dispatchEvent(new CustomEvent("emoji-mood", { detail: "surprised" })),
+  },
+  {
     keyword: "boot",
     intent: "replay_intro",
     confidence: 0.99,
@@ -894,6 +974,7 @@ export function AgentBar(): React.ReactElement {
   const [inHeroViewport, setInHeroViewport] = useState(true);
   const [heroAgentOpen, setHeroAgentOpen] = useState(false);
   const [emojiHovered, setEmojiHovered] = useState(false);
+  const [emojiMoodOverride, setEmojiMoodOverride] = useState<EmojiMood | null>(null);
   // Emoji position phases: "hidden" → "bottom" → "settled" (in hero mount)
   const [emojiPhase, setEmojiPhase] = useState<"hidden" | "bottom" | "settled">("hidden");
   const emojiHasSettled = useRef(false);
@@ -1081,6 +1162,17 @@ export function AgentBar(): React.ReactElement {
     const handler = (): void => setShowBuildPopup(true);
     window.addEventListener("show-build-popup", handler);
     return () => window.removeEventListener("show-build-popup", handler);
+  }, []);
+
+  // Listen for emoji mood easter eggs — temporary mood override (resets after 4s)
+  useEffect(() => {
+    const handler = (e: Event): void => {
+      const mood = (e as CustomEvent<string>).detail as EmojiMood;
+      setEmojiMoodOverride(mood);
+      setTimeout(() => setEmojiMoodOverride(null), 4000);
+    };
+    window.addEventListener("emoji-mood", handler);
+    return () => window.removeEventListener("emoji-mood", handler);
   }, []);
 
   // Listen for whoami popup trigger
@@ -1719,7 +1811,7 @@ export function AgentBar(): React.ReactElement {
                       }}
                     >
                       <div className="w-7 h-7 rounded-full bg-gradient-to-br from-card-border to-card border border-accent-status/20 flex items-center justify-center shrink-0">
-                        <AgentEmoji size={18} />
+                        <AgentEmoji size={18} mood={emojiMoodOverride ?? (activeSection === "projects" ? "curious" : activeSection === "log" ? "proud" : activeSection === "contact" ? "waving" : "default")} />
                       </div>
                       <span className="flex-1 font-mono text-small text-muted/25 bg-foreground/[0.03] rounded-full px-4 py-1 truncate">
                         {inputConfig.placeholder}
