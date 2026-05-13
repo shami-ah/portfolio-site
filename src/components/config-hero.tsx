@@ -264,7 +264,9 @@ export function ConfigHero(): React.ReactElement {
           transition={{ duration: immediate ? 0 : 0.6, delay: immediate ? 0 : 0.3, ease: EASE }}
           className="flex items-center justify-center gap-4 md:gap-6 mb-8 font-mono text-caption md:text-xs"
         >
-          <span className="text-foreground font-semibold">{status.portfolio.productionSystems}+ <span className="text-muted/50 font-normal">systems</span></span>
+          <span className="text-foreground font-semibold">{status.portfolio.productionSystems}+ <span className="text-muted/50 font-normal">systems shipped</span></span>
+          <span className="text-muted/20">/</span>
+          <span className="text-foreground font-semibold">10 <span className="text-muted/50 font-normal">showcased</span></span>
           <span className="text-muted/20">/</span>
           <span className="text-foreground font-semibold">{status.portfolio.yearsBuilding}+ <span className="text-muted/50 font-normal">years</span></span>
         </motion.div>

@@ -50,7 +50,7 @@ export const kb: KbEntry[] = [
       "expensive", "cheap", "affordable", "hourly", "per hour",
     ],
     response:
-      "Hourly: $80–120/hr for contract work. Project-based: starting from $3k for scoped deliveries, scales with complexity — nothing below $3k. Full-time: flexible depending on scope, equity, and impact. Best way to dial in the number is a quick call.",
+      "Contract: $80–120/hr for direct engagements. Project-based: starting from $3k for scoped deliveries, scales with complexity. Full-time: $4k–10k/mo depending on scope, location, and impact. Rates vary by engagement type — best to discuss on a quick call.",
     tags: ["commercial"],
     actions: [
       { label: "Book a 15-min call", href: BOOK_URL },

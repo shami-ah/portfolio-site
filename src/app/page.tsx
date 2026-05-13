@@ -11,11 +11,13 @@ import { CursorGlow } from "@/components/cursor-glow";
 import { BootParticles } from "@/components/boot-particles";
 import { AgentRevealParticles } from "@/components/agent-reveal-particles";
 import { HomeHashScroll } from "@/components/home-hash-scroll";
+import { WelcomeBack } from "@/components/welcome-back";
 
 export default function Home(): React.ReactElement {
   return (
     <main id="main-content">
       <HomeHashScroll />
+      <WelcomeBack />
       <TerminalBoot />
       <TopBar />
       <SidebarNav />

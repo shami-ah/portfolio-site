@@ -6,6 +6,22 @@ interface Env {
   GROQ_API_KEY: string;
 }
 
+// Simple in-memory rate limiter: 10 requests per minute per IP
+const rateMap = new Map<string, { count: number; reset: number }>();
+const RATE_LIMIT = 10;
+const RATE_WINDOW = 60_000;
+
+function isRateLimited(ip: string): boolean {
+  const now = Date.now();
+  const entry = rateMap.get(ip);
+  if (!entry || now > entry.reset) {
+    rateMap.set(ip, { count: 1, reset: now + RATE_WINDOW });
+    return false;
+  }
+  entry.count++;
+  return entry.count > RATE_LIMIT;
+}
+
 const PORTFOLIO_CONTEXT = `
 You are Ahtesham's AI assistant on his portfolio website.
 Answer from the context below. If you can partially answer, do so and say what you're unsure about.
@@ -103,10 +119,10 @@ Infra: GitHub Actions CI/CD, Docker Compose, Traefik (reverse proxy), Sentry, Gr
 NOT in stack: Kubernetes, AWS, Azure, GCP managed services. Ahtesham uses Docker Compose + Traefik on self-managed servers, not K8s orchestration. Can learn/adopt if the role requires it.
 
 === RATES ===
-Hourly: $80–120/hr for contract work
-Project-based: starting from $3k for scoped deliveries, scales with complexity. Nothing below $3k.
-Full-time: flexible depending on scope, equity, and impact
-Best to discuss on a 15-min call — use the Book a Call button
+Contract: $80–120/hr for direct engagements
+Project-based: starting from $3k for scoped deliveries, scales with complexity
+Full-time: $4k–10k/mo depending on scope, location, and impact
+Rates vary by engagement type — best to discuss on a 15-min call via the Book a Call button
 
 === PROCESS ===
 Architecture document first (1-3 day discovery)
@@ -146,6 +162,14 @@ const MODEL_TEMPS: Record<string, number> = {
 
 export const onRequestPost: PagesFunction<Env> = async (context) => {
   const { request, env } = context;
+
+  const clientIp = request.headers.get("cf-connecting-ip") ?? request.headers.get("x-forwarded-for") ?? "unknown";
+  if (isRateLimited(clientIp)) {
+    return new Response(
+      JSON.stringify({ answer: "You're asking too fast. Try again in a minute." }),
+      { status: 429, headers: { "Content-Type": "application/json", "Retry-After": "60" } },
+    );
+  }
 
   if (!env.GROQ_API_KEY) {
     return new Response(
