@@ -1186,7 +1186,7 @@ export function Projects(): React.ReactElement {
       <ScrollProgress containerRef={sectionRef} />
 
       {/* Section intro */}
-      <div className="min-h-[60vh] flex flex-col items-center justify-center text-center px-5 md:px-8 py-20">
+      <div className="min-h-[40vh] md:min-h-[60vh] flex flex-col items-center justify-center text-center px-5 md:px-8 py-12 md:py-20">
         <FadeUp>
           <p className="text-sm font-mono text-accent mb-4 uppercase tracking-[0.3em]">
             what I&apos;ve shipped

@@ -108,7 +108,7 @@ function TestimonialCarousel(): React.ReactElement {
 
 export function ConfigContact(): React.ReactElement {
   return (
-    <section id="contact" className="relative py-20 md:py-32">
+    <section id="contact" className="relative py-12 md:py-32">
       <div className="max-w-5xl mx-auto px-5 md:px-6">
         <FadeUp>
           <TypeLabel

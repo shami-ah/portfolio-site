@@ -78,7 +78,7 @@ export function ExperienceAndWriting(): React.ReactElement {
   const featured = getFeaturedArticles();
 
   return (
-    <section id="log" className="py-20 md:py-32">
+    <section id="log" className="py-12 md:py-32">
       <div className="max-w-6xl mx-auto px-5 md:px-6">
         {/* Section header */}
         <FadeUp>
