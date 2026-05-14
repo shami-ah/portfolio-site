@@ -235,6 +235,99 @@ const server = createServer(async (req, res) => {
     }
   }
 
+  // Unified agent endpoint
+  if (req.url === "/api/agent" && req.method === "POST") {
+    const clientIp = req.headers["x-forwarded-for"]?.split(",")[0]?.trim() ?? req.socket.remoteAddress ?? "unknown";
+    if (isRateLimited(clientIp)) {
+      return json(res, 429, { intent: { command: null, confidence: 0 }, response: "You're asking too fast. Try again in a minute.", actions: [] });
+    }
+
+    if (!GROQ_API_KEY) {
+      return json(res, 200, { intent: { command: null, confidence: 0 }, response: "Agent is warming up. Try a command like 'projects' or 'rate'.", actions: [] });
+    }
+
+    let body = "";
+    for await (const chunk of req) body += chunk;
+
+    let query = "";
+    let history = [];
+    let modelId = "groq";
+    try {
+      const parsed = JSON.parse(body);
+      query = parsed.query?.trim() ?? "";
+      history = parsed.history ?? [];
+      modelId = parsed.model ?? "groq";
+    } catch {
+      return json(res, 400, { intent: { command: null, confidence: 0 }, response: "Invalid request.", actions: [] });
+    }
+
+    if (!query) {
+      return json(res, 200, { intent: { command: null, confidence: 0 }, response: "Type something to get started.", actions: [] });
+    }
+
+    const KNOWN_COMMANDS = ["whoami","hire","contact","projects","cv","resume","rate","stack","skills","availability","impact","experience","career","build","tour","chat","call","writing","boot","help","openevent","codelens","gogaa","rasad"];
+
+    const AGENT_PREAMBLE = `You are the unified AI agent on Ahtesham Ahmad's portfolio website. You serve two functions:
+
+1. INTENT CLASSIFICATION: Given the visitor's query, determine if it maps to one of these UI commands:
+   ${KNOWN_COMMANDS.join(", ")}
+   Return the command name and your confidence (0.0 to 1.0). Only return a command if the query CLEARLY maps to it (confidence > 0.8).
+
+2. RESPONSE GENERATION: Always generate a conversational response.
+   - If a command was matched, the response should be a brief 1-2 sentence confirmation.
+   - If no command matched, the response should fully answer the query using the portfolio context below.
+   - Keep responses under 3 sentences for simple questions, under 5 for complex ones.
+
+3. ACTION SUGGESTIONS: If your response relates to booking a call, viewing CV, or navigating, include structured actions.
+
+You MUST return ONLY valid JSON: {"intent":{"command":"<name>" or null,"confidence":<0-1>},"response":"<text>","actions":[{"type":"scroll|popup|drawer|external","target":"<id>","label":"<text>"}]}
+If no actions, return empty actions array.`;
+
+    const voice = MODEL_VOICES[modelId] ?? MODEL_VOICES.groq;
+    const temp = { groq: 0.15, claude: 0.3, gpt4: 0.15, nvidia: 0.1 }[modelId] ?? 0.15;
+
+    const messages = [
+      { role: "system", content: AGENT_PREAMBLE + "\n\n" + PORTFOLIO_CONTEXT + voice },
+    ];
+    for (const msg of history.slice(-6)) {
+      messages.push({ role: msg.role, content: msg.content });
+    }
+    messages.push({ role: "user", content: query });
+
+    try {
+      const groqRes = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${GROQ_API_KEY}` },
+        body: JSON.stringify({
+          model: "llama-3.3-70b-versatile",
+          messages,
+          temperature: temp,
+          max_tokens: 500,
+          response_format: { type: "json_object" },
+        }),
+      });
+
+      if (!groqRes.ok) throw new Error(`Groq API: ${groqRes.status}`);
+
+      const data = await groqRes.json();
+      const raw = data.choices?.[0]?.message?.content ?? "";
+      const jsonStr = raw.replace(/```json\n?/g, "").replace(/```/g, "").trim();
+      const result = JSON.parse(jsonStr);
+
+      return json(res, 200, {
+        intent: { command: result.intent?.command ?? null, confidence: result.intent?.confidence ?? 0 },
+        response: result.response ?? "I couldn't process that. Try asking about projects, rate, or availability.",
+        actions: Array.isArray(result.actions) ? result.actions : [],
+      });
+    } catch {
+      return json(res, 200, {
+        intent: { command: null, confidence: 0 },
+        response: "Ahtesham works across AI, full-stack, and automation. Try a specific question or use the Book a Call button.",
+        actions: [{ type: "external", target: "booking", label: "Book a call" }],
+      });
+    }
+  }
+
   // 404 for everything else
   json(res, 404, { error: "Not found" });
 });

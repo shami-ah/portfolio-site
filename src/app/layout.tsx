@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Inter, Space_Grotesk, JetBrains_Mono } from "next/font/google";
-import { ChatWidget } from "@/components/chat-widget";
 import { CVDrawer } from "@/components/cv-drawer";
 import { ThemeToggle } from "@/components/theme-toggle";
 import "./globals.css";
@@ -150,7 +149,7 @@ export default function RootLayout({
           <ThemeToggle />
         </div>
         <CVDrawer />
-        <ChatWidget />
+        {/* ChatWidget removed — unified agent handles all conversation */}
         <script
           dangerouslySetInnerHTML={{
             __html: `if(location.hostname==='ahtesham.dev.wadwarehouse.com'){fetch('https://shami-command-center.vercel.app/api/server/track',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({path:location.pathname,referrer:document.referrer})}).catch(function(){});}`,
