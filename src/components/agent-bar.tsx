@@ -284,67 +284,66 @@ export function AgentEmoji({ size = 40, hovered = false, mood = "default" }: { s
 
   const m = mouths[mood] ?? mouths.default;
 
-  // Dancing stick figure — only render body when large enough (hero emoji)
-  // Small sizes (mood constellation) just show the dancing face
+  // Disco mode — round face with ecstatic grin, bouncing, musical notes floating out
   if (isDancing && s > 40) {
+    const notes = ["♪", "♫", "♬"];
     return (
-      <motion.svg
-        viewBox="0 0 48 96"
-        width={s}
-        height={s * 2}
-        fill="none"
-        className="shrink-0"
-        style={{ filter: s > 24 ? "drop-shadow(0 0 6px rgba(74,222,128,0.3))" : "none" }}
-        animate={{ rotate: [0, -6, 6, -4, 4, 0] }}
-        transition={{ duration: 1, repeat: Infinity, ease: "easeInOut" }}
-      >
-        {/* === Head — round circle like normal emoji === */}
-        <circle cx="24" cy="24" r="22" className={sc} strokeWidth="1.5" opacity="0.2" fill="none" />
-        {/* Eyes — same position as normal face */}
-        <motion.circle cx="16" cy="19" r={2.5} className={fc} animate={{ scaleY: [1, 0.1, 1] }} transition={{ duration: 0.3, delay: 1.5, repeat: Infinity, repeatDelay: 2.5 }} />
-        <motion.circle cx="32" cy="19" r={2.5} className={fc} animate={{ scaleY: [1, 0.1, 1] }} transition={{ duration: 0.3, delay: 1.5, repeat: Infinity, repeatDelay: 2.5 }} />
-        {/* Nose */}
-        <line x1="24" y1="22" x2="24" y2="27" className={sc} strokeWidth="1.5" strokeLinecap="round" opacity="0.3" />
-        {/* Mouth — big grin */}
-        <motion.path d="M 14 30 Q 24 40 34 30" className={sc} strokeWidth="2" strokeLinecap="round" fill="none" animate={{ d: ["M 14 30 Q 24 40 34 30", "M 16 31 Q 24 38 32 31", "M 14 30 Q 24 40 34 30"] }} transition={{ duration: 0.6, repeat: Infinity, ease: "easeInOut" }} />
-
-        {/* === Body === */}
-        {/* Torso — from bottom of head circle */}
-        <motion.line
-          x1="24" y1="46" x2="24" y2="66"
-          className={sc} strokeWidth="2" strokeLinecap="round"
-          animate={{ x2: [24, 22, 26, 24] }}
-          transition={{ duration: 0.6, repeat: Infinity, ease: "easeInOut" }}
-        />
-        {/* Left arm */}
-        <motion.line
-          x1="24" y1="52" x2="10" y2="58"
-          className={sc} strokeWidth="2" strokeLinecap="round"
-          animate={{ x2: [10, 8, 14, 10], y2: [58, 46, 60, 58] }}
-          transition={{ duration: 0.6, repeat: Infinity, ease: "easeInOut" }}
-        />
-        {/* Right arm */}
-        <motion.line
-          x1="24" y1="52" x2="38" y2="58"
-          className={sc} strokeWidth="2" strokeLinecap="round"
-          animate={{ x2: [38, 40, 34, 38], y2: [58, 46, 60, 58] }}
-          transition={{ duration: 0.6, repeat: Infinity, ease: "easeInOut", delay: 0.15 }}
-        />
-        {/* Left leg */}
-        <motion.line
-          x1="24" y1="66" x2="14" y2="86"
-          className={sc} strokeWidth="2" strokeLinecap="round"
-          animate={{ x2: [14, 10, 18, 14], y2: [86, 84, 88, 86] }}
-          transition={{ duration: 0.6, repeat: Infinity, ease: "easeInOut" }}
-        />
-        {/* Right leg */}
-        <motion.line
-          x1="24" y1="66" x2="34" y2="86"
-          className={sc} strokeWidth="2" strokeLinecap="round"
-          animate={{ x2: [34, 38, 30, 34], y2: [86, 84, 88, 86] }}
-          transition={{ duration: 0.6, repeat: Infinity, ease: "easeInOut", delay: 0.15 }}
-        />
-      </motion.svg>
+      <div className="relative shrink-0" style={{ width: s, height: s }}>
+        {/* Musical notes floating up */}
+        {notes.map((note, i) => (
+          <motion.span
+            key={i}
+            className="absolute text-accent-status/60 pointer-events-none select-none"
+            style={{ fontSize: s * 0.18, left: `${20 + i * 28}%`, top: "10%" }}
+            animate={{
+              y: [0, -s * 0.6],
+              x: [0, (i % 2 === 0 ? 1 : -1) * s * 0.15],
+              opacity: [0, 0.8, 0],
+              rotate: [0, (i % 2 === 0 ? 15 : -15)],
+            }}
+            transition={{
+              duration: 1.8,
+              repeat: Infinity,
+              delay: i * 0.6,
+              ease: "easeOut",
+            }}
+          >
+            {note}
+          </motion.span>
+        ))}
+        {/* The face itself — same viewBox as normal, but bouncing */}
+        <motion.svg
+          viewBox="0 0 48 48"
+          width={s}
+          height={s}
+          fill="none"
+          style={{ filter: "drop-shadow(0 0 8px rgba(74,222,128,0.4))" }}
+          animate={{ y: [0, -4, 0, -2, 0], rotate: [0, -3, 0, 3, 0] }}
+          transition={{ duration: 0.8, repeat: Infinity, ease: "easeInOut" }}
+        >
+          {/* Happy squinted eyes — arc shapes */}
+          <motion.path d="M 12 18 Q 16 14 20 18" className={sc} strokeWidth="2.5" strokeLinecap="round" fill="none"
+            animate={{ d: ["M 12 18 Q 16 14 20 18", "M 12 19 Q 16 15 20 19", "M 12 18 Q 16 14 20 18"] }}
+            transition={{ duration: 0.8, repeat: Infinity, ease: "easeInOut" }}
+          />
+          <motion.path d="M 28 18 Q 32 14 36 18" className={sc} strokeWidth="2.5" strokeLinecap="round" fill="none"
+            animate={{ d: ["M 28 18 Q 32 14 36 18", "M 28 19 Q 32 15 36 19", "M 28 18 Q 32 14 36 18"] }}
+            transition={{ duration: 0.8, repeat: Infinity, ease: "easeInOut" }}
+          />
+          {/* Nose */}
+          <line x1="24" y1="22" x2="24" y2="27" className={sc} strokeWidth="1.5" strokeLinecap="round" opacity="0.3" />
+          {/* Wide open grin */}
+          <motion.path
+            d="M 12 30 Q 24 44 36 30"
+            className={sc}
+            strokeWidth="2.5"
+            strokeLinecap="round"
+            fill="none"
+            animate={{ d: ["M 12 30 Q 24 44 36 30", "M 14 31 Q 24 42 34 31", "M 12 30 Q 24 44 36 30"] }}
+            transition={{ duration: 0.8, repeat: Infinity, ease: "easeInOut" }}
+          />
+        </motion.svg>
+      </div>
     );
   }
 
