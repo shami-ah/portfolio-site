@@ -141,8 +141,11 @@ function BuildPopup({ onDone }: { onDone: () => void }): React.ReactElement {
 /* ------------------------------------------------------------------ */
 
 const STAGE_MESSAGES = [
-  { text: "I\u2019m Ahtesham\u2019s portfolio agent.", duration: 4000 },
-  { text: "I\u2019m alive \u2014 click me", duration: 5000 },
+  { text: "I\u2019m alive \u2014 click me", duration: 4500 },
+  { text: "50+ systems shipped.", duration: 3500 },
+  { text: "try: whoami", duration: 4000 },
+  { text: "I build what doesn\u2019t exist yet.", duration: 4000 },
+  { text: "ask me anything.", duration: 5000 },
 ];
 
 const DATA_FRAGS = ["0x4a", "RAG", "LLM", "RLS"];
@@ -281,8 +284,9 @@ export function AgentEmoji({ size = 40, hovered = false, mood = "default" }: { s
 
   const m = mouths[mood] ?? mouths.default;
 
-  // Dancing stick figure — round head (same face), body below, tilts and dances
-  if (isDancing && s > 18) {
+  // Dancing stick figure — only render body when large enough (hero emoji)
+  // Small sizes (mood constellation) just show the dancing face
+  if (isDancing && s > 40) {
     return (
       <motion.svg
         viewBox="0 0 48 96"
