@@ -78,11 +78,11 @@ export function ExperienceAndWriting(): React.ReactElement {
   const featured = getFeaturedArticles();
 
   return (
-    <section id="log" className="py-12 md:py-32">
+    <section id="log" className="py-10 md:py-32">
       <div className="max-w-6xl mx-auto px-5 md:px-6">
         {/* Section header */}
         <FadeUp>
-          <div className="text-center mb-10 md:mb-16">
+          <div className="text-center mb-8 md:mb-16">
             <TypeLabel
               text="$ systemctl status --all"
               className="text-sm font-mono text-accent mb-4 uppercase tracking-wider"
@@ -95,7 +95,7 @@ export function ExperienceAndWriting(): React.ReactElement {
         </FadeUp>
 
         {/* ── Mobile layout: experience first, then writing ── */}
-        <div className="md:hidden space-y-10">
+        <div className="md:hidden space-y-8">
           {/* Experience section */}
           <div>
             <FadeUp>
@@ -106,7 +106,7 @@ export function ExperienceAndWriting(): React.ReactElement {
                 </span>
               </div>
             </FadeUp>
-            <div className="space-y-4">
+            <div className="space-y-3">
               {roles.map((role, i) => (
                 <motion.div
                   key={role.hash}
@@ -158,7 +158,7 @@ export function ExperienceAndWriting(): React.ReactElement {
                 </span>
               </div>
             </FadeUp>
-            <div className="space-y-4">
+            <div className="space-y-3">
               {featured.map((article, i) => (
                 <motion.div
                   key={article.slug}

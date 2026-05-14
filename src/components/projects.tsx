@@ -451,7 +451,7 @@ function ScrollPanel({
           style={{ background: content.glow }}
         />
 
-        <div className="relative z-10 h-full flex flex-col px-5 md:px-8 lg:px-16 py-6 md:py-10 max-w-[1400px] mx-auto">
+        <div className="relative z-10 h-full flex flex-col px-4 md:px-8 lg:px-16 py-5 md:py-10 max-w-[1400px] mx-auto">
           {/* Top row: status + title left, big number right */}
           <div className="flex items-start justify-between gap-4 mb-4 md:mb-5">
             <div className="flex-1 min-w-0">
@@ -472,8 +472,8 @@ function ScrollPanel({
           </div>
 
           {/* Problem → Solution — single row, inline */}
-          <div className="p-3 md:p-4 rounded-xl border border-card-border/50 bg-card/30 mb-4 md:mb-5">
-            <p className="text-xs md:text-sm text-muted leading-relaxed">
+          <div className="p-2.5 md:p-4 rounded-xl border border-card-border/50 bg-card/30 mb-3 md:mb-5">
+            <p className="text-[11px] md:text-sm text-muted leading-relaxed">
               <span className="font-mono uppercase tracking-wider text-muted/60 text-caption">Problem: </span>
               {content.problem}
               <span className="mx-2 text-accent/40">→</span>
@@ -1186,7 +1186,7 @@ export function Projects(): React.ReactElement {
       <ScrollProgress containerRef={sectionRef} />
 
       {/* Section intro */}
-      <div className="md:min-h-[60vh] flex flex-col items-center justify-center text-center px-5 md:px-8 py-10 md:py-20">
+      <div className="md:min-h-[60vh] flex flex-col items-center justify-center text-center px-5 md:px-8 py-8 md:py-20">
         <FadeUp>
           <p className="text-sm font-mono text-accent mb-4 uppercase tracking-[0.3em]">
             what I&apos;ve shipped
@@ -1219,7 +1219,7 @@ export function Projects(): React.ReactElement {
       </div>
 
       {/* Other deployments carousel */}
-      <div className="py-12 md:py-16 px-5 md:px-8">
+      <div className="py-8 md:py-16 px-4 md:px-8">
         <OtherDeployments others={others} onOpen={setActiveProject} />
       </div>
 

@@ -161,7 +161,7 @@ export function Footer(): React.ReactElement {
   return (
     <footer id="contact">
       {/* Deploy section */}
-      <div className="relative flex flex-col items-center px-5 md:px-10 pt-20 md:pt-32 pb-16 overflow-hidden">
+      <div className="relative flex flex-col items-center px-5 md:px-10 pt-14 md:pt-32 pb-12 md:pb-16 overflow-hidden">
         {/* Subtle gradient orb */}
         <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[700px] h-[500px] bg-[radial-gradient(circle,rgba(160,120,104,0.035)_0%,transparent_65%)] pointer-events-none" />
 
