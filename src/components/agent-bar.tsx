@@ -145,7 +145,7 @@ const STAGE_MESSAGES = [
   { text: "50+ systems shipped.", duration: 3500 },
   { text: "try: whoami", duration: 4000 },
   { text: "I build what doesn\u2019t exist yet.", duration: 4000 },
-  { text: "ask me anything.", duration: 5000 },
+  { text: "I know everything about Ahtesham\u2019s work.", duration: 4500 },
 ];
 
 const DATA_FRAGS = ["0x4a", "RAG", "LLM", "RLS"];
@@ -347,36 +347,72 @@ export function AgentEmoji({ size = 40, hovered = false, mood = "default" }: { s
     );
   }
 
+  // Proud/happy uses squinted arc-eyes (like disco but calmer)
+  const useArcEyes = mood === "proud";
+  // Confused uses asymmetric eyes (one higher)
+  const isConfused = mood === "confused";
+  const isSurprised = mood === "surprised";
+  const er = 2.5 * (s > 24 ? 1 : 0.9);
+
   return (
     <svg viewBox="0 0 48 48" width={s} height={s} fill="none" className="shrink-0" style={{ filter: s > 24 ? "drop-shadow(0 0 6px rgba(74,222,128,0.3))" : "none" }}>
-      {/* Eyes */}
-      <motion.circle
-        cx="16" cy="19" r={2.5 * (s > 24 ? 1 : 0.9)}
-        className={fc}
-        animate={
-          isSleeping ? { scaleY: 0.15 }
-          : hovered ? { scaleY: [1, 0.1, 1, 0.1, 1] }
-          : { scaleY: [1, 0.1, 1] }
-        }
-        transition={hovered
-          ? { duration: 0.5, ease: "easeInOut" }
-          : { duration: 0.3, delay: 2, repeat: isSleeping ? 0 : Infinity, repeatDelay: 3.5 }
-        }
-      />
-      <motion.circle
-        cx="32" cy="19" r={2.5 * (s > 24 ? 1 : 0.9)}
-        className={fc}
-        animate={
-          isSleeping ? { scaleY: 0.15 }
-          : mood === "curious" ? { cx: [32, 34, 32] }
-          : { scaleY: [1, 0.1, 1] }
-        }
-        transition={
-          mood === "curious"
-            ? { duration: 2, repeat: Infinity, ease: "easeInOut" }
-            : { duration: 0.3, delay: 2, repeat: isSleeping ? 0 : Infinity, repeatDelay: 3.5 }
-        }
-      />
+      {/* Eyes — mood-specific */}
+      {useArcEyes ? (
+        /* Proud: squinted happy arc-eyes */
+        <>
+          <motion.path d="M 12 19 Q 16 15 20 19" className={sc} strokeWidth="2" strokeLinecap="round" fill="none"
+            animate={{ d: ["M 12 19 Q 16 15 20 19", "M 12 20 Q 16 16 20 20", "M 12 19 Q 16 15 20 19"] }}
+            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+          />
+          <motion.path d="M 28 19 Q 32 15 36 19" className={sc} strokeWidth="2" strokeLinecap="round" fill="none"
+            animate={{ d: ["M 28 19 Q 32 15 36 19", "M 28 20 Q 32 16 36 20", "M 28 19 Q 32 15 36 19"] }}
+            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+          />
+        </>
+      ) : isSurprised ? (
+        /* Surprised: wide open eyes */
+        <>
+          <motion.circle cx="16" cy="18" r={er * 1.3} className={fc}
+            animate={{ scale: [1, 1.15, 1] }}
+            transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+          />
+          <motion.circle cx="32" cy="18" r={er * 1.3} className={fc}
+            animate={{ scale: [1, 1.15, 1] }}
+            transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut", delay: 0.1 }}
+          />
+        </>
+      ) : (
+        /* Default/curious/confused/waving/sleeping/dancing: circle eyes */
+        <>
+          <motion.circle
+            cx="16" cy={isConfused ? 17 : 19} r={er}
+            className={fc}
+            animate={
+              isSleeping ? { scaleY: 0.15 }
+              : hovered ? { scaleY: [1, 0.1, 1, 0.1, 1] }
+              : { scaleY: [1, 0.1, 1] }
+            }
+            transition={hovered
+              ? { duration: 0.5, ease: "easeInOut" }
+              : { duration: 0.3, delay: 2, repeat: isSleeping ? 0 : Infinity, repeatDelay: 3.5 }
+            }
+          />
+          <motion.circle
+            cx="32" cy={isConfused ? 21 : 19} r={er}
+            className={fc}
+            animate={
+              isSleeping ? { scaleY: 0.15 }
+              : mood === "curious" ? { cx: [32, 34, 32] }
+              : { scaleY: [1, 0.1, 1] }
+            }
+            transition={
+              mood === "curious"
+                ? { duration: 2, repeat: Infinity, ease: "easeInOut" }
+                : { duration: 0.3, delay: 2, repeat: isSleeping ? 0 : Infinity, repeatDelay: 3.5 }
+            }
+          />
+        </>
+      )}
       {/* Nose */}
       {s > 24 && (
         <line x1="24" y1="22" x2="24" y2="27" className={sc} strokeWidth="1.5" strokeLinecap="round" opacity="0.3" />
@@ -401,6 +437,13 @@ export function AgentEmoji({ size = 40, hovered = false, mood = "default" }: { s
         >
           z
         </motion.text>
+      )}
+      {/* Confused: raised eyebrow */}
+      {isConfused && s > 24 && (
+        <motion.line x1="28" y1="13" x2="36" y2="15" className={sc} strokeWidth="1.5" strokeLinecap="round"
+          animate={{ y1: [13, 11, 13], y2: [15, 14, 15] }}
+          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+        />
       )}
       {/* Mouth */}
       <motion.path
