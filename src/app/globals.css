@@ -504,6 +504,8 @@ html {
   50% { box-shadow: 0 0 12px 4px rgba(160, 120, 104, 0.12); }
 }
 
+/* ── Agent Stage — removed, using responsive classes instead ── */
+
 /* ── Agent Stage Animations ── */
 
 @keyframes scanner-sweep {
@@ -652,8 +654,12 @@ html {
 .light .agent-ring { border-color: rgba(109, 78, 62, 0.18); }
 .light .agent-ring-secondary { border-color: rgba(52, 64, 88, 0.14); }
 .light .agent-ring-dashed { border-color: rgba(109, 78, 62, 0.1); }
-/* Dark mode emoji body — default */
+/* Dark mode emoji body — default (card-tinted, not bright gradient) */
 .agent-emoji-body {
+  background: linear-gradient(145deg, color-mix(in srgb, var(--accent) 15%, var(--card)), var(--card) 40%, color-mix(in srgb, var(--accent-secondary) 12%, var(--card)));
+}
+/* Dark mode mood faces — match emoji body card tone */
+.mood-face {
   background: linear-gradient(145deg, color-mix(in srgb, var(--accent) 15%, var(--card)), var(--card) 40%, color-mix(in srgb, var(--accent-secondary) 12%, var(--card)));
 }
 /* Light mode emoji body — warm accent filled */
@@ -678,9 +684,9 @@ html {
 .light .mood-face .fill-accent-status { fill: #f0ede6 !important; }
 .light .mood-face .stroke-accent-status { stroke: #f0ede6 !important; }
 .light .agent-data-frag { color: rgba(109, 78, 62, 0.12) !important; }
-/* Speech bubble — both themes */
+/* Speech bubble — both themes (matches emoji body card tone) */
 .speech-bubble {
-  background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 40%, var(--card)), color-mix(in srgb, var(--accent-secondary) 35%, var(--card)));
+  background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 15%, var(--card)), var(--card) 40%, color-mix(in srgb, var(--accent-secondary) 12%, var(--card)));
 }
 .light .speech-bubble {
   background: linear-gradient(145deg, #a08070, #917060);
