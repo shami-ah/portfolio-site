@@ -141,9 +141,8 @@ function BuildPopup({ onDone }: { onDone: () => void }): React.ReactElement {
 /* ------------------------------------------------------------------ */
 
 const STAGE_MESSAGES = [
-  { text: "I\u2019m Ahtesham\u2019s portfolio agent.", duration: 3500 },
-  { text: "I\u2019m alive \u2014 click me", duration: 4000 },
-  { text: "ask about rate, stack, or projects", duration: 5000 },
+  { text: "I\u2019m Ahtesham\u2019s portfolio agent.", duration: 4000 },
+  { text: "I\u2019m alive \u2014 click me", duration: 5000 },
 ];
 
 const DATA_FRAGS = ["0x4a", "RAG", "LLM", "RLS"];
@@ -182,7 +181,7 @@ function StageSpeechBubble({ visible }: { visible: boolean }): React.ReactElemen
 
   if (!visible) return <></>;
 
-  const showCursor = charIdx < STAGE_MESSAGES[msgIdx].text.length;
+  const isTyping = charIdx < STAGE_MESSAGES[msgIdx].text.length;
 
   return (
     <motion.div
@@ -192,34 +191,42 @@ function StageSpeechBubble({ visible }: { visible: boolean }): React.ReactElemen
       transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
       className="w-full md:w-[280px] shrink-0"
     >
-      <div className="relative rounded-[22px] px-6 py-5 min-h-[72px] flex items-center"
-        style={{
-          background: "linear-gradient(135deg, rgba(20,21,24,0.6), rgba(20,21,24,0.35))",
-          border: "1px solid rgba(160,120,104,0.08)",
-          backdropFilter: "blur(20px)",
-          WebkitBackdropFilter: "blur(20px)",
-        }}
-      >
-        {/* Tail pointing left */}
-        <div className="absolute left-[-7px] top-1/2 -translate-y-1/2 w-0 h-0"
-          style={{ borderTop: "7px solid transparent", borderBottom: "7px solid transparent", borderRight: "7px solid rgba(160,120,104,0.08)" }} />
-        <div className="absolute left-[-5px] top-1/2 -translate-y-1/2 w-0 h-0"
-          style={{ borderTop: "5px solid transparent", borderBottom: "5px solid transparent", borderRight: "5px solid rgba(20,21,24,0.5)" }} />
-        <p className="font-mono text-sm leading-relaxed text-accent-status/70">
-          {typed}
-          {showCursor && <span className="inline-block w-[2px] h-[13px] bg-accent-status/50 ml-0.5 align-middle animate-pulse" />}
-        </p>
+      <div className="relative flex items-center gap-3">
+        {/* Connecting dots — brand gradient colored */}
+        <div className="hidden md:flex items-center gap-[10px] shrink-0">
+          <motion.span className="w-3 h-3 rounded-full bg-accent/30"
+            animate={{ opacity: [0.3, 0.7, 0.3] }}
+            transition={{ duration: 2, repeat: Infinity, delay: 0 }} />
+          <motion.span className="w-2.5 h-2.5 rounded-full bg-accent-secondary/25"
+            animate={{ opacity: [0.25, 0.6, 0.25] }}
+            transition={{ duration: 2, repeat: Infinity, delay: 0.35 }} />
+          <motion.span className="w-1.5 h-1.5 rounded-full bg-accent-secondary/20"
+            animate={{ opacity: [0.2, 0.5, 0.2] }}
+            transition={{ duration: 2, repeat: Infinity, delay: 0.7 }} />
+        </div>
+
+        {/* Bubble — brand gradient */}
+        <div className="speech-bubble relative flex-1 rounded-[22px] px-6 py-5 min-h-[72px] flex items-center border border-accent-secondary/20 backdrop-blur-xl"
+          style={{ background: "linear-gradient(135deg, var(--accent), var(--accent-secondary))" }}
+        >
+          <p className="speech-text font-mono text-sm leading-relaxed whitespace-nowrap text-white/80">
+            {typed}<span className="inline-block w-[2px] h-[13px] ml-0.5 align-middle rounded-full animate-pulse"
+              style={{ backgroundColor: "rgba(255,255,255,0.5)", animationDuration: isTyping ? "0.4s" : "1.2s" }} />
+          </p>
+        </div>
       </div>
     </motion.div>
   );
 }
 
+// Mood faces — vertical column on the left, evenly spaced, no overlap
+// 220px zone, 38px faces, need ~44px between centers
 const MOOD_POSITIONS = [
-  { mood: "curious" as const, label: "curious", style: { top: "-6px", left: "50%", marginLeft: "-19px" } },
-  { mood: "proud" as const, label: "happy", style: { top: "50%", right: "-6px", marginTop: "-19px" } },
-  { mood: "sleeping" as const, label: "sleepy", style: { bottom: "-6px", left: "50%", marginLeft: "-19px" } },
-  { mood: "confused" as const, label: "confused", style: { top: "50%", left: "-6px", marginTop: "-19px" } },
-  { mood: "dancing" as const, label: "dance!", style: { top: "12%", right: "8%" } },
+  { mood: "curious" as const, label: "curious", style: { top: "6px", left: "-22px" } },
+  { mood: "proud" as const, label: "happy", style: { top: "50px", left: "-22px" } },
+  { mood: "dancing" as const, label: "dance!", style: { top: "94px", left: "-22px" } },
+  { mood: "confused" as const, label: "confused", style: { top: "138px", left: "-22px" } },
+  { mood: "sleeping" as const, label: "sleepy", style: { top: "182px", left: "-22px" } },
 ];
 
 /* ------------------------------------------------------------------ */
@@ -1753,7 +1760,7 @@ export function AgentBar(): React.ReactElement {
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: 8 }}
           transition={{ duration: 0.3 }}
-          className="mb-2 rounded-xl glass-strong overflow-hidden"
+          className="mb-2 rounded-xl bg-card/95 backdrop-blur-xl border border-card-border overflow-hidden"
           style={{ boxShadow: "0 8px 32px rgba(0,0,0,0.3)" }}
         >
           <div className="px-4 py-3 font-mono text-small space-y-1">
@@ -1808,8 +1815,8 @@ export function AgentBar(): React.ReactElement {
     </AnimatePresence>
   );
 
-  // ── Morph handlers (must be before JSX variables — hooks order rule) ──
-  const handleEmojiClick = useCallback((): void => {
+  // ── Morph handlers (plain functions, not hooks) ──
+  const handleEmojiClick = (): void => {
     if (emojiMoodOverride === "dancing") return;
     setMorphPhase("morphing");
     setTimeout(() => {
@@ -1818,16 +1825,16 @@ export function AgentBar(): React.ReactElement {
       window.dispatchEvent(new CustomEvent("hide-chat-widget"));
       setTimeout(() => inputRef.current?.focus(), 200);
     }, 400);
-  }, [emojiMoodOverride]);
+  };
 
-  const handleCloseBar = useCallback((): void => {
+  const handleCloseBar = (): void => {
     setHeroAgentOpen(false);
     setMorphPhase("stage");
     setActiveCmd(null);
     setShownSteps(0);
     setShowResponse(false);
     setInput("");
-  }, []);
+  };
 
   // ── Shared suggestion chips ──
   const chipsContent = (
@@ -1881,96 +1888,35 @@ export function AgentBar(): React.ReactElement {
           /* ═══ AGENT STAGE — emoji + scanner + speech bubble ═══ */
           <motion.div
             key="agent-stage"
-            exit={{ opacity: 0, scale: 0.95 }}
-            transition={{ duration: 0.3 }}
-            className="flex flex-col md:flex-row items-center justify-center gap-6 md:gap-12"
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.6, filter: "blur(8px)" }}
+            transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
+            className="relative flex flex-col md:flex-row items-center justify-center gap-6 md:gap-0"
           >
-            {/* LEFT: Character zone */}
-            <div className="relative w-[220px] h-[220px] md:w-[300px] md:h-[300px] flex items-center justify-center shrink-0">
-              {/* Deep ambient glow */}
-              <div className="absolute w-[280px] h-[280px] md:w-[350px] md:h-[350px] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full pointer-events-none" style={{ background: "radial-gradient(ellipse, rgba(74,222,128,0.025) 0%, transparent 60%)" }} />
-              {/* Breathing mid glow */}
-              <div className="absolute w-[180px] h-[180px] md:w-[220px] md:h-[220px] top-1/2 left-1/2 rounded-full pointer-events-none" style={{ background: "radial-gradient(ellipse, rgba(74,222,128,0.04) 0%, transparent 70%)", animation: "glow-breathe 4s ease-in-out infinite" }} />
+            {/* Background gradient glow */}
+            <div className="absolute inset-0 -inset-x-8 pointer-events-none" style={{ background: "radial-gradient(ellipse at 35% 50%, color-mix(in srgb, var(--accent) 8%, transparent) 0%, color-mix(in srgb, var(--accent-secondary) 4%, transparent) 40%, transparent 70%)" }} />
 
-              {/* Scanner rings */}
-              <motion.div
-                animate={{ opacity: morphPhase === "stage" ? 1 : 0 }}
-                transition={{ duration: 0.3 }}
-                className="absolute inset-0 pointer-events-none"
-              >
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[140px] h-[140px] md:w-[170px] md:h-[170px] rounded-full border border-accent-status/[0.04]" />
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[190px] h-[190px] md:w-[240px] md:h-[240px] rounded-full border border-accent-status/[0.025]" />
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[220px] h-[220px] md:w-[300px] md:h-[300px] rounded-full border border-dashed border-accent-status/[0.015]" />
-                {/* Sweep */}
-                <div className="absolute top-1/2 left-1/2 w-[110px] md:w-[150px] h-[1px] origin-left" style={{ background: "linear-gradient(90deg, rgba(74,222,128,0.1), transparent 80%)", animation: "scanner-sweep 10s linear infinite" }} />
-              </motion.div>
-
-              {/* Data fragments */}
-              <motion.div
-                animate={{ opacity: morphPhase === "stage" ? 1 : 0 }}
-                transition={{ duration: 0.3 }}
-                className="absolute inset-0 pointer-events-none"
-              >
-                {DATA_FRAGS.map((frag, i) => (
-                  <span key={frag} className="absolute font-mono text-[9px] text-accent-status/[0.08]"
-                    style={{
-                      top: `${15 + i * 20}%`,
-                      left: i % 2 === 0 ? `${8 + i * 5}%` : undefined,
-                      right: i % 2 === 1 ? `${5 + i * 4}%` : undefined,
-                      animation: `drift-up ${10 + i * 2}s linear ${i * 2.5}s infinite`,
-                    }}
-                  >{frag}</span>
-                ))}
-              </motion.div>
-
-              {/* Glass platform shadow */}
-              <div className="absolute bottom-[35px] md:bottom-[45px] left-1/2 -translate-x-1/2 h-[6px] rounded-full pointer-events-none" style={{ background: "linear-gradient(90deg, transparent, rgba(74,222,128,0.06), rgba(74,222,128,0.08), rgba(74,222,128,0.06), transparent)", filter: "blur(3px)", animation: "platform-breathe 5s ease-in-out infinite" }} />
-
-              {/* Mood constellation — appears at 10s */}
+            {/* LEFT: Character zone — compact, emoji only */}
+            <div className="relative w-[180px] h-[180px] md:w-[220px] md:h-[220px] flex items-center justify-center shrink-0">
+              {/* Mood constellation */}
               <AnimatePresence>
                 {moodFacesVisible && morphPhase === "stage" && (
-                  <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.8 }}
-                    className="absolute inset-0 pointer-events-none"
-                  >
+                  <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.8 }} className="absolute inset-0 pointer-events-none">
                     {MOOD_POSITIONS.map((mp, i) => (
-                      <motion.button
-                        key={mp.mood}
-                        type="button"
-                        initial={{ opacity: 0, scale: 0.5 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{ delay: i * 0.1, type: "spring", stiffness: 300, damping: 20 }}
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          if (mp.mood === "dancing") {
-                            window.dispatchEvent(new CustomEvent("emoji-mood", { detail: "dancing" }));
-                          } else {
-                            window.dispatchEvent(new CustomEvent("emoji-mood", { detail: { mood: mp.mood, persistent: true } }));
-                          }
-                        }}
-                        className="absolute w-[34px] h-[34px] md:w-[38px] md:h-[38px] rounded-full flex items-center justify-center cursor-pointer pointer-events-auto transition-all duration-300 group hover:scale-[1.4] hover:z-20"
-                        style={{
-                          ...mp.style,
-                          background: "rgba(12,13,16,0.85)",
-                          border: "1px solid rgba(74,222,128,0.06)",
-                          backdropFilter: "blur(12px)",
-                          boxShadow: "0 4px 16px rgba(0,0,0,0.3)",
-                        }}
+                      <motion.button key={mp.mood} type="button" initial={{ opacity: 0, scale: 0.5 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: i * 0.1, type: "spring", stiffness: 300, damping: 20 }}
+                        onClick={(e) => { e.stopPropagation(); if (mp.mood === "dancing") { window.dispatchEvent(new CustomEvent("emoji-mood", { detail: "dancing" })); } else { window.dispatchEvent(new CustomEvent("emoji-mood", { detail: { mood: mp.mood, persistent: true } })); } }}
+                        className="mood-face absolute w-[34px] h-[34px] md:w-[38px] md:h-[38px] rounded-full flex items-center justify-center cursor-pointer pointer-events-auto transition-all duration-300 group hover:scale-[1.4] hover:z-20 border border-accent/20 shadow-md backdrop-blur-xl"
+                        style={{ ...mp.style, background: "linear-gradient(135deg, var(--accent), var(--accent-secondary))" }}
                         aria-label={mp.label}
                       >
                         <AgentEmoji size={16} mood={mp.mood} />
-                        <span className="absolute -bottom-5 left-1/2 -translate-x-1/2 font-mono text-[8px] text-accent-status/60 whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
-                          {mp.label}
-                        </span>
+                        <span className="absolute top-1/2 -translate-y-1/2 right-[calc(100%+8px)] font-mono text-[8px] text-accent-status/60 whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">{mp.label}</span>
                       </motion.button>
                     ))}
                   </motion.div>
                 )}
               </AnimatePresence>
-
               {/* The emoji character */}
               <div
                 className="relative z-10 cursor-pointer"
@@ -1979,78 +1925,62 @@ export function AgentBar(): React.ReactElement {
                 onMouseLeave={() => setEmojiHovered(false)}
               >
                 {/* Badge */}
-                <div className="absolute -top-7 left-1/2 -translate-x-1/2 z-20 inline-flex items-center gap-1.5 px-3 py-1 rounded-full font-mono text-[10px] text-accent-status whitespace-nowrap"
-                  style={{ background: "rgba(12,13,16,0.85)", border: "1px solid rgba(74,222,128,0.1)", backdropFilter: "blur(12px)" }}
+                <div className="agent-badge absolute -top-7 left-1/2 -translate-x-1/2 z-20 inline-flex items-center gap-1.5 px-3 py-1 rounded-full font-mono text-[10px] text-accent-status whitespace-nowrap bg-card/90 border border-accent-status/15 backdrop-blur-xl shadow-sm"
                 >
-                  <span className="w-[5px] h-[5px] rounded-full bg-accent-status animate-pulse" />
+                  <span className="agent-badge-dot w-[5px] h-[5px] rounded-full bg-accent-status animate-pulse" />
                   agent online
                 </div>
-
                 {/* Hover outer ring */}
-                <div className={`absolute -inset-[10px] rounded-full border border-accent-status/[0.06] pointer-events-none transition-all duration-500 ${emojiHovered ? "opacity-100 border-accent-status/15" : "opacity-0"}`} />
-
+                <div className={`absolute -inset-[10px] rounded-full border border-accent-status/[0.08] pointer-events-none transition-all duration-500 ${emojiHovered ? "opacity-100 border-accent-status/20" : "opacity-0"}`} />
                 {/* Emoji body */}
                 <motion.div
-                  className="relative w-[100px] h-[100px] md:w-[130px] md:h-[130px] rounded-full flex items-center justify-center"
+                  className="agent-emoji-body relative w-[100px] h-[100px] md:w-[130px] md:h-[130px] rounded-full flex items-center justify-center border border-accent/25 shadow-xl"
                   style={{
-                    background: "linear-gradient(145deg, #16171b 0%, #141518 50%, #111215 100%)",
-                    border: "1.5px solid rgba(74,222,128,0.18)",
+                    background: "linear-gradient(145deg, var(--accent), var(--accent-secondary))",
                     animation: "asymmetric-float 5s ease-in-out infinite, agent-stage-glow 3s ease-in-out infinite",
                   }}
                   whileHover={{ scale: 1.06 }}
                   transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
                 >
-                  {/* Inner light reflection */}
-                  <div className={`absolute top-[8%] left-[15%] w-[35%] h-[25%] rounded-full pointer-events-none transition-opacity duration-400 ${emojiHovered ? "opacity-100" : "opacity-50"}`}
+                  <div className={`absolute top-[8%] left-[15%] w-[35%] h-[25%] rounded-full pointer-events-none transition-opacity ${emojiHovered ? "opacity-100" : "opacity-50"}`}
                     style={{ background: "radial-gradient(ellipse, rgba(255,255,255,0.04), transparent)" }} />
                   <AnimatePresence mode="wait">
                     {emojiMoodOverride === "dancing" ? (
-                      <motion.div
-                        key="dance"
-                        initial={{ scale: 0.3, opacity: 0 }}
-                        animate={{ scale: 1, opacity: 1 }}
-                        exit={{ scale: 0.3, opacity: 0 }}
-                        transition={{ type: "spring", stiffness: 300, damping: 18 }}
-                      >
-                        <AgentEmoji size={65} mood="dancing" />
+                      <motion.div key="dance" initial={{ scale: 0.3, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.3, opacity: 0 }} transition={{ type: "spring", stiffness: 300, damping: 18 }}>
+                        <AgentEmoji size={80} mood="dancing" />
                       </motion.div>
                     ) : (
-                      <motion.div
-                        key="face"
-                        initial={{ scale: 0.5, opacity: 0 }}
-                        animate={{ scale: 1, opacity: 1 }}
-                        exit={{ scale: 0.4, opacity: 0 }}
-                      >
-                        <AgentEmoji size={55} hovered={emojiHovered} mood={emojiMoodOverride ?? persistentMood} />
+                      <motion.div key="face" initial={{ scale: 0.5, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.4, opacity: 0 }}>
+                        <AgentEmoji size={90} hovered={emojiHovered} mood={emojiMoodOverride ?? persistentMood} />
                       </motion.div>
                     )}
                   </AnimatePresence>
                 </motion.div>
               </div>
             </div>
-
             {/* RIGHT: Speech bubble */}
             <StageSpeechBubble visible={morphPhase === "stage"} />
           </motion.div>
         ) : (
-          /* ═══ INPUT BAR — after morph ═══ */
+          /* ═══ INPUT BAR ═══ */
           <motion.div
             key="agent-input"
-            initial={{ opacity: 0, y: 12, scale: 0.95, filter: "blur(4px)" }}
-            animate={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }}
-            exit={{ opacity: 0, y: 8, scale: 0.95 }}
-            transition={{ type: "spring", stiffness: 300, damping: 22 }}
+            initial={{ opacity: 0, scale: 0.7, filter: "blur(6px)" }}
+            animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
+            exit={{ opacity: 0, scale: 0.7, filter: "blur(6px)" }}
+            transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
             className="max-w-[460px] mx-auto"
           >
             {processingContent}
             <form
               onSubmit={onSubmit}
-              className="glass-strong rounded-2xl overflow-hidden"
-              style={{ boxShadow: "0 4px 24px rgba(0,0,0,0.25)" }}
+              className="card-gradient-border card-glow rounded-2xl bg-card/95 backdrop-blur-xl border border-card-border hover:border-transparent transition-colors duration-300"
+              style={{ boxShadow: "0 8px 32px rgba(0,0,0,0.25), 0 0 0 1px var(--card-border)" }}
             >
               <div className="flex items-center gap-3 px-5 py-4">
-                {/* Small emoji at left of bar */}
-                <div className="w-9 h-9 rounded-full bg-gradient-to-br from-card-border to-card border border-accent-status/20 flex items-center justify-center shrink-0">
+                <div className="w-9 h-9 rounded-full flex items-center justify-center shrink-0"
+                  style={{ background: "linear-gradient(135deg, var(--accent), var(--accent-secondary))", border: "1.5px solid var(--accent-secondary)" }}
+                >
                   <AgentEmoji size={24} mood={emojiMoodOverride ?? persistentMood} />
                 </div>
                 <input
@@ -2083,8 +2013,8 @@ export function AgentBar(): React.ReactElement {
       {chipsContent}
       <form
         onSubmit={onSubmit}
-        className="glass-strong rounded-xl overflow-hidden"
-        style={{ boxShadow: "0 4px 30px rgba(0,0,0,0.5), 0 0 60px rgba(0,0,0,0.2)" }}
+        className="card-gradient-border card-glow rounded-xl bg-card/95 backdrop-blur-xl border border-card-border hover:border-transparent transition-colors duration-300"
+        style={{ boxShadow: "0 8px 32px rgba(0,0,0,0.3), 0 0 0 1px var(--card-border)" }}
       >
         <div className="flex items-center gap-2 px-4 py-3">
           <span className="text-accent font-mono text-body font-semibold shrink-0">&#10095;</span>
@@ -2128,12 +2058,12 @@ export function AgentBar(): React.ReactElement {
             animate={{ opacity: 1, scale: 1, x: "-50%" }}
             exit={{
               opacity: 0,
-              scale: 0.6,
-              y: -300,
+              scale: 0.5,
+              y: -350,
               x: "-50%",
-              transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] },
+              transition: { duration: 1, ease: [0.4, 0, 0.2, 1] },
             }}
-            transition={{ type: "spring", stiffness: 400, damping: 20 }}
+            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
           >
             <div className="flex flex-col items-center gap-3">
               <motion.div
@@ -2181,7 +2111,7 @@ export function AgentBar(): React.ReactElement {
                       animate={{ opacity: 1, y: 0, scale: 1 }}
                       exit={{ opacity: 0, y: 12, scale: 0.95 }}
                       transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-                      className="flex items-center gap-3 glass-strong rounded-full px-4 py-2.5 cursor-pointer w-[calc(100vw-2rem)] max-w-[380px]"
+                      className="flex items-center gap-3 card-gradient-border rounded-full bg-card/95 backdrop-blur-xl border border-card-border px-4 py-2.5 cursor-pointer w-[calc(100vw-2rem)] max-w-[380px] hover:border-transparent transition-colors duration-300"
                       style={{
                         boxShadow: `0 4px 20px rgba(0,0,0,0.3), 0 0 12px ${p.glowColor}`,
                       }}
@@ -2191,7 +2121,8 @@ export function AgentBar(): React.ReactElement {
                       }}
                     >
                       <motion.div
-                        className="w-9 h-9 rounded-full bg-gradient-to-br from-card-border to-card border border-accent-status/20 flex items-center justify-center shrink-0"
+                        className="w-9 h-9 rounded-full flex items-center justify-center shrink-0"
+                        style={{ background: "linear-gradient(135deg, var(--accent), var(--accent-secondary))" }}
                         key={activeSection}
                         initial={{ scale: 0.8 }}
                         animate={{ scale: 1 }}

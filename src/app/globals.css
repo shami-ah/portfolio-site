@@ -28,25 +28,34 @@
   --gradient-brand: linear-gradient(135deg, #a07868, #4a5578);
   --gradient-brand-subtle: linear-gradient(135deg, rgba(160, 120, 104, 0.12), rgba(74, 85, 120, 0.12));
   --gradient-glow: radial-gradient(ellipse at 45% -5%, rgba(160, 120, 104, 0.07) 0%, rgba(74, 85, 120, 0.03) 45%, transparent 70%);
+  --wire-stroke: rgba(42, 37, 32, 0.6);
+  --wire-green: rgba(74, 222, 128, 0.3);
   color-scheme: dark;
 }
 
 /* ── Light Theme ── */
 .light {
-  --background: #e6e3da;
-  --foreground: #1a1b18;
-  --muted: #706d65;
+  --background: #f0ede6;
+  --foreground: #1a1a17;
+  --muted: #45423c;
   --accent: #6d4e3e;
-  --accent-glow: rgba(109, 78, 62, 0.08);
+  --accent-glow: rgba(109, 78, 62, 0.1);
   --accent-secondary: #344058;
-  --accent-status: #16a34a;
-  --card: #f4f2ec;
-  --card-border: #c4c0b6;
-  --card-hover: #eae7e0;
+  --accent-status: #15803d;
+  --card: #faf9f6;
+  --card-border: #a09a8e;
+  --card-hover: #f2f0ea;
 
   --gradient-brand: linear-gradient(135deg, #6d4e3e, #344058);
   --gradient-brand-subtle: linear-gradient(135deg, rgba(109, 78, 62, 0.1), rgba(52, 64, 88, 0.1));
-  --gradient-glow: radial-gradient(ellipse at 45% -5%, rgba(109, 78, 62, 0.05) 0%, rgba(52, 64, 88, 0.03) 45%, transparent 70%);
+  --gradient-glow: radial-gradient(ellipse at 45% -5%, rgba(109, 78, 62, 0.06) 0%, rgba(52, 64, 88, 0.04) 45%, transparent 70%);
+  --wire-stroke: rgba(140, 130, 118, 0.5);
+  --wire-green: rgba(21, 128, 61, 0.4);
+  --speech-dot-dim: rgba(144, 112, 96, 0.25);
+  --speech-dot-bright: rgba(144, 112, 96, 0.6);
+  --speech-dot-glow: rgba(144, 112, 96, 0.15);
+  --speech-text-color: rgba(109, 78, 62, 0.7);
+  --speech-cursor-color: rgba(109, 78, 62, 0.5);
   color-scheme: light;
 }
 
@@ -489,6 +498,12 @@ html {
   50% { box-shadow: 0 0 8px rgba(160, 120, 104, 0.25), 0 0 16px rgba(160, 120, 104, 0.1); }
 }
 
+/* ── Deploy pipeline pulse ── */
+@keyframes ready-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(160, 120, 104, 0.1); }
+  50% { box-shadow: 0 0 12px 4px rgba(160, 120, 104, 0.12); }
+}
+
 /* ── Agent Stage Animations ── */
 
 @keyframes scanner-sweep {
@@ -512,17 +527,15 @@ html {
 @keyframes agent-stage-glow {
   0%, 100% {
     box-shadow:
-      0 0 0 0 rgba(74, 222, 128, 0.15),
-      0 0 30px rgba(74, 222, 128, 0.05),
-      0 16px 48px rgba(0, 0, 0, 0.5),
-      inset 0 -2px 8px rgba(74, 222, 128, 0.03);
+      0 0 0 0 rgba(74, 222, 128, 0.2),
+      0 0 20px rgba(74, 222, 128, 0.08),
+      0 8px 24px rgba(0, 0, 0, 0.12);
   }
   50% {
     box-shadow:
-      0 0 0 12px rgba(74, 222, 128, 0),
-      0 0 50px rgba(74, 222, 128, 0.08),
-      0 16px 48px rgba(0, 0, 0, 0.5),
-      inset 0 -2px 12px rgba(74, 222, 128, 0.05);
+      0 0 0 8px rgba(74, 222, 128, 0),
+      0 0 35px rgba(74, 222, 128, 0.15),
+      0 8px 24px rgba(0, 0, 0, 0.12);
   }
 }
 
@@ -542,4 +555,161 @@ html {
 }
 .scroll-snap-align-start {
   scroll-snap-align: start;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   Light Theme — Depth, Contrast & Shadow System
+   Dark themes use glow for hierarchy. Light themes need shadows.
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* Cards get real shadows in light mode */
+.light .border {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+/* Stronger shadow for elevated cards */
+.light .rounded-2xl.border,
+.light .rounded-xl.border {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07), 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+/* Navigation sidebar elements — boost visibility */
+.light .nav-journey-idle {
+  background: rgba(109, 78, 62, 0.08);
+  border-color: rgba(109, 78, 62, 0.2);
+}
+.light .nav-journey-idle:hover {
+  border-color: rgba(109, 78, 62, 0.5);
+}
+
+/* Deploy pipeline pulse — use accent in light mode */
+.light .nav-journey-active {
+  background: rgba(21, 128, 61, 0.1);
+  border-color: rgba(21, 128, 61, 0.35);
+}
+
+/* Green status animations — darker green for light bg */
+.light .chat-glow {
+  animation: chat-glow-light 3s ease-in-out infinite;
+}
+@keyframes chat-glow-light {
+  0%, 100% { box-shadow: 0 0 6px rgba(21, 128, 61, 0.2), 0 0 16px rgba(21, 128, 61, 0.1); }
+  50% { box-shadow: 0 0 12px rgba(21, 128, 61, 0.35), 0 0 32px rgba(21, 128, 61, 0.15); }
+}
+
+/* Selection in light mode */
+.light ::selection {
+  background: rgba(109, 78, 62, 0.25);
+  color: #1a1a17;
+}
+
+/* Text gradient — ensure readability */
+.light .text-gradient {
+  filter: brightness(0.85);
+}
+
+/* Button gradient — slightly deeper in light */
+.light .btn-gradient {
+  box-shadow: 0 2px 8px rgba(109, 78, 62, 0.25), 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+.light .btn-gradient:hover {
+  box-shadow: 0 4px 16px rgba(109, 78, 62, 0.3), 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Terminal / code screenshots — contained with shadow + rounded corners */
+.light img[alt*="screenshot"],
+.light img[alt*="terminal"],
+.light .rasad-screenshot,
+.light [class*="bg-background"] img {
+  border-radius: 8px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.12), 0 1px 4px rgba(0, 0, 0, 0.08);
+}
+
+/* Agent stage glow — softer for light */
+.light .agent-stage-glow {
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08), 0 1px 4px rgba(0, 0, 0, 0.05) !important;
+}
+
+/* CV glow — use accent shadow */
+.light .cv-glow {
+  animation: cv-glow-light 3s ease-in-out infinite;
+}
+@keyframes cv-glow-light {
+  0%, 100% { box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06); }
+  50% { box-shadow: 0 2px 12px rgba(109, 78, 62, 0.15), 0 1px 4px rgba(0, 0, 0, 0.06); }
+}
+
+/* ── Light mode contrast & depth boosters ── */
+
+/* Architecture diagrams — invert dark blocks */
+.light .architecture-diagram {
+  filter: invert(0.88) hue-rotate(180deg);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+/* Agent stage — warm accent glow + depth in light mode */
+.light .agent-ring { border-color: rgba(109, 78, 62, 0.18); }
+.light .agent-ring-secondary { border-color: rgba(52, 64, 88, 0.14); }
+.light .agent-ring-dashed { border-color: rgba(109, 78, 62, 0.1); }
+/* Dark mode emoji body — default */
+.agent-emoji-body {
+  background: linear-gradient(145deg, color-mix(in srgb, var(--accent) 15%, var(--card)), var(--card) 40%, color-mix(in srgb, var(--accent-secondary) 12%, var(--card)));
+}
+/* Light mode emoji body — warm accent filled */
+.light .agent-emoji-body {
+  background: linear-gradient(145deg, #a08070, #917060) !important;
+  border-color: rgba(144, 112, 96, 0.25) !important;
+  animation-name: agent-stage-glow-light !important;
+}
+/* Emoji face features — cream on brown bg */
+.light .agent-emoji-body .fill-accent-status { fill: #f0ede6 !important; }
+.light .agent-emoji-body .stroke-accent-status { stroke: #f0ede6 !important; }
+/* Drop shadow on emoji — warm instead of green */
+.light .agent-emoji-body svg { filter: drop-shadow(0 0 6px rgba(109,78,62,0.3)) !important; }
+.light .agent-badge {
+  border-color: rgba(21, 128, 61, 0.2);
+}
+.light .mood-face {
+  background: linear-gradient(145deg, #a08070, #917060) !important;
+  border-color: rgba(144, 112, 96, 0.25) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+.light .mood-face .fill-accent-status { fill: #f0ede6 !important; }
+.light .mood-face .stroke-accent-status { stroke: #f0ede6 !important; }
+.light .agent-data-frag { color: rgba(109, 78, 62, 0.12) !important; }
+/* Speech bubble — both themes */
+.speech-bubble {
+  background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 40%, var(--card)), color-mix(in srgb, var(--accent-secondary) 35%, var(--card)));
+}
+.light .speech-bubble {
+  background: linear-gradient(145deg, #a08070, #917060);
+  border-color: rgba(144, 112, 96, 0.25);
+}
+.light .speech-bubble .speech-text {
+  color: #f0ede6 !important;
+}
+.light .speech-bubble .speech-text span {
+  background-color: #f0ede6 !important;
+}
+
+/* Chat modal — solid bg in light mode */
+.light .chat-modal-bg {
+  background-color: var(--card) !important;
+}
+@keyframes agent-stage-glow-light {
+  0%, 100% {
+    box-shadow:
+      0 0 0 0 rgba(109, 78, 62, 0.1),
+      0 0 24px rgba(109, 78, 62, 0.06),
+      0 12px 36px rgba(0, 0, 0, 0.07),
+      inset 0 -2px 8px rgba(109, 78, 62, 0.04);
+  }
+  50% {
+    box-shadow:
+      0 0 0 10px rgba(109, 78, 62, 0),
+      0 0 40px rgba(109, 78, 62, 0.09),
+      0 12px 36px rgba(0, 0, 0, 0.07),
+      inset 0 -2px 12px rgba(109, 78, 62, 0.06);
+  }
 }

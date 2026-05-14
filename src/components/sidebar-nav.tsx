@@ -192,7 +192,7 @@ export function SidebarNav(): React.ReactElement {
               {/* Base dashed wire — always visible underneath */}
               <path
                 d={w.path}
-                stroke="rgba(42,37,32,0.6)"
+                stroke="var(--wire-stroke)"
                 strokeWidth={1}
                 strokeDasharray="6 4"
                 opacity={w.completed ? 0 : 1}
@@ -203,7 +203,7 @@ export function SidebarNav(): React.ReactElement {
               {w.fill > 0 && (
                 <path
                   d={w.path}
-                  stroke="rgba(74,222,128,0.3)"
+                  stroke="var(--wire-green)"
                   strokeWidth={1.5}
                   strokeLinecap="round"
                   strokeDasharray={pathLen}
@@ -284,11 +284,11 @@ export function SidebarNav(): React.ReactElement {
               marginLeft: isActive ? -4 : 0,
               marginTop: isActive ? -4 : 0,
               borderRadius: 14,
-              background: isActive ? "rgba(160,120,104,0.12)" : "transparent",
+              background: isActive ? "var(--accent-glow)" : "transparent",
               boxShadow: isActive
-                ? "0 4px 24px rgba(160,120,104,0.2), inset 0 1px 0 rgba(255,255,255,0.06)"
+                ? "0 4px 24px var(--accent-glow), inset 0 1px 0 rgba(255,255,255,0.06)"
                 : "none",
-              border: isActive ? "1px solid rgba(160,120,104,0.15)" : "1px solid transparent",
+              border: isActive ? "1px solid color-mix(in srgb, var(--accent) 20%, transparent)" : "1px solid transparent",
             }}
           >
             {/* Pulse ring on active */}
