@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import { Inter, Space_Grotesk, JetBrains_Mono } from "next/font/google";
 import { CVDrawer } from "@/components/cv-drawer";
+import { ChatWidget } from "@/components/chat-widget";
 import { ThemeToggle } from "@/components/theme-toggle";
 import "./globals.css";
 
@@ -105,13 +107,17 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <head>
-        <script
+        <Script
+          id="theme-bootstrap"
+          strategy="beforeInteractive"
           dangerouslySetInnerHTML={{
             __html: `(function(){try{var t=localStorage.getItem('theme')||((document.cookie.match(/(?:^|;)\\s*theme=([^;]*)/)||[])[1]);if(t==='light'){document.documentElement.classList.remove('dark');document.documentElement.classList.add('light')}}catch(e){}})()`,
           }}
         />
-        <script
+        <Script
+          id="person-json-ld"
           type="application/ld+json"
+          strategy="beforeInteractive"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
               "@context": "https://schema.org",
@@ -149,7 +155,7 @@ export default function RootLayout({
           <ThemeToggle />
         </div>
         <CVDrawer />
-        {/* ChatWidget removed — unified agent handles all conversation */}
+        <ChatWidget />
         <script
           dangerouslySetInnerHTML={{
             __html: `if(location.hostname==='ahtesham.dev.wadwarehouse.com'){fetch('https://shami-command-center.vercel.app/api/server/track',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({path:location.pathname,referrer:document.referrer})}).catch(function(){});}`,

@@ -3,6 +3,7 @@
  *  Uses word-boundary matching (so "hi" doesn't match "which"). */
 
 const BOOK_URL = "https://ahtesham.dev.wadwarehouse.com/book";
+const BOOK_CALL_ACTION: KbAction = { label: "Book a 15-min call", href: BOOK_URL };
 
 export interface KbAction {
   label: string;
@@ -91,8 +92,24 @@ export const kb: KbEntry[] = [
       "what stack", "which stack",
     ],
     response:
-      "Two halves: (1) AI orchestration with Claude, OpenAI, multi-agent systems, human approval gates, RAG on pgvector, LangChain. (2) Full-stack TypeScript with React, Next.js, Supabase (Postgres + Edge + RLS), Stripe, Docker. Python for data pipelines and agent backends.",
+      "Core stack: TypeScript, React, Next.js, Supabase/Postgres, Docker, Stripe, and Python. On the AI side: Claude, OpenAI, RAG with pgvector, multi-agent orchestration, evals, and human approval gates. I usually choose the stack around the workflow, not the other way around.",
     tags: ["technical"],
+  },
+  {
+    id: "project-fit",
+    keywords: [
+      "project in", "project uses", "project stack", "can you handle",
+      "can you build", "can you work", "handle it", "build it", "fastapi project",
+      "django project", "flask project", "python backend", "python app",
+      "need someone", "looking for someone", "can you fix", "can you integrate",
+      "can you migrate", "can you improve", "can you help with",
+    ],
+    response:
+      "Likely, yes. If the work touches AI agents, automation, RAG, SaaS workflows, backend systems, frontend product work, integrations, or production hardening, it is within Ahtesham's lane. The right next step is a short scope call: current stack, what is broken or missing, constraints, and what outcome you need.",
+    tags: ["technical", "commercial"],
+    actions: [
+      BOOK_CALL_ACTION,
+    ],
   },
   {
     id: "react",
@@ -519,10 +536,120 @@ function escapeRegex(s: string): string {
   return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
+const KNOWN_CAPABILITY_TERMS: Record<string, string> = {
+  python: "Python backends, data pipelines, agent services, RAG, FastAPI, and AI evaluation work are explicitly in the portfolio.",
+  fastapi: "FastAPI is a good fit for async APIs around agents, ingestion, automation, and model-backed services.",
+  flask: "Flask is adjacent to the Python backend work shown here; FastAPI is the stronger default for new production services.",
+  django: "Django is adjacent rather than a headline stack here; Ahtesham can assess it, especially if the work involves AI, APIs, data, or production cleanup.",
+  typescript: "TypeScript is Ahtesham's primary production language.",
+  react: "React product work is directly in the portfolio.",
+  nextjs: "Next.js is a core stack for Ahtesham's production web work.",
+  supabase: "Supabase/Postgres is a core backend choice in the portfolio.",
+  postgres: "Postgres, RLS, pgvector, and production database design are directly relevant.",
+  postgresql: "Postgres, RLS, pgvector, and production database design are directly relevant.",
+  docker: "Dockerized development and deployment are directly in the portfolio.",
+  stripe: "Stripe billing, checkout, portals, and webhooks are directly in the portfolio.",
+  openai: "OpenAI integrations, structured outputs, and production AI workflows are directly in the portfolio.",
+  claude: "Claude/Anthropic workflows and Claude Code driven engineering are directly in the portfolio.",
+  anthropic: "Claude/Anthropic workflows and Claude Code driven engineering are directly in the portfolio.",
+  groq: "Groq-backed agent services are represented in the AI agent projects.",
+  rag: "RAG with pgvector, retrieval, reranking, and context assembly are directly in the portfolio.",
+  pgvector: "pgvector-backed semantic search and RAG are directly in the portfolio.",
+  langchain: "LangChain is listed in the AI orchestration stack, though Ahtesham chooses orchestration tools based on the workflow.",
+  firebase: "Firebase appears in the mobile/consumer app work and can be assessed project-by-project.",
+  "react native": "React Native and Expo are directly represented in the mobile work.",
+  expo: "Expo/React Native is directly represented in the mobile work.",
+  node: "Node.js is part of the TypeScript backend/tooling work.",
+  "nodejs": "Node.js is part of the TypeScript backend/tooling work.",
+};
+
+const OUT_OF_SCOPE_TERMS = [
+  "homework", "assignment", "essay", "crypto signal", "trading signal",
+  "medical advice", "legal advice", "tax advice", "surveillance",
+  "scrape private", "bypass", "hack", "malware",
+];
+
+function entry(
+  id: string,
+  response: string,
+  tags: string[] = ["commercial"],
+  actions: KbAction[] = [BOOK_CALL_ACTION],
+): KbEntry {
+  return { id, keywords: [], response, tags, actions };
+}
+
+function hasPhrase(lowered: string, phrases: string[]): boolean {
+  return phrases.some((phrase) => {
+    const escaped = escapeRegex(phrase);
+    if (phrase.includes(" ")) return new RegExp(`\\b${escaped}\\b`).test(lowered);
+    return new RegExp(`\\b${escaped}\\b`).test(lowered);
+  });
+}
+
+function isCapabilityQuery(lowered: string, tokens: string[]): boolean {
+  const asksAbility = /\b(can|could|would|will)\s+(you|ahtesham|he)\b/.test(lowered);
+  const hasWorkNoun = tokens.some((t) => ["project", "app", "website", "backend", "frontend", "saas", "tool", "system", "platform", "integration", "migration", "automation"].includes(t));
+  const hasWorkVerb = tokens.some((t) => ["build", "handle", "fix", "improve", "integrate", "migrate", "audit", "review", "ship", "develop", "create", "automate"].includes(t));
+  const hasBuyerIntent = hasPhrase(lowered, ["i have", "we have", "i need", "we need", "looking for", "need someone", "my project", "our project"]);
+  return (asksAbility && (hasWorkNoun || hasWorkVerb)) || (hasBuyerIntent && (hasWorkNoun || hasWorkVerb));
+}
+
+function mentionedCapabilities(lowered: string): string[] {
+  return Object.keys(KNOWN_CAPABILITY_TERMS).filter((term) => {
+    const normalized = term.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    if (term === "nextjs") return /\b(nextjs|next\.js)\b/.test(lowered);
+    return new RegExp(`\\b${normalized}\\b`).test(lowered);
+  });
+}
+
+function projectFitAnswer(lowered: string, tokens: string[]): KbEntry | null {
+  if (!isCapabilityQuery(lowered, tokens)) return null;
+
+  if (hasPhrase(lowered, OUT_OF_SCOPE_TERMS)) {
+    return entry(
+      "scope-boundary",
+      "That sounds outside what this portfolio can responsibly confirm. Ahtesham is best suited for production AI systems, SaaS/product engineering, automation, integrations, data/RAG work, and code quality/security tooling. If there is a legitimate software scope behind it, book a short call and share the constraints so he can assess it properly.",
+      ["commercial", "boundary"],
+    );
+  }
+
+  const mentioned = mentionedCapabilities(lowered);
+  if (mentioned.length > 0) {
+    const notes = mentioned.slice(0, 3).map((term) => KNOWN_CAPABILITY_TERMS[term]);
+    return entry(
+      "project-fit-known-stack",
+      `Yes, that is worth discussing. ${notes.join(" ")} The professional next step is a quick scope pass: what exists now, what outcome you need, timeline, access constraints, and whether this is a build, rescue, integration, or audit.`,
+      ["technical", "commercial"],
+    );
+  }
+
+  return entry(
+    "project-fit-assess",
+    `I can’t confirm that exact stack from the portfolio alone, but the right answer is not a blind yes or no. Ahtesham can assess whether it fits his lane: AI systems, automation, SaaS/product engineering, integrations, backend/frontend delivery, RAG/data workflows, or production hardening. Share the stack and goal on a short call, and he can tell you quickly whether he should take it or refer it out.`,
+    ["commercial", "boundary"],
+  );
+}
+
+function outOfScopeAnswer(lowered: string): KbEntry | null {
+  if (!hasPhrase(lowered, OUT_OF_SCOPE_TERMS)) return null;
+  return entry(
+    "out-of-scope",
+    "That is outside the portfolio scope I can answer from. This assistant is focused on Ahtesham's work, availability, stack, projects, and whether a software engagement is a fit. For anything sensitive or not represented here, the professional next step is to book a call and explain the context directly.",
+    ["boundary"],
+    hasPhrase(lowered, ["malware", "bypass", "hack", "surveillance", "scrape private"]) ? [] : [BOOK_CALL_ACTION],
+  );
+}
+
 export function findAnswer(query: string): KbEntry | null {
   const lowered = query.toLowerCase();
   const tokens = tokenize(query);
   if (tokens.length === 0) return null;
+
+  const scopedBoundary = outOfScopeAnswer(lowered);
+  if (scopedBoundary) return scopedBoundary;
+
+  const fit = projectFitAnswer(lowered, tokens);
+  if (fit) return fit;
 
   let bestScore = 0;
   let best: KbEntry | null = null;
@@ -559,5 +686,11 @@ export function findAnswer(query: string): KbEntry | null {
     }
   }
 
-  return bestScore >= 3 ? best : null;
+  if (bestScore >= 3) return best;
+
+  return entry(
+    "portfolio-handoff",
+    "I don’t have that specific detail in the portfolio context. I can still help route it professionally: if it relates to an AI system, SaaS/product build, automation, integration, backend/frontend work, RAG/data pipeline, or production rescue, book a short call and share the scope. Ahtesham can confirm fit quickly instead of guessing from incomplete context.",
+    ["boundary", "commercial"],
+  );
 }

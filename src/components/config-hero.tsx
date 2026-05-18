@@ -26,38 +26,48 @@ function StreamingWords({
   speed?: number;
   showCursor?: boolean;
 }): React.ReactElement {
-  const [count, setCount] = useState(0);
+  const [count, setCount] = useState(() => immediate ? segments.length : 0);
   const [cursorOn, setCursorOn] = useState(false);
 
   useEffect(() => {
     // Returning visitor — show everything instantly
     if (immediate) {
-      setCount(segments.length);
-      setCursorOn(false);
-      return;
+      const t = setTimeout(() => {
+        setCount(segments.length);
+        setCursorOn(false);
+      }, 0);
+      return () => clearTimeout(t);
     }
     // Replay reset
     if (!active) {
-      setCount(0);
-      setCursorOn(false);
-      return;
+      const t = setTimeout(() => {
+        setCount(0);
+        setCursorOn(false);
+      }, 0);
+      return () => clearTimeout(t);
     }
     // Done streaming — blink cursor briefly then hide
     if (count >= segments.length) {
       if (showCursor) {
-        setCursorOn(true);
-        const t = setTimeout(() => setCursorOn(false), 1200);
-        return () => clearTimeout(t);
+        const t1 = setTimeout(() => setCursorOn(true), 0);
+        const t2 = setTimeout(() => setCursorOn(false), 1200);
+        return () => {
+          clearTimeout(t1);
+          clearTimeout(t2);
+        };
       }
       return;
     }
     // Stream next word
-    setCursorOn(showCursor);
+    const cursorTimer = setTimeout(() => setCursorOn(showCursor), 0);
     const t = setTimeout(
       () => setCount((c) => c + 1),
       speed + Math.random() * speed * 0.5,
     );
-    return () => clearTimeout(t);
+    return () => {
+      clearTimeout(cursorTimer);
+      clearTimeout(t);
+    };
   }, [active, immediate, count, segments.length, speed, showCursor]);
 
   return (
@@ -123,12 +133,20 @@ export function ConfigHero(): React.ReactElement {
   // Materialization state — driven by particle arrival events
   const [materialized, setMaterialized] = useState<Set<string>>(new Set());
 
+  // Agent overlays — hero copy fades out while command output or chat is active
+  const [chatActive, setChatActive] = useState(false);
+  const [agentActive, setAgentActive] = useState(false);
+
   useEffect(() => {
-    // Returning visitor — show everything immediately
-    const isComplete = sessionStorage.getItem("boot-complete") === "1";
-    if (isComplete) {
-      setMaterialized(new Set(ALL_TARGETS));
-    }
+    const frame = requestAnimationFrame(() => {
+      try {
+        if (sessionStorage.getItem("boot-complete") === "1") {
+          setMaterialized(new Set(ALL_TARGETS));
+        }
+      } catch {
+        // noop
+      }
+    });
 
     // Particle-driven reveals
     const onReveal = (e: Event): void => {
@@ -169,13 +187,27 @@ export function ConfigHero(): React.ReactElement {
       setMaterialized(new Set());
     };
 
+    const onChatOpen = (): void => setChatActive(true);
+    const onChatClose = (): void => setChatActive(false);
+    const onAgentOpen = (): void => setAgentActive(true);
+    const onAgentClose = (): void => setAgentActive(false);
+
     window.addEventListener("hero-reveal", onReveal);
     window.addEventListener("boot-complete", onBootComplete);
     window.addEventListener("replay-intro", onReplay);
+    window.addEventListener("chat-overlay-open", onChatOpen);
+    window.addEventListener("chat-overlay-close", onChatClose);
+    window.addEventListener("agent-overlay-open", onAgentOpen);
+    window.addEventListener("agent-overlay-close", onAgentClose);
     return () => {
       window.removeEventListener("hero-reveal", onReveal);
       window.removeEventListener("boot-complete", onBootComplete);
       window.removeEventListener("replay-intro", onReplay);
+      window.removeEventListener("chat-overlay-open", onChatOpen);
+      window.removeEventListener("chat-overlay-close", onChatClose);
+      window.removeEventListener("agent-overlay-open", onAgentOpen);
+      window.removeEventListener("agent-overlay-close", onAgentClose);
+      cancelAnimationFrame(frame);
     };
   }, []);
 
@@ -189,6 +221,7 @@ export function ConfigHero(): React.ReactElement {
     [materialized],
   );
   const immediate = materialized.size === ALL_TARGETS.length;
+  const overlayActive = chatActive || agentActive;
 
   return (
     <section
@@ -209,49 +242,60 @@ export function ConfigHero(): React.ReactElement {
 
       <div className="relative w-full max-w-4xl mx-auto px-5 md:px-6 text-center">
 
-        {/* 1. Title — word-by-word streaming with cursor */}
-        <h1
-          data-hero="title"
-          className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-[1.1] mb-6"
-        >
-          <StreamingWords
-            segments={TITLE_SEGMENTS}
-            active={m("title")}
-            immediate={immediate}
-            speed={100}
-            showCursor
-          />
-        </h1>
-
-        {/* 3. Description — word-by-word streaming (faster, no cursor) */}
-        <p
-          data-hero="desc"
-          className="text-base md:text-lg text-muted max-w-xl mx-auto leading-relaxed mb-6"
-        >
-          <StreamingWords
-            segments={DESC_SEGMENTS}
-            active={m("desc")}
-            immediate={immediate}
-            speed={50}
-          />
-        </p>
-
-        {/* 4. Compact stats strip — proof, not claims */}
+        {/* Hero text content — fades out when agent/chat overlays are open */}
         <motion.div
-          data-hero="desc"
-          initial={false}
           animate={{
-            opacity: m("desc") ? 1 : 0,
-            y: m("desc") ? 0 : 8,
+            opacity: overlayActive ? 0 : 1,
+            y: overlayActive ? -12 : 0,
+            filter: overlayActive ? "blur(8px)" : "blur(0px)",
           }}
-          transition={{ duration: immediate ? 0 : 0.6, delay: immediate ? 0 : 0.3, ease: EASE }}
-          className="flex items-center justify-center gap-4 md:gap-6 mb-8 font-mono text-xs md:text-sm"
+          transition={{ duration: 0.4, ease: EASE }}
+          style={{ pointerEvents: overlayActive ? "none" : "auto" }}
         >
-          <span className="text-foreground font-semibold">{status.portfolio.productionSystems}+ <span className="text-muted/50 font-normal">systems shipped</span></span>
-          <span className="text-muted/20">/</span>
-          <span className="text-foreground font-semibold">10 <span className="text-muted/50 font-normal">showcased</span></span>
-          <span className="text-muted/20">/</span>
-          <span className="text-foreground font-semibold">{status.portfolio.yearsBuilding}+ <span className="text-muted/50 font-normal">years</span></span>
+          {/* 1. Title — word-by-word streaming with cursor */}
+          <h1
+            data-hero="title"
+            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-[1.1] mb-6"
+          >
+            <StreamingWords
+              segments={TITLE_SEGMENTS}
+              active={m("title")}
+              immediate={immediate}
+              speed={100}
+              showCursor
+            />
+          </h1>
+
+          {/* 3. Description — word-by-word streaming (faster, no cursor) */}
+          <p
+            data-hero="desc"
+            className="text-base md:text-lg text-muted max-w-xl mx-auto leading-relaxed mb-6"
+          >
+            <StreamingWords
+              segments={DESC_SEGMENTS}
+              active={m("desc")}
+              immediate={immediate}
+              speed={50}
+            />
+          </p>
+
+          {/* 4. Compact stats strip — proof, not claims */}
+          <motion.div
+            data-hero="desc"
+            initial={false}
+            animate={{
+              opacity: m("desc") ? 1 : 0,
+              y: m("desc") ? 0 : 8,
+            }}
+            transition={{ duration: immediate ? 0 : 0.6, delay: immediate ? 0 : 0.3, ease: EASE }}
+            className="flex items-center justify-center gap-4 md:gap-6 mb-8 font-mono text-xs md:text-sm"
+          >
+            <span className="text-foreground font-semibold">{status.portfolio.productionSystems}+ <span className="text-muted/50 font-normal">systems shipped</span></span>
+            <span className="text-muted/20">/</span>
+            <span className="text-foreground font-semibold">10 <span className="text-muted/50 font-normal">showcased</span></span>
+            <span className="text-muted/20">/</span>
+            <span className="text-foreground font-semibold">{status.portfolio.yearsBuilding}+ <span className="text-muted/50 font-normal">years</span></span>
+          </motion.div>
         </motion.div>
 
         {/* 5. Agent input container — agent-bar renders here via portal */}
@@ -265,15 +309,16 @@ export function ConfigHero(): React.ReactElement {
             filter: m("agent") ? "blur(0px)" : "blur(6px)",
           }}
           transition={{ duration: immediate ? 0 : 0.7, ease: EASE }}
-          className="mt-2 max-w-[700px] mx-auto"
+          className="mt-2 max-w-[700px] mx-auto min-h-[136px] md:min-h-[250px] flex items-center justify-center"
         />
 
-        {/* Building status */}
+        {/* Building status — also fades with overlays */}
         <motion.div
           initial={false}
-          animate={{ opacity: m("agent") ? 1 : 0 }}
-          transition={{ duration: immediate ? 0 : 0.5 }}
+          animate={{ opacity: overlayActive ? 0 : (m("agent") ? 1 : 0) }}
+          transition={{ duration: overlayActive ? 0.3 : (immediate ? 0 : 0.5) }}
           className="flex items-center gap-2 mt-5 justify-center"
+          style={{ pointerEvents: overlayActive ? "none" : "auto" }}
         >
           <span className="w-1.5 h-1.5 bg-accent rounded-full animate-pulse" />
           <p className="text-caption md:text-xs font-mono text-muted/40">

@@ -1,11 +1,10 @@
 "use client";
 
-import { useEffect, useRef, useState, useCallback } from "react";
+import { useEffect, useRef, useState } from "react";
 import ReactDOM from "react-dom";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { Check, X } from "lucide-react";
 import { openCvDrawer } from "@/components/cv-drawer";
-import { useTilt } from "@/lib/use-tilt";
 
 /* ------------------------------------------------------------------ */
 /*  Build pipeline popup — 5-second centered overlay                  */
@@ -159,10 +158,12 @@ export function StageSpeechBubble({ visible, emojiHovered }: { visible: boolean;
   // Type hover message character by character
   useEffect(() => {
     if (!emojiHovered) {
-      setHoverCharIdx(0);
-      setHoverTyped("");
+      const frame = requestAnimationFrame(() => {
+        setHoverCharIdx(0);
+        setHoverTyped("");
+      });
       clearTimeout(hoverTimerRef.current);
-      return;
+      return () => cancelAnimationFrame(frame);
     }
     if (hoverCharIdx < hoverMsg.length) {
       hoverTimerRef.current = setTimeout(() => {
@@ -196,7 +197,13 @@ export function StageSpeechBubble({ visible, emojiHovered }: { visible: boolean;
 
   // Reset when becoming visible
   useEffect(() => {
-    if (visible) { setMsgIdx(0); setCharIdx(0); setTyped(""); }
+    if (!visible) return;
+    const frame = requestAnimationFrame(() => {
+      setMsgIdx(0);
+      setCharIdx(0);
+      setTyped("");
+    });
+    return () => cancelAnimationFrame(frame);
   }, [visible]);
 
   if (!visible) return <></>;
@@ -440,14 +447,12 @@ export function AgentEmoji({ size = 40, hovered = false, mood = "default" }: { s
         />
       )}
       {/* Mouth */}
-      <motion.path
+      <path
         d={hovered && mood === "default" ? "M 14 29 Q 24 40 34 29" : m.rest}
         className={sc}
         strokeWidth={s > 24 ? 2 : 1.5}
         strokeLinecap="round"
         fill="none"
-        animate={(hovered && mood === "default") ? {} : m.animated ? { d: m.animated } : {}}
-        transition={{ duration: 2, repeat: Infinity, repeatDelay: 1, ease: "easeInOut" }}
       />
     </svg>
   );
@@ -467,7 +472,6 @@ export const TERM_STEPS = [
 ];
 
 export function WhoamiPopup({ onDone }: { onDone: () => void }): React.ReactElement {
-  const tilt = useTilt(10);
   const [visibleLines, setVisibleLines] = useState(0);
 
   useEffect(() => {
@@ -515,10 +519,6 @@ export function WhoamiPopup({ onDone }: { onDone: () => void }): React.ReactElem
         style={{ background: "radial-gradient(circle, rgba(160,120,104,0.12) 0%, transparent 70%)" }}
       />
       <motion.div
-        ref={tilt.ref}
-        onMouseMove={tilt.onMouseMove}
-        onMouseLeave={tilt.onMouseLeave}
-        style={tilt.style}
         initial={{ scale: 0, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         exit={{ scale: 0, opacity: 0 }}

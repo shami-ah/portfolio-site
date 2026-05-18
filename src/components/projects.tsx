@@ -7,7 +7,6 @@ import mermaid from "mermaid";
 import { projects, type ProjectData } from "@/data/projects";
 import { diagrams } from "@/data/diagrams";
 import { FadeUp } from "./motion";
-import { TypeLabel } from "./type-label";
 import { ProjectModal } from "./project-modal";
 import { ProjectMockup, type MockupKind } from "./project-mockup";
 import { AccessRequestModal } from "./access-request-modal";
@@ -249,7 +248,7 @@ function MermaidDiagram({ chart, className }: { chart: string; className?: strin
           edgeLabelBackground: "#09090b",
           nodeTextColor: "#e2e8f0",
         },
-        flowchart: { htmlLabels: true, curve: "basis", padding: 8, nodeSpacing: 20, rankSpacing: 30 },
+        flowchart: { htmlLabels: true, curve: "linear", padding: 8, nodeSpacing: 20, rankSpacing: 30 },
       });
       const safeId = reactId.replace(/[^a-zA-Z0-9_-]/g, "") || "diagram";
       const randomId = typeof crypto !== "undefined" && "randomUUID" in crypto
@@ -258,12 +257,13 @@ function MermaidDiagram({ chart, className }: { chart: string; className?: strin
       const id = `mermaid-${safeId}-${randomId.replace(/[^a-zA-Z0-9_-]/g, "")}`;
       try {
         const { svg: rendered } = await mermaid.render(id, chart);
+        const safeRendered = rendered.replace(/\sd="undefined"/g, ' d="M 0 0"');
         if (!cancelled) {
           window.clearTimeout(fallbackTimer);
-          setSvg(rendered);
+          setSvg(safeRendered);
           setShowFallback(false);
         }
-      } catch (err) {
+      } catch {
         if (!cancelled) {
           window.clearTimeout(fallbackTimer);
           setShowFallback(true);
@@ -1178,7 +1178,7 @@ export function Projects(): React.ReactElement {
         return others[next];
       });
     },
-    [others],
+    [others, setActiveProject],
   );
 
   return (
@@ -1191,7 +1191,7 @@ export function Projects(): React.ReactElement {
           <p className="text-sm font-mono text-accent mb-4 uppercase tracking-[0.3em]">
             what I&apos;ve shipped
           </p>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-[1.08] tracking-tight mb-5">
+          <h2 className="mx-auto max-w-[760px] text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-[1.08] tracking-tight mb-5 text-balance">
             4 production systems<span className="text-muted">.</span>
             <br />
             <span className="text-muted">Scroll to explore</span><span className="text-accent">.</span>

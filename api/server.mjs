@@ -189,7 +189,7 @@ const server = createServer(async (req, res) => {
     let modelId = "groq";
     try {
       const parsed = JSON.parse(body);
-      message = parsed.message?.trim() ?? "";
+      message = (parsed.message ?? parsed.query)?.trim() ?? "";
       modelId = parsed.model ?? "groq";
     } catch {
       return json(res, 400, { answer: "Invalid request." });
@@ -227,7 +227,10 @@ const server = createServer(async (req, res) => {
         data.choices?.[0]?.message?.content ??
         "Something went wrong. Try rephrasing your question.";
 
-      return json(res, 200, { answer });
+      return json(res, 200, {
+        answer,
+        actions: [{ label: "Book a 15-min call", href: "https://ahtesham.dev.wadwarehouse.com/book" }],
+      });
     } catch {
       return json(res, 200, {
         answer: "The AI agent is temporarily offline. Use the Book a Call button to schedule a quick chat.",

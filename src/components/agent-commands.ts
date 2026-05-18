@@ -3,7 +3,6 @@
 import { openCvDrawer } from "@/components/cv-drawer";
 
 declare global {
-  // eslint-disable-next-line no-var
   var __agentScrolling: boolean | undefined;
 }
 
@@ -259,9 +258,10 @@ export const commands: AgentCommand[] = [
     confidence: 0.95,
     steps: [
       { name: "classify_intent", detail: "label: conversational_query · conf 0.95", ms: 31 },
-      { name: "activate_thread", detail: "switching to conversational mode", ms: 8 },
+      { name: "open_chat", detail: "launching chat interface", ms: 8 },
     ],
-    response: "Thread mode active. Ask anything — I have full context on Ahtesham's work.",
+    response: "Opening chat — ask anything about Ahtesham's work.",
+    action: () => window.dispatchEvent(new CustomEvent("open-chat-widget")),
   },
   {
     keyword: "projects",
@@ -634,9 +634,10 @@ export const SECTION_CHIPS: Record<string, { label: string; command: string }[]>
     { label: "How I ship", command: "build" },
   ],
   projects: [
-    { label: "Skills", command: "skills" },
-    { label: "Chat", command: "chat" },
-    { label: "See career →", command: "career" },
+    { label: "OpenEvent", command: "openevent" },
+    { label: "CodeLens", command: "codelens" },
+    { label: "Gogaa", command: "gogaa" },
+    { label: "Rasad", command: "rasad" },
   ],
   log: [
     { label: "Rate", command: "rate" },

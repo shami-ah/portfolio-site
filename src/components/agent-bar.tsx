@@ -7,12 +7,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { X } from "lucide-react";
 import {
   type AgentCommand,
-  type AgentStep,
   commands,
   fuzzyMatch,
-  scrollTo,
-  PROJECT_KEYWORDS,
-  ALL_CHIPS,
   SECTION_ORDER,
   SECTION_PERSONALITY,
   PROJECT_METHODOLOGY,
@@ -28,21 +24,6 @@ import {
   MOOD_POSITIONS,
 } from "./agent-visuals";
 
-import {
-  type ThreadMessage,
-  AgentThread,
-  useStreamWords,
-  loadThreadHistory,
-  saveThreadHistory,
-  hasStoredHistory,
-  getStoredMessageCount,
-} from "./agent-thread";
-import {
-  type LiveStep,
-  type DispatchResult,
-  dispatch as agentDispatch,
-  localMatch,
-} from "@/lib/agent-dispatch";
 
 // Re-export for external consumers that import from agent-bar
 export { AgentEmoji } from "./agent-visuals";
@@ -50,10 +31,10 @@ export type { EmojiMood } from "./agent-visuals";
 
 
 /* ------------------------------------------------------------------ */
-/*  AgentBar — Button / Panel / Thread                                */
+/*  AgentBar — Button / Panel / Processing                            */
 /* ------------------------------------------------------------------ */
 
-type UIState = "hidden" | "button" | "panel" | "processing" | "responding" | "thread";
+type UIState = "hidden" | "button" | "panel" | "processing" | "responding";
 
 /* ------------------------------------------------------------------ */
 /*  Visitor memory — persists in sessionStorage                        */
@@ -95,11 +76,28 @@ function recordCommand(keyword: string): void {
   }
 }
 
+function hasSeenBoot(): boolean {
+  try {
+    if (typeof window === "undefined") return false;
+    return sessionStorage.getItem("boot-complete") === "1" || localStorage.getItem("boot-ever-seen") === "1";
+  } catch {
+    return false;
+  }
+}
+
+function loadSavedMood(): EmojiMood {
+  try {
+    if (typeof window === "undefined") return "default";
+    return (sessionStorage.getItem("agent-mood") as EmojiMood | null) ?? "default";
+  } catch {
+    return "default";
+  }
+}
+
 export function AgentBar(): React.ReactElement {
   const router = useRouter();
   const [uiState, setUiState] = useState<UIState>("hidden");
   const [input, setInput] = useState("");
-  const [buffer, setBuffer] = useState("");
   const [activeCmd, setActiveCmd] = useState<AgentCommand | null>(null);
   const [shownSteps, setShownSteps] = useState(0);
   const [showResponse, setShowResponse] = useState(false);
@@ -112,42 +110,56 @@ export function AgentBar(): React.ReactElement {
   const [heroAgentOpen, setHeroAgentOpen] = useState(false);
   const [morphPhase, setMorphPhase] = useState<"stage" | "morphing" | "bar">("stage");
   const [moodFacesVisible, setMoodFacesVisible] = useState(false);
-  const [blinkActive, setBlinkActive] = useState(false);
   const [emojiHovered, setEmojiHovered] = useState(false);
   const [emojiMoodOverride, setEmojiMoodOverride] = useState<EmojiMood | null>(null);
   const [persistentMood, setPersistentMood] = useState<EmojiMood>("default");
-  // Bubble suggestion phases: "hidden" → "dots" → "intro" → "hint" → "chips" → "dance-hint"
-  const [bubblePhase, setBubblePhase] = useState<"hidden" | "dots" | "intro" | "hint" | "chips" | "dance-hint">("hidden");
-  const bubbleTimerRef = useRef<ReturnType<typeof setTimeout>>(undefined);
-  const bubbleCycleRef = useRef(0); // 0-3 = mood picker cycles, then stops
-  const [danceHintShown, setDanceHintShown] = useState(false);
-  const [danceTried, setDanceTried] = useState(false);
   // Emoji position phases: "hidden" → "bottom" → "settled" (in hero mount)
   const [emojiPhase, setEmojiPhase] = useState<"hidden" | "bottom" | "settled">("hidden");
   const emojiHasSettled = useRef(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const navTimerRef = useRef<ReturnType<typeof setTimeout>>(undefined);
 
-  // Thread state (conversational mode)
-  const [threadMessages, setThreadMessages] = useState<ThreadMessage[]>([]);
-  const [liveSteps, setLiveSteps] = useState<LiveStep[]>([]);
-  const [isRestoredSession, setIsRestoredSession] = useState(false);
+  // Chat message count — tracked via ChatWidget events
+  const [chatMsgCount, setChatMsgCount] = useState(0);
   const [chatOpen, setChatOpen] = useState(false);
-  const streamWords = useStreamWords(setThreadMessages);
 
-  // Load thread history on mount
   useEffect(() => {
-    const history = loadThreadHistory();
-    if (history.length > 0) {
-      setThreadMessages(history);
-      setIsRestoredSession(true);
-    }
+    const frame = requestAnimationFrame(() => {
+      setPersistentMood(loadSavedMood());
+      if (!hasSeenBoot()) return;
+      setButtonReady(true);
+      setUiState("button");
+      setEmojiPhase("settled");
+      emojiHasSettled.current = true;
+      try { sessionStorage.setItem("emoji-settled", "1"); } catch { /* noop */ }
+    });
+    return () => cancelAnimationFrame(frame);
   }, []);
 
-  // Save thread history when messages change
   useEffect(() => {
-    if (threadMessages.length > 0) saveThreadHistory(threadMessages);
-  }, [threadMessages]);
+    const handler = (e: Event): void => {
+      setChatMsgCount((e as CustomEvent<number>).detail ?? 0);
+    };
+    window.addEventListener("chat-message-count", handler);
+    return () => window.removeEventListener("chat-message-count", handler);
+  }, []);
+
+  useEffect(() => {
+    const onOpen = (): void => {
+      setChatOpen(true);
+      setUiState("panel");
+      setMorphPhase("bar");
+      setHeroAgentOpen(true);
+      setTimeout(() => inputRef.current?.focus(), 120);
+    };
+    const onClose = (): void => setChatOpen(false);
+    window.addEventListener("chat-overlay-open", onOpen);
+    window.addEventListener("chat-overlay-close", onClose);
+    return () => {
+      window.removeEventListener("chat-overlay-open", onOpen);
+      window.removeEventListener("chat-overlay-close", onClose);
+    };
+  }, []);
 
   // Track which section the user is currently viewing
   useEffect(() => {
@@ -164,10 +176,12 @@ export function AgentBar(): React.ReactElement {
         }
         setActiveSection(current);
         recordSection(current);
-        // Track hero viewport — agent input lives in hero above this threshold
+        // Track hero viewport — keep inline agent until the hero has actually
+        // cleared the bottom agent area. This avoids a visible scroll jump.
         const heroEl = document.getElementById("hero");
         if (heroEl) {
-          const wasInHero = window.scrollY < heroEl.offsetHeight * 0.7;
+          const rect = heroEl.getBoundingClientRect();
+          const wasInHero = rect.bottom > 120;
           setInHeroViewport(wasInHero);
           // Reset emoji when leaving hero — always show emoji on return
           if (!wasInHero) {
@@ -183,39 +197,15 @@ export function AgentBar(): React.ReactElement {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Load persistent mood + dance state from sessionStorage
-  useEffect(() => {
-    try {
-      const saved = sessionStorage.getItem("agent-mood") as EmojiMood | null;
-      if (saved) setPersistentMood(saved);
-      if (sessionStorage.getItem("dance-tried") === "1") setDanceTried(true);
-    } catch { /* noop */ }
-  }, []);
-
   // Mood constellation — appears 10s after emoji settles in stage
   useEffect(() => {
     if (emojiPhase !== "settled" || heroAgentOpen || morphPhase !== "stage") {
-      setMoodFacesVisible(false);
-      return;
+      const t = setTimeout(() => setMoodFacesVisible(false), 0);
+      return () => clearTimeout(t);
     }
     const t = setTimeout(() => setMoodFacesVisible(true), 10000);
     return () => clearTimeout(t);
   }, [emojiPhase, heroAgentOpen, morphPhase]);
-
-  // Blink effect — every 4 seconds
-  useEffect(() => {
-    if (emojiPhase !== "settled" || morphPhase !== "stage") return;
-    const blink = (): void => {
-      setBlinkActive(true);
-      setTimeout(() => setBlinkActive(false), 150);
-    };
-    const t1 = setTimeout(blink, 2000);
-    const interval = setInterval(blink, 4000);
-    return () => { clearTimeout(t1); clearInterval(interval); };
-  }, [emojiPhase, morphPhase]);
-
-
-  const mem = loadMemory();
 
   // When viewing a project, show methodology chips instead of section chips
   const methodologyChips = viewingProject ? PROJECT_METHODOLOGY[viewingProject] ?? [] : [];
@@ -276,7 +266,6 @@ export function AgentBar(): React.ReactElement {
         }
       }
     };
-    const onClose = (): void => setViewingProject(null);
     window.addEventListener("project-opened", onOpen);
     // Listen for modal close via body attribute change
     const obs = new MutationObserver(() => {
@@ -310,16 +299,6 @@ export function AgentBar(): React.ReactElement {
     };
     window.addEventListener("hero-fully-written", onHeroReady);
 
-    // If boot was already seen (returning visitor or same-session navigation),
-    // skip all animation phases and settle emoji immediately
-    if (sessionStorage.getItem("boot-complete") === "1" || localStorage.getItem("boot-ever-seen") === "1") {
-      setButtonReady(true);
-      setUiState("button");
-      setEmojiPhase("settled");
-      emojiHasSettled.current = true;
-      try { sessionStorage.setItem("emoji-settled", "1"); } catch { /* noop */ }
-    }
-
     return () => {
       window.removeEventListener("agent-button-ready", onReady);
       window.removeEventListener("hero-fully-written", onHeroReady);
@@ -335,16 +314,27 @@ export function AgentBar(): React.ReactElement {
       setMorphPhase("stage");
       setMoodFacesVisible(false);
       setEmojiPhase("hidden");
-      setBubblePhase("hidden");
       setPersistentMood("default");
-      setDanceTried(false);
-      setDanceHintShown(false);
-      bubbleCycleRef.current = 0;
       emojiHasSettled.current = false;
       try { sessionStorage.removeItem("emoji-settled"); sessionStorage.removeItem("agent-mood"); sessionStorage.removeItem("dance-tried"); } catch { /* noop */ }
     };
     window.addEventListener("replay-intro", onReplay);
     return () => window.removeEventListener("replay-intro", onReplay);
+  }, []);
+
+  const runCommand = useCallback((cmd: AgentCommand): void => {
+    recordCommand(cmd.keyword);
+    setActiveCmd(cmd);
+    setShownSteps(0);
+    setShowResponse(false);
+    setUiState("processing");
+    // Easter eggs: fire mood change immediately so the hero emoji reacts while processing
+    if (cmd.intent === "easter_egg" && cmd.action) {
+      cmd.action();
+      if (cmd.keyword === "dance") {
+        try { sessionStorage.setItem("dance-tried", "1"); } catch { /* noop */ }
+      }
+    }
   }, []);
 
   // Hide agent when modal is open
@@ -361,12 +351,13 @@ export function AgentBar(): React.ReactElement {
   useEffect(() => {
     const onKey = (e: KeyboardEvent): void => {
       // Escape closes panel from anywhere (even when input is focused)
-      if (e.key === "Escape" && (uiState === "panel" || uiState === "processing" || uiState === "responding" || uiState === "thread")) {
+      if (e.key === "Escape" && (uiState === "panel" || uiState === "processing" || uiState === "responding")) {
         e.preventDefault();
         setActiveCmd(null);
         setShownSteps(0);
         setShowResponse(false);
         setInput("");
+        if (chatOpen) window.dispatchEvent(new CustomEvent("close-chat-widget"));
         setUiState("button");
         return;
       }
@@ -376,7 +367,7 @@ export function AgentBar(): React.ReactElement {
       if (e.metaKey || e.ctrlKey || e.altKey) return;
 
       // "/" focuses the panel
-      if (e.key === "/" && uiState !== "processing" && uiState !== "responding" && uiState !== "thread") {
+      if (e.key === "/" && uiState !== "processing" && uiState !== "responding") {
         e.preventDefault();
         setUiState("panel");
         setTimeout(() => inputRef.current?.focus(), 100);
@@ -386,19 +377,18 @@ export function AgentBar(): React.ReactElement {
       if (e.key.length !== 1) return;
       if (uiState === "processing" || uiState === "responding" || false /* flying-to-chat removed */) return;
 
-      setBuffer((prev) => {
-        const next = (prev + e.key.toLowerCase()).slice(-12);
-        const match = commands.find((c) => next.endsWith(c.keyword));
-        if (match) {
-          runCommand(match);
-          return "";
-        }
-        return next;
-      });
+      const keyBuffer = ((window as Window & { __agentKeyBuffer?: string }).__agentKeyBuffer ?? "") + e.key.toLowerCase();
+      const next = keyBuffer.slice(-12);
+      (window as Window & { __agentKeyBuffer?: string }).__agentKeyBuffer = next;
+      const match = commands.find((c) => next.endsWith(c.keyword));
+      if (match) {
+        runCommand(match);
+        (window as Window & { __agentKeyBuffer?: string }).__agentKeyBuffer = "";
+      }
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [uiState]);
+  }, [chatOpen, uiState, runCommand]);
 
   // Stage the steps one-by-one during processing
   useEffect(() => {
@@ -425,13 +415,14 @@ export function AgentBar(): React.ReactElement {
   useEffect(() => {
     if (uiState !== "responding" || !activeCmd) return;
 
-    // "chat" command — enter thread mode via AI
+    // "chat" command — open ChatWidget
     if (activeCmd.keyword === "chat") {
       const chatTimer = setTimeout(() => {
         setActiveCmd(null);
         setShownSteps(0);
         setShowResponse(false);
-        setUiState("thread");
+        setUiState("button");
+        window.dispatchEvent(new CustomEvent("open-chat-widget"));
       }, 1200);
       return () => clearTimeout(chatTimer);
     }
@@ -480,7 +471,7 @@ export function AgentBar(): React.ReactElement {
       window.removeEventListener("click", onInteract);
       window.removeEventListener("scroll", onInteract);
     };
-  }, [uiState, activeCmd]);
+  }, [uiState, activeCmd, router]);
 
   // Reappear as button after being hidden (post-command)
   useEffect(() => {
@@ -489,32 +480,38 @@ export function AgentBar(): React.ReactElement {
     return () => clearTimeout(t);
   }, [uiState, buttonReady]);
 
-  // Flying-to-chat animation completion — glow the chat trigger, then open chat
   useEffect(() => {
-    // Thread mode doesn't need special cleanup — messages persist
-    return;
-  }, [uiState]);
-
-  const runCommand = useCallback((cmd: AgentCommand): void => {
-    recordCommand(cmd.keyword);
-    setActiveCmd(cmd);
-    setShownSteps(0);
-    setShowResponse(false);
-    setUiState("processing");
-    // Easter eggs: fire mood change immediately so the hero emoji reacts while processing
-    if (cmd.intent === "easter_egg" && cmd.action) {
-      cmd.action();
-      if (cmd.keyword === "dance") {
-        setDanceTried(true);
-        try { sessionStorage.setItem("dance-tried", "1"); } catch { /* noop */ }
-      }
+    if (!inHeroViewport) return;
+    if (uiState === "processing" || uiState === "responding") {
+      window.dispatchEvent(new CustomEvent("agent-overlay-open"));
+      return () => {
+        window.dispatchEvent(new CustomEvent("agent-overlay-close"));
+      };
     }
-  }, []);
+  }, [inHeroViewport, uiState]);
+
+  useEffect(() => {
+    const focusMountShouldExist =
+      (!inHeroViewport && (uiState === "panel" || uiState === "processing" || uiState === "responding")) ||
+      (inHeroViewport && morphPhase === "bar" && (uiState === "button" || uiState === "panel" || uiState === "processing" || uiState === "responding"));
+
+    if (!focusMountShouldExist) return;
+    const frame = requestAnimationFrame(() => {
+      window.dispatchEvent(new CustomEvent("agent-focus-mount-ready"));
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [chatOpen, inHeroViewport, morphPhase, uiState]);
 
   const onSubmit = (e: React.FormEvent): void => {
     e.preventDefault();
-    const q = input.trim().toLowerCase();
+    const raw = input.trim();
+    const q = raw.toLowerCase();
     if (!q) return;
+
+    if (chatOpen) {
+      handleAiQuery(raw);
+      return;
+    }
 
     // 0. Project-context queries — "why", "how", "architecture" map to methodology chips
     if (viewingProject && methodologyChips.length > 0) {
@@ -538,76 +535,16 @@ export function AgentBar(): React.ReactElement {
     const fuzzy = fuzzyMatch(q, commands);
     if (fuzzy) { runCommand(fuzzy.command); return; }
     // 3. Free-text → AI dispatch (tier 2)
-    handleAiQuery(q);
+    handleAiQuery(raw);
   };
 
-  const handleAiQuery = async (query: string): Promise<void> => {
+  const handleAiQuery = (query: string): void => {
     setInput("");
-
-    // If not in hero viewport, scroll back to hero first
-    if (!inHeroViewport) {
-      window.scrollTo({ top: 0, behavior: "smooth" });
-      // Wait for scroll to settle before starting
-      await new Promise((r) => setTimeout(r, 600));
-    }
-
-    // Ensure input bar is open
-    if (morphPhase !== "bar") {
-      setMorphPhase("bar");
-      setHeroAgentOpen(true);
-      await new Promise((r) => setTimeout(r, 400));
-    }
-
-    setUiState("processing");
-    setLiveSteps([
-      { name: "local_match", status: "done", elapsedMs: 2 },
-      { name: "classify_intent", status: "running" },
-      { name: "generate_response", status: "pending" },
-    ]);
-
-    // Add user message to thread
-    const userMsg: ThreadMessage = { id: `u-${Date.now()}`, role: "user", content: query };
-    setThreadMessages((prev) => [...prev, userMsg]);
-
-    // Build history from thread messages (last 6)
-    const history = threadMessages.slice(-6).map((m) => ({ role: m.role, content: m.content }));
-
-    try {
-      const result = await agentDispatch(query, history, activeSection, "groq", (steps) => {
-        setLiveSteps(steps);
-      });
-
-      if (result.mode === "quick" && result.command) {
-        // AI recognized a known command — run it
-        setLiveSteps([]);
-        runCommand(result.command);
-        return;
-      }
-
-      // Conversational response — stream it into the thread
-      setLiveSteps([]);
-      setUiState("thread");
-      setIsRestoredSession(false);
-
-      const agentMsg: ThreadMessage = {
-        id: `a-${Date.now()}`,
-        role: "assistant",
-        content: "",
-        streaming: true,
-        actions: result.actions,
-      };
-      setThreadMessages((prev) => [...prev, agentMsg]);
-      await streamWords(agentMsg.id, result.response ?? "I couldn't process that. Try a specific question.");
-    } catch {
-      setLiveSteps([]);
-      setUiState("thread");
-      const errorMsg: ThreadMessage = {
-        id: `a-${Date.now()}`,
-        role: "assistant",
-        content: "Something went wrong. Try asking about projects, rate, or availability.",
-      };
-      setThreadMessages((prev) => [...prev, errorMsg]);
-    }
+    // Route free-text queries to ChatWidget
+    window.dispatchEvent(new CustomEvent("chat-with-query", { detail: query }));
+    setUiState("panel");
+    setMorphPhase("bar");
+    setHeroAgentOpen(true);
   };
 
   const onChipClick = (command: string): void => {
@@ -630,9 +567,6 @@ export function AgentBar(): React.ReactElement {
   // In hero viewport, auto-show panel if button state (agent is always "open" in hero)
   const effectiveUiState = isHeroInline && uiState === "button" ? "panel" : uiState;
 
-  // Chat open/minimized: hero emoji still visible, only pill bar hidden
-  const hidePillBar = false; // No separate chat widget — agent handles everything
-
   // ── Shared processing/response area (used by both hero and fixed modes) ──
   const processingContent = (
     <AnimatePresence>
@@ -642,7 +576,7 @@ export function AgentBar(): React.ReactElement {
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: 8 }}
           transition={{ duration: 0.3 }}
-          className="mb-2 rounded-xl bg-card/95 backdrop-blur-xl border border-card-border overflow-hidden"
+          className="rounded-xl bg-card/95 backdrop-blur-xl border border-card-border overflow-hidden"
           style={{ boxShadow: "0 8px 32px rgba(0,0,0,0.3)" }}
         >
           <div className="px-4 py-3 font-mono text-small space-y-1">
@@ -715,76 +649,17 @@ export function AgentBar(): React.ReactElement {
     setShownSteps(0);
     setShowResponse(false);
     setInput("");
+    if (chatOpen) window.dispatchEvent(new CustomEvent("close-chat-widget"));
   };
 
-  // ── Live pipeline (tier 2 AI processing) ──
-  const livePipelineContent = (
-    <AnimatePresence>
-      {liveSteps.length > 0 && (
-        <motion.div
-          initial={{ opacity: 0, y: 8 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: 8 }}
-          transition={{ duration: 0.3 }}
-          className="mb-2 rounded-xl bg-card/95 backdrop-blur-xl border border-card-border overflow-hidden"
-          style={{ boxShadow: "0 8px 32px rgba(0,0,0,0.3)" }}
-        >
-          <div className="px-4 py-3 font-mono text-small space-y-1">
-            <p className="text-caption font-mono text-accent uppercase tracking-wider mb-2">shami.agent</p>
-            {liveSteps.map((step, i) => {
-              const isLast = i === liveSteps.length - 1;
-              return (
-                <div key={step.name} className="flex items-baseline gap-2" style={{ opacity: step.status === "pending" ? 0.3 : 1 }}>
-                  <span className="text-muted/40">{isLast ? "└─" : "├─"}</span>
-                  <span className="text-foreground/80">{step.name}</span>
-                  {step.status === "done" && <span className="text-green-400 ml-auto shrink-0">&#10003;</span>}
-                  {step.status === "running" && <span className="ml-auto w-[10px] h-[10px] border-[1.5px] border-green-400/30 border-t-green-400 rounded-full animate-spin shrink-0" />}
-                  {step.elapsedMs !== undefined && <span className="text-muted/40 text-caption tabular-nums">{step.elapsedMs}ms</span>}
-                </div>
-              );
-            })}
-          </div>
-        </motion.div>
-      )}
-    </AnimatePresence>
-  );
-
-  // ── Thread content (conversational mode) ──
-  const threadContent = (
-    <AnimatePresence>
-      {uiState === "thread" && threadMessages.length > 0 && (
-        <motion.div
-          initial={{ opacity: 0, y: 8 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: 8 }}
-          transition={{ duration: 0.3 }}
-          className="mb-2 rounded-xl bg-card/95 backdrop-blur-xl border border-card-border overflow-hidden"
-          style={{ boxShadow: "0 8px 32px rgba(0,0,0,0.3)" }}
-        >
-          <div className="px-3 pt-3 pb-0">
-            <p className="text-[9px] font-mono text-accent uppercase tracking-[0.15em] mb-0">
-              shami.agent <span className="text-muted/40">thread</span>
-            </p>
-          </div>
-          <AgentThread
-            messages={threadMessages}
-            isRestoredSession={isRestoredSession}
-            maxHeight="300px"
-            onActionClick={(action) => {
-              if (action.type === "scroll") scrollTo(action.target);
-              else if (action.type === "drawer") window.dispatchEvent(new CustomEvent("open-cv-drawer"));
-              else if (action.type === "external" && action.target === "booking") window.open("https://ahtesham.dev.wadwarehouse.com/book", "_blank", "noopener,noreferrer");
-            }}
-          />
-        </motion.div>
-      )}
-    </AnimatePresence>
-  );
+  const handleChatToggle = (): void => {
+    window.dispatchEvent(new CustomEvent(chatOpen ? "close-chat-widget" : "open-chat-widget"));
+  };
 
   // ── Shared suggestion chips ──
   const chipsContent = (
     <AnimatePresence>
-      {(effectiveUiState === "panel" || uiState === "thread") && !activeCmd && (
+      {effectiveUiState === "panel" && !activeCmd && !chatOpen && (
         <motion.div
           initial={{ opacity: 0, y: 6 }}
           animate={{ opacity: 1, y: 0 }}
@@ -914,30 +789,43 @@ export function AgentBar(): React.ReactElement {
             animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
             exit={{ opacity: 0, scale: 0.7, filter: "blur(6px)" }}
             transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-            className="max-w-[calc(100vw-3rem)] md:max-w-[460px] mx-auto"
+            className="relative max-w-[calc(100vw-3rem)] md:max-w-[460px] mx-auto"
           >
-            <div className="max-h-[300px] md:max-h-[400px] overflow-y-auto">
+            <div
+              id="agent-focus-mount"
+              className="absolute bottom-full left-1/2 mb-3 w-full max-h-[300px] md:max-h-[400px] -translate-x-1/2 overflow-y-auto"
+            >
               {processingContent}
-              {livePipelineContent}
-              {threadContent}
             </div>
             <form
               onSubmit={onSubmit}
+              data-agent-bar="hero"
               className="card-gradient-border card-glow rounded-2xl bg-card/95 backdrop-blur-xl border border-card-border hover:border-transparent transition-colors duration-300"
               style={{ boxShadow: "0 8px 32px rgba(0,0,0,0.25), 0 0 0 1px var(--card-border)" }}
             >
               <div className="flex items-center gap-2 md:gap-3 px-3 py-3 md:px-5 md:py-4">
-                <div className="w-7 h-7 md:w-9 md:h-9 rounded-full flex items-center justify-center shrink-0"
-                  style={{ background: "linear-gradient(135deg, var(--accent), var(--accent-secondary))", border: "1.5px solid var(--accent-secondary)" }}
+                {/* Chat trigger — emoji dot with green indicator + badge */}
+                <button
+                  type="button"
+                  onClick={handleChatToggle}
+                  className="relative w-8 h-8 md:w-9 md:h-9 rounded-full glass border border-card-border hover:border-accent-status/40 hover:scale-110 transition-all shrink-0 cursor-pointer flex items-center justify-center"
+                  style={{ boxShadow: "0 0 10px rgba(74,222,128,0.2), 0 0 20px rgba(74,222,128,0.08), 0 2px 8px rgba(0,0,0,0.25)" }}
+                  aria-label="Open chat"
                 >
-                  <AgentEmoji size={24} mood={emojiMoodOverride ?? persistentMood} />
-                </div>
+                  <AgentEmoji size={20} mood={emojiMoodOverride ?? persistentMood} />
+                  <span className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-accent-status border-[1.5px] border-card" style={{ animation: "green-pulse 2s infinite" }} />
+                  {chatMsgCount > 0 && (
+                    <span className="absolute -top-1.5 -right-1.5 min-w-[16px] h-[16px] rounded-full bg-accent text-[9px] font-mono font-bold text-background flex items-center justify-center px-0.5">
+                      {chatMsgCount}
+                    </span>
+                  )}
+                </button>
                 <input
                   ref={inputRef}
                   type="text"
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
-                  placeholder="ask anything about Ahtesham's work..."
+                  placeholder={chatOpen ? "reply in chat..." : "ask anything about Ahtesham's work..."}
                   disabled={effectiveUiState === "processing" || effectiveUiState === "responding"}
                   className="flex-1 min-w-0 bg-transparent outline-none font-mono text-[11px] md:text-sm placeholder:text-muted/40 text-foreground disabled:opacity-50"
                 />
@@ -957,24 +845,42 @@ export function AgentBar(): React.ReactElement {
 
   // ── Fixed bottom panel content (❯ prompt style) ──
   const fixedPanelContent = (
-    <>
-      <div className="max-h-[300px] md:max-h-[400px] overflow-y-auto">
+    <div className="relative">
+      <div
+        id="agent-focus-mount"
+        className="absolute bottom-full left-1/2 mb-3 w-full max-h-[300px] md:max-h-[400px] -translate-x-1/2 overflow-y-auto"
+      >
         {processingContent}
       </div>
       {chipsContent}
       <form
         onSubmit={onSubmit}
+        data-agent-bar="fixed"
         className="card-gradient-border card-glow rounded-xl bg-card/95 backdrop-blur-xl border border-card-border hover:border-transparent transition-colors duration-300"
         style={{ boxShadow: "0 8px 32px rgba(0,0,0,0.3), 0 0 0 1px var(--card-border)" }}
       >
         <div className="flex items-center gap-2 px-3 py-2.5 md:px-4 md:py-3">
-          <span className="text-accent font-mono text-[11px] md:text-body font-semibold shrink-0">&#10095;</span>
+          <button
+            type="button"
+            onClick={handleChatToggle}
+            className="relative w-7 h-7 md:w-8 md:h-8 rounded-full glass border border-card-border hover:border-accent-status/40 hover:scale-110 transition-all shrink-0 cursor-pointer flex items-center justify-center"
+            style={{ boxShadow: "0 0 10px rgba(74,222,128,0.16), 0 2px 8px rgba(0,0,0,0.22)" }}
+            aria-label="Open chat"
+          >
+            <AgentEmoji size={18} mood={emojiMoodOverride ?? persistentMood} />
+            <span className="absolute -bottom-0.5 -right-0.5 w-2 h-2 rounded-full bg-accent-status border-[1.5px] border-card" style={{ animation: "green-pulse 2s infinite" }} />
+            {chatMsgCount > 0 && (
+              <span className="absolute -top-1.5 -right-1.5 min-w-[15px] h-[15px] rounded-full bg-accent text-[8px] font-mono font-bold text-background flex items-center justify-center px-0.5">
+                {chatMsgCount}
+              </span>
+            )}
+          </button>
           <input
             ref={inputRef}
             type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            placeholder={viewingProject ? `ask about this project...` : inputConfig.placeholder}
+            placeholder={chatOpen ? "reply in chat..." : (viewingProject ? `ask about this project...` : inputConfig.placeholder)}
             disabled={effectiveUiState === "processing" || effectiveUiState === "responding"}
             className="flex-1 min-w-0 bg-transparent outline-none font-mono text-[11px] md:text-small placeholder:text-muted/35 text-foreground disabled:opacity-50"
           />
@@ -985,6 +891,7 @@ export function AgentBar(): React.ReactElement {
               setShownSteps(0);
               setShowResponse(false);
               setInput("");
+              if (chatOpen) window.dispatchEvent(new CustomEvent("close-chat-widget"));
               setUiState("button");
             }}
             aria-label="Close agent panel"
@@ -994,7 +901,7 @@ export function AgentBar(): React.ReactElement {
           </button>
         </div>
       </form>
-    </>
+    </div>
   );
 
   return (
@@ -1043,12 +950,12 @@ export function AgentBar(): React.ReactElement {
       </AnimatePresence>
 
       {/* ── Hero inline agent (portal into hero section — emoji settled or agent open) ── */}
-      {isHeroInline && emojiPhase === "settled" && (effectiveUiState === "panel" || effectiveUiState === "processing" || effectiveUiState === "responding" || uiState === "thread") && heroMount &&
+      {isHeroInline && emojiPhase === "settled" && (effectiveUiState === "panel" || effectiveUiState === "processing" || effectiveUiState === "responding") && heroMount &&
         ReactDOM.createPortal(heroContent, heroMount)
       }
 
       {/* ── Fixed bottom agent (when scrolled past hero, hidden when chat active) ── */}
-      {!isHeroInline && !hidePillBar && (
+      {!isHeroInline && (
         <>
           {/* Agent pill bar (button state — shows label + input) */}
           <AnimatePresence>
@@ -1062,7 +969,8 @@ export function AgentBar(): React.ReactElement {
                       animate={{ opacity: 1, y: 0, scale: 1 }}
                       exit={{ opacity: 0, y: 12, scale: 0.95 }}
                       transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-                      className="flex items-center gap-2 md:gap-3 card-gradient-border rounded-full bg-card/95 backdrop-blur-xl border border-card-border px-3 py-1.5 md:px-4 md:py-2.5 cursor-pointer w-[260px] md:w-[calc(100vw-2rem)] max-w-[380px] hover:border-transparent transition-colors duration-300"
+                      data-agent-pill="fixed"
+                      className="flex items-center gap-2 md:gap-3 card-gradient-border rounded-full bg-card/95 backdrop-blur-xl border border-card-border px-3 py-1.5 md:px-4 md:py-2.5 cursor-pointer w-[220px] md:w-[240px] max-w-[calc(100vw-2rem)] hover:border-transparent transition-colors duration-300"
                       style={{
                         boxShadow: `0 4px 20px rgba(0,0,0,0.3), 0 0 12px ${p.glowColor}`,
                       }}
@@ -1071,16 +979,22 @@ export function AgentBar(): React.ReactElement {
                         setTimeout(() => inputRef.current?.focus(), 150);
                       }}
                     >
-                      <motion.div
-                        className="w-7 h-7 md:w-9 md:h-9 rounded-full flex items-center justify-center shrink-0"
-                        style={{ background: "linear-gradient(135deg, var(--accent), var(--accent-secondary))" }}
-                        key={activeSection}
-                        initial={{ scale: 0.8 }}
-                        animate={{ scale: 1 }}
-                        transition={{ type: "spring", stiffness: 500, damping: 15 }}
-                      >
-                        <AgentEmoji size={24} mood={emojiMoodOverride ?? (activeSection === "projects" ? "curious" : activeSection === "log" ? "proud" : activeSection === "contact" ? "waving" : persistentMood)} />
-                      </motion.div>
+	                      <motion.div
+	                        className="relative w-7 h-7 md:w-9 md:h-9 rounded-full glass border border-card-border flex items-center justify-center shrink-0"
+	                        style={{ boxShadow: "0 0 10px rgba(74,222,128,0.14), 0 2px 8px rgba(0,0,0,0.22)" }}
+	                        key={activeSection}
+	                        initial={{ scale: 0.8 }}
+	                        animate={{ scale: 1 }}
+	                        transition={{ type: "spring", stiffness: 500, damping: 15 }}
+	                      >
+	                        <AgentEmoji size={24} mood={emojiMoodOverride ?? (activeSection === "projects" ? "curious" : activeSection === "log" ? "proud" : activeSection === "contact" ? "waving" : persistentMood)} />
+	                        <span className="absolute -bottom-0.5 -right-0.5 w-2 h-2 md:w-2.5 md:h-2.5 rounded-full bg-accent-status border-[1.5px] border-card" style={{ animation: "green-pulse 2s infinite" }} />
+	                        {chatMsgCount > 0 && (
+	                          <span className="absolute -top-1.5 -right-1.5 min-w-[15px] h-[15px] rounded-full bg-accent text-[8px] font-mono font-bold text-background flex items-center justify-center px-0.5">
+	                            {chatMsgCount}
+	                          </span>
+	                        )}
+	                      </motion.div>
                       <span className="flex-1 font-mono text-[11px] md:text-small text-muted/25 bg-foreground/[0.03] rounded-full px-3 py-0.5 md:px-4 md:py-1 truncate">
                         {inputConfig.placeholder}
                       </span>

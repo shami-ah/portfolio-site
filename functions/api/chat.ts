@@ -184,8 +184,8 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
   let message = "";
   let modelId = "groq";
   try {
-    const body = (await request.json()) as { message?: string; model?: string };
-    message = body.message?.trim() ?? "";
+    const body = (await request.json()) as { message?: string; query?: string; model?: string };
+    message = (body.message ?? body.query)?.trim() ?? "";
     modelId = body.model ?? "groq";
   } catch {
     return new Response(JSON.stringify({ answer: "Invalid request." }), {
@@ -233,7 +233,10 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
       data.choices?.[0]?.message?.content ??
       "Something went wrong. Try rephrasing your question.";
 
-    return new Response(JSON.stringify({ answer }), {
+    return new Response(JSON.stringify({
+      answer,
+      actions: [{ label: "Book a 15-min call", href: "https://ahtesham.dev.wadwarehouse.com/book" }],
+    }), {
       status: 200,
       headers: {
         "Content-Type": "application/json",

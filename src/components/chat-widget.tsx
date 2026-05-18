@@ -1,13 +1,12 @@
 "use client";
 
 import { useState, useEffect, useRef, useCallback, useMemo } from "react";
+import ReactDOM from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Minus, Maximize2, Send, Calendar, FileText, ArrowRight } from "lucide-react";
+import { X, Minus, Calendar, FileText, ArrowRight } from "lucide-react";
 import { findAnswer, starters } from "@/lib/kb";
 import type { KbAction } from "@/lib/kb";
 import { openCvDrawer } from "@/components/cv-drawer";
-import { AgentEmoji } from "@/components/agent-bar";
-import { useTilt } from "@/lib/use-tilt";
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
@@ -21,19 +20,55 @@ interface Message {
   actions?: KbAction[];
 }
 
-type WidgetState = "closed" | "open" | "minimized";
+type WidgetState = "closed" | "open";
 
 const MODELS = [
-  { id: "groq", label: "Concise", provider: "Llama 3.3" },
-  { id: "claude", label: "Thoughtful", provider: "Llama 3.3" },
-  { id: "gpt4", label: "Structured", provider: "Llama 3.3" },
-  { id: "nvidia", label: "Technical", provider: "Llama 3.3" },
+  { id: "groq", label: "Llama 3.3", provider: "Groq" },
+  { id: "claude", label: "Claude 4", provider: "Anthropic" },
+  { id: "gpt4", label: "GPT-4o", provider: "OpenAI" },
+  { id: "nvidia", label: "Nemotron", provider: "NVIDIA" },
 ] as const;
 
 const BOOK_URL = "https://ahtesham.dev.wadwarehouse.com/book";
 
 const FALLBACK =
   "That's outside what I know about Ahtesham's work right now. Try asking about his rate, stack, availability, tools, or how he works with clients.";
+
+const CHAT_STORAGE_KEY = "portfolio-chat-history";
+const CHAT_MAX_AGE = 7 * 24 * 60 * 60 * 1000; // 7 days
+const CHAT_MESSAGE_LIMIT = 20;
+const LIMIT_MESSAGE =
+  "This chat has reached its 20-message limit for this visit. You can still book a call or refresh the conversation later.";
+
+function loadChatHistory(): Message[] {
+  try {
+    if (typeof localStorage === "undefined") return [];
+    const raw = localStorage.getItem(CHAT_STORAGE_KEY);
+    if (!raw) return [];
+    const { messages, timestamp } = JSON.parse(raw) as { messages: Message[]; timestamp: number };
+    if (Date.now() - timestamp > CHAT_MAX_AGE) {
+      localStorage.removeItem(CHAT_STORAGE_KEY);
+      return [];
+    }
+    return messages.map((m) => ({ ...m, streaming: false }));
+  } catch {
+    return [];
+  }
+}
+
+function saveChatHistory(messages: Message[]): void {
+  try {
+    if (typeof localStorage === "undefined") return;
+    const safeMessages = messages.map((m) => ({ ...m, streaming: false }));
+    if (safeMessages.length === 0) {
+      localStorage.removeItem(CHAT_STORAGE_KEY);
+      return;
+    }
+    localStorage.setItem(CHAT_STORAGE_KEY, JSON.stringify({ messages: safeMessages, timestamp: Date.now() }));
+  } catch {
+    // ignore storage quota/private mode failures
+  }
+}
 
 /* ------------------------------------------------------------------ */
 /*  Rich text — clickable URLs and emails                              */
@@ -120,13 +155,18 @@ function AmbientMotes(): React.ReactElement {
   const motes = useMemo<Mote[]>(() => {
     const result: Mote[] = [];
     for (let i = 0; i < 8; i++) {
+      const seed = (i + 1) * 9301;
+      const rand = (offset: number): number => {
+        const x = Math.sin(seed + offset) * 10000;
+        return x - Math.floor(x);
+      };
       result.push({
         id: i,
-        x: 10 + Math.random() * 80,  // % from left
-        y: 10 + Math.random() * 80,  // % from top
-        size: 1.5 + Math.random() * 2.5,
-        duration: 6 + Math.random() * 8,
-        delay: Math.random() * 4,
+        x: 10 + rand(1) * 80,  // % from left
+        y: 10 + rand(2) * 80,  // % from top
+        size: 1.5 + rand(3) * 2.5,
+        duration: 6 + rand(4) * 8,
+        delay: rand(5) * 4,
       });
     }
     return result;
@@ -184,104 +224,88 @@ const panelVariants = {
   },
 };
 
-const minimizedVariants = {
-  hidden: { opacity: 0, y: 10, scale: 0.9 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    scale: 1,
-    transition: { type: "spring" as const, stiffness: 400, damping: 30 },
-  },
-  exit: { opacity: 0, y: 10, scale: 0.9, transition: { duration: 0.15 } },
-};
+function buildContextualQuery(query: string, messages: Message[]): string {
+  const lower = query.toLowerCase();
+  const needsContext =
+    /\b(it|that|this|those|them|same|there)\b/.test(lower)
+    || /\b(can you handle|can you do|what about|how about)\b/.test(lower);
+
+  if (!needsContext) return query;
+
+  const previousUser = [...messages].reverse().find((m) => m.role === "user")?.content;
+  if (!previousUser) return query;
+
+  const previousAssistant = [...messages].reverse().find((m) => m.role === "assistant" && m.content.trim())?.content;
+  if (!previousAssistant) return `${previousUser}\nFollow-up: ${query}`;
+
+  return `Previous user question: ${previousUser}\nPrevious answer: ${previousAssistant.slice(0, 500)}\nFollow-up: ${query}`;
+}
+
+function toSentences(answer: string): string[] {
+  return answer
+    .split(/(?<=[.!?])\s+/)
+    .map((s) => s.trim())
+    .filter(Boolean);
+}
+
+function applyModelVoice(answer: string, model: string): string {
+  const sentences = toSentences(answer);
+  if (sentences.length === 0) return answer;
+
+  if (model === "claude") {
+    return `Concise read: ${answer}\n\nFit check: scope, constraints, timeline, and production risk decide the next move.`;
+  }
+
+  if (model === "gpt4") {
+    if (sentences.length === 1) return `Structured answer:\n- ${sentences[0]}`;
+    return `Structured answer:\n${sentences.slice(0, 4).map((s) => `- ${s}`).join("\n")}`;
+  }
+
+  if (model === "nvidia") {
+    return `${answer}\n\nSystems lens: confirm inputs, outputs, integration points, failure modes, and deployment constraints before implementation.`;
+  }
+
+  return answer;
+}
 
 /* ------------------------------------------------------------------ */
 /*  ChatWidget                                                         */
 /* ------------------------------------------------------------------ */
 
-const CHAT_STORAGE_KEY = "portfolio-chat-history";
-const CHAT_MAX_AGE = 30 * 60 * 1000; // 30 minutes
-
-function loadChatHistory(): Message[] {
-  try {
-    const raw = localStorage.getItem(CHAT_STORAGE_KEY);
-    if (!raw) return [];
-    const { messages, timestamp } = JSON.parse(raw) as { messages: Message[]; timestamp: number };
-    if (Date.now() - timestamp > CHAT_MAX_AGE) {
-      localStorage.removeItem(CHAT_STORAGE_KEY);
-      return [];
-    }
-    return messages.map((m) => ({ ...m, streaming: false }));
-  } catch {
-    return [];
-  }
-}
-
-function saveChatHistory(messages: Message[]): void {
-  try {
-    const finished = messages.filter((m) => !m.streaming);
-    if (finished.length === 0) {
-      localStorage.removeItem(CHAT_STORAGE_KEY);
-      return;
-    }
-    localStorage.setItem(CHAT_STORAGE_KEY, JSON.stringify({ messages: finished, timestamp: Date.now() }));
-  } catch {
-    // quota exceeded — ignore
-  }
-}
-
 export function ChatWidget(): React.ReactElement {
   const [state, setState] = useState<WidgetState>("closed");
-  const [messages, setMessages] = useState<Message[]>(() => loadChatHistory());
-  const [input, setInput] = useState("");
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [historyLoaded, setHistoryLoaded] = useState(false);
   const [isThinking, setIsThinking] = useState(false);
   const [activeModel, setActiveModel] = useState("groq");
-  const [showTrigger, setShowTrigger] = useState(false);
-  const [triggerGlow, setTriggerGlow] = useState(false);
   const [showFallbackChips, setShowFallbackChips] = useState(false);
+  const [mountRevision, setMountRevision] = useState(0);
   const scrollRef = useRef<HTMLDivElement>(null);
-  const inputRef = useRef<HTMLInputElement>(null);
-  const tilt = useTilt(4); // subtle 3D tilt on the chat panel
+  const pendingQueriesRef = useRef<Set<string>>(new Set());
 
-  // Persist chat history on change
   useEffect(() => {
+    setMessages(loadChatHistory());
+    setHistoryLoaded(true);
+  }, []);
+
+  useEffect(() => {
+    if (!historyLoaded) return;
     saveChatHistory(messages);
-  }, [messages]);
+  }, [historyLoaded, messages]);
 
-  // Auto-reopen if there's a restored conversation
-  useEffect(() => {
-    const restored = loadChatHistory();
-    if (restored.length > 0) setState("minimized");
-  }, []);
-
-  // No auto-show trigger — chat opens from agent bar only
-  useEffect(() => {
-    setShowTrigger(false);
-  }, []);
-
-  useEffect(() => {
-    let glowTimer: ReturnType<typeof setTimeout>;
-    const handler = (): void => {
-      setTriggerGlow(true);
-      glowTimer = setTimeout(() => setTriggerGlow(false), 600);
-    };
-    window.addEventListener("agent-flying-to-chat", handler);
-    return () => {
-      window.removeEventListener("agent-flying-to-chat", handler);
-      clearTimeout(glowTimer);
-    };
-  }, []);
-
-  const stateRef = useRef(state);
-  stateRef.current = state;
   useEffect(() => {
     const onOpen = (): void => setState("open");
-    const onHide = (): void => { if (stateRef.current !== "closed") setState("minimized"); };
+    const onClose = (): void => setState("closed");
+    const onMountReady = (): void => setMountRevision((n) => n + 1);
     window.addEventListener("open-chat-widget", onOpen);
-    window.addEventListener("hide-chat-widget", onHide);
+    window.addEventListener("hide-chat-widget", onClose);
+    window.addEventListener("close-chat-widget", onClose);
+    window.addEventListener("agent-focus-mount-ready", onMountReady);
     return () => {
       window.removeEventListener("open-chat-widget", onOpen);
-      window.removeEventListener("hide-chat-widget", onHide);
+      window.removeEventListener("hide-chat-widget", onClose);
+      window.removeEventListener("close-chat-widget", onClose);
+      window.removeEventListener("agent-focus-mount-ready", onMountReady);
     };
   }, []);
 
@@ -290,21 +314,26 @@ export function ChatWidget(): React.ReactElement {
 
   useEffect(() => {
     if (state === "closed") {
-      window.dispatchEvent(new CustomEvent("close-chat-widget"));
+      window.dispatchEvent(new CustomEvent("chat-overlay-close"));
     } else {
-      // Both "open" and "minimized" should hide the agent pill bar
-      // Use a separate event name to avoid re-triggering our own open listener
       window.dispatchEvent(new CustomEvent("chat-widget-active"));
+      window.dispatchEvent(new CustomEvent("chat-overlay-open"));
     }
+  }, [state]);
+
+  useEffect(() => {
+    if (state !== "open") return;
+    const timers = [
+      window.setTimeout(() => setMountRevision((n) => n + 1), 0),
+      window.setTimeout(() => setMountRevision((n) => n + 1), 80),
+      window.setTimeout(() => setMountRevision((n) => n + 1), 240),
+    ];
+    return () => timers.forEach((t) => window.clearTimeout(t));
   }, [state]);
 
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
   }, [messages, isThinking, showFallbackChips]);
-
-  useEffect(() => {
-    if (state === "open") setTimeout(() => inputRef.current?.focus(), 100);
-  }, [state]);
 
   /* ── Streaming ── */
 
@@ -330,34 +359,36 @@ export function ChatWidget(): React.ReactElement {
       let answer = "";
       let actions: KbAction[] | undefined;
 
+      const contextualQuery = buildContextualQuery(query, messages);
+      const entry = findAnswer(contextualQuery);
+      const history = messages
+        .filter((m) => m.role === "user" || m.role === "assistant")
+        .slice(-8)
+        .map((m) => ({ role: m.role, content: m.content }));
+
       try {
         const res = await fetch("/api/chat", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ message: query, model: activeModel }),
+          body: JSON.stringify({ query: contextualQuery, history, model: activeModel }),
         });
         if (res.ok) {
-          const data = (await res.json()) as { answer: string };
-          answer = data.answer;
+          const data = await res.json() as { answer?: string; actions?: KbAction[] };
+          if (data.answer?.trim()) {
+            answer = data.answer.trim();
+            actions = data.actions ?? entry?.actions;
+          }
         }
       } catch {
-        // silent fallback
-      }
-
-      if (answer) {
-        const lower = answer.toLowerCase();
-        if (lower.includes("book a call") || lower.includes("schedule") || lower.includes("15-min") || lower.includes("intro call")) {
-          actions = [{ label: "Book a 15-min call", href: BOOK_URL }];
-        }
+        // Local KB fallback keeps the portfolio assistant reliable offline.
       }
 
       if (!answer) {
-        const entry = findAnswer(query);
         if (entry) {
-          answer = entry.response;
+          answer = applyModelVoice(entry.response, activeModel);
           actions = entry.actions;
         } else {
-          answer = FALLBACK;
+          answer = applyModelVoice(FALLBACK, activeModel);
           setShowFallbackChips(true);
         }
       }
@@ -365,20 +396,39 @@ export function ChatWidget(): React.ReactElement {
       setIsThinking(false);
       setMessages((prev) => [...prev, { id, role: "assistant", content: "", streaming: true, actions }]);
       await streamWords(id, answer);
+      pendingQueriesRef.current.delete(query.toLowerCase());
     },
-    [streamWords, activeModel],
+    [streamWords, activeModel, messages],
   );
 
   const send = useCallback(
     (q: string): void => {
       const query = q.trim();
       if (!query) return;
+      const userCount = messages.filter((m) => m.role === "user").length + pendingQueriesRef.current.size;
+      if (userCount >= CHAT_MESSAGE_LIMIT) {
+        setMessages((prev) => {
+          if (prev.some((m) => m.id === "chat-limit")) return prev;
+          return [
+            ...prev,
+            {
+              id: "chat-limit",
+              role: "assistant",
+              content: LIMIT_MESSAGE,
+              actions: [{ label: "Book a 15-min call", href: BOOK_URL }],
+            },
+          ];
+        });
+        return;
+      }
+      const key = query.toLowerCase();
+      if (pendingQueriesRef.current.has(key)) return;
+      pendingQueriesRef.current.add(key);
       setShowFallbackChips(false);
       setMessages((prev) => [...prev, { id: `u-${Date.now()}`, role: "user", content: query }]);
-      setInput("");
       void streamAnswer(query);
     },
-    [streamAnswer],
+    [streamAnswer, messages],
   );
 
   // Keep sendRef in sync for the event listener
@@ -395,59 +445,31 @@ export function ChatWidget(): React.ReactElement {
     return () => window.removeEventListener("chat-with-query", handler);
   }, []);
 
-  const onSubmit = (e: React.FormEvent): void => {
-    e.preventDefault();
-    send(input);
-  };
-
   const msgCount = messages.filter((m) => m.role === "user").length;
   const model = MODELS.find((m) => m.id === activeModel) ?? MODELS[0];
 
-  return (
-    <>
-      {/* Chat trigger removed — opens from agent bar only */}
+  // Broadcast message count to agent bar badge
+  useEffect(() => {
+    window.dispatchEvent(new CustomEvent("chat-message-count", { detail: msgCount }));
+  }, [msgCount]);
 
-      {/* ── Minimized dot ── */}
-      <AnimatePresence>
-        {state === "minimized" && (
-          <motion.button
-            type="button"
-            onClick={() => setState("open")}
-            variants={minimizedVariants}
-            initial="hidden"
-            animate="visible"
-            exit="exit"
-            className="fixed bottom-5 right-3 md:right-6 z-50 w-10 h-10 rounded-full glass border border-card-border shadow-[0_8px_24px_rgba(0,0,0,0.3)] cursor-pointer hover:border-accent/30 hover:scale-110 transition-all flex items-center justify-center"
-          >
-            <AgentEmoji size={22} />
-            {msgCount > 0 && (
-              <span className="absolute -top-1 -right-1 min-w-[18px] h-[18px] rounded-full bg-accent text-[10px] font-mono font-bold text-background flex items-center justify-center px-1">
-                {msgCount}
-              </span>
-            )}
-            {/* Running indicator dot */}
-            <span className="absolute -bottom-0.5 -right-0.5 w-2 h-2 rounded-full bg-accent-status border-[1.5px] border-background" style={{ animation: "green-pulse 2s infinite" }} />
-          </motion.button>
-        )}
-      </AnimatePresence>
-
-      {/* ── Chat panel ── */}
-      <AnimatePresence>
-        {state === "open" && (
-          <div className="fixed bottom-5 right-3 md:right-6 z-50">
-          <motion.div
-            ref={tilt.ref}
-            onMouseMove={tilt.onMouseMove}
-            onMouseLeave={tilt.onMouseLeave}
-            style={tilt.style}
-            variants={panelVariants}
-            initial="hidden"
-            animate="visible"
-            exit="exit"
-            className="w-[calc(100vw-2rem)] sm:w-[400px] h-[min(560px,calc(100vh-7rem))] flex flex-col rounded-xl overflow-hidden card-gradient-border"
-          >
-            {/* Glass background layer — opaque on mobile, translucent on desktop */}
-            <div className="chat-modal-bg absolute inset-0 bg-card md:bg-card/75 backdrop-blur-2xl rounded-xl" />
+  const panel = (
+    <AnimatePresence>
+      {state === "open" && (
+        <div className="w-full">
+            <motion.div
+              variants={panelVariants}
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+              className="w-full flex flex-col rounded-xl overflow-hidden card-gradient-border pointer-events-auto"
+              style={{
+                maxHeight: "min(400px, calc(100vh - 12rem))",
+                boxShadow: "0 8px 32px rgba(0,0,0,0.3)",
+              }}
+            >
+              {/* Glass background layer — opaque on mobile, translucent on desktop */}
+              <div className="absolute inset-0 bg-card md:bg-card/80 backdrop-blur-2xl rounded-xl" />
 
             {/* Ambient floating motes */}
             <AmbientMotes />
@@ -455,19 +477,19 @@ export function ChatWidget(): React.ReactElement {
             {/* ── Header ── */}
             <div className="relative z-10 shrink-0 border-b border-card-border/30">
               <div className="flex items-center justify-between px-4 py-3">
-                <div className="flex items-center gap-2.5">
+                <div className="flex items-center gap-2.5 min-w-0">
                   <div className="relative">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img src="/ahtesham.jpg" alt="Ahtesham" className="w-8 h-8 rounded-full border border-accent/20 object-cover" />
                     <span className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-accent-status border-2 border-card animate-pulse" />
                   </div>
-                  <div>
-                    <span className="font-mono text-sm font-semibold text-foreground">shami.ai</span>
-                    <p className="text-caption font-mono text-muted/50">portfolio agent · {model.label} voice</p>
+                  <div className="min-w-0 text-left leading-tight">
+                    <span className="block font-mono text-[13px] font-semibold text-foreground tracking-normal truncate">Ahtesham Agent</span>
+                    <p className="text-[10px] leading-4 font-mono text-muted/50 truncate">portfolio intelligence · {model.label} style</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-1">
-                  <button type="button" onClick={() => setState("minimized")} className="p-1.5 rounded-lg text-muted/40 hover:text-foreground/70 hover:bg-foreground/5 transition-colors" aria-label="Minimize chat">
+                  <button type="button" onClick={() => setState("closed")} className="p-1.5 rounded-lg text-muted/40 hover:text-foreground/70 hover:bg-foreground/5 transition-colors" aria-label="Minimize chat">
                     <Minus size={14} />
                   </button>
                   <button type="button" onClick={() => setState("closed")} className="p-1.5 rounded-lg text-muted/40 hover:text-foreground/70 hover:bg-foreground/5 transition-colors" aria-label="Close chat">
@@ -496,37 +518,40 @@ export function ChatWidget(): React.ReactElement {
             </div>
 
             {/* ── Body ── */}
-            <div ref={scrollRef} className="relative z-10 flex-1 overflow-y-auto px-4 py-4 space-y-3">
+            <div
+              ref={scrollRef}
+              className={`relative z-10 flex-1 px-3 py-3 ${messages.length === 0 ? "overflow-hidden" : "overflow-y-auto space-y-3"}`}
+            >
               {/* Welcome card */}
               {messages.length === 0 && (
                 <motion.div
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-                  className="space-y-3"
+                  className="space-y-2"
                 >
-                  <div className="rounded-xl bg-background/40 border border-card-border/40 p-3.5 backdrop-blur-sm">
-                    <div className="flex items-center gap-3 mb-2.5">
+                  <div className="rounded-xl bg-background/40 border border-card-border/40 p-3 backdrop-blur-sm">
+                    <div className="flex items-center gap-2.5 mb-2">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src="/ahtesham.jpg" alt="Ahtesham Ahmad" className="w-10 h-10 rounded-xl border border-accent/20 object-cover shrink-0" />
+                      <img src="/ahtesham.jpg" alt="Ahtesham Ahmad" className="w-8 h-8 rounded-lg border border-accent/20 object-cover shrink-0" />
                       <div className="min-w-0">
-                        <p className="text-foreground font-semibold font-sans text-sm">Ahtesham Ahmad</p>
+                        <p className="text-foreground font-semibold font-sans text-[13px] leading-tight">Ahtesham Ahmad</p>
                         <p className="text-muted/60 text-caption">AI Engineer · Open to opportunities</p>
                       </div>
                     </div>
-                    <div className="flex flex-wrap gap-1">
+                    <div className="flex flex-wrap gap-1 overflow-hidden">
                       {["Multi-Agent Systems", "TypeScript", "React", "Supabase"].map((t) => (
-                        <span key={t} className="px-1.5 py-0.5 text-caption bg-accent/5 text-accent/70 rounded border border-accent/15">{t}</span>
+                        <span key={t} className="px-1.5 py-px text-[10px] leading-4 bg-accent/5 text-accent/70 rounded border border-accent/15">{t}</span>
                       ))}
                     </div>
-                    <p className="mt-2.5 text-caption text-muted/50 font-sans leading-relaxed">
+                    <p className="mt-2 text-[11px] text-muted/50 font-sans leading-snug">
                       Ask me about his rate, stack, availability, tools, or how you&apos;d work together.
                     </p>
                     <a
                       href={BOOK_URL}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="mt-3 flex items-center justify-center gap-2 px-3 py-2 rounded-lg bg-accent/10 border border-accent/20 text-accent text-caption font-mono hover:bg-accent/15 hover:border-accent/35 transition-all"
+                      className="mt-2 flex items-center justify-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-accent/10 border border-accent/20 text-accent text-[11px] font-mono hover:bg-accent/15 hover:border-accent/35 transition-all"
                     >
                       <Calendar size={12} />
                       Book a 15-min call
@@ -534,7 +559,7 @@ export function ChatWidget(): React.ReactElement {
                   </div>
 
                   <div className="flex flex-wrap gap-1.5">
-                    {starters.map((s, i) => (
+                    {starters.slice(0, 3).map((s, i) => (
                       <motion.button
                         key={s}
                         type="button"
@@ -542,7 +567,7 @@ export function ChatWidget(): React.ReactElement {
                         initial={{ opacity: 0, y: 6 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.3, delay: 0.15 + i * 0.05 }}
-                        className="text-caption px-2.5 py-1.5 rounded-lg border border-card-border/60 bg-background/30 hover:border-accent/30 hover:bg-accent/5 hover:text-accent transition-all font-sans cursor-pointer"
+                        className="text-[10px] leading-4 px-2 py-1 rounded-lg border border-card-border/60 bg-background/30 hover:border-accent/30 hover:bg-accent/5 hover:text-accent transition-all font-sans cursor-pointer"
                       >
                         {s}
                       </motion.button>
@@ -584,34 +609,20 @@ export function ChatWidget(): React.ReactElement {
               )}
             </div>
 
-            {/* ── Input ── */}
-            <form onSubmit={onSubmit} className="relative z-10 shrink-0 border-t border-card-border/30">
-              <div className="flex items-center gap-2 px-3 py-2.5">
-                <span className="text-accent font-mono text-sm shrink-0">$</span>
-                <input
-                  ref={inputRef}
-                  type="text"
-                  value={input}
-                  onChange={(e) => setInput(e.target.value)}
-                  placeholder="Ask anything..."
-                  className="flex-1 bg-transparent outline-none font-mono text-sm placeholder:text-muted/30 min-w-0"
-                />
-                <button type="submit" disabled={!input.trim()}
-                  className="shrink-0 p-1.5 rounded-lg text-accent hover:bg-accent/10 transition-colors disabled:opacity-20 disabled:cursor-not-allowed cursor-pointer" title="Send">
-                  <Send size={14} />
-                </button>
-              </div>
-              <div className="px-3 pb-2 flex items-center justify-between">
-                <span className="text-caption font-mono text-muted/20">{model.label} voice · {model.provider}</span>
-                <span className="text-caption font-mono text-muted/20">{msgCount}/20</span>
-              </div>
-            </form>
-          </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
-    </>
+            <div className="relative z-10 shrink-0 border-t border-card-border/30 px-3 py-2 flex items-center justify-between">
+              <span className="text-caption font-mono text-muted/25">{model.label} response style</span>
+              <span className="text-caption font-mono text-muted/25">{Math.min(msgCount, CHAT_MESSAGE_LIMIT)}/{CHAT_MESSAGE_LIMIT}</span>
+            </div>
+            </motion.div>
+        </div>
+      )}
+    </AnimatePresence>
   );
+
+  const agentMount = typeof document !== "undefined" ? document.getElementById("agent-focus-mount") : null;
+  void mountRevision;
+  if (agentMount) return ReactDOM.createPortal(panel, agentMount);
+  return <></>;
 }
 
 /* ------------------------------------------------------------------ */
