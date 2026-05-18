@@ -22,6 +22,21 @@ async function prepare(page: Page): Promise<string[]> {
 
 test("agent bar and chat act as one unified flow", async ({ page }) => {
   const errors = await prepare(page);
+  const chatPayloads: Array<{ message?: string; query?: string }> = [];
+  await page.route("**/api/chat", async (route) => {
+    const payload = route.request().postDataJSON() as { message?: string; query?: string };
+    chatPayloads.push(payload);
+    expect(payload.message?.trim()).toBeTruthy();
+    expect(payload.query?.trim()).toBeTruthy();
+    await route.fulfill({
+      status: 200,
+      contentType: "application/json",
+      body: JSON.stringify({
+        answer: "Yes. Python project work is in scope when the goal is clear. Book a call to scope timeline, risks, and delivery shape.",
+        actions: [{ label: "Book a 15-min call", href: "https://ahtesham.dev.wadwarehouse.com/book" }],
+      }),
+    });
+  });
   await page.goto("/");
   await page.locator(".agent-emoji-body").click({ force: true });
 
@@ -46,6 +61,7 @@ test("agent bar and chat act as one unified flow", async ({ page }) => {
   await page.keyboard.press("Enter");
   await expect(page.getByText("I have a Python project, can you handle it?")).toBeVisible();
   await expect(page.getByText(/Python|scope|project|call/i).first()).toBeVisible();
+  expect(chatPayloads).toHaveLength(1);
 
   await page.reload();
   await page.locator(".agent-emoji-body").click({ force: true });

@@ -370,7 +370,12 @@ export function ChatWidget(): React.ReactElement {
         const res = await fetch("/api/chat", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ query: contextualQuery, history, model: activeModel }),
+          body: JSON.stringify({
+            message: contextualQuery,
+            query: contextualQuery,
+            history,
+            model: activeModel,
+          }),
         });
         if (res.ok) {
           const data = await res.json() as { answer?: string; actions?: KbAction[] };

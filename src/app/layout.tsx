@@ -156,7 +156,9 @@ export default function RootLayout({
         </div>
         <CVDrawer />
         <ChatWidget />
-        <script
+        <Script
+          id="visitor-track"
+          strategy="afterInteractive"
           dangerouslySetInnerHTML={{
             __html: `if(location.hostname==='ahtesham.dev.wadwarehouse.com'){fetch('https://shami-command-center.vercel.app/api/server/track',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({path:location.pathname,referrer:document.referrer})}).catch(function(){});}`,
           }}

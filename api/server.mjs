@@ -187,10 +187,18 @@ const server = createServer(async (req, res) => {
 
     let message = "";
     let modelId = "groq";
+    let history = [];
     try {
       const parsed = JSON.parse(body);
-      message = (parsed.message ?? parsed.query)?.trim() ?? "";
+      const rawMessage = parsed.message ?? parsed.query ?? parsed.question ?? parsed.prompt;
+      message = typeof rawMessage === "string" ? rawMessage.trim() : "";
       modelId = parsed.model ?? "groq";
+      history = Array.isArray(parsed.history)
+        ? parsed.history
+            .filter((m) => (m.role === "user" || m.role === "assistant") && typeof m.content === "string")
+            .slice(-8)
+            .map((m) => ({ role: m.role, content: m.content.slice(0, 1200) }))
+        : [];
     } catch {
       return json(res, 400, { answer: "Invalid request." });
     }
@@ -212,6 +220,7 @@ const server = createServer(async (req, res) => {
             model: "llama-3.3-70b-versatile",
             messages: [
               { role: "system", content: PORTFOLIO_CONTEXT + (MODEL_VOICES[modelId] ?? "") },
+              ...history,
               { role: "user", content: message },
             ],
             temperature: MODEL_TEMPS[modelId] ?? 0.3,

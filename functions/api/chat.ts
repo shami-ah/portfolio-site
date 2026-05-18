@@ -183,10 +183,25 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
 
   let message = "";
   let modelId = "groq";
+  let history: { role: "user" | "assistant"; content: string }[] = [];
   try {
-    const body = (await request.json()) as { message?: string; query?: string; model?: string };
-    message = (body.message ?? body.query)?.trim() ?? "";
+    const body = (await request.json()) as {
+      message?: unknown;
+      query?: unknown;
+      question?: unknown;
+      prompt?: unknown;
+      model?: string;
+      history?: { role: "user" | "assistant"; content: string }[];
+    };
+    const rawMessage = body.message ?? body.query ?? body.question ?? body.prompt;
+    message = typeof rawMessage === "string" ? rawMessage.trim() : "";
     modelId = body.model ?? "groq";
+    history = Array.isArray(body.history)
+      ? body.history
+          .filter((m) => (m.role === "user" || m.role === "assistant") && typeof m.content === "string")
+          .slice(-8)
+          .map((m) => ({ role: m.role, content: m.content.slice(0, 1200) }))
+      : [];
   } catch {
     return new Response(JSON.stringify({ answer: "Invalid request." }), {
       status: 400,
@@ -214,6 +229,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
           model: "llama-3.3-70b-versatile",
           messages: [
             { role: "system", content: PORTFOLIO_CONTEXT + MODEL_VOICES[modelId as keyof typeof MODEL_VOICES] },
+            ...history,
             { role: "user", content: message },
           ],
           temperature: MODEL_TEMPS[modelId as keyof typeof MODEL_TEMPS] ?? 0.3,
