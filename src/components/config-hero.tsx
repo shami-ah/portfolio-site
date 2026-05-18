@@ -312,6 +312,19 @@ export function ConfigHero(): React.ReactElement {
           className="mt-2 max-w-[700px] mx-auto min-h-[136px] md:min-h-[250px] flex items-center justify-center"
         />
 
+        <motion.p
+          initial={false}
+          animate={{
+            opacity: overlayActive ? 0 : (m("agent") ? 1 : 0),
+            y: m("agent") ? 0 : 6,
+          }}
+          transition={{ duration: overlayActive ? 0.2 : (immediate ? 0 : 0.45), ease: EASE }}
+          className="-mt-5 md:-mt-12 mb-3 text-caption md:text-xs font-mono text-muted/45"
+          style={{ pointerEvents: overlayActive ? "none" : "auto" }}
+        >
+          ask the agent about projects, stack, rates, or fit
+        </motion.p>
+
         {/* Building status — also fades with overlays */}
         <motion.div
           initial={false}

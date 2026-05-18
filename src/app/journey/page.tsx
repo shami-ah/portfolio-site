@@ -4,7 +4,7 @@ import { Journey } from "./journey";
 export const metadata: Metadata = {
   title: "Journey · Ahtesham Ahmad",
   description:
-    "An immersive walk through 5 years of shipping production AI. Career milestones, a day in the life, and the tools that matter.",
+    "The operating principles behind Ahtesham Ahmad's AI engineering work: human gates, architecture-first delivery, tooling, and production rollout discipline.",
 };
 
 export default function JourneyPage(): React.ReactElement {

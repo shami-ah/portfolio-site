@@ -85,8 +85,6 @@ export function Journey(): React.ReactElement {
           backgroundSize: "80px 80px",
         }}
       />
-      <div className="fixed -top-40 -right-40 w-[36rem] h-[36rem] bg-accent/[0.06] rounded-full blur-3xl pointer-events-none" />
-      <div className="fixed -bottom-40 -left-40 w-[36rem] h-[36rem] bg-purple-500/[0.04] rounded-full blur-3xl pointer-events-none" />
 
       {/* Top bar */}
       <header className="fixed top-0 left-0 right-0 z-40 bg-background/60 backdrop-blur-xl border-b border-card-border">
@@ -112,43 +110,59 @@ export function Journey(): React.ReactElement {
       </header>
 
       {/* Intro */}
-      <section className="min-h-[80vh] flex items-center justify-center px-5 md:px-6 pt-24 pb-12">
-        <div className="max-w-3xl mx-auto text-center">
+      <section className="min-h-[calc(100vh-56px)] flex items-center justify-center px-5 md:px-6 pt-24 pb-16">
+        <div className="max-w-5xl mx-auto w-full">
           <motion.p
-            initial={{ opacity: 0 }}
+            initial={false}
             animate={{ opacity: 1 }}
-            transition={{ duration: 0.8 }}
-            className="text-sm font-mono text-accent mb-4 uppercase tracking-[0.3em]"
+            transition={{ duration: 0.35 }}
+            className="text-sm font-mono text-accent mb-4 uppercase tracking-[0.3em] text-center"
           >
-            not the resume. not the projects.
+            behind the systems
           </motion.p>
           <motion.h1
-            initial={{ opacity: 0, y: 20 }}
+            initial={false}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.1 }}
-            className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-[1.05] mb-6"
+            transition={{ duration: 0.45 }}
+            className="max-w-4xl mx-auto text-center text-3xl md:text-5xl lg:text-6xl font-bold tracking-tight leading-[1.06] mb-5"
           >
-            The
-            <span className="text-accent"> principles </span>
-            and the
-            <span className="text-accent"> day-to-day </span>
-            behind every system I ship.
+            The operating principles behind every AI system I ship.
           </motion.h1>
           <motion.p
-            initial={{ opacity: 0, y: 20 }}
+            initial={false}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.3 }}
-            className="text-sm md:text-lg text-muted leading-relaxed max-w-xl mx-auto"
+            transition={{ duration: 0.45 }}
+            className="text-sm md:text-lg text-muted leading-relaxed max-w-2xl mx-auto text-center"
           >
-            The home page shows what I&apos;ve built. This page shows the
-            thinking that made it ship. Six principles and a real day.
+            Not a resume and not another project grid. This is the decision
+            system: where AI can act, where humans approve, how context stays
+            clean, and how production changes roll out without drama.
           </motion.p>
 
           <motion.div
-            initial={{ opacity: 0 }}
+            initial={false}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+            className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-4"
+          >
+            {[
+              ["Human gates", "Money, commitments, and trust always need approval."],
+              ["Architecture first", "Specs and invariants before agent-generated code."],
+              ["Tool producer", "Gogaa, CodeLens, Rasad, and WISC came from real workflow gaps."],
+              ["Controlled rollout", "Feature flags, 10% exposure, Sentry, then global release."],
+            ].map(([title, body]) => (
+              <div key={title} className="rounded-xl border border-card-border bg-card/70 p-4 text-left">
+                <p className="font-mono text-caption uppercase tracking-[0.18em] text-accent mb-2">{title}</p>
+                <p className="text-xs leading-relaxed text-muted">{body}</p>
+              </div>
+            ))}
+          </motion.div>
+
+          <motion.div
+            initial={false}
             animate={{ opacity: 1 }}
-            transition={{ duration: 1, delay: 0.7 }}
-            className="mt-12 flex flex-col items-center gap-2"
+            transition={{ duration: 0.35 }}
+            className="mt-8 flex flex-col items-center gap-2"
           >
             <motion.div
               animate={{ y: [0, 8, 0] }}
