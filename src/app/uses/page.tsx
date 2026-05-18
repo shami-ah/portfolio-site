@@ -4,7 +4,7 @@ import { Uses } from "./uses";
 export const metadata: Metadata = {
   title: "Uses",
   description:
-    "The tools, stack, workflow, and philosophy behind 50+ production systems. A self-reinforcing AI development ecosystem.",
+    "The workbench, stack, workflow, and context discipline behind OpenEvent, CodeLens, Gogaa, and 50+ shipped systems.",
 };
 
 export default function UsesPage(): React.ReactElement {

@@ -63,24 +63,25 @@ const files: FileEntry[] = [
 function CodeReadme(): React.ReactElement {
   return (
     <div className="py-2">
-      <CodeLine num={1}><C># shami-toolkit</C></CodeLine>
+      <CodeLine num={1}><C># ahtesham.workbench</C></CodeLine>
       <CodeLine num={2}><span /></CodeLine>
-      <CodeLine num={3}><V>A self-improving AI development ecosystem.</V></CodeLine>
-      <CodeLine num={4}><V>Each tool feeds into the next.</V></CodeLine>
+      <CodeLine num={3}><V>The operating setup behind the portfolio agent.</V></CodeLine>
+      <CodeLine num={4}><V>Not a tools list. A system for shipping reliably.</V></CodeLine>
       <CodeLine num={5}><span /></CodeLine>
-      <CodeLine num={6}><C>## Tools</C></CodeLine>
-      <CodeLine num={7}><V>- **Gogaa CLI** writes code</V></CodeLine>
-      <CodeLine num={8}><V>- **CodeLens** reviews it</V></CodeLine>
-      <CodeLine num={9}><V>- **Rasad** monitors everything</V></CodeLine>
-      <CodeLine num={10}><V>- **Patterns** feed back in</V></CodeLine>
+      <CodeLine num={6}><C>## Proof</C></CodeLine>
+      <CodeLine num={7}><V>- **OpenEvent** runs with 100+ clients</V></CodeLine>
+      <CodeLine num={8}><V>- **CodeLens** reviews with 430 patterns</V></CodeLine>
+      <CodeLine num={9}><V>- **Gogaa CLI** passes 1,418 tests</V></CodeLine>
+      <CodeLine num={10}><V>- **WISC** keeps agent context scoped</V></CodeLine>
       <CodeLine num={11}><span /></CodeLine>
-      <CodeLine num={12}><C>## Quick Start</C></CodeLine>
-      <CodeLine num={13}><V>```</V></CodeLine>
-      <CodeLine num={14}><G>npm install shami-toolkit</G></CodeLine>
-      <CodeLine num={15}><V>```</V></CodeLine>
-      <CodeLine num={16}><span /></CodeLine>
-      <CodeLine num={17}><C>## Author</C></CodeLine>
-      <CodeLine num={18}><V>Ahtesham Ahmad · AI Engineer</V></CodeLine>
+      <CodeLine num={12}><C>## Loop</C></CodeLine>
+      <CodeLine num={13}><V>scope -&gt; context -&gt; agent -&gt; review -&gt; ship</V></CodeLine>
+      <CodeLine num={14}><span /></CodeLine>
+      <CodeLine num={15}><C>## Rule</C></CodeLine>
+      <CodeLine num={16}><G>AI proposes. Humans approve money, commitments, and risk.</G></CodeLine>
+      <CodeLine num={17}><span /></CodeLine>
+      <CodeLine num={18}><C>## Author</C></CodeLine>
+      <CodeLine num={19}><V>Ahtesham Ahmad · AI Engineer</V></CodeLine>
     </div>
   );
 }
@@ -88,14 +89,14 @@ function CodeReadme(): React.ReactElement {
 function CodeEcosystem(): React.ReactElement {
   return (
     <div className="py-2">
-      <CodeLine num={1}><C>{"// The self-improving AI toolkit"}</C></CodeLine>
+      <CodeLine num={1}><C>{"// Real tools that feed the portfolio workflow"}</C></CodeLine>
       <CodeLine num={2}><span /></CodeLine>
       <CodeLine num={3}><K>import</K> <V>{`{ Agent }`}</V> <K>from</K> <S>&quot;gogaa-cli&quot;</S></CodeLine>
       <CodeLine num={4}><K>import</K> <V>{`{ Reviewer }`}</V> <K>from</K> <S>&quot;codelens&quot;</S></CodeLine>
       <CodeLine num={5}><K>import</K> <V>{`{ Observer }`}</V> <K>from</K> <S>&quot;rasad&quot;</S></CodeLine>
       <CodeLine num={6}><span /></CodeLine>
-      <CodeLine num={7}><K>export const</K> <K>toolkit</K> <P>=</P> <P>{`{`}</P></CodeLine>
-      <CodeLine num={8}>  <V>name</V><P>:</P> <S>&quot;shami-toolkit&quot;</S><P>,</P></CodeLine>
+      <CodeLine num={7}><K>export const</K> <K>workbench</K> <P>=</P> <P>{`{`}</P></CodeLine>
+      <CodeLine num={8}>  <V>name</V><P>:</P> <S>&quot;ahtesham.workbench&quot;</S><P>,</P></CodeLine>
       <CodeLine num={9}>  <V>loop</V><P>:</P> <G>true</G><P>,</P></CodeLine>
       <CodeLine num={10}><span /></CodeLine>
       <CodeLine num={11}>  <V>tools</V><P>: [</P></CodeLine>
@@ -104,9 +105,9 @@ function CodeEcosystem(): React.ReactElement {
       <CodeLine num={14}>    Observer<P>({`{`}</P> <V>role</V><P>:</P> <S>&quot;monitors all&quot;</S> <P>{`})`}</P><P>,</P></CodeLine>
       <CodeLine num={15}>  <P>],</P></CodeLine>
       <CodeLine num={16}><span /></CodeLine>
-      <CodeLine num={17}>  <C>{"// patterns feed back into context"}</C></CodeLine>
-      <CodeLine num={18}>  <C>{"// same bug never generated twice"}</C></CodeLine>
-      <CodeLine num={19}><P>{`}`}</P> <K>satisfies</K> <V>Toolkit</V></CodeLine>
+      <CodeLine num={17}>  <C>{"// lessons feed back into context"}</C></CodeLine>
+      <CodeLine num={18}>  <C>{"// same class of bug should not repeat"}</C></CodeLine>
+      <CodeLine num={19}><P>{`}`}</P> <K>satisfies</K> <V>Workbench</V></CodeLine>
     </div>
   );
 }
@@ -225,25 +226,35 @@ function CodePhilosophy(): React.ReactElement {
 /* ------------------------------------------------------------------ */
 
 const loopNodes = [
-  { label: "Gogaa CLI", stat: "writes code", color: "border-accent/40 text-accent" },
-  { label: "CodeLens", stat: "reviews it", color: "border-accent-secondary/40 text-accent-secondary" },
-  { label: "Patterns", stat: "feed back in", color: "border-accent/40 text-accent" },
-  { label: "Rasad", stat: "monitors all", color: "border-accent/40 text-accent" },
+  { label: "Gogaa CLI", stat: "1,418 tests", color: "border-accent/40 text-accent" },
+  { label: "CodeLens", stat: "430 patterns", color: "border-accent-secondary/40 text-accent-secondary" },
+  { label: "OpenEvent", stat: "100+ clients", color: "border-accent/40 text-accent" },
+  { label: "WISC", stat: "84% smaller context", color: "border-accent/40 text-accent" },
 ];
 
 function PreviewReadme(): React.ReactElement {
   return (
     <div className="p-5">
-      <h2 className="text-xl font-bold mb-2">shami-toolkit</h2>
-      <p className="text-xs text-muted leading-relaxed mb-4">A self-improving AI development ecosystem. Every piece was chosen because it makes the others better. Most of the AI tooling here I built myself.</p>
+      <p className="text-caption font-mono text-accent uppercase tracking-wider mb-3">setup page</p>
+      <h2 className="text-xl font-bold mb-2">ahtesham.workbench</h2>
+      <p className="text-xs text-muted leading-relaxed mb-4">The operating setup behind the portfolio agent: tools, constraints, review loops, and context discipline used to ship real products.</p>
       <div className="flex flex-wrap gap-2 mb-4">
-        {["Gogaa CLI", "CodeLens", "Rasad", "Claude Code"].map((t) => (
+        {["OpenEvent", "Gogaa CLI", "CodeLens", "WISC"].map((t) => (
           <span key={t} className="px-2 py-0.5 text-caption font-mono bg-accent/5 text-accent/80 rounded border border-accent/20">{t}</span>
         ))}
       </div>
-      <div className="p-3 rounded-lg bg-card border border-card-border font-mono text-caption">
-        <div className="text-muted/40 mb-1">$ npm install shami-toolkit</div>
-        <div className="text-accent/60">+ shami-toolkit@1.0.0</div>
+      <div className="grid grid-cols-2 gap-2">
+        {[
+          ["100+", "OpenEvent clients"],
+          ["430", "CodeLens patterns"],
+          ["1,418", "Gogaa tests"],
+          ["84%", "context reduction"],
+        ].map(([value, label]) => (
+          <div key={label} className="p-3 rounded-lg bg-card border border-card-border">
+            <p className="text-lg font-mono font-bold text-accent">{value}</p>
+            <p className="text-caption text-muted/50">{label}</p>
+          </div>
+        ))}
       </div>
       <p className="text-caption text-muted/40 mt-4 font-mono">Ahtesham Ahmad · AI Engineer</p>
     </div>
@@ -254,9 +265,9 @@ function PreviewEcosystem(): React.ReactElement {
   return (
     <div className="p-5">
       <div className="card-glow card-gradient-border rounded-xl bg-card border border-card-border p-5">
-        <p className="text-caption font-mono text-accent uppercase tracking-wider mb-3">The loop nobody else has</p>
-        <p className="text-sm font-medium mb-1">I built an ecosystem where each tool makes the others better.</p>
-        <p className="text-caption text-muted leading-relaxed mb-5">Gogaa writes code. CodeLens reviews it. Patterns feed back via Guardian mode. Rasad monitors every session.</p>
+        <p className="text-caption font-mono text-accent uppercase tracking-wider mb-3">Workbench loop</p>
+        <p className="text-sm font-medium mb-1">The setup is designed to make AI work auditable, scoped, and repeatable.</p>
+        <p className="text-caption text-muted leading-relaxed mb-5">Gogaa helps with implementation, CodeLens reviews risk, OpenEvent proves production delivery, and WISC keeps context under control.</p>
         {/* Globe diagram with orbital pillars */}
         <div className="hidden md:flex relative items-center justify-center py-8">
           {/* Globe: concentric circles */}
@@ -271,8 +282,8 @@ function PreviewEcosystem(): React.ReactElement {
           <div className="absolute w-[100px] h-[160px] rounded-full border border-dashed border-accent/10" />
           {/* Center label */}
           <div className="absolute text-center z-0">
-            <p className="text-caption font-mono text-muted/30 uppercase tracking-wider">self</p>
-            <p className="text-caption font-mono text-muted/30 uppercase tracking-wider">improving</p>
+            <p className="text-caption font-mono text-muted/30 uppercase tracking-wider">ship</p>
+            <p className="text-caption font-mono text-muted/30 uppercase tracking-wider">loop</p>
           </div>
           {/* 4 pillar nodes positioned around the globe */}
           <div className="relative w-[280px] h-[280px]">
@@ -306,10 +317,10 @@ function PreviewEcosystem(): React.ReactElement {
           <p className="text-caption font-mono text-muted/40 uppercase tracking-widest mb-2">In practice</p>
           <div className="flex flex-wrap gap-1 items-center">
             {[
-              { t: "9:00", a: "Gogaa scaffolds", c: "text-accent" },
-              { t: "9:04", a: "CodeLens reviews", c: "text-accent-secondary" },
-              { t: "9:05", a: "2 caught", c: "text-accent" },
-              { t: "9:06", a: "push", c: "text-foreground/60" },
+              { t: "scope", a: "constraints written", c: "text-accent" },
+              { t: "build", a: "agent edits", c: "text-accent-secondary" },
+              { t: "review", a: "patterns checked", c: "text-accent" },
+              { t: "ship", a: "observe", c: "text-foreground/60" },
             ].map((s, i, arr) => (
               <span key={s.t} className="flex items-center gap-1">
                 <span className="px-1.5 py-0.5 rounded bg-background/40 border border-card-border/40 text-caption font-mono">
@@ -499,12 +510,13 @@ export function Uses(): React.ReactElement {
           <span className="w-3 h-3 rounded-full bg-green-500/60" />
         </div>
         <div className="max-w-5xl mx-auto px-5 md:px-6 py-3 flex items-center justify-center">
-          <span className="text-small font-mono text-muted/40">shami-toolkit</span>
+          <span className="text-small font-mono text-muted/40">ahtesham.workbench</span>
           <Link
             href="/"
             className="text-xs font-mono text-muted hover:text-accent transition-colors absolute right-5 md:right-6"
           >
-            ← back to portfolio
+            <span className="sm:hidden">← back</span>
+            <span className="hidden sm:inline">← back to portfolio</span>
           </Link>
         </div>
       </div>
@@ -619,7 +631,7 @@ export function Uses(): React.ReactElement {
 
           {/* Breadcrumb — desktop only */}
           <div className="hidden md:block px-3 py-[3px] text-caption font-mono text-muted/20 border-b border-card-border/20 shrink-0 bg-background/30">
-            shami-toolkit <span className="text-muted/20">&rsaquo;</span> {activeEntry?.path}
+            ahtesham.workbench <span className="text-muted/20">&rsaquo;</span> {activeEntry?.path}
           </div>
 
           {/* Split: Code + Preview — or empty state */}
@@ -662,7 +674,7 @@ export function Uses(): React.ReactElement {
               <span className="hidden sm:inline">UTF-8</span>
             </div>
             <div className="flex items-center gap-3">
-              <span className="hidden sm:inline">shami-toolkit</span>
+              <span className="hidden sm:inline">ahtesham.workbench</span>
               <span className="hidden sm:inline">Ln 1, Col 1</span>
             </div>
           </div>
