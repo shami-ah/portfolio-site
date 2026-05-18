@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useStatus } from "@/lib/use-status";
 import { Check, Volume2, VolumeX } from "lucide-react";
@@ -31,11 +31,14 @@ export function TerminalBoot({ force = false, onDone }: BootProps): React.ReactE
   const [checkStep, setCheckStep] = useState(0);
   const [introTyped, setIntroTyped] = useState(0);
   const [soundOn, setSoundOn] = useState(false);
+  const [slow, setSlow] = useState(false);
+  const [exitStyle, setExitStyle] = useState({
+    dist: 300,
+    accent: "#a07868",
+    status: "#4ade80",
+    background: "#0c0d10",
+  });
   const audioCtxRef = useRef<AudioContext | null>(null);
-  const exitDistRef = useRef(300);
-  const exitAccentRef = useRef("#a07868");
-  const exitStatusRef = useRef("#4ade80");
-  const exitBgRef = useRef("#0c0d10");
 
   const introText = "$ shami init --mode=command-center";
 
@@ -43,12 +46,15 @@ export function TerminalBoot({ force = false, onDone }: BootProps): React.ReactE
   const [visitorClass, setVisitorClass] = useState({ referrer: "direct", intent: "curious_explorer", persona: "explorer" });
   useEffect(() => {
     if (typeof document === "undefined") return;
-    const ref = document.referrer;
-    if (ref.includes("linkedin")) setVisitorClass({ referrer: "linkedin.com", intent: "likely_hiring", persona: "decision_maker" });
-    else if (ref.includes("github")) setVisitorClass({ referrer: "github.com", intent: "likely_developer", persona: "technical_evaluator" });
-    else if (ref.includes("upwork")) setVisitorClass({ referrer: "upwork.com", intent: "potential_client", persona: "buyer" });
-    else if (ref.includes("google")) setVisitorClass({ referrer: "google.com", intent: "researcher", persona: "explorer" });
-    else if (ref.includes("twitter") || ref.includes("x.com")) setVisitorClass({ referrer: "x.com", intent: "social_referral", persona: "curious_visitor" });
+    const frame = requestAnimationFrame(() => {
+      const ref = document.referrer;
+      if (ref.includes("linkedin")) setVisitorClass({ referrer: "linkedin.com", intent: "likely_hiring", persona: "decision_maker" });
+      else if (ref.includes("github")) setVisitorClass({ referrer: "github.com", intent: "likely_developer", persona: "technical_evaluator" });
+      else if (ref.includes("upwork")) setVisitorClass({ referrer: "upwork.com", intent: "potential_client", persona: "buyer" });
+      else if (ref.includes("google")) setVisitorClass({ referrer: "google.com", intent: "researcher", persona: "explorer" });
+      else if (ref.includes("twitter") || ref.includes("x.com")) setVisitorClass({ referrer: "x.com", intent: "social_referral", persona: "curious_visitor" });
+    });
+    return () => cancelAnimationFrame(frame);
   }, []);
 
   const checks: Check[] = [
@@ -61,7 +67,7 @@ export function TerminalBoot({ force = false, onDone }: BootProps): React.ReactE
   ];
 
   // Short beep on type
-  const beep = (): void => {
+  const beep = useCallback((): void => {
     if (!soundOn) return;
     try {
       const ctx =
@@ -83,13 +89,51 @@ export function TerminalBoot({ force = false, onDone }: BootProps): React.ReactE
     } catch {
       // ignore
     }
-  };
+  }, [soundOn]);
+
+  const dismiss = useCallback((): void => {
+    const cs = getComputedStyle(document.documentElement);
+    setExitStyle({
+      dist: window.innerHeight / 2 - 36,
+      accent: cs.getPropertyValue("--accent").trim() || "#a07868",
+      status: cs.getPropertyValue("--accent-status").trim() || "#4ade80",
+      background: cs.getPropertyValue("--background").trim() || "#0c0d10",
+    });
+    setPhase("exit");
+
+    const completeTimer = setTimeout(() => {
+      sessionStorage.setItem("boot-complete", "1");
+      window.dispatchEvent(new CustomEvent("boot-complete"));
+    }, 800);
+
+    const readyTimer = setTimeout(() => {
+      window.dispatchEvent(new CustomEvent("agent-button-ready"));
+    }, 1400);
+
+    const particlesTimer = setTimeout(() => {
+      window.dispatchEvent(new CustomEvent("boot-particles"));
+    }, 1750);
+
+    const cleanupTimer = setTimeout(() => {
+      setVisible(false);
+      localStorage.setItem("boot-ever-seen", "1");
+      onDone?.();
+    }, 2400);
+
+    void completeTimer;
+    void readyTimer;
+    void particlesTimer;
+    void cleanupTimer;
+  }, [onDone]);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
 
-    const saved = localStorage.getItem("boot-sound");
-    if (saved === "1") setSoundOn(true);
+    const settingsFrame = requestAnimationFrame(() => {
+      const saved = localStorage.getItem("boot-sound");
+      if (saved === "1") setSoundOn(true);
+      setSlow(sessionStorage.getItem("boot-slow") === "1");
+    });
 
     const seen = localStorage.getItem("boot-ever-seen") === "1";
 
@@ -99,6 +143,7 @@ export function TerminalBoot({ force = false, onDone }: BootProps): React.ReactE
       sessionStorage.removeItem("boot-complete");
       if (slow) sessionStorage.setItem("boot-slow", "1");
       else sessionStorage.removeItem("boot-slow");
+      setSlow(slow);
       setPhase("intro");
       setIntroTyped(0);
       setCheckStep(0);
@@ -121,11 +166,13 @@ export function TerminalBoot({ force = false, onDone }: BootProps): React.ReactE
     document.addEventListener("visibilitychange", closeRestoredOverlay);
 
     if (force || !seen) {
-      setVisible(true);
+      const visibleFrame = requestAnimationFrame(() => setVisible(true));
       return () => {
         window.removeEventListener("replay-intro", onReplay);
         window.removeEventListener("pageshow", closeRestoredOverlay);
         document.removeEventListener("visibilitychange", closeRestoredOverlay);
+        cancelAnimationFrame(settingsFrame);
+        cancelAnimationFrame(visibleFrame);
       };
     }
 
@@ -136,51 +183,11 @@ export function TerminalBoot({ force = false, onDone }: BootProps): React.ReactE
       window.removeEventListener("replay-intro", onReplay);
       window.removeEventListener("pageshow", closeRestoredOverlay);
       document.removeEventListener("visibilitychange", closeRestoredOverlay);
+      cancelAnimationFrame(settingsFrame);
     };
   }, [force]);
 
-  const dismiss = (): void => {
-    exitDistRef.current = window.innerHeight / 2 - 36;
-    // Read theme colors for a visible, theme-aware bubble
-    const cs = getComputedStyle(document.documentElement);
-    exitAccentRef.current = cs.getPropertyValue("--accent").trim() || "#a07868";
-    exitStatusRef.current = cs.getPropertyValue("--accent-status").trim() || "#4ade80";
-    exitBgRef.current = cs.getPropertyValue("--background").trim() || "#0c0d10";
-    setPhase("exit");
-
-    // Timeline:
-    // 0ms      — content fades, terminal shrinks in place
-    // ~480ms   — small glowing gold circle at center
-    // ~880ms   — tiny green bubble, starts travelling to agent
-    // ~1400ms  — bubble arrives at agent button → agent-button-ready fires
-    //            agent button crossfades in while bubble is still visible
-    // ~1700ms  — bubble fully dissolved, button fully visible → particles fire
-    // 2400ms   — cleanup
-
-    setTimeout(() => {
-      sessionStorage.setItem("boot-complete", "1");
-      window.dispatchEvent(new CustomEvent("boot-complete"));
-    }, 800);
-
-    // Agent button appears while bubble is still at the position (crossfade)
-    setTimeout(() => {
-      window.dispatchEvent(new CustomEvent("agent-button-ready"));
-    }, 1400);
-
-    // Particles fire once button is fully materialized
-    setTimeout(() => {
-      window.dispatchEvent(new CustomEvent("boot-particles"));
-    }, 1750);
-
-    setTimeout(() => {
-      setVisible(false);
-      localStorage.setItem("boot-ever-seen", "1");
-      onDone?.();
-    }, 2400);
-  };
-
   // Speed multiplier: 1x for first visit, 2.5x for replay
-  const slow = typeof sessionStorage !== "undefined" && sessionStorage.getItem("boot-slow") === "1";
   const m = slow ? 2.5 : 1;
 
   // Phase: intro typing
@@ -195,7 +202,7 @@ export function TerminalBoot({ force = false, onDone }: BootProps): React.ReactE
     }
     const t = setTimeout(() => setPhase("checks"), 90 * m);
     return () => clearTimeout(t);
-  }, [visible, phase, introTyped, soundOn, m]);
+  }, [visible, phase, introTyped, beep, m]);
 
   // Phase: checks cascade
   useEffect(() => {
@@ -212,7 +219,7 @@ export function TerminalBoot({ force = false, onDone }: BootProps): React.ReactE
       80 * m,
     );
     return () => clearTimeout(t);
-  }, [visible, phase, checkStep, soundOn, m]);
+  }, [visible, phase, checkStep, checks.length, beep, m]);
 
   // Phase: status → launching → exit
   useEffect(() => {
@@ -225,7 +232,7 @@ export function TerminalBoot({ force = false, onDone }: BootProps): React.ReactE
       const t = setTimeout(dismiss, 280);
       return () => clearTimeout(t);
     }
-  }, [visible, phase]);
+  }, [visible, phase, dismiss, m]);
 
   const toggleSound = (): void => {
     const next = !soundOn;
@@ -245,10 +252,7 @@ export function TerminalBoot({ force = false, onDone }: BootProps): React.ReactE
           : 100;
 
   const isExit = phase === "exit";
-  const dist = exitDistRef.current;
-  const ac = exitAccentRef.current;
-  const st = exitStatusRef.current;
-  const bg = exitBgRef.current;
+  const { dist, accent: ac, status: st, background: bg } = exitStyle;
 
   return (
     <AnimatePresence>

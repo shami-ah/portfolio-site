@@ -531,6 +531,16 @@ export function AgentBar(): React.ReactElement {
     // 1. Exact keyword match — instant
     const exact = commands.find((c) => c.keyword === q);
     if (exact) { runCommand(exact); return; }
+    // 1.5 Project-name mention — route to the exact case study before generic "tell me more" chat intent.
+    const projectMention = commands.find((c) =>
+      c.intent === "project_detail" && (
+        q.includes(c.keyword)
+        || (c.keyword === "openevent" && q.includes("open event"))
+        || (c.keyword === "codelens" && q.includes("code lens"))
+        || (c.keyword === "gogaa" && q.includes("gogaa cli"))
+      ),
+    );
+    if (projectMention) { runCommand(projectMention); return; }
     // 2. Fuzzy intent match — instant
     const fuzzy = fuzzyMatch(q, commands);
     if (fuzzy) { runCommand(fuzzy.command); return; }

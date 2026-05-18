@@ -11,6 +11,7 @@
   --accent-glow: rgba(160, 120, 104, 0.08);
   --accent-secondary: #4a5578;
   --accent-status: #4ade80;
+  --agent-emoji: #4ade80;
   --card: #111218;
   --card-border: #232530;
   --card-hover: #181a22;
@@ -42,6 +43,7 @@
   --accent-glow: rgba(109, 78, 62, 0.1);
   --accent-secondary: #344058;
   --accent-status: #15803d;
+  --agent-emoji: #4ade80;
   --card: #faf9f6;
   --card-border: #a09a8e;
   --card-hover: #f2f0ea;

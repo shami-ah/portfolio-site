@@ -2,9 +2,6 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { motion } from "framer-motion";
-
-import { FadeUp } from "@/components/motion";
 
 /* ------------------------------------------------------------------ */
 /*  Helpers                                                            */
@@ -16,19 +13,6 @@ function Line({ label, value, accent }: { label: string; value: string; accent?:
       <span className="text-foreground/80">{label}</span>
       <span className="text-muted/40"> : </span>
       <span className={accent ? "text-accent" : "text-accent-secondary/80"}>{value}</span>
-    </div>
-  );
-}
-
-function StatStrip({ stats }: { stats: { label: string; value: string }[] }): React.ReactElement {
-  return (
-    <div className="flex flex-wrap gap-x-4 gap-y-1 mt-2">
-      {stats.map((s) => (
-        <div key={s.label} className="flex items-center gap-1.5 text-caption font-mono">
-          <span className="text-foreground/80 font-semibold">{s.value}</span>
-          <span className="text-muted/40">{s.label}</span>
-        </div>
-      ))}
     </div>
   );
 }
@@ -104,7 +88,7 @@ function CodeReadme(): React.ReactElement {
 function CodeEcosystem(): React.ReactElement {
   return (
     <div className="py-2">
-      <CodeLine num={1}><C>// The self-improving AI toolkit</C></CodeLine>
+      <CodeLine num={1}><C>{"// The self-improving AI toolkit"}</C></CodeLine>
       <CodeLine num={2}><span /></CodeLine>
       <CodeLine num={3}><K>import</K> <V>{`{ Agent }`}</V> <K>from</K> <S>&quot;gogaa-cli&quot;</S></CodeLine>
       <CodeLine num={4}><K>import</K> <V>{`{ Reviewer }`}</V> <K>from</K> <S>&quot;codelens&quot;</S></CodeLine>
@@ -120,8 +104,8 @@ function CodeEcosystem(): React.ReactElement {
       <CodeLine num={14}>    Observer<P>({`{`}</P> <V>role</V><P>:</P> <S>&quot;monitors all&quot;</S> <P>{`})`}</P><P>,</P></CodeLine>
       <CodeLine num={15}>  <P>],</P></CodeLine>
       <CodeLine num={16}><span /></CodeLine>
-      <CodeLine num={17}>  <C>// patterns feed back into context</C></CodeLine>
-      <CodeLine num={18}>  <C>// same bug never generated twice</C></CodeLine>
+      <CodeLine num={17}>  <C>{"// patterns feed back into context"}</C></CodeLine>
+      <CodeLine num={18}>  <C>{"// same bug never generated twice"}</C></CodeLine>
       <CodeLine num={19}><P>{`}`}</P> <K>satisfies</K> <V>Toolkit</V></CodeLine>
     </div>
   );
@@ -130,13 +114,13 @@ function CodeEcosystem(): React.ReactElement {
 function CodeWisc(): React.ReactElement {
   return (
     <div className="py-2">
-      <CodeLine num={1}><C>// Context engineering framework</C></CodeLine>
+      <CodeLine num={1}><C>{"// Context engineering framework"}</C></CodeLine>
       <CodeLine num={2}><span /></CodeLine>
       <CodeLine num={3}><K>export const</K> <K>wisc</K> <P>=</P> <P>{`{`}</P></CodeLine>
-      <CodeLine num={4}>  <V>W</V><P>:</P> <S>&quot;Write&quot;</S><P>,</P>   <C>// persist to files</C></CodeLine>
-      <CodeLine num={5}>  <V>I</V><P>:</P> <S>&quot;Isolate&quot;</S><P>,</P> <C>// one task per convo</C></CodeLine>
-      <CodeLine num={6}>  <V>S</V><P>:</P> <S>&quot;Select&quot;</S><P>,</P>  <C>// path-scoped rules</C></CodeLine>
-      <CodeLine num={7}>  <V>C</V><P>:</P> <S>&quot;Compress&quot;</S><P>,</P><C>// lazy-load skills</C></CodeLine>
+      <CodeLine num={4}>  <V>W</V><P>:</P> <S>&quot;Write&quot;</S><P>,</P>   <C>{"// persist to files"}</C></CodeLine>
+      <CodeLine num={5}>  <V>I</V><P>:</P> <S>&quot;Isolate&quot;</S><P>,</P> <C>{"// one task per convo"}</C></CodeLine>
+      <CodeLine num={6}>  <V>S</V><P>:</P> <S>&quot;Select&quot;</S><P>,</P>  <C>{"// path-scoped rules"}</C></CodeLine>
+      <CodeLine num={7}>  <V>C</V><P>:</P> <S>&quot;Compress&quot;</S><P>,</P><C>{"// lazy-load skills"}</C></CodeLine>
       <CodeLine num={8}><span /></CodeLine>
       <CodeLine num={9}>  <V>before</V><P>:</P> <S>&quot;72KB&quot;</S><P>,</P></CodeLine>
       <CodeLine num={10}>  <V>after</V><P>:</P> <S>&quot;11.7KB&quot;</S><P>,</P></CodeLine>

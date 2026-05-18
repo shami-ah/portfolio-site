@@ -358,6 +358,8 @@ function ExpandModal({
           transition={{ duration: 0.2 }}
           className="fixed inset-0 z-[9999] flex items-center justify-center bg-background p-4 md:p-8"
           onClick={onClose}
+          aria-modal="true"
+          role="dialog"
         >
           <motion.div
             initial={{ scale: 0.95, opacity: 0 }}
@@ -435,6 +437,7 @@ function ScrollPanel({
     <>
       {/* Sticky panel — slides over previous via z-index */}
       <div
+        id={`project-${project.slug}`}
         className="sticky top-0 h-screen w-full overflow-hidden bg-background scroll-snap-align-start"
         style={{ zIndex: (index + 1) * 10 }}
       >
@@ -1167,6 +1170,32 @@ export function Projects(): React.ReactElement {
     section.addEventListener("click", onClick, true);
     return () => section.removeEventListener("click", onClick, true);
   }, [expandBySlug]);
+
+  useEffect(() => {
+    const handler = (event: Event): void => {
+      const detail = (event as CustomEvent<{ slug?: string; kind?: "mockup" | "diagram" }>).detail;
+      const slug = detail?.slug;
+      if (!slug) return;
+      const kind = detail.kind ?? "mockup";
+      const flagship = FLAGSHIP_SLUGS.find((item) => item.slug === slug);
+      const project = projects.find((item) => item.slug === slug);
+      if (!project) return;
+
+      const target = document.getElementById(`project-${slug}`) ?? sectionRef.current;
+      target?.scrollIntoView({ behavior: "smooth", block: "start" });
+
+      window.setTimeout(() => {
+        if (flagship) {
+          expandBySlug(slug, kind);
+        } else {
+          setActiveProject(project);
+        }
+      }, 650);
+    };
+
+    window.addEventListener("open-project-detail", handler);
+    return () => window.removeEventListener("open-project-detail", handler);
+  }, [expandBySlug, setActiveProject]);
 
   const navigate = useCallback(
     (dir: 1 | -1) => {

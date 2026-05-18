@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 interface TimeStop {
@@ -90,14 +90,14 @@ export function TimeMachine(): React.ReactElement {
   }, [userInteracted]);
 
   // Update idx from pointer X on the track
-  const updateFromPointer = (clientX: number): void => {
+  const updateFromPointer = useCallback((clientX: number): void => {
     const el = trackRef.current;
     if (!el) return;
     const rect = el.getBoundingClientRect();
     const ratio = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
     const next = Math.min(stops.length - 1, Math.floor(ratio * stops.length));
     if (next !== idx) setIdx(next);
-  };
+  }, [idx]);
 
   // Drag lifecycle
   useEffect(() => {
@@ -115,7 +115,7 @@ export function TimeMachine(): React.ReactElement {
       window.removeEventListener("pointerup", onUp);
       window.removeEventListener("pointercancel", onUp);
     };
-  }, [dragging, idx]);
+  }, [dragging, updateFromPointer]);
 
   const stop = stops[idx];
 

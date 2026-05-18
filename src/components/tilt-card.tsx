@@ -10,14 +10,14 @@ interface TiltCardProps {
 }
 
 export function TiltCard({ children, className = "", maxDeg = 5 }: TiltCardProps): React.ReactElement {
-  const tilt = useTilt(maxDeg);
+  const { ref, onMouseMove, onMouseLeave, style } = useTilt(maxDeg);
 
   return (
     <motion.div
-      ref={tilt.ref}
-      onMouseMove={tilt.onMouseMove}
-      onMouseLeave={tilt.onMouseLeave}
-      style={tilt.style}
+      ref={ref}
+      onMouseMove={onMouseMove}
+      onMouseLeave={onMouseLeave}
+      style={style}
       className={className}
     >
       {children}

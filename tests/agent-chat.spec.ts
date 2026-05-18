@@ -94,3 +94,31 @@ test("agent bar remains centered and usable on mobile", async ({ page }) => {
 
   expect(errors).toEqual([]);
 });
+
+test("project name queries open the exact project details", async ({ page }) => {
+  const errors = await prepare(page);
+  const chatRequests: string[] = [];
+  await page.route("**/api/chat", async (route) => {
+    chatRequests.push(route.request().postData() ?? "");
+    await route.abort();
+  });
+
+  await page.goto("/");
+  await page.locator(".agent-emoji-body").click({ force: true });
+  await page.getByPlaceholder("ask anything about Ahtesham's work...").fill("tell me more about gogaa");
+  await page.keyboard.press("Enter");
+
+  await expect(page.getByRole("dialog").getByText("Gogaa CLI — Details")).toBeVisible({ timeout: 8000 });
+  await expect(page.getByText("Details").first()).toBeVisible();
+  expect(chatRequests).toHaveLength(0);
+  expect(errors).toEqual([]);
+});
+
+test("core routes load without browser errors", async ({ page }) => {
+  for (const path of ["/", "/uses", "/writing", "/journey"]) {
+    const errors = await prepare(page);
+    await page.goto(path);
+    await page.waitForLoadState("networkidle");
+    expect(errors, path).toEqual([]);
+  }
+});

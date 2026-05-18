@@ -128,9 +128,12 @@ export function SidebarNav(): React.ReactElement {
         ticking = false;
       });
     };
-    updateActive();
+    const frame = requestAnimationFrame(updateActive);
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", onScroll);
+    };
   }, [updateActive]);
 
   useEffect(() => {

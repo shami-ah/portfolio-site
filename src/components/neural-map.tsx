@@ -1,5 +1,6 @@
 "use client";
 
+/* eslint-disable react-hooks/immutability */
 import { useEffect, useRef, useState, useCallback } from "react";
 import { skillNodes, skillEdges, groupColors, type SkillNode } from "@/data/skills-graph";
 
@@ -44,7 +45,8 @@ export function NeuralMap(): React.ReactElement {
     });
   }, []);
 
-  const simulate = useCallback(() => {
+  const simulateRef = useRef<() => void>(() => {});
+  simulateRef.current = () => {
     const nodes = nodesRef.current;
     const canvas = canvasRef.current;
     if (!canvas || nodes.length === 0) return;
@@ -206,8 +208,8 @@ export function NeuralMap(): React.ReactElement {
       ctx.fillText(n.node.label, n.x, n.y + n.radius + (isHovered ? 18 : 14));
     }
 
-    animRef.current = requestAnimationFrame(simulate);
-  }, []);
+    animRef.current = requestAnimationFrame(simulateRef.current);
+  };
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -225,14 +227,14 @@ export function NeuralMap(): React.ReactElement {
     };
 
     resize();
-    animRef.current = requestAnimationFrame(simulate);
+    animRef.current = requestAnimationFrame(simulateRef.current);
 
     window.addEventListener("resize", resize);
     return () => {
       window.removeEventListener("resize", resize);
       cancelAnimationFrame(animRef.current);
     };
-  }, [initNodes, simulate]);
+  }, [initNodes]);
 
   const onMouseMove = (e: React.MouseEvent<HTMLCanvasElement>): void => {
     const canvas = canvasRef.current;

@@ -13,10 +13,11 @@ export function WelcomeBack(): React.ReactElement | null {
 
     const count = parseInt(localStorage.getItem("visit-count") ?? "1", 10) + 1;
     localStorage.setItem("visit-count", String(count));
-    setVisitCount(count);
-
     // Show after hero has materialized
-    const timer = setTimeout(() => setShow(true), 800);
+    const timer = setTimeout(() => {
+      setVisitCount(count);
+      setShow(true);
+    }, 800);
     const hide = setTimeout(() => setShow(false), 4500);
     return () => {
       clearTimeout(timer);

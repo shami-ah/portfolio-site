@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { motion, useInView } from "framer-motion";
+import { useInView } from "framer-motion";
 import { FadeUp } from "./motion";
 import { TiltCard } from "./tilt-card";
 import { TypeLabel } from "./type-label";
@@ -10,13 +10,12 @@ import { useStatus } from "@/lib/use-status";
 function CountUp({ to, suffix = "" }: { to: number; suffix?: string }): React.ReactElement {
   const ref = useRef<HTMLSpanElement>(null);
   const isInView = useInView(ref, { once: true });
-  const [count, setCount] = useState(to);
+  const [count, setCount] = useState(0);
   const hasAnimated = useRef(false);
 
   useEffect(() => {
     if (!isInView || hasAnimated.current || to === 0) return;
     hasAnimated.current = true;
-    setCount(0);
     const duration = 1400;
     const start = Date.now();
     const tick = (): void => {
@@ -86,7 +85,7 @@ export function MissionStats(): React.ReactElement {
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 items-stretch">
-          {widgets.map((w, i) => (
+          {widgets.map((w) => (
             <TiltCard
               key={w.key}
               className="h-full"

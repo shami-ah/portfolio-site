@@ -6,8 +6,6 @@ import { motion } from "framer-motion";
 import { RefreshCcw, Wrench, TrendingUp, Sun, Moon } from "lucide-react";
 
 export function TopBar(): React.ReactElement {
-  const [scrolled, setScrolled] = useState(false);
-  const [onProjects, setOnProjects] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const [theme, setThemeState] = useState<"dark" | "light">("dark");
   const [themeMounted, setThemeMounted] = useState(false);
@@ -19,9 +17,12 @@ export function TopBar(): React.ReactElement {
 
   useEffect(() => {
     if (typeof sessionStorage === "undefined") return;
-    if (sessionStorage.getItem("seen-reboot") === "1") setSeenReboot(true);
-    if (sessionStorage.getItem("seen-setup") === "1") setSeenSetup(true);
-    if (sessionStorage.getItem("seen-journey") === "1") setSeenJourney(true);
+    const frame = requestAnimationFrame(() => {
+      if (sessionStorage.getItem("seen-reboot") === "1") setSeenReboot(true);
+      if (sessionStorage.getItem("seen-setup") === "1") setSeenSetup(true);
+      if (sessionStorage.getItem("seen-journey") === "1") setSeenJourney(true);
+    });
+    return () => cancelAnimationFrame(frame);
   }, []);
 
   const markSeen = useCallback((key: "reboot" | "setup" | "journey"): void => {
@@ -42,12 +43,27 @@ export function TopBar(): React.ReactElement {
   // ── Journey: meteor rises from bottom to button ──
   const [meteorProgress, setMeteorProgress] = useState(0); // 0-100
   const [meteorLanded, setMeteorLanded] = useState(false);
+  const [meteorDispersing, setMeteorDispersing] = useState(false);
   const journeyBtnRef = useRef<HTMLAnchorElement>(null);
   const [journeyPos, setJourneyPos] = useState({ cx: 0, cy: 0, bottom: 0 });
   const meteorTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const meteorAnimRef = useRef<number | null>(null);
   const meteorAutoMode = useRef(false); // true = time-based animation active
   const meteorProgressRef = useRef(0);
+  const disperseTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const disperseMeteor = useCallback((): void => {
+    if (meteorTimerRef.current) { clearTimeout(meteorTimerRef.current); meteorTimerRef.current = null; }
+    if (meteorAnimRef.current) { cancelAnimationFrame(meteorAnimRef.current); meteorAnimRef.current = null; }
+    meteorAutoMode.current = false;
+    if (meteorProgressRef.current > 0 || meteorLanded) {
+      setMeteorDispersing(true);
+      if (disperseTimerRef.current) clearTimeout(disperseTimerRef.current);
+      disperseTimerRef.current = setTimeout(() => setMeteorDispersing(false), 320);
+    }
+    setMeteorProgress(0);
+    setMeteorLanded(false);
+  }, [meteorLanded]);
 
   const updatePressure = useCallback(() => {
     setPressure((p) => Math.min(p + 1, 100));
@@ -57,15 +73,6 @@ export function TopBar(): React.ReactElement {
     const onScroll = (): void => {
       requestAnimationFrame(() => {
         const y = window.scrollY;
-        setScrolled(y > 40);
-
-        // Detect if we're on the projects section (full-bleed scrollytelling)
-        const projectsEl = document.getElementById("projects");
-        if (projectsEl) {
-          const pt = projectsEl.getBoundingClientRect().top;
-          const pb = projectsEl.getBoundingClientRect().bottom;
-          setOnProjects(pt < 60 && pb > 0);
-        }
 
         // Accumulate total scroll distance for pressure (very gradual)
         const delta = Math.abs(y - lastScrollY.current);
@@ -97,25 +104,17 @@ export function TopBar(): React.ReactElement {
           const agentScrolling = (globalThis as Record<string, unknown>).__agentScrolling === true;
 
           if (y < startScroll || agentScrolling) {
-            // Scrolled above contact — cancel any pending timer/animation and retract
-            if (meteorTimerRef.current) { clearTimeout(meteorTimerRef.current); meteorTimerRef.current = null; }
-            if (meteorAnimRef.current) { cancelAnimationFrame(meteorAnimRef.current); meteorAnimRef.current = null; }
-            meteorAutoMode.current = false;
-            setMeteorProgress(0);
-            setMeteorLanded(false);
+            // Scrolled above contact — disperse in place instead of dragging down with scroll.
+            disperseMeteor();
           } else {
-            // In contact zone — scroll-based retraction (scroll up pulls the line back)
+            setMeteorDispersing(false);
+            // In contact zone — scroll-up cancels the signal rather than retracting the line.
             const maxScroll = document.documentElement.scrollHeight - vh;
             const totalRange = maxScroll - startScroll;
             if (totalRange > 0) {
               const scrollProgress = ((y - startScroll) / totalRange) * 100;
-              // Only retract (never increase via scroll — the timer handles forward motion)
               if (scrollProgress < meteorProgressRef.current) {
-                // Cancel any in-progress auto-animation
-                if (meteorAnimRef.current) { cancelAnimationFrame(meteorAnimRef.current); meteorAnimRef.current = null; }
-                meteorAutoMode.current = false;
-                setMeteorProgress(scrollProgress);
-                setMeteorLanded(false);
+                disperseMeteor();
               }
             }
           }
@@ -131,7 +130,7 @@ export function TopBar(): React.ReactElement {
 
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
-  }, [updatePressure]);
+  }, [disperseMeteor, updatePressure]);
 
   // Keep ref in sync with state for scroll handler access
   useEffect(() => { meteorProgressRef.current = meteorProgress; }, [meteorProgress]);
@@ -191,8 +190,8 @@ export function TopBar(): React.ReactElement {
       observer.disconnect();
       if (meteorTimerRef.current) clearTimeout(meteorTimerRef.current);
       if (meteorAnimRef.current) cancelAnimationFrame(meteorAnimRef.current);
+      if (disperseTimerRef.current) clearTimeout(disperseTimerRef.current);
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -211,9 +210,12 @@ export function TopBar(): React.ReactElement {
 
   // Theme toggle (mobile inline version)
   useEffect(() => {
-    setThemeMounted(true);
-    const stored = localStorage.getItem("theme") as "dark" | "light" | null;
-    if (stored) setThemeState(stored);
+    const frame = requestAnimationFrame(() => {
+      setThemeMounted(true);
+      const stored = localStorage.getItem("theme") as "dark" | "light" | null;
+      if (stored) setThemeState(stored);
+    });
+    return () => cancelAnimationFrame(frame);
   }, []);
 
   const toggleTheme = (): void => {
@@ -247,7 +249,7 @@ export function TopBar(): React.ReactElement {
   const tremor = !seenReboot && pressure >= 80;
   const heavy = !seenReboot && pressure >= 92;
   const fillPct = !seenReboot ? Math.min(pressure, 100) : 0;
-  const showMeteor = !seenJourney && meteorProgress > 0;
+  const showMeteor = !seenJourney && (meteorProgress > 0 || meteorDispersing);
 
   return (
     <>
@@ -280,7 +282,7 @@ export function TopBar(): React.ReactElement {
 
       {/* ── Journey meteor — rises from viewport bottom to journey button ── */}
       {journeyPos.cx > 0 && (
-        <div className="fixed inset-0 z-30 pointer-events-none" style={{ opacity: showMeteor ? 1 : 0, transition: "opacity 0.6s ease" }}>
+        <div className="fixed inset-0 z-30 pointer-events-none" style={{ opacity: showMeteor ? 1 : 0, transition: meteorDispersing ? "opacity 0.22s ease-out, filter 0.22s ease-out" : "opacity 0.6s ease", filter: meteorDispersing ? "blur(10px)" : "blur(0px)" }}>
           {(() => {
             const vh = typeof window !== "undefined" ? window.innerHeight : 800;
             const lineX = journeyPos.cx;

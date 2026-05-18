@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Sun, Moon } from "lucide-react";
 
 type Theme = "dark" | "light";
@@ -9,20 +9,23 @@ export function ThemeToggle(): React.ReactElement {
   const [theme, setTheme] = useState<Theme>("dark");
   const [mounted, setMounted] = useState(false);
 
-  useEffect(() => {
-    setMounted(true);
-    const stored = localStorage.getItem("theme") as Theme | null;
-    if (stored === "light" || stored === "dark") {
-      setTheme(stored);
-      applyTheme(stored);
-    }
-  }, []);
-
-  function applyTheme(t: Theme): void {
+  const applyTheme = useCallback((t: Theme): void => {
     const root = document.documentElement;
     root.classList.remove("dark", "light");
     root.classList.add(t);
-  }
+  }, []);
+
+  useEffect(() => {
+    const frame = requestAnimationFrame(() => {
+      setMounted(true);
+      const stored = localStorage.getItem("theme") as Theme | null;
+      if (stored === "light" || stored === "dark") {
+        setTheme(stored);
+        applyTheme(stored);
+      }
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [applyTheme]);
 
   function toggle(): void {
     const next: Theme = theme === "dark" ? "light" : "dark";

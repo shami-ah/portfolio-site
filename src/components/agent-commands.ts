@@ -33,6 +33,10 @@ export function scrollTo(id: string): void {
   document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
+export function openProjectDetail(slug: string): void {
+  window.dispatchEvent(new CustomEvent("open-project-detail", { detail: { slug, kind: "mockup" } }));
+}
+
 /* ------------------------------------------------------------------ */
 /*  Fuzzy intent matching for free-text queries                        */
 /* ------------------------------------------------------------------ */
@@ -284,7 +288,7 @@ export const commands: AgentCommand[] = [
       { name: "retrieve_context", detail: "openevent: 100+ clients", ms: 18 },
     ],
     response: "OpenEvent — AI event management SaaS. Emails come in, AI classifies and extracts entities, humans approve, workflows execute. 100+ clients, 150+ events, saves 1.5hrs/day per team. Ask me more about it.",
-    action: () => scrollTo("projects"),
+    action: () => openProjectDetail("openevent"),
   },
   {
     keyword: "codelens",
@@ -295,7 +299,7 @@ export const commands: AgentCommand[] = [
       { name: "retrieve_context", detail: "codelens: 430 patterns", ms: 16 },
     ],
     response: "CodeLens — AI code review engine. 430 hand-crafted patterns, source-to-sink taint tracking, sub-second scans. Single 351KB file, zero deps. Currently private beta. Ask me more about it.",
-    action: () => scrollTo("projects"),
+    action: () => openProjectDetail("codelens"),
   },
   {
     keyword: "gogaa",
@@ -306,7 +310,7 @@ export const commands: AgentCommand[] = [
       { name: "retrieve_context", detail: "gogaa: 11 providers", ms: 14 },
     ],
     response: "Gogaa CLI — open-source AI coding agent. 11 LLM providers with auto-fallback, full Claude Code UI parity, 1,400+ tests, React Ink TUI. Ask me more about it.",
-    action: () => scrollTo("projects"),
+    action: () => openProjectDetail("gogaa-cli"),
   },
   {
     keyword: "rasad",
@@ -317,7 +321,7 @@ export const commands: AgentCommand[] = [
       { name: "retrieve_context", detail: "rasad: 656 sessions", ms: 12 },
     ],
     response: "Rasad — AI session observatory. 656 sessions across 4 tools, X-Ray replay, quality grading A-F. 100% local, zero outbound requests. Ask me more about it.",
-    action: () => scrollTo("projects"),
+    action: () => openProjectDetail("rasad"),
   },
   {
     keyword: "writing",

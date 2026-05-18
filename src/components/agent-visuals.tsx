@@ -266,8 +266,8 @@ export type EmojiMood = "default" | "curious" | "proud" | "waving" | "confused" 
 
 export function AgentEmoji({ size = 40, hovered = false, mood = "default" }: { size?: number; hovered?: boolean; mood?: EmojiMood }): React.ReactElement {
   const s = size;
-  const fc = "fill-accent-status";
-  const sc = "stroke-accent-status";
+  const fc = "fill-[var(--agent-emoji)]";
+  const sc = "stroke-[var(--agent-emoji)]";
   const isDancing = mood === "dancing";
   const isSleeping = mood === "sleeping";
 
@@ -403,7 +403,7 @@ export function AgentEmoji({ size = 40, hovered = false, mood = "default" }: { s
             className={fc}
             animate={
               isSleeping ? { scaleY: 0.15 }
-              : mood === "curious" ? { cx: [32, 34, 32] }
+              : mood === "curious" ? { x: [0, 2, 0] }
               : { scaleY: [1, 0.1, 1] }
             }
             transition={

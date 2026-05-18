@@ -92,8 +92,11 @@ export function ProjectModal({
   const [accessModalOpen, setAccessModalOpen] = useState(false);
 
   useEffect(() => {
-    setSelectedNode(null);
-    setAccessModalOpen(false);
+    const frame = requestAnimationFrame(() => {
+      setSelectedNode(null);
+      setAccessModalOpen(false);
+    });
+    return () => cancelAnimationFrame(frame);
   }, [project?.slug]);
 
   useScrollLock(!!project);
