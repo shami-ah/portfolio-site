@@ -134,11 +134,11 @@ export function BuildPopup({ onDone }: { onDone: () => void }): React.ReactEleme
 /* ------------------------------------------------------------------ */
 
 export const STAGE_MESSAGES = [
-  { text: "I\u2019m alive \u2014 click me", duration: 4500 },
+  { text: "portfolio agent ready", duration: 4500 },
   { text: "50+ systems shipped.", duration: 3500 },
-  { text: "try: whoami", duration: 4000 },
-  { text: "I build what doesn\u2019t exist yet.", duration: 4000 },
-  { text: "I know everything about Ahtesham\u2019s work.", duration: 4500 },
+  { text: "ask: projects, stack, rates", duration: 4000 },
+  { text: "human-gated AI systems", duration: 4000 },
+  { text: "trained on Ahtesham\u2019s work", duration: 4500 },
 ];
 
 export const DATA_FRAGS = ["0x4a", "RAG", "LLM", "RLS"];
