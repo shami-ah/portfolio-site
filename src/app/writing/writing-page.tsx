@@ -61,8 +61,8 @@ export function WritingPage(): React.ReactElement {
             Thinking in public<span className="text-muted">.</span>
           </h1>
           <p className="text-sm md:text-base text-muted max-w-2xl leading-relaxed">
-            Lessons from building AI systems, developer tools, and production
-            software. Not theory. Things I learned by shipping.
+            Field notes from shipping OpenEvent, CodeLens, Gogaa, and production
+            software people actually use.
           </p>
         </div>
       </div>

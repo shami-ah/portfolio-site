@@ -4,7 +4,7 @@ import { WritingPage } from "./writing-page";
 export const metadata: Metadata = {
   title: "Writing",
   description:
-    "Lessons from building AI systems, developer tools, and production software. Not theory. Things I learned by shipping.",
+    "Field notes from shipping OpenEvent, CodeLens, Gogaa, and production software people actually use.",
 };
 
 export default function Page(): React.ReactElement {

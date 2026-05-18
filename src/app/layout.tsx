@@ -36,7 +36,7 @@ export const metadata: Metadata = {
     template: "%s | Ahtesham Ahmad",
   },
   description:
-    "AI engineer building production AI systems end-to-end. 50+ production systems, AI-powered SaaS with 100+ clients, and open-source developer tools.",
+    "AI engineer behind OpenEvent, CodeLens, and Gogaa CLI: 50+ systems shipped, 100+ OpenEvent clients, and developer tools with 1,400+ tests.",
   keywords: [
     "Ahtesham Ahmad",
     "AI Engineer",
@@ -58,7 +58,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Ahtesham Ahmad | AI Engineer",
     description:
-      "AI engineer building production AI systems end-to-end. 50+ production systems, AI-powered SaaS with 100+ clients, and open-source developer tools.",
+      "AI engineer behind OpenEvent, CodeLens, and Gogaa CLI: 50+ systems shipped, 100+ OpenEvent clients, and developer tools with 1,400+ tests.",
     type: "website",
     url: "https://ahtesham.dev.wadwarehouse.com",
     siteName: "Ahtesham Ahmad Portfolio",
@@ -76,7 +76,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Ahtesham Ahmad | AI Engineer",
     description:
-      "I turn business workflows into AI-powered products. 50+ production systems, production SaaS, open-source developer tools.",
+      "OpenEvent serves 100+ clients, CodeLens reviews PRs in under a second, and Gogaa CLI runs across 11 AI providers.",
     images: ["/og.png"],
   },
   robots: {
@@ -127,7 +127,7 @@ export default function RootLayout({
               image: "https://ahtesham.dev.wadwarehouse.com/ahtesham.jpg",
               jobTitle: "AI Engineer",
               description:
-                "AI engineer building production AI systems end-to-end. 50+ production systems, AI-powered SaaS with 100+ clients, and open-source developer tools.",
+                "AI engineer behind OpenEvent, CodeLens, and Gogaa CLI: 50+ systems shipped, 100+ OpenEvent clients, and developer tools with 1,400+ tests.",
               sameAs: [
                 "https://github.com/shami-ah",
                 "https://www.linkedin.com/in/muhammad-ahtesham-ahmad-a153801b5",

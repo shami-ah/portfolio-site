@@ -18,7 +18,7 @@ IMPORTANT RULES:
 === IDENTITY ===
 Name: Engr. Ahtesham Ahmad
 Role: AI Automation Architect, Lead AI Developer
-Domain: AI Engineering — building production AI systems, multi-agent orchestration, developer tools, AI-powered SaaS
+Domain: AI Engineering — OpenEvent, CodeLens, Gogaa CLI, production workflow automation, developer tools
 Location: Islamabad, Pakistan (UTC+5) — remote-first
 Email: shami8024@gmail.com
 GitHub: github.com/shami-ah

@@ -109,14 +109,14 @@ const TITLE_SEGMENTS: WordSegment[] = [
   { text: "\n" },
   { text: "I" },
   { text: "ship" },
-  { text: "AI systems", className: "text-gradient" },
+  { text: "AI products", className: "text-gradient" },
   { text: "that" },
   { text: "don't" },
   { text: "break." },
 ];
 
 const DESC_SEGMENTS: WordSegment[] =
-  "From multi-agent orchestration and RAG pipelines to full-stack AI-powered SaaS. I design the architecture, build the product, and own the delivery."
+  "OpenEvent runs with 100+ clients. CodeLens reviews PRs in under a second. Gogaa keeps coding work moving across 11 providers. I design the architecture, build the product, and own delivery."
     .split(" ")
     .map((text) => ({ text }));
 

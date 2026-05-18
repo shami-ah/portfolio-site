@@ -102,7 +102,7 @@ function printCV(s: ReturnType<typeof useStatus>["status"]): void {
       <p style="font-family:monospace;font-size:9px;text-transform:uppercase;letter-spacing:3px;color:#aaa;margin-bottom:3px">Curriculum Vitae</p>
       <h1 style="font-size:38px;font-weight:bold;letter-spacing:-1px;line-height:1;color:#1a1a2e">Ahtesham <span style="color:#4a6fa5">Ahmad</span></h1>
       <p style="font-size:14px;font-weight:300;color:#888;margin-top:3px">AI Engineer</p>
-      <p style="font-size:10px;color:#777;margin-top:5px;max-width:380px;line-height:1.55">AI engineer building production AI systems end-to-end: multi-agent orchestration, RAG pipelines, and full-stack AI-powered SaaS. I architect solutions where AI agents classify, execute, and learn while humans stay in control.</p>
+      <p style="font-size:10px;color:#777;margin-top:5px;max-width:380px;line-height:1.55">Builder of OpenEvent, CodeLens, and Gogaa CLI. I ship workflow products with measurable adoption: 100+ OpenEvent clients, 430 CodeLens patterns, and 1,400+ Gogaa tests. AI proposes; humans stay in control where money or commitments are involved.</p>
     </div>
     <div style="font-family:monospace;font-size:10px;color:#999;text-align:right;line-height:1.7">
       shami8024@gmail.com<br><span style="color:#4a6fa5">github.com/shami-ah</span><br><span style="color:#4a6fa5">linkedin.com/in/ahtesham</span><br><span style="color:#4a6fa5">ahtesham.dev.wadwarehouse.com</span><br>Islamabad, PK \u00b7 Remote
@@ -528,7 +528,7 @@ function DrawerContent({ close, status }: { close: () => void; status: ReturnTyp
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.4 }}
               >
-                AI engineer building production AI systems end-to-end: multi-agent orchestration, RAG pipelines, and full-stack AI-powered SaaS. I architect solutions where AI agents classify, execute, and learn while humans stay in control.
+                Builder of OpenEvent, CodeLens, and Gogaa CLI. I ship workflow products with measurable adoption: 100+ OpenEvent clients, 430 CodeLens patterns, and 1,400+ Gogaa tests. AI proposes; humans stay in control where money or commitments are involved.
               </motion.p>
               <motion.div
                 className="text-sm text-muted/80 space-y-1.5 font-mono mt-4"
