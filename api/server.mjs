@@ -1,5 +1,12 @@
 import { createServer } from "node:http";
-import { BOOK_URL, GROQ_MODEL, buildSystemPrompt, getModelTemperature } from "./chat-context.mjs";
+import {
+  BOOK_URL,
+  GROQ_MODEL,
+  buildSystemPrompt,
+  getModelTemperature,
+  polishAnswer,
+  shouldSuggestBooking,
+} from "./chat-context.mjs";
 
 const PORT = 3001;
 
@@ -123,13 +130,14 @@ const server = createServer(async (req, res) => {
       if (!groqRes.ok) throw new Error(`Groq API: ${groqRes.status}`);
 
       const data = await groqRes.json();
-      const answer =
+      const rawAnswer =
         data.choices?.[0]?.message?.content ??
         "Something went wrong. Try rephrasing your question.";
+      const answer = polishAnswer(rawAnswer, message);
 
       return json(res, 200, {
         answer,
-        actions: [{ label: "Book a 15-min call", href: BOOK_URL }],
+        actions: shouldSuggestBooking(message) ? [{ label: "Book a 15-min call", href: BOOK_URL }] : [],
       });
     } catch {
       return json(res, 200, {

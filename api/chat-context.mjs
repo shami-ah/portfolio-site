@@ -148,3 +148,44 @@ export function buildSystemPrompt(modelId = "groq") {
 export function getModelTemperature(modelId = "groq") {
   return MODEL_TEMPS[modelId] ?? 0.3;
 }
+
+export function shouldSuggestBooking(message = "") {
+  return /\b(hire|available|availability|rate|rates|price|pricing|cost|timeline|time line|start|project|contract|full[- ]?time|work together|can you handle|fit|engagement)\b/i.test(message);
+}
+
+function stripUnwantedBooking(answer = "") {
+  return answer
+    .replace(/\s*(For more details,?\s*)?consider booking a 15-min call\.?/gi, "")
+    .replace(/\s*If you'?d like to learn more[^.]*Book a Call button\.?/gi, "")
+    .replace(/\s*I recommend booking a 15-min call[^.]*\.?/gi, "")
+    .replace(/\s*Use the Book a Call button[^.]*\.?/gi, "")
+    .trim();
+}
+
+export function polishAnswer(rawAnswer = "", message = "") {
+  const q = message.toLowerCase();
+  const answer = stripUnwantedBooking(rawAnswer);
+
+  if (/\bgogaa\b/.test(q)) {
+    return "Gogaa is Ahtesham's open-source AI coding agent. The credible parts: 11 LLM providers with auto-fallback, Aider-style repo editing, Claude Code-style terminal UX, plugin marketplace, parallel panes, scheduled triggers, WAL session persistence, and 1,418 passing tests. He built it to avoid being locked into one provider while keeping serious repo-level coding workflows.";
+  }
+
+  if (/\bpython\b/.test(q) && /\b(project|handle|can you|fit|build)\b/.test(q)) {
+    return "Yes, if the Python work is backend, automation, data pipelines, agent services, FastAPI, RAG, evaluation, or production hardening. Ahtesham has used Python across agent backends, AI evaluation, RAG pipelines, and HuggingFace/Groq agent systems. The right fit check is scope, integrations, deployment target, and timeline.";
+  }
+
+  if (/\b(stack|tech|technology|tools?)\b/.test(q)) {
+    return "Core stack: TypeScript, React, Next.js, Supabase/Postgres, Docker, Stripe, and Python/FastAPI. AI side: Claude, OpenAI, Groq, pgvector/RAG, LangChain, evals, and human-in-the-loop workflows. Infra: GitHub Actions, Docker Compose, Traefik, Cloudflare, Vercel, Sentry, Grafana, and n8n.";
+  }
+
+  if (/\b(rate|rates|price|pricing|cost|budget)\b/.test(q)) {
+    return "Typical range: $80-120/hr for direct contract work, scoped projects from $3k, and full-time remote compensation around $4k-10k/mo depending on scope, location, and impact. For serious work, the clean next step is a 15-min call to pin scope, timeline, and risk.";
+  }
+
+  if (/\b(timeline|time line|how long|start|availability|available)\b/.test(q)) {
+    return "Usual flow: 1-3 days for discovery/architecture, then sprint-based delivery with weekly demos. Availability is open for full-time remote roles and 90-day engagements. Timeline depends on integrations, data access, approvals, and deployment constraints.";
+  }
+
+  if (!answer) return rawAnswer;
+  return answer;
+}

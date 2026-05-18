@@ -2,7 +2,14 @@
 // full portfolio context. Set GROQ_API_KEY in your Cloudflare Pages
 // environment settings (Settings → Environment Variables).
 
-import { BOOK_URL, GROQ_MODEL, buildSystemPrompt, getModelTemperature } from "../../api/chat-context.mjs";
+import {
+  BOOK_URL,
+  GROQ_MODEL,
+  buildSystemPrompt,
+  getModelTemperature,
+  polishAnswer,
+  shouldSuggestBooking,
+} from "../../api/chat-context.mjs";
 
 interface Env {
   GROQ_API_KEY: string;
@@ -109,13 +116,14 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     const data = (await groqRes.json()) as {
       choices: { message: { content: string } }[];
     };
-    const answer =
+    const rawAnswer =
       data.choices?.[0]?.message?.content ??
       "Something went wrong. Try rephrasing your question.";
+    const answer = polishAnswer(rawAnswer, message);
 
     return new Response(JSON.stringify({
       answer,
-      actions: [{ label: "Book a 15-min call", href: BOOK_URL }],
+      actions: shouldSuggestBooking(message) ? [{ label: "Book a 15-min call", href: BOOK_URL }] : [],
     }), {
       status: 200,
       headers: {
