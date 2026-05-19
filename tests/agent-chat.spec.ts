@@ -20,6 +20,15 @@ async function prepare(page: Page): Promise<string[]> {
   return errors;
 }
 
+async function openAgentEntry(page: Page): Promise<void> {
+  try {
+    await page.locator(".agent-emoji-body").first().click({ force: true, timeout: 3_000 });
+    return;
+  } catch {
+    await page.locator('[data-agent-pill="fixed"]').first().click({ force: true, timeout: 8_000 });
+  }
+}
+
 test("agent bar and chat act as one unified flow", async ({ page }) => {
   const errors = await prepare(page);
   const chatPayloads: Array<{ message?: string; query?: string }> = [];
@@ -38,7 +47,7 @@ test("agent bar and chat act as one unified flow", async ({ page }) => {
     });
   });
   await page.goto("/");
-  await page.locator(".agent-emoji-body").click({ force: true });
+  await openAgentEntry(page);
 
   const bar = page.locator('[data-agent-bar="hero"]');
   await expect(bar).toBeVisible();
@@ -68,7 +77,7 @@ test("agent bar and chat act as one unified flow", async ({ page }) => {
   expect(chatPayloads).toHaveLength(1);
 
   await page.reload();
-  await page.locator(".agent-emoji-body").click({ force: true });
+  await openAgentEntry(page);
   await page.getByLabel("Open chat").first().click();
   await expect(page.getByText("I have a Python project, can you handle it?")).toBeVisible();
 
@@ -82,7 +91,7 @@ test("agent bar and chat act as one unified flow", async ({ page }) => {
 test("agent bar remains centered and usable on mobile", async ({ page }) => {
   const errors = await prepare(page);
   await page.goto("/");
-  await page.locator(".agent-emoji-body").click({ force: true });
+  await openAgentEntry(page);
 
   const bar = page.locator('[data-agent-bar="hero"]');
   await expect(bar).toBeVisible();
@@ -108,7 +117,7 @@ test("project name queries open the exact project details", async ({ page }) => 
   });
 
   await page.goto("/");
-  await page.locator(".agent-emoji-body").click({ force: true });
+  await openAgentEntry(page);
   await page.getByPlaceholder("ask anything about Ahtesham's work...").fill("tell me more about gogaa");
   await page.keyboard.press("Enter");
 
@@ -145,7 +154,7 @@ test("first-time visitor chat flow preserves history and badge across scroll", a
   });
 
   await page.goto("/");
-  await page.locator(".agent-emoji-body").click({ force: true });
+  await openAgentEntry(page);
   await page.getByLabel("Open chat").first().click();
   await page.getByPlaceholder("reply in chat...").fill("tell me more about gogaa");
   await page.keyboard.press("Enter");
@@ -165,7 +174,7 @@ test("first-time visitor chat flow preserves history and badge across scroll", a
   await expect(page.getByText("what about timeline?")).toBeVisible();
 
   await page.reload();
-  await page.locator(".agent-emoji-body").click({ force: true });
+  await openAgentEntry(page);
   await page.getByLabel("Open chat").first().click();
   await expect(page.getByText("what about timeline?")).toBeVisible();
 

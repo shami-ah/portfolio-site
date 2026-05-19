@@ -7,6 +7,7 @@ import {
   GROQ_MODEL,
   buildSystemPrompt,
   buildContextualMessage,
+  classifyQuestion,
   getModelTemperature,
   polishAnswer,
   shouldSuggestBooking,
@@ -20,6 +21,21 @@ interface Env {
 const rateMap = new Map<string, { count: number; reset: number }>();
 const RATE_LIMIT = 10;
 const RATE_WINDOW = 60_000;
+
+export const onRequestGet: PagesFunction<Env> = async (context) => {
+  return new Response(JSON.stringify({
+    status: "ok",
+    service: "shami-api",
+    groqConfigured: Boolean(context.env.GROQ_API_KEY),
+    deterministicAnswers: true,
+  }), {
+    status: 200,
+    headers: {
+      "Content-Type": "application/json",
+      "Cache-Control": "no-store",
+    },
+  });
+};
 
 function isRateLimited(ip: string): boolean {
   const now = Date.now();
@@ -122,10 +138,21 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
       data.choices?.[0]?.message?.content ??
       "Something went wrong. Try rephrasing your question.";
     const answer = polishAnswer(rawAnswer, contextualMessage);
+    const wantsBooking = shouldSuggestBooking(contextualMessage);
+
+    console.log(JSON.stringify({
+      event: "chat_answer",
+      ts: new Date().toISOString(),
+      category: classifyQuestion(contextualMessage),
+      source: answer === rawAnswer ? "llm" : "deterministic-polish",
+      booking: wantsBooking,
+      question: message.slice(0, 180),
+      answerChars: answer.length,
+    }));
 
     return new Response(JSON.stringify({
       answer,
-      actions: shouldSuggestBooking(contextualMessage) ? [{ label: "Book a 15-min call", href: BOOK_URL }] : [],
+      actions: wantsBooking ? [{ label: "Book a 15-min call", href: BOOK_URL }] : [],
     }), {
       status: 200,
       headers: {

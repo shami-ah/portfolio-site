@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useScrollLock } from "@/lib/use-scroll-lock";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronLeft, ChevronRight, X, Lock } from "lucide-react";
+import { ChevronLeft, ChevronRight, X, Lock, MessageSquare } from "lucide-react";
 import type { ProjectData } from "@/data/projects";
 import { diagrams } from "@/data/diagrams";
 import { ArchitectureDiagram } from "./architecture-diagram";
@@ -122,6 +122,15 @@ export function ProjectModal({
     return () => window.removeEventListener("keydown", onKey);
   }, [project, onClose, onNavigate]);
 
+  const askAgentAboutProject = (): void => {
+    if (!project) return;
+    const query = `Walk me through ${project.title}: what problem it solves, the architecture, tradeoffs, and why it matters.`;
+    onClose();
+    window.setTimeout(() => {
+      window.dispatchEvent(new CustomEvent("chat-with-query", { detail: query }));
+    }, 220);
+  };
+
   return (
     <>
     <AnimatePresence>
@@ -189,7 +198,7 @@ export function ProjectModal({
 
             {/* Scrollable content */}
             <div className="overflow-y-auto overscroll-contain flex-1 px-5 md:px-10 pt-6 md:pt-10 pb-24 md:pb-28">
-              {/* Header: type + title + impact */}
+              {/* Header: type + title + case-study framing */}
               <motion.div
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -213,12 +222,22 @@ export function ProjectModal({
                 <h2 className="text-2xl md:text-4xl font-bold mb-2 leading-tight">
                   {project.title}
                 </h2>
-                <p className="text-sm md:text-base text-muted mb-5">
-                  {project.subtitle}
+                <p className="text-sm md:text-base text-foreground/80 leading-relaxed border-l-2 border-accent pl-4 max-w-3xl">
+                  {project.oneLiner ?? project.impact}
                 </p>
-                <p className="text-sm md:text-base text-foreground/80 leading-relaxed border-l-2 border-accent pl-4">
-                  {project.impact}
-                </p>
+                <div className="mt-4 flex flex-wrap items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={askAgentAboutProject}
+                    className="inline-flex items-center gap-2 px-3 py-2 rounded-lg border border-accent/25 bg-accent/10 text-accent hover:bg-accent/15 hover:border-accent/40 transition-colors text-xs md:text-sm font-mono"
+                  >
+                    <MessageSquare size={14} />
+                    Ask agent about this project
+                  </button>
+                  <span className="text-caption md:text-xs font-mono text-muted/50">
+                    Opens with project context
+                  </span>
+                </div>
 
                 {/* Agent emoji commentary */}
                 {EMOJI_COMMENTARY[project.slug] && (

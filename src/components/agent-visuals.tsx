@@ -135,10 +135,10 @@ export function BuildPopup({ onDone }: { onDone: () => void }): React.ReactEleme
 
 export const STAGE_MESSAGES = [
   { text: "portfolio agent ready", duration: 4500 },
-  { text: "50+ systems shipped.", duration: 3500 },
-  { text: "ask: projects, stack, rates", duration: 4000 },
-  { text: "human-gated AI systems", duration: 4000 },
-  { text: "trained on Ahtesham\u2019s work", duration: 4500 },
+  { text: "ask about fit, proof, cost", duration: 4200 },
+  { text: "OpenEvent · CodeLens · Gogaa", duration: 4200 },
+  { text: "human gates before risk", duration: 4000 },
+  { text: "answers from real project context", duration: 4500 },
 ];
 
 export const DATA_FRAGS = ["0x4a", "RAG", "LLM", "RLS"];
@@ -153,7 +153,7 @@ export function StageSpeechBubble({ visible, emojiHovered }: { visible: boolean;
   const [hoverCharIdx, setHoverCharIdx] = useState(0);
   const [hoverTyped, setHoverTyped] = useState("");
   const hoverTimerRef = useRef<ReturnType<typeof setTimeout>>(undefined);
-  const hoverMsg = "talk to me";
+  const hoverMsg = "open agent";
 
   // Type hover message character by character
   useEffect(() => {
@@ -236,7 +236,7 @@ export function StageSpeechBubble({ visible, emojiHovered }: { visible: boolean;
         </div>
 
         {/* Bubble — fixed width, text wraps inside */}
-        <div className="speech-bubble relative w-[120px] md:w-[180px] rounded-[16px] md:rounded-[22px] px-3 py-2.5 md:px-6 md:py-5 flex items-center border border-accent-secondary/20 backdrop-blur-xl"
+        <div className="speech-bubble relative w-[132px] md:w-[196px] min-h-[58px] md:min-h-[82px] rounded-[16px] md:rounded-[22px] px-3 py-2.5 md:px-6 md:py-5 flex items-center border border-accent-secondary/20 backdrop-blur-xl"
         >
           <p className="speech-text font-mono text-[11px] md:text-sm leading-relaxed text-white/80">
             {displayText}<span className="inline-block w-[2px] h-[13px] ml-0.5 align-middle rounded-full animate-pulse"

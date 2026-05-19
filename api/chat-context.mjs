@@ -153,6 +153,21 @@ export function shouldSuggestBooking(message = "") {
   return /\b(hire|available|availability|rate|rates|price|pricing|cost|timeline|time line|start|project|contract|full[- ]?time|work together|can you handle|fit|engagement)\b/i.test(message);
 }
 
+export function classifyQuestion(message = "") {
+  const q = normalizedQuestion(message);
+  if (/\bgogaa\b/.test(q)) return "gogaa";
+  if (/\bopenevent|open event\b/.test(q)) return "openevent";
+  if (/\bcodelens|code lens\b/.test(q)) return "codelens";
+  if (/\brasad\b/.test(q)) return "rasad";
+  if (/\bpython\b/.test(q) && /\b(project|handle|can you|fit|build)\b/.test(q)) return "python-fit";
+  if (/\b(stack|tech|technology|tools?)\b/.test(q)) return "stack";
+  if (/\b(rate|rates|price|pricing|cost|budget|how much)\b/.test(q)) return "pricing";
+  if (/\b(timeline|time line|how long|start|availability|available)\b/.test(q)) return "timeline";
+  if (/\b(kubernetes|k8s|aws|azure|gcp)\b/.test(q)) return "unsupported-cloud";
+  if (/\bwhy\b.*\b(hire|choose)|\bproof\b|\bsenior\b|\bcredible|credibility|fit for.*role|remote role|abroad\b/.test(q)) return "senior-proof";
+  return "general";
+}
+
 export function buildContextualMessage(message = "", history = []) {
   const query = message.trim();
   if (!query) return "";

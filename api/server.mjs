@@ -4,6 +4,7 @@ import {
   GROQ_MODEL,
   buildSystemPrompt,
   buildContextualMessage,
+  classifyQuestion,
   getModelTemperature,
   polishAnswer,
   shouldSuggestBooking,
@@ -46,7 +47,7 @@ function json(res, status, data) {
     "Content-Type": "application/json",
     "Cache-Control": "no-store",
     "Access-Control-Allow-Origin": "*",
-    "Access-Control-Allow-Methods": "POST, OPTIONS",
+    "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
     "Access-Control-Allow-Headers": "Content-Type",
   });
   res.end(JSON.stringify(data));
@@ -57,15 +58,22 @@ const server = createServer(async (req, res) => {
   if (req.method === "OPTIONS") {
     res.writeHead(204, {
       "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Methods": "POST, OPTIONS",
+      "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
       "Access-Control-Allow-Headers": "Content-Type",
     });
     return res.end();
   }
 
   // Health check
-  if (req.url === "/health" && req.method === "GET") {
-    return json(res, 200, { status: "ok" });
+  if ((req.url === "/health" || req.url === "/api/health") && req.method === "GET") {
+    return json(res, 200, {
+      status: "ok",
+      service: "shami-api",
+      version: process.env.GIT_SHA ?? "local",
+      groqConfigured: Boolean(GROQ_API_KEY),
+      deterministicAnswers: true,
+      uptimeSec: Math.round(process.uptime()),
+    });
   }
 
   // Chat endpoint
@@ -136,10 +144,21 @@ const server = createServer(async (req, res) => {
         data.choices?.[0]?.message?.content ??
         "Something went wrong. Try rephrasing your question.";
       const answer = polishAnswer(rawAnswer, contextualMessage);
+      const wantsBooking = shouldSuggestBooking(contextualMessage);
+
+      console.log(JSON.stringify({
+        event: "chat_answer",
+        ts: new Date().toISOString(),
+        category: classifyQuestion(contextualMessage),
+        source: answer === rawAnswer ? "llm" : "deterministic-polish",
+        booking: wantsBooking,
+        question: message.slice(0, 180),
+        answerChars: answer.length,
+      }));
 
       return json(res, 200, {
         answer,
-        actions: shouldSuggestBooking(contextualMessage) ? [{ label: "Book a 15-min call", href: BOOK_URL }] : [],
+        actions: wantsBooking ? [{ label: "Book a 15-min call", href: BOOK_URL }] : [],
       });
     } catch {
       return json(res, 200, {

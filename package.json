@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "eslint",
     "test:chat-eval": "node tests/chat-eval.mjs",
-    "test:agent-chat": "playwright test tests/agent-chat.spec.ts"
+    "test:agent-chat": "playwright test tests/agent-chat.spec.ts",
+    "test:launch": "node scripts/launch-check.mjs"
   },
   "dependencies": {
     "@tailwindcss/typography": "^0.5.19",
