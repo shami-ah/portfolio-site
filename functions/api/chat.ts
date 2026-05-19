@@ -125,7 +125,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
 
     return new Response(JSON.stringify({
       answer,
-      actions: shouldSuggestBooking(message) ? [{ label: "Book a 15-min call", href: BOOK_URL }] : [],
+      actions: shouldSuggestBooking(contextualMessage) ? [{ label: "Book a 15-min call", href: BOOK_URL }] : [],
     }), {
       status: 200,
       headers: {

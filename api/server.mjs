@@ -139,7 +139,7 @@ const server = createServer(async (req, res) => {
 
       return json(res, 200, {
         answer,
-        actions: shouldSuggestBooking(message) ? [{ label: "Book a 15-min call", href: BOOK_URL }] : [],
+        actions: shouldSuggestBooking(contextualMessage) ? [{ label: "Book a 15-min call", href: BOOK_URL }] : [],
       });
     } catch {
       return json(res, 200, {
