@@ -172,6 +172,9 @@ export function buildContextualMessage(message = "", history = []) {
   const query = message.trim();
   if (!query) return "";
   const lower = query.toLowerCase();
+  const mentionsSpecificProject = /\b(openevent|open event|codelens|code lens|gogaa|rasad|command center|gluten-free|portable dev|orchestrator)\b/.test(lower);
+  if (mentionsSpecificProject) return query;
+
   const needsContext =
     /\b(it|that|this|those|them|same|there|he|him)\b/.test(lower)
     || /\b(can you handle|can he handle|can he do|can you do|what about|how about|how much|timeline|proof|show me proof)\b/.test(lower);

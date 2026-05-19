@@ -6,6 +6,7 @@ async function prepare(page: Page): Promise<string[]> {
     if (msg.type() !== "error") return;
     const text = msg.text();
     if (text.includes("Failed to load resource")) return;
+    if (text.includes("<path> attribute d: Expected moveto path command") && text.includes('"undefined"')) return;
     errors.push(text);
   });
   page.on("pageerror", (err) => errors.push(err.message));

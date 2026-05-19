@@ -236,8 +236,27 @@ export function StageSpeechBubble({ visible, emojiHovered }: { visible: boolean;
         </div>
 
         {/* Bubble — fixed width, text wraps inside */}
-        <div className="speech-bubble relative w-[132px] md:w-[196px] min-h-[58px] md:min-h-[82px] rounded-[16px] md:rounded-[22px] px-3 py-2.5 md:px-6 md:py-5 flex items-center border border-accent-secondary/20 backdrop-blur-xl"
+        <div className="speech-bubble relative w-[132px] md:w-[196px] min-h-[58px] md:min-h-[82px] rounded-[16px] md:rounded-[22px] px-3 py-2.5 md:px-6 md:py-5 flex items-center border border-accent-secondary/20 backdrop-blur-xl overflow-hidden"
         >
+          <motion.span
+            aria-hidden
+            className="absolute right-2.5 top-2.5 h-1.5 w-1.5 rounded-full bg-accent-status"
+            animate={{
+              opacity: [0.35, 1, 0.35],
+              boxShadow: [
+                "0 0 0 0 rgba(74,222,128,0.25)",
+                "0 0 0 6px rgba(74,222,128,0)",
+                "0 0 0 0 rgba(74,222,128,0.25)",
+              ],
+            }}
+            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+          />
+          <motion.span
+            aria-hidden
+            className="absolute bottom-0 left-0 h-px w-full bg-gradient-to-r from-transparent via-accent-status/60 to-transparent"
+            animate={{ x: ["-100%", "100%"], opacity: [0, 0.85, 0] }}
+            transition={{ duration: 3.2, repeat: Infinity, ease: "easeInOut" }}
+          />
           <p className="speech-text font-mono text-[11px] md:text-sm leading-relaxed text-white/80">
             {displayText}<span className="inline-block w-[2px] h-[13px] ml-0.5 align-middle rounded-full animate-pulse"
               style={{ backgroundColor: "rgba(255,255,255,0.5)", animationDuration: isActivelyTyping ? "0.4s" : "1.2s" }} />

@@ -219,6 +219,9 @@ const panelVariants = {
 
 function buildContextualQuery(query: string, messages: Message[]): string {
   const lower = query.toLowerCase();
+  const mentionsSpecificProject = /\b(openevent|open event|codelens|code lens|gogaa|rasad|command center|gluten-free|portable dev|orchestrator)\b/.test(lower);
+  if (mentionsSpecificProject) return query;
+
   const needsContext =
     /\b(it|that|this|those|them|same|there)\b/.test(lower)
     || /\b(can you handle|can you do|what about|how about)\b/.test(lower);
@@ -352,7 +355,7 @@ export function ChatWidget(): React.ReactElement {
       let actions: KbAction[] | undefined;
 
       const contextualQuery = buildContextualQuery(query, messages);
-      const entry = findAnswer(contextualQuery);
+      const entry = findAnswer(query) ?? findAnswer(contextualQuery);
       const history = messages
         .filter((m) => m.role === "user" || m.role === "assistant")
         .slice(-8)
@@ -363,8 +366,8 @@ export function ChatWidget(): React.ReactElement {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            message: contextualQuery,
-            query: contextualQuery,
+            message: query,
+            query,
             history,
             model: "groq",
           }),

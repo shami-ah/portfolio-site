@@ -21,7 +21,7 @@ const EMOJI_COMMENTARY: Record<string, { mood: "proud" | "curious" | "default" |
   rasad: { mood: "default", text: "Built this so I could see inside the black box." },
 };
 import { useScrollLock } from "@/lib/use-scroll-lock";
-import { ChevronLeft, ChevronRight, X, Maximize2 } from "lucide-react";
+import { ChevronLeft, ChevronRight, X, Maximize2, MessageSquare } from "lucide-react";
 
 /* ------------------------------------------------------------------ */
 /*  Flagship config                                                    */
@@ -322,12 +322,14 @@ function ExpandModal({
   open,
   onClose,
   title,
+  project,
   projectSlug,
   children,
 }: {
   open: boolean;
   onClose: () => void;
   title: string;
+  project?: ProjectData;
   projectSlug?: string;
   children: React.ReactNode;
 }): React.ReactElement {
@@ -344,6 +346,14 @@ function ExpandModal({
   }, [open, onClose]);
 
   const commentary = projectSlug ? EMOJI_COMMENTARY[projectSlug] : undefined;
+  const askAgentAboutProject = (): void => {
+    if (!project) return;
+    const query = `Walk me through ${project.title}: what problem it solves, the architecture, tradeoffs, and why it matters.`;
+    onClose();
+    window.setTimeout(() => {
+      window.dispatchEvent(new CustomEvent("chat-with-query", { detail: query }));
+    }, 220);
+  };
 
   // Portal to document.body so modal sits above all fixed elements (nav, sidebar, agent, chat)
   if (typeof document === "undefined") return <></>;
@@ -372,6 +382,16 @@ function ExpandModal({
             <div className="sticky top-0 z-10 flex items-center justify-between px-5 py-3 border-b border-card-border/50 bg-card/90 backdrop-blur-sm">
               <p className="text-sm font-mono text-muted">{title}</p>
               <div className="flex items-center gap-3">
+                {project && (
+                  <button
+                    type="button"
+                    onClick={askAgentAboutProject}
+                    className="hidden sm:inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-accent/10 border border-accent/20 text-accent hover:bg-accent/15 hover:border-accent/35 transition-colors text-caption font-mono"
+                  >
+                    <MessageSquare size={13} />
+                    ask agent
+                  </button>
+                )}
                 {/* Agent emoji commentary — top-right, animated */}
                 {commentary && (
                   <motion.div
@@ -398,6 +418,16 @@ function ExpandModal({
               </div>
             </div>
             <div className="p-5 md:p-8">
+              {project && (
+                <button
+                  type="button"
+                  onClick={askAgentAboutProject}
+                  className="sm:hidden mb-4 inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-accent/10 border border-accent/20 text-accent hover:bg-accent/15 transition-colors text-xs font-mono"
+                >
+                  <MessageSquare size={14} />
+                  Ask agent about this project
+                </button>
+              )}
               {children}
             </div>
           </motion.div>
@@ -1257,7 +1287,13 @@ export function Projects(): React.ReactElement {
         onClose={() => setActiveProject(null)}
         onNavigate={navigate}
       />
-      <ExpandModal open={!!expandedPanel} onClose={() => setExpandedPanel(null)} title={expandedPanel ? `${expandedPanel.content.title} — ${expandedPanel.kind === "mockup" ? "Details" : "Architecture"}` : ""} projectSlug={expandedPanel?.project.slug}>
+      <ExpandModal
+        open={!!expandedPanel}
+        onClose={() => setExpandedPanel(null)}
+        title={expandedPanel ? `${expandedPanel.content.title} — ${expandedPanel.kind === "mockup" ? "Details" : "Architecture"}` : ""}
+        project={expandedPanel?.project}
+        projectSlug={expandedPanel?.project.slug}
+      >
         {expandedPanel?.kind === "mockup" ? (
           <ProjectDetailsContent project={expandedPanel.project} mockup={expandedPanel.mockup} />
         ) : expandedPanel ? (

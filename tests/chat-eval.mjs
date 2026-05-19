@@ -89,6 +89,17 @@ const cases = [
     category: "gogaa",
     book: false,
   },
+  {
+    q: "Walk me through OpenEvent: what problem it solves, the architecture, tradeoffs, and why it matters.",
+    history: [
+      { role: "user", content: "Walk me through CodeLens: what problem it solves, the architecture, tradeoffs, and why it matters." },
+      { role: "assistant", content: "CodeLens is Ahtesham's AI code review engine with 430 patterns." },
+    ],
+    must: ["OpenEvent", "production SaaS", "human approval"],
+    mustNot: ["CodeLens is Ahtesham's AI code review engine"],
+    category: "openevent",
+    book: false,
+  },
 ];
 
 function fallbackFor(q) {
