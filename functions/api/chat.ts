@@ -6,6 +6,7 @@ import {
   BOOK_URL,
   GROQ_MODEL,
   buildSystemPrompt,
+  buildContextualMessage,
   getModelTemperature,
   polishAnswer,
   shouldSuggestBooking,
@@ -88,6 +89,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
   }
 
   try {
+    const contextualMessage = buildContextualMessage(message, history);
     const groqRes = await fetch(
       "https://api.groq.com/openai/v1/chat/completions",
       {
@@ -101,7 +103,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
           messages: [
             { role: "system", content: buildSystemPrompt(modelId) },
             ...history,
-            { role: "user", content: message },
+            { role: "user", content: contextualMessage },
           ],
           temperature: getModelTemperature(modelId),
           max_tokens: 400,
@@ -119,7 +121,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     const rawAnswer =
       data.choices?.[0]?.message?.content ??
       "Something went wrong. Try rephrasing your question.";
-    const answer = polishAnswer(rawAnswer, message);
+    const answer = polishAnswer(rawAnswer, contextualMessage);
 
     return new Response(JSON.stringify({
       answer,

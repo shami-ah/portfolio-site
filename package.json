@@ -7,6 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
+    "test:chat-eval": "node tests/chat-eval.mjs",
     "test:agent-chat": "playwright test tests/agent-chat.spec.ts"
   },
   "dependencies": {

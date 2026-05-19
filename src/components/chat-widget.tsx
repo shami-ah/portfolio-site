@@ -22,13 +22,6 @@ interface Message {
 
 type WidgetState = "closed" | "open";
 
-const MODELS = [
-  { id: "groq", label: "Llama 3.3", provider: "Groq" },
-  { id: "claude", label: "Claude 4", provider: "Anthropic" },
-  { id: "gpt4", label: "GPT-4o", provider: "OpenAI" },
-  { id: "nvidia", label: "Nemotron", provider: "NVIDIA" },
-] as const;
-
 const BOOK_URL = "https://ahtesham.dev.wadwarehouse.com/book";
 
 const FALLBACK =
@@ -277,7 +270,6 @@ export function ChatWidget(): React.ReactElement {
   const [messages, setMessages] = useState<Message[]>([]);
   const [historyLoaded, setHistoryLoaded] = useState(false);
   const [isThinking, setIsThinking] = useState(false);
-  const [activeModel, setActiveModel] = useState("groq");
   const [showFallbackChips, setShowFallbackChips] = useState(false);
   const [mountRevision, setMountRevision] = useState(0);
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -374,7 +366,7 @@ export function ChatWidget(): React.ReactElement {
             message: contextualQuery,
             query: contextualQuery,
             history,
-            model: activeModel,
+            model: "groq",
           }),
         });
         if (res.ok) {
@@ -390,10 +382,10 @@ export function ChatWidget(): React.ReactElement {
 
       if (!answer) {
         if (entry) {
-          answer = applyModelVoice(entry.response, activeModel);
+          answer = applyModelVoice(entry.response, "groq");
           actions = entry.actions;
         } else {
-          answer = applyModelVoice(FALLBACK, activeModel);
+          answer = applyModelVoice(FALLBACK, "groq");
           setShowFallbackChips(true);
         }
       }
@@ -403,7 +395,7 @@ export function ChatWidget(): React.ReactElement {
       await streamWords(id, answer);
       pendingQueriesRef.current.delete(query.toLowerCase());
     },
-    [streamWords, activeModel, messages],
+    [streamWords, messages],
   );
 
   const send = useCallback(
@@ -451,8 +443,6 @@ export function ChatWidget(): React.ReactElement {
   }, []);
 
   const msgCount = messages.filter((m) => m.role === "user").length;
-  const model = MODELS.find((m) => m.id === activeModel) ?? MODELS[0];
-
   // Broadcast message count to agent bar badge
   useEffect(() => {
     window.dispatchEvent(new CustomEvent("chat-message-count", { detail: msgCount }));
@@ -463,6 +453,7 @@ export function ChatWidget(): React.ReactElement {
       {state === "open" && (
         <div className="w-full">
             <motion.div
+              data-chat-panel="open"
               variants={panelVariants}
               initial="hidden"
               animate="visible"
@@ -490,7 +481,7 @@ export function ChatWidget(): React.ReactElement {
                   </div>
                   <div className="min-w-0 text-left leading-tight">
                     <span className="block font-mono text-[13px] font-semibold text-foreground tracking-normal truncate">Ahtesham Agent</span>
-                    <p className="text-[10px] leading-4 font-mono text-muted/50 truncate">portfolio intelligence · {model.label} style</p>
+                    <p className="text-[10px] leading-4 font-mono text-muted/50 truncate">portfolio intelligence · scoped to his work</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-1">
@@ -501,24 +492,6 @@ export function ChatWidget(): React.ReactElement {
                     <X size={14} />
                   </button>
                 </div>
-              </div>
-
-              {/* Model selector pills */}
-              <div className="flex items-center gap-0.5 px-4 pb-2">
-                {MODELS.map((m) => (
-                  <button
-                    key={m.id}
-                    type="button"
-                    onClick={() => setActiveModel(m.id)}
-                    className={`px-1.5 py-px rounded text-[9px] leading-[16px] font-mono transition-all cursor-pointer ${
-                      activeModel === m.id
-                        ? "text-foreground/80 bg-foreground/8 border border-card-border"
-                        : "text-muted/30 hover:text-muted/60 border border-transparent"
-                    }`}
-                  >
-                    {m.label}
-                  </button>
-                ))}
               </div>
             </div>
 
@@ -615,7 +588,7 @@ export function ChatWidget(): React.ReactElement {
             </div>
 
             <div className="relative z-10 shrink-0 border-t border-card-border/30 px-3 py-2 flex items-center justify-between">
-              <span className="text-caption font-mono text-muted/25">{model.label} response style</span>
+              <span className="text-caption font-mono text-muted/25">Ahtesham portfolio context</span>
               <span className="text-caption font-mono text-muted/25">{Math.min(msgCount, CHAT_MESSAGE_LIMIT)}/{CHAT_MESSAGE_LIMIT}</span>
             </div>
             </motion.div>

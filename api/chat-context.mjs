@@ -153,6 +153,32 @@ export function shouldSuggestBooking(message = "") {
   return /\b(hire|available|availability|rate|rates|price|pricing|cost|timeline|time line|start|project|contract|full[- ]?time|work together|can you handle|fit|engagement)\b/i.test(message);
 }
 
+export function buildContextualMessage(message = "", history = []) {
+  const query = message.trim();
+  if (!query) return "";
+  const lower = query.toLowerCase();
+  const needsContext =
+    /\b(it|that|this|those|them|same|there|he|him)\b/.test(lower)
+    || /\b(can you handle|can he handle|can he do|can you do|what about|how about|how much|timeline|proof|show me proof)\b/.test(lower);
+
+  if (!needsContext || !Array.isArray(history) || history.length === 0) return query;
+
+  const previousUser = [...history].reverse().find((m) => m?.role === "user" && typeof m.content === "string")?.content;
+  const previousAssistant = [...history].reverse().find((m) => m?.role === "assistant" && typeof m.content === "string")?.content;
+  if (!previousUser) return query;
+
+  return [
+    `Previous user question: ${previousUser.slice(0, 500)}`,
+    previousAssistant ? `Previous answer: ${previousAssistant.slice(0, 700)}` : "",
+    `Follow-up: ${query}`,
+  ].filter(Boolean).join("\n");
+}
+
+function normalizedQuestion(message = "") {
+  const followUp = message.match(/Follow-up:\s*([\s\S]+)$/i)?.[1];
+  return (followUp || message).toLowerCase();
+}
+
 function stripUnwantedBooking(answer = "") {
   return answer
     .replace(/\s*(For more details,?\s*)?consider booking a 15-min call\.?/gi, "")
@@ -163,7 +189,8 @@ function stripUnwantedBooking(answer = "") {
 }
 
 export function polishAnswer(rawAnswer = "", message = "") {
-  const q = message.toLowerCase();
+  const q = normalizedQuestion(message);
+  const full = message.toLowerCase();
   const answer = stripUnwantedBooking(rawAnswer);
 
   if (/\bgogaa\b/.test(q)) {
@@ -172,6 +199,26 @@ export function polishAnswer(rawAnswer = "", message = "") {
 
   if (/\bpython\b/.test(q) && /\b(project|handle|can you|fit|build)\b/.test(q)) {
     return "Yes, if the Python work is backend, automation, data pipelines, agent services, FastAPI, RAG, evaluation, or production hardening. Ahtesham has used Python across agent backends, AI evaluation, RAG pipelines, and HuggingFace/Groq agent systems. The right fit check is scope, integrations, deployment target, and timeline.";
+  }
+
+  if (/\bopenevent|open event\b/.test(q)) {
+    return "OpenEvent is Ahtesham's production SaaS for event operations. It turns messy email threads into structured workflows: AI classification, entity extraction, human approval, workflow execution, and audit logs. It is live with 100+ clients, 150+ events, Supabase/RLS/Edge Functions, pgvector, Stripe, Docker, and OpenAI.";
+  }
+
+  if (/\bcodelens|code lens\b/.test(q)) {
+    return "CodeLens is Ahtesham's AI code review engine: 430 hand-crafted patterns across 9 stacks, source-to-sink taint tracking, PR risk scoring, Guardian mode for AI coding tools, zero dependencies, and sub-second reviews. It exists because generic AI reviewers miss repeatable production bug classes.";
+  }
+
+  if (/\brasad\b/.test(q)) {
+    return "Rasad is Ahtesham's local AI session observatory. It parses AI coding sessions across tools, replays actions with phase labels, grades session quality, compares model cost, and handles 700MB+ logs without loading everything into memory. It is built for debugging AI-assisted development, not generic analytics.";
+  }
+
+  if (/\bwhy\b.*\b(hire|choose)|\bproof\b|\bsenior\b|\bcredible|credibility|fit for.*role|remote role|abroad\b/.test(q)) {
+    return "The strongest proof is shipped systems, not labels: OpenEvent runs with 100+ clients, CodeLens has 430 review patterns, Gogaa has 1,418 tests across 11 providers, and Rasad tracks real AI coding sessions locally. Ahtesham is strongest where AI, product engineering, automation, and production ownership meet.";
+  }
+
+  if (/\b(kubernetes|k8s|aws|azure|gcp)\b/.test(q)) {
+    return "Those are not core to Ahtesham's current portfolio. His production lane is Docker Compose, Traefik, Cloudflare/Vercel, Supabase, GitHub Actions, and self-managed Linux. If a role requires Kubernetes or managed cloud depth, he can adopt it, but he should not pretend it is his strongest proof today.";
   }
 
   if (/\b(stack|tech|technology|tools?)\b/.test(q)) {
@@ -184,6 +231,14 @@ export function polishAnswer(rawAnswer = "", message = "") {
 
   if (/\b(timeline|time line|how long|start|availability|available)\b/.test(q)) {
     return "Usual flow: 1-3 days for discovery/architecture, then sprint-based delivery with weekly demos. Availability is open for full-time remote roles and 90-day engagements. Timeline depends on integrations, data access, approvals, and deployment constraints.";
+  }
+
+  if (/\bhow much\b/.test(q) && /\b(project|contract|rate|pricing|cost|budget|scope|timeline)\b/.test(full)) {
+    return "For pricing, use the engagement shape: $80-120/hr for direct contract work, scoped projects from $3k, and full-time remote around $4k-10k/mo depending on impact. The accurate number depends on scope, integrations, timeline, and operational risk.";
+  }
+
+  if (/\bwhat about\b/.test(q) && /\b(project|python|handle|fit|scope|timeline)\b/.test(full)) {
+    return "For timeline, assume 1-3 days of discovery/architecture first, then sprint-based delivery with weekly demos. The schedule depends on integrations, data quality, approval loops, and deployment constraints.";
   }
 
   if (!answer) return rawAnswer;

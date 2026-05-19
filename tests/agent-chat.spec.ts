@@ -49,7 +49,11 @@ test("agent bar and chat act as one unified flow", async ({ page }) => {
   if (box && viewport) expect(Math.abs(box.x + box.width / 2 - viewport.width / 2)).toBeLessThan(6);
 
   await page.getByLabel("Open chat").first().click();
+  const chatPanel = page.locator('[data-chat-panel="open"]');
   await expect(page.getByText("Ahtesham Agent")).toBeVisible();
+  await expect(page.getByText("scoped to his work")).toBeVisible();
+  await expect(chatPanel.locator("button", { hasText: /Llama|Claude|GPT|Nemotron/i })).toHaveCount(0);
+  await expect(chatPanel.getByText(/response style/i)).toHaveCount(0);
   await expect(page.getByPlaceholder("reply in chat...")).toBeVisible();
 
   await page.getByLabel("Open chat").first().click();
@@ -121,4 +125,49 @@ test("core routes load without browser errors", async ({ page }) => {
     await page.waitForLoadState("networkidle");
     expect(errors, path).toEqual([]);
   }
+});
+
+test("first-time visitor chat flow preserves history and badge across scroll", async ({ page }) => {
+  const errors = await prepare(page);
+
+  const seen: string[] = [];
+  await page.route("**/api/chat", async (route) => {
+    const payload = route.request().postDataJSON() as { message?: string; history?: Array<{ role: string; content: string }> };
+    seen.push(payload.message ?? "");
+    const answer = seen.length === 1
+      ? "Gogaa is Ahtesham's open-source AI coding agent with 11 providers and 1,418 tests."
+      : "Timeline usually starts with 1-3 days of discovery, then sprint-based delivery with weekly demos.";
+    await route.fulfill({
+      status: 200,
+      contentType: "application/json",
+      body: JSON.stringify({ answer, actions: [] }),
+    });
+  });
+
+  await page.goto("/");
+  await page.locator(".agent-emoji-body").click({ force: true });
+  await page.getByLabel("Open chat").first().click();
+  await page.getByPlaceholder("reply in chat...").fill("tell me more about gogaa");
+  await page.keyboard.press("Enter");
+  await expect(page.getByText(/open-source AI coding agent with 11 providers/i)).toBeVisible();
+
+  await page.getByPlaceholder("reply in chat...").fill("what about timeline?");
+  await page.keyboard.press("Enter");
+  await expect(page.getByText("1-3 days")).toBeVisible();
+  expect(seen).toHaveLength(2);
+
+  await page.getByLabel("Minimize chat").click();
+  await expect(page.getByText("Ahtesham Agent")).toBeHidden();
+  await page.mouse.wheel(0, 900);
+  await page.waitForTimeout(500);
+  await page.getByLabel("Open chat").first().click();
+  await expect(page.getByText("tell me more about gogaa")).toBeVisible();
+  await expect(page.getByText("what about timeline?")).toBeVisible();
+
+  await page.reload();
+  await page.locator(".agent-emoji-body").click({ force: true });
+  await page.getByLabel("Open chat").first().click();
+  await expect(page.getByText("what about timeline?")).toBeVisible();
+
+  expect(errors).toEqual([]);
 });
