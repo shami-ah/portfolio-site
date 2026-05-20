@@ -269,7 +269,7 @@ export function ConfigHero(): React.ReactElement {
           {/* 3. Description — word-by-word streaming (faster, no cursor) */}
           <p
             data-hero="desc"
-            className="text-base md:text-lg text-muted max-w-xl mx-auto leading-relaxed mb-6"
+            className="text-base md:text-lg text-muted max-w-xl mx-auto leading-relaxed mb-6 tracking-[-0.01em]"
           >
             <StreamingWords
               segments={DESC_SEGMENTS}
@@ -288,7 +288,7 @@ export function ConfigHero(): React.ReactElement {
               y: m("desc") ? 0 : 8,
             }}
             transition={{ duration: immediate ? 0 : 0.6, delay: immediate ? 0 : 0.3, ease: EASE }}
-            className="flex items-center justify-center gap-4 md:gap-6 mb-4 md:mb-5 font-mono text-xs md:text-sm"
+            className="flex items-center justify-center gap-4 md:gap-6 mb-4 md:mb-5 font-mono text-[11px] md:text-xs tracking-wide"
           >
             <span className="text-foreground font-semibold">{status.portfolio.productionSystems}+ <span className="text-muted/50 font-normal">systems shipped</span></span>
             <span className="text-muted/20">/</span>

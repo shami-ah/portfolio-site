@@ -167,7 +167,7 @@ export function Footer(): React.ReactElement {
 
         {/* Heading */}
         <FadeUp>
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold leading-tight text-center mb-3 relative z-[1]">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-semibold leading-tight tracking-tight text-center mb-3 relative z-[1]">
             Deploy <span className="text-gradient">me.</span>
           </h2>
         </FadeUp>

@@ -492,7 +492,7 @@ function ScrollPanel({
                 <span className="w-1.5 h-1.5 rounded-full bg-current animate-pulse" />
                 {meta.status}
               </span>
-              <h3 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-[1.1] tracking-tight mb-2 md:mb-3">
+              <h3 className="text-3xl sm:text-4xl md:text-5xl font-bold leading-[1.1] tracking-tight mb-2 md:mb-3">
                 {content.title}<span className="text-muted">.</span>
               </h3>
               <p className="text-xs md:text-sm text-muted leading-relaxed max-w-lg">
@@ -506,7 +506,7 @@ function ScrollPanel({
 
           {/* Problem → Solution — single row, inline */}
           <div className="p-2.5 md:p-4 rounded-xl border border-card-border/50 bg-card/30 mb-3 md:mb-5">
-            <p className="text-[11px] md:text-sm text-muted leading-relaxed">
+            <p className="text-[11px] md:text-sm text-muted leading-[1.6]">
               <span className="font-mono uppercase tracking-wider text-muted/60 text-caption">Problem: </span>
               {content.problem}
               <span className="mx-2 text-accent/40">→</span>
@@ -554,8 +554,8 @@ function ScrollPanel({
               <div className="flex gap-6 md:gap-8">
                 {meta.metrics.map((m) => (
                   <div key={m.label}>
-                    <p className="text-lg md:text-xl font-bold font-mono text-foreground">{m.value}</p>
-                    <p className="text-caption font-mono text-muted/50 uppercase tracking-wider">{m.label}</p>
+                    <p className="text-xl md:text-2xl font-bold font-mono text-foreground tracking-tight">{m.value}</p>
+                    <p className="text-[10px] md:text-caption font-mono text-muted/40 uppercase tracking-[0.15em]">{m.label}</p>
                   </div>
                 ))}
               </div>
