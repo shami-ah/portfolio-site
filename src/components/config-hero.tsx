@@ -309,7 +309,7 @@ export function ConfigHero(): React.ReactElement {
             filter: m("agent") ? "blur(0px)" : "blur(6px)",
           }}
           transition={{ duration: immediate ? 0 : 0.7, ease: EASE }}
-          className="mt-0 max-w-[700px] mx-auto min-h-[275px] md:min-h-[340px] flex items-center justify-center"
+          className="mt-0 max-w-[700px] mx-auto min-h-[255px] md:min-h-[315px] flex items-center justify-center"
         />
       </div>
 

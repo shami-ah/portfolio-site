@@ -268,37 +268,37 @@ export const MOOD_POSITIONS = [
   {
     mood: "curious" as const,
     label: "curious",
-    style: { top: "42px", left: "34px" },
+    style: { top: "38px", left: "30px" },
     labelClass: "right-[calc(100%+10px)] top-1/2 -translate-y-1/2",
   },
   {
     mood: "proud" as const,
     label: "proud",
-    style: { top: "42px", left: "206px" },
+    style: { top: "38px", left: "184px" },
     labelClass: "left-[calc(100%+10px)] top-1/2 -translate-y-1/2",
   },
   {
     mood: "dancing" as const,
     label: "dance",
-    style: { top: "122px", left: "6px" },
+    style: { top: "110px", left: "4px" },
     labelClass: "right-[calc(100%+10px)] top-1/2 -translate-y-1/2",
   },
   {
     mood: "confused" as const,
     label: "focus",
-    style: { top: "122px", left: "234px" },
+    style: { top: "110px", left: "210px" },
     labelClass: "left-[calc(100%+10px)] top-1/2 -translate-y-1/2",
   },
   {
     mood: "surprised" as const,
     label: "spark",
-    style: { top: "202px", left: "34px" },
+    style: { top: "182px", left: "30px" },
     labelClass: "right-[calc(100%+10px)] top-1/2 -translate-y-1/2",
   },
   {
     mood: "sleeping" as const,
     label: "rest",
-    style: { top: "202px", left: "206px" },
+    style: { top: "182px", left: "184px" },
     labelClass: "left-[calc(100%+10px)] top-1/2 -translate-y-1/2",
   },
 ];

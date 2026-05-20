@@ -728,11 +728,11 @@ export function AgentBar(): React.ReactElement {
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.6, filter: "blur(8px)" }}
             transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
-            className="flex flex-col items-center justify-center gap-1 md:gap-2 mx-auto"
+            className="flex flex-col items-center justify-center gap-1 md:gap-2 mx-auto -mt-3 md:-mt-4"
           >
             {/* Character zone — centered signature object, never shifts */}
             <div
-              className="relative w-[190px] h-[220px] md:w-[280px] md:h-[280px] flex items-center justify-center shrink-0 overflow-visible"
+              className="relative w-[176px] h-[204px] md:w-[252px] md:h-[252px] flex items-center justify-center shrink-0 overflow-visible"
               onMouseEnter={() => setEmojiHovered(true)}
               onMouseLeave={() => {
                 setEmojiHovered(false);
@@ -747,7 +747,7 @@ export function AgentBar(): React.ReactElement {
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                     transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
-                    className="absolute inset-0 pointer-events-none scale-[0.66] md:scale-100 origin-center"
+                    className="absolute inset-0 pointer-events-none scale-[0.62] md:scale-100 origin-center"
                   >
                     {MOOD_POSITIONS.map((mp, i) => (
                       <motion.button key={mp.mood} type="button" initial={{ opacity: 0, scale: 0.5 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: i * 0.1, type: "spring", stiffness: 300, damping: 20 }}
@@ -794,7 +794,7 @@ export function AgentBar(): React.ReactElement {
                 <div className={`absolute -inset-[18px] rounded-full border border-accent-status/10 pointer-events-none transition-all duration-500 ${emojiHovered ? "opacity-100 border-accent-status/25" : "opacity-60"}`} />
                 {/* Emoji body */}
                 <motion.div
-                  className="agent-emoji-body relative w-[90px] h-[90px] md:w-[150px] md:h-[150px] rounded-full flex items-center justify-center border border-accent/25 shadow-xl"
+                  className="agent-emoji-body relative w-[82px] h-[82px] md:w-[136px] md:h-[136px] rounded-full flex items-center justify-center border border-accent/25 shadow-xl"
                   style={{
                     animation: "asymmetric-float 5s ease-in-out infinite, agent-stage-glow 3s ease-in-out infinite",
                   }}
