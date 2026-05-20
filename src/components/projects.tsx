@@ -1096,9 +1096,9 @@ function OtherDeployments({
         <h3 className="text-lg md:text-xl font-bold mb-1">
           Side projects that made it to production
         </h3>
-        <p className="text-xs md:text-sm text-muted/60 mb-8">{others.length} systems shipped and running</p>
+        <p className="text-xs md:text-sm text-muted/60 mb-10">{others.length} systems shipped and running</p>
 
-        <div className="relative w-[400px] sm:w-[440px] h-[360px] sm:h-[380px]">
+        <div className="relative w-[min(400px,calc(100vw-3rem))] sm:w-[480px] h-[380px] sm:h-[420px]">
           {others.map((project, i) => {
             const pos = (i - current + others.length) % others.length;
             const transformClass = pos < 3
@@ -1112,7 +1112,7 @@ function OtherDeployments({
                 project={project}
                 onOpen={onOpen}
                 counter={counter}
-                className={`absolute top-0 left-0 w-[400px] sm:w-[440px] h-[340px] sm:h-[360px] cursor-pointer transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${transformClass}`}
+                className={`absolute top-0 left-0 w-[min(400px,calc(100vw-3rem))] sm:w-[480px] h-[360px] sm:h-[400px] cursor-pointer transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${transformClass}`}
               />
             );
           })}

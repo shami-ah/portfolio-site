@@ -53,11 +53,11 @@
   --gradient-glow: radial-gradient(ellipse at 45% -5%, rgba(109, 78, 62, 0.06) 0%, rgba(52, 64, 88, 0.04) 45%, transparent 70%);
   --wire-stroke: rgba(140, 130, 118, 0.5);
   --wire-green: rgba(21, 128, 61, 0.4);
-  --speech-dot-dim: rgba(144, 112, 96, 0.25);
-  --speech-dot-bright: rgba(144, 112, 96, 0.6);
-  --speech-dot-glow: rgba(144, 112, 96, 0.15);
-  --speech-text-color: rgba(109, 78, 62, 0.7);
-  --speech-cursor-color: rgba(109, 78, 62, 0.5);
+  --speech-dot-dim: rgba(61, 46, 36, 0.2);
+  --speech-dot-bright: rgba(61, 46, 36, 0.5);
+  --speech-dot-glow: rgba(109, 78, 62, 0.1);
+  --speech-text-color: rgba(61, 46, 36, 0.8);
+  --speech-cursor-color: rgba(61, 46, 36, 0.4);
   color-scheme: light;
 }
 
@@ -132,6 +132,11 @@ body {
 .fixed {
   will-change: transform;
   transform: translateZ(0);
+}
+
+/* Layout containment for heavy animation zones — reduces repaint scope */
+.contain-paint {
+  contain: paint;
 }
 
 /* Texture overlays use a dedicated .grain-overlay div (added in layout.tsx)
@@ -379,6 +384,12 @@ h1, h2, h3, h4, h5, h6 {
   color: #0c0d10;
 }
 
+/* ── Content visibility — skip layout/paint for off-screen sections ── */
+.cv-auto {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 800px;
+}
+
 /* Smooth scroll — disabled for users who prefer reduced motion */
 html {
   scroll-behavior: smooth;
@@ -531,15 +542,17 @@ html {
 @keyframes agent-stage-glow {
   0%, 100% {
     box-shadow:
-      0 0 0 0 rgba(74, 222, 128, 0.2),
-      0 0 20px rgba(74, 222, 128, 0.08),
-      0 8px 24px rgba(0, 0, 0, 0.12);
+      0 0 0 0 rgba(74, 222, 128, 0.28),
+      0 0 28px rgba(74, 222, 128, 0.18),
+      0 0 72px rgba(74, 222, 128, 0.08),
+      0 10px 30px rgba(0, 0, 0, 0.2);
   }
   50% {
     box-shadow:
-      0 0 0 8px rgba(74, 222, 128, 0),
-      0 0 35px rgba(74, 222, 128, 0.15),
-      0 8px 24px rgba(0, 0, 0, 0.12);
+      0 0 0 12px rgba(74, 222, 128, 0),
+      0 0 46px rgba(74, 222, 128, 0.28),
+      0 0 96px rgba(74, 222, 128, 0.12),
+      0 10px 30px rgba(0, 0, 0, 0.2);
   }
 }
 
@@ -659,46 +672,51 @@ html {
 /* Dark mode emoji body — default (card-tinted, not bright gradient) */
 .agent-emoji-body {
   background: linear-gradient(145deg, color-mix(in srgb, var(--accent) 15%, var(--card)), var(--card) 40%, color-mix(in srgb, var(--accent-secondary) 12%, var(--card)));
+  filter: saturate(1.08);
 }
 /* Dark mode mood faces — match emoji body card tone */
 .mood-face {
   background: linear-gradient(145deg, color-mix(in srgb, var(--accent) 15%, var(--card)), var(--card) 40%, color-mix(in srgb, var(--accent-secondary) 12%, var(--card)));
+  box-shadow: 0 0 18px rgba(74, 222, 128, 0.08), 0 4px 18px rgba(0, 0, 0, 0.18);
 }
-/* Light mode emoji body — warm accent filled */
+/* Light mode emoji body — warm cream with leather border, not muddy brown */
 .light .agent-emoji-body {
-  background: linear-gradient(145deg, #a08070, #917060) !important;
-  border-color: rgba(144, 112, 96, 0.25) !important;
+  background: linear-gradient(145deg, #f5f0e8, #ebe4d8, #e8dfd0) !important;
+  border-color: rgba(109, 78, 62, 0.35) !important;
+  box-shadow: 0 4px 20px rgba(109, 78, 62, 0.15), inset 0 2px 8px rgba(255,255,255,0.6) !important;
   animation-name: agent-stage-glow-light !important;
 }
-/* Emoji face features — cream on brown bg */
-.light .agent-emoji-body .fill-accent-status { fill: #f0ede6 !important; }
-.light .agent-emoji-body .stroke-accent-status { stroke: #f0ede6 !important; }
-/* Drop shadow on emoji — warm instead of green */
-.light .agent-emoji-body svg { filter: drop-shadow(0 0 6px rgba(109,78,62,0.3)) !important; }
+/* Emoji face features — dark accent on light bg for crisp visibility */
+.light .agent-emoji-body .fill-accent-status { fill: #6d4e3e !important; }
+.light .agent-emoji-body .stroke-accent-status { stroke: #6d4e3e !important; }
+/* Drop shadow on emoji — subtle warm depth */
+.light .agent-emoji-body svg { filter: drop-shadow(0 0 4px rgba(109,78,62,0.2)) !important; }
 .light .agent-badge {
   border-color: rgba(21, 128, 61, 0.2);
 }
 .light .mood-face {
-  background: linear-gradient(145deg, #a08070, #917060) !important;
-  border-color: rgba(144, 112, 96, 0.25) !important;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  background: linear-gradient(145deg, #f5f0e8, #ebe4d8) !important;
+  border-color: rgba(109, 78, 62, 0.3) !important;
+  box-shadow: 0 2px 12px rgba(109, 78, 62, 0.12), 0 1px 3px rgba(0, 0, 0, 0.06);
 }
-.light .mood-face .fill-accent-status { fill: #f0ede6 !important; }
-.light .mood-face .stroke-accent-status { stroke: #f0ede6 !important; }
+.light .mood-face .fill-accent-status { fill: #6d4e3e !important; }
+.light .mood-face .stroke-accent-status { stroke: #6d4e3e !important; }
 .light .agent-data-frag { color: rgba(109, 78, 62, 0.12) !important; }
 /* Speech bubble — both themes (matches emoji body card tone) */
 .speech-bubble {
   background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 15%, var(--card)), var(--card) 40%, color-mix(in srgb, var(--accent-secondary) 12%, var(--card)));
+  box-shadow: 0 0 34px rgba(74, 222, 128, 0.06), 0 10px 34px rgba(0, 0, 0, 0.24), inset 0 1px 0 rgba(255, 255, 255, 0.04);
 }
 .light .speech-bubble {
-  background: linear-gradient(145deg, #a08070, #917060);
-  border-color: rgba(144, 112, 96, 0.25);
+  background: linear-gradient(145deg, #faf9f6, #f2ede6);
+  border-color: rgba(109, 78, 62, 0.2);
+  box-shadow: 0 2px 12px rgba(109, 78, 62, 0.08), 0 1px 3px rgba(0, 0, 0, 0.04);
 }
 .light .speech-bubble .speech-text {
-  color: #f0ede6 !important;
+  color: #3d2e24 !important;
 }
 .light .speech-bubble .speech-text span {
-  background-color: #f0ede6 !important;
+  background-color: #3d2e24 !important;
 }
 
 /* Chat modal — solid bg in light mode */
@@ -708,16 +726,16 @@ html {
 @keyframes agent-stage-glow-light {
   0%, 100% {
     box-shadow:
-      0 0 0 0 rgba(109, 78, 62, 0.1),
-      0 0 24px rgba(109, 78, 62, 0.06),
-      0 12px 36px rgba(0, 0, 0, 0.07),
-      inset 0 -2px 8px rgba(109, 78, 62, 0.04);
+      0 0 0 0 rgba(109, 78, 62, 0.08),
+      0 4px 20px rgba(109, 78, 62, 0.1),
+      0 12px 36px rgba(0, 0, 0, 0.06),
+      inset 0 2px 8px rgba(255, 255, 255, 0.6);
   }
   50% {
     box-shadow:
       0 0 0 10px rgba(109, 78, 62, 0),
-      0 0 40px rgba(109, 78, 62, 0.09),
-      0 12px 36px rgba(0, 0, 0, 0.07),
-      inset 0 -2px 12px rgba(109, 78, 62, 0.06);
+      0 4px 30px rgba(109, 78, 62, 0.14),
+      0 12px 36px rgba(0, 0, 0, 0.06),
+      inset 0 2px 12px rgba(255, 255, 255, 0.7);
   }
 }

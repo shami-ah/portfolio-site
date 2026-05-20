@@ -24,9 +24,15 @@ export default function Home(): React.ReactElement {
       <CursorGlow />
       <div className="relative z-10">
         <ConfigHero />
-        <Projects />
-        <ExperienceAndWriting />
-        <Footer />
+        <div className="cv-auto">
+          <Projects />
+        </div>
+        <div className="cv-auto">
+          <ExperienceAndWriting />
+        </div>
+        <div className="cv-auto">
+          <Footer />
+        </div>
       </div>
       <AgentBar />
       <BootParticles />

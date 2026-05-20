@@ -41,6 +41,10 @@ function formatTime(seconds: number): string {
   return `${m}m ${s}s`;
 }
 
+function sectionTop(el: HTMLElement): number {
+  return el.getBoundingClientRect().top + window.scrollY;
+}
+
 export function SidebarNav(): React.ReactElement {
   const [active, setActive] = useState("hero");
   const [modalOpen, setModalOpen] = useState(false);
@@ -67,14 +71,14 @@ export function SidebarNav(): React.ReactElement {
     const offsets: number[] = [];
     for (const { id } of pipelineSteps) {
       const el = document.getElementById(id);
-      offsets.push(el ? el.offsetTop : 0);
+      offsets.push(el ? sectionTop(el) : 0);
     }
 
     /* Active section detection — uses lookahead for snappy nav highlight */
     let current: string = pipelineSteps[0].id;
     for (const { id } of pipelineSteps) {
       const el = document.getElementById(id);
-      if (el && el.offsetTop <= lookAhead) current = id;
+      if (el && sectionTop(el) <= lookAhead) current = id;
     }
 
     /* Wire fill — maps total scroll range to 0→N fractional progress.

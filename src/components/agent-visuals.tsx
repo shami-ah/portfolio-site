@@ -212,6 +212,7 @@ export function StageSpeechBubble({ visible, emojiHovered }: { visible: boolean;
   const isActivelyTyping = emojiHovered
     ? hoverCharIdx < hoverMsg.length
     : charIdx < STAGE_MESSAGES[msgIdx].text.length;
+  const bubbleWidthCh = Math.min(Math.max((displayText || hoverMsg).length + 4, 18), 34);
 
   return (
     <motion.div
@@ -222,8 +223,16 @@ export function StageSpeechBubble({ visible, emojiHovered }: { visible: boolean;
       className="w-full shrink-0"
     >
       <div className="relative flex justify-center">
+        <motion.span
+          aria-hidden
+          className="absolute -top-5 left-1/2 h-5 w-px -translate-x-1/2 bg-gradient-to-b from-accent-status/80 via-accent-status/35 to-transparent"
+          animate={{ opacity: [0.25, 0.95, 0.25], scaleY: [0.65, 1, 0.65] }}
+          transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
+        />
         {/* Bubble — fixed width, text wraps inside */}
-        <div className="speech-bubble relative w-[min(330px,calc(100vw-3rem))] md:w-[420px] min-h-[48px] md:min-h-[58px] rounded-[16px] md:rounded-[20px] px-4 py-3 md:px-6 md:py-4 flex items-center justify-center text-center border border-accent-secondary/20 backdrop-blur-xl overflow-hidden"
+        <div
+          className="speech-bubble relative min-h-[42px] md:min-h-[56px] min-w-[180px] max-w-[calc(100vw-3rem)] md:max-w-[390px] rounded-[14px] md:rounded-[20px] px-3 py-2.5 md:px-6 md:py-4 flex items-center justify-center text-center border border-accent-secondary/20 backdrop-blur-xl overflow-hidden transition-[width] duration-300 ease-out"
+          style={{ width: `min(${bubbleWidthCh}ch, calc(100vw - 3rem))` }}
         >
           <motion.span
             aria-hidden
@@ -254,13 +263,44 @@ export function StageSpeechBubble({ visible, emojiHovered }: { visible: boolean;
   );
 }
 
-// Mood faces — vertical column on the left, evenly spaced, no overlap
-// 220px zone, 38px faces, need ~44px between centers
+// Mood faces orbit the main agent with enough distance for labels/tooltips.
 export const MOOD_POSITIONS = [
-  { mood: "curious" as const, label: "curious", style: { top: "34px", left: "40px" } },
-  { mood: "proud" as const, label: "proud", style: { top: "34px", left: "184px" } },
-  { mood: "confused" as const, label: "focus", style: { top: "166px", left: "42px" } },
-  { mood: "dancing" as const, label: "dance", style: { top: "166px", left: "184px" } },
+  {
+    mood: "curious" as const,
+    label: "curious",
+    style: { top: "42px", left: "34px" },
+    labelClass: "right-[calc(100%+10px)] top-1/2 -translate-y-1/2",
+  },
+  {
+    mood: "proud" as const,
+    label: "proud",
+    style: { top: "42px", left: "206px" },
+    labelClass: "left-[calc(100%+10px)] top-1/2 -translate-y-1/2",
+  },
+  {
+    mood: "dancing" as const,
+    label: "dance",
+    style: { top: "122px", left: "6px" },
+    labelClass: "right-[calc(100%+10px)] top-1/2 -translate-y-1/2",
+  },
+  {
+    mood: "confused" as const,
+    label: "focus",
+    style: { top: "122px", left: "234px" },
+    labelClass: "left-[calc(100%+10px)] top-1/2 -translate-y-1/2",
+  },
+  {
+    mood: "surprised" as const,
+    label: "spark",
+    style: { top: "202px", left: "34px" },
+    labelClass: "right-[calc(100%+10px)] top-1/2 -translate-y-1/2",
+  },
+  {
+    mood: "sleeping" as const,
+    label: "rest",
+    style: { top: "202px", left: "206px" },
+    labelClass: "left-[calc(100%+10px)] top-1/2 -translate-y-1/2",
+  },
 ];
 
 /* ------------------------------------------------------------------ */

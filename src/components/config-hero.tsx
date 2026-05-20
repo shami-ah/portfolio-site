@@ -288,7 +288,7 @@ export function ConfigHero(): React.ReactElement {
               y: m("desc") ? 0 : 8,
             }}
             transition={{ duration: immediate ? 0 : 0.6, delay: immediate ? 0 : 0.3, ease: EASE }}
-            className="flex items-center justify-center gap-4 md:gap-6 mb-8 font-mono text-xs md:text-sm"
+            className="flex items-center justify-center gap-4 md:gap-6 mb-4 md:mb-5 font-mono text-xs md:text-sm"
           >
             <span className="text-foreground font-semibold">{status.portfolio.productionSystems}+ <span className="text-muted/50 font-normal">systems shipped</span></span>
             <span className="text-muted/20">/</span>
@@ -309,7 +309,7 @@ export function ConfigHero(): React.ReactElement {
             filter: m("agent") ? "blur(0px)" : "blur(6px)",
           }}
           transition={{ duration: immediate ? 0 : 0.7, ease: EASE }}
-          className="mt-2 max-w-[700px] mx-auto min-h-[240px] md:min-h-[360px] flex items-center justify-center"
+          className="mt-0 max-w-[700px] mx-auto min-h-[275px] md:min-h-[340px] flex items-center justify-center"
         />
       </div>
 

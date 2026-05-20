@@ -173,7 +173,8 @@ export function AgentBar(): React.ReactElement {
         let current = "hero";
         for (const id of SECTION_ORDER) {
           const el = document.getElementById(id);
-          if (el && el.offsetTop <= probeY) current = id;
+          const top = el ? el.getBoundingClientRect().top + window.scrollY : 0;
+          if (el && top <= probeY) current = id;
         }
         setActiveSection(current);
         recordSection(current);
@@ -727,11 +728,11 @@ export function AgentBar(): React.ReactElement {
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.6, filter: "blur(8px)" }}
             transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
-            className="flex flex-col items-center justify-center gap-5 md:gap-6 mx-auto"
+            className="flex flex-col items-center justify-center gap-1 md:gap-2 mx-auto"
           >
             {/* Character zone — centered signature object, never shifts */}
             <div
-              className="relative w-[170px] h-[190px] md:w-[260px] md:h-[260px] flex items-center justify-center shrink-0 overflow-visible"
+              className="relative w-[190px] h-[220px] md:w-[280px] md:h-[280px] flex items-center justify-center shrink-0 overflow-visible"
               onMouseEnter={() => setEmojiHovered(true)}
               onMouseLeave={() => {
                 setEmojiHovered(false);
@@ -746,7 +747,7 @@ export function AgentBar(): React.ReactElement {
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                     transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
-                    className="absolute inset-0 pointer-events-none scale-[0.65] md:scale-100 origin-center"
+                    className="absolute inset-0 pointer-events-none scale-[0.66] md:scale-100 origin-center"
                   >
                     {MOOD_POSITIONS.map((mp, i) => (
                       <motion.button key={mp.mood} type="button" initial={{ opacity: 0, scale: 0.5 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: i * 0.1, type: "spring", stiffness: 300, damping: 20 }}
@@ -759,12 +760,14 @@ export function AgentBar(): React.ReactElement {
                           }
                           setMoodPickerOpen(false);
                         }}
-                        className="mood-face absolute w-[34px] h-[34px] md:w-[36px] md:h-[36px] rounded-full flex items-center justify-center cursor-pointer pointer-events-auto opacity-80 transition-all duration-300 group hover:scale-[1.25] hover:opacity-100 hover:z-20 border border-accent/20 shadow-md backdrop-blur-xl"
+                        className="mood-face absolute z-20 w-[38px] h-[38px] md:w-[40px] md:h-[40px] rounded-full flex items-center justify-center cursor-pointer pointer-events-auto opacity-80 transition-all duration-300 group hover:scale-[1.18] hover:opacity-100 hover:z-50 border border-accent/20 shadow-md backdrop-blur-xl"
                         style={{ ...mp.style }}
                         aria-label={mp.label}
                       >
                         <AgentEmoji size={16} mood={mp.mood} />
-                        <span className="absolute top-1/2 -translate-y-1/2 right-[calc(100%+8px)] font-mono text-[8px] text-accent-status/60 whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">{mp.label}</span>
+                        <span className={`absolute z-[80] font-mono text-[8px] md:text-[9px] text-accent-status/70 whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none rounded-full border border-accent-status/10 bg-background/80 px-1.5 py-0.5 backdrop-blur-md ${mp.labelClass}`}>
+                          {mp.label}
+                        </span>
                       </motion.button>
                     ))}
                   </motion.div>
@@ -776,16 +779,22 @@ export function AgentBar(): React.ReactElement {
                 onClick={handleEmojiClick}
               >
                 {/* Badge */}
-                <div className="agent-badge absolute -top-6 md:-top-9 left-1/2 -translate-x-1/2 z-20 inline-flex items-center gap-1.5 md:gap-2 px-2.5 py-0.5 md:px-4 md:py-1.5 rounded-full font-mono text-[8px] md:text-[11px] text-accent-status whitespace-nowrap bg-card/90 border border-accent-status/15 backdrop-blur-xl shadow-sm"
+                <div className="agent-badge absolute -top-8 md:-top-12 left-1/2 -translate-x-1/2 z-20 inline-flex items-center gap-1.5 md:gap-2 px-2.5 py-0.5 md:px-4 md:py-1.5 rounded-full font-mono text-[8px] md:text-[11px] text-accent-status whitespace-nowrap bg-card/90 border border-accent-status/15 backdrop-blur-xl shadow-sm"
                 >
                   <span className="agent-badge-dot w-1 h-1 md:w-[5px] md:h-[5px] rounded-full bg-accent-status animate-pulse" />
                   agent online
                 </div>
                 {/* Hover outer ring */}
-                <div className={`absolute -inset-[10px] rounded-full border border-accent-status/[0.08] pointer-events-none transition-all duration-500 ${emojiHovered ? "opacity-100 border-accent-status/20" : "opacity-0"}`} />
+                <div
+                  className="absolute -inset-[36px] rounded-full pointer-events-none opacity-80 blur-xl"
+                  style={{
+                    background: "radial-gradient(circle, rgba(74,222,128,0.22) 0%, rgba(74,222,128,0.1) 36%, transparent 70%)",
+                  }}
+                />
+                <div className={`absolute -inset-[18px] rounded-full border border-accent-status/10 pointer-events-none transition-all duration-500 ${emojiHovered ? "opacity-100 border-accent-status/25" : "opacity-60"}`} />
                 {/* Emoji body */}
                 <motion.div
-                  className="agent-emoji-body relative w-[88px] h-[88px] md:w-[160px] md:h-[160px] rounded-full flex items-center justify-center border border-accent/25 shadow-xl"
+                  className="agent-emoji-body relative w-[90px] h-[90px] md:w-[150px] md:h-[150px] rounded-full flex items-center justify-center border border-accent/25 shadow-xl"
                   style={{
                     animation: "asymmetric-float 5s ease-in-out infinite, agent-stage-glow 3s ease-in-out infinite",
                   }}
