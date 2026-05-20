@@ -342,11 +342,13 @@ export function AgentEmoji({ size = 40, hovered = false, mood = "default" }: { s
           transition={{ duration: 0.8, repeat: Infinity, ease: "easeInOut" }}
         >
           {/* Happy squinted eyes — arc shapes */}
-          <motion.path d="M 12 18 Q 16 14 20 18" className={sc} strokeWidth="2.5" strokeLinecap="round" fill="none"
+          <motion.path className={sc} strokeWidth="2.5" strokeLinecap="round" fill="none"
+            initial={{ d: "M 12 18 Q 16 14 20 18" }}
             animate={{ d: ["M 12 18 Q 16 14 20 18", "M 12 19 Q 16 15 20 19", "M 12 18 Q 16 14 20 18"] }}
             transition={{ duration: 0.8, repeat: Infinity, ease: "easeInOut" }}
           />
-          <motion.path d="M 28 18 Q 32 14 36 18" className={sc} strokeWidth="2.5" strokeLinecap="round" fill="none"
+          <motion.path className={sc} strokeWidth="2.5" strokeLinecap="round" fill="none"
+            initial={{ d: "M 28 18 Q 32 14 36 18" }}
             animate={{ d: ["M 28 18 Q 32 14 36 18", "M 28 19 Q 32 15 36 19", "M 28 18 Q 32 14 36 18"] }}
             transition={{ duration: 0.8, repeat: Infinity, ease: "easeInOut" }}
           />
@@ -354,11 +356,11 @@ export function AgentEmoji({ size = 40, hovered = false, mood = "default" }: { s
           <line x1="24" y1="22" x2="24" y2="27" className={sc} strokeWidth="1.5" strokeLinecap="round" opacity="0.3" />
           {/* Wide open grin */}
           <motion.path
-            d="M 12 30 Q 24 44 36 30"
             className={sc}
             strokeWidth="2.5"
             strokeLinecap="round"
             fill="none"
+            initial={{ d: "M 12 30 Q 24 44 36 30" }}
             animate={{ d: ["M 12 30 Q 24 44 36 30", "M 14 31 Q 24 42 34 31", "M 12 30 Q 24 44 36 30"] }}
             transition={{ duration: 0.8, repeat: Infinity, ease: "easeInOut" }}
           />
@@ -380,11 +382,13 @@ export function AgentEmoji({ size = 40, hovered = false, mood = "default" }: { s
       {useArcEyes ? (
         /* Proud: squinted happy arc-eyes */
         <>
-          <motion.path d="M 12 19 Q 16 15 20 19" className={sc} strokeWidth="2" strokeLinecap="round" fill="none"
+          <motion.path className={sc} strokeWidth="2" strokeLinecap="round" fill="none"
+            initial={{ d: "M 12 19 Q 16 15 20 19" }}
             animate={{ d: ["M 12 19 Q 16 15 20 19", "M 12 20 Q 16 16 20 20", "M 12 19 Q 16 15 20 19"] }}
             transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
           />
-          <motion.path d="M 28 19 Q 32 15 36 19" className={sc} strokeWidth="2" strokeLinecap="round" fill="none"
+          <motion.path className={sc} strokeWidth="2" strokeLinecap="round" fill="none"
+            initial={{ d: "M 28 19 Q 32 15 36 19" }}
             animate={{ d: ["M 28 19 Q 32 15 36 19", "M 28 20 Q 32 16 36 20", "M 28 19 Q 32 15 36 19"] }}
             transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
           />
