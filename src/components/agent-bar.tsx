@@ -110,6 +110,7 @@ export function AgentBar(): React.ReactElement {
   const [heroAgentOpen, setHeroAgentOpen] = useState(false);
   const [morphPhase, setMorphPhase] = useState<"stage" | "morphing" | "bar">("stage");
   const [moodFacesVisible, setMoodFacesVisible] = useState(false);
+  const [moodPickerOpen, setMoodPickerOpen] = useState(false);
   const [emojiHovered, setEmojiHovered] = useState(false);
   const [emojiMoodOverride, setEmojiMoodOverride] = useState<EmojiMood | null>(null);
   const [persistentMood, setPersistentMood] = useState<EmojiMood>("default");
@@ -197,15 +198,18 @@ export function AgentBar(): React.ReactElement {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Mood constellation — appears 10s after emoji settles in stage
+  // Mood constellation — playful secondary control; main emoji click always opens agent.
   useEffect(() => {
     if (emojiPhase !== "settled" || heroAgentOpen || morphPhase !== "stage") {
-      const t = setTimeout(() => setMoodFacesVisible(false), 0);
+      const t = setTimeout(() => {
+        setMoodFacesVisible(false);
+        setMoodPickerOpen(false);
+      }, 0);
       return () => clearTimeout(t);
     }
-    const t = setTimeout(() => setMoodFacesVisible(true), 10000);
+    const t = setTimeout(() => setMoodFacesVisible(emojiHovered || moodPickerOpen), 0);
     return () => clearTimeout(t);
-  }, [emojiPhase, heroAgentOpen, morphPhase]);
+  }, [emojiPhase, heroAgentOpen, moodPickerOpen, morphPhase, emojiHovered]);
 
   // When viewing a project, show methodology chips instead of section chips
   const methodologyChips = viewingProject ? PROJECT_METHODOLOGY[viewingProject] ?? [] : [];
@@ -313,6 +317,7 @@ export function AgentBar(): React.ReactElement {
       setHeroAgentOpen(false);
       setMorphPhase("stage");
       setMoodFacesVisible(false);
+      setMoodPickerOpen(false);
       setEmojiPhase("hidden");
       setPersistentMood("default");
       emojiHasSettled.current = false;
@@ -725,14 +730,38 @@ export function AgentBar(): React.ReactElement {
             className="flex flex-row items-center justify-center gap-0 mx-auto"
           >
             {/* LEFT: Character zone — fixed size, never shifts */}
-            <div className="relative w-[120px] h-[120px] md:w-[220px] md:h-[220px] flex items-center justify-center shrink-0 overflow-visible">
+            <div
+              className="relative w-[120px] h-[120px] md:w-[220px] md:h-[220px] flex items-center justify-center shrink-0 overflow-visible"
+              onMouseEnter={() => setEmojiHovered(true)}
+              onMouseLeave={() => {
+                setEmojiHovered(false);
+                setMoodPickerOpen(false);
+              }}
+            >
               {/* Mood constellation */}
               <AnimatePresence>
                 {moodFacesVisible && morphPhase === "stage" && (
-                  <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.8 }} className="absolute inset-0 pointer-events-none scale-[0.5] md:scale-100 origin-top-left">
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+                    className="absolute inset-0 pointer-events-none scale-[0.5] md:scale-100 origin-top-left"
+                  >
+                    <span className="absolute left-[18px] top-[2px] md:left-[30px] md:top-[8px] rounded-full border border-accent-status/15 bg-card/80 px-2 py-0.5 font-mono text-[8px] md:text-[9px] text-accent-status/60 backdrop-blur-xl">
+                      mood
+                    </span>
                     {MOOD_POSITIONS.map((mp, i) => (
                       <motion.button key={mp.mood} type="button" initial={{ opacity: 0, scale: 0.5 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: i * 0.1, type: "spring", stiffness: 300, damping: 20 }}
-                        onClick={(e) => { e.stopPropagation(); if (mp.mood === "dancing") { window.dispatchEvent(new CustomEvent("emoji-mood", { detail: "dancing" })); } else { window.dispatchEvent(new CustomEvent("emoji-mood", { detail: { mood: mp.mood, persistent: true } })); } }}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          if (mp.mood === "dancing") {
+                            window.dispatchEvent(new CustomEvent("emoji-mood", { detail: "dancing" }));
+                          } else {
+                            window.dispatchEvent(new CustomEvent("emoji-mood", { detail: { mood: mp.mood, persistent: true } }));
+                          }
+                          setMoodPickerOpen(false);
+                        }}
                         className="mood-face absolute w-[34px] h-[34px] md:w-[38px] md:h-[38px] rounded-full flex items-center justify-center cursor-pointer pointer-events-auto transition-all duration-300 group hover:scale-[1.4] hover:z-20 border border-accent/20 shadow-md backdrop-blur-xl"
                         style={{ ...mp.style }}
                         aria-label={mp.label}
@@ -748,8 +777,6 @@ export function AgentBar(): React.ReactElement {
               <div
                 className="relative z-10 cursor-pointer"
                 onClick={handleEmojiClick}
-                onMouseEnter={() => setEmojiHovered(true)}
-                onMouseLeave={() => setEmojiHovered(false)}
               >
                 {/* Badge */}
                 <div className="agent-badge absolute -top-5 md:-top-7 left-1/2 -translate-x-1/2 z-20 inline-flex items-center gap-1 md:gap-1.5 px-2 py-0.5 md:px-3 md:py-1 rounded-full font-mono text-[7px] md:text-[10px] text-accent-status whitespace-nowrap bg-card/90 border border-accent-status/15 backdrop-blur-xl shadow-sm"
@@ -784,10 +811,21 @@ export function AgentBar(): React.ReactElement {
                     </AnimatePresence>
                   </div>
                 </motion.div>
+                <button
+                  type="button"
+                  aria-label="Choose agent mood"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setMoodPickerOpen((open) => !open);
+                  }}
+                  className="md:hidden absolute -bottom-1 -left-1 z-30 flex h-7 w-7 items-center justify-center rounded-full border border-accent-status/20 bg-card/90 text-accent-status shadow-md backdrop-blur-xl transition-transform active:scale-95"
+                >
+                  <AgentEmoji size={13} mood={persistentMood} />
+                </button>
               </div>
             </div>
             {/* RIGHT: Speech bubble — fixed width container so resizing text doesn't shift emoji */}
-            <div className="shrink-0">
+            <div className="-ml-4 shrink-0 md:-ml-8">
               <StageSpeechBubble visible={morphPhase === "stage"} emojiHovered={emojiHovered} />
             </div>
           </motion.div>

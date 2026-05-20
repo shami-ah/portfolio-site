@@ -134,11 +134,11 @@ export function BuildPopup({ onDone }: { onDone: () => void }): React.ReactEleme
 /* ------------------------------------------------------------------ */
 
 export const STAGE_MESSAGES = [
-  { text: "portfolio agent ready", duration: 4500 },
-  { text: "ask about fit, proof, cost", duration: 4200 },
-  { text: "OpenEvent · CodeLens · Gogaa", duration: 4200 },
-  { text: "human gates before risk", duration: 4000 },
-  { text: "answers from real project context", duration: 4500 },
+  { text: "ask me about fit", duration: 4200 },
+  { text: "show project proof", duration: 4200 },
+  { text: "estimate scope", duration: 3800 },
+  { text: "check my stack", duration: 3800 },
+  { text: "open the agent", duration: 4200 },
 ];
 
 export const DATA_FRAGS = ["0x4a", "RAG", "LLM", "RLS"];
@@ -153,7 +153,7 @@ export function StageSpeechBubble({ visible, emojiHovered }: { visible: boolean;
   const [hoverCharIdx, setHoverCharIdx] = useState(0);
   const [hoverTyped, setHoverTyped] = useState("");
   const hoverTimerRef = useRef<ReturnType<typeof setTimeout>>(undefined);
-  const hoverMsg = "open agent";
+  const hoverMsg = "click to open";
 
   // Type hover message character by character
   useEffect(() => {
@@ -222,17 +222,13 @@ export function StageSpeechBubble({ visible, emojiHovered }: { visible: boolean;
       className="shrink-0"
     >
       <div className="relative flex items-center gap-1.5 md:gap-3">
-        {/* Connecting dots — brand gradient colored */}
-        <div className="flex items-center gap-1 md:gap-[10px] shrink-0">
-          <motion.span className="w-1.5 h-1.5 md:w-3 md:h-3 rounded-full bg-accent/30"
-            animate={{ opacity: [0.3, 0.7, 0.3] }}
-            transition={{ duration: 2, repeat: Infinity, delay: 0 }} />
-          <motion.span className="w-1 h-1 md:w-2.5 md:h-2.5 rounded-full bg-accent-secondary/25"
-            animate={{ opacity: [0.25, 0.6, 0.25] }}
-            transition={{ duration: 2, repeat: Infinity, delay: 0.35 }} />
-          <motion.span className="hidden md:block w-1.5 h-1.5 rounded-full bg-accent-secondary/20"
-            animate={{ opacity: [0.2, 0.5, 0.2] }}
-            transition={{ duration: 2, repeat: Infinity, delay: 0.7 }} />
+        {/* Typing signal — makes the bubble read as the agent speaking */}
+        <div className="relative h-[2px] w-8 md:w-14 shrink-0 overflow-hidden rounded-full bg-accent-secondary/10">
+          <motion.span
+            className="absolute inset-y-0 left-0 w-1/2 rounded-full bg-gradient-to-r from-transparent via-accent-status/70 to-transparent"
+            animate={{ x: ["-100%", "220%"] }}
+            transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
+          />
         </div>
 
         {/* Bubble — fixed width, text wraps inside */}
@@ -270,11 +266,11 @@ export function StageSpeechBubble({ visible, emojiHovered }: { visible: boolean;
 // Mood faces — vertical column on the left, evenly spaced, no overlap
 // 220px zone, 38px faces, need ~44px between centers
 export const MOOD_POSITIONS = [
-  { mood: "curious" as const, label: "curious", style: { top: "6px", left: "-22px" } },
-  { mood: "proud" as const, label: "happy", style: { top: "50px", left: "-22px" } },
-  { mood: "dancing" as const, label: "dance!", style: { top: "94px", left: "-22px" } },
-  { mood: "confused" as const, label: "confused", style: { top: "138px", left: "-22px" } },
-  { mood: "sleeping" as const, label: "sleepy", style: { top: "182px", left: "-22px" } },
+  { mood: "curious" as const, label: "curious", style: { top: "20px", left: "18px" } },
+  { mood: "proud" as const, label: "proud", style: { top: "60px", left: "-6px" } },
+  { mood: "dancing" as const, label: "dance", style: { top: "106px", left: "-12px" } },
+  { mood: "confused" as const, label: "thinking", style: { top: "152px", left: "6px" } },
+  { mood: "sleeping" as const, label: "sleep", style: { top: "184px", left: "48px" } },
 ];
 
 /* ------------------------------------------------------------------ */

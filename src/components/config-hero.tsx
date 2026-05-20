@@ -322,25 +322,8 @@ export function ConfigHero(): React.ReactElement {
           className="-mt-5 md:-mt-12 mb-3 text-caption md:text-xs font-mono text-muted/45"
           style={{ pointerEvents: overlayActive ? "none" : "auto" }}
         >
-          ask the agent about projects, stack, rates, or fit
+          <span className="text-accent/60">&gt;</span> ask about projects, stack, rates, fit
         </motion.p>
-
-        {/* Building status — also fades with overlays */}
-        <motion.div
-          initial={false}
-          animate={{ opacity: overlayActive ? 0 : (m("agent") ? 1 : 0) }}
-          transition={{ duration: overlayActive ? 0.3 : (immediate ? 0 : 0.5) }}
-          className="flex items-center gap-2 mt-5 justify-center"
-          style={{ pointerEvents: overlayActive ? "none" : "auto" }}
-        >
-          <span className="w-1.5 h-1.5 bg-accent rounded-full animate-pulse" />
-          <p className="text-caption md:text-xs font-mono text-muted/40">
-            building:{" "}
-            <span className="text-accent/60">
-              {status.currentlyBuilding.label}
-            </span>
-          </p>
-        </motion.div>
       </div>
 
     </section>
