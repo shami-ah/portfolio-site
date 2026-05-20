@@ -215,24 +215,15 @@ export function StageSpeechBubble({ visible, emojiHovered }: { visible: boolean;
 
   return (
     <motion.div
-      initial={{ opacity: 0, x: -16, scale: 0.92, filter: "blur(4px)" }}
-      animate={{ opacity: 1, x: 0, scale: 1, filter: "blur(0px)" }}
-      exit={{ opacity: 0, x: -8, scale: 0.95 }}
+      initial={{ opacity: 0, y: -8, scale: 0.92, filter: "blur(4px)" }}
+      animate={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }}
+      exit={{ opacity: 0, y: -6, scale: 0.95 }}
       transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-      className="shrink-0"
+      className="w-full shrink-0"
     >
-      <div className="relative flex items-center gap-1.5 md:gap-3">
-        {/* Typing signal — makes the bubble read as the agent speaking */}
-        <div className="relative h-[2px] w-8 md:w-14 shrink-0 overflow-hidden rounded-full bg-accent-secondary/10">
-          <motion.span
-            className="absolute inset-y-0 left-0 w-1/2 rounded-full bg-gradient-to-r from-transparent via-accent-status/70 to-transparent"
-            animate={{ x: ["-100%", "220%"] }}
-            transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
-          />
-        </div>
-
+      <div className="relative flex justify-center">
         {/* Bubble — fixed width, text wraps inside */}
-        <div className="speech-bubble relative w-[132px] md:w-[196px] min-h-[58px] md:min-h-[82px] rounded-[16px] md:rounded-[22px] px-3 py-2.5 md:px-6 md:py-5 flex items-center border border-accent-secondary/20 backdrop-blur-xl overflow-hidden"
+        <div className="speech-bubble relative w-[min(330px,calc(100vw-3rem))] md:w-[420px] min-h-[48px] md:min-h-[58px] rounded-[16px] md:rounded-[20px] px-4 py-3 md:px-6 md:py-4 flex items-center justify-center text-center border border-accent-secondary/20 backdrop-blur-xl overflow-hidden"
         >
           <motion.span
             aria-hidden
@@ -266,11 +257,10 @@ export function StageSpeechBubble({ visible, emojiHovered }: { visible: boolean;
 // Mood faces — vertical column on the left, evenly spaced, no overlap
 // 220px zone, 38px faces, need ~44px between centers
 export const MOOD_POSITIONS = [
-  { mood: "curious" as const, label: "curious", style: { top: "20px", left: "18px" } },
-  { mood: "proud" as const, label: "proud", style: { top: "60px", left: "-6px" } },
-  { mood: "dancing" as const, label: "dance", style: { top: "106px", left: "-12px" } },
-  { mood: "confused" as const, label: "thinking", style: { top: "152px", left: "6px" } },
-  { mood: "sleeping" as const, label: "sleep", style: { top: "184px", left: "48px" } },
+  { mood: "curious" as const, label: "curious", style: { top: "34px", left: "40px" } },
+  { mood: "proud" as const, label: "proud", style: { top: "34px", left: "184px" } },
+  { mood: "confused" as const, label: "focus", style: { top: "166px", left: "42px" } },
+  { mood: "dancing" as const, label: "dance", style: { top: "166px", left: "184px" } },
 ];
 
 /* ------------------------------------------------------------------ */

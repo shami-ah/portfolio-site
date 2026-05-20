@@ -309,21 +309,8 @@ export function ConfigHero(): React.ReactElement {
             filter: m("agent") ? "blur(0px)" : "blur(6px)",
           }}
           transition={{ duration: immediate ? 0 : 0.7, ease: EASE }}
-          className="mt-2 max-w-[700px] mx-auto min-h-[136px] md:min-h-[250px] flex items-center justify-center"
+          className="mt-2 max-w-[700px] mx-auto min-h-[240px] md:min-h-[360px] flex items-center justify-center"
         />
-
-        <motion.p
-          initial={false}
-          animate={{
-            opacity: overlayActive ? 0 : (m("agent") ? 1 : 0),
-            y: m("agent") ? 0 : 6,
-          }}
-          transition={{ duration: overlayActive ? 0.2 : (immediate ? 0 : 0.45), ease: EASE }}
-          className="-mt-5 md:-mt-12 mb-3 text-caption md:text-xs font-mono text-muted/45"
-          style={{ pointerEvents: overlayActive ? "none" : "auto" }}
-        >
-          <span className="text-accent/60">&gt;</span> ask about projects, stack, rates, fit
-        </motion.p>
       </div>
 
     </section>

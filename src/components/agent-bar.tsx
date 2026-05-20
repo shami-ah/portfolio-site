@@ -727,11 +727,11 @@ export function AgentBar(): React.ReactElement {
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.6, filter: "blur(8px)" }}
             transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
-            className="flex flex-row items-center justify-center gap-0 mx-auto"
+            className="flex flex-col items-center justify-center gap-5 md:gap-6 mx-auto"
           >
-            {/* LEFT: Character zone — fixed size, never shifts */}
+            {/* Character zone — centered signature object, never shifts */}
             <div
-              className="relative w-[120px] h-[120px] md:w-[220px] md:h-[220px] flex items-center justify-center shrink-0 overflow-visible"
+              className="relative w-[170px] h-[190px] md:w-[260px] md:h-[260px] flex items-center justify-center shrink-0 overflow-visible"
               onMouseEnter={() => setEmojiHovered(true)}
               onMouseLeave={() => {
                 setEmojiHovered(false);
@@ -746,11 +746,8 @@ export function AgentBar(): React.ReactElement {
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                     transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
-                    className="absolute inset-0 pointer-events-none scale-[0.5] md:scale-100 origin-top-left"
+                    className="absolute inset-0 pointer-events-none scale-[0.65] md:scale-100 origin-center"
                   >
-                    <span className="absolute left-[18px] top-[2px] md:left-[30px] md:top-[8px] rounded-full border border-accent-status/15 bg-card/80 px-2 py-0.5 font-mono text-[8px] md:text-[9px] text-accent-status/60 backdrop-blur-xl">
-                      mood
-                    </span>
                     {MOOD_POSITIONS.map((mp, i) => (
                       <motion.button key={mp.mood} type="button" initial={{ opacity: 0, scale: 0.5 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: i * 0.1, type: "spring", stiffness: 300, damping: 20 }}
                         onClick={(e) => {
@@ -762,7 +759,7 @@ export function AgentBar(): React.ReactElement {
                           }
                           setMoodPickerOpen(false);
                         }}
-                        className="mood-face absolute w-[34px] h-[34px] md:w-[38px] md:h-[38px] rounded-full flex items-center justify-center cursor-pointer pointer-events-auto transition-all duration-300 group hover:scale-[1.4] hover:z-20 border border-accent/20 shadow-md backdrop-blur-xl"
+                        className="mood-face absolute w-[34px] h-[34px] md:w-[36px] md:h-[36px] rounded-full flex items-center justify-center cursor-pointer pointer-events-auto opacity-80 transition-all duration-300 group hover:scale-[1.25] hover:opacity-100 hover:z-20 border border-accent/20 shadow-md backdrop-blur-xl"
                         style={{ ...mp.style }}
                         aria-label={mp.label}
                       >
@@ -779,7 +776,7 @@ export function AgentBar(): React.ReactElement {
                 onClick={handleEmojiClick}
               >
                 {/* Badge */}
-                <div className="agent-badge absolute -top-5 md:-top-7 left-1/2 -translate-x-1/2 z-20 inline-flex items-center gap-1 md:gap-1.5 px-2 py-0.5 md:px-3 md:py-1 rounded-full font-mono text-[7px] md:text-[10px] text-accent-status whitespace-nowrap bg-card/90 border border-accent-status/15 backdrop-blur-xl shadow-sm"
+                <div className="agent-badge absolute -top-6 md:-top-9 left-1/2 -translate-x-1/2 z-20 inline-flex items-center gap-1.5 md:gap-2 px-2.5 py-0.5 md:px-4 md:py-1.5 rounded-full font-mono text-[8px] md:text-[11px] text-accent-status whitespace-nowrap bg-card/90 border border-accent-status/15 backdrop-blur-xl shadow-sm"
                 >
                   <span className="agent-badge-dot w-1 h-1 md:w-[5px] md:h-[5px] rounded-full bg-accent-status animate-pulse" />
                   agent online
@@ -788,7 +785,7 @@ export function AgentBar(): React.ReactElement {
                 <div className={`absolute -inset-[10px] rounded-full border border-accent-status/[0.08] pointer-events-none transition-all duration-500 ${emojiHovered ? "opacity-100 border-accent-status/20" : "opacity-0"}`} />
                 {/* Emoji body */}
                 <motion.div
-                  className="agent-emoji-body relative w-[70px] h-[70px] md:w-[130px] md:h-[130px] rounded-full flex items-center justify-center border border-accent/25 shadow-xl"
+                  className="agent-emoji-body relative w-[88px] h-[88px] md:w-[160px] md:h-[160px] rounded-full flex items-center justify-center border border-accent/25 shadow-xl"
                   style={{
                     animation: "asymmetric-float 5s ease-in-out infinite, agent-stage-glow 3s ease-in-out infinite",
                   }}
@@ -797,15 +794,15 @@ export function AgentBar(): React.ReactElement {
                 >
                   <div className={`absolute top-[8%] left-[15%] w-[35%] h-[25%] rounded-full pointer-events-none transition-opacity ${emojiHovered ? "opacity-100" : "opacity-50"}`}
                     style={{ background: "radial-gradient(ellipse, rgba(255,255,255,0.04), transparent)" }} />
-                  <div className="scale-[0.55] md:scale-100 origin-center">
+                  <div className="scale-[0.72] md:scale-100 origin-center">
                     <AnimatePresence mode="wait">
                       {emojiMoodOverride === "dancing" ? (
                         <motion.div key="dance" initial={{ scale: 0.3, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.3, opacity: 0 }} transition={{ type: "spring", stiffness: 300, damping: 18 }}>
-                          <AgentEmoji size={80} mood="dancing" />
+                          <AgentEmoji size={104} mood="dancing" />
                         </motion.div>
                       ) : (
                         <motion.div key="face" initial={{ scale: 0.5, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.4, opacity: 0 }}>
-                          <AgentEmoji size={90} hovered={emojiHovered} mood={emojiMoodOverride ?? persistentMood} />
+                          <AgentEmoji size={112} hovered={emojiHovered} mood={emojiMoodOverride ?? persistentMood} />
                         </motion.div>
                       )}
                     </AnimatePresence>
@@ -824,8 +821,8 @@ export function AgentBar(): React.ReactElement {
                 </button>
               </div>
             </div>
-            {/* RIGHT: Speech bubble — fixed width container so resizing text doesn't shift emoji */}
-            <div className="-ml-4 shrink-0 md:-ml-8">
+            {/* Speech panel — one centered message surface */}
+            <div className="w-full shrink-0">
               <StageSpeechBubble visible={morphPhase === "stage"} emojiHovered={emojiHovered} />
             </div>
           </motion.div>
