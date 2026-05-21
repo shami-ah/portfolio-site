@@ -225,8 +225,8 @@ export function StageSpeechBubble({ visible, emojiHovered }: { visible: boolean;
       <div className="relative flex justify-center">
         <motion.span
           aria-hidden
-          className="absolute -top-5 left-1/2 h-5 w-px -translate-x-1/2 bg-gradient-to-b from-accent-status/80 via-accent-status/35 to-transparent"
-          animate={{ opacity: [0.25, 0.95, 0.25], scaleY: [0.65, 1, 0.65] }}
+          className="absolute -top-8 md:-top-10 left-1/2 h-8 md:h-10 w-[2px] -translate-x-1/2 rounded-full bg-gradient-to-b from-accent-status/70 via-accent-status/40 to-accent-status/15"
+          animate={{ opacity: [0.3, 1, 0.3], scaleY: [0.7, 1, 0.7] }}
           transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
         />
         {/* Bubble — fixed width, text wraps inside */}
