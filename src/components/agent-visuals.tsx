@@ -263,42 +263,43 @@ export function StageSpeechBubble({ visible, emojiHovered }: { visible: boolean;
   );
 }
 
-// Mood faces orbit the main agent with enough distance for labels/tooltips.
+// Mood faces orbit the main agent — percentage positions so they scale with container.
+// Each style places the center of the emoji at (top%, left%), with translate(-50%,-50%) applied via className.
 export const MOOD_POSITIONS = [
   {
     mood: "curious" as const,
     label: "curious",
-    style: { top: "38px", left: "30px" },
+    style: { top: "23%", left: "20%" },
     labelClass: "right-[calc(100%+10px)] top-1/2 -translate-y-1/2",
   },
   {
     mood: "proud" as const,
     label: "proud",
-    style: { top: "38px", left: "184px" },
+    style: { top: "23%", left: "80%" },
     labelClass: "left-[calc(100%+10px)] top-1/2 -translate-y-1/2",
   },
   {
     mood: "dancing" as const,
     label: "dance",
-    style: { top: "110px", left: "4px" },
+    style: { top: "50%", left: "8%" },
     labelClass: "right-[calc(100%+10px)] top-1/2 -translate-y-1/2",
   },
   {
     mood: "confused" as const,
     label: "focus",
-    style: { top: "110px", left: "210px" },
+    style: { top: "50%", left: "92%" },
     labelClass: "left-[calc(100%+10px)] top-1/2 -translate-y-1/2",
   },
   {
     mood: "surprised" as const,
     label: "spark",
-    style: { top: "182px", left: "30px" },
+    style: { top: "77%", left: "20%" },
     labelClass: "right-[calc(100%+10px)] top-1/2 -translate-y-1/2",
   },
   {
     mood: "sleeping" as const,
     label: "rest",
-    style: { top: "182px", left: "184px" },
+    style: { top: "77%", left: "80%" },
     labelClass: "left-[calc(100%+10px)] top-1/2 -translate-y-1/2",
   },
 ];

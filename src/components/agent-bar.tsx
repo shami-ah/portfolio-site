@@ -747,7 +747,7 @@ export function AgentBar(): React.ReactElement {
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                     transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
-                    className="absolute inset-0 pointer-events-none scale-[0.62] md:scale-100 origin-center"
+                    className="absolute inset-0 pointer-events-none"
                   >
                     {MOOD_POSITIONS.map((mp, i) => (
                       <motion.button key={mp.mood} type="button" initial={{ opacity: 0, scale: 0.5 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: i * 0.1, type: "spring", stiffness: 300, damping: 20 }}
@@ -760,7 +760,7 @@ export function AgentBar(): React.ReactElement {
                           }
                           setMoodPickerOpen(false);
                         }}
-                        className="mood-face absolute z-20 w-[38px] h-[38px] md:w-[40px] md:h-[40px] rounded-full flex items-center justify-center cursor-pointer pointer-events-auto opacity-80 transition-all duration-300 group hover:scale-[1.18] hover:opacity-100 hover:z-50 border border-accent/20 shadow-md backdrop-blur-xl"
+                        className="mood-face absolute z-20 w-[38px] h-[38px] md:w-[40px] md:h-[40px] -translate-x-1/2 -translate-y-1/2 rounded-full flex items-center justify-center cursor-pointer pointer-events-auto opacity-80 transition-all duration-300 group hover:scale-[1.18] hover:opacity-100 hover:z-50 border border-accent/20 shadow-md backdrop-blur-xl"
                         style={{ ...mp.style }}
                         aria-label={mp.label}
                       >
