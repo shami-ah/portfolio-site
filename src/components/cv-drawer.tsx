@@ -34,16 +34,13 @@ function printCV(s: ReturnType<typeof useStatus>["status"]): void {
     .join("");
 
   const skills = [
-    { title: "AI & ML", items: [["Claude API", 90], ["OpenAI / LangChain", 85], ["RAG Pipelines", 80], ["Multi-Agent Systems", 75], ["Prompt Engineering", 70], ["Taint Analysis", 65]] },
-    { title: "Full Stack", items: [["TypeScript / React", 92], ["Next.js", 88], ["Supabase / PostgreSQL", 84], ["Node.js / Python", 80], ["Tailwind / Framer", 76]] },
-    { title: "Infrastructure", items: [["GitHub Actions / CI", 88], ["Docker / Cloudflare", 83], ["Stripe Integration", 78], ["Playwright / n8n", 73]] },
-    { title: "Process", items: [["Architecture-First Dev", 90], ["Team Leadership (3-10)", 85], ["Client Comms & SOWs", 80], ["Code Review (CodeLens)", 75]] },
+    { title: "AI & ML", items: ["Claude API", "OpenAI", "LangChain", "RAG Pipelines", "pgvector", "Multi-Agent Systems", "Prompt Engineering", "Taint Analysis"] },
+    { title: "Full Stack", items: ["TypeScript", "React", "Next.js", "Node.js", "Python", "Supabase", "PostgreSQL", "Tailwind", "Framer Motion"] },
+    { title: "Infrastructure", items: ["Docker", "GitHub Actions", "Cloudflare", "Stripe", "Playwright", "n8n", "Traefik"] },
+    { title: "Process", items: ["Architecture-First Dev", "Team Leadership (3-10)", "Client Comms & SOWs", "Code Review Systems"] },
   ].map(sec => `
     <p style="font-family:monospace;font-size:10px;text-transform:uppercase;letter-spacing:2px;color:#aaa;margin:10px 0 5px"><span style="color:#4a6fa5">\u25B8</span> ${sec.title}</p>
-    ${(sec.items as [string, number][]).map(([n, l]) => `
-      <div style="display:flex;justify-content:space-between;margin-bottom:2px"><span style="font-size:10px;color:#555">${n}</span><span style="font-family:monospace;font-size:10px;color:#bbb">${l}%</span></div>
-      <div style="height:3px;background:#eee;border-radius:2px;margin-bottom:5px"><div style="height:100%;width:${l}%;background:#4a6fa5;border-radius:2px"></div></div>
-    `).join("")}
+    <div style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:6px">${sec.items.map(n => `<span style="font-size:9px;padding:2px 7px;border-radius:4px;background:#f0f0ec;color:#666;border:1px solid #e4e4e0">${n}</span>`).join("")}</div>
   `).join("");
 
   const roles = [
@@ -57,7 +54,7 @@ function printCV(s: ReturnType<typeof useStatus>["status"]): void {
       "AI reduced manual data entry by 70%; agile cut delivery cycles by 40%",
     ]},
     { t: "AI Evaluation Specialist", c: "Outlier \u00b7 RWS \u00b7 Translated \u00b7 Remote", p: "2021 \u2013 Present", items: ["500+ RLHF/SFT evaluation sessions on frontier models"] },
-    { t: "Freelance AI & Full-Stack Engineer", c: "Upwork \u00b7 Fiverr \u00b7 Direct Clients \u00b7 Remote", p: "2019 \u2013 Present", items: ["50+ production systems shipped; 40+ clients, 100% job success on Upwork"] },
+    { t: "Freelance AI & Full-Stack Engineer", c: "Upwork \u00b7 Fiverr \u00b7 Direct Clients \u00b7 Remote", p: "2019 \u2013 Present", items: ["50+ production systems shipped; 40+ returning clients, 100% job success on Upwork"] },
     { t: "Co-Founder & AI Engineer", c: "Wadware House \u00b7 Remote", p: "2023 \u2013 Present", items: ["AI automation agency for scoped client engagements"] },
   ].map(r => `
     <div style="display:flex;gap:8px;margin-bottom:6px">
@@ -82,6 +79,7 @@ function printCV(s: ReturnType<typeof useStatus>["status"]): void {
     { n: "OpenEvent", tag: "Production SaaS", tc: "#b8860b", d: `${s.openevent.clients}+ clients, ${s.openevent.events}+ events. Multi-agent: email \u2192 extraction \u2192 workflow \u2192 auto-approval. Saves ~${s.openevent.hoursSavedPerDay} hrs/day.` },
     { n: "Command Center", tag: "Dev Tool", tc: "#10b981", d: "Unified dev interface: Claude API, Gemini, Supabase, Gmail. PWA with push notifications." },
     { n: "Gluten-Free Deals & Dining", tag: "Cross-Platform", tc: "#8b5cf6", d: "React Native + Next.js. LLM queries, 40+ retailer scraping, GPS finder, AI recipes." },
+    { n: "Rasad", tag: "AI Observatory", tc: "#10b981", d: "AI session analytics: 656 sessions graded A-F, 38K messages, 14K tool calls. X-Ray replay. 100% local, zero outbound." },
     { n: "AI Agent System", tag: "Multi-Agent", tc: "#ec4899", d: "5 agents with tool-calling on HuggingFace Spaces. Groq + Tavily + GitHub API." },
   ].map(p => `
     <div style="padding:5px 9px;border-radius:5px;border:1px solid #e8e8e4;background:#f5f5f1;margin-bottom:3px">
@@ -102,7 +100,7 @@ function printCV(s: ReturnType<typeof useStatus>["status"]): void {
       <p style="font-family:monospace;font-size:9px;text-transform:uppercase;letter-spacing:3px;color:#aaa;margin-bottom:3px">Curriculum Vitae</p>
       <h1 style="font-size:38px;font-weight:bold;letter-spacing:-1px;line-height:1;color:#1a1a2e">Ahtesham <span style="color:#4a6fa5">Ahmad</span></h1>
       <p style="font-size:14px;font-weight:300;color:#888;margin-top:3px">AI Engineer</p>
-      <p style="font-size:10px;color:#777;margin-top:5px;max-width:380px;line-height:1.55">Builder of OpenEvent, CodeLens, and Gogaa CLI. I ship workflow products with measurable adoption: 100+ OpenEvent clients, 430 CodeLens patterns, and 1,400+ Gogaa tests. AI proposes; humans stay in control where money or commitments are involved.</p>
+      <p style="font-size:10px;color:#777;margin-top:5px;max-width:380px;line-height:1.55">Builder of OpenEvent, CodeLens, and Gogaa CLI. I ship workflow products with measurable adoption: ${s.openevent.clients}+ OpenEvent clients, ${s.codelens.patterns} CodeLens patterns, and ${s.gogaa.tests.toLocaleString()}+ Gogaa tests. AI proposes; humans stay in control where money or commitments are involved.</p>
     </div>
     <div style="font-family:monospace;font-size:10px;color:#999;text-align:right;line-height:1.7">
       shami8024@gmail.com<br><span style="color:#4a6fa5">github.com/shami-ah</span><br><span style="color:#4a6fa5">linkedin.com/in/ahtesham</span><br><span style="color:#4a6fa5">ahtesham.dev.wadwarehouse.com</span><br>Islamabad, PK \u00b7 Remote
@@ -111,7 +109,7 @@ function printCV(s: ReturnType<typeof useStatus>["status"]): void {
   <div style="display:flex;align-items:center;gap:5px;flex-wrap:wrap">${flow}</div>
   <div style="height:1px;background:linear-gradient(90deg,transparent,#4a6fa5,transparent);margin:7px 0"></div>
   <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:8px">
-    ${[{ n: "50+", l: "Production Systems" }, { n: "5+", l: "Years Experience" }, { n: "100%", l: "Client Satisfaction" }, { n: String(s.gogaa.tests), l: "Gogaa Tests", a: true }].map(st => `<div style="padding:8px;border-radius:6px;border:1px solid #e8e8e4;background:#f5f5f1;text-align:center"><p style="font-family:monospace;font-size:18px;font-weight:bold;color:${st.a ? "#b8860b" : "#4a6fa5"};line-height:1">${st.n}</p><p style="font-size:8px;text-transform:uppercase;letter-spacing:1.5px;color:#aaa;margin-top:3px">${st.l}</p></div>`).join("")}
+    ${[{ n: "50+", l: "Systems Shipped" }, { n: String(s.codelens.patterns), l: "CodeLens Patterns" }, { n: String(s.gogaa.providers), l: "LLM Providers" }, { n: String(s.gogaa.tests), l: "Gogaa Tests", a: true }].map(st => `<div style="padding:8px;border-radius:6px;border:1px solid #e8e8e4;background:#f5f5f1;text-align:center"><p style="font-family:monospace;font-size:18px;font-weight:bold;color:${st.a ? "#b8860b" : "#4a6fa5"};line-height:1">${st.n}</p><p style="font-size:8px;text-transform:uppercase;letter-spacing:1.5px;color:#aaa;margin-top:3px">${st.l}</p></div>`).join("")}
   </div>
   <div style="display:grid;grid-template-columns:1fr 250px;gap:18px">
     <div>
@@ -132,7 +130,7 @@ function printCV(s: ReturnType<typeof useStatus>["status"]): void {
       <p style="font-family:monospace;font-size:10px;text-transform:uppercase;letter-spacing:2px;color:#aaa;margin:10px 0 5px"><span style="color:#4a6fa5">\u25B8</span> Languages</p>
       <div style="display:flex;gap:5px;flex-wrap:wrap">${["English \u00b7 Pro", "Urdu \u00b7 Native", "Pashtu \u00b7 Native", "Sindhi \u00b7 Conv", "Arabic \u00b7 Conv"].map(l => `<span style="font-size:9px;padding:2px 6px;border-radius:3px;background:#f0f0ec;color:#888;border:1px solid #e4e4e0">${l}</span>`).join("")}</div>
       <p style="font-family:monospace;font-size:10px;text-transform:uppercase;letter-spacing:2px;color:#aaa;margin:10px 0 4px"><span style="color:#4a6fa5">\u25B8</span> Building Next</p>
-      <p style="font-size:10px;color:#888;line-height:1.45">Gogaa Architect Mode \u00b7 Spec-to-Code Traceability \u00b7 CodeLens v0.4 (AST)</p>
+      <p style="font-size:10px;color:#888;line-height:1.45">Gogaa v1.3.0 \u00b7 CodeLens Public Launch \u00b7 LLM Observability</p>
     </div>
   </div>
 </div></body></html>`;
@@ -197,35 +195,6 @@ function FlowNode({ label, delay, isLast }: { label: string; delay: number; isLa
           transition={{ delay: delay + 0.2, duration: 0.3 }}
         >{"\u2192"}</motion.span>
       )}
-    </motion.div>
-  );
-}
-
-/* ------------------------------------------------------------------ */
-/*  Skill bar with glow                                                */
-/* ------------------------------------------------------------------ */
-
-function SkillBar({ name, level, delay }: { name: string; level: number; delay: number }): React.ReactElement {
-  return (
-    <motion.div
-      className="group"
-      initial={{ opacity: 0, x: -20 }}
-      animate={{ opacity: 1, x: 0 }}
-      transition={{ delay, duration: 0.4 }}
-    >
-      <div className="flex justify-between text-xs mb-1">
-        <span className="text-foreground/80 group-hover:text-foreground transition-colors">{name}</span>
-        <span className="text-muted/80 font-mono">{level}%</span>
-      </div>
-      <div className="h-1.5 bg-card-border/30 rounded-full overflow-hidden">
-        <motion.div
-          className="h-full rounded-full bg-accent"
-          style={{ boxShadow: "0 0 10px var(--accent-glow)" }}
-          initial={{ width: 0 }}
-          animate={{ width: `${level}%` }}
-          transition={{ delay: delay + 0.2, duration: 0.8, ease: "easeOut" }}
-        />
-      </div>
     </motion.div>
   );
 }
@@ -528,7 +497,7 @@ function DrawerContent({ close, status }: { close: () => void; status: ReturnTyp
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.4 }}
               >
-                Builder of OpenEvent, CodeLens, and Gogaa CLI. I ship workflow products with measurable adoption: 100+ OpenEvent clients, 430 CodeLens patterns, and 1,400+ Gogaa tests. AI proposes; humans stay in control where money or commitments are involved.
+                Builder of OpenEvent, CodeLens, and Gogaa CLI. I ship workflow products with measurable adoption: {status.openevent.clients}+ OpenEvent clients, {status.codelens.patterns} CodeLens patterns, and {status.gogaa.tests.toLocaleString()}+ Gogaa tests. AI proposes; humans stay in control where money or commitments are involved.
               </motion.p>
               <motion.div
                 className="text-sm text-muted/80 space-y-1.5 font-mono mt-4"
@@ -573,9 +542,9 @@ function DrawerContent({ close, status }: { close: () => void; status: ReturnTyp
               transition={{ duration: 0.5 }}
             >
               {[
-                { n: 50, s: "+", l: "Production Systems", amber: false },
-                { n: 5, s: "+", l: "Years Experience", amber: false },
-                { n: 100, s: "%", l: "Client Satisfaction", amber: false },
+                { n: 50, s: "+", l: "Systems Shipped", amber: false },
+                { n: status.codelens.patterns, s: "", l: "CodeLens Patterns", amber: false },
+                { n: status.gogaa.providers, s: "", l: "LLM Providers", amber: false },
                 { n: status.gogaa.tests, s: "", l: "Gogaa Tests Passing", amber: true },
               ].map((stat) => (
                 <motion.div
@@ -613,7 +582,7 @@ function DrawerContent({ close, status }: { close: () => void; status: ReturnTyp
               ]} />
               <TimelineRole title="Freelance AI & Full-Stack Engineer" company="Upwork · Fiverr · Direct Clients" period="2019 – Present" location="Remote · Global" items={[
                 "50+ production systems shipped: SaaS products, AI pipelines, dashboards, automation",
-                "40+ long-term clients across 250+ total projects, 100% job success rate on Upwork",
+                "40+ returning clients, 100% job success rate on Upwork",
               ]} />
               <TimelineRole title="Co-Founder & AI Engineer" company="Wadware House" period="2023 – Present" location="Remote" items={[
                 "Co-founded AI automation agency for scoped client engagements",
@@ -628,36 +597,38 @@ function DrawerContent({ close, status }: { close: () => void; status: ReturnTyp
               <ProjectCard name="OpenEvent" tag="Production SaaS" tagColor={AMBER} liveLabel="live" description={`${status.openevent.clients}+ clients across ${status.openevent.events}+ events. Saves each team ~${status.openevent.hoursSavedPerDay} hrs/day of manual email processing. Multi-agent orchestration: email \u2192 entity extraction \u2192 workflow \u2192 auto-approval.`} />
               <ProjectCard name="Command Center" tag="Developer Tool" tagColor="#10b981" description="Unified dev interface with Claude API, Google Gemini, Supabase, Gmail/Calendar integration. PWA with push notifications." />
               <ProjectCard name="Gluten-Free Deals & Dining" tag="Cross-Platform" tagColor="#8b5cf6" description="React Native + Next.js app. LLM-generated 200+ search queries, concurrent scraping from 40+ retailers, GPS restaurant finder, AI recipe generation." />
+              <ProjectCard name="Rasad" tag="AI Observatory" tagColor="#10b981" description={`AI session analytics: 656 sessions graded A-F, 38K messages, 14K tool calls. X-Ray action replay. 100% local, zero outbound requests.`} />
               <ProjectCard name="AI Agent System" tag="Multi-Agent" tagColor="#ec4899" description="5 purpose-built AI agents with tool-calling: job search, research, code review, proposals, freelance automation. Groq + Tavily + GitHub API. Deployed on HuggingFace Spaces." />
             </Section>
 
-            {/* Skills — AI & ML */}
-            <Section title="AI & ML" icon={<Zap size={12} />}>
-              {["Claude API", "OpenAI / LangChain", "RAG Pipelines", "Multi-Agent Systems", "Prompt Engineering", "Taint Analysis"].map((s, i) => (
-                <SkillBar key={s} name={s} level={90 - i * 5} delay={i * 0.05} />
-              ))}
-            </Section>
-
-            {/* Skills — Full Stack */}
-            <Section title="Full Stack" icon={<Cog size={12} />}>
-              {["TypeScript / React", "Next.js", "Supabase / PostgreSQL", "Node.js / Python", "Tailwind / Framer"].map((s, i) => (
-                <SkillBar key={s} name={s} level={92 - i * 4} delay={i * 0.05} />
-              ))}
-            </Section>
-
-            {/* Skills — Infrastructure */}
-            <Section title="Infrastructure" icon={<Cloud size={12} />}>
-              {["GitHub Actions / CI", "Docker / Cloudflare", "Stripe Integration", "Playwright / n8n"].map((s, i) => (
-                <SkillBar key={s} name={s} level={88 - i * 5} delay={i * 0.05} />
-              ))}
-            </Section>
-
-            {/* Skills — Process */}
-            <Section title="Process" icon={<ArrowRight size={12} />}>
-              {["Architecture-First Development", "Team Leadership (3-10 people)", "Client-Facing Comms & SOWs", "CodeLens: 305-pattern review engine", "Gogaa: Claude Code alternative"].map((s, i) => (
-                <SkillBar key={s} name={s} level={90 - i * 4} delay={i * 0.05} />
-              ))}
-            </Section>
+            {/* Skills — Tag Groups */}
+            {[
+              { title: "AI & ML", icon: <Zap size={12} />, items: ["Claude API", "OpenAI", "LangChain", "RAG Pipelines", "pgvector", "Multi-Agent Systems", "Prompt Engineering", "Taint Analysis"] },
+              { title: "Full Stack", icon: <Cog size={12} />, items: ["TypeScript", "React", "Next.js", "Node.js", "Python", "Supabase", "PostgreSQL", "Tailwind", "Framer Motion"] },
+              { title: "Infrastructure", icon: <Cloud size={12} />, items: ["Docker", "GitHub Actions", "Cloudflare", "Stripe", "Playwright", "n8n", "Traefik"] },
+              { title: "Process", icon: <ArrowRight size={12} />, items: ["Architecture-First Dev", "Team Leadership (3-10)", "Client Comms & SOWs", "Code Review Systems"] },
+            ].map((sec) => (
+              <Section key={sec.title} title={sec.title} icon={sec.icon}>
+                <motion.div
+                  className="flex flex-wrap gap-2"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.4 }}
+                >
+                  {sec.items.map((skill, i) => (
+                    <motion.span
+                      key={skill}
+                      className="text-xs px-2.5 py-1 rounded-lg bg-card/80 text-muted border border-card-border hover:border-accent/30 hover:text-foreground transition-colors"
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ delay: i * 0.03 }}
+                    >
+                      {skill}
+                    </motion.span>
+                  ))}
+                </motion.div>
+              </Section>
+            ))}
 
             {/* Certifications */}
             <Section title="Certifications" icon={<GraduationCap size={12} />}>
@@ -704,9 +675,9 @@ function DrawerContent({ close, status }: { close: () => void; status: ReturnTyp
             <Section title="Building Next" icon={<Rocket size={12} />}>
               <div className="space-y-2">
                 {[
-                  { icon: <Building2 size={14} />, name: "Gogaa Architect Mode", status: "Next", color: ACCENT },
-                  { icon: <Link2 size={14} />, name: "Spec-to-Code Traceability", status: "Designing", color: AMBER },
-                  { icon: <TreePine size={14} />, name: "CodeLens v0.4 (AST)", status: "Planned", color: "#10b981" },
+                  { icon: <Building2 size={14} />, name: "Gogaa v1.3.0", status: "Next", color: ACCENT },
+                  { icon: <Link2 size={14} />, name: "CodeLens Public Launch", status: "In Progress", color: AMBER },
+                  { icon: <TreePine size={14} />, name: "LLM Observability", status: "Planned", color: "#10b981" },
                 ].map((item, i) => (
                   <motion.div
                     key={item.name}

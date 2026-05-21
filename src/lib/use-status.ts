@@ -17,7 +17,7 @@ export interface Status {
 const FALLBACK: Status = {
   updated: "2026-04-17",
   gogaa: { version: "1.2.1", tests: 1418, providers: 11, status: "private beta" },
-  codelens: { version: "0.3.5", patterns: 430, stacks: 9, status: "private beta" },
+  codelens: { version: "0.4.1", patterns: 445, stacks: 9, status: "private beta" },
   openevent: { clients: 100, events: 150, hoursSavedPerDay: 1.5, status: "live" },
   portfolio: { productionSystems: 50, totalProjects: 250, yearsBuilding: 5 },
   currentlyBuilding: { label: "Gogaa v1.3.0", detail: "CC mega upgrade phase 1" },
