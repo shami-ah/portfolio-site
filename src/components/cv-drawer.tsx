@@ -34,7 +34,7 @@ function printCV(s: ReturnType<typeof useStatus>["status"]): void {
     .join("");
 
   const skills = [
-    { title: "AI & ML", items: ["Claude API", "OpenAI", "LangChain", "RAG Pipelines", "pgvector", "Multi-Agent Systems", "Prompt Engineering", "Taint Analysis"] },
+    { title: "AI & ML", items: ["Claude API", "MCP", "Agent SDK", "OpenAI", "LangChain", "RAG Pipelines", "pgvector", "Multi-Agent Systems", "Prompt Engineering", "Taint Analysis"] },
     { title: "Full Stack", items: ["TypeScript", "React", "Next.js", "Node.js", "Python", "Supabase", "PostgreSQL", "Tailwind", "Framer Motion"] },
     { title: "Infrastructure", items: ["Docker", "GitHub Actions", "Cloudflare", "Stripe", "Playwright", "n8n", "Traefik"] },
     { title: "Process", items: ["Architecture-First Dev", "Team Leadership (3-10)", "Client Comms & SOWs", "Code Review Systems"] },
@@ -126,7 +126,7 @@ function printCV(s: ReturnType<typeof useStatus>["status"]): void {
     <div>
       ${skills}
       <p style="font-family:monospace;font-size:10px;text-transform:uppercase;letter-spacing:2px;color:#aaa;margin:10px 0 5px"><span style="color:#4a6fa5">\u25B8</span> Certifications</p>
-      ${["Generative AI & LLMs \u00b7 IBM", "Project Management \u00b7 Google", "Gen AI for PMs \u00b7 PMI"].map(c => `<p style="font-size:10px;color:#888;padding-left:8px;border-left:2px solid #e8e8e4;margin-bottom:4px;line-height:1.4">${c}</p>`).join("")}
+      ${["Claude Platform 101 \u00b7 Anthropic Academy", "Building with the Claude API \u00b7 Anthropic Academy", "MCP & Agent Skills \u00b7 Anthropic Academy", "Generative AI & LLMs \u00b7 IBM", "Project Management \u00b7 Google", "Gen AI for PMs \u00b7 PMI"].map(c => `<p style="font-size:10px;color:#888;padding-left:8px;border-left:2px solid #e8e8e4;margin-bottom:4px;line-height:1.4">${c}</p>`).join("")}
       <p style="font-family:monospace;font-size:10px;text-transform:uppercase;letter-spacing:2px;color:#aaa;margin:10px 0 5px"><span style="color:#4a6fa5">\u25B8</span> Languages</p>
       <div style="display:flex;gap:5px;flex-wrap:wrap">${["English \u00b7 Pro", "Urdu \u00b7 Native", "Pashtu \u00b7 Native", "Sindhi \u00b7 Conv", "Arabic \u00b7 Conv"].map(l => `<span style="font-size:9px;padding:2px 6px;border-radius:3px;background:#f0f0ec;color:#888;border:1px solid #e4e4e0">${l}</span>`).join("")}</div>
       <p style="font-family:monospace;font-size:10px;text-transform:uppercase;letter-spacing:2px;color:#aaa;margin:10px 0 4px"><span style="color:#4a6fa5">\u25B8</span> Building Next</p>
@@ -603,7 +603,7 @@ function DrawerContent({ close, status }: { close: () => void; status: ReturnTyp
 
             {/* Skills — Tag Groups */}
             {[
-              { title: "AI & ML", icon: <Zap size={12} />, items: ["Claude API", "OpenAI", "LangChain", "RAG Pipelines", "pgvector", "Multi-Agent Systems", "Prompt Engineering", "Taint Analysis"] },
+              { title: "AI & ML", icon: <Zap size={12} />, items: ["Claude API", "MCP", "Agent SDK", "OpenAI", "LangChain", "RAG Pipelines", "pgvector", "Multi-Agent Systems", "Prompt Engineering", "Taint Analysis"] },
               { title: "Full Stack", icon: <Cog size={12} />, items: ["TypeScript", "React", "Next.js", "Node.js", "Python", "Supabase", "PostgreSQL", "Tailwind", "Framer Motion"] },
               { title: "Infrastructure", icon: <Cloud size={12} />, items: ["Docker", "GitHub Actions", "Cloudflare", "Stripe", "Playwright", "n8n", "Traefik"] },
               { title: "Process", icon: <ArrowRight size={12} />, items: ["Architecture-First Dev", "Team Leadership (3-10)", "Client Comms & SOWs", "Code Review Systems"] },
@@ -633,7 +633,7 @@ function DrawerContent({ close, status }: { close: () => void; status: ReturnTyp
             {/* Certifications */}
             <Section title="Certifications" icon={<GraduationCap size={12} />}>
               <div className="space-y-2 text-xs">
-                {["Generative AI & LLMs · IBM", "Project Management · Google", "Gen AI for PMs · PMI"].map((cert, i) => (
+                {["Claude Platform 101 · Anthropic Academy", "Building with the Claude API · Anthropic Academy", "MCP & Agent Skills · Anthropic Academy", "Generative AI & LLMs · IBM", "Project Management · Google", "Gen AI for PMs · PMI"].map((cert, i) => (
                   <motion.p
                     key={cert}
                     className="text-muted pl-3 border-l border-card-border"
