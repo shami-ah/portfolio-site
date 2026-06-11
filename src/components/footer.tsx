@@ -254,7 +254,7 @@ export function Footer(): React.ReactElement {
                 className="inline-flex items-center gap-1.5 px-3 py-[7px] rounded-[7px] border border-card-border/80 bg-background/50 text-foreground/45 font-mono text-[11px] hover:opacity-100 hover:border-accent hover:bg-accent/[0.06] hover:text-accent transition-all duration-200"
               >
                 <Mail size={13} strokeWidth={1.5} className="opacity-50" />
-                email
+                shami8024@gmail.com
               </a>
               <a
                 href="https://github.com/shami-ah"

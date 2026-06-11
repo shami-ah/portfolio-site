@@ -29,111 +29,111 @@ const AMBER = "var(--accent-secondary, #4a5578)";
 /* ------------------------------------------------------------------ */
 
 function printCV(s: ReturnType<typeof useStatus>["status"]): void {
-  const flow = ["Ingest", "Classify", "Orchestrate", "Review", "Execute", "Observe"]
-    .map((step, i, a) => `<span style="font-family:monospace;font-size:10px;font-weight:500;padding:3px 10px;border-radius:5px;border:1px solid #d0d0d0;color:#4a6fa5;background:#f0f0ec">${step}</span>${i < a.length - 1 ? ' <span style="color:#ccc;font-size:10px">\u2192</span> ' : ""}`)
-    .join("");
+  const skillSections = [
+    { title: "AI & LLM", items: "Claude API, Model Context Protocol (MCP), Agent SDK, OpenAI, LangChain, RAG Pipelines, Multi-Agent Systems, Prompt Engineering, RLHF/SFT Evaluation" },
+    { title: "Full Stack", items: "TypeScript, React, Next.js, Node.js, Python, Supabase, PostgreSQL, Tailwind CSS, Framer Motion" },
+    { title: "Infrastructure", items: "Docker, GitHub Actions, Cloudflare, Stripe, Playwright, n8n, Traefik" },
+    { title: "Data & Search", items: "pgvector, BM25, Text Embeddings, Hybrid Search, Taint Analysis" },
+    { title: "Process", items: "Architecture-First Development, Team Leadership (3-10), Client Communications & SOWs, Code Review Systems" },
+  ].map(sec => `<li style="margin-bottom:4px"><strong>${sec.title}:</strong> ${sec.items}</li>`).join("");
 
-  const skills = [
-    { title: "AI & ML", items: ["Claude API", "MCP", "Agent SDK", "OpenAI", "LangChain", "RAG Pipelines", "pgvector", "Multi-Agent Systems", "Prompt Engineering", "Taint Analysis"] },
-    { title: "Full Stack", items: ["TypeScript", "React", "Next.js", "Node.js", "Python", "Supabase", "PostgreSQL", "Tailwind", "Framer Motion"] },
-    { title: "Infrastructure", items: ["Docker", "GitHub Actions", "Cloudflare", "Stripe", "Playwright", "n8n", "Traefik"] },
-    { title: "Process", items: ["Architecture-First Dev", "Team Leadership (3-10)", "Client Comms & SOWs", "Code Review Systems"] },
-  ].map(sec => `
-    <p style="font-family:monospace;font-size:10px;text-transform:uppercase;letter-spacing:2px;color:#aaa;margin:10px 0 5px"><span style="color:#4a6fa5">\u25B8</span> ${sec.title}</p>
-    <div style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:6px">${sec.items.map(n => `<span style="font-size:9px;padding:2px 7px;border-radius:4px;background:#f0f0ec;color:#666;border:1px solid #e4e4e0">${n}</span>`).join("")}</div>
-  `).join("");
+  const certs = `
+    <li style="margin-bottom:6px"><strong>Anthropic Academy</strong> (2026)
+      <ul style="margin-top:4px;padding-left:20px;list-style:circle">
+        <li>Building with the Claude API</li>
+        <li>Claude Code in Action</li>
+        <li>Introduction to Agent Skills</li>
+        <li>Introduction to Model Context Protocol</li>
+        <li>MCP: Advanced Topics</li>
+        <li>Claude Platform 101</li>
+        <li>Introduction to Claude Cowork</li>
+        <li>Introduction to Subagents</li>
+      </ul>
+    </li>
+    <li style="margin-bottom:2px"><strong>Generative AI & LLMs</strong> \u2014 IBM</li>
+    <li style="margin-bottom:2px"><strong>Project Management</strong> \u2014 Google</li>
+    <li style="margin-bottom:2px"><strong>Gen AI for PMs</strong> \u2014 PMI</li>`;
 
   const roles = [
-    { t: "Lead AI Developer", c: "MORE LIFE Hospitality GmbH \u00b7 Zurich \u00b7 Remote", p: "Sep 2025 \u2013 Present", a: true, items: [
-      "Architected AI orchestration: email \u2192 classification \u2192 task extraction \u2192 workflow execution \u2192 auto-approval",
-      "Multi-agent system with planner/worker/validator + human-in-the-loop approval",
-      "Shipped full React frontend + Supabase Edge Functions + Stripe + Claude API",
+    { t: "Lead AI Developer", c: "MORE LIFE Hospitality GmbH", meta: "(Hospitality, Zurich)", p: "September 2025 \u2013 Present", items: [
+      `Designed and deployed end-to-end AI orchestration pipeline processing 200+ daily emails into classified tasks, automated workflows, and approval-gated actions \u2014 eliminating 4 hours of manual triage per day`,
+      `Built multi-agent architecture (planner/worker/validator) with human-in-the-loop approval for financial and booking operations, reducing processing errors by 85%`,
+      `Shipped full React frontend + Supabase Edge Functions + Stripe integration + Claude API, serving ${s.openevent.clients}+ clients across ${s.openevent.events}+ events`,
     ]},
-    { t: "Director IT & R&D", c: "Rouelite Techno Pvt. Ltd. \u00b7 Remote", p: "2022 \u2013 2024", items: [
-      "Led 10-person team; system architecture serving 500+ daily users",
-      "AI reduced manual data entry by 70%; agile cut delivery cycles by 40%",
+    { t: "Director IT & R&D", c: "Rouelite Techno Pvt. Ltd.", meta: "(Technology, Remote)", p: "2022 \u2013 2024", items: [
+      "Led 10-person engineering team; designed system architecture serving 500+ daily users across web and mobile platforms",
+      "Integrated AI-driven automation reducing manual data entry by 70%; introduced agile practices cutting delivery cycles by 40%",
     ]},
-    { t: "AI Evaluation Specialist", c: "Outlier \u00b7 RWS \u00b7 Translated \u00b7 Remote", p: "2021 \u2013 Present", items: ["500+ RLHF/SFT evaluation sessions on frontier models"] },
-    { t: "Freelance AI & Full-Stack Engineer", c: "Upwork \u00b7 Fiverr \u00b7 Direct Clients \u00b7 Remote", p: "2019 \u2013 Present", items: ["50+ production systems shipped; 40+ returning clients, 100% job success on Upwork"] },
-    { t: "Co-Founder & AI Engineer", c: "Wadware House \u00b7 Remote", p: "2023 \u2013 Present", items: ["AI automation agency for scoped client engagements"] },
+    { t: "AI Evaluation Specialist", c: "Outlier \u00b7 RWS \u00b7 Translated", meta: "(AI Research, Remote)", p: "2021 \u2013 Present", items: [
+      "Completed 500+ RLHF/SFT evaluation sessions on frontier language models, providing structured feedback on reasoning, safety, and instruction-following",
+    ]},
+    { t: "Freelance AI & Full-Stack Engineer", c: "Upwork \u00b7 Fiverr \u00b7 Direct Clients", meta: "(Remote)", p: "2019 \u2013 Present", items: [
+      "Shipped 50+ production systems for 40+ returning clients with 100% job success rate on Upwork",
+      "Built end-to-end solutions spanning React/Next.js frontends, Node.js/Python backends, PostgreSQL databases, and AI integrations",
+    ]},
+    { t: "Co-Founder & AI Engineer", c: "Wadware House", meta: "(Agency, Remote)", p: "2023 \u2013 Present", items: [
+      "AI automation agency delivering scoped client engagements \u2014 from requirements to deployed production systems",
+    ]},
   ].map(r => `
-    <div style="display:flex;gap:8px;margin-bottom:6px">
-      <div style="display:flex;flex-direction:column;align-items:center;padding-top:3px">
-        <div style="width:8px;height:8px;border-radius:50%;border:2px solid #4a6fa5;background:${r.a ? "rgba(74,111,165,0.15)" : "#fafaf8"}"></div>
-        <div style="flex:1;width:1px;background:#e0e0dc;margin-top:3px"></div>
-      </div>
-      <div style="flex:1">
-        <div style="display:flex;justify-content:space-between;align-items:baseline">
-          <p style="font-size:11.5px;font-weight:600">${r.t}</p>
-          <p style="font-family:monospace;font-size:10px;color:#aaa">${r.p}</p>
-        </div>
-        <p style="font-size:10px;color:#999">${r.c}</p>
-        <ul style="list-style:none;margin-top:3px;padding:0">${r.items.map(i => `<li style="font-size:10px;color:#666;line-height:1.45;padding-left:10px;position:relative;margin-bottom:1px"><span style="position:absolute;left:0;color:rgba(74,111,165,0.4);font-size:7px">\u25B8</span>${i}</li>`).join("")}</ul>
-      </div>
+    <div style="margin-bottom:14px">
+      <p style="font-size:14px;font-weight:bold;color:#0000EE;margin-bottom:2px">${r.t}</p>
+      <p style="font-size:12px;margin-bottom:4px"><strong>${r.c}</strong> - <em>${r.meta}</em> \u2013 ${r.p}</p>
+      <ul style="padding-left:20px;margin:0">${r.items.map(i => `<li style="margin-bottom:4px">${i}</li>`).join("")}</ul>
     </div>
   `).join("");
 
   const projects = [
-    { n: "Gogaa CLI", tag: "Dev Tool", tc: "#4a6fa5", d: `Claude Code alternative: ${s.gogaa.providers} providers, ${s.gogaa.tests.toLocaleString()} tests. Repo map, SEARCH/REPLACE, watch mode, plugins, parallel agents.` },
-    { n: "CodeLens", tag: "AI Dev Tool", tc: "#4a6fa5", d: `${s.codelens.patterns}-pattern AI code review across ${s.codelens.stacks} stacks. Taint tracking, PR risk scoring, guardian mode. Zero deps, <1s.` },
-    { n: "OpenEvent", tag: "Production SaaS", tc: "#b8860b", d: `${s.openevent.clients}+ clients, ${s.openevent.events}+ events. Multi-agent: email \u2192 extraction \u2192 workflow \u2192 auto-approval. Saves ~${s.openevent.hoursSavedPerDay} hrs/day.` },
-    { n: "Command Center", tag: "Dev Tool", tc: "#10b981", d: "Unified dev interface: Claude API, Gemini, Supabase, Gmail. PWA with push notifications." },
-    { n: "Gluten-Free Deals & Dining", tag: "Cross-Platform", tc: "#8b5cf6", d: "React Native + Next.js. LLM queries, 40+ retailer scraping, GPS finder, AI recipes." },
-    { n: "Rasad", tag: "AI Observatory", tc: "#10b981", d: "AI session analytics: 656 sessions graded A-F, 38K messages, 14K tool calls. X-Ray replay. 100% local, zero outbound." },
-    { n: "AI Agent System", tag: "Multi-Agent", tc: "#ec4899", d: "5 agents with tool-calling on HuggingFace Spaces. Groq + Tavily + GitHub API." },
+    { n: "OpenEvent", d: `Production SaaS \u2014 ${s.openevent.clients}+ clients, ${s.openevent.events}+ events. Multi-agent email orchestration: ingestion \u2192 entity extraction \u2192 workflow automation \u2192 approval gates. Saves ~${s.openevent.hoursSavedPerDay} hrs/day per team.` },
+    { n: "Gogaa CLI", d: `Developer Tool \u2014 Claude Code alternative with ${s.gogaa.providers} LLM providers, ${s.gogaa.tests.toLocaleString()}+ tests. Repo map, SEARCH/REPLACE, watch mode, plugins, parallel agents.` },
+    { n: "CodeLens", d: `AI Dev Tool \u2014 ${s.codelens.patterns}-pattern AI code review across ${s.codelens.stacks} stacks. Taint tracking, PR risk scoring, guardian mode. Zero deps, <1s.` },
+    { n: "Rasad", d: "AI Observatory \u2014 Session analytics: 656 sessions graded A-F, 38K messages, 14K tool calls. X-Ray replay. 100% local, zero outbound." },
+    { n: "Command Center", d: "Unified dev interface: Claude API, Gemini, Supabase, Gmail/Calendar. PWA with push notifications." },
+    { n: "AI Agent System", d: "5 agents with tool-calling on HuggingFace Spaces. Groq + Tavily + GitHub API." },
+    { n: "Gluten-Free Deals & Dining", d: "Cross-platform React Native + Next.js app. LLM queries, 40+ retailer scraping, GPS finder, AI recipes." },
   ].map(p => `
-    <div style="padding:5px 9px;border-radius:5px;border:1px solid #e8e8e4;background:#f5f5f1;margin-bottom:3px">
-      <div style="display:flex;align-items:baseline;gap:5px;margin-bottom:1px">
-        <span style="font-size:10.5px;font-weight:600">${p.n}</span>
-        <span style="font-family:monospace;font-size:9px;padding:1px 5px;border-radius:10px;color:${p.tc};border:1px solid ${p.tc}40">${p.tag}</span>
-      </div>
-      <p style="font-size:10px;color:#777;line-height:1.4">${p.d}</p>
+    <div style="margin-bottom:8px">
+      <p style="font-size:12px"><strong>${p.n}</strong> \u2014 ${p.d}</p>
     </div>
   `).join("");
 
   const html = `<!DOCTYPE html><html><head><meta charset="utf-8"><title>CV - Ahtesham Ahmad</title>
-<style>@page{size:A4;margin:8mm 10mm}*{margin:0;padding:0;box-sizing:border-box}body{-webkit-print-color-adjust:exact;print-color-adjust:exact;font-family:system-ui,-apple-system,sans-serif;background:#fafaf8;color:#1a1a2e;font-size:10px;line-height:1.45}</style>
+<style>
+  @page { size: A4; margin: 20mm 18mm; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: "Times New Roman", Georgia, serif; font-size: 12px; line-height: 1.5; color: #000; }
+  h1 { font-size: 28px; font-weight: bold; text-align: center; margin-bottom: 4px; }
+  h2 { font-size: 16px; font-weight: bold; color: #0000EE; border-bottom: 2px solid #0000EE; padding-bottom: 3px; margin: 18px 0 10px; }
+  ul { list-style-type: disc; }
+  a { color: #0000EE; }
+</style>
 </head><body>
-<div>
-  <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:8px">
-    <div>
-      <p style="font-family:monospace;font-size:9px;text-transform:uppercase;letter-spacing:3px;color:#aaa;margin-bottom:3px">Curriculum Vitae</p>
-      <h1 style="font-size:38px;font-weight:bold;letter-spacing:-1px;line-height:1;color:#1a1a2e">Ahtesham <span style="color:#4a6fa5">Ahmad</span></h1>
-      <p style="font-size:14px;font-weight:300;color:#888;margin-top:3px">AI Engineer</p>
-      <p style="font-size:10px;color:#777;margin-top:5px;max-width:380px;line-height:1.55">Builder of OpenEvent, CodeLens, and Gogaa CLI. I ship workflow products with measurable adoption: ${s.openevent.clients}+ OpenEvent clients, ${s.codelens.patterns} CodeLens patterns, and ${s.gogaa.tests.toLocaleString()}+ Gogaa tests. AI proposes; humans stay in control where money or commitments are involved.</p>
-    </div>
-    <div style="font-family:monospace;font-size:10px;color:#999;text-align:right;line-height:1.7">
-      shami8024@gmail.com<br><span style="color:#4a6fa5">github.com/shami-ah</span><br><span style="color:#4a6fa5">linkedin.com/in/ahtesham</span><br><span style="color:#4a6fa5">ahtesham.dev.wadwarehouse.com</span><br>Islamabad, PK \u00b7 Remote
-    </div>
-  </div>
-  <div style="display:flex;align-items:center;gap:5px;flex-wrap:wrap">${flow}</div>
-  <div style="height:1px;background:linear-gradient(90deg,transparent,#4a6fa5,transparent);margin:7px 0"></div>
-  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:8px">
-    ${[{ n: "50+", l: "Systems Shipped" }, { n: String(s.codelens.patterns), l: "CodeLens Patterns" }, { n: String(s.gogaa.providers), l: "LLM Providers" }, { n: String(s.gogaa.tests), l: "Gogaa Tests", a: true }].map(st => `<div style="padding:8px;border-radius:6px;border:1px solid #e8e8e4;background:#f5f5f1;text-align:center"><p style="font-family:monospace;font-size:18px;font-weight:bold;color:${st.a ? "#b8860b" : "#4a6fa5"};line-height:1">${st.n}</p><p style="font-size:8px;text-transform:uppercase;letter-spacing:1.5px;color:#aaa;margin-top:3px">${st.l}</p></div>`).join("")}
-  </div>
-  <div style="display:grid;grid-template-columns:1fr 250px;gap:18px">
-    <div>
-      <p style="font-family:monospace;font-size:10px;text-transform:uppercase;letter-spacing:3px;color:#aaa;margin-bottom:6px"><span style="color:#4a6fa5">\u25B8</span> Experience</p>
-      ${roles}
-      <p style="font-family:monospace;font-size:10px;text-transform:uppercase;letter-spacing:3px;color:#aaa;margin:6px 0"><span style="color:#4a6fa5">\u25C6</span> Key Projects</p>
-      ${projects}
-      <p style="font-family:monospace;font-size:10px;text-transform:uppercase;letter-spacing:3px;color:#aaa;margin:6px 0 5px"><span style="color:#4a6fa5">\u25C8</span> Education</p>
-      <div style="padding:6px 9px;border-radius:5px;border:1px solid #e8e8e4;background:#f5f5f1;display:flex;justify-content:space-between;align-items:baseline">
-        <div><p style="font-size:10.5px;font-weight:600">B.Eng in Electrical & Electronics Engineering</p><p style="font-size:10px;color:#999">Sukkur IBA University</p></div>
-        <p style="font-family:monospace;font-size:10px;color:#aaa">2017 \u2013 2020 \u00b7 Grade A</p>
-      </div>
-    </div>
-    <div>
-      ${skills}
-      <p style="font-family:monospace;font-size:10px;text-transform:uppercase;letter-spacing:2px;color:#aaa;margin:10px 0 5px"><span style="color:#4a6fa5">\u25B8</span> Certifications</p>
-      ${["Claude Platform 101 \u00b7 Anthropic Academy", "Building with the Claude API \u00b7 Anthropic Academy", "MCP & Agent Skills \u00b7 Anthropic Academy", "Generative AI & LLMs \u00b7 IBM", "Project Management \u00b7 Google", "Gen AI for PMs \u00b7 PMI"].map(c => `<p style="font-size:10px;color:#888;padding-left:8px;border-left:2px solid #e8e8e4;margin-bottom:4px;line-height:1.4">${c}</p>`).join("")}
-      <p style="font-family:monospace;font-size:10px;text-transform:uppercase;letter-spacing:2px;color:#aaa;margin:10px 0 5px"><span style="color:#4a6fa5">\u25B8</span> Languages</p>
-      <div style="display:flex;gap:5px;flex-wrap:wrap">${["English \u00b7 Pro", "Urdu \u00b7 Native", "Pashtu \u00b7 Native", "Sindhi \u00b7 Conv", "Arabic \u00b7 Conv"].map(l => `<span style="font-size:9px;padding:2px 6px;border-radius:3px;background:#f0f0ec;color:#888;border:1px solid #e4e4e0">${l}</span>`).join("")}</div>
-      <p style="font-family:monospace;font-size:10px;text-transform:uppercase;letter-spacing:2px;color:#aaa;margin:10px 0 4px"><span style="color:#4a6fa5">\u25B8</span> Building Next</p>
-      <p style="font-size:10px;color:#888;line-height:1.45">Gogaa v1.3.0 \u00b7 CodeLens Public Launch \u00b7 LLM Observability</p>
-    </div>
-  </div>
-</div></body></html>`;
+
+<h1>Ahtesham Ahmad</h1>
+<p style="text-align:center;font-size:13px;font-weight:bold;margin-bottom:4px">AI Engineer</p>
+<p style="text-align:center;font-size:12px;margin-bottom:2px">
+  shami8024@gmail.com | <a href="https://ahtesham.dev.wadwarehouse.com">Portfolio</a> | +923449688946
+</p>
+<p style="text-align:center;font-size:12px">Islamabad, Pakistan</p>
+
+<h2>TECHNICAL SKILLS</h2>
+<ul style="padding-left:20px">${skillSections}</ul>
+
+<h2>PROFESSIONAL CERTIFICATIONS</h2>
+<ul style="padding-left:20px;list-style:none">${certs}</ul>
+
+<h2>EXPERIENCE</h2>
+${roles}
+
+<h2>KEY PROJECTS</h2>
+${projects}
+
+<h2>EDUCATION</h2>
+<div style="margin-bottom:8px">
+  <p style="font-size:14px;font-weight:bold;color:#0000EE">BEE in Electrical & Electronics Engineering</p>
+  <p style="font-size:12px"><strong>Sukkur IBA University</strong> \u2013 2017 \u2013 2020 \u00b7 Grade A</p>
+</div>
+
+</body></html>`;
 
   const win = window.open("", "_blank", "width=794,height=1123");
   if (!win) return;
@@ -663,7 +663,7 @@ function DrawerContent({ close, status }: { close: () => void; status: ReturnTyp
               >
                 <div className="flex justify-between items-baseline">
                   <div>
-                    <p className="font-semibold text-sm">B.Eng in Electrical & Electronics Engineering</p>
+                    <p className="font-semibold text-sm">BEE in Electrical & Electronics Engineering</p>
                     <p className="text-xs text-muted/80">Sukkur IBA University</p>
                   </div>
                   <p className="text-xs text-muted/60 font-mono">2017 – 2020 · Grade A</p>
