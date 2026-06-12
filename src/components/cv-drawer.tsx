@@ -64,15 +64,12 @@ function printCV(s: ReturnType<typeof useStatus>["status"]): void {
       "Led 10-person engineering team; designed system architecture serving 500+ daily users across web and mobile platforms",
       "Integrated AI-driven automation reducing manual data entry by 70%; introduced agile practices cutting delivery cycles by 40%",
     ]},
-    { t: "AI Evaluation Specialist", c: "Outlier \u00b7 RWS \u00b7 Translated", meta: "(AI Research, Remote)", p: "2021 \u2013 Present", items: [
+    { t: "AI Evaluation Specialist", c: "Outlier \u00b7 RWS \u00b7 Translated", meta: "(AI Research, Remote)", p: "2021 \u2013 2025", items: [
       "Completed 500+ RLHF/SFT evaluation sessions on frontier language models, providing structured feedback on reasoning, safety, and instruction-following",
     ]},
-    { t: "Freelance AI & Full-Stack Engineer", c: "Upwork \u00b7 Fiverr \u00b7 Direct Clients", meta: "(Remote)", p: "2019 \u2013 Present", items: [
+    { t: "Freelance AI & Full-Stack Engineer", c: "Upwork \u00b7 Fiverr \u00b7 Direct Clients", meta: "(Remote)", p: "2019 \u2013 September 2025", items: [
       "Shipped 50+ production systems for 40+ returning clients with 100% job success rate on Upwork",
       "Built end-to-end solutions spanning React/Next.js frontends, Node.js/Python backends, PostgreSQL databases, and AI integrations",
-    ]},
-    { t: "Co-Founder & AI Engineer", c: "Wadware House", meta: "(Agency, Remote)", p: "2023 \u2013 Present", items: [
-      "AI automation agency delivering scoped client engagements \u2014 from requirements to deployed production systems",
     ]},
   ].map(r => `
     <div style="margin-bottom:14px">
@@ -576,17 +573,13 @@ function DrawerContent({ close, status }: { close: () => void; status: ReturnTyp
                 "Replaced 3 legacy spreadsheet processes with React + Supabase internal tools",
                 "Implemented agile workflows reducing delivery cycles by 40%",
               ]} />
-              <TimelineRole title="AI Evaluation Specialist" company="Outlier · RWS · Translated" period="2021 – Present" location="Remote" items={[
+              <TimelineRole title="AI Evaluation Specialist" company="Outlier · RWS · Translated" period="2021 – 2025" location="Remote" items={[
                 "500+ RLHF/SFT evaluation sessions on frontier models",
                 "Evaluated model reasoning, code generation, and instruction-following quality",
               ]} />
-              <TimelineRole title="Freelance AI & Full-Stack Engineer" company="Upwork · Fiverr · Direct Clients" period="2019 – Present" location="Remote · Global" items={[
+              <TimelineRole title="Freelance AI & Full-Stack Engineer" company="Upwork · Fiverr · Direct Clients" period="2019 – Sep 2025" location="Remote · Global" items={[
                 "50+ production systems shipped: SaaS products, AI pipelines, dashboards, automation",
                 "40+ returning clients, 100% job success rate on Upwork",
-              ]} />
-              <TimelineRole title="Co-Founder & AI Engineer" company="Wadware House" period="2023 – Present" location="Remote" items={[
-                "Co-founded AI automation agency for scoped client engagements",
-                "Delivered AI integration and automation projects for global clients",
               ]} />
             </Section>
 
