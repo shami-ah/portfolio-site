@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import ReactDOM from "react-dom";
 import { useScrollLock } from "@/lib/use-scroll-lock";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight, X, Lock, MessageSquare } from "lucide-react";
@@ -131,7 +132,9 @@ export function ProjectModal({
     }, 220);
   };
 
-  return (
+  if (typeof document === "undefined") return <></>;
+
+  return ReactDOM.createPortal(
     <>
     <AnimatePresence>
       {project && (
@@ -627,6 +630,7 @@ export function ProjectModal({
       open={accessModalOpen}
       onClose={() => setAccessModalOpen(false)}
     />
-    </>
+    </>,
+    document.body,
   );
 }
