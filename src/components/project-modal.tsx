@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import ReactDOM from "react-dom";
 import { useScrollLock } from "@/lib/use-scroll-lock";
 import { motion, AnimatePresence } from "framer-motion";
@@ -11,6 +11,8 @@ import { ArchitectureDiagram } from "./architecture-diagram";
 import { DecisionTree } from "./decision-tree";
 import { AccessRequestModal } from "./access-request-modal";
 import { AgentEmoji } from "./agent-bar";
+import { CodeLensTryIt } from "./codelens-try-it";
+import { useSoundFX } from "@/lib/use-sound-fx";
 
 const EMOJI_COMMENTARY: Record<string, { mood: "proud" | "curious" | "default" | "surprised"; text: string }> = {
   openevent: { mood: "proud", text: "8 months, 100+ clients, zero AI errors." },
@@ -91,6 +93,16 @@ export function ProjectModal({
 }: ProjectModalProps): React.ReactElement {
   const [selectedNode, setSelectedNode] = useState<string | null>(null);
   const [accessModalOpen, setAccessModalOpen] = useState(false);
+  const { play } = useSoundFX();
+  const prevProjectRef = useRef<ProjectData | null>(null);
+
+  // Play sound when modal opens (project transitions from null to non-null)
+  useEffect(() => {
+    if (project && !prevProjectRef.current) {
+      play("modal-open");
+    }
+    prevProjectRef.current = project;
+  }, [project, play]);
 
   useEffect(() => {
     const frame = requestAnimationFrame(() => {
@@ -377,6 +389,18 @@ export function ProjectModal({
                   transition={{ delay: 0.35, duration: 0.35 }}
                 >
                   <ArchitectureDiagram chart={diagrams[project.slug]} />
+                </motion.div>
+              )}
+
+              {/* CodeLens "Try it" interactive scanner */}
+              {project.slug === "codelens" && (
+                <motion.div
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.38, duration: 0.35 }}
+                  className="mt-8 md:mt-10"
+                >
+                  <CodeLensTryIt />
                 </motion.div>
               )}
 

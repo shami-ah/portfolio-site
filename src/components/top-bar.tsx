@@ -4,11 +4,13 @@ import { useEffect, useState, useRef, useCallback } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { RefreshCcw, Wrench, TrendingUp, Sun, Moon } from "lucide-react";
+import { useSoundFX } from "@/lib/use-sound-fx";
 
 export function TopBar(): React.ReactElement {
   const [modalOpen, setModalOpen] = useState(false);
   const [theme, setThemeState] = useState<"dark" | "light">("dark");
   const [themeMounted, setThemeMounted] = useState(false);
+  const { enabled: soundEnabled, toggle: toggleSound } = useSoundFX();
 
   // ── Per-button signal suppression ──
   const [seenReboot, setSeenReboot] = useState(false);
@@ -398,6 +400,30 @@ export function TopBar(): React.ReactElement {
             )}
             <span className="max-w-0 overflow-hidden group-hover:max-w-[50px] transition-all duration-300 whitespace-nowrap font-mono text-small text-muted/60">
               {theme === "dark" ? "light" : "dark"}
+            </span>
+          </button>
+        )}
+
+        {/* ── Sound toggle (desktop only) ── */}
+        {themeMounted && (
+          <button
+            type="button"
+            onClick={toggleSound}
+            aria-label={soundEnabled ? "Mute sound effects" : "Enable sound effects"}
+            className="group relative hidden sm:flex items-center cursor-pointer glass rounded-full p-2.5 hover:px-4 hover:gap-2 transition-all duration-300"
+            style={{ boxShadow: "0 4px 12px rgba(0,0,0,0.12), 0 0 4px rgba(0,0,0,0.06)" }}
+          >
+            <span
+              className={`shrink-0 text-[10px] leading-none transition-colors duration-500 ${
+                soundEnabled
+                  ? "text-green-400"
+                  : "text-muted/60 group-hover:text-accent"
+              }`}
+            >
+              {soundEnabled ? "\uD83D\uDD0A" : "\uD83D\uDD07"}
+            </span>
+            <span className="max-w-0 overflow-hidden group-hover:max-w-[50px] transition-all duration-300 whitespace-nowrap font-mono text-small text-muted/60">
+              {soundEnabled ? "on" : "off"}
             </span>
           </button>
         )}

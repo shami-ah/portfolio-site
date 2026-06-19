@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useStatus } from "@/lib/use-status";
+import { useSoundFX } from "@/lib/use-sound-fx";
 import { Check, Volume2, VolumeX } from "lucide-react";
 
 function hexToRgba(hex: string, a: number): string {
@@ -24,6 +25,7 @@ interface BootProps {
 
 export function TerminalBoot({ force = false, onDone }: BootProps): React.ReactElement | null {
   const { status } = useStatus();
+  const { play: playSoundFX } = useSoundFX();
   const [visible, setVisible] = useState(false);
   const [phase, setPhase] = useState<
     "intro" | "checks" | "status" | "launching" | "exit"
@@ -229,10 +231,13 @@ export function TerminalBoot({ force = false, onDone }: BootProps): React.ReactE
       return () => clearTimeout(t);
     }
     if (phase === "launching") {
+      playSoundFX("boot-pulse");
       const t = setTimeout(dismiss, 280);
       return () => clearTimeout(t);
     }
-  }, [visible, phase, dismiss, m]);
+  }, [visible, phase, dismiss, m, playSoundFX]);
+
+  // TODO: wire play("scan-complete") when CodeLens try-it is added
 
   const toggleSound = (): void => {
     const next = !soundOn;

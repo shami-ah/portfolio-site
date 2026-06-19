@@ -15,6 +15,7 @@ import {
   SECTION_CHIPS,
   SECTION_INPUT,
 } from "./agent-commands";
+import { useSoundFX } from "@/lib/use-sound-fx";
 import {
   type EmojiMood,
   AgentEmoji,
@@ -96,6 +97,7 @@ function loadSavedMood(): EmojiMood {
 
 export function AgentBar(): React.ReactElement {
   const router = useRouter();
+  const { play: playSoundFX } = useSoundFX();
   const [uiState, setUiState] = useState<UIState>("hidden");
   const [input, setInput] = useState("");
   const [activeCmd, setActiveCmd] = useState<AgentCommand | null>(null);
@@ -119,6 +121,15 @@ export function AgentBar(): React.ReactElement {
   const emojiHasSettled = useRef(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const navTimerRef = useRef<ReturnType<typeof setTimeout>>(undefined);
+  const prevUiStateRef = useRef<UIState>("hidden");
+
+  // Play sound when agent starts responding
+  useEffect(() => {
+    if (uiState === "responding" && prevUiStateRef.current !== "responding") {
+      playSoundFX("agent-respond");
+    }
+    prevUiStateRef.current = uiState;
+  }, [uiState, playSoundFX]);
 
   // Chat message count — tracked via ChatWidget events
   const [chatMsgCount, setChatMsgCount] = useState(0);
