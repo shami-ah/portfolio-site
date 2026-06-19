@@ -1,15 +1,11 @@
 "use client";
 
-import { useState, useCallback, useEffect } from "react";
-
-const STORAGE_KEY = "sound-fx-enabled";
+import { useCallback } from "react";
 
 type SoundName = "modal-open" | "scan-complete" | "agent-respond" | "boot-pulse";
 
 interface SoundFX {
   play: (name: SoundName) => void;
-  enabled: boolean;
-  toggle: () => void;
 }
 
 /** Lazily-created AudioContext (browser policy requires user gesture). */
@@ -74,53 +70,23 @@ const SOUNDS: Record<SoundName, (ctx: AudioContext) => void> = {
   },
 };
 
-function readStoredEnabled(): boolean {
-  if (typeof window === "undefined") return false;
-  try {
-    return localStorage.getItem(STORAGE_KEY) === "1";
-  } catch {
-    return false;
-  }
-}
-
 /**
  * Subtle sound effects via Web Audio API oscillators.
- * Off by default; persists preference in localStorage.
+ * Always on — plays after first user interaction (browser autoplay policy).
  */
 export function useSoundFX(): SoundFX {
-  const [enabled, setEnabled] = useState(false);
-
-  // Hydrate from localStorage after mount (SSR-safe)
-  useEffect(() => {
-    setEnabled(readStoredEnabled());
-  }, []);
-
-  const toggle = useCallback((): void => {
-    setEnabled((prev) => {
-      const next = !prev;
-      try {
-        localStorage.setItem(STORAGE_KEY, next ? "1" : "0");
-      } catch {
-        // storage full / unavailable
-      }
-      return next;
-    });
-  }, []);
-
   const play = useCallback(
     (name: SoundName): void => {
-      if (!enabled) return;
       const ctx = getAudioContext();
       if (!ctx) return;
-      // Resume if suspended (autoplay policy)
       if (ctx.state === "suspended") {
         void ctx.resume();
       }
       const fn = SOUNDS[name];
       fn(ctx);
     },
-    [enabled],
+    [],
   );
 
-  return { play, enabled, toggle };
+  return { play };
 }
