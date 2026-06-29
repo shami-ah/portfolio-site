@@ -160,6 +160,11 @@ body::before, body::after {
   opacity: 0.08;
 }
 
+/* Hide AgentBar's floating pill when FloatingAgent is active (room-based layout) */
+body[data-floating-agent="true"] [data-agent-pill="fixed"] {
+  display: none !important;
+}
+
 /* Gradient CTA — leather→navy brand gradient */
 .btn-gradient {
   background: var(--gradient-brand);

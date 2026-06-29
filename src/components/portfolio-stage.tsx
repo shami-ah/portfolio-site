@@ -6,6 +6,7 @@ import { type Room, roomOrder, CurtainPullAgent, NextRoomPreview } from "@/compo
 import { RoomShell } from "@/components/room-shell";
 import { Atmosphere } from "@/components/atmosphere";
 import { SignalRail } from "@/components/signal-rail";
+import { FloatingAgent } from "@/components/floating-agent";
 import { HomeRoom } from "@/components/rooms/home-room";
 import { ProjectsRoom, type FlagshipSlug, type GestureState, flagshipSlugs } from "@/components/rooms/projects-room";
 import { ExperienceRoom } from "@/components/rooms/experience-room";
@@ -48,6 +49,17 @@ export function PortfolioStage(): React.ReactElement {
     const nextIdx = roomOrder.indexOf(next);
     setTransitionDir(nextIdx >= currentIdx ? 1 : -1);
     setRoom(next);
+    // Tell AgentBar whether hero is visible — it uses scroll to detect this,
+    // but there's no scrolling in room mode. Force the hero element position.
+    requestAnimationFrame(() => {
+      const heroEl = document.getElementById("hero");
+      if (heroEl) {
+        // When on home room, hero is visible (rect.bottom > 120)
+        // When not on home, hero is hidden (AnimatePresence removed it)
+        // Dispatch scroll to trigger AgentBar's scroll handler
+        window.dispatchEvent(new Event("scroll"));
+      }
+    });
   }, [room]);
 
   const goNext = useCallback((): void => {
@@ -136,6 +148,7 @@ export function PortfolioStage(): React.ReactElement {
         )}
       </AnimatePresence>
 
+      <FloatingAgent room={room} />
       <ProjectModal
         project={modalProject}
         onClose={() => setModalProject(null)}

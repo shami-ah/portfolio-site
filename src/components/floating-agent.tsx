@@ -23,6 +23,16 @@ export function FloatingAgent({ room }: { room: Room }): React.ReactElement {
     return () => clearTimeout(t);
   }, [room]);
 
+  // Hide AgentBar's floating pill when FloatingAgent is visible
+  useEffect(() => {
+    if (room === "home") {
+      document.body.removeAttribute("data-floating-agent");
+    } else {
+      document.body.setAttribute("data-floating-agent", "true");
+    }
+    return () => document.body.removeAttribute("data-floating-agent");
+  }, [room]);
+
   if (room === "home") return <div className="hidden" />;
 
   if (!visible) return <div className="hidden" />;
