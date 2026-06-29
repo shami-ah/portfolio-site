@@ -3,7 +3,6 @@
 import { useEffect, useState, useCallback } from "react";
 import { motion } from "framer-motion";
 import { useStatus } from "@/lib/use-status";
-import { AgentEmoji, type EmojiMood } from "@/components/agent-visuals";
 
 /* ------------------------------------------------------------------ */
 /*  StreamingWords — reveals text word-by-word with a typing cursor    */
@@ -120,59 +119,6 @@ const DESC_SEGMENTS: WordSegment[] =
   "OpenEvent runs with 100+ clients. CodeLens reviews PRs in under a second. Gogaa keeps coding work moving across 11 providers. I design the architecture, build the product, and own delivery."
     .split(" ")
     .map((text) => ({ text }));
-
-/* ------------------------------------------------------------------ */
-/*  HeroAgentDock — agent badge, emoji button, mood selector          */
-/* ------------------------------------------------------------------ */
-
-function HeroAgentDock(): React.ReactElement {
-  const moods: EmojiMood[] = ["default", "curious", "proud", "dancing"];
-  const [mood, setMood] = useState<EmojiMood>("default");
-
-  return (
-    <div className="mt-6 flex flex-col items-center">
-      <div className="rounded-full border border-green-400/25 bg-green-400/10 px-4 py-1.5 font-mono text-[11px] text-green-300">
-        <span className="mr-2 inline-block h-1.5 w-1.5 rounded-full bg-green-300" />
-        agent online
-      </div>
-      <button
-        type="button"
-        onClick={() => window.dispatchEvent(new CustomEvent("open-chat-widget"))}
-        className="group relative mt-4 grid h-40 w-40 place-items-center rounded-full border border-green-400/30 bg-card/80 shadow-[0_0_70px_rgba(74,222,128,0.22)] backdrop-blur-xl md:h-48 md:w-48"
-        aria-label="Open agent chat"
-      >
-        <motion.span
-          aria-hidden
-          className="absolute inset-[-14px] rounded-full border border-green-400/10"
-          animate={{ scale: [0.92, 1.08, 0.92], opacity: [0.25, 0.65, 0.25] }}
-          transition={{ duration: 3.2, repeat: Infinity, ease: "easeInOut" }}
-        />
-        <AgentEmoji size={104} mood={mood} />
-      </button>
-      <div className="mt-2 flex items-center gap-2">
-        {moods.map((item) => (
-          <button
-            key={item}
-            type="button"
-            onClick={() => setMood(item)}
-            className={`grid h-7 w-7 place-items-center rounded-full border transition ${mood === item ? "border-green-400/40 bg-green-400/10" : "border-card-border bg-background/40 opacity-65 hover:opacity-100"}`}
-            aria-label={`Set agent mood ${item}`}
-          >
-            <AgentEmoji size={18} mood={item} />
-          </button>
-        ))}
-      </div>
-      <div className="mt-3 h-11 w-px bg-gradient-to-b from-green-400/55 to-green-400/10" />
-      <button
-        type="button"
-        onClick={() => window.dispatchEvent(new CustomEvent("open-chat-widget"))}
-        className="rounded-[1.35rem] border border-card-border bg-card/85 px-10 py-4 font-mono text-sm text-muted shadow-[0_0_36px_rgba(74,222,128,0.12)] backdrop-blur-xl"
-      >
-        open the agent
-      </button>
-    </div>
-  );
-}
 
 /* ------------------------------------------------------------------ */
 /*  HomeRoom                                                           */
@@ -361,10 +307,7 @@ export function HomeRoom(): React.ReactElement {
           }}
           transition={{ duration: immediate ? 0 : 0.7, ease: EASE }}
           className="mt-0 max-w-[700px] mx-auto min-h-[255px] md:min-h-[315px] flex items-center justify-center"
-        >
-          {/* HeroAgentDock is shown when AgentBar is not active */}
-          <HeroAgentDock />
-        </motion.div>
+        />
 
       </div>
     </section>
