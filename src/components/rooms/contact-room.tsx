@@ -77,16 +77,39 @@ export function ContactRoom({
             ))}
           </div>
           <div className="mt-6 flex flex-wrap justify-center gap-3">
-            {["Email", "Schedule", "GitHub", "Resume"].map((item) => (
-              <button
-                key={item}
-                type="button"
-                className="inline-flex items-center gap-2 rounded-lg border border-accent/25 bg-accent/10 px-5 py-3 font-mono text-small text-accent"
-              >
-                {item === "Email" ? <Mail size={15} /> : <Radio size={15} />}
-                {item}
-              </button>
-            ))}
+            <a
+              href="mailto:shami8024@gmail.com"
+              className="inline-flex items-center gap-2 rounded-lg border border-accent/25 bg-accent/10 px-5 py-3 font-mono text-small text-accent transition hover:border-accent/45"
+            >
+              <Mail size={15} />
+              Email
+            </a>
+            <a
+              href="https://ahtesham.dev.wadwarehouse.com/book"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 rounded-lg border border-accent/25 bg-accent/10 px-5 py-3 font-mono text-small text-accent transition hover:border-accent/45"
+            >
+              <Radio size={15} />
+              Schedule
+            </a>
+            <a
+              href="https://github.com/shami-ah"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 rounded-lg border border-accent/25 bg-accent/10 px-5 py-3 font-mono text-small text-accent transition hover:border-accent/45"
+            >
+              <Radio size={15} />
+              GitHub
+            </a>
+            <button
+              type="button"
+              onClick={() => window.dispatchEvent(new CustomEvent("open-cv-drawer"))}
+              className="inline-flex items-center gap-2 rounded-lg border border-accent/25 bg-accent/10 px-5 py-3 font-mono text-small text-accent transition hover:border-accent/45"
+            >
+              <Radio size={15} />
+              Resume
+            </button>
           </div>
         </div>
 

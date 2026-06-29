@@ -73,12 +73,11 @@ export function SignalRail({
     return () => obs.disconnect();
   }, []);
 
-  // Wire fill based on active room index
+  // Wire fill based on active room index — only completed wires are green
   const wires = pipelineSteps.slice(0, -1).map((_, i) => {
     const path = wirePath(i, i + 1);
     const completed = i < activeIdx;
-    const filling = i === activeIdx;
-    return { path, completed, filling };
+    return { path, completed };
   });
 
   return (
@@ -117,18 +116,6 @@ export function SignalRail({
                   stroke="var(--wire-green)"
                   strokeWidth={1.5}
                   strokeLinecap="round"
-                />
-              )}
-
-              {/* Partial fill for active wire */}
-              {w.filling && (
-                <path
-                  d={w.path}
-                  stroke="var(--wire-green)"
-                  strokeWidth={1.5}
-                  strokeLinecap="round"
-                  strokeDasharray={pathLen}
-                  strokeDashoffset={pathLen * 0.5}
                 />
               )}
 

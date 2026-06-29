@@ -6,15 +6,11 @@ import { type Room, roomOrder, CurtainPullAgent, NextRoomPreview } from "@/compo
 import { RoomShell } from "@/components/room-shell";
 import { Atmosphere } from "@/components/atmosphere";
 import { SignalRail } from "@/components/signal-rail";
-import { FloatingAgent } from "@/components/floating-agent";
 import { HomeRoom } from "@/components/rooms/home-room";
 import { ProjectsRoom, type FlagshipSlug, type GestureState, flagshipSlugs } from "@/components/rooms/projects-room";
 import { ExperienceRoom } from "@/components/rooms/experience-room";
 import { SkillsRoom } from "@/components/rooms/skills-room";
 import { ContactRoom } from "@/components/rooms/contact-room";
-import { ChatWidget } from "@/components/chat-widget";
-import { CVDrawer } from "@/components/cv-drawer";
-import { SkillsModal } from "@/components/skills-modal";
 import { ProjectModal } from "@/components/project-modal";
 import { projects, type ProjectData } from "@/data/projects";
 import { getFeaturedArticles } from "@/data/writing";
@@ -140,10 +136,6 @@ export function PortfolioStage(): React.ReactElement {
         )}
       </AnimatePresence>
 
-      <FloatingAgent room={room} />
-      <ChatWidget />
-      <CVDrawer />
-      <SkillsModal />
       <ProjectModal
         project={modalProject}
         onClose={() => setModalProject(null)}

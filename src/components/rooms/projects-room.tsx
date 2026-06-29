@@ -153,29 +153,30 @@ export function ProjectsRoom({
               </p>
             </div>
 
-            <div className="relative mx-auto mt-8 h-1 w-[calc(100%-8rem)] max-w-[520px] rounded-full bg-muted/15 md:w-full">
+            <div className="relative mx-auto mt-12 h-1 w-[calc(100%-4rem)] max-w-[520px] rounded-full bg-muted/15 md:w-full">
+              {/* Agent emoji — centered on the rail, slides between dots */}
               <motion.div
-                className="absolute -top-9 z-10 flex flex-col items-center"
+                className="absolute top-1/2 z-10 -translate-y-1/2"
                 animate={{
                   left: `${(activeIndex / Math.max(1, flagships.length - 1)) * 100}%`,
                 }}
-                transition={{ duration: 0.35, ease }}
+                transition={{ type: "spring", stiffness: 300, damping: 28 }}
                 style={{ x: "-50%" }}
               >
                 <motion.button
                   type="button"
                   drag="x"
-                  dragConstraints={{ left: -48, right: 48 }}
-                  dragElastic={0.18}
+                  dragConstraints={{ left: -120, right: 120 }}
+                  dragElastic={0.12}
                   onDragEnd={(_, info) => slideToNextStop(info.offset.x)}
                   onClick={() =>
                     chooseFlagship((activeIndex + 1) % flagships.length)
                   }
-                  className="grid h-14 w-14 place-items-center rounded-full border border-green-400/35 bg-background/95 shadow-[0_0_38px_rgba(74,222,128,0.2)]"
+                  className="grid h-12 w-12 place-items-center rounded-full border border-green-400/35 bg-background/95 shadow-[0_0_38px_rgba(74,222,128,0.2)]"
                   style={{ touchAction: "none" }}
-                  aria-label="Slide agent to the right to choose project"
+                  aria-label="Slide agent to choose project"
                 >
-                  <AgentEmoji size={38} mood={config.mood} />
+                  <AgentEmoji size={32} mood={config.mood} />
                 </motion.button>
               </motion.div>
               {flagships.map((item, index) => (
@@ -245,17 +246,6 @@ export function ProjectsRoom({
                     className="rounded-xl border border-accent/25 bg-accent/10 px-4 py-3 font-mono text-small text-accent transition hover:border-accent/45"
                   >
                     open full case file
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      solve(slug);
-                      openProject(project);
-                    }}
-                    className="inline-flex items-center gap-2 rounded-xl border border-card-border bg-card/35 px-4 py-3 font-mono text-small text-muted transition hover:text-foreground"
-                  >
-                    <AgentEmoji size={24} mood={config.mood} />
-                    let agent show details
                   </button>
                 </div>
               </div>
