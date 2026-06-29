@@ -164,6 +164,7 @@ export function CurtainPullAgent({
         style={{
           y: curtainTranslateY,
           opacity: curtainOpacity,
+          visibility: isDragging || committed ? "visible" : "hidden",
         }}
         aria-hidden={!committed}
       >
