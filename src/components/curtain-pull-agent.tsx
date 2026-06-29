@@ -172,7 +172,7 @@ export function CurtainPullAgent({
       </motion.div>
 
       {/* ── Wire + Character ── */}
-      <div className="fixed top-0 right-[200px] z-[65]" style={{ width: 200 }}>
+      <div className="fixed top-0 right-4 z-[65] md:right-[200px]" style={{ width: 200 }}>
         {/* Wire line from top edge to character */}
         <motion.div
           className="absolute top-0 w-px"
@@ -201,7 +201,7 @@ export function CurtainPullAgent({
           onDrag={handleDrag}
           onDragEnd={handleDragEnd}
           className="absolute cursor-grab active:cursor-grabbing"
-          style={{ left: 0, top: WIRE_REST - 10, y: pullY }}
+          style={{ left: 0, top: WIRE_REST - 10, y: pullY, touchAction: "none" }}
           role="button"
           tabIndex={0}
           aria-label={`Pull down to go to ${roomOrder[roomIdx + 1]}`}

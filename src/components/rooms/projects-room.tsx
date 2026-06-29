@@ -172,6 +172,7 @@ export function ProjectsRoom({
                     chooseFlagship((activeIndex + 1) % flagships.length)
                   }
                   className="grid h-14 w-14 place-items-center rounded-full border border-green-400/35 bg-background/95 shadow-[0_0_38px_rgba(74,222,128,0.2)]"
+                  style={{ touchAction: "none" }}
                   aria-label="Slide agent to the right to choose project"
                 >
                   <AgentEmoji size={38} mood={config.mood} />
