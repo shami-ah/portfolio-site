@@ -141,7 +141,6 @@ export function PortfolioStage(): React.ReactElement {
         onClose={() => setModalProject(null)}
         onNavigate={navigateModal}
       />
-      <div className="grain-overlay" aria-hidden="true" />
     </div>
   );
 }
