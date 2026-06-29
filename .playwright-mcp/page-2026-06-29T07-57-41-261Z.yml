@@ -1,0 +1,105 @@
+- generic [active] [ref=e1]:
+  - link "Skip to content" [ref=e2] [cursor=pointer]:
+    - /url: "#main-content"
+  - main:
+    - link "> ahtesham.dev" [ref=e4] [cursor=pointer]:
+      - /url: /
+      - generic [ref=e5]: "> ahtesham.dev"
+    - generic [ref=e7]:
+      - button "Reboot system — replay intro" [ref=e8] [cursor=pointer]:
+        - img [ref=e9]
+        - generic: reboot
+      - link "Tools, stack, and workflow" [ref=e14] [cursor=pointer]:
+        - /url: /uses
+        - img [ref=e15]
+        - generic: setup
+      - link "Walk through my career" [ref=e17] [cursor=pointer]:
+        - /url: /journey
+        - img [ref=e18]
+        - generic: journey
+    - main [ref=e21]:
+      - navigation "Pipeline navigation" [ref=e22]:
+        - img
+        - button "Home" [ref=e23]:
+          - img [ref=e25]
+          - generic [ref=e28]: Home
+        - button "Projects" [ref=e29]:
+          - img [ref=e30]
+          - generic [ref=e34]: Projects
+        - button "Experience" [ref=e35]:
+          - img [ref=e36]
+          - generic [ref=e38]: Experience
+        - button "Skills CV Chat" [ref=e39]:
+          - img [ref=e40]
+          - generic [ref=e45]: Skills CV Chat
+        - button "Contact" [ref=e46]:
+          - img [ref=e47]
+          - generic [ref=e50]: Contact
+      - generic [ref=e56]:
+        - paragraph [ref=e57]: what I've shipped
+        - heading [level=2] [ref=e58]: Projects
+        - paragraph [ref=e59]: Four flagship builds with clean proof and full case files.
+      - button "Pull down to go to projects" [ref=e63]:
+        - img [ref=e65]
+      - generic [ref=e79]:
+        - generic [ref=e80]:
+          - heading "I'm Ahtesham. I ship AI products that don't break." [level=1] [ref=e81]:
+            - generic [ref=e82]: I'm
+            - generic [ref=e83]: Ahtesham.
+            - generic [ref=e84]: I
+            - generic [ref=e85]: ship
+            - generic [ref=e86]: AI products
+            - generic [ref=e87]: that
+            - generic [ref=e88]: don't
+            - text: break.
+          - paragraph [ref=e89]:
+            - generic [ref=e90]: OpenEvent
+            - generic [ref=e91]: runs
+            - generic [ref=e92]: with
+            - generic [ref=e93]: 100+
+            - generic [ref=e94]: clients.
+            - generic [ref=e95]: CodeLens
+            - generic [ref=e96]: reviews
+            - generic [ref=e97]: PRs
+            - generic [ref=e98]: in
+            - generic [ref=e99]: under
+            - generic [ref=e100]: a
+            - generic [ref=e101]: second.
+            - generic [ref=e102]: Gogaa
+            - generic [ref=e103]: keeps
+            - generic [ref=e104]: coding
+            - generic [ref=e105]: work
+            - generic [ref=e106]: moving
+            - generic [ref=e107]: across
+            - generic [ref=e108]: "11"
+            - generic [ref=e109]: providers.
+            - generic [ref=e110]: I
+            - generic [ref=e111]: design
+            - generic [ref=e112]: the
+            - generic [ref=e113]: architecture,
+            - generic [ref=e114]: build
+            - generic [ref=e115]: the
+            - generic [ref=e116]: product,
+            - generic [ref=e117]: and
+            - generic [ref=e118]: own
+            - text: delivery.
+          - generic [ref=e119]:
+            - generic [ref=e120]: 50+ systems shipped
+            - generic [ref=e121]: /
+            - generic [ref=e122]: 10 showcased
+            - generic [ref=e123]: /
+            - generic [ref=e124]: 5+ years
+        - generic [ref=e126]:
+          - generic [ref=e127]: agent online
+          - button "Open agent chat" [ref=e129]:
+            - img [ref=e131]
+          - generic [ref=e134]:
+            - button "Set agent mood default" [ref=e135]:
+              - img [ref=e136]
+            - button "Set agent mood curious" [ref=e139]:
+              - img [ref=e140]
+            - button "Set agent mood proud" [ref=e144]:
+              - img [ref=e145]
+            - button "Set agent mood dancing" [ref=e149]:
+              - img [ref=e150]
+          - button "open the agent" [ref=e155]
