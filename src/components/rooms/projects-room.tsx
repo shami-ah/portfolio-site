@@ -153,50 +153,53 @@ export function ProjectsRoom({
               </p>
             </div>
 
-            <div className="relative mx-auto mt-12 h-1 w-[calc(100%-4rem)] max-w-[520px] rounded-full bg-muted/15 md:w-full">
-              {/* Agent emoji — centered on the rail, slides between dots */}
+            <div className="relative mx-auto mt-10 h-1 w-[calc(100%-4rem)] max-w-[520px] rounded-full bg-muted/15 md:w-full">
+              {/* Dots for each flagship */}
+              {flagships.map((item, index) => {
+                const pct = (index / Math.max(1, flagships.length - 1)) * 100;
+                return (
+                  <button
+                    key={item.slug}
+                    type="button"
+                    onClick={() => chooseFlagship(index)}
+                    className={`absolute top-1/2 h-3 w-3 -translate-x-1/2 -translate-y-1/2 rounded-full transition-colors ${
+                      index === activeIndex
+                        ? "bg-accent shadow-[0_0_18px_rgba(74,222,128,0.7)]"
+                        : solved[item.slug as FlagshipSlug]
+                          ? "bg-green-300/70"
+                          : "bg-muted/30"
+                    }`}
+                    style={{ left: `${pct}%` }}
+                    aria-label={`Reveal ${item.title}`}
+                  />
+                );
+              })}
+              {/* Agent emoji slider — positioned via left % with margin offset for centering */}
               <motion.div
-                className="absolute top-1/2 z-10 -translate-y-1/2"
+                className="absolute z-10"
+                style={{ top: "-18px" }}
                 animate={{
-                  left: `${(activeIndex / Math.max(1, flagships.length - 1)) * 100}%`,
+                  left: `calc(${(activeIndex / Math.max(1, flagships.length - 1)) * 100}% - 18px)`,
                 }}
-                transition={{ type: "spring", stiffness: 300, damping: 28 }}
-                style={{ x: "-50%" }}
+                transition={{ type: "spring", stiffness: 260, damping: 26 }}
               >
                 <motion.button
                   type="button"
                   drag="x"
-                  dragConstraints={{ left: -120, right: 120 }}
-                  dragElastic={0.12}
+                  dragConstraints={{ left: -100, right: 100 }}
+                  dragElastic={0.15}
+                  dragSnapToOrigin
                   onDragEnd={(_, info) => slideToNextStop(info.offset.x)}
                   onClick={() =>
                     chooseFlagship((activeIndex + 1) % flagships.length)
                   }
-                  className="grid h-12 w-12 place-items-center rounded-full border border-green-400/35 bg-background/95 shadow-[0_0_38px_rgba(74,222,128,0.2)]"
+                  className="grid h-9 w-9 place-items-center rounded-full border border-green-400/35 bg-background/95 shadow-[0_0_30px_rgba(74,222,128,0.2)]"
                   style={{ touchAction: "none" }}
                   aria-label="Slide agent to choose project"
                 >
-                  <AgentEmoji size={32} mood={config.mood} />
+                  <AgentEmoji size={24} mood={config.mood} />
                 </motion.button>
               </motion.div>
-              {flagships.map((item, index) => (
-                <button
-                  key={item.slug}
-                  type="button"
-                  onClick={() => chooseFlagship(index)}
-                  className={`absolute top-1/2 h-3 w-3 -translate-x-1/2 -translate-y-1/2 rounded-full transition ${
-                    index === activeIndex
-                      ? "bg-accent shadow-[0_0_18px_rgba(74,222,128,0.7)]"
-                      : solved[item.slug as FlagshipSlug]
-                        ? "bg-green-300/70"
-                        : "bg-muted/30"
-                  }`}
-                  style={{
-                    left: `${(index / Math.max(1, flagships.length - 1)) * 100}%`,
-                  }}
-                  aria-label={`Reveal ${item.title}`}
-                />
-              ))}
             </div>
           </div>
 
