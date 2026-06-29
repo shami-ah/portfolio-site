@@ -221,7 +221,7 @@ export function HomeRoom(): React.ReactElement {
   return (
     <section
       id="hero"
-      className="relative flex items-center justify-center overflow-hidden pt-12 pb-6 md:pt-20 md:pb-24"
+      className="relative h-full flex items-center justify-center overflow-hidden"
     >
       {/* Static decorative gradient orbs */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
