@@ -221,10 +221,10 @@ export function HomeRoom(): React.ReactElement {
   return (
     <section
       id="hero"
-      className="relative h-full flex items-center justify-center overflow-hidden"
+      className="relative h-full flex items-center justify-center"
     >
-      {/* Static decorative gradient orbs */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+      {/* Static decorative gradient orbs — fixed to viewport to avoid clipping at room padding edges */}
+      <div className="fixed inset-0 pointer-events-none" aria-hidden="true">
         <div className="absolute -top-40 -right-40 w-72 md:w-[32rem] h-72 md:h-[32rem] bg-accent/10 rounded-full blur-3xl" />
         <div className="absolute -bottom-40 -left-40 w-72 md:w-[32rem] h-72 md:h-[32rem] bg-accent-secondary/6 rounded-full blur-3xl" />
       </div>
