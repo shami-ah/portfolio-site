@@ -179,7 +179,7 @@ export function CurtainPullAgent({
       </motion.div>
 
       {/* ── Wire + Character ── */}
-      <div className="fixed top-0 right-4 z-[65] md:right-[200px]" style={{ width: 200 }}>
+      <div className="fixed top-0 right-4 z-[65] md:right-[160px]" style={{ width: 200 }}>
         {/* Wire line from top edge to character */}
         <motion.div
           className="absolute top-0 w-px"

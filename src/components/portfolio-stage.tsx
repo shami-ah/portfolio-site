@@ -89,7 +89,7 @@ export function PortfolioStage(): React.ReactElement {
   const roomVariants = roomVariantFactory(transitionDir);
 
   return (
-    <main className="fixed inset-0 overflow-hidden bg-background text-foreground">
+    <div className="fixed inset-0 overflow-hidden bg-background text-foreground">
       <Atmosphere room={room} projectSlug={activeSlug} />
       <SignalRail room={room} setRoom={goRoom} />
       <CurtainPullAgent
@@ -142,6 +142,6 @@ export function PortfolioStage(): React.ReactElement {
         onNavigate={navigateModal}
       />
       <div className="grain-overlay" aria-hidden="true" />
-    </main>
+    </div>
   );
 }

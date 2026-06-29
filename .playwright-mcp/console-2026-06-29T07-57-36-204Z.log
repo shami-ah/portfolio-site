@@ -115,3 +115,49 @@
 [ 2666016ms] [LOG] [Fast Refresh] done in 254ms @ http://localhost:3478/_next/static/chunks/0jd6_next_dist_0uxzbbg._.js:2431
 [ 2891818ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3478/_next/static/chunks/0jd6_next_dist_0uxzbbg._.js:2431
 [ 2892252ms] [LOG] [Fast Refresh] done in 492ms @ http://localhost:3478/_next/static/chunks/0jd6_next_dist_0uxzbbg._.js:2431
+[ 3256664ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3478/_next/static/chunks/0jd6_next_dist_0uxzbbg._.js:2431
+[ 3257156ms] [LOG] [Fast Refresh] done in 543ms @ http://localhost:3478/_next/static/chunks/0jd6_next_dist_0uxzbbg._.js:2431
+[ 3288910ms] [ERROR] Error: <path> attribute d: Expected moveto path command ('M' or 'm'), "undefined". @ http://localhost:3478/_next/static/chunks/0jd6_motion-dom_dist_es_0y.4t_o._.js:3738
+[ 3288910ms] [ERROR] Error: <circle> attribute cx: Expected length, "undefined". @ http://localhost:3478/_next/static/chunks/0jd6_motion-dom_dist_es_0y.4t_o._.js:3738
+[ 3288910ms] [ERROR] Error: <circle> attribute cy: Expected length, "undefined". @ http://localhost:3478/_next/static/chunks/0jd6_motion-dom_dist_es_0y.4t_o._.js:3738
+[ 3428733ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3478/_next/static/chunks/0jd6_next_dist_0uxzbbg._.js:2431
+[ 3428955ms] [LOG] [Fast Refresh] done in 299ms @ http://localhost:3478/_next/static/chunks/0jd6_next_dist_0uxzbbg._.js:2431
+[ 3460758ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3478/_next/static/chunks/0jd6_next_dist_0uxzbbg._.js:2431
+[ 3460914ms] [ERROR] ./.claude/worktrees/room-based-portfolio/src/components/portfolio-stage.tsx:145:7
+Expected corresponding JSX closing tag for <div>
+  143 |       />
+  144 |       <div className="grain-overlay" aria-hidden="true" />
+> 145 |     </main>
+      |       ^^^^
+  146 |   );
+  147 | }
+  148 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./.claude/worktrees/room-based-portfolio/src/components/portfolio-stage.tsx
+    ./.claude/worktrees/room-based-portfolio/src/app/page.tsx @ http://localhost:3478/_next/static/chunks/0jd6_next_dist_0uxzbbg._.js:3272
+[ 3461007ms] [ERROR] ./.claude/worktrees/room-based-portfolio/src/components/portfolio-stage.tsx:145:7
+Expected corresponding JSX closing tag for <div>
+  143 |       />
+  144 |       <div className="grain-overlay" aria-hidden="true" />
+> 145 |     </main>
+      |       ^^^^
+  146 |   );
+  147 | }
+  148 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./.claude/worktrees/room-based-portfolio/src/components/portfolio-stage.tsx
+    ./.claude/worktrees/room-based-portfolio/src/app/page.tsx @ http://localhost:3478/_next/static/chunks/0jd6_next_dist_0uxzbbg._.js:3272
+[ 3461038ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3478/_next/static/chunks/0jd6_next_dist_0uxzbbg._.js:2431
+[ 3499306ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3478/_next/static/chunks/0jd6_next_dist_0uxzbbg._.js:2431
+[ 3499486ms] [ERROR] Error: <path> attribute d: Expected moveto path command ('M' or 'm'), "undefined". @ http://localhost:3478/_next/static/chunks/0jd6_motion-dom_dist_es_0y.4t_o._.js:3738
+[ 3499487ms] [ERROR] Error: <circle> attribute cx: Expected length, "undefined". @ http://localhost:3478/_next/static/chunks/0jd6_motion-dom_dist_es_0y.4t_o._.js:3738
+[ 3499487ms] [ERROR] Error: <circle> attribute cy: Expected length, "undefined". @ http://localhost:3478/_next/static/chunks/0jd6_motion-dom_dist_es_0y.4t_o._.js:3738
+[ 3499488ms] [LOG] [Fast Refresh] done in 233ms @ http://localhost:3478/_next/static/chunks/0jd6_next_dist_0uxzbbg._.js:2431

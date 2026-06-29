@@ -20,7 +20,7 @@ export function RoomShell({
       exit="exit"
       variants={variants}
       transition={{ duration: 0.45, ease }}
-      className={`absolute inset-0 z-10 overflow-y-auto overflow-x-hidden px-5 pb-24 pt-16 md:overflow-hidden md:px-8 md:pb-6 md:pl-28 md:pt-20 ${className}`}
+      className={`absolute inset-0 z-10 overflow-y-auto overflow-x-hidden px-5 pb-24 pt-12 md:overflow-hidden md:px-8 md:pb-6 md:pl-28 md:pt-14 ${className}`}
     >
       {children}
     </motion.section>
