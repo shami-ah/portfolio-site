@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { AgentEmoji } from "@/components/agent-visuals";
 import type { Room } from "@/components/curtain-pull-agent";
@@ -15,8 +15,17 @@ const roomMessages: Record<Room, string> = {
 
 export function FloatingAgent({ room }: { room: Room }): React.ReactElement {
   const [hovered, setHovered] = useState(false);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    setVisible(false);
+    const t = setTimeout(() => setVisible(true), 400);
+    return () => clearTimeout(t);
+  }, [room]);
 
   if (room === "home") return <div className="hidden" />;
+
+  if (!visible) return <div className="hidden" />;
 
   return (
     <div className="fixed bottom-6 right-6 z-[55] flex items-end gap-2">

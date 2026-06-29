@@ -22,6 +22,13 @@ function CharacterSVG({ excited }: { excited?: boolean }): React.ReactElement {
       <circle cx="42" cy="28" r="14" fill={`${B}0.98)`} stroke={`${G}0.4)`} strokeWidth="1.5" />
       <circle cx="38" cy="26" r="2" fill={`${G}1)`} />
       <circle cx="46" cy="26" r="2" fill={`${G}1)`} />
+      {/* Blink overlay */}
+      <motion.rect
+        x="36" y="24" width="14" height="5" rx="2"
+        fill="rgba(16,17,22,0.98)"
+        animate={{ scaleY: [0, 0, 0, 1, 0, 0, 0, 0, 0, 0] }}
+        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+      />
       {excited ? (
         <ellipse cx="42" cy="34" rx="4" ry="3" fill={`${G}0.3)`} stroke={`${G}1)`} strokeWidth="1.5" />
       ) : (
@@ -127,8 +134,8 @@ export function CurtainPullAgent({
         setCommitted(true);
         animate(pullY, PULL_MAX, {
           type: "spring",
-          stiffness: 200,
-          damping: 28,
+          stiffness: 180,
+          damping: 24,
           onComplete: () => {
             onNext();
             pullY.set(0);
