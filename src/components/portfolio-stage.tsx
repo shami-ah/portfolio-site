@@ -49,17 +49,18 @@ export function PortfolioStage(): React.ReactElement {
     const nextIdx = roomOrder.indexOf(next);
     setTransitionDir(nextIdx >= currentIdx ? 1 : -1);
     setRoom(next);
-    // Tell AgentBar whether hero is visible — it uses scroll to detect this,
-    // but there's no scrolling in room mode. Force the hero element position.
-    requestAnimationFrame(() => {
-      const heroEl = document.getElementById("hero");
-      if (heroEl) {
-        // When on home room, hero is visible (rect.bottom > 120)
-        // When not on home, hero is hidden (AnimatePresence removed it)
-        // Dispatch scroll to trigger AgentBar's scroll handler
-        window.dispatchEvent(new Event("scroll"));
-      }
-    });
+  }, [room]);
+
+  // When room changes, nudge AgentBar's scroll-based hero detection.
+  // AgentBar checks document.getElementById("hero").getBoundingClientRect()
+  // on scroll events. In room mode there's no scrolling, so we dispatch
+  // scroll after the AnimatePresence transition has mounted/unmounted the hero.
+  useEffect(() => {
+    const delays = [100, 300, 600, 1000];
+    const timers = delays.map((ms) =>
+      setTimeout(() => window.dispatchEvent(new Event("scroll")), ms),
+    );
+    return () => timers.forEach(clearTimeout);
   }, [room]);
 
   const goNext = useCallback((): void => {

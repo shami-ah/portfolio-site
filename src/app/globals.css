@@ -61,6 +61,32 @@
   color-scheme: light;
 }
 
+/* ── Light mode overrides for room-based green elements ── */
+.light .border-green-400\/30,
+.light .border-green-400\/35,
+.light .border-green-400\/25,
+.light .border-green-400\/20 {
+  border-color: rgba(21, 128, 61, 0.3) !important;
+}
+.light .bg-green-400\/10,
+.light .bg-green-400\/\[0\.045\] {
+  background-color: rgba(21, 128, 61, 0.08) !important;
+}
+.light .text-green-300,
+.light .text-green-400\/60 {
+  color: #15803d !important;
+}
+.light .bg-green-300 {
+  background-color: #15803d !important;
+}
+.light .text-amber-300\/70,
+.light .text-amber-400\/60 {
+  color: #92400e !important;
+}
+.light .border-amber-400 {
+  border-color: #b45309 !important;
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);

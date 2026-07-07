@@ -218,3 +218,11 @@ Import trace:
 [ 7035961ms] [LOG] [Fast Refresh] done in 329ms @ http://localhost:3478/_next/static/chunks/0jd6_next_dist_0uxzbbg._.js:2431
 [ 7088349ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3478/_next/static/chunks/0jd6_next_dist_0uxzbbg._.js:2431
 [ 7088661ms] [LOG] [Fast Refresh] done in 374ms @ http://localhost:3478/_next/static/chunks/0jd6_next_dist_0uxzbbg._.js:2431
+[ 7348862ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3478/_next/static/chunks/0jd6_next_dist_0uxzbbg._.js:2431
+[ 7348890ms] [LOG] [HMR] connected @ http://localhost:3478/_next/static/chunks/0jd6_next_dist_0uxzbbg._.js:2431
+[ 7376248ms] [ERROR] Error: <path> attribute d: Expected moveto path command ('M' or 'm'), "undefined". @ http://localhost:3478/_next/static/chunks/0jd6_motion-dom_dist_es_0y.4t_o._.js:3738
+[ 7376248ms] [ERROR] Error: <circle> attribute cx: Expected length, "undefined". @ http://localhost:3478/_next/static/chunks/0jd6_motion-dom_dist_es_0y.4t_o._.js:3738
+[ 7376248ms] [ERROR] Error: <circle> attribute cy: Expected length, "undefined". @ http://localhost:3478/_next/static/chunks/0jd6_motion-dom_dist_es_0y.4t_o._.js:3738
+[ 8954346ms] [ERROR] Error: <path> attribute d: Expected moveto path command ('M' or 'm'), "undefined". @ http://localhost:3478/_next/static/chunks/0jd6_motion-dom_dist_es_0y.4t_o._.js:3738
+[ 8954346ms] [ERROR] Error: <circle> attribute cx: Expected length, "undefined". @ http://localhost:3478/_next/static/chunks/0jd6_motion-dom_dist_es_0y.4t_o._.js:3738
+[ 8954346ms] [ERROR] Error: <circle> attribute cy: Expected length, "undefined". @ http://localhost:3478/_next/static/chunks/0jd6_motion-dom_dist_es_0y.4t_o._.js:3738
