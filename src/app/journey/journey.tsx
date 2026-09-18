@@ -24,50 +24,50 @@ interface Principle {
 const principles: Principle[] = [
   {
     tag: "01 · default",
-    headline: "Human-in-the-loop, always.",
-    body: "If an AI action touches money, commitments, or trust, a human approves it first. Full automation fails the first time the model misreads context.",
+    headline: "People stay in control.",
+    body: "When an AI action affects money, commitments, or customer trust, a person reviews it before anything is finalized. AI handles the work; people make the important decisions.",
     example:
-      "OpenEvent won't send an invoice until a human clicks approve. That single boundary is why 100+ clients stayed after the AI misfired.",
+      "In OpenEvent, AI can prepare bookings and invoices, but a human approves the final action before it is sent.",
     mood: "proud",
   },
   {
     tag: "02 · sequence",
-    headline: "Architect first. Code second.",
-    body: "Every feature gets an architecture doc before a single line of code. The spec is checked into the repo, then the agent scaffolds from it.",
+    headline: "Plan first. Code second.",
+    body: "Before building a feature, I define how it should work, what can go wrong, and how the pieces connect. This reduces unnecessary rework and keeps development focused.",
     example:
-      "Thread summarization feature: 1 day of architecture doc, 2 hours of scaffolding, 0 rewrites. If the spec is right, the code falls out.",
+      "For a thread summarization feature, the workflow was defined before development began, allowing the implementation to move quickly with fewer rewrites.",
     mood: "default",
   },
   {
     tag: "03 · trust-boundary",
-    headline: "Strict at boundaries. Loose inside.",
-    body: "All validation happens at system edges (user input, external APIs, webhook payloads). Internally, I trust the types and the invariants.",
+    headline: "Protect the important parts.",
+    body: "User input, payments, and information coming from outside systems are checked carefully before they enter the application. This helps keep the rest of the product reliable.",
     example:
-      "Stripe webhooks have dual-secret verification + replay protection at the boundary. Business logic downstream assumes the payload is clean.",
+      "Payment webhooks are verified and protected against replay before the rest of the application processes them.",
     mood: "curious",
   },
   {
     tag: "04 · tools",
-    headline: "Consumer AND producer of tooling.",
-    body: "When the tool I need doesn't exist, I build it. CodeLens, gogaa, a custom dev container — each started as a personal frustration that became infrastructure.",
+    headline: "I build the tools I need.",
+    body: "When an existing tool does not solve the problem well enough, I create one. These tools often become useful infrastructure for future projects.",
     example:
-      "No commercial AI reviewer caught the bugs I saw in real PRs. So I built 305 hand-crafted patterns across 9 stacks. Now every PR runs through it.",
+      "CodeLens started because existing AI reviewers were missing bugs found in real code reviews. It grew into a system with hundreds of patterns across multiple technology stacks.",
     mood: "surprised",
   },
   {
     tag: "05 · focus",
-    headline: "One task per session.",
-    body: "Context is sacred. I spawn a fresh agent session for each task, with scoped rules and a dedicated memory. Cross-contamination is the enemy.",
+    headline: "One clear task per session.",
+    body: "Each development task gets its own focused working context. This keeps requirements clear, reduces confusion, and helps prevent unrelated work from affecting the result.",
     example:
-      "Reviewing an Openevent PR? That session only has OE's CLAUDE.md loaded. Drafting a gogaa feature? Different session, different memory.",
+      "An OpenEvent task has its own project context and rules, while a Gogaa feature is handled separately with its own requirements.",
     mood: "default",
   },
   {
     tag: "06 · output",
-    headline: "Deploy behind feature flags.",
-    body: "Shipped code is off by default. I turn it on for 10% first, watch Sentry for 24h, then roll globally. No big-bang releases.",
+    headline: "Release carefully, not all at once.",
+    body: "New features are introduced gradually instead of exposing every customer to a change immediately. I monitor the product, check for problems, and expand the release when it is ready.",
     example:
-      "Every OpenEvent feature ships dark. A bad migration caught in staging means one hour of rollback, not a week of bug fires.",
+      "OpenEvent features can be released gradually so problems can be identified and rolled back before they affect the entire user base.",
     mood: "waving",
   },
 ];
@@ -97,9 +97,11 @@ export function Journey(): React.ReactElement {
           >
             book a call
           </a>
+
           <p className="text-caption md:text-xs font-mono text-muted/80 text-center truncate hidden sm:block">
             <span className="text-accent">how I work</span> · behind the systems
           </p>
+
           <Link
             href="/"
             className="inline-flex items-center gap-2 text-xs font-mono text-muted hover:text-accent transition-colors"
@@ -120,23 +122,24 @@ export function Journey(): React.ReactElement {
           >
             behind the systems
           </motion.p>
+
           <motion.h1
             initial={false}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.45 }}
             className="max-w-4xl mx-auto text-center text-3xl md:text-5xl lg:text-6xl font-bold tracking-tight leading-[1.06] mb-5"
           >
-            The operating principles behind every AI system I ship.
+            How I turn ideas into reliable AI products.
           </motion.h1>
+
           <motion.p
             initial={false}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.45 }}
             className="text-sm md:text-lg text-muted leading-relaxed max-w-2xl mx-auto text-center"
           >
-            Not a resume and not another project grid. This is the decision
-            system: where AI can act, where humans approve, how context stays
-            clean, and how production changes roll out without drama.
+            A simple look at how I plan, build, test, and release AI products
+            so they solve real problems while people stay in control.
           </motion.p>
 
           <motion.div
@@ -146,13 +149,31 @@ export function Journey(): React.ReactElement {
             className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-4"
           >
             {[
-              ["Human gates", "Money, commitments, and trust always need approval."],
-              ["Architecture first", "Specs and invariants before agent-generated code."],
-              ["Tool producer", "Gogaa, CodeLens, Rasad, and WISC came from real workflow gaps."],
-              ["Controlled rollout", "Feature flags, 10% exposure, Sentry, then global release."],
+              [
+                "People stay in control",
+                "Important actions are reviewed before they happen.",
+              ],
+              [
+                "Plan before building",
+                "Clear requirements help reduce rework.",
+              ],
+              [
+                "Build what is needed",
+                "Custom tools fill gaps when existing solutions fall short.",
+              ],
+              [
+                "Release carefully",
+                "New features are introduced gradually and monitored.",
+              ],
             ].map(([title, body]) => (
-              <div key={title} className="rounded-xl border border-card-border bg-card/70 p-4 text-left">
-                <p className="font-mono text-caption uppercase tracking-[0.18em] text-accent mb-2">{title}</p>
+              <div
+                key={title}
+                className="rounded-xl border border-card-border bg-card/70 p-4 text-left"
+              >
+                <p className="font-mono text-caption uppercase tracking-[0.18em] text-accent mb-2">
+                  {title}
+                </p>
+
                 <p className="text-xs leading-relaxed text-muted">{body}</p>
               </div>
             ))}
@@ -171,6 +192,7 @@ export function Journey(): React.ReactElement {
             >
               <div className="w-1 h-2 bg-accent rounded-full" />
             </motion.div>
+
             <p className="text-caption font-mono text-muted/60 uppercase tracking-widest">
               scroll
             </p>
@@ -185,8 +207,9 @@ export function Journey(): React.ReactElement {
             <p className="text-sm font-mono text-accent mb-4 uppercase tracking-[0.3em]">
               six principles
             </p>
+
             <h2 className="text-3xl md:text-5xl font-bold leading-tight">
-              The rules I actually follow.
+              How I build products.
             </h2>
           </div>
 
@@ -197,32 +220,41 @@ export function Journey(): React.ReactElement {
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-80px" }}
-                transition={{ duration: 0.5, delay: i * 0.1, ease: [0.22, 1, 0.36, 1] }}
+                transition={{
+                  duration: 0.5,
+                  delay: i * 0.1,
+                  ease: [0.22, 1, 0.36, 1],
+                }}
               >
-              <TiltCard className="group card-glow card-gradient-border p-6 md:p-7 rounded-xl bg-card border border-card-border hover:border-transparent transition-all duration-300 relative overflow-hidden h-full">
-                <div className="flex items-center justify-between mb-3">
-                  <p className="text-caption font-mono uppercase tracking-wider text-accent/80">
-                    {p.tag}
+                <TiltCard className="group card-glow card-gradient-border p-6 md:p-7 rounded-xl bg-card border border-card-border hover:border-transparent transition-all duration-300 relative overflow-hidden h-full">
+                  <div className="flex items-center justify-between mb-3">
+                    <p className="text-caption font-mono uppercase tracking-wider text-accent/80">
+                      {p.tag}
+                    </p>
+
+                    <span className="w-9 h-9 rounded-full bg-gradient-to-br from-card-border to-card border border-accent-status/20 flex items-center justify-center shadow-sm shadow-accent/10">
+                      <AgentEmoji size={24} mood={p.mood} />
+                    </span>
+                  </div>
+
+                  <h3 className="text-lg md:text-xl font-bold mb-3 leading-tight">
+                    {p.headline}
+                  </h3>
+
+                  <p className="text-xs md:text-sm text-muted leading-relaxed mb-4">
+                    {p.body}
                   </p>
-                  <span className="w-9 h-9 rounded-full bg-gradient-to-br from-card-border to-card border border-accent-status/20 flex items-center justify-center shadow-sm shadow-accent/10">
-                    <AgentEmoji size={24} mood={p.mood} />
-                  </span>
-                </div>
-                <h3 className="text-lg md:text-xl font-bold mb-3 leading-tight">
-                  {p.headline}
-                </h3>
-                <p className="text-xs md:text-sm text-muted leading-relaxed mb-4">
-                  {p.body}
-                </p>
-                <div className="pt-3 border-t border-card-border">
-                  <p className="text-caption font-mono uppercase tracking-wider text-muted/60 mb-1.5">
-                    real example
-                  </p>
-                  <p className="text-xs text-foreground/80 leading-relaxed">
-                    {p.example}
-                  </p>
-                </div>
-              </TiltCard>
+
+                  <div className="pt-3 border-t border-card-border">
+                    <p className="text-caption font-mono uppercase tracking-wider text-muted/60 mb-1.5">
+                      real example
+                    </p>
+
+                    <p className="text-xs text-foreground/80 leading-relaxed">
+                      {p.example}
+                    </p>
+                  </div>
+                </TiltCard>
               </motion.div>
             ))}
           </div>
@@ -236,13 +268,17 @@ export function Journey(): React.ReactElement {
             <p className="text-sm font-mono text-accent mb-3 uppercase tracking-[0.3em]">
               a typical day
             </p>
+
             <h2 className="text-2xl md:text-4xl font-bold mb-4 leading-tight">
               07:00 to 18:00 · drag through the day.
             </h2>
+
             <p className="text-sm md:text-base text-muted max-w-xl mx-auto">
-              Deep work over meetings. Architecture over reaction. Memory over rework.
+              Focused building, clear planning, and time spent improving the
+              product instead of unnecessary meetings.
             </p>
           </div>
+
           <TimeMachine />
         </div>
       </section>
@@ -251,14 +287,18 @@ export function Journey(): React.ReactElement {
       <section className="py-24 md:py-32 px-5 md:px-6 relative">
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="text-3xl md:text-5xl font-bold mb-6 leading-tight">
-            If the principles fit
+            Need an AI product?
             <br />
-            <span className="text-accent">let&apos;s build something.</span>
+            <span className="text-accent">Let&apos;s build it.</span>
           </h2>
+
           <p className="text-sm md:text-base text-muted mb-10 max-w-lg mx-auto leading-relaxed">
-            This is how I work with every client and every repo. If that
-            sounds like what you need, book a 15-minute intro call.
+            This is how I approach client projects: understand the problem,
+            plan the solution, build it carefully, and release it with
+            confidence. If that sounds like what you need, book a 15-minute
+            intro call.
           </p>
+
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
             <a
               href="https://ahtesham.dev.wadwarehouse.com/book"
@@ -268,6 +308,7 @@ export function Journey(): React.ReactElement {
             >
               Book a 15-min call
             </a>
+
             <Link
               href="/#projects"
               className="px-6 py-3 border border-card-border text-foreground rounded-lg hover:bg-card hover:border-muted/20 transition-all"
@@ -280,3 +321,4 @@ export function Journey(): React.ReactElement {
     </main>
   );
 }
+

@@ -55,13 +55,16 @@ export const projects: ProjectData[] = [
     title: "OpenEvent",
     subtitle: "AI-Powered Event Management Platform",
     type: "Production SaaS",
-    oneLiner: "AI turns client emails into approved bookings, invoices, and CRM updates.",
-    cardSummary: "100+ clients in 8 months, no sales team. AI reads emails, proposes actions, humans approve with one click.",
-    impact: "Grew to 100+ clients across 150+ events in 8 months with zero sales team — product-led adoption. Saves each team ~1.5 hours per day. AI classifies emails, proposes actions, and executes after human approval.",
+    oneLiner:
+      "AI turns client emails into approved bookings, invoices, and CRM updates.",
+    cardSummary:
+      "100+ clients in 8 months. AI handles repetitive event coordination while people stay in control of important decisions.",
+    impact:
+      "Grew to 100+ clients across 150+ events in 8 months with no dedicated sales team. Teams save about 1.5 hours per day by letting AI organize incoming requests, prepare actions, and handle repetitive coordination.",
     problem:
-      "Event companies drown in emails and manual coordination. Staff spend hours triaging requests, copying data between systems, and chasing approvals. Simple automation breaks on ambiguous language.",
+      "Event companies spend hours managing emails, copying information between systems, coordinating bookings, and waiting for approvals. Simple automation often struggles when customer requests are unclear or incomplete.",
     solution:
-      "An AI layer that ingests emails, classifies intent, extracts entities with pgvector context, and proposes actions. Humans approve with one click before anything touches money or commitments. Declarative JSON workflows make the system extensible without code changes.",
+      "OpenEvent reads incoming emails, understands what the customer needs, prepares the right actions, and lets a person approve them before anything important happens. It can then update bookings, invoices, calendars, CRM records, and other connected systems automatically.",
     architecture: [
       "Email Ingestion (Gmail / Outlook / IMAP)",
       "AI Intent Classification",
@@ -72,38 +75,57 @@ export const projects: ProjectData[] = [
       "Audit Log + Telemetry",
     ],
     features: [
-      "Email-to-task pipeline with AI intent classification and entity extraction",
-      "Human-in-the-loop: AI drafts, humans approve before any execution",
-      "Declarative workflow engine — non-engineers can add steps without code",
-      "Semantic search via pgvector for template matching and client history",
-      "Full integrations: Calendar, Stripe invoicing, CRM sync, webhooks",
+      "Turns incoming emails into organized tasks and suggested actions",
+      "AI prepares actions while people approve important decisions",
+      "Flexible workflows allow new business processes without rebuilding the system",
+      "Searches client history and previous information to improve AI suggestions",
+      "Connects calendars, invoicing, CRM systems, email, and webhooks",
     ],
     techDecisions: [
       {
-        title: "Human-in-the-loop by default",
-        description: "Event coordination is full of ambiguity. AI proposes, humans approve — this trust boundary is why adoption was immediate. The fully automated competitor clients tried before failed on day two.",
+        title: "Human approval for important actions",
+        description:
+          "Event coordination often contains ambiguous requests. AI prepares the action, but a person approves it before money or commitments are affected. This creates a safer and more trustworthy workflow.",
       },
       {
-        title: "pgvector inside Postgres",
-        description: "No separate vector DB. Embeddings live next to relational data — one query joins both. Zero sync lag, zero extra infra.",
+        title: "One database for business data and AI context",
+        description:
+          "Business information and AI search data live together in Postgres. This keeps the system simpler and avoids synchronizing a separate database.",
       },
       {
-        title: "Declarative workflow engine",
-        description: "Workflows are JSON/YAML, not TypeScript. Adding an approval step or integration is a config change, not a deploy.",
+        title: "Flexible workflows",
+        description:
+          "Business workflows are stored as configuration rather than being hardcoded. This makes it easier to add approval steps or integrations without changing the core application.",
       },
     ],
-    stack: ["React", "TypeScript", "Supabase", "OpenAI", "pgvector", "Stripe", "Docker"],
+    stack: [
+      "React",
+      "TypeScript",
+      "Supabase",
+      "OpenAI",
+      "pgvector",
+      "Stripe",
+      "Docker",
+    ],
     results: [
-      "100+ active clients, 150+ events managed",
+      "100+ active clients across 150+ events",
       "~80% reduction in manual coordination time",
-      "Response time dropped from hours to minutes",
-      "Full CI/CD with staging and production environments",
+      "Response time reduced from hours to minutes",
+      "Separate staging and production environments with automated deployment",
     ],
     live: "https://openevent.io",
     featured: true,
     measuredImpact: {
-      before: { value: "~1.5", unit: "hrs", context: "per team, per day, reading & triaging email" },
-      after: { value: "~15", unit: "min", context: "review AI-drafted actions & approve" },
+      before: {
+        value: "~1.5",
+        unit: "hrs",
+        context: "per team, per day, reading and organizing email",
+      },
+      after: {
+        value: "~15",
+        unit: "min",
+        context: "reviewing AI-prepared actions and approving them",
+      },
       highlights: [
         { n: "100+", l: "active clients" },
         { n: "150+", l: "events run" },
@@ -111,35 +133,36 @@ export const projects: ProjectData[] = [
       ],
     },
     decision: {
-      scenario: "An event company gets 100+ ambiguous client emails daily. They want AI to handle it.",
-      question: "How do you design the system?",
+      scenario:
+        "An event company receives 100+ customer emails every day and wants AI to help manage them.",
+      question: "How should the system handle important customer requests?",
       options: [
-        "Full automation: AI reads, decides, executes",
-        "AI drafts action, human approves before execution",
-        "Classification only, humans do the rest",
+        "Let AI read, decide, and execute everything automatically",
+        "Let AI prepare the action and have a person approve it",
+        "Use AI only to classify emails and let people handle everything else",
       ],
       commonChoice: 0,
       myChoice: 1,
       reasoning:
-        "Full automation fails on the first misread. Event coordination needs judgment. I designed AI to handle extraction and proposal — humans approve before anything touches money. That trust boundary is why clients actually use it.",
+        "Important event requests can be ambiguous. AI handles the repetitive work of understanding and preparing actions, while a person approves anything that affects money or customer commitments.",
     },
     vs: {
       mine: {
         title: "OpenEvent",
         bullets: [
-          "AI classifies, extracts, proposes — human approves",
-          "JSON/YAML workflows, extensible without code",
-          "pgvector inside Postgres, no extra infra",
-          "Full audit log with auto-approval learning",
+          "AI understands requests and prepares actions for approval",
+          "Flexible workflows can be extended without rebuilding the product",
+          "Business and AI context stay in one database",
+          "Clear audit trail for important actions",
         ],
       },
       standard: {
-        title: "Full-automation AI",
+        title: "Fully automated AI",
         bullets: [
-          "AI decides and executes with no human gate",
-          "Breaks on ambiguous input, fast trust erosion",
-          "Hardcoded workflows, every change = deploy",
-          "No audit trail when AI makes wrong call",
+          "AI makes decisions and executes them automatically",
+          "Ambiguous requests can lead to incorrect actions",
+          "Business changes often require code changes",
+          "Harder to understand what happened after a mistake",
         ],
       },
     },
@@ -153,13 +176,22 @@ export const projects: ProjectData[] = [
     title: "CodeLens",
     subtitle: "AI Code Review Engine",
     type: "AI Dev Tool",
+<<<<<<< Updated upstream
     cardSummary: "470 patterns mined from 860+ production PRs. Reviews in under one second, entirely on your machine.",
     oneLiner: "470 bug patterns mined from 860+ real PRs. Under one second. Code never leaves your machine.",
     impact: "470 hand-crafted patterns mined from 860+ production PRs across 9 stacks. Reviews in under one second, entirely on your machine. When a commercial AI reviewer (Greptile) caught 12 issues CodeLens missed, I ran a gap analysis and closed every one — coverage went from 8% to 100%.",
+=======
+    cardSummary:
+      "544 real-world bug patterns from 860+ production PRs. Reviews code in under one second while keeping it on your machine.",
+    oneLiner:
+      "544 bug patterns from 860+ real PRs. Reviews in under one second. Code stays on your machine.",
+    impact:
+      "CodeLens analyzes code for real production problems using 544 patterns collected from 860+ production pull requests. Reviews can run in under one second, while the code stays on the developer's machine.",
+>>>>>>> Stashed changes
     problem:
-      "Existing tools are either fast but shallow (linters catching style, not logic) or deep but cloud-dependent (sending your code to a third party). Neither catches the bugs that actually ship: missing auth guards, silent N+1 queries, cross-file taint paths.",
+      "Many code-review tools focus on style or rely on cloud-based analysis. They can miss problems that involve multiple files, security checks, database usage, or how information moves through an application.",
     solution:
-      "Deterministic patterns first, then AI for what patterns can't express. A persistent codebase index (call graph, schema graph) enables cross-file analysis. Source-to-sink taint tracking follows user input to dangerous sinks. Guardian mode injects rules into AI coding assistants to prevent bugs at generation time.",
+      "CodeLens combines fast rule-based checks with AI analysis. It understands how different parts of a codebase connect, follows potentially risky data across files, and highlights issues before they reach production.",
     architecture: [
       "Git Diff → AST-aware Parser",
       "Persistent Index (call graph + schema graph)",
@@ -170,74 +202,120 @@ export const projects: ProjectData[] = [
       "Self-Learning Noise Filter",
     ],
     features: [
+<<<<<<< Updated upstream
       "~470 patterns mapped to real production failures, tagged with OWASP/CWE",
       "Persistent codebase index with 60ms incremental updates",
       "Source-to-sink taint tracking across files with CWE mapping",
       "Guardian mode: injects rules into Claude Code, Cursor, Copilot at prompt level",
       "Zero runtime deps — single 351KB file, runs anywhere Node runs",
+=======
+      "544 patterns based on real production failures",
+      "Keeps a searchable map of the codebase for faster analysis",
+      "Tracks potentially dangerous data across multiple files",
+      "Can provide rules to AI coding assistants to prevent common bugs",
+      "Runs as a lightweight tool without requiring a large runtime setup",
+>>>>>>> Stashed changes
     ],
     techDecisions: [
       {
-        title: "Hand-crafted patterns over imported rule sets",
-        description: "Existing rule sets cover style, not production failures. Every CodeLens pattern comes from a real bug: missing .limit() on Supabase queries, hooks after conditional returns, catch blocks swallowing errors silently.",
+        title: "Real production problems over generic rules",
+        description:
+          "The review patterns are based on bugs that actually appeared in production code, including missing security checks, unsafe database queries, and silently ignored errors.",
       },
       {
-        title: "Persistent index over re-parsing",
-        description: "First build: 4s on a 1,622-file codebase. After that: 60ms incremental. This makes cross-file analysis viable as a pre-commit hook.",
+        title: "Remember the codebase instead of rebuilding the map",
+        description:
+          "CodeLens keeps an index of the project so later reviews only update what changed. A first build can take seconds, while incremental updates can complete in milliseconds.",
       },
       {
+<<<<<<< Updated upstream
         title: "Patterns first, AI second",
         description: "470 deterministic patterns in <1s, then focused AI probes for semantic bugs no regex can catch. Coverage went from 8% to 100% on a head-to-head benchmark against a commercial AI reviewer.",
+=======
+        title: "Fast checks first, AI where it adds value",
+        description:
+          "Deterministic patterns handle known problems quickly. AI is then used for issues that require deeper understanding and cannot be reliably described by simple rules.",
+>>>>>>> Stashed changes
       },
     ],
-    stack: ["TypeScript", "Docker", "esbuild", "Persistent JSON Index", "GitHub Actions", "GHCR"],
+    stack: [
+      "TypeScript",
+      "Docker",
+      "esbuild",
+      "Persistent JSON Index",
+      "GitHub Actions",
+      "GHCR",
+    ],
     results: [
+<<<<<<< Updated upstream
       "~470 patterns across 9 stacks, validated against real production repos",
       "7-file PR review in 780ms, full 456-file PR in 12s",
       "Zero deps: single 351KB file, Docker image auto-published to GHCR",
       "Glean pipeline processed 860+ PRs, Agent Harvest added 34 patterns",
+=======
+      "~544 patterns across 9 technology stacks",
+      "7-file PR review in 780ms, full 456-file PR in 12s",
+      "Single 351KB file with no runtime dependencies",
+      "3,360+ PRs processed through the analysis pipeline",
+>>>>>>> Stashed changes
     ],
     giteaRepo: "shami/codelens",
     featured: true,
     measuredImpact: {
-      before: { value: "8%", unit: "", context: "coverage vs commercial AI reviewer (Greptile)" },
-      after: { value: "100%", unit: "", context: "all 12 gaps closed after gap analysis" },
+      before: {
+        value: "8%",
+        unit: "",
+        context: "coverage compared with a commercial AI reviewer",
+      },
+      after: {
+        value: "100%",
+        unit: "",
+        context: "coverage after analyzing and closing the identified gaps",
+      },
       highlights: [
         { n: "470", l: "patterns" },
         { n: "<1s", l: "review time" },
-        { n: "351KB", l: "zero deps" },
+        { n: "351KB", l: "tool size" },
       ],
     },
     decision: {
-      scenario: "Production bugs keep slipping past SonarQube + ESLint + AI review. They span multiple files with user input reaching DB queries unvalidated.",
-      question: "What do you build?",
+      scenario:
+        "Production bugs keep getting through existing code-quality and AI review tools, especially problems involving multiple files.",
+      question: "What kind of solution should you build?",
       options: [
-        "More ESLint rules",
-        "Pay for commercial AI review SaaS",
-        "Custom engine with cross-file taint tracking",
+        "Add more rules to an existing linting tool",
+        "Use a commercial AI code-review service",
+        "Build a custom review engine that understands the whole codebase",
       ],
       commonChoice: 1,
       myChoice: 2,
       reasoning:
-        "ESLint stays single-file. Commercial SaaS sends code to a third party and still misses schema bugs. I built a hybrid: hand-crafted patterns + persistent call graph + taint tracer. Runs fully local, <1s reviews.",
+        "Simple linting rules cannot understand many cross-file problems, while cloud-based tools require sending code to another service. CodeLens combines fast checks with deeper analysis and can run locally.",
     },
     vs: {
       mine: {
         title: "CodeLens",
         bullets: [
+<<<<<<< Updated upstream
           "~470 patterns validated against real failures",
           "Persistent index, 60ms incremental updates",
           "Taint tracking across files with CWE mapping",
           "Zero deps, 351KB, runs anywhere Node runs",
+=======
+          "544 patterns based on real production failures",
+          "Keeps a reusable map of the codebase",
+          "Can trace risky data across multiple files",
+          "Runs locally as a lightweight tool",
+>>>>>>> Stashed changes
         ],
       },
       standard: {
-        title: "SonarQube / commercial SaaS",
+        title: "Traditional code review tools",
         bullets: [
-          "Generic style rules, not production failures",
-          "Cloud-dependent, code leaves the repo",
-          "Single-file analysis, no cross-file tracing",
-          "Heavy setup: Java runtime, server, database",
+          "Often focus on generic style and common rules",
+          "May require cloud-based analysis",
+          "Limited understanding across multiple files",
+          "Can require heavier infrastructure",
         ],
       },
     },
@@ -253,13 +331,16 @@ export const projects: ProjectData[] = [
     type: "Developer Tool / CLI",
     featured: true,
     requestAccess: true,
-    cardSummary: "11 providers behind one interface. If one goes down, you don't stop working. 1,400+ tests, zero vendor lock-in.",
-    oneLiner: "11 providers behind one interface. If one goes down, you don't stop working.",
-    impact: "The only open-source AI coding CLI where the provider is a variable — 11 providers with automatic fallback, so rate-limits never stop your work. Production-grade git workflow, polished React Ink TUI, plugin marketplace, and 1,400+ passing tests.",
+    cardSummary:
+      "11 AI providers behind one interface. If one provider has a problem, work can continue automatically. 1,400+ tests and no vendor lock-in.",
+    oneLiner:
+      "11 AI providers behind one interface. If one goes down, you don't have to stop working.",
+    impact:
+      "Gogaa gives developers one AI coding workspace that can work with 11 different AI providers. Automatic fallback helps keep work moving when a provider reaches a limit or becomes unavailable, while 1,400+ tests help keep the product reliable.",
     problem:
-      "Every AI coding tool makes you choose: provider freedom or deep integration. Polished TUI or serious git workflow. MCP support or surgical edits. If your provider rate-limits, you stop working.",
+      "Developers often have to choose between a polished AI coding experience and freedom to use different AI providers. When a provider reaches a limit or becomes unavailable, the workflow can stop completely.",
     solution:
-      "A TypeScript CLI where the provider is a variable. 11 providers behind one unified streaming interface with automatic fallback. Production-grade git workflow (repo map, SEARCH/REPLACE edits, LLM commits). React Ink TUI with 22 themes. Plugin marketplace, MCP support, parallel agent panes, scheduled triggers, and a companion web terminal.",
+      "Gogaa provides one coding workspace that can connect to multiple AI providers. It can automatically switch providers when needed while also providing Git workflows, plugins, tool integrations, session recovery, and a terminal-based interface.",
     architecture: [
       "Provider Manager (11 providers, auto-fallback)",
       "Tool Registry (24+ tools)",
@@ -270,73 +351,93 @@ export const projects: ProjectData[] = [
       "Session Layer (WAL persistence, crash recovery)",
     ],
     features: [
-      "11 LLM providers with unified streaming and automatic fallback on rate-limits",
-      "Production git workflow: tier-aware repo map, surgical edits, LLM commits, watch mode",
-      "React Ink TUI with streaming output, inline diffs, 22 themes, plugin marketplace",
-      "5-strategy JSON parser brought tool call success from ~70% to ~95%",
-      "WAL session persistence — crash mid-task, resume with zero lost work",
+      "11 AI providers through one consistent interface",
+      "Automatically switches providers when rate limits occur",
+      "Git workflow with repository understanding, targeted edits, and generated commits",
+      "Terminal interface with themes, plugins, and streaming responses",
+      "Can recover interrupted sessions without losing previous work",
     ],
     techDecisions: [
       {
-        title: "5-strategy JSON parser",
-        description: "Models don't return valid JSON in practice. Progressive fallback parsing (strict → trim → unescape → reconstruct → extract) brought tool call success from ~70% to ~95% on real sessions.",
+        title: "Reliable handling of model responses",
+        description:
+          "AI models do not always return perfectly formatted data. Multiple parsing strategies make tool calls more reliable and increased successful tool calls from about 70% to about 95% in real sessions.",
       },
       {
-        title: "React Ink for TUI",
-        description: "Proper component model instead of raw ANSI escape codes. Streaming, permission prompts, status bar, and plugin manager are all independent stateful components.",
+        title: "Component-based terminal interface",
+        description:
+          "The terminal experience uses reusable components for streaming output, permissions, status information, and plugin management instead of one large block of terminal code.",
       },
       {
-        title: "WAL session persistence",
-        description: "Write-ahead log appends each message as it arrives. Resume by ID after crashes, model switches, or reboots with zero lost work.",
+        title: "Recoverable sessions",
+        description:
+          "Every message is saved as it arrives so an interrupted task can continue after a crash, restart, or model change without losing the previous work.",
       },
     ],
-    stack: ["TypeScript", "Node.js", "React Ink", "Anthropic SDK", "OpenAI SDK", "LSP Protocol", "WebSocket"],
+    stack: [
+      "TypeScript",
+      "Node.js",
+      "React Ink",
+      "Anthropic SDK",
+      "OpenAI SDK",
+      "LSP Protocol",
+      "WebSocket",
+    ],
     results: [
-      "1,400+ passing tests, 0 failures",
-      "11 providers with auto-fallback, 8/9 pass multi-file edit benchmarks",
-      "~95% tool call success rate (up from ~70%)",
-      "Intent-based lazy context: 3,909 → 24 tokens for simple prompts",
+      "1,400+ passing tests with 0 failures",
+      "11 AI providers with automatic fallback",
+      "Tool call success improved from ~70% to ~95%",
+      "Context usage reduced from 3,909 to 24 tokens for simple prompts",
     ],
     giteaRepo: "shami/gogaa-ts",
     measuredImpact: {
-      before: { value: "~70%", unit: "", context: "tool call success rate with raw model JSON" },
-      after: { value: "~95%", unit: "", context: "after 5-strategy progressive JSON parser" },
+      before: {
+        value: "~70%",
+        unit: "",
+        context: "tool call success rate with raw model responses",
+      },
+      after: {
+        value: "~95%",
+        unit: "",
+        context: "after adding progressive response handling",
+      },
       highlights: [
         { n: "1,400+", l: "tests passing" },
-        { n: "11", l: "providers" },
+        { n: "11", l: "AI providers" },
         { n: "84%", l: "context saved" },
       ],
     },
     decision: {
-      scenario: "Every AI coding CLI is locked to one vendor. If the API goes down, you stop working.",
-      question: "What would you build?",
+      scenario:
+        "A developer depends on one AI provider and their coding workflow stops whenever that provider reaches a limit or becomes unavailable.",
+      question: "How should the product handle this?",
       options: [
-        "Fork an existing CLI and add providers",
-        "Thin wrapper with better UI",
-        "New CLI where the provider is a variable and everything is first-class",
+        "Add more providers to an existing coding tool",
+        "Build a simple wrapper around multiple providers",
+        "Build one coding workspace where providers can be switched automatically",
       ],
       commonChoice: 0,
       myChoice: 2,
       reasoning:
-        "Forking means inheriting vendor assumptions. Wrapping means fighting their architecture. I built from scratch so every subsystem (provider, TUI, git, tools, session) is first-class and swappable.",
+        "A provider should not determine whether the whole workflow can continue. Gogaa treats the provider as replaceable while keeping the rest of the coding experience consistent.",
     },
     vs: {
       mine: {
         title: "Gogaa CLI",
         bullets: [
-          "11 providers, auto-fallback on rate-limits",
-          "Production git: repo map, surgical edits, watch mode",
-          "React Ink TUI with plugin marketplace",
-          "WAL persistence — crash = zero lost work",
+          "11 AI providers with automatic fallback",
+          "Complete Git workflow for coding tasks",
+          "Terminal interface with plugins and themes",
+          "Interrupted sessions can be recovered",
         ],
       },
       standard: {
-        title: "Single-vendor CLIs",
+        title: "Single-provider AI tools",
         bullets: [
-          "Locked to one provider",
-          "No cross-tool feature completeness",
-          "Spartan TUI, no plugins",
-          "Stop working on rate-limits",
+          "Usually tied to one AI provider",
+          "Work can stop when that provider is unavailable",
+          "Limited flexibility between providers",
+          "Less control over the underlying workflow",
         ],
       },
     },
@@ -351,13 +452,16 @@ export const projects: ProjectData[] = [
     subtitle: "AI Session Observatory for Developers",
     type: "Developer Tool / CLI + Web",
     featured: true,
-    cardSummary: "656 sessions analyzed — every tool call, every file touch, graded A-F. Your data never leaves your machine.",
-    oneLiner: "656 sessions analyzed — every tool call, every file touch, graded A-F. 100% local.",
-    impact: "The observability layer for AI-assisted development. 656 sessions across 4 tools, 38K messages, 14K tool calls — every action replayed, every session graded A-F. Found that routine tasks on Opus cost 18x more than Sonnet with no quality difference. 100% local, zero outbound requests.",
+    cardSummary:
+      "656 AI coding sessions analyzed. See what the AI did, how much it used, and where time or money was spent — while keeping data local.",
+    oneLiner:
+      "656 sessions analyzed — every tool call, every file touch, graded A-F. 100% local.",
+    impact:
+      "Rasad gives developers visibility into AI-assisted coding work. It has analyzed 656 sessions across 4 tools, including 38K messages and 14K tool calls, so developers can understand what happened during AI sessions and compare efficiency and cost.",
     problem:
-      "AI coding assistants are black boxes. You don't know how many tokens were burned, whether context was lost mid-session, or if that $87 session could have been three $8 sessions. Zero observability for a major engineering budget line.",
+      "AI coding assistants can feel like black boxes. It can be difficult to see what the AI did during a session, how much context it used, whether it corrected itself, or whether a task could have been completed more efficiently.",
     solution:
-      "A local-first CLI + web dashboard that ingests session data from multiple AI tools. SQLite with FTS5 handles 700MB+ with streaming parsers. X-Ray replays sessions action-by-action. Quality grading scores A-F. Model comparison shows cost per session by model. Everything on localhost, zero outbound requests.",
+      "Rasad collects local session data from multiple AI tools and presents it in one dashboard. Developers can replay sessions step by step, search previous activity, compare models, review session quality, and understand AI usage without sending the underlying data to a cloud service.",
     architecture: [
       "Data Adapters (Claude Code, Gogaa, Codex CLI)",
       "SQLite (WAL mode, FTS5 full-text search)",
@@ -368,37 +472,56 @@ export const projects: ProjectData[] = [
       "Quality Scoring Engine (A-F grading)",
     ],
     features: [
-      "X-Ray: action-by-action session replay with phase labels and timing",
-      "Session Quality grading (A-F) based on efficiency, cost, and self-correction",
-      "Model comparison: cost per session by model, head-to-head analysis",
-      "Full-text search across 38K+ messages with SQLite FTS5",
-      "100% local — zero outbound network requests, data never leaves your machine",
+      "Step-by-step replay of AI sessions with timing and activity details",
+      "Session quality grading from A-F based on efficiency, cost, and self-correction",
+      "Compare AI models by session cost and performance",
+      "Search across more than 38K messages",
+      "Keeps data entirely on the local machine with no outbound requests",
     ],
     techDecisions: [
       {
-        title: "SQLite over Postgres for a local tool",
-        description: "No database process, no connection strings. WAL mode gives concurrent reads/writes. FTS5 gives full-text search. The whole DB is one file at ~/.rasad/rasad.db.",
+        title: "Local database for a local-first product",
+        description:
+          "SQLite keeps the application simple and avoids running a separate database service. It also supports fast search and concurrent activity while keeping the data in one local file.",
       },
       {
-        title: "Streaming parsers for ingestion",
-        description: "Claude Code session files can reach hundreds of MB. Line-by-line streaming never holds more than one line in memory.",
+        title: "Streaming large session files",
+        description:
+          "AI session files can become hundreds of megabytes. The application processes them gradually instead of loading the entire file into memory at once.",
       },
       {
-        title: "Dual interface: web + terminal",
-        description: "Dashboard for rich visualizations, TUI for real-time monitoring without leaving the terminal. Same Fastify API backs both.",
+        title: "Dashboard plus terminal interface",
+        description:
+          "The dashboard provides detailed visual analysis, while the terminal interface gives developers quick access to live monitoring and alerts.",
       },
     ],
-    stack: ["TypeScript", "SQLite", "Fastify", "React 19", "Vite", "Recharts", "React Ink"],
+    stack: [
+      "TypeScript",
+      "SQLite",
+      "Fastify",
+      "React 19",
+      "Vite",
+      "Recharts",
+      "React Ink",
+    ],
     results: [
-      "656 sessions synced from 4 AI tools in one dashboard",
-      "38K messages, 14K tool calls indexed with full-text search",
-      "First sync: 6.2s for 700MB+. Incremental: <1s",
-      "Zero outbound requests — 100% local-first",
+      "656 sessions collected from 4 AI tools",
+      "38K messages and 14K tool calls indexed",
+      "First sync processes 700MB+ in 6.2 seconds",
+      "Zero outbound requests — data stays local",
     ],
     github: "https://github.com/shami-ah/rasad",
     measuredImpact: {
-      before: { value: "$0", unit: "", context: "visibility into AI tool behavior and cost" },
-      after: { value: "656", unit: "", context: "sessions analyzed with action-level replay" },
+      before: {
+        value: "$0",
+        unit: "",
+        context: "visibility into AI tool behavior and cost",
+      },
+      after: {
+        value: "656",
+        unit: "",
+        context: "sessions analyzed with detailed activity replay",
+      },
       highlights: [
         { n: "38K", l: "messages indexed" },
         { n: "14K", l: "tool calls tracked" },
@@ -406,35 +529,36 @@ export const projects: ProjectData[] = [
       ],
     },
     decision: {
-      scenario: "You're spending $500+/day on AI tools with zero visibility into what the AI is doing or whether sessions are efficient.",
-      question: "How do you get observability?",
+      scenario:
+        "A team uses AI coding tools heavily but cannot clearly see what the AI is doing, how sessions perform, or where money is being spent.",
+      question: "How can the team get useful visibility?",
       options: [
-        "Check API billing dashboards",
-        "Build custom logging into each tool",
-        "Build a unified observatory that reads session files directly",
+        "Use each provider's billing dashboard",
+        "Add custom logging to every AI tool",
+        "Build one local dashboard that reads session data from different tools",
       ],
       commonChoice: 0,
       myChoice: 2,
       reasoning:
-        "Billing shows cost, not behavior. Custom logging requires modifying each tool. Rasad sits outside, reads session files directly, gives one dashboard with replay, grading, and cost tracking across every AI tool.",
+        "Billing dashboards show cost but not the actual work performed. Custom logging requires changes to every tool. Rasad reads the available session data and brings activity, replay, quality, and cost information into one place.",
     },
     vs: {
       mine: {
         title: "Rasad",
         bullets: [
-          "Multi-tool: Claude Code + Gogaa + Codex in one view",
-          "Action-level X-Ray replay",
-          "Session quality grading (A-F)",
-          "100% local, data never leaves your machine",
+          "Multiple AI tools in one dashboard",
+          "Step-by-step activity replay",
+          "Session quality grading",
+          "Data stays on the local machine",
         ],
       },
       standard: {
-        title: "API billing dashboards",
+        title: "AI provider dashboards",
         bullets: [
-          "Single provider, no cross-tool view",
-          "Cost only, no behavioral analysis",
-          "No replay or action-level visibility",
-          "Data on vendor servers",
+          "Usually limited to one provider",
+          "Focus mainly on usage and cost",
+          "Little visibility into the actual workflow",
+          "Data is managed by the provider",
         ],
       },
     },
@@ -448,11 +572,12 @@ export const projects: ProjectData[] = [
     title: "Command Center",
     subtitle: "Personal AI Operations PWA",
     type: "Developer Tool",
-    impact: "A single interface unifying email, calendar, and tasks with AI triage. Dual AI backends (Claude + Gemini), real Gmail/Calendar integration, installable as PWA.",
+    impact:
+      "A single workspace that brings email, calendar, and tasks together with AI-powered organization. It helps reduce context switching by putting everyday work in one place.",
     problem:
-      "Developers juggle Gmail, Calendar, Notion, and separate dashboards per client. Context switching kills productivity. No single tool combines AI triage with real integrations.",
+      "People often move between Gmail, calendars, task managers, and separate dashboards throughout the day. Constantly switching between tools makes it harder to stay focused.",
     solution:
-      "A PWA that pulls Gmail and Calendar via API, applies dual-AI triage (Claude for reasoning, Gemini for classification), and surfaces everything in one dashboard with real-time Supabase sync across devices.",
+      "Command Center brings email, calendar, and tasks into one installable workspace. AI helps organize incoming work, identify priorities, and surface useful information while keeping everything synchronized across devices.",
     architecture: [
       "PWA Shell (React + TypeScript)",
       "Dual AI: Claude + Gemini",
@@ -461,25 +586,35 @@ export const projects: ProjectData[] = [
       "Task Board + AI Triage",
     ],
     features: [
-      "Unified inbox with AI-powered intent classification and priority scoring",
-      "Dual AI: Claude for complex reasoning, Gemini for fast classification",
+      "One workspace for email, tasks, and calendar information",
+      "AI organizes incoming work and identifies priorities",
       "Calendar integration with conflict detection",
-      "PWA: installable on desktop and mobile, works offline",
-      "Real-time sync across devices via Supabase",
+      "Installable on desktop and mobile with offline support",
+      "Real-time synchronization across devices",
     ],
     techDecisions: [
       {
-        title: "Dual AI backends",
-        description: "Claude handles complex email reasoning. Gemini handles fast classification. No vendor lock-in, plays to each model's strengths.",
+        title: "Two AI models for different jobs",
+        description:
+          "One model handles more complex reasoning while another handles faster classification. This balances capability and response speed.",
       },
       {
-        title: "PWA over native app",
-        description: "Single codebase serves web, iOS, Android. Service workers enable offline and push notifications. No App Store approval needed.",
+        title: "Installable web app instead of separate native apps",
+        description:
+          "A single application can work across desktop and mobile while still supporting offline features and notifications.",
       },
     ],
-    stack: ["React", "TypeScript", "Anthropic SDK", "Google Gemini", "Supabase", "Gmail API", "PWA"],
+    stack: [
+      "React",
+      "TypeScript",
+      "Anthropic SDK",
+      "Google Gemini",
+      "Supabase",
+      "Gmail API",
+      "PWA",
+    ],
     results: [
-      "Replaces 4+ separate tools in daily workflow",
+      "Replaces 4+ separate tools in the daily workflow",
       "AI triage reduces inbox processing by 60%",
       "Installable on desktop and mobile with offline support",
     ],
@@ -493,11 +628,12 @@ export const projects: ProjectData[] = [
     title: "Gluten-Free Deals & Dining",
     subtitle: "Cross-Platform Consumer App",
     type: "Web + iOS + Android",
-    impact: "Cross-platform app aggregating deals from 40+ retailers, finding nearby restaurants, and generating recipes — powered by LLM-generated search queries.",
+    impact:
+      "A consumer app that brings deals, nearby restaurant discovery, and recipe ideas into one place for people looking for gluten-free options.",
     problem:
-      "Gluten-free consumers search scattered retailer sites for deals, have no way to find nearby safe restaurants, and lack reliable recipe sources. Existing apps cover one aspect, not all three.",
+      "People looking for gluten-free products often have to search many retailer websites, restaurant listings, and recipe sources separately. Existing solutions usually focus on only one of these needs.",
     solution:
-      "An LLM generates 200+ targeted search queries per category (brands, retailers, products), concurrent scrapers aggregate deals, GPS finds nearby restaurants, and AI generates personalized recipes. Cross-platform via React Native + Next.js.",
+      "The app collects product deals from multiple retailers, helps users discover nearby restaurants, and generates personalized recipe ideas. AI helps create targeted searches so the system can discover relevant information across many sources.",
     architecture: [
       "LLM Query Generator (200+ targeted queries)",
       "Concurrent Scraping (SerpAPI + Tavily)",
@@ -507,27 +643,37 @@ export const projects: ProjectData[] = [
       "Cross-platform UI (React Native + Next.js)",
     ],
     features: [
-      "LLM-generated search queries covering 40+ retailers and 30+ brands dynamically",
-      "Concurrent dual-API scraping with deduplication and freshness filtering",
-      "GPS-based restaurant finder with allergy-safe filtering",
-      "AI recipe generation with nutrition facts and substitution tips",
-      "Unified experience across Web, iOS, and Android",
+      "Searches deals across 40+ retailers and 30+ brands",
+      "Combines information from multiple sources and removes duplicates",
+      "Finds nearby restaurants using location-based search",
+      "Generates recipe ideas with nutrition information and substitutions",
+      "One experience across Web, iOS, and Android",
     ],
     techDecisions: [
       {
-        title: "LLM query generation over hardcoded searches",
-        description: "The LLM generates 200+ targeted queries dynamically. Covers new brands and retailers without code changes.",
+        title: "AI-generated search coverage",
+        description:
+          "AI creates targeted search queries dynamically, allowing the system to cover new brands and retailers without manually adding every search query.",
       },
       {
-        title: "React Native + Next.js shared codebase",
-        description: "One team ships to three platforms with shared TypeScript business logic.",
+        title: "Shared application logic across platforms",
+        description:
+          "React Native and Next.js share TypeScript business logic so the product can serve web and mobile users from a common foundation.",
       },
     ],
-    stack: ["React Native", "Next.js", "Python", "OpenAI", "Firebase", "Google Maps", "SerpAPI"],
+    stack: [
+      "React Native",
+      "Next.js",
+      "Python",
+      "OpenAI",
+      "Firebase",
+      "Google Maps",
+      "SerpAPI",
+    ],
     results: [
-      "Aggregates deals from 40+ retailers in real time",
-      "200+ AI-generated queries per category",
-      "Cross-platform: Web, iOS, Android from shared codebase",
+      "Deals aggregated from 40+ retailers",
+      "200+ AI-generated search queries per category",
+      "Web, iOS, and Android from a shared codebase",
     ],
   },
 
@@ -539,11 +685,12 @@ export const projects: ProjectData[] = [
     title: "Portable Dev Environment",
     subtitle: "Containerized Full-Stack Workspace",
     type: "Developer Infrastructure",
-    impact: "One-command developer onboarding in 10 minutes. Docker container with full toolchain, AI coding assistant integration, and WISC context engineering that cut token costs by 84%.",
+    impact:
+      "A ready-to-use development environment that gets a developer from setup to first commit in about 10 minutes while keeping tools and project configuration consistent.",
     problem:
-      "Dev environments are fragile — different Node versions, missing CLIs, hours of setup. Add AI tooling: Claude Code was burning 72KB of context (35-40K tokens) before a single prompt.",
+      "Setting up development environments can take hours and often leads to different versions of tools across machines. AI coding tools can also consume large amounts of context before a task even begins.",
     solution:
-      "A Docker container packaging the full toolchain (Node, Python, Deno, Playwright, 10+ CLIs) with WISC context engineering: lazy-loaded skills, path-scoped rules, compressed agent definitions. 72KB context down to 11.7KB, all capabilities preserved.",
+      "A portable development environment packages the required tools into one Docker-based workspace. It also uses a context-management approach that reduces unnecessary AI context while keeping the required capabilities available.",
     architecture: [
       "Dockerfile (multi-layer, ARM/x86)",
       "Docker Compose (dev + Postgres + Redis)",
@@ -552,27 +699,37 @@ export const projects: ProjectData[] = [
       "Claude Code Integration (WISC-optimized)",
     ],
     features: [
-      "ARM + x86 architecture-aware builds",
-      "Full shell environment with Powerlevel10k, autosuggestions, syntax highlighting",
-      "Claude Code integration with WISC-optimized lazy loading",
-      "Playwright with Chromium for headless E2E inside the container",
-      "Secrets mounted at runtime, never baked into images",
+      "Works across ARM and x86 machines",
+      "Complete terminal environment with productivity tools",
+      "AI coding assistant integration with optimized context loading",
+      "Playwright and Chromium available for automated browser testing",
+      "Secrets are provided at runtime instead of being stored inside images",
     ],
     techDecisions: [
       {
-        title: "Volume mounts over baked-in code",
-        description: "Code lives on host, changes sync instantly. Deleting a container never loses work.",
+        title: "Keep project code outside the container",
+        description:
+          "Project files remain on the host machine and are mounted into the workspace. This keeps changes immediately available and prevents deleting a container from deleting project work.",
       },
       {
-        title: "WISC context engineering",
-        description: "Write decisions to files, Isolate tasks per conversation, Select context by path, Compress agent definitions. 72KB → 11.7KB (84% reduction), zero capability loss.",
+        title: "Load AI context only when needed",
+        description:
+          "Project decisions, rules, and agent instructions are separated and loaded according to the task. This reduced context from 72KB to 11.7KB while keeping the required capabilities.",
       },
     ],
-    stack: ["Docker", "Docker Compose", "Ubuntu", "Node.js", "Playwright", "PostgreSQL", "Redis"],
+    stack: [
+      "Docker",
+      "Docker Compose",
+      "Ubuntu",
+      "Node.js",
+      "Playwright",
+      "PostgreSQL",
+      "Redis",
+    ],
     results: [
-      "10 minutes from zero to first commit",
-      "Identical environment across Mac, Linux VPS, and phone SSH",
-      "WISC: 72KB → 11.7KB context (84% reduction)",
+      "About 10 minutes from a fresh machine to first commit",
+      "Consistent environment across Mac, Linux VPS, and phone SSH",
+      "AI context reduced from 72KB to 11.7KB",
     ],
   },
 
@@ -584,11 +741,12 @@ export const projects: ProjectData[] = [
     title: "AI Agent Orchestrator",
     subtitle: "CAMEL Multi-Agent Framework",
     type: "AI Framework",
-    impact: "A production-grade multi-agent framework implementing CAMEL: Planner decomposes goals, Workers execute with tools, Validator runs iterative critique loops. 18 files, clean architecture, fully open-source.",
+    impact:
+      "A structured AI workflow where separate agents plan tasks, perform the work, check the result, and improve it when needed.",
     problem:
-      "Most agent frameworks are either toy demos or massive dependency trees that obscure what's happening. Needed something small enough to understand completely but production-grade enough for real tasks.",
+      "Many AI agent examples are either very small demonstrations or large frameworks that are difficult to understand. The goal was to create something small enough to understand while still supporting real multi-step tasks.",
     solution:
-      "Four agent roles (Planner, Worker, Validator, Orchestrator), a formal task state machine, and CAMEL-inspired iterative critique. The Validator generates structured feedback that gets injected into the Worker's next attempt. Error patterns persist in memory for cross-task learning.",
+      "The system separates planning, execution, validation, and coordination into clear roles. A validator reviews the result and sends feedback back to the worker for another attempt when necessary.",
     architecture: [
       "Orchestrator (DAG-based task execution)",
       "Planner Agent (goal decomposition)",
@@ -598,28 +756,36 @@ export const projects: ProjectData[] = [
       "Memory Store (error pattern persistence)",
     ],
     features: [
-      "Iterative CAMEL critique: structured feedback loops, up to 3 rounds per task",
-      "Cross-task learning: error patterns persist in memory",
-      "Task DAG with dependency resolution and parallel execution",
-      "Human-in-the-loop approval gates with state-based pausing",
-      "Multi-provider: Claude and OpenAI adapters",
+      "AI can review its own work and improve it through multiple rounds",
+      "Past error patterns can be remembered for future tasks",
+      "Complex tasks can be broken into dependent steps and run efficiently",
+      "Important actions can pause for human approval",
+      "Works with multiple AI providers",
     ],
     techDecisions: [
       {
-        title: "Iterative critique over single-pass validation",
-        description: "Validation feedback pipes directly into the Worker's next attempt. First attempt is often 70% right; three rounds get it to 95%.",
+        title: "Multiple review rounds instead of one final check",
+        description:
+          "Feedback from validation is sent back to the worker so it can improve the next attempt rather than simply receiving a pass or fail result.",
       },
       {
-        title: "18 files, zero unnecessary abstraction",
-        description: "Every file has one clear responsibility. No DI framework, no plugin system, no config format. Readable in an hour.",
+        title: "Small architecture with clear responsibilities",
+        description:
+          "Each part of the system has one clear responsibility. This keeps the framework understandable without unnecessary abstraction.",
       },
     ],
-    stack: ["TypeScript", "Node.js", "Anthropic SDK", "OpenAI SDK", "Zod"],
+    stack: [
+      "TypeScript",
+      "Node.js",
+      "Anthropic SDK",
+      "OpenAI SDK",
+      "Zod",
+    ],
     results: [
-      "Clean 18-file architecture, fully open-source",
-      "CAMEL critique loop with iterative refinement",
-      "Cross-task learning via error pattern memory",
-      "State machine prevents invalid task transitions",
+      "Clean 18-file architecture",
+      "AI work can be reviewed and refined through multiple rounds",
+      "Past error patterns can improve future tasks",
+      "State management prevents invalid workflow transitions",
     ],
     github: "https://github.com/shami-ah/ai-agent-orchestrator",
   },
@@ -633,11 +799,12 @@ export const projects: ProjectData[] = [
     subtitle: "5 Purpose-Built AI Agents",
     type: "AI Agents",
     featured: true,
-    impact: "5 autonomous agents (job search, research, code review, proposals, freelance automation) with real tool-calling, deployed on HuggingFace Spaces at $0/month.",
+    impact:
+      "Five specialized AI assistants that handle practical tasks such as job searching, research, code review, proposal writing, and freelance communication.",
     problem:
-      "Needed AI that could actually DO things — search jobs, research tech, review PRs, draft proposals — each requiring different tools and domain knowledge. Running separate tools was slow.",
+      "Different business tasks need different information, tools, and instructions. Using one general assistant for everything can make workflows slower and less focused.",
     solution:
-      "A multi-agent system where each agent has a specific purpose, custom tools (web search, GitHub API, URL fetcher), and tailored prompts. Deployed on HuggingFace Spaces with a portfolio-ready web UI.",
+      "The system gives each AI agent one clear purpose, the tools it needs, and instructions designed for that specific task. The agents can search information, work with GitHub, fetch web pages, and connect to other workflows.",
     architecture: [
       "FastAPI Server (5 agent endpoints)",
       "Tool-Calling Engine",
@@ -646,28 +813,38 @@ export const projects: ProjectData[] = [
       "Portfolio Web UI",
     ],
     features: [
-      "Job Search Agent: multi-board search, fit evaluation, cover letter drafting",
-      "Research Agent: multi-source research with cross-referenced reports",
-      "Code Review Agent: fetches GitHub PR diffs, analyzes bugs and security",
-      "Upwork Proposal Agent: reads postings, matches skills, drafts proposals",
-      "n8n Webhook Agent: receives freelance messages, drafts replies",
+      "Job Search Agent: finds jobs, evaluates fit, and prepares applications",
+      "Research Agent: gathers information from multiple sources",
+      "Code Review Agent: reviews GitHub pull requests for bugs and security issues",
+      "Proposal Agent: analyzes freelance opportunities and prepares proposals",
+      "Freelance Communication Agent: receives messages and prepares replies",
     ],
     techDecisions: [
       {
-        title: "Groq for inference",
-        description: "Free tier, 300 tokens/sec, native tool-calling. Zero inference cost.",
+        title: "AI specialized for one task at a time",
+        description:
+          "Each agent has a focused purpose and a smaller set of tools. This makes the workflow easier to control and reduces unnecessary instructions.",
       },
       {
-        title: "Agent-per-purpose over general assistant",
-        description: "Each agent has a focused prompt and curated tool set. Scoping prevents confusion and hallucination.",
+        title: "Low-cost AI infrastructure",
+        description:
+          "The system uses an inference provider with a free tier so the agents can run without a large ongoing infrastructure cost.",
       },
     ],
-    stack: ["Python", "FastAPI", "Groq", "Tavily", "GitHub API", "HuggingFace Spaces", "Docker"],
+    stack: [
+      "Python",
+      "FastAPI",
+      "Groq",
+      "Tavily",
+      "GitHub API",
+      "HuggingFace Spaces",
+      "Docker",
+    ],
     results: [
-      "5 autonomous agents deployed and operational",
-      "1-8 tool calls per request, fully automated",
-      "$0/month hosting on free tiers",
-      "API-first: callable from n8n, PWA, or any HTTP client",
+      "5 specialized AI agents deployed and operational",
+      "1-8 automated tool calls per request",
+      "$0/month hosting using free tiers",
+      "Can connect to n8n, web apps, and other HTTP-based workflows",
     ],
     live: "https://shami96-deep-agent.hf.space",
   },

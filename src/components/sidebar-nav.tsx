@@ -337,9 +337,28 @@ export function SidebarNav(): React.ReactElement {
             })()}
 
             {/* Tooltip */}
-            <span className="absolute left-full ml-3 px-2.5 py-1 rounded-lg bg-card/90 backdrop-blur-xl border border-card-border/50 text-[10px] text-foreground/80 whitespace-nowrap opacity-0 pointer-events-none group-hover:opacity-100 group-hover:translate-x-0 -translate-x-1 transition-all duration-200 shadow-lg z-10">
-              {label}
-            </span>
+            {/* User-friendly navigation label */}
+<span
+  className={`
+    absolute left-full ml-3
+    px-2.5 py-1.5
+    rounded-lg
+    bg-card/95
+    backdrop-blur-xl
+    border border-card-border/60
+    text-[10px] font-sans font-medium
+    text-foreground/80
+    whitespace-nowrap
+    transition-all duration-200
+    shadow-lg z-10
+    ${isActive
+      ? "opacity-100 translate-x-0"
+      : "opacity-0 -translate-x-1 pointer-events-none group-hover:opacity-100 group-hover:translate-x-0"
+    }
+  `}
+>
+  {label}
+</span>
           </button>
         );
       })}
