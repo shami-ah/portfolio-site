@@ -6,6 +6,7 @@ import { Calendar, Mail, FileText, Layers, Check, Play } from "lucide-react";
 import { FadeUp } from "./motion";
 import { TiltCard } from "./tilt-card";
 import { openCvDrawer } from "@/components/cv-drawer";
+import { useLens } from "@/lib/use-lens";
 
 /* ------------------------------------------------------------------ */
 /*  Data                                                               */
@@ -40,11 +41,41 @@ const deployments = [
   },
 ] as const;
 
+/** Contact copy per lens. Plain is written for recruiters and clients; technical keeps the deploy metaphor. */
+const COPY = {
+  plain: {
+    headingLead: "Let\u2019s work",
+    headingAccent: "together.",
+    panelTitle: ["Ahtesham Ahmad", "AI product engineer"],
+    badge: "available now",
+    steps: ["see the work", "read reviews", "check the fit", "book a call"],
+    rows: { engineer: "name", status: "availability", region: "location", mode: "work type" },
+    ready: "available now",
+    cta: "Book a 15-min call",
+    cv: "view CV",
+    history: "what clients say",
+    since: (years: number): string => `${years} years building`,
+  },
+  technical: {
+    headingLead: "Deploy",
+    headingAccent: "me.",
+    panelTitle: ["your-company", "ahtesham"],
+    badge: "production",
+    steps: ["reviewed", "vetted", "matched", "deploy"],
+    rows: { engineer: "engineer", status: "status", region: "region", mode: "mode" },
+    ready: "ready",
+    cta: "Deploy to your team",
+    cv: "cv",
+    history: "previous deployments",
+    since: (years: number): string => `${years}y uptime`,
+  },
+} as const;
+
 /* ------------------------------------------------------------------ */
 /*  Pipeline Step                                                      */
 /* ------------------------------------------------------------------ */
 
-function PipeStep({ done, label, active }: { done: boolean; label: string; active?: boolean }): React.ReactElement {
+function PipeStep({ done, label, active, bright }: { done: boolean; label: string; active?: boolean; bright?: boolean }): React.ReactElement {
   return (
     <div className="flex flex-col items-center gap-1 min-w-[64px] md:min-w-[72px]">
       <div
@@ -58,7 +89,7 @@ function PipeStep({ done, label, active }: { done: boolean; label: string; activ
       </div>
       <span
         className={`font-mono text-caption ${
-          active ? "text-accent opacity-70" : "text-muted opacity-35"
+          active ? (bright ? "text-accent" : "text-accent opacity-70") : bright ? "text-muted opacity-80" : "text-muted opacity-35"
         }`}
       >
         {label}
@@ -89,6 +120,8 @@ function PipeLine({ done }: { done: boolean }): React.ReactElement {
 
 function DeployHistory(): React.ReactElement {
   const [idx, setIdx] = useState(0);
+  const lens = useLens();
+  const plain = lens === "plain";
 
   useEffect(() => {
     const timer = setInterval(() => setIdx((i) => (i + 1) % deployments.length), 5000);
@@ -99,8 +132,8 @@ function DeployHistory(): React.ReactElement {
 
   return (
     <div className="w-full max-w-[58rem]">
-      <p className="font-mono text-caption text-muted/20 uppercase tracking-widest text-center mb-3.5">
-        previous deployments
+      <p className={`font-mono text-caption uppercase tracking-widest text-center mb-3.5 ${plain ? "text-muted/60" : "text-muted/20"}`}>
+        {COPY[lens].history}
       </p>
 
       <div className="relative h-[72px]">
@@ -120,13 +153,13 @@ function DeployHistory(): React.ReactElement {
 
             <div className="flex items-center gap-2 font-mono text-small shrink-0">
               <span className="text-[13px]">{d.flag}</span>
-              <span className="text-foreground/60 font-medium">{d.who}</span>
+              <span className={`font-medium ${plain ? "text-foreground/85" : "text-foreground/60"}`}>{d.who}</span>
               <span className="text-muted/20">{d.when}</span>
             </div>
 
             <span className="text-muted/15 shrink-0">|</span>
 
-            <p className="text-[12.5px] leading-[1.6] text-foreground/35 italic min-w-0 line-clamp-2">
+            <p className={`text-[12.5px] leading-[1.6] italic min-w-0 line-clamp-2 ${plain ? "text-foreground/75" : "text-foreground/35"}`}>
               &ldquo;{d.quote}&rdquo;
             </p>
           </motion.div>
@@ -157,6 +190,8 @@ function DeployHistory(): React.ReactElement {
 
 export function Footer(): React.ReactElement {
   const years = new Date().getFullYear() - 2019;
+  const lens = useLens();
+  const copy = COPY[lens];
 
   return (
     <footer id="contact">
@@ -168,11 +203,11 @@ export function Footer(): React.ReactElement {
         {/* Heading */}
         <FadeUp>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-semibold leading-tight tracking-tight text-center mb-3 relative z-[1]">
-            Deploy <span className="text-gradient">me.</span>
+            {copy.headingLead} <span className="text-gradient">{copy.headingAccent}</span>
           </h2>
         </FadeUp>
         <FadeUp delay={0.06}>
-          <p className="font-mono text-[13px] text-muted/35 mb-8 text-center relative z-[1]">
+          <p className={`font-mono text-[13px] mb-8 text-center relative z-[1] ${lens === "plain" ? "text-muted/70" : "text-muted/35"}`}>
             one engineer, full ownership, zero handoffs
           </p>
         </FadeUp>
@@ -188,32 +223,32 @@ export function Footer(): React.ReactElement {
                   <Layers size={14} strokeWidth={2} className="text-white" />
                 </div>
                 <span className="font-mono text-[13px] font-semibold text-foreground/80">
-                  your-company <span className="text-muted/30 mx-0.5">/</span> ahtesham
+                  {copy.panelTitle[0]} <span className="text-muted/30 mx-0.5">/</span> {copy.panelTitle[1]}
                 </span>
               </div>
               <span className="font-mono text-caption px-2 py-0.5 rounded bg-accent-status/8 border border-accent-status/15 text-accent-status/70">
-                production
+                {copy.badge}
               </span>
             </div>
 
             {/* Pipeline */}
             <div className="flex items-center justify-center py-3.5 px-6 border-b border-card-border bg-background/30">
-              <PipeStep done label="reviewed" />
+              <PipeStep done label={copy.steps[0]} bright={lens === "plain"} />
               <PipeLine done />
-              <PipeStep done label="vetted" />
+              <PipeStep done label={copy.steps[1]} bright={lens === "plain"} />
               <PipeLine done />
-              <PipeStep done label="matched" />
+              <PipeStep done label={copy.steps[2]} bright={lens === "plain"} />
               <PipeLine done={false} />
-              <PipeStep done={false} label="deploy" active />
+              <PipeStep done={false} label={copy.steps[3]} active bright={lens === "plain"} />
             </div>
 
             {/* Config */}
             <div className="px-5 py-3 border-b border-card-border">
               {[
-                { key: "engineer", val: "Ahtesham Ahmad" },
-                { key: "status", val: "ready", green: true },
-                { key: "region", val: "remote / Gulf / EU", sep: "/" },
-                { key: "mode", val: "full-time | contract | 90-day", sep: "|" },
+                { key: "engineer" as const, val: "Ahtesham Ahmad" },
+                { key: "status" as const, val: copy.ready, green: true },
+                { key: "region" as const, val: "remote / Gulf / EU" },
+                { key: "mode" as const, val: "full-time | contract | 90-day" },
               ].map((row, i) => (
                 <div
                   key={row.key}
@@ -221,11 +256,11 @@ export function Footer(): React.ReactElement {
                     i > 0 ? "border-t border-card-border/40" : ""
                   }`}
                 >
-                  <span className="text-muted/35 text-[11px]">{row.key}</span>
+                  <span className={`text-[11px] ${lens === "plain" ? "text-muted/60" : "text-muted/35"}`}>{copy.rows[row.key]}</span>
                   {row.green ? (
                     <span className="text-accent-status flex items-center gap-1.5 text-foreground/70">
                       <span className="w-[5px] h-[5px] rounded-full bg-accent-status animate-pulse" />
-                      ready
+                      {row.val}
                     </span>
                   ) : (
                     <span className="text-foreground/70 text-right">{row.val}</span>
@@ -243,7 +278,7 @@ export function Footer(): React.ReactElement {
                 className="flex items-center justify-center gap-2.5 w-full py-3 rounded-[10px] btn-gradient font-semibold text-sm hover:shadow-lg hover:shadow-accent/25 hover:-translate-y-0.5 transition-all duration-200"
               >
                 <Calendar size={16} strokeWidth={1.5} />
-                Deploy to your team
+                {copy.cta}
               </a>
             </div>
 
@@ -281,7 +316,7 @@ export function Footer(): React.ReactElement {
                 className="inline-flex items-center gap-1.5 px-3 py-[7px] rounded-[7px] border border-card-border/80 bg-background/50 text-foreground/45 font-mono text-[11px] hover:opacity-100 hover:border-accent hover:bg-accent/[0.06] hover:text-accent transition-all duration-200 cursor-pointer"
               >
                 <FileText size={13} strokeWidth={1.5} className="opacity-50" />
-                cv
+                {copy.cv}
               </button>
             </div>
 
@@ -298,7 +333,7 @@ export function Footer(): React.ReactElement {
       {/* Copyright — left-aligned, between sidebar nav and content */}
       <div className="pl-16 md:pl-20 pb-8">
         <p className="font-mono text-caption text-muted/30">
-          &copy; {new Date().getFullYear()} Ahtesham Ahmad &middot; {years}y uptime
+          &copy; {new Date().getFullYear()} Ahtesham Ahmad &middot; {copy.since(years)}
         </p>
       </div>
     </footer>

@@ -13,6 +13,7 @@ import { AccessRequestModal } from "./access-request-modal";
 import { DecisionTree } from "./decision-tree";
 import { AgentEmoji } from "./agent-bar";
 import { useStatus } from "@/lib/use-status";
+import { useLens } from "@/lib/use-lens";
 
 const EMOJI_COMMENTARY: Record<string, { mood: "proud" | "curious" | "default" | "surprised"; text: string }> = {
   openevent: { mood: "proud", text: "8 months, 100+ clients, zero AI errors." },
@@ -38,6 +39,8 @@ interface FlagshipMeta {
   status: string;
   statusColor: string;
   metrics: { label: string; value: string }[];
+  /** Business-facing numbers for the plain lens. */
+  plainMetrics: { label: string; value: string }[];
 }
 
 function useFlagshipMeta(): Record<string, FlagshipMeta> {
@@ -51,6 +54,11 @@ function useFlagshipMeta(): Record<string, FlagshipMeta> {
         { label: "in months", value: "8" },
         { label: "time saved", value: "83%" },
       ],
+      plainMetrics: [
+        { label: "companies use it", value: `${status.openevent.clients}+` },
+        { label: "saved per team, per day", value: "~1.5 h" },
+        { label: "to get there, no sales team", value: "8 months" },
+      ],
     },
     codelens: {
       status: "BETA",
@@ -59,6 +67,11 @@ function useFlagshipMeta(): Record<string, FlagshipMeta> {
         { label: "bug patterns", value: `~${status.codelens.patterns}` },
         { label: "mined from", value: "600+ PRs" },
         { label: "review speed", value: "<1s" },
+      ],
+      plainMetrics: [
+        { label: "known mistakes it catches", value: `~${status.codelens.patterns}` },
+        { label: "per review", value: "<1 sec" },
+        { label: "private, runs on your machine", value: "100%" },
       ],
     },
     "gogaa-cli": {
@@ -69,6 +82,11 @@ function useFlagshipMeta(): Record<string, FlagshipMeta> {
         { label: "if one fails", value: "auto-switch" },
         { label: "lock-in", value: "zero" },
       ],
+      plainMetrics: [
+        { label: "AI services supported", value: `${status.gogaa.providers}` },
+        { label: "switch when one fails", value: "automatic" },
+        { label: "automated quality checks", value: "1,400+" },
+      ],
     },
     rasad: {
       status: "SHIPPED",
@@ -77,6 +95,11 @@ function useFlagshipMeta(): Record<string, FlagshipMeta> {
         { label: "sessions", value: "656" },
         { label: "graded", value: "A-F" },
         { label: "cloud", value: "none" },
+      ],
+      plainMetrics: [
+        { label: "AI work sessions reviewed", value: "656" },
+        { label: "overspend it uncovered", value: "18x" },
+        { label: "private, nothing leaves your computer", value: "100%" },
       ],
     },
   };
@@ -92,6 +115,8 @@ interface PanelContent {
   problem: string;
   solution: string;
   glow: string;
+  /** Jargon-free version for the plain lens. Falls back to the technical copy. */
+  plain?: { oneLiner: string; problem: string; solution: string };
 }
 
 type ExpandedPanel = { kind: "mockup" | "diagram"; project: ProjectData; mockup: MockupKind; content: PanelContent } | null;
@@ -103,6 +128,11 @@ const PANEL_CONTENT: Record<string, PanelContent> = {
     problem: "Event teams waste 90 min/day on email to CRM data entry.",
     solution: "AI reads emails, creates bookings, detects conflicts, updates CRM. Zero manual entry.",
     glow: "radial-gradient(ellipse at 30% 50%, rgba(160,120,104,0.06), transparent 70%)",
+    plain: {
+      oneLiner: "A booking request arrives by email. The AI reads it and prepares the booking, the invoice and the customer record. A person approves with one click.",
+      problem: "Event teams lose about 90 minutes a day copying details from emails into their systems.",
+      solution: "The AI does the reading and the typing. Staff only approve, so nothing touches money without a human saying yes.",
+    },
   },
   codelens: {
     title: "CodeLens",
@@ -110,6 +140,11 @@ const PANEL_CONTENT: Record<string, PanelContent> = {
     problem: "Code review misses bugs that patterns catch in milliseconds.",
     solution: "430 patterns from 600+ real PRs. Scans in <1s. Your code never leaves your machine.",
     glow: "radial-gradient(ellipse at 70% 40%, rgba(74,85,120,0.06), transparent 70%)",
+    plain: {
+      oneLiner: "An automatic proofreader for software. It checks new code for known mistakes in under a second, before they reach customers.",
+      problem: "Human reviewers miss bugs when they are rushed, and those bugs get expensive once customers hit them.",
+      solution: "I collected hundreds of real mistakes from past projects and built a tool that spots them instantly. The code never leaves the company's computer.",
+    },
   },
   "gogaa-cli": {
     title: "Gogaa CLI",
@@ -117,6 +152,11 @@ const PANEL_CONTENT: Record<string, PanelContent> = {
     problem: "AI providers go down. Your work stops.",
     solution: "11 providers behind one interface. Auto-fallback. 1,400+ tests. Zero lock-in.",
     glow: "radial-gradient(ellipse at 40% 60%, rgba(74,85,120,0.04), transparent 70%)",
+    plain: {
+      oneLiner: "An AI coding assistant that keeps working when an AI service goes down. It switches to another one by itself.",
+      problem: "Teams that depend on a single AI service stop working whenever it is down or over its limit.",
+      solution: "Gogaa connects to 11 AI services through one tool and switches between them automatically, so work never stops and no vendor can lock you in.",
+    },
   },
   rasad: {
     title: "Rasad",
@@ -124,6 +164,11 @@ const PANEL_CONTENT: Record<string, PanelContent> = {
     problem: "AI coding sessions are black boxes — no way to know what worked.",
     solution: "Every tool call, every file touch, graded A-F. 656 sessions analyzed. 100% local.",
     glow: "radial-gradient(ellipse at 50% 50%, rgba(160,120,104,0.06), transparent 70%)",
+    plain: {
+      oneLiner: "A dashboard that shows what AI coding assistants really did, what it cost, and whether it was worth it.",
+      problem: "Companies pay for AI coding tools but cannot see what the AI did or whether the money was well spent.",
+      solution: "Rasad records every AI work session, grades it from A to F, and shows where money is wasted. It found routine tasks costing 18x more than they needed to.",
+    },
   },
 };
 
@@ -462,6 +507,9 @@ function ScrollPanel({
   const num = String(index + 1).padStart(2, "0");
   const [accessModalOpen, setAccessModalOpen] = useState(false);
   const panelPayload = { project, mockup, content };
+  const plain = useLens() === "plain";
+  const copy = (plain ? content.plain : undefined) ?? content;
+  const metrics = plain && meta.plainMetrics.length > 0 ? meta.plainMetrics : meta.metrics;
 
   return (
     <>
@@ -484,7 +532,7 @@ function ScrollPanel({
           style={{ background: content.glow }}
         />
 
-        <div className="relative z-10 h-full flex flex-col px-4 md:px-8 lg:px-16 py-5 md:py-10 max-w-[1400px] mx-auto">
+        <div className="relative z-10 h-full flex flex-col px-4 md:px-8 lg:px-16 pt-14 pb-20 md:py-10 max-w-[1400px] mx-auto">
           {/* Top row: status + title left, big number right */}
           <div className="flex items-start justify-between gap-4 mb-4 md:mb-5">
             <div className="flex-1 min-w-0">
@@ -495,8 +543,8 @@ function ScrollPanel({
               <h3 className="text-3xl sm:text-4xl md:text-5xl font-bold leading-[1.1] tracking-tight mb-2 md:mb-3">
                 {content.title}<span className="text-muted">.</span>
               </h3>
-              <p className="text-xs md:text-sm text-muted leading-relaxed max-w-lg">
-                {content.oneLiner}
+              <p className={plain ? "text-sm md:text-lg text-foreground/80 leading-relaxed max-w-2xl" : "text-xs md:text-sm text-muted leading-relaxed max-w-lg"}>
+                {copy.oneLiner}
               </p>
             </div>
             <span className="hidden sm:block text-[7rem] md:text-[9rem] lg:text-[11rem] font-bold leading-none text-foreground/[0.04] select-none tracking-tighter shrink-0">
@@ -507,16 +555,16 @@ function ScrollPanel({
           {/* Problem → Solution — single row, inline */}
           <div className="p-2.5 md:p-4 rounded-xl border border-card-border/50 bg-card/30 mb-3 md:mb-5">
             <p className="text-[11px] md:text-sm text-muted leading-[1.6]">
-              <span className="font-mono uppercase tracking-wider text-muted/60 text-caption">Problem: </span>
-              {content.problem}
+              <span className="font-mono uppercase tracking-wider text-muted/60 text-caption">{plain ? "The problem: " : "Problem: "}</span>
+              {copy.problem}
               <span className="mx-2 text-accent/40">→</span>
-              <span className="font-mono uppercase tracking-wider text-accent/60 text-caption">Solution: </span>
-              <span className="text-foreground/80">{content.solution}</span>
+              <span className="font-mono uppercase tracking-wider text-accent/60 text-caption">{plain ? "What I built: " : "Solution: "}</span>
+              <span className="text-foreground/80">{copy.solution}</span>
             </p>
           </div>
 
           {/* Live Preview + Architecture — clearly labeled, full width */}
-          <div className="flex-1 min-h-0 grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
+          <div className={`flex-1 min-h-0 grid grid-cols-1 gap-3 md:gap-4 ${plain ? "" : "md:grid-cols-2"}`}>
             {/* Mockup */}
             <button
               type="button"
@@ -528,15 +576,16 @@ function ScrollPanel({
               <ProjectMockup kind={mockup} className="shadow-none border-card-border/40 h-full" />
               <div className="absolute top-2 right-2 flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-background/80 backdrop-blur-sm border border-card-border/50 opacity-60 group-hover:opacity-100 transition-opacity">
                 <Maximize2 size={11} className="text-accent" />
-                <span className="text-caption font-mono text-muted">full details</span>
+                <span className="text-caption font-mono text-muted">{plain ? "full story" : "full details"}</span>
               </div>
             </button>
-            {/* Architecture diagram */}
+            {/* Architecture diagram — technical lens only; plain lens reaches it via "How it's built" */}
             <button
               type="button"
               data-project-expand="diagram"
               data-project-slug={project.slug}
               onClick={() => onExpand({ kind: "diagram", ...panelPayload })}
+              hidden={plain}
               className="relative group min-h-0 overflow-hidden rounded-xl border border-card-border/40 bg-card cursor-pointer hover:border-accent/30 transition-colors"
             >
               <p className="text-caption font-mono uppercase tracking-wider text-muted/40 pt-3 text-center">architecture</p>
@@ -550,12 +599,12 @@ function ScrollPanel({
 
           {/* Metrics + stack + links */}
           <div className="flex flex-col gap-2 mt-3 md:mt-4 shrink-0">
-            <div className="flex items-end justify-between gap-4">
-              <div className="flex gap-6 md:gap-8">
-                {meta.metrics.map((m) => (
+            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-2 sm:gap-4">
+              <div className="flex gap-4 md:gap-8">
+                {metrics.map((m) => (
                   <div key={m.label}>
-                    <p className="text-xl md:text-2xl font-bold font-mono text-foreground tracking-tight">{m.value}</p>
-                    <p className="text-[10px] md:text-caption font-mono text-muted/40 uppercase tracking-[0.15em]">{m.label}</p>
+                    <p className="text-base sm:text-xl md:text-2xl font-bold font-mono text-foreground tracking-tight whitespace-nowrap">{m.value}</p>
+                    <p className={plain ? "text-[11px] md:text-xs text-muted/70 max-w-[11rem] leading-snug" : "text-[10px] md:text-caption font-mono text-muted/40 uppercase tracking-[0.15em]"}>{m.label}</p>
                   </div>
                 ))}
               </div>
@@ -580,14 +629,25 @@ function ScrollPanel({
                 </span>
               </div>
             </div>
-            {/* Tech stack tags */}
-            <div className="flex flex-wrap gap-1.5">
-              {project.stack.slice(0, 8).map((tech) => (
-                <span key={tech} className="px-2 py-0.5 text-caption font-mono rounded bg-card/50 border border-card-border/40 text-muted/60">
-                  {tech}
-                </span>
-              ))}
-            </div>
+            {plain ? (
+              <button
+                type="button"
+                data-project-expand="diagram"
+                data-project-slug={project.slug}
+                onClick={() => onExpand({ kind: "diagram", ...panelPayload })}
+                className="self-start text-caption font-mono text-muted/70 hover:text-accent transition-colors cursor-pointer"
+              >
+                How it&apos;s built (for engineers) &rarr;
+              </button>
+            ) : (
+              <div className="flex flex-wrap gap-1.5">
+                {project.stack.slice(0, 8).map((tech) => (
+                  <span key={tech} className="px-2 py-0.5 text-caption font-mono rounded bg-card/50 border border-card-border/40 text-muted/60">
+                    {tech}
+                  </span>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -793,6 +853,12 @@ interface FrameProps {
   className: string;
 }
 
+function CardSummary({ project, className }: { project: ProjectData; className: string }): React.ReactElement {
+  const lens = useLens();
+  const text = (lens === "plain" ? project.plainSummary : undefined) ?? project.cardSummary ?? project.subtitle;
+  return <p className={`text-small text-muted leading-relaxed ${className}`}>{text}</p>;
+}
+
 function CardFooter({ project, onOpen, counter }: { project: ProjectData; onOpen: (p: ProjectData) => void; counter: string }): React.ReactElement {
   return (
     <div className="mt-auto">
@@ -837,7 +903,7 @@ function PhoneCard({ project, onOpen, counter, className }: FrameProps): React.R
           <span className="inline-block text-caption font-mono px-2 py-0.5 rounded-full bg-accent/8 text-accent border border-accent/15 mb-2 self-start">
             {project.type}
           </span>
-          <p className="text-small text-muted leading-relaxed mb-2">{project.cardSummary ?? project.subtitle}</p>
+          <CardSummary project={project} className="mb-2" />
           <div className="flex flex-wrap gap-1 mb-2">
             {project.stack.slice(0, 4).map((t) => (
               <span key={t} className="px-1.5 py-0.5 text-caption font-mono rounded bg-card-border/20 text-muted/50">{t}</span>
@@ -876,7 +942,7 @@ function PwaCard({ project, onOpen, counter, className }: FrameProps): React.Rea
         </div>
         <div className="flex-1 p-4 pt-2.5 flex flex-col">
           <p className="font-bold text-base mb-1">{project.title}</p>
-          <p className="text-small text-muted leading-relaxed mb-2">{project.cardSummary ?? project.subtitle}</p>
+          <CardSummary project={project} className="mb-2" />
           <div className="flex flex-wrap gap-1 mb-2">
             {project.stack.slice(0, 4).map((t) => (
               <span key={t} className="px-1.5 py-0.5 text-caption font-mono rounded bg-card-border/20 text-muted/50">{t}</span>
@@ -917,7 +983,7 @@ function DockerCard({ project, onOpen, counter, className }: FrameProps): React.
         </div>
         <div className="flex-1 px-4 pt-2 pb-4 flex flex-col">
           <p className="font-bold text-base mb-1">{project.title}</p>
-          <p className="text-small text-muted leading-relaxed mb-2">{project.cardSummary ?? project.subtitle}</p>
+          <CardSummary project={project} className="mb-2" />
           <div className="flex flex-wrap gap-1 mb-2">
             {project.stack.slice(0, 4).map((t) => (
               <span key={t} className="px-1.5 py-0.5 text-caption font-mono rounded bg-card-border/20 text-muted/50">{t}</span>
@@ -951,7 +1017,7 @@ function HuggingFaceCard({ project, onOpen, counter, className }: FrameProps): R
         </div>
         <div className="flex-1 p-4 pt-3 flex flex-col">
           <p className="font-bold text-base mb-1">{project.title}</p>
-          <p className="text-small text-muted leading-relaxed mb-2">{project.cardSummary ?? project.subtitle}</p>
+          <CardSummary project={project} className="mb-2" />
           <div className="flex flex-wrap gap-1 mb-2">
             {project.stack.slice(0, 4).map((t) => (
               <span key={t} className="px-1.5 py-0.5 text-caption font-mono rounded bg-card-border/20 text-muted/50">{t}</span>
@@ -1005,7 +1071,7 @@ function StreamlitCard({ project, onOpen, counter, className }: FrameProps): Rea
         </div>
         <div className="flex-1 px-4 pt-2 pb-4 flex flex-col">
           <p className="font-bold text-base mb-1">{project.title}</p>
-          <p className="text-small text-muted leading-relaxed line-clamp-1">{project.cardSummary ?? project.subtitle}</p>
+          <CardSummary project={project} className="line-clamp-1" />
           <CardFooter project={project} onOpen={onOpen} counter={counter} />
         </div>
       </div>
@@ -1044,7 +1110,7 @@ function DagCard({ project, onOpen, counter, className }: FrameProps): React.Rea
         </div>
         <div className="flex-1 px-4 pt-2 pb-4 flex flex-col">
           <p className="font-bold text-base mb-1">{project.title}</p>
-          <p className="text-small text-muted leading-relaxed mb-2">{project.cardSummary ?? project.subtitle}</p>
+          <CardSummary project={project} className="mb-2" />
           <div className="flex flex-wrap gap-1 mb-2">
             {project.stack.slice(0, 4).map((t) => (
               <span key={t} className="px-1.5 py-0.5 text-caption font-mono rounded bg-card-border/20 text-muted/50">{t}</span>
@@ -1268,7 +1334,7 @@ export function Projects(): React.ReactElement {
             key={project.slug}
             project={project}
             mockup={mockup}
-            meta={flagshipMeta[project.slug] ?? { status: "SHIPPED", statusColor: "text-muted", metrics: [] }}
+            meta={flagshipMeta[project.slug] ?? { status: "SHIPPED", statusColor: "text-muted", metrics: [], plainMetrics: [] }}
             content={PANEL_CONTENT[project.slug] ?? { title: project.title, oneLiner: project.impact, problem: project.problem, solution: project.solution, glow: "none", mermaid: "" }}
             index={i}
             total={flagships.length}
