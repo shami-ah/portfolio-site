@@ -16,6 +16,7 @@ import {
   SECTION_INPUT,
 } from "./agent-commands";
 import { useSoundFX } from "@/lib/use-sound-fx";
+import { VisitorIntentPrompt, isIntentPromptDismissed } from "./visitor-intent-prompt";
 import {
   type EmojiMood,
   AgentEmoji,
@@ -235,6 +236,21 @@ export function AgentBar(): React.ReactElement {
   const visibleChips = sectionChips.slice(0, 5);
 
   const inputConfig = SECTION_INPUT[activeSection] ?? SECTION_INPUT.hero;
+
+  // First visit: the agent asks who the visitor is instead of cycling its usual messages
+  const [showIntentPrompt, setShowIntentPrompt] = useState(false);
+  const closeIntentPrompt = useCallback((): void => setShowIntentPrompt(false), []);
+  useEffect(() => {
+    const frame = requestAnimationFrame(() => {
+      try {
+        const answered = localStorage.getItem("visitor-intent") !== null;
+        if (!answered && !isIntentPromptDismissed()) setShowIntentPrompt(true);
+      } catch {
+        // storage unavailable — keep the regular bubble
+      }
+    });
+    return () => cancelAnimationFrame(frame);
+  }, []);
 
   // Listen for build popup trigger
   useEffect(() => {
@@ -843,7 +859,11 @@ export function AgentBar(): React.ReactElement {
             </div>
             {/* Speech panel — one centered message surface */}
             <div className="w-full shrink-0">
-              <StageSpeechBubble visible={morphPhase === "stage"} emojiHovered={emojiHovered} />
+              {showIntentPrompt && morphPhase === "stage" ? (
+                <VisitorIntentPrompt onDone={closeIntentPrompt} />
+              ) : (
+                <StageSpeechBubble visible={morphPhase === "stage"} emojiHovered={emojiHovered} />
+              )}
             </div>
           </motion.div>
         ) : (
