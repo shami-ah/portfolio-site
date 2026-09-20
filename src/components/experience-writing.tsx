@@ -8,6 +8,8 @@ import { TypeLabel } from "./type-label";
 import { useStatus } from "@/lib/use-status";
 import { getFeaturedArticles } from "@/data/writing";
 import Link from "next/link";
+import { useLens } from "@/lib/use-lens";
+import { CareerStory } from "./story/career-story";
 
 /* ------------------------------------------------------------------ */
 /*  Roles data (same as git-log.tsx)                                   */
@@ -76,6 +78,9 @@ export function ExperienceAndWriting(): React.ReactElement {
   const { status } = useStatus();
   const roles = getRoles(status.openevent);
   const featured = getFeaturedArticles();
+  const lens = useLens();
+
+  if (lens === "plain") return <CareerStory />;
 
   return (
     <section id="log" className="py-10 md:py-32">

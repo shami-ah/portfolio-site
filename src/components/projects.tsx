@@ -14,10 +14,14 @@ import { DecisionTree } from "./decision-tree";
 import { AgentEmoji } from "./agent-bar";
 import { useStatus } from "@/lib/use-status";
 import { useLens } from "@/lib/use-lens";
+import { FLAGSHIP_STORIES } from "@/data/stories";
+import { ProjectChapter } from "./story/project-chapter";
+import { ProofBand } from "./story/proof-band";
+import { SideProjects } from "./story/side-projects";
 
 const EMOJI_COMMENTARY: Record<string, { mood: "proud" | "curious" | "default" | "surprised"; text: string }> = {
   openevent: { mood: "proud", text: "8 months, 100+ clients, zero AI errors." },
-  codelens: { mood: "curious", text: "430 patterns from real PRs, not theory." },
+  codelens: { mood: "curious", text: "544 patterns from real PRs, not theory." },
   "gogaa-cli": { mood: "surprised", text: "1,418 tests. I don't ship without them." },
   rasad: { mood: "default", text: "Built this so I could see inside the black box." },
 };
@@ -65,7 +69,7 @@ function useFlagshipMeta(): Record<string, FlagshipMeta> {
       statusColor: "text-accent-secondary",
       metrics: [
         { label: "bug patterns", value: `~${status.codelens.patterns}` },
-        { label: "mined from", value: "600+ PRs" },
+        { label: "mined from", value: "860+ PRs" },
         { label: "review speed", value: "<1s" },
       ],
       plainMetrics: [
@@ -136,9 +140,9 @@ const PANEL_CONTENT: Record<string, PanelContent> = {
   },
   codelens: {
     title: "CodeLens",
-    oneLiner: "430 bug patterns mined from 600+ real PRs. Reviews in under one second.",
+    oneLiner: "544 bug patterns mined from 860+ real PRs. Reviews in under one second.",
     problem: "Code review misses bugs that patterns catch in milliseconds.",
-    solution: "430 patterns from 600+ real PRs. Scans in <1s. Your code never leaves your machine.",
+    solution: "544 patterns from 860+ real PRs. Scans in <1s. Your code never leaves your machine.",
     glow: "radial-gradient(ellipse at 70% 40%, rgba(74,85,120,0.06), transparent 70%)",
     plain: {
       oneLiner: "An automatic proofreader for software. It checks new code for known mistakes in under a second, before they reach customers.",
@@ -657,11 +661,33 @@ function ScrollPanel({
 }
 
 function ProjectDetailsContent({ project, mockup }: { project: ProjectData; mockup: MockupKind }): React.ReactElement {
+  const plain = useLens() === "plain";
+  const story = FLAGSHIP_STORIES[project.slug];
+  const copy = PANEL_CONTENT[project.slug]?.plain;
+
   return (
     <>
+      {/* Plain lens opens with the story in words; the architect quiz moves to the end */}
+      {plain && story && copy && (
+        <div className="mb-8">
+          <p className="font-mono text-[11px] md:text-xs uppercase tracking-[0.2em] text-accent mb-3">{story.audience}</p>
+          <h3 className="font-heading font-bold text-2xl md:text-4xl leading-[1.1] tracking-tight text-balance">{story.headline}</h3>
+          <div className="mt-6 grid md:grid-cols-2 gap-5 md:gap-8">
+            <div>
+              <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-foreground/50 mb-2">The problem</p>
+              <p className="text-sm md:text-base text-foreground/80 leading-relaxed">{copy.problem}</p>
+            </div>
+            <div>
+              <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-foreground/50 mb-2">What I built</p>
+              <p className="text-sm md:text-base text-foreground/80 leading-relaxed">{copy.solution}</p>
+            </div>
+          </div>
+        </div>
+      )}
+
       <ProjectMockup kind={mockup} />
 
-      {project.decision && (
+      {!plain && project.decision && (
         <DecisionTree decision={project.decision} />
       )}
 
@@ -787,6 +813,9 @@ function ProjectDetailsContent({ project, mockup }: { project: ProjectData; mock
             ))}
           </div>
         </div>
+      )}
+      {plain && project.decision && (
+        <DecisionTree decision={project.decision} />
       )}
     </>
   );
@@ -1224,6 +1253,7 @@ export function Projects(): React.ReactElement {
   }, []);
   const [expandedPanel, setExpandedPanel] = useState<ExpandedPanel>(null);
   const flagshipMeta = useFlagshipMeta();
+  const plain = useLens() === "plain";
   const sectionRef = useRef<HTMLElement>(null);
 
   const flagships = FLAGSHIP_SLUGS.map(({ slug, mockup }) => ({
@@ -1310,43 +1340,75 @@ export function Projects(): React.ReactElement {
     <section id="projects" ref={sectionRef}>
       <ScrollProgress containerRef={sectionRef} />
 
-      {/* Section intro */}
-      <div className="md:min-h-[60vh] flex flex-col items-center justify-center text-center px-5 md:px-8 py-8 md:py-20">
-        <FadeUp>
-          <p className="text-sm font-mono text-accent mb-4 uppercase tracking-[0.3em]">
-            what I&apos;ve shipped
-          </p>
-          <h2 className="mx-auto max-w-[760px] text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-[1.08] tracking-tight mb-5 text-balance">
-            4 production systems<span className="text-muted">.</span>
-            <br />
-            <span className="text-muted">Scroll to explore</span><span className="text-accent">.</span>
-          </h2>
-          <p className="text-sm md:text-base text-muted leading-relaxed max-w-md mx-auto">
-            Each one built from scratch, solving a real problem, running in production. Click the mockup or diagram to expand.
-          </p>
-        </FadeUp>
-      </div>
+      {plain ? (
+        <>
+          {/* Plain lens: each flagship is told as a story, then every smaller build at once */}
+          <ProofBand />
+          {flagships.map(({ project, mockup }, i) => {
+            const story = FLAGSHIP_STORIES[project.slug];
+            const meta = flagshipMeta[project.slug];
+            const next = flagships[i + 1]?.project;
+            if (!story || !meta) return null;
+            return (
+              <ProjectChapter
+                key={project.slug}
+                project={project}
+                mockup={mockup}
+                story={story}
+                index={i}
+                total={flagships.length}
+                status={meta.status}
+                statusColor={meta.statusColor}
+                summary={PANEL_CONTENT[project.slug]?.plain?.oneLiner ?? project.cardSummary ?? project.subtitle}
+                metrics={meta.plainMetrics}
+                nextTitle={next?.title}
+                nextSlug={next?.slug}
+              />
+            );
+          })}
+          <SideProjects projects={others} onOpen={setActiveProject} />
+        </>
+      ) : (
+        <>
+          {/* Section intro */}
+          <div className="md:min-h-[60vh] flex flex-col items-center justify-center text-center px-5 md:px-8 py-8 md:py-20">
+            <FadeUp>
+              <p className="text-sm font-mono text-accent mb-4 uppercase tracking-[0.3em]">
+                what I&apos;ve shipped
+              </p>
+              <h2 className="mx-auto max-w-[760px] text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-[1.08] tracking-tight mb-5 text-balance">
+                4 production systems<span className="text-muted">.</span>
+                <br />
+                <span className="text-muted">Scroll to explore</span><span className="text-accent">.</span>
+              </h2>
+              <p className="text-sm md:text-base text-muted leading-relaxed max-w-md mx-auto">
+                Each one built from scratch, solving a real problem, running in production. Click the mockup or diagram to expand.
+              </p>
+            </FadeUp>
+          </div>
 
-      {/* Scrollytelling panels — scroll-snap for smooth snapping */}
-      <div className="scroll-snap-projects">
-        {flagships.map(({ project, mockup }, i) => (
-          <ScrollPanel
-            key={project.slug}
-            project={project}
-            mockup={mockup}
-            meta={flagshipMeta[project.slug] ?? { status: "SHIPPED", statusColor: "text-muted", metrics: [], plainMetrics: [] }}
-            content={PANEL_CONTENT[project.slug] ?? { title: project.title, oneLiner: project.impact, problem: project.problem, solution: project.solution, glow: "none", mermaid: "" }}
-            index={i}
-            total={flagships.length}
-            onExpand={setExpandedPanel}
-          />
-        ))}
-      </div>
+          {/* Scrollytelling panels — scroll-snap for smooth snapping */}
+          <div className="scroll-snap-projects">
+            {flagships.map(({ project, mockup }, i) => (
+              <ScrollPanel
+                key={project.slug}
+                project={project}
+                mockup={mockup}
+                meta={flagshipMeta[project.slug] ?? { status: "SHIPPED", statusColor: "text-muted", metrics: [], plainMetrics: [] }}
+                content={PANEL_CONTENT[project.slug] ?? { title: project.title, oneLiner: project.impact, problem: project.problem, solution: project.solution, glow: "none", mermaid: "" }}
+                index={i}
+                total={flagships.length}
+                onExpand={setExpandedPanel}
+              />
+            ))}
+          </div>
 
-      {/* Other deployments carousel */}
-      <div className="py-8 md:py-16 px-4 md:px-8">
-        <OtherDeployments others={others} onOpen={setActiveProject} />
-      </div>
+          {/* Other deployments carousel */}
+          <div className="py-8 md:py-16 px-4 md:px-8">
+            <OtherDeployments others={others} onOpen={setActiveProject} />
+          </div>
+        </>
+      )}
 
       <ProjectModal
         project={activeProject}

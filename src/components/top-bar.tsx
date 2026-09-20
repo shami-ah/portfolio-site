@@ -259,6 +259,12 @@ export function TopBar(): React.ReactElement {
 
   return (
     <>
+      {/* Soft backdrop so scrolling content never collides with the fixed bar */}
+      <div
+        aria-hidden
+        className="fixed top-0 inset-x-0 h-20 z-30 pointer-events-none bg-gradient-to-b from-background via-background/80 to-transparent"
+      />
+
       {/* Signature — top-left corner */}
       <motion.div
         initial={false}
