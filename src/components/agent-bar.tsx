@@ -714,23 +714,6 @@ export function AgentBar(): React.ReactElement {
       {/* ── The dock: bottom-right, one home for the agent on every section ── */}
       {emojiPhase !== "bottom" && (
         <div className="fixed z-[100] bottom-4 right-4 md:bottom-5 md:right-5 flex flex-col items-end gap-3 w-[min(380px,calc(100vw-2rem))] pointer-events-none">
-          {/* Collapsed: first-visit question sits above the dock */}
-          <AnimatePresence>
-            {!isOpen && showIntentPrompt && buttonReady && (
-              <motion.div
-                key="intent"
-                initial={{ opacity: 0, y: 10, scale: 0.96 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                exit={{ opacity: 0, y: 10, scale: 0.96 }}
-                transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-                className="pointer-events-auto w-full rounded-2xl border border-card-border bg-card/95 backdrop-blur-xl p-4"
-                style={{ boxShadow: "0 12px 40px rgba(0,0,0,0.35)" }}
-              >
-                <VisitorIntentPrompt onDone={closeIntentPrompt} />
-              </motion.div>
-            )}
-          </AnimatePresence>
-
           {/* Expanded panel */}
           <AnimatePresence>
             {isOpen && (
@@ -906,9 +889,39 @@ export function AgentBar(): React.ReactElement {
             )}
           </AnimatePresence>
 
+          {/* Collapsed dock, first visit: the question lives inside the dock, same footprint */}
+          <AnimatePresence>
+            {uiState === "button" && buttonReady && showIntentPrompt && (
+              <motion.div
+                key="dock-asking"
+                layout
+                initial={{ opacity: 0, y: 12, scale: 0.9 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: 12, scale: 0.9 }}
+                transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1], layout: { type: "spring", stiffness: 380, damping: 32 } }}
+                className="pointer-events-auto flex items-center gap-2.5 card-gradient-border rounded-[22px] bg-card/95 backdrop-blur-xl border border-card-border pl-1.5 pr-3.5 py-1.5 max-w-full"
+                style={{ boxShadow: `0 6px 24px rgba(0,0,0,0.35), 0 0 14px ${personality.glowColor.replace("0.4", "0.22")}` }}
+              >
+                <button
+                  type="button"
+                  onClick={() => {
+                    setUiState("panel");
+                    setTimeout(() => inputRef.current?.focus(), 150);
+                  }}
+                  aria-label="Open agent"
+                  className="relative w-10 h-10 rounded-full border border-accent-status/30 bg-accent-status/[0.07] flex items-center justify-center shrink-0 cursor-pointer hover:scale-105 transition-transform"
+                >
+                  <AgentEmoji size={26} mood={sectionMood} />
+                  <span className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-accent-status border-[1.5px] border-card" style={{ animation: "green-pulse 2s infinite" }} />
+                </button>
+                <VisitorIntentPrompt onDone={closeIntentPrompt} />
+              </motion.div>
+            )}
+          </AnimatePresence>
+
           {/* Collapsed dock — morphs with the section in view */}
           <AnimatePresence>
-            {uiState === "button" && buttonReady && (
+            {uiState === "button" && buttonReady && !showIntentPrompt && (
               <motion.button
                 key="dock"
                 type="button"

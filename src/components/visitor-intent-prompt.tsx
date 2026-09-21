@@ -1,25 +1,25 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
+import { X } from "lucide-react";
 import { setVisitorIntent, type VisitorIntent } from "@/lib/use-lens";
 
 /* ------------------------------------------------------------------ */
-/*  First-visit question from the agent: who are you?                  */
-/*  The answer picks the reading lens and the hero's primary action.   */
-/*  Ignoring it is fine — plain-language defaults stay in place.       */
+/*  First-visit question, asked from inside the dock itself:           */
+/*  one line of text, one row of short chips. The answer picks the     */
+/*  reading lens and the hero's primary action. Ignoring it is fine.   */
 /* ------------------------------------------------------------------ */
 
 const DISMISS_KEY = "visitor-intent-dismissed";
 
 const OPTIONS: { intent: VisitorIntent; label: string; reply: string }[] = [
-  { intent: "hiring", label: "I'm hiring", reply: "Great. CV is up front, and I'll keep it jargon-free." },
-  { intent: "project", label: "I have a project", reply: "Great. Booking a call is one click, no jargon on the way." },
-  { intent: "developer", label: "I'm a developer", reply: "Nice. Technical mode on: diagrams, stack, code." },
+  { intent: "hiring", label: "Hiring", reply: "Great. CV is up front, no jargon." },
+  { intent: "project", label: "A project", reply: "Great. Booking a call is one click." },
+  { intent: "developer", label: "Developer", reply: "Nice. Technical mode is on." },
 ];
 
 const CHIP =
-  "px-3 py-1.5 rounded-full border border-accent-status/25 bg-card/70 font-mono text-[11px] md:text-xs text-foreground/85 hover:border-accent-status/60 hover:bg-accent-status/10 transition-colors duration-200 cursor-pointer";
+  "px-2.5 py-1 rounded-full border border-accent-status/30 bg-background/40 text-[11px] leading-none text-foreground/85 hover:border-accent-status/70 hover:bg-accent-status/10 transition-colors duration-200 cursor-pointer whitespace-nowrap";
 
 export function isIntentPromptDismissed(): boolean {
   try {
@@ -32,10 +32,10 @@ export function isIntentPromptDismissed(): boolean {
 export function VisitorIntentPrompt({ onDone }: { onDone: () => void }): React.ReactElement {
   const [reply, setReply] = useState<string | null>(null);
 
-  // Let the agent's answer sit for a moment, then hand the bubble back
+  // Let the agent's answer sit for a moment, then hand the dock back
   useEffect(() => {
     if (!reply) return;
-    const t = setTimeout(onDone, 3200);
+    const t = setTimeout(onDone, 2600);
     return () => clearTimeout(t);
   }, [reply, onDone]);
 
@@ -55,31 +55,31 @@ export function VisitorIntentPrompt({ onDone }: { onDone: () => void }): React.R
   };
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: -8, scale: 0.92, filter: "blur(4px)" }}
-      animate={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }}
-      transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-      className="w-full flex flex-col items-start gap-2.5"
-    >
-      <p className="text-sm font-semibold text-foreground" aria-live="polite">
-        {reply ?? "What brings you here?"}
-      </p>
+    <span className="min-w-0 flex flex-col gap-1.5 text-left">
+      <span className="flex items-center justify-between gap-3">
+        <span className="text-[13px] font-semibold text-foreground leading-tight" aria-live="polite">
+          {reply ?? "What brings you here?"}
+        </span>
+        {!reply && (
+          <button
+            type="button"
+            onClick={dismiss}
+            aria-label="Just looking, dismiss the question"
+            className="shrink-0 -mr-1 p-0.5 rounded-full text-foreground/40 hover:text-foreground transition-colors cursor-pointer"
+          >
+            <X size={13} strokeWidth={2} />
+          </button>
+        )}
+      </span>
       {!reply && (
-        <div className="flex flex-wrap items-center gap-1.5">
+        <span className="flex items-center gap-1.5">
           {OPTIONS.map((opt) => (
             <button key={opt.intent} type="button" onClick={() => choose(opt)} className={CHIP}>
               {opt.label}
             </button>
           ))}
-          <button
-            type="button"
-            onClick={dismiss}
-            className="px-2 py-1.5 font-mono text-[11px] md:text-xs text-muted/60 hover:text-foreground/80 transition-colors cursor-pointer"
-          >
-            just looking
-          </button>
-        </div>
+        </span>
       )}
-    </motion.div>
+    </span>
   );
 }
