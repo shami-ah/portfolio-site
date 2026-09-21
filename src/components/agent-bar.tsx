@@ -664,8 +664,6 @@ export function AgentBar(): React.ReactElement {
     ? methodologyChips.map((mc) => ({ key: mc.command.keyword, label: mc.label, run: () => runCommand(mc.command) }))
     : visibleChips.map((chip) => ({ key: chip.command, label: chip.label, run: () => onChipClick(chip.command) }));
 
-  const DOCK_LABEL = "font-mono text-[10px] uppercase tracking-[0.18em] text-foreground/45 mb-2";
-
   return (
     <>
       {/* ── Emoji born at bottom centre after the intro replay, then travels to the dock ── */}
@@ -713,7 +711,7 @@ export function AgentBar(): React.ReactElement {
 
       {/* ── The dock: bottom-right, one home for the agent on every section ── */}
       {emojiPhase !== "bottom" && (
-        <div className="fixed z-[100] bottom-4 right-4 md:bottom-5 md:right-5 flex flex-col items-end gap-3 w-[min(380px,calc(100vw-2rem))] pointer-events-none">
+        <div className="fixed z-[100] bottom-4 right-4 md:bottom-5 md:right-5 flex flex-col items-end gap-3 w-[min(340px,calc(100vw-2rem))] pointer-events-none">
           {/* Expanded panel */}
           <AnimatePresence>
             {isOpen && (
@@ -740,15 +738,15 @@ export function AgentBar(): React.ReactElement {
                   style={{ boxShadow: `0 16px 48px rgba(0,0,0,0.4), 0 0 18px ${personality.glowColor.replace("0.4", "0.12")}` }}
                 >
                   {/* Header: who is talking, where you are */}
-                  <div className="flex items-center gap-3 px-4 pt-4 pb-3">
+                  <div className="flex items-center gap-2.5 px-3 pt-3 pb-2.5">
                     <button
                       type="button"
                       onClick={() => setMoodPickerOpen((open) => !open)}
                       aria-label="Choose agent mood"
                       aria-expanded={moodPickerOpen}
-                      className="relative w-11 h-11 rounded-full border border-accent-status/30 bg-accent-status/[0.07] flex items-center justify-center shrink-0 cursor-pointer hover:scale-105 transition-transform"
+                      className="relative w-9 h-9 rounded-full border border-accent-status/30 bg-accent-status/[0.07] flex items-center justify-center shrink-0 cursor-pointer hover:scale-105 transition-transform"
                     >
-                      <AgentEmoji size={30} mood={sectionMood} />
+                      <AgentEmoji size={24} mood={sectionMood} />
                       <span className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-accent-status border-[1.5px] border-card" style={{ animation: "green-pulse 2s infinite" }} />
                     </button>
                     <div className="min-w-0 flex-1">
@@ -760,8 +758,8 @@ export function AgentBar(): React.ReactElement {
                           exit={{ opacity: 0, y: -6 }}
                           transition={{ duration: 0.2 }}
                         >
-                          <p className="text-sm font-semibold text-foreground truncate">{dock.title}</p>
-                          <p className="text-xs text-foreground/60 leading-snug">{dock.info}</p>
+                          <p className="text-[13px] font-semibold text-foreground leading-tight truncate">{dock.title}</p>
+                          <p className="text-[11px] text-foreground/60 leading-snug line-clamp-1" title={dock.info}>{dock.info}</p>
                         </motion.div>
                       </AnimatePresence>
                     </div>
@@ -769,7 +767,7 @@ export function AgentBar(): React.ReactElement {
                       type="button"
                       onClick={closePanel}
                       aria-label="Close agent"
-                      className="self-start p-1.5 -mr-1 rounded-lg text-foreground/40 hover:text-foreground hover:bg-foreground/5 transition-colors cursor-pointer"
+                      className="self-start p-1 -mr-0.5 rounded-lg text-foreground/40 hover:text-foreground hover:bg-foreground/5 transition-colors cursor-pointer"
                     >
                       <X size={15} strokeWidth={2} />
                     </button>
@@ -785,7 +783,7 @@ export function AgentBar(): React.ReactElement {
                         transition={{ duration: 0.25 }}
                         className="overflow-hidden"
                       >
-                        <div className="flex items-center gap-2 px-4 pb-3">
+                        <div className="flex items-center gap-1.5 px-3 pb-2.5">
                           {MOOD_POSITIONS.map((mp) => (
                             <button
                               key={mp.mood}
@@ -800,7 +798,7 @@ export function AgentBar(): React.ReactElement {
                                 );
                                 setMoodPickerOpen(false);
                               }}
-                              className="w-9 h-9 rounded-full border border-card-border bg-background/40 flex items-center justify-center cursor-pointer hover:border-accent-status/50 hover:scale-110 transition-all"
+                              className="w-8 h-8 rounded-full border border-card-border bg-background/40 flex items-center justify-center cursor-pointer hover:border-accent-status/50 hover:scale-110 transition-all"
                             >
                               <AgentEmoji size={18} mood={mp.mood} />
                             </button>
@@ -812,9 +810,9 @@ export function AgentBar(): React.ReactElement {
 
                   {/* Routes and questions for this part of the page */}
                   {!activeCmd && !chatOpen && (
-                    <div className="px-4 pb-3 space-y-3.5 border-t border-card-border/60 pt-3.5">
+                    <div className="px-3 py-2.5 space-y-2 border-t border-card-border/60">
                       <div>
-                        <p className={DOCK_LABEL}>Go to</p>
+                        <p className="sr-only">Go to</p>
                         <AnimatePresence mode="wait" initial={false}>
                           <motion.div
                             key={dock.title}
@@ -822,14 +820,14 @@ export function AgentBar(): React.ReactElement {
                             animate={{ opacity: 1, y: 0 }}
                             exit={{ opacity: 0, y: -6 }}
                             transition={{ duration: 0.2 }}
-                            className="grid grid-cols-2 gap-1.5"
+                            className="grid grid-cols-2 gap-1"
                           >
                             {dock.routes.map((route) => (
                               <button
                                 key={route.label}
                                 type="button"
                                 onClick={() => followRoute(route)}
-                                className="text-left px-3 py-2 rounded-lg border border-card-border bg-background/40 text-xs text-foreground/80 hover:border-accent/50 hover:text-foreground hover:bg-accent/[0.06] transition-colors cursor-pointer truncate"
+                                className="text-left px-2.5 py-1.5 rounded-md border border-card-border bg-background/40 text-[11.5px] leading-tight text-foreground/80 hover:border-accent/50 hover:text-foreground hover:bg-accent/[0.06] transition-colors cursor-pointer truncate"
                               >
                                 {route.label}
                               </button>
@@ -838,15 +836,15 @@ export function AgentBar(): React.ReactElement {
                         </AnimatePresence>
                       </div>
                       {askChips.length > 0 && (
-                        <div>
-                          <p className={DOCK_LABEL}>Ask me</p>
-                          <div className="flex flex-wrap gap-1.5">
+                        <div className="flex items-center gap-2">
+                          <p className="shrink-0 font-mono text-[10px] uppercase tracking-[0.14em] text-foreground/45">Ask</p>
+                          <div className="flex gap-1 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
                             {askChips.map((chip) => (
                               <button
                                 key={chip.key}
                                 type="button"
                                 onClick={chip.run}
-                                className="px-2.5 py-1 rounded-full border border-card-border text-[11px] text-foreground/65 hover:text-accent hover:border-accent/40 transition-colors cursor-pointer"
+                                className="shrink-0 px-2 py-0.5 rounded-full border border-card-border text-[11px] text-foreground/65 hover:text-accent hover:border-accent/40 transition-colors cursor-pointer whitespace-nowrap"
                               >
                                 {chip.label}
                               </button>
@@ -859,14 +857,14 @@ export function AgentBar(): React.ReactElement {
 
                   {/* Input */}
                   <form onSubmit={onSubmit} data-agent-bar="fixed" className="border-t border-card-border/60">
-                    <div className="flex items-center gap-2 px-3 py-2.5">
+                    <div className="flex items-center gap-2 px-3 py-1.5">
                       <button
                         type="button"
                         onClick={handleChatToggle}
                         aria-label={chatOpen ? "Close chat" : "Open chat"}
-                        className="relative w-8 h-8 rounded-full border border-card-border flex items-center justify-center shrink-0 cursor-pointer text-foreground/60 hover:text-accent-status hover:border-accent-status/40 transition-colors"
+                        className="relative w-7 h-7 rounded-full border border-card-border flex items-center justify-center shrink-0 cursor-pointer text-foreground/60 hover:text-accent-status hover:border-accent-status/40 transition-colors"
                       >
-                        <MessageSquare size={14} strokeWidth={1.75} />
+                        <MessageSquare size={13} strokeWidth={1.75} />
                         {chatMsgCount > 0 && (
                           <span className="absolute -top-1.5 -right-1.5 min-w-[15px] h-[15px] rounded-full bg-accent text-[8px] font-mono font-bold text-background flex items-center justify-center px-0.5">
                             {chatMsgCount}
@@ -880,7 +878,7 @@ export function AgentBar(): React.ReactElement {
                         onChange={(e) => setInput(e.target.value)}
                         placeholder={chatOpen ? "reply in chat..." : (viewingProject ? "ask about this project..." : inputConfig.placeholder)}
                         disabled={isBusy}
-                        className="flex-1 min-w-0 bg-transparent outline-none text-sm placeholder:text-foreground/35 text-foreground disabled:opacity-50"
+                        className="flex-1 min-w-0 bg-transparent outline-none text-[13px] placeholder:text-foreground/35 text-foreground disabled:opacity-50"
                       />
                     </div>
                   </form>
