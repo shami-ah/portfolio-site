@@ -59,13 +59,13 @@ export function VisitorIntentPrompt({ onDone }: { onDone: () => void }): React.R
       initial={{ opacity: 0, y: -8, scale: 0.92, filter: "blur(4px)" }}
       animate={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }}
       transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-      className="w-full shrink-0 flex flex-col items-center gap-2 -mt-3 md:-mt-8"
+      className="w-full flex flex-col items-start gap-2.5"
     >
-      <p className="font-mono text-[11px] md:text-sm text-foreground/80 text-center" aria-live="polite">
+      <p className="text-sm font-semibold text-foreground" aria-live="polite">
         {reply ?? "What brings you here?"}
       </p>
       {!reply && (
-        <div className="flex flex-wrap items-center justify-center gap-1.5 md:gap-2 max-w-[calc(100vw-2rem)]">
+        <div className="flex flex-wrap items-center gap-1.5">
           {OPTIONS.map((opt) => (
             <button key={opt.intent} type="button" onClick={() => choose(opt)} className={CHIP}>
               {opt.label}

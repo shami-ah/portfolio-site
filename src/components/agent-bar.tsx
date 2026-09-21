@@ -2,9 +2,8 @@
 
 import { useEffect, useRef, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
-import ReactDOM from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { X } from "lucide-react";
+import { MessageSquare, X } from "lucide-react";
 import {
   type AgentCommand,
   commands,
@@ -17,10 +16,11 @@ import {
 } from "./agent-commands";
 import { useSoundFX } from "@/lib/use-sound-fx";
 import { VisitorIntentPrompt, isIntentPromptDismissed } from "./visitor-intent-prompt";
+import { getDockContext, type DockRoute } from "./agent-dock-data";
+import { openCvDrawer } from "./cv-drawer";
 import {
   type EmojiMood,
   AgentEmoji,
-  StageSpeechBubble,
   BuildPopup,
   WhoamiPopup,
   MOOD_POSITIONS,
@@ -109,15 +109,12 @@ export function AgentBar(): React.ReactElement {
   const [buttonReady, setButtonReady] = useState(false);
   const [activeSection, setActiveSection] = useState("hero");
   const [viewingProject, setViewingProject] = useState<string | null>(null);
-  const [inHeroViewport, setInHeroViewport] = useState(true);
-  const [heroAgentOpen, setHeroAgentOpen] = useState(false);
-  const [morphPhase, setMorphPhase] = useState<"stage" | "morphing" | "bar">("stage");
-  const [moodFacesVisible, setMoodFacesVisible] = useState(false);
+  // Flagship chapter currently in view — lets the dock speak about one project at a time
+  const [activeChapter, setActiveChapter] = useState<string | null>(null);
   const [moodPickerOpen, setMoodPickerOpen] = useState(false);
-  const [emojiHovered, setEmojiHovered] = useState(false);
   const [emojiMoodOverride, setEmojiMoodOverride] = useState<EmojiMood | null>(null);
   const [persistentMood, setPersistentMood] = useState<EmojiMood>("default");
-  // Emoji position phases: "hidden" → "bottom" → "settled" (in hero mount)
+  // Emoji position phases: "hidden" → "bottom" (born after the intro replay) → "settled" (docked)
   const [emojiPhase, setEmojiPhase] = useState<"hidden" | "bottom" | "settled">("hidden");
   const emojiHasSettled = useRef(false);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -161,8 +158,6 @@ export function AgentBar(): React.ReactElement {
     const onOpen = (): void => {
       setChatOpen(true);
       setUiState("panel");
-      setMorphPhase("bar");
-      setHeroAgentOpen(true);
       setTimeout(() => inputRef.current?.focus(), 120);
     };
     const onClose = (): void => setChatOpen(false);
@@ -190,39 +185,22 @@ export function AgentBar(): React.ReactElement {
         }
         setActiveSection(current);
         recordSection(current);
-        // Track hero viewport — keep inline agent until the hero has actually
-        // cleared the bottom agent area. This avoids a visible scroll jump.
-        const heroEl = document.getElementById("hero");
-        if (heroEl) {
-          const rect = heroEl.getBoundingClientRect();
-          const wasInHero = rect.bottom > 120;
-          setInHeroViewport(wasInHero);
-          // Reset emoji when leaving hero — always show emoji on return
-          if (!wasInHero) {
-            setHeroAgentOpen(false);
-            setMorphPhase("stage");
-            setEmojiPhase("settled");
+        let chapter: string | null = null;
+        if (current === "projects") {
+          for (const el of document.querySelectorAll<HTMLElement>('[id^="project-"]')) {
+            const rect = el.getBoundingClientRect();
+            if (rect.top <= window.innerHeight * 0.5 && rect.bottom > window.innerHeight * 0.5) {
+              chapter = el.id.replace("project-", "");
+            }
           }
         }
+        setActiveChapter(chapter);
         ticking = false;
       });
     };
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
-
-  // Mood constellation — playful secondary control; main emoji click always opens agent.
-  useEffect(() => {
-    if (emojiPhase !== "settled" || heroAgentOpen || morphPhase !== "stage") {
-      const t = setTimeout(() => {
-        setMoodFacesVisible(false);
-        setMoodPickerOpen(false);
-      }, 0);
-      return () => clearTimeout(t);
-    }
-    const t = setTimeout(() => setMoodFacesVisible(emojiHovered || moodPickerOpen), 0);
-    return () => clearTimeout(t);
-  }, [emojiPhase, heroAgentOpen, moodPickerOpen, morphPhase, emojiHovered]);
 
   // When viewing a project, show methodology chips instead of section chips
   const methodologyChips = viewingProject ? PROJECT_METHODOLOGY[viewingProject] ?? [] : [];
@@ -342,9 +320,6 @@ export function AgentBar(): React.ReactElement {
     const onReplay = (): void => {
       setUiState("hidden");
       setButtonReady(false);
-      setHeroAgentOpen(false);
-      setMorphPhase("stage");
-      setMoodFacesVisible(false);
       setMoodPickerOpen(false);
       setEmojiPhase("hidden");
       setPersistentMood("default");
@@ -513,27 +488,14 @@ export function AgentBar(): React.ReactElement {
     return () => clearTimeout(t);
   }, [uiState, buttonReady]);
 
+  // ChatWidget portals into the dock's focus mount — tell it whenever the mount appears
   useEffect(() => {
-    if (!inHeroViewport) return;
-    if (uiState === "processing" || uiState === "responding") {
-      window.dispatchEvent(new CustomEvent("agent-overlay-open"));
-      return () => {
-        window.dispatchEvent(new CustomEvent("agent-overlay-close"));
-      };
-    }
-  }, [inHeroViewport, uiState]);
-
-  useEffect(() => {
-    const focusMountShouldExist =
-      (!inHeroViewport && (uiState === "panel" || uiState === "processing" || uiState === "responding")) ||
-      (inHeroViewport && morphPhase === "bar" && (uiState === "button" || uiState === "panel" || uiState === "processing" || uiState === "responding"));
-
-    if (!focusMountShouldExist) return;
+    if (uiState !== "panel" && uiState !== "processing" && uiState !== "responding") return;
     const frame = requestAnimationFrame(() => {
       window.dispatchEvent(new CustomEvent("agent-focus-mount-ready"));
     });
     return () => cancelAnimationFrame(frame);
-  }, [chatOpen, inHeroViewport, morphPhase, uiState]);
+  }, [chatOpen, uiState]);
 
   const onSubmit = (e: React.FormEvent): void => {
     e.preventDefault();
@@ -586,8 +548,6 @@ export function AgentBar(): React.ReactElement {
     // Route free-text queries to ChatWidget
     window.dispatchEvent(new CustomEvent("chat-with-query", { detail: query }));
     setUiState("panel");
-    setMorphPhase("bar");
-    setHeroAgentOpen(true);
   };
 
   const onChipClick = (command: string): void => {
@@ -599,21 +559,47 @@ export function AgentBar(): React.ReactElement {
 
   const totalMs = activeCmd?.steps.reduce((s, x) => s + x.ms, 0) ?? 0;
 
-  // Hero portal mount point
-  const heroMount = typeof document !== "undefined" ? document.getElementById("hero-agent-mount") : null;
+  const dock = getDockContext(activeSection, activeChapter);
+  const sectionMood: EmojiMood =
+    emojiMoodOverride ??
+    (activeSection === "projects" ? "curious" : activeSection === "log" ? "proud" : activeSection === "contact" ? "waving" : persistentMood);
+  const personality = SECTION_PERSONALITY[activeSection] ?? SECTION_PERSONALITY.hero;
+  const isOpen = uiState === "panel" || uiState === "processing" || uiState === "responding";
+  const isBusy = uiState === "processing" || uiState === "responding";
 
-  // When in hero viewport, the agent panel renders inline in the hero via portal.
-  // The button state is skipped — we go straight to panel appearance in the hero.
-  // When scrolled past hero, it renders as the fixed bottom pill/panel.
-  const isHeroInline = inHeroViewport && heroMount;
+  const closePanel = (): void => {
+    setActiveCmd(null);
+    setShownSteps(0);
+    setShowResponse(false);
+    setInput("");
+    setMoodPickerOpen(false);
+    if (chatOpen) window.dispatchEvent(new CustomEvent("close-chat-widget"));
+    setUiState("button");
+  };
 
-  // In hero viewport, auto-show panel if button state (agent is always "open" in hero)
-  const effectiveUiState = isHeroInline && uiState === "button" ? "panel" : uiState;
+  const handleChatToggle = (): void => {
+    window.dispatchEvent(new CustomEvent(chatOpen ? "close-chat-widget" : "open-chat-widget"));
+  };
 
-  // ── Shared processing/response area (used by both hero and fixed modes) ──
+  const followRoute = (route: DockRoute): void => {
+    closePanel();
+    if (route.kind === "scroll") {
+      document.getElementById(route.target)?.scrollIntoView({ behavior: "smooth", block: "start" });
+    } else if (route.kind === "cv") {
+      openCvDrawer();
+    } else if (route.kind === "expand") {
+      window.dispatchEvent(new CustomEvent("open-project-detail", { detail: { slug: route.slug, kind: route.view } }));
+    } else if (route.external || route.href.startsWith("mailto:")) {
+      window.open(route.href, route.external ? "_blank" : "_self", "noopener");
+    } else {
+      router.push(route.href);
+    }
+  };
+
+  // ── Command trace + response (shown above the dock while a command runs) ──
   const processingContent = (
     <AnimatePresence>
-      {(effectiveUiState === "processing" || effectiveUiState === "responding") && activeCmd && (
+      {isBusy && activeCmd && (
         <motion.div
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
@@ -674,326 +660,17 @@ export function AgentBar(): React.ReactElement {
     </AnimatePresence>
   );
 
-  // ── Morph handlers (plain functions, not hooks) ──
-  const handleEmojiClick = (): void => {
-    if (emojiMoodOverride === "dancing") return;
-    setMorphPhase("morphing");
-    setTimeout(() => {
-      setMorphPhase("bar");
-      setHeroAgentOpen(true);
-      setTimeout(() => inputRef.current?.focus(), 200);
-    }, 400);
-  };
+  const askChips = methodologyChips.length > 0
+    ? methodologyChips.map((mc) => ({ key: mc.command.keyword, label: mc.label, run: () => runCommand(mc.command) }))
+    : visibleChips.map((chip) => ({ key: chip.command, label: chip.label, run: () => onChipClick(chip.command) }));
 
-  const handleCloseBar = (): void => {
-    setHeroAgentOpen(false);
-    setMorphPhase("stage");
-    setActiveCmd(null);
-    setShownSteps(0);
-    setShowResponse(false);
-    setInput("");
-    if (chatOpen) window.dispatchEvent(new CustomEvent("close-chat-widget"));
-  };
-
-  const handleChatToggle = (): void => {
-    window.dispatchEvent(new CustomEvent(chatOpen ? "close-chat-widget" : "open-chat-widget"));
-  };
-
-  // ── Shared suggestion chips ──
-  const chipsContent = (
-    <AnimatePresence>
-      {effectiveUiState === "panel" && !activeCmd && !chatOpen && (
-        <motion.div
-          initial={{ opacity: 0, y: 6 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: 6 }}
-          transition={{ duration: 0.3 }}
-          className="flex justify-center gap-1 md:gap-1.5 flex-wrap px-1 md:px-2"
-        >
-          {methodologyChips.length > 0
-            ? methodologyChips.map((mc, i) => (
-                <motion.button
-                  key={mc.command.keyword}
-                  type="button"
-                  onClick={() => runCommand(mc.command)}
-                  initial={{ opacity: 0, y: 8 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: i * 0.05 + 0.1, duration: 0.3 }}
-                  className="px-2 py-1 md:px-3 md:py-1.5 rounded-full glass text-[10px] md:text-small font-mono text-green-400/70 border-green-500/20 hover:text-green-400 hover:border-green-500/40 hover:bg-green-500/5 transition-all cursor-pointer"
-                >
-                  {mc.label}
-                </motion.button>
-              ))
-            : visibleChips.map((chip, i) => (
-                <motion.button
-                  key={chip.command}
-                  type="button"
-                  onClick={() => onChipClick(chip.command)}
-                  initial={{ opacity: 0, y: 8 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: i * 0.05 + 0.1, duration: 0.3 }}
-                  className="px-2 py-1 md:px-3 md:py-1.5 rounded-full glass text-[10px] md:text-small font-mono text-muted/70 hover:text-accent hover:border-accent/30 transition-all cursor-pointer"
-                >
-                  {chip.label}
-                </motion.button>
-              ))
-          }
-        </motion.div>
-      )}
-    </AnimatePresence>
-  );
-
-  // ── Hero inline content — Agent Stage (closed) or Input Bar (open) ──
-  const heroContent = (
-    <div className="w-full mx-auto">
-      <AnimatePresence mode="wait">
-        {morphPhase !== "bar" ? (
-          /* ═══ AGENT STAGE — emoji + scanner + speech bubble ═══ */
-          <motion.div
-            key="agent-stage"
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.6, filter: "blur(8px)" }}
-            transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
-            className="flex flex-col items-center justify-center gap-1 md:gap-2 mx-auto -mt-3 md:-mt-4"
-          >
-            {/* Character zone — centered signature object, never shifts */}
-            <div
-              className="relative w-[176px] h-[204px] md:w-[252px] md:h-[252px] flex items-center justify-center shrink-0 overflow-visible"
-              onMouseEnter={() => setEmojiHovered(true)}
-              onMouseLeave={() => {
-                setEmojiHovered(false);
-                setMoodPickerOpen(false);
-              }}
-            >
-              {/* Mood constellation */}
-              <AnimatePresence>
-                {moodFacesVisible && morphPhase === "stage" && (
-                  <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
-                    className="absolute inset-0 pointer-events-none"
-                  >
-                    {MOOD_POSITIONS.map((mp, i) => (
-                      <motion.button key={mp.mood} type="button" initial={{ opacity: 0, scale: 0.5 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: i * 0.1, type: "spring", stiffness: 300, damping: 20 }}
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          if (mp.mood === "dancing") {
-                            window.dispatchEvent(new CustomEvent("emoji-mood", { detail: "dancing" }));
-                          } else {
-                            window.dispatchEvent(new CustomEvent("emoji-mood", { detail: { mood: mp.mood, persistent: true } }));
-                          }
-                          setMoodPickerOpen(false);
-                        }}
-                        className="mood-face absolute z-20 w-[38px] h-[38px] md:w-[40px] md:h-[40px] -translate-x-1/2 -translate-y-1/2 rounded-full flex items-center justify-center cursor-pointer pointer-events-auto opacity-80 transition-all duration-300 group hover:scale-[1.18] hover:opacity-100 hover:z-50 border border-accent/20 shadow-md backdrop-blur-xl"
-                        style={{ ...mp.style }}
-                        aria-label={mp.label}
-                      >
-                        <AgentEmoji size={16} mood={mp.mood} />
-                        <span className={`absolute z-[80] font-mono text-[8px] md:text-[9px] text-accent-status/70 whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none rounded-full border border-accent-status/10 bg-background/80 px-1.5 py-0.5 backdrop-blur-md ${mp.labelClass}`}>
-                          {mp.label}
-                        </span>
-                      </motion.button>
-                    ))}
-                  </motion.div>
-                )}
-              </AnimatePresence>
-              {/* The emoji character */}
-              <div
-                className="relative z-10 cursor-pointer"
-                onClick={handleEmojiClick}
-              >
-                {/* Badge */}
-                <div className="agent-badge absolute -top-8 md:-top-12 left-1/2 -translate-x-1/2 z-20 inline-flex items-center gap-1.5 md:gap-2 px-2.5 py-0.5 md:px-4 md:py-1.5 rounded-full font-mono text-[8px] md:text-[11px] text-accent-status whitespace-nowrap bg-card/90 border border-accent-status/15 backdrop-blur-xl shadow-sm"
-                >
-                  <span className="agent-badge-dot w-1 h-1 md:w-[5px] md:h-[5px] rounded-full bg-accent-status animate-pulse" />
-                  agent online
-                </div>
-                {/* Hover outer ring */}
-                <div
-                  className="absolute -inset-[36px] rounded-full pointer-events-none opacity-80 blur-xl"
-                  style={{
-                    background: "radial-gradient(circle, rgba(74,222,128,0.22) 0%, rgba(74,222,128,0.1) 36%, transparent 70%)",
-                  }}
-                />
-                <div className={`absolute -inset-[18px] rounded-full border border-accent-status/10 pointer-events-none transition-all duration-500 ${emojiHovered ? "opacity-100 border-accent-status/25" : "opacity-60"}`} />
-                {/* Emoji body */}
-                <motion.div
-                  className="agent-emoji-body relative w-[82px] h-[82px] md:w-[136px] md:h-[136px] rounded-full flex items-center justify-center border border-accent/25 shadow-xl"
-                  style={{
-                    animation: "asymmetric-float 5s ease-in-out infinite, agent-stage-glow 3s ease-in-out infinite",
-                  }}
-                  whileHover={{ scale: 1.06 }}
-                  transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-                >
-                  <div className={`absolute top-[8%] left-[15%] w-[35%] h-[25%] rounded-full pointer-events-none transition-opacity ${emojiHovered ? "opacity-100" : "opacity-50"}`}
-                    style={{ background: "radial-gradient(ellipse, rgba(255,255,255,0.04), transparent)" }} />
-                  <div className="scale-[0.72] md:scale-100 origin-center">
-                    <AnimatePresence mode="wait">
-                      {emojiMoodOverride === "dancing" ? (
-                        <motion.div key="dance" initial={{ scale: 0.3, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.3, opacity: 0 }} transition={{ type: "spring", stiffness: 300, damping: 18 }}>
-                          <AgentEmoji size={104} mood="dancing" />
-                        </motion.div>
-                      ) : (
-                        <motion.div key="face" initial={{ scale: 0.5, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.4, opacity: 0 }}>
-                          <AgentEmoji size={112} hovered={emojiHovered} mood={emojiMoodOverride ?? persistentMood} />
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  </div>
-                </motion.div>
-                <button
-                  type="button"
-                  aria-label="Choose agent mood"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setMoodPickerOpen((open) => !open);
-                  }}
-                  className="md:hidden absolute -bottom-1 -left-1 z-30 flex h-7 w-7 items-center justify-center rounded-full border border-accent-status/20 bg-card/90 text-accent-status shadow-md backdrop-blur-xl transition-transform active:scale-95"
-                >
-                  <AgentEmoji size={13} mood={persistentMood} />
-                </button>
-              </div>
-            </div>
-            {/* Speech panel — one centered message surface */}
-            <div className="w-full shrink-0">
-              {showIntentPrompt && morphPhase === "stage" ? (
-                <VisitorIntentPrompt onDone={closeIntentPrompt} />
-              ) : (
-                <StageSpeechBubble visible={morphPhase === "stage"} emojiHovered={emojiHovered} />
-              )}
-            </div>
-          </motion.div>
-        ) : (
-          /* ═══ INPUT BAR ═══ */
-          <motion.div
-            key="agent-input"
-            initial={{ opacity: 0, scale: 0.7, filter: "blur(6px)" }}
-            animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
-            exit={{ opacity: 0, scale: 0.7, filter: "blur(6px)" }}
-            transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-            className="relative max-w-[calc(100vw-3rem)] md:max-w-[460px] mx-auto"
-          >
-            <div
-              id="agent-focus-mount"
-              className="absolute bottom-full left-1/2 mb-3 w-full max-h-[300px] md:max-h-[400px] -translate-x-1/2 overflow-y-auto"
-            >
-              {processingContent}
-            </div>
-            <form
-              onSubmit={onSubmit}
-              data-agent-bar="hero"
-              className="card-gradient-border card-glow rounded-2xl bg-card/95 backdrop-blur-xl border border-card-border hover:border-transparent transition-colors duration-300"
-              style={{ boxShadow: "0 8px 32px rgba(0,0,0,0.25), 0 0 0 1px var(--card-border)" }}
-            >
-              <div className="flex items-center gap-2 md:gap-3 px-3 py-3 md:px-5 md:py-4">
-                {/* Chat trigger — emoji dot with green indicator + badge */}
-                <button
-                  type="button"
-                  onClick={handleChatToggle}
-                  className="relative w-8 h-8 md:w-9 md:h-9 rounded-full glass border border-card-border hover:border-accent-status/40 hover:scale-110 transition-all shrink-0 cursor-pointer flex items-center justify-center"
-                  style={{ boxShadow: "0 0 10px rgba(74,222,128,0.2), 0 0 20px rgba(74,222,128,0.08), 0 2px 8px rgba(0,0,0,0.25)" }}
-                  aria-label="Open chat"
-                >
-                  <AgentEmoji size={20} mood={emojiMoodOverride ?? persistentMood} />
-                  <span className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-accent-status border-[1.5px] border-card" style={{ animation: "green-pulse 2s infinite" }} />
-                  {chatMsgCount > 0 && (
-                    <span className="absolute -top-1.5 -right-1.5 min-w-[16px] h-[16px] rounded-full bg-accent text-[9px] font-mono font-bold text-background flex items-center justify-center px-0.5">
-                      {chatMsgCount}
-                    </span>
-                  )}
-                </button>
-                <input
-                  ref={inputRef}
-                  type="text"
-                  value={input}
-                  onChange={(e) => setInput(e.target.value)}
-                  placeholder={chatOpen ? "reply in chat..." : "ask anything about Ahtesham's work..."}
-                  disabled={effectiveUiState === "processing" || effectiveUiState === "responding"}
-                  className="flex-1 min-w-0 bg-transparent outline-none font-mono text-[11px] md:text-sm placeholder:text-muted/40 text-foreground disabled:opacity-50"
-                />
-                <button type="button" onClick={handleCloseBar} className="p-1.5 rounded-lg text-muted/40 hover:text-foreground/70 hover:bg-foreground/5 transition-colors shrink-0 cursor-pointer" aria-label="Close agent bar">
-                  <X size={14} />
-                </button>
-              </div>
-            </form>
-            <div className="mt-4">
-              {chipsContent}
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
-  );
-
-  // ── Fixed bottom panel content (❯ prompt style) ──
-  const fixedPanelContent = (
-    <div className="relative">
-      <div
-        id="agent-focus-mount"
-        className="absolute bottom-full left-1/2 mb-3 w-full max-h-[300px] md:max-h-[400px] -translate-x-1/2 overflow-y-auto"
-      >
-        {processingContent}
-      </div>
-      {chipsContent}
-      <form
-        onSubmit={onSubmit}
-        data-agent-bar="fixed"
-        className="card-gradient-border card-glow rounded-xl bg-card/95 backdrop-blur-xl border border-card-border hover:border-transparent transition-colors duration-300"
-        style={{ boxShadow: "0 8px 32px rgba(0,0,0,0.3), 0 0 0 1px var(--card-border)" }}
-      >
-        <div className="flex items-center gap-2 px-3 py-2.5 md:px-4 md:py-3">
-          <button
-            type="button"
-            onClick={handleChatToggle}
-            className="relative w-7 h-7 md:w-8 md:h-8 rounded-full glass border border-card-border hover:border-accent-status/40 hover:scale-110 transition-all shrink-0 cursor-pointer flex items-center justify-center"
-            style={{ boxShadow: "0 0 10px rgba(74,222,128,0.16), 0 2px 8px rgba(0,0,0,0.22)" }}
-            aria-label="Open chat"
-          >
-            <AgentEmoji size={18} mood={emojiMoodOverride ?? persistentMood} />
-            <span className="absolute -bottom-0.5 -right-0.5 w-2 h-2 rounded-full bg-accent-status border-[1.5px] border-card" style={{ animation: "green-pulse 2s infinite" }} />
-            {chatMsgCount > 0 && (
-              <span className="absolute -top-1.5 -right-1.5 min-w-[15px] h-[15px] rounded-full bg-accent text-[8px] font-mono font-bold text-background flex items-center justify-center px-0.5">
-                {chatMsgCount}
-              </span>
-            )}
-          </button>
-          <input
-            ref={inputRef}
-            type="text"
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            placeholder={chatOpen ? "reply in chat..." : (viewingProject ? `ask about this project...` : inputConfig.placeholder)}
-            disabled={effectiveUiState === "processing" || effectiveUiState === "responding"}
-            className="flex-1 min-w-0 bg-transparent outline-none font-mono text-[11px] md:text-small placeholder:text-muted/35 text-foreground disabled:opacity-50"
-          />
-          <button
-            type="button"
-            onClick={() => {
-              setActiveCmd(null);
-              setShownSteps(0);
-              setShowResponse(false);
-              setInput("");
-              if (chatOpen) window.dispatchEvent(new CustomEvent("close-chat-widget"));
-              setUiState("button");
-            }}
-            aria-label="Close agent panel"
-            className="text-muted/40 hover:text-foreground shrink-0 transition-colors cursor-pointer ml-1"
-          >
-            <X size={14} strokeWidth={2.5} />
-          </button>
-        </div>
-      </form>
-    </div>
-  );
+  const DOCK_LABEL = "font-mono text-[10px] uppercase tracking-[0.18em] text-foreground/45 mb-2";
 
   return (
     <>
-      {/* ── Emoji at fixed bottom center (born from boot bubble, throws particles) ── */}
+      {/* ── Emoji born at bottom centre after the intro replay, then travels to the dock ── */}
       <AnimatePresence>
-        {emojiPhase === "bottom" && inHeroViewport && (
+        {emojiPhase === "bottom" && (
           <motion.div
             key="emoji-bottom"
             className="fixed z-[45] bottom-8 left-1/2"
@@ -1001,10 +678,10 @@ export function AgentBar(): React.ReactElement {
             animate={{ opacity: 1, scale: 1, x: "-50%" }}
             exit={{
               opacity: 0,
-              scale: 0.5,
-              y: -350,
-              x: "-50%",
-              transition: { duration: 1, ease: [0.4, 0, 0.2, 1] },
+              scale: 0.6,
+              x: "calc(50vw - 90px)",
+              y: 12,
+              transition: { duration: 0.9, ease: [0.4, 0, 0.2, 1] },
             }}
             transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
           >
@@ -1034,78 +711,257 @@ export function AgentBar(): React.ReactElement {
         )}
       </AnimatePresence>
 
-      {/* ── Hero inline agent (portal into hero section — emoji settled or agent open) ── */}
-      {isHeroInline && emojiPhase === "settled" && (effectiveUiState === "panel" || effectiveUiState === "processing" || effectiveUiState === "responding") && heroMount &&
-        ReactDOM.createPortal(heroContent, heroMount)
-      }
+      {/* ── The dock: bottom-right, one home for the agent on every section ── */}
+      {emojiPhase !== "bottom" && (
+        <div className="fixed z-[100] bottom-4 right-4 md:bottom-5 md:right-5 flex flex-col items-end gap-3 w-[min(380px,calc(100vw-2rem))] pointer-events-none">
+          {/* Collapsed: first-visit question sits above the dock */}
+          <AnimatePresence>
+            {!isOpen && showIntentPrompt && buttonReady && (
+              <motion.div
+                key="intent"
+                initial={{ opacity: 0, y: 10, scale: 0.96 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: 10, scale: 0.96 }}
+                transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+                className="pointer-events-auto w-full rounded-2xl border border-card-border bg-card/95 backdrop-blur-xl p-4"
+                style={{ boxShadow: "0 12px 40px rgba(0,0,0,0.35)" }}
+              >
+                <VisitorIntentPrompt onDone={closeIntentPrompt} />
+              </motion.div>
+            )}
+          </AnimatePresence>
 
-      {/* ── Fixed bottom agent (when scrolled past hero, hidden when chat active) ── */}
-      {!isHeroInline && (
-        <>
-          {/* Agent pill bar (button state — shows label + input) */}
+          {/* Expanded panel */}
+          <AnimatePresence>
+            {isOpen && (
+              <motion.div
+                key="panel"
+                initial={{ opacity: 0, y: 16, scale: 0.96 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: 16, scale: 0.96 }}
+                transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                style={{ transformOrigin: "bottom right" }}
+                className="pointer-events-auto relative w-full"
+              >
+                <div
+                  id="agent-focus-mount"
+                  className={`absolute bottom-full right-0 mb-3 w-full max-h-[300px] md:max-h-[400px] overflow-y-auto ${
+                    chatOpen ? "rounded-2xl border border-card-border bg-card/95 backdrop-blur-xl p-2 shadow-[0_16px_48px_rgba(0,0,0,0.4)]" : ""
+                  }`}
+                >
+                  {processingContent}
+                </div>
+
+                <div
+                  className="card-gradient-border rounded-2xl bg-card/95 backdrop-blur-xl border border-card-border overflow-hidden"
+                  style={{ boxShadow: `0 16px 48px rgba(0,0,0,0.4), 0 0 18px ${personality.glowColor.replace("0.4", "0.12")}` }}
+                >
+                  {/* Header: who is talking, where you are */}
+                  <div className="flex items-center gap-3 px-4 pt-4 pb-3">
+                    <button
+                      type="button"
+                      onClick={() => setMoodPickerOpen((open) => !open)}
+                      aria-label="Choose agent mood"
+                      aria-expanded={moodPickerOpen}
+                      className="relative w-11 h-11 rounded-full border border-accent-status/30 bg-accent-status/[0.07] flex items-center justify-center shrink-0 cursor-pointer hover:scale-105 transition-transform"
+                    >
+                      <AgentEmoji size={30} mood={sectionMood} />
+                      <span className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-accent-status border-[1.5px] border-card" style={{ animation: "green-pulse 2s infinite" }} />
+                    </button>
+                    <div className="min-w-0 flex-1">
+                      <AnimatePresence mode="wait" initial={false}>
+                        <motion.div
+                          key={dock.title}
+                          initial={{ opacity: 0, y: 6 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: -6 }}
+                          transition={{ duration: 0.2 }}
+                        >
+                          <p className="text-sm font-semibold text-foreground truncate">{dock.title}</p>
+                          <p className="text-xs text-foreground/60 leading-snug">{dock.info}</p>
+                        </motion.div>
+                      </AnimatePresence>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={closePanel}
+                      aria-label="Close agent"
+                      className="self-start p-1.5 -mr-1 rounded-lg text-foreground/40 hover:text-foreground hover:bg-foreground/5 transition-colors cursor-pointer"
+                    >
+                      <X size={15} strokeWidth={2} />
+                    </button>
+                  </div>
+
+                  {/* Mood picker — same moods as before, now one tidy row */}
+                  <AnimatePresence initial={false}>
+                    {moodPickerOpen && (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: "auto", opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.25 }}
+                        className="overflow-hidden"
+                      >
+                        <div className="flex items-center gap-2 px-4 pb-3">
+                          {MOOD_POSITIONS.map((mp) => (
+                            <button
+                              key={mp.mood}
+                              type="button"
+                              title={mp.label}
+                              aria-label={mp.label}
+                              onClick={() => {
+                                window.dispatchEvent(
+                                  new CustomEvent("emoji-mood", {
+                                    detail: mp.mood === "dancing" ? "dancing" : { mood: mp.mood, persistent: true },
+                                  }),
+                                );
+                                setMoodPickerOpen(false);
+                              }}
+                              className="w-9 h-9 rounded-full border border-card-border bg-background/40 flex items-center justify-center cursor-pointer hover:border-accent-status/50 hover:scale-110 transition-all"
+                            >
+                              <AgentEmoji size={18} mood={mp.mood} />
+                            </button>
+                          ))}
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+
+                  {/* Routes and questions for this part of the page */}
+                  {!activeCmd && !chatOpen && (
+                    <div className="px-4 pb-3 space-y-3.5 border-t border-card-border/60 pt-3.5">
+                      <div>
+                        <p className={DOCK_LABEL}>Go to</p>
+                        <AnimatePresence mode="wait" initial={false}>
+                          <motion.div
+                            key={dock.title}
+                            initial={{ opacity: 0, y: 6 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: -6 }}
+                            transition={{ duration: 0.2 }}
+                            className="grid grid-cols-2 gap-1.5"
+                          >
+                            {dock.routes.map((route) => (
+                              <button
+                                key={route.label}
+                                type="button"
+                                onClick={() => followRoute(route)}
+                                className="text-left px-3 py-2 rounded-lg border border-card-border bg-background/40 text-xs text-foreground/80 hover:border-accent/50 hover:text-foreground hover:bg-accent/[0.06] transition-colors cursor-pointer truncate"
+                              >
+                                {route.label}
+                              </button>
+                            ))}
+                          </motion.div>
+                        </AnimatePresence>
+                      </div>
+                      {askChips.length > 0 && (
+                        <div>
+                          <p className={DOCK_LABEL}>Ask me</p>
+                          <div className="flex flex-wrap gap-1.5">
+                            {askChips.map((chip) => (
+                              <button
+                                key={chip.key}
+                                type="button"
+                                onClick={chip.run}
+                                className="px-2.5 py-1 rounded-full border border-card-border text-[11px] text-foreground/65 hover:text-accent hover:border-accent/40 transition-colors cursor-pointer"
+                              >
+                                {chip.label}
+                              </button>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  )}
+
+                  {/* Input */}
+                  <form onSubmit={onSubmit} data-agent-bar="fixed" className="border-t border-card-border/60">
+                    <div className="flex items-center gap-2 px-3 py-2.5">
+                      <button
+                        type="button"
+                        onClick={handleChatToggle}
+                        aria-label={chatOpen ? "Close chat" : "Open chat"}
+                        className="relative w-8 h-8 rounded-full border border-card-border flex items-center justify-center shrink-0 cursor-pointer text-foreground/60 hover:text-accent-status hover:border-accent-status/40 transition-colors"
+                      >
+                        <MessageSquare size={14} strokeWidth={1.75} />
+                        {chatMsgCount > 0 && (
+                          <span className="absolute -top-1.5 -right-1.5 min-w-[15px] h-[15px] rounded-full bg-accent text-[8px] font-mono font-bold text-background flex items-center justify-center px-0.5">
+                            {chatMsgCount}
+                          </span>
+                        )}
+                      </button>
+                      <input
+                        ref={inputRef}
+                        type="text"
+                        value={input}
+                        onChange={(e) => setInput(e.target.value)}
+                        placeholder={chatOpen ? "reply in chat..." : (viewingProject ? "ask about this project..." : inputConfig.placeholder)}
+                        disabled={isBusy}
+                        className="flex-1 min-w-0 bg-transparent outline-none text-sm placeholder:text-foreground/35 text-foreground disabled:opacity-50"
+                      />
+                    </div>
+                  </form>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          {/* Collapsed dock — morphs with the section in view */}
           <AnimatePresence>
             {uiState === "button" && buttonReady && (
-              <div className="fixed z-[100] bottom-5 left-1/2 -translate-x-1/2">
-                {(() => {
-                  const p = SECTION_PERSONALITY[activeSection] ?? SECTION_PERSONALITY.hero;
-                  return (
-                    <motion.div
-                      initial={{ opacity: 0, y: 12, scale: 0.95 }}
-                      animate={{ opacity: 1, y: 0, scale: 1 }}
-                      exit={{ opacity: 0, y: 12, scale: 0.95 }}
-                      transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-                      data-agent-pill="fixed"
-                      className="flex items-center gap-2 md:gap-3 card-gradient-border rounded-full bg-card/95 backdrop-blur-xl border border-card-border px-3 py-1.5 md:px-4 md:py-2.5 cursor-pointer w-[220px] md:w-[240px] max-w-[calc(100vw-2rem)] hover:border-transparent transition-colors duration-300"
-                      style={{
-                        boxShadow: `0 4px 20px rgba(0,0,0,0.3), 0 0 12px ${p.glowColor}`,
-                      }}
-                      onClick={() => {
-                        setUiState("panel");
-                        setTimeout(() => inputRef.current?.focus(), 150);
-                      }}
-                    >
-	                      <motion.div
-	                        className="relative w-7 h-7 md:w-9 md:h-9 rounded-full glass border border-card-border flex items-center justify-center shrink-0"
-	                        style={{ boxShadow: "0 0 10px rgba(74,222,128,0.14), 0 2px 8px rgba(0,0,0,0.22)" }}
-	                        key={activeSection}
-	                        initial={{ scale: 0.8 }}
-	                        animate={{ scale: 1 }}
-	                        transition={{ type: "spring", stiffness: 500, damping: 15 }}
-	                      >
-	                        <AgentEmoji size={24} mood={emojiMoodOverride ?? (activeSection === "projects" ? "curious" : activeSection === "log" ? "proud" : activeSection === "contact" ? "waving" : persistentMood)} />
-	                        <span className="absolute -bottom-0.5 -right-0.5 w-2 h-2 md:w-2.5 md:h-2.5 rounded-full bg-accent-status border-[1.5px] border-card" style={{ animation: "green-pulse 2s infinite" }} />
-	                        {chatMsgCount > 0 && (
-	                          <span className="absolute -top-1.5 -right-1.5 min-w-[15px] h-[15px] rounded-full bg-accent text-[8px] font-mono font-bold text-background flex items-center justify-center px-0.5">
-	                            {chatMsgCount}
-	                          </span>
-	                        )}
-	                      </motion.div>
-                      <span className="flex-1 font-mono text-[11px] md:text-small text-muted/25 bg-foreground/[0.03] rounded-full px-3 py-0.5 md:px-4 md:py-1 truncate">
-                        {inputConfig.placeholder}
-                      </span>
-                    </motion.div>
-                  );
-                })()}
-              </div>
-            )}
-          </AnimatePresence>
-
-          {/* Panel (expanded command bar — fixed bottom) */}
-          <AnimatePresence>
-            {(uiState === "panel" || uiState === "processing" || uiState === "responding") && (
-              <div className="fixed z-[100] bottom-5 left-1/2 -translate-x-1/2 w-[280px] md:w-[calc(100vw-1.5rem)] max-w-[440px]">
-              <motion.div
-                initial={{ opacity: 0, y: 20, scale: 0.95 }}
+              <motion.button
+                key="dock"
+                type="button"
+                layout
+                data-agent-pill="fixed"
+                initial={{ opacity: 0, y: 12, scale: 0.9 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
-                exit={{ opacity: 0, y: 20, scale: 0.95 }}
-                transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+                exit={{ opacity: 0, y: 12, scale: 0.9 }}
+                transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1], layout: { type: "spring", stiffness: 380, damping: 32 } }}
+                onClick={() => {
+                  setUiState("panel");
+                  setTimeout(() => inputRef.current?.focus(), 150);
+                }}
+                aria-label={`Open agent. ${dock.title}`}
+                className="pointer-events-auto flex items-center gap-2.5 card-gradient-border rounded-full bg-card/95 backdrop-blur-xl border border-card-border pl-1.5 pr-4 py-1.5 cursor-pointer hover:border-transparent transition-colors duration-300 max-w-full"
+                style={{ boxShadow: `0 6px 24px rgba(0,0,0,0.35), 0 0 14px ${personality.glowColor.replace("0.4", "0.22")}` }}
               >
-                {fixedPanelContent}
-              </motion.div>
-              </div>
+                <motion.span
+                  key={activeSection}
+                  initial={{ scale: 0.8 }}
+                  animate={{ scale: 1 }}
+                  transition={{ type: "spring", stiffness: 500, damping: 15 }}
+                  className="relative w-10 h-10 rounded-full border border-accent-status/30 bg-accent-status/[0.07] flex items-center justify-center shrink-0"
+                >
+                  <AgentEmoji size={26} mood={sectionMood} />
+                  <span className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-accent-status border-[1.5px] border-card" style={{ animation: "green-pulse 2s infinite" }} />
+                  {chatMsgCount > 0 && (
+                    <span className="absolute -top-1.5 -right-1.5 min-w-[15px] h-[15px] rounded-full bg-accent text-[8px] font-mono font-bold text-background flex items-center justify-center px-0.5">
+                      {chatMsgCount}
+                    </span>
+                  )}
+                </motion.span>
+                <span className="min-w-0 text-left overflow-hidden">
+                  <AnimatePresence mode="wait" initial={false}>
+                    <motion.span
+                      key={dock.title}
+                      initial={{ opacity: 0, y: 8 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -8 }}
+                      transition={{ duration: 0.2 }}
+                      className="block"
+                    >
+                      <span className="block text-[13px] font-semibold text-foreground leading-tight truncate">{dock.title}</span>
+                      <span className="block text-[11px] text-foreground/55 leading-tight truncate">
+                        {dock.routes.length} routes · ask me anything
+                      </span>
+                    </motion.span>
+                  </AnimatePresence>
+                </span>
+              </motion.button>
             )}
           </AnimatePresence>
-        </>
+        </div>
       )}
 
       {/* Build pipeline popup */}
