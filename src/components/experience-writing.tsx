@@ -83,7 +83,7 @@ export function ExperienceAndWriting(): React.ReactElement {
   if (lens === "plain") return <CareerStory />;
 
   return (
-    <section id="log" className="py-10 md:py-32">
+    <section id="log" className="py-10 md:py-16">
       <div className="max-w-6xl mx-auto px-5 md:px-6">
         {/* Section header */}
         <FadeUp>

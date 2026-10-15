@@ -238,6 +238,75 @@ body::before, body::after {
 @keyframes gradient-rotate {
   to { --gradient-angle: 360deg; }
 }
+/* ── Project card — subtle moving hover flow ── */
+.project-hover-flow {
+  position: relative;
+  isolation: isolate;
+}
+
+.project-hover-flow::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: 2;
+  opacity: 0;
+  background:
+    linear-gradient(
+      115deg,
+      transparent 25%,
+      rgba(160, 120, 104, 0.12) 45%,
+      rgba(74, 85, 120, 0.10) 50%,
+      transparent 70%
+    );
+  background-size: 220% 100%;
+  transition: opacity 0.4s ease;
+}
+
+.project-hover-flow:hover::before {
+  opacity: 1;
+  animation: project-flow 3.5s ease-in-out infinite;
+}
+
+.project-hover-flow:focus-visible::before {
+  opacity: 0;
+  animation: none;
+}
+
+.project-hover-flow:active::before {
+  opacity: 0;
+  animation: none;
+}
+
+@keyframes project-flow {
+  0% {
+    background-position: 120% 0;
+  }
+  50% {
+    background-position: 0% 0;
+  }
+  100% {
+    background-position: -120% 0;
+  }
+}
+
+.project-hover-flow:hover {
+  transform: translateY(-1px);
+  transition: transform 0.35s ease, border-color 0.3s ease;
+}
+
+.light .project-hover-flow::before {
+  background:
+    linear-gradient(
+      115deg,
+      transparent 25%,
+      rgba(109, 78, 62, 0.08) 45%,
+      rgba(52, 64, 88, 0.07) 50%,
+      transparent 70%
+    );
+  background-size: 220% 100%;
+}
 
 
 /* ── Reboot breathing spin ── */

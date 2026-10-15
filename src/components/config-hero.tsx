@@ -273,22 +273,7 @@ export function ConfigHero(): React.ReactElement {
           </p>
 
           {/* 4. Compact stats strip — proof, not claims */}
-          <motion.div
-            data-hero="desc"
-            initial={false}
-            animate={{
-              opacity: m("desc") ? 1 : 0,
-              y: m("desc") ? 0 : 8,
-            }}
-            transition={{ duration: immediate ? 0 : 0.6, delay: immediate ? 0 : 0.3, ease: EASE }}
-            className="flex items-center justify-center gap-4 md:gap-6 mb-4 md:mb-5 font-mono text-[11px] md:text-xs tracking-wide"
-          >
-            <span className="text-foreground font-semibold">{status.portfolio.productionSystems}+ <span className="text-muted/50 font-normal">systems shipped</span></span>
-            <span className="text-muted/20">/</span>
-            <span className="text-foreground font-semibold">10 <span className="text-muted/50 font-normal">showcased</span></span>
-            <span className="text-muted/20">/</span>
-            <span className="text-foreground font-semibold">{status.portfolio.yearsBuilding}+ <span className="text-muted/50 font-normal">years</span></span>
-          </motion.div>
+         
 
           {/* 5. Labelled actions — the primary one follows what the visitor told the agent */}
           <motion.div
@@ -298,21 +283,15 @@ export function ConfigHero(): React.ReactElement {
             transition={{ duration: immediate ? 0 : 0.6, delay: immediate ? 0 : 0.45, ease: EASE }}
             className="flex flex-wrap items-center justify-center gap-3 mt-4 md:mt-6"
           >
-            {intent === "project" ? (
-              <a href={BOOK_URL} target="_blank" rel="noopener noreferrer" className={CTA_PRIMARY}>
-                <Calendar size={15} strokeWidth={1.5} />
-                Book a 15-min call
-              </a>
-            ) : intent === "developer" ? (
-              <a href={GITHUB_URL} target="_blank" rel="noopener noreferrer" className={CTA_PRIMARY}>
-                See the code on GitHub
-              </a>
-            ) : (
-              <button type="button" data-cv-open="true" onClick={openCvDrawer} className={CTA_PRIMARY}>
-                <FileText size={15} strokeWidth={1.5} />
-                View my CV
-              </button>
-            )}
+           <button
+  type="button"
+  data-cv-open="true"
+  onClick={openCvDrawer}
+  className={CTA_PRIMARY}
+>
+  <FileText size={15} strokeWidth={1.5} />
+  View my CV
+</button>
             <a href="#projects" className={CTA_SECONDARY}>
               See my work
               <ArrowDown size={14} strokeWidth={1.5} />

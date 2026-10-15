@@ -44,7 +44,7 @@ export function ProjectChapter({
   return (
     <article
       id={`project-${project.slug}`}
-      className="relative px-5 md:px-10 lg:pl-28 lg:pr-16 py-16 md:py-28 border-t border-card-border/60 scroll-mt-16"
+      className="relative px-5 md:px-10 lg:pl-28 lg:pr-16 py-10 md:py-12 border-t border-card-border/60 scroll-mt-16"
     >
       <div className="max-w-[1200px] mx-auto">
         <div className={impact ? "grid grid-cols-1 xl:grid-cols-[1.15fr_1fr] gap-12 xl:gap-16 items-end" : ""}>
@@ -93,8 +93,11 @@ export function ProjectChapter({
               className="group block w-full text-left cursor-pointer rounded-2xl overflow-hidden border border-card-border bg-card shadow-[0_30px_80px_rgba(0,0,0,0.35)] hover:border-accent/40 transition-colors duration-300"
             >
               <div className="max-h-[70vh] overflow-hidden">
-                <ProjectMockup kind={mockup} className="shadow-none border-0 rounded-none" />
-              </div>
+  <div className="transition-transform duration-500 ease-out group-hover:scale-[1.015]">
+    <ProjectMockup kind={mockup} className="shadow-none border-0 rounded-none" />
+  </div>
+</div>
+              
             </button>
           </Reveal>
 
@@ -156,7 +159,7 @@ export function ProjectChapter({
 
         {/* Next step */}
         {nextTitle && nextSlug && (
-          <Reveal className="mt-14 md:mt-20">
+          <div className="mt-14 md:mt-20">
             <a
               href={`#project-${nextSlug}`}
               className="group inline-flex items-baseline gap-3 text-foreground/55 hover:text-foreground transition-colors"
@@ -165,7 +168,7 @@ export function ProjectChapter({
               <span className="font-heading text-xl md:text-2xl font-semibold">{nextTitle}</span>
               <ArrowRight size={18} className="translate-y-0.5 group-hover:translate-x-1 transition-transform" />
             </a>
-          </Reveal>
+          </div>
         )}
       </div>
     </article>

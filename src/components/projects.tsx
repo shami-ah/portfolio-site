@@ -26,7 +26,7 @@ const EMOJI_COMMENTARY: Record<string, { mood: "proud" | "curious" | "default" |
   rasad: { mood: "default", text: "Built this so I could see inside the black box." },
 };
 import { useScrollLock } from "@/lib/use-scroll-lock";
-import { ChevronLeft, ChevronRight, X, Maximize2, MessageSquare } from "lucide-react";
+import { X, Maximize2, MessageSquare } from "lucide-react";
 
 /* ------------------------------------------------------------------ */
 /*  Flagship config                                                    */
@@ -491,6 +491,244 @@ function ExpandModal({
 /*  Scrollytelling panel                                               */
 /* ------------------------------------------------------------------ */
 
+
+function FlagshipCarousel({
+  flagships,
+  flagshipMeta,
+  onExpand,
+  onOpen,
+  plain = false,
+}: {
+  flagships: { project: ProjectData; mockup: MockupKind }[];
+  flagshipMeta: Record<string, FlagshipMeta>;
+  onExpand: (panel: Exclude<ExpandedPanel, null>) => void;
+  onOpen: (project: ProjectData) => void;
+  plain?: boolean;
+}): React.ReactElement {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+
+  const total = flagships.length;
+
+  const selectProject = useCallback((index: number) => {
+    setCurrentIndex(index);
+  }, []);
+
+  const nextProject = useCallback(() => {
+    setCurrentIndex((prev) => (prev + 1) % total);
+  }, [total]);
+
+  useEffect(() => {
+    if (hoveredIndex !== null || total <= 1) return;
+
+    const timer = window.setInterval(nextProject, 2000);
+
+    return () => window.clearInterval(timer);
+  }, [hoveredIndex, nextProject, total]);
+
+  const getPosition = (
+    index: number
+  ):
+    | "center"
+    | "left"
+    | "right"
+    | "far-left"
+    | "far-right"
+    | "hidden-left"
+    | "hidden-right" => {
+    let offset = index - currentIndex;
+
+    if (offset > total / 2) offset -= total;
+    if (offset < -total / 2) offset += total;
+
+    if (offset === 0) return "center";
+    if (offset === -1) return "left";
+    if (offset === 1) return "right";
+    if (offset === -2) return "far-left";
+    if (offset === 2) return "far-right";
+
+    return offset < 0 ? "hidden-left" : "hidden-right";
+  };
+
+  const positionStyles: Record<
+    | "center"
+    | "left"
+    | "right"
+    | "far-left"
+    | "far-right"
+    | "hidden-left"
+    | "hidden-right",
+    {
+      x: number;
+      z: number;
+      rotateY: number;
+      scale: number;
+      opacity: number;
+      zIndex: number;
+    }
+  > = {
+    center: {
+      x: 0,
+      z: 80,
+      rotateY: 0,
+      scale: 0.78,
+      opacity: 1,
+      zIndex: 20,
+    },
+    left: {
+      x: -330,
+      z: -120,
+      rotateY: 18,
+      scale: 0.62,
+      opacity: 0.55,
+      zIndex: 10,
+    },
+    right: {
+      x: 330,
+      z: -120,
+      rotateY: -18,
+      scale: 0.62,
+      opacity: 0.55,
+      zIndex: 10,
+    },
+    "far-left": {
+      x: -560,
+      z: -280,
+      rotateY: 28,
+      scale: 0.48,
+      opacity: 0.2,
+      zIndex: 5,
+    },
+    "far-right": {
+      x: 560,
+      z: -280,
+      rotateY: -28,
+      scale: 0.48,
+      opacity: 0.2,
+      zIndex: 5,
+    },
+    "hidden-left": {
+      x: -850,
+      z: -400,
+      rotateY: 35,
+      scale: 0.4,
+      opacity: 0,
+      zIndex: 1,
+    },
+    "hidden-right": {
+      x: 850,
+      z: -400,
+      rotateY: -35,
+      scale: 0.4,
+      opacity: 0,
+      zIndex: 1,
+    },
+  };
+
+  return (
+    <div
+      className="relative w-full"
+      onPointerLeave={() => setHoveredIndex(null)}
+    >
+      <div className="relative mx-auto h-[520px] md:h-[620px] lg:h-[650px] w-full max-w-[1400px] flex items-center justify-center [perspective:1400px]">
+        <div className="relative w-full h-full flex items-center justify-center [transform-style:preserve-3d]">
+          {flagships.map(({ project, mockup }, i) => {
+            const position = getPosition(i);
+            const style = positionStyles[position];
+
+            const meta = flagshipMeta[project.slug] ?? {
+              status: "SHIPPED",
+              statusColor: "text-muted",
+              metrics: [],
+              plainMetrics: [],
+            };
+
+            const content = PANEL_CONTENT[project.slug] ?? {
+              title: project.title,
+              oneLiner: project.impact,
+              problem: project.problem,
+              solution: project.solution,
+              glow: "none",
+            };
+
+            return (
+              <motion.div
+                key={project.slug}
+                className="
+                  absolute
+                  w-[88vw]
+                  h-[500px]
+                  md:w-[650px]
+                  md:h-[620px]
+                  max-w-[92vw]
+                  cursor-pointer
+                  [transform-style:preserve-3d]
+                  pointer-events-auto
+                "
+                initial={false}
+                animate={{
+                  x: style.x,
+                  z: style.z,
+                  rotateY: style.rotateY,
+                  scale: style.scale,
+                  opacity: style.opacity,
+                }}
+                transition={{
+                  duration: 0.2,
+                  ease: [0.22, 1, 0.36, 1],
+                }}
+                style={{
+                  zIndex: style.zIndex,
+                  transformStyle: "preserve-3d",
+                  transformOrigin: "center center",
+                }}
+                onPointerEnter={() => {
+                  setHoveredIndex(i);
+                  selectProject(i);
+                }}
+              >
+                <div
+                  className="
+                    relative
+                    w-full
+                    h-full
+                    overflow-hidden
+                    rounded-2xl
+                    border border-card-border/50
+                    bg-background
+                    shadow-2xl
+                    pointer-events-auto
+                  "
+                  onClick={() => {
+                    if (i === currentIndex) {
+                      onOpen(project);
+                    } else {
+                      selectProject(i);
+                    }
+                  }}
+                >
+                  <ScrollPanel
+                    project={project}
+                    mockup={mockup}
+                    meta={meta}
+                    content={content}
+                    index={i}
+                    total={total}
+                    onExpand={onExpand}
+                  />
+                </div>
+              </motion.div>
+            );
+          })}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+
+
+
 function ScrollPanel({
   project,
   mockup,
@@ -519,10 +757,10 @@ function ScrollPanel({
     <>
       {/* Sticky panel — slides over previous via z-index */}
       <div
-        id={`project-${project.slug}`}
-        className="sticky top-0 h-screen w-full overflow-hidden bg-background scroll-snap-align-start"
-        style={{ zIndex: (index + 1) * 10 }}
-      >
+  id={`project-${project.slug}`}
+  className="relative h-full w-full overflow-hidden bg-background rounded-2xl border border-card-border/40"
+  style={{ zIndex: (index + 1) * 10 }}
+>
         {/* Top shadow for smooth slide-over visual */}
         <div
           aria-hidden
@@ -1175,9 +1413,25 @@ function OtherDeployments({
   onOpen: (p: ProjectData) => void;
 }): React.ReactElement {
   const [current, setCurrent] = useState(0);
+const [isPaused, setIsPaused] = useState(false);
 
-  const next = (): void => setCurrent((c) => (c + 1) % others.length);
-  const prev = (): void => setCurrent((c) => (c - 1 + others.length) % others.length);
+const next = useCallback((): void => {
+  setCurrent((c) => (c + 1) % others.length);
+}, [others.length]);
+
+const prev = useCallback((): void => {
+  setCurrent((c) => (c - 1 + others.length) % others.length);
+}, [others.length]);
+
+useEffect(() => {
+  if (others.length <= 1 || isPaused) return;
+
+  const timer = window.setInterval(() => {
+    setCurrent((c) => (c + 1) % others.length);
+  }, 4500);
+
+  return () => window.clearInterval(timer);
+}, [others.length, isPaused]);
 
   return (
     <FadeUp>
@@ -1191,9 +1445,13 @@ function OtherDeployments({
         <h3 className="text-lg md:text-xl font-bold mb-1">
           Side projects that made it to production
         </h3>
-        <p className="text-xs md:text-sm text-muted/60 mb-10">{others.length} systems shipped and running</p>
+        <p className="text-xs md:text-sm text-muted/60 mb-6">{others.length} systems shipped and running</p>
 
-        <div className="relative w-[min(400px,calc(100vw-3rem))] sm:w-[480px] h-[380px] sm:h-[420px]">
+        <div
+         className="relative w-[min(400px,calc(100vw-3rem))] sm:w-[480px] h-[380px] sm:h-[420px]"
+         onMouseEnter={() => setIsPaused(true)}
+         onMouseLeave={() => setIsPaused(false)}
+>
           {others.map((project, i) => {
             const pos = (i - current + others.length) % others.length;
             const transformClass = pos < 3
@@ -1214,22 +1472,7 @@ function OtherDeployments({
         </div>
 
         <div className="flex gap-2.5 mt-4">
-          <button
-            type="button"
-            onClick={prev}
-            aria-label="Previous project"
-            className="w-10 h-10 rounded-full border border-card-border bg-card flex items-center justify-center text-foreground hover:border-accent hover:text-accent transition-colors"
-          >
-            <ChevronLeft size={18} />
-          </button>
-          <button
-            type="button"
-            onClick={next}
-            aria-label="Next project"
-            className="w-10 h-10 rounded-full border border-card-border bg-card flex items-center justify-center text-foreground hover:border-accent hover:text-accent transition-colors"
-          >
-            <ChevronRight size={18} />
-          </button>
+        
         </div>
       </div>
     </FadeUp>
@@ -1251,15 +1494,66 @@ export function Projects(): React.ReactElement {
       return next;
     });
   }, []);
-  const [expandedPanel, setExpandedPanel] = useState<ExpandedPanel>(null);
-  const flagshipMeta = useFlagshipMeta();
-  const plain = useLens() === "plain";
-  const sectionRef = useRef<HTMLElement>(null);
+ const [expandedPanel, setExpandedPanel] = useState<ExpandedPanel>(null);
+const flagshipMeta = useFlagshipMeta();
+const plain = useLens() === "plain";
+const sectionRef = useRef<HTMLElement>(null);
+
+const autoProjectIndexRef = useRef(0);
+const autoProjectTimerRef = useRef<number | null>(null);
 
   const flagships = FLAGSHIP_SLUGS.map(({ slug, mockup }) => ({
     project: projects.find((p) => p.slug === slug),
     mockup,
   })).filter((x): x is { project: ProjectData; mockup: MockupKind } => !!x.project);
+useEffect(() => {
+  if (plain || flagships.length <= 1) return;
+
+  const section = sectionRef.current;
+  if (!section) return;
+
+  let isVisible = false;
+
+  const observer = new IntersectionObserver(
+    ([entry]) => {
+      isVisible = entry.isIntersecting;
+    },
+    { threshold: 0.35 }
+  );
+
+  observer.observe(section);
+
+  autoProjectTimerRef.current = window.setInterval(() => {
+    if (!isVisible) return;
+    if (activeProject || expandedPanel) return;
+
+    autoProjectIndexRef.current =
+      (autoProjectIndexRef.current + 1) % flagships.length;
+
+    const nextProject =
+      flagships[autoProjectIndexRef.current]?.project;
+
+    if (nextProject) {
+      const target = document.getElementById(
+        `project-${nextProject.slug}`
+      );
+
+      target?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }
+  }, 5000);
+
+  return () => {
+    observer.disconnect();
+
+    if (autoProjectTimerRef.current !== null) {
+      window.clearInterval(autoProjectTimerRef.current);
+      autoProjectTimerRef.current = null;
+    }
+  };
+}, [plain, flagships.length, activeProject, expandedPanel]);
 
   const flagshipSlugs = new Set(FLAGSHIP_SLUGS.map((s) => s.slug));
   const others = projects.filter((p) => !flagshipSlugs.has(p.slug));
@@ -1343,35 +1637,26 @@ export function Projects(): React.ReactElement {
       {plain ? (
         <>
           {/* Plain lens: each flagship is told as a story, then every smaller build at once */}
-          <ProofBand />
-          {flagships.map(({ project, mockup }, i) => {
-            const story = FLAGSHIP_STORIES[project.slug];
-            const meta = flagshipMeta[project.slug];
-            const next = flagships[i + 1]?.project;
-            if (!story || !meta) return null;
-            return (
-              <ProjectChapter
-                key={project.slug}
-                project={project}
-                mockup={mockup}
-                story={story}
-                index={i}
-                total={flagships.length}
-                status={meta.status}
-                statusColor={meta.statusColor}
-                summary={PANEL_CONTENT[project.slug]?.plain?.oneLiner ?? project.cardSummary ?? project.subtitle}
-                metrics={meta.plainMetrics}
-                nextTitle={next?.title}
-                nextSlug={next?.slug}
-              />
-            );
-          })}
-          <SideProjects projects={others} onOpen={setActiveProject} />
+         <ProofBand />
+
+{/* Flagship 3D Project Carousel */}
+<FlagshipCarousel
+  flagships={flagships}
+  flagshipMeta={flagshipMeta}
+  onExpand={setExpandedPanel}
+  onOpen={setActiveProject}
+  plain
+/>
+
+<SideProjects
+  projects={others}
+  onOpen={setActiveProject}
+/>
         </>
       ) : (
         <>
           {/* Section intro */}
-          <div className="md:min-h-[60vh] flex flex-col items-center justify-center text-center px-5 md:px-8 py-8 md:py-20">
+          <div className="md:min-h-[45vh] flex flex-col items-center justify-center text-center px-5 md:px-8 py-8 md:py-20">
             <FadeUp>
               <p className="text-sm font-mono text-accent mb-4 uppercase tracking-[0.3em]">
                 what I&apos;ve shipped
@@ -1387,31 +1672,24 @@ export function Projects(): React.ReactElement {
             </FadeUp>
           </div>
 
-          {/* Scrollytelling panels — scroll-snap for smooth snapping */}
-          <div className="scroll-snap-projects">
-            {flagships.map(({ project, mockup }, i) => (
-              <ScrollPanel
-                key={project.slug}
-                project={project}
-                mockup={mockup}
-                meta={flagshipMeta[project.slug] ?? { status: "SHIPPED", statusColor: "text-muted", metrics: [], plainMetrics: [] }}
-                content={PANEL_CONTENT[project.slug] ?? { title: project.title, oneLiner: project.impact, problem: project.problem, solution: project.solution, glow: "none", mermaid: "" }}
-                index={i}
-                total={flagships.length}
-                onExpand={setExpandedPanel}
-              />
-            ))}
-          </div>
+         {/* Flagship 3D Project Carousel */}
+            <FlagshipCarousel
+             flagships={flagships}
+             flagshipMeta={flagshipMeta}
+             onExpand={setExpandedPanel}
+             onOpen={setActiveProject}
+           />  
 
           {/* Other deployments carousel */}
-          <div className="py-8 md:py-16 px-4 md:px-8">
-            <OtherDeployments others={others} onOpen={setActiveProject} />
-          </div>
+         <div className="py-6 md:py-10 px-4 md:px-8">
+  <OtherDeployments others={others} onOpen={setActiveProject} />
+</div>
         </>
       )}
 
       <ProjectModal
         project={activeProject}
+
         onClose={() => setActiveProject(null)}
         onNavigate={navigate}
       />

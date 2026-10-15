@@ -163,33 +163,7 @@ export function ProjectModal({
           {/* Backdrop */}
           <div className="absolute inset-0 bg-background/80 backdrop-blur-md" />
 
-          {/* Prev / Next chevrons (desktop) */}
-          {onNavigate && (
-            <>
-              <button
-                type="button"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  onNavigate(-1);
-                }}
-                aria-label="Previous project"
-                className="hidden md:flex absolute left-4 top-1/2 -translate-y-1/2 z-10 w-11 h-11 rounded-full bg-card/80 border border-card-border hover:border-accent/40 hover:bg-card-hover transition-all items-center justify-center text-muted hover:text-foreground backdrop-blur-sm"
-              >
-                <ChevronLeft size={18} />
-              </button>
-              <button
-                type="button"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  onNavigate(1);
-                }}
-                aria-label="Next project"
-                className="hidden md:flex absolute right-4 top-1/2 -translate-y-1/2 z-10 w-11 h-11 rounded-full bg-card/80 border border-card-border hover:border-accent/40 hover:bg-card-hover transition-all items-center justify-center text-muted hover:text-foreground backdrop-blur-sm"
-              >
-                <ChevronRight size={18} />
-              </button>
-            </>
-          )}
+       
 
           {/* Modal */}
           <motion.div

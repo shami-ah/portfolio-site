@@ -59,6 +59,7 @@ export const projects: ProjectData[] = [
     type: "Production SaaS",
     oneLiner: "AI turns client emails into approved bookings, invoices, and CRM updates.",
     cardSummary: "100+ clients in 8 months, no sales team. AI reads emails, proposes actions, humans approve with one click.",
+    
     impact: "Grew to 100+ clients across 150+ events in 8 months with zero sales team — product-led adoption. Saves each team ~1.5 hours per day. AI classifies emails, proposes actions, and executes after human approval.",
     problem:
       "Event companies drown in emails and manual coordination. Staff spend hours triaging requests, copying data between systems, and chasing approvals. Simple automation breaks on ambiguous language.",

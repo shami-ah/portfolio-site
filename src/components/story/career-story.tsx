@@ -18,7 +18,7 @@ export function CareerStory(): React.ReactElement {
   const articles = getFeaturedArticles().slice(0, 3);
 
   return (
-    <section id="log" className="px-5 md:px-10 lg:pl-28 lg:pr-16 py-16 md:py-28 border-t border-card-border/60">
+    <section id="log" className="px-5 md:px-10 lg:pl-28 lg:pr-16 py-10 md:py-16 border-t border-card-border/60">
       <div className="max-w-[1200px] mx-auto">
         <Reveal>
           <Eyebrow className="mb-3">Experience</Eyebrow>
