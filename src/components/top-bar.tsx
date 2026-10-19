@@ -3,16 +3,11 @@
 import { useEffect, useState, useRef, useCallback } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { RefreshCcw, Wrench, TrendingUp, Sun, Moon, ArrowLeftRight } from "lucide-react";
-import { setLens, useLens, type Lens } from "@/lib/use-lens";
+import { RefreshCcw, TrendingUp, Sun, Moon } from "lucide-react";
 
-const LENS_OPTIONS: { value: Lens; label: string }[] = [
-  { value: "plain", label: "Simple" },
-  { value: "technical", label: "Technical" },
-];
 
 export function TopBar(): React.ReactElement {
-  const lens = useLens();
+
   const [modalOpen, setModalOpen] = useState(false);
   const [theme, setThemeState] = useState<"dark" | "light">("dark");
   const [themeMounted, setThemeMounted] = useState(false);
@@ -414,124 +409,93 @@ export function TopBar(): React.ReactElement {
           </button>
         )}
 
-        {/* ── Reading lens: plain language for clients and recruiters, technical for engineers ── */}
-        <div
-          role="group"
-          aria-label="Choose how the site explains things"
-          className="glass rounded-full p-0.5 hidden md:flex items-center font-mono text-small"
-          style={{ boxShadow: "0 4px 12px rgba(0,0,0,0.12), 0 0 4px rgba(0,0,0,0.06)" }}
-        >
-          {LENS_OPTIONS.map((opt) => (
-            <button
-              key={opt.value}
-              type="button"
-              aria-pressed={lens === opt.value}
-              onClick={() => setLens(opt.value)}
-              className={`px-2.5 md:px-3 py-1.5 rounded-full cursor-pointer transition-colors duration-300 ${
-                lens === opt.value ? "bg-accent/20 text-foreground" : "text-muted/70 hover:text-foreground"
-              }`}
-            >
-              {opt.label}
-            </button>
-          ))}
-        </div>
+       
 
-        {/* Mobile: one compact button that flips the lens */}
-        <button
-          type="button"
-          onClick={() => setLens(lens === "plain" ? "technical" : "plain")}
-          aria-label={`Reading mode: ${lens === "plain" ? "simple" : "technical"}. Tap to switch.`}
-          className="glass rounded-full px-3 py-2 flex md:hidden items-center gap-1.5 font-mono text-[10px] text-foreground/80 cursor-pointer"
-          style={{ boxShadow: "0 4px 12px rgba(0,0,0,0.12), 0 0 4px rgba(0,0,0,0.06)" }}
-        >
-          <ArrowLeftRight size={10} className="text-accent" />
-          {lens === "plain" ? "Simple" : "Technical"}
-        </button>
+        
 
-        {/* ── Reboot ── */}
-        <button
-          type="button"
-          onClick={reboot}
-          aria-label="Reboot system — replay intro"
-          className={`group relative flex items-center cursor-pointer glass rounded-full p-2.5 md:px-4 md:gap-2 hover:px-4 hover:gap-2 transition-all overflow-hidden border border-transparent ${tremor ? "nav-tremor" : "duration-300"}`}
-          style={{
-            boxShadow: heavy
-              ? "0 6px 25px rgba(74,222,128,0.25), 0 0 40px rgba(74,222,128,0.15)"
-              : "0 4px 12px rgba(0,0,0,0.12), 0 0 4px rgba(0,0,0,0.06)",
-            transform: heavy ? "translateY(3px)" : "translateY(0)",
-            transition: "transform 1s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.8s",
-          }}
-        >
-          <span
-            className="absolute bottom-0 left-0 right-0 bg-accent-status/15 rounded-full pointer-events-none"
-            style={{ height: `${fillPct}%`, transition: "height 2s ease-out" }}
-          />
-          <RefreshCcw
-            size={12}
-            className={`relative z-10 shrink-0 transition-colors duration-500 ${
-              heavy ? "text-accent-status" : tremor ? "text-accent-status/70" : "text-muted/60 group-hover:text-accent-status"
-            }`}
-          />
-          <span className="relative z-10 max-w-0 md:max-w-[120px] overflow-hidden group-hover:max-w-[120px] transition-all duration-300 whitespace-nowrap font-mono text-small text-muted/80">
-            replay intro
-          </span>
-        </button>
+       
+{/* ── Reboot ── */}
+<button
+  type="button"
+  onClick={reboot}
+  aria-label="Replay intro"
+  title="Replay intro"
+  className={`group relative flex items-center justify-center cursor-pointer glass rounded-full p-3 hover:px-4 hover:gap-2 transition-all duration-300 overflow-hidden border border-transparent ${
+    tremor ? "nav-tremor" : ""
+  }`}
+  style={{
+    boxShadow: heavy
+      ? "0 6px 25px rgba(74,222,128,0.25), 0 0 40px rgba(74,222,128,0.15)"
+      : "0 4px 12px rgba(0,0,0,0.12), 0 0 4px rgba(0,0,0,0.06)",
+    transform: heavy ? "translateY(3px)" : "translateY(0)",
+    transition:
+      "transform 1s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.8s",
+  }}
+>
+  <span
+    className="absolute bottom-0 left-0 right-0 bg-accent-status/15 rounded-full pointer-events-none"
+    style={{
+      height: `${fillPct}%`,
+      transition: "height 2s ease-out",
+    }}
+  />
 
-        {/* ── Setup ── */}
-        <Link
-          href="/uses"
-          onClick={() => markSeen("setup")}
-          aria-label="Tools, stack, and workflow"
-          className={`group relative hidden sm:flex items-center cursor-pointer glass rounded-full p-2.5 md:px-4 md:gap-2 hover:px-4 hover:gap-2 transition-all duration-500 border border-transparent ${
-            !seenSetup && setupGlow ? "nav-setup-glow" : ""
-          }`}
-          style={{
-            boxShadow: setupGlow
-              ? "0 4px 20px rgba(160,120,104,0.15), 0 0 30px rgba(160,120,104,0.1)"
-              : "0 4px 12px rgba(0,0,0,0.12), 0 0 4px rgba(0,0,0,0.06)",
-          }}
-        >
-          <span className={`absolute w-[3px] h-[3px] rounded-full nav-orbit pointer-events-none ${setupGlow ? "bg-accent/60" : "bg-accent/20"}`} style={{ animationDuration: setupGlow ? "2s" : "4s" }} />
-          <span className={`absolute w-[2px] h-[2px] rounded-full nav-orbit pointer-events-none ${setupGlow ? "bg-accent-secondary/60" : "bg-accent-secondary/20"}`} style={{ animationDuration: setupGlow ? "3s" : "6s", animationDelay: "-2s" }} />
-          <span className={`absolute w-[2px] h-[2px] rounded-full nav-orbit pointer-events-none ${setupGlow ? "bg-accent/50" : "bg-accent/15"}`} style={{ animationDuration: setupGlow ? "2.5s" : "5s", animationDelay: "-3.5s" }} />
-          <Wrench
-            size={12}
-            className={`shrink-0 transition-all duration-500 group-hover:rotate-[-20deg] ${
-              setupGlow ? "text-accent" : "text-muted/60 group-hover:text-accent"
-            }`}
-          />
-          <span className="max-w-0 md:max-w-[120px] overflow-hidden group-hover:max-w-[120px] transition-all duration-300 whitespace-nowrap font-mono text-small text-muted/80">
-            my tools
-          </span>
-        </Link>
+  <RefreshCcw
+    size={14}
+    className={`relative z-10 shrink-0 transition-colors duration-500 ${
+      heavy
+        ? "text-accent-status"
+        : tremor
+          ? "text-accent-status/70"
+          : "text-muted/60 group-hover:text-accent-status"
+    }`}
+  />
+
+  
+<span className="relative z-10 max-w-0 overflow-hidden opacity-0 group-hover:max-w-[120px] group-hover:opacity-100 transition-all duration-300 whitespace-nowrap font-mono text-small text-muted/80">
+  replay intro
+</span>
+
+</button>
+
+
 
         {/* ── Journey ── */}
-        <Link
-          ref={journeyBtnRef}
-          href="/journey"
-          onClick={() => markSeen("journey")}
-          aria-label="Walk through my career"
-          className={`group relative flex items-center cursor-pointer glass rounded-full p-2.5 md:px-4 md:gap-2 hover:px-4 hover:gap-2 transition-all duration-500 ${
-            meteorLanded ? "nav-journey-active" : "nav-journey-idle"
-          }`}
-          style={{
-            boxShadow: meteorLanded
-              ? "0 0 20px rgba(74,222,128,0.3), 0 0 40px rgba(74,222,128,0.15)"
-              : "0 4px 12px rgba(0,0,0,0.12), 0 0 4px rgba(160,120,104,0.04)",
-          }}
-        >
-          <TrendingUp
-            size={12}
-            className={`shrink-0 transition-colors duration-500 ${
-              meteorLanded ? "text-accent-status" : "text-accent/70 group-hover:text-accent"
-            }`}
-          />
-          <span className={`max-w-0 md:max-w-[120px] overflow-hidden group-hover:max-w-[120px] transition-all duration-300 whitespace-nowrap font-mono text-small ${
-            meteorLanded ? "text-accent-status/60" : "text-accent/60"
-          }`}>
-            my story
-          </span>
-        </Link>
+      
+{/* ── Journey ── */}
+<Link
+  ref={journeyBtnRef}
+  href="/journey"
+  onClick={() => markSeen("journey")}
+  aria-label="My Story — walk through my career"
+  title="My Story"
+  className={`group relative flex items-center justify-center cursor-pointer glass rounded-full p-3 hover:px-4 hover:gap-2 transition-all duration-300 ${
+    meteorLanded ? "nav-journey-active" : "nav-journey-idle"
+  }`}
+  style={{
+    boxShadow: meteorLanded
+      ? "0 0 20px rgba(74,222,128,0.3), 0 0 40px rgba(74,222,128,0.15)"
+      : "0 4px 12px rgba(0,0,0,0.12), 0 0 4px rgba(160,120,104,0.04)",
+  }}
+>
+  <TrendingUp
+    size={14}
+    className={`shrink-0 transition-colors duration-500 ${
+      meteorLanded
+        ? "text-accent-status"
+        : "text-accent/70 group-hover:text-accent"
+    }`}
+  />
+
+  <span
+    className={`max-w-0 overflow-hidden opacity-0 group-hover:max-w-[90px] group-hover:opacity-100 transition-all duration-300 whitespace-nowrap font-mono text-small ${
+      meteorLanded ? "text-accent-status/60" : "text-accent/60"
+    }`}
+  >
+    my story
+  </span>
+</Link>
+
       </motion.div>
     </>
   );

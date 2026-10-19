@@ -491,6 +491,81 @@ function ExpandModal({
 /*  Scrollytelling panel                                               */
 /* ------------------------------------------------------------------ */
 
+function AnimatedMetric({
+  value,
+  active,
+}: {
+  value: string;
+  active: boolean;
+}): React.ReactElement {
+  const [displayValue, setDisplayValue] = useState(value);
+  const hasAnimated = useRef(false);
+
+  // Animate plain numbers and values such as ~544, 83%, 860+ PRs, and ~1.5 h.
+  const match = value.match(/^([~]?)([\d,]+(?:\.\d+)?)(.*)$/);
+  const numericValue = match
+    ? Number(match[2].replace(/,/g, ""))
+    : null;
+  const prefix = match?.[1] ?? "";
+  const suffix = match?.[3] ?? "";
+  const decimals = match?.[2].split(".")[1]?.length ?? 0;
+
+  useEffect(() => {
+    if (!active) return;
+
+    // Keep text-only metrics unchanged.
+    if (numericValue === null || !Number.isFinite(numericValue)) {
+      setDisplayValue(value);
+      return;
+    }
+
+    // If this metric has already animated, show any updated value directly.
+    if (hasAnimated.current) {
+      setDisplayValue(value);
+      return;
+    }
+
+    hasAnimated.current = true;
+
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setDisplayValue(value);
+      return;
+    }
+
+    let frameId = 0;
+    const duration = 1100;
+    let startTime: number | null = null;
+
+    const animate = (time: number): void => {
+      if (startTime === null) startTime = time;
+
+      const progress = Math.min((time - startTime) / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      const current = numericValue * eased;
+
+      const formatted = current.toLocaleString("en-US", {
+        minimumFractionDigits: decimals,
+        maximumFractionDigits: decimals,
+      });
+
+      setDisplayValue(`${prefix}${formatted}${suffix}`);
+
+      if (progress < 1) {
+        frameId = requestAnimationFrame(animate);
+      } else {
+        setDisplayValue(value);
+      }
+    };
+
+    setDisplayValue(`${prefix}${(0).toLocaleString("en-US")}${suffix}`);
+    frameId = requestAnimationFrame(animate);
+
+    return () => cancelAnimationFrame(frameId);
+  }, [active, value, numericValue, prefix, suffix, decimals]);
+
+  return <>{displayValue}</>;
+}
+
 
 function FlagshipCarousel({
   flagships,
@@ -506,36 +581,37 @@ function FlagshipCarousel({
   plain?: boolean;
 }): React.ReactElement {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const [isHovered, setIsHovered] = useState(false);  
+const hoverZoneRef = useRef<"left" | "right" | "center" | null>(null);
+
 
   const total = flagships.length;
 
-  const selectProject = useCallback((index: number) => {
-    setCurrentIndex(index);
-  }, []);
+  const selectProject = useCallback(
+    (index: number) => {
+      setCurrentIndex(index);
+    },
+    [],
+  );
 
   const nextProject = useCallback(() => {
     setCurrentIndex((prev) => (prev + 1) % total);
   }, [total]);
 
+  // Rotate automatically only while the pointer is outside the carousel.
   useEffect(() => {
-    if (hoveredIndex !== null || total <= 1) return;
+    if (isHovered || total <= 1) return;
 
-    const timer = window.setInterval(nextProject, 2000);
+    const timer = window.setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % total);
+    }, 3000);
 
     return () => window.clearInterval(timer);
-  }, [hoveredIndex, nextProject, total]);
+  }, [isHovered, total]);
 
   const getPosition = (
-    index: number
-  ):
-    | "center"
-    | "left"
-    | "right"
-    | "far-left"
-    | "far-right"
-    | "hidden-left"
-    | "hidden-right" => {
+    index: number,
+  ): "center" | "left" | "right" | "hidden" => {
     let offset = index - currentIndex;
 
     if (offset > total / 2) offset -= total;
@@ -544,93 +620,85 @@ function FlagshipCarousel({
     if (offset === 0) return "center";
     if (offset === -1) return "left";
     if (offset === 1) return "right";
-    if (offset === -2) return "far-left";
-    if (offset === 2) return "far-right";
 
-    return offset < 0 ? "hidden-left" : "hidden-right";
+    return "hidden";
   };
 
-  const positionStyles: Record<
-    | "center"
-    | "left"
-    | "right"
-    | "far-left"
-    | "far-right"
-    | "hidden-left"
-    | "hidden-right",
-    {
-      x: number;
-      z: number;
-      rotateY: number;
-      scale: number;
-      opacity: number;
-      zIndex: number;
-    }
-  > = {
-    center: {
-      x: 0,
-      z: 80,
-      rotateY: 0,
-      scale: 0.78,
-      opacity: 1,
-      zIndex: 20,
-    },
-    left: {
-      x: -330,
-      z: -120,
-      rotateY: 18,
-      scale: 0.62,
-      opacity: 0.55,
-      zIndex: 10,
-    },
-    right: {
-      x: 330,
-      z: -120,
-      rotateY: -18,
-      scale: 0.62,
-      opacity: 0.55,
-      zIndex: 10,
-    },
-    "far-left": {
-      x: -560,
-      z: -280,
-      rotateY: 28,
-      scale: 0.48,
-      opacity: 0.2,
-      zIndex: 5,
-    },
-    "far-right": {
-      x: 560,
-      z: -280,
-      rotateY: -28,
-      scale: 0.48,
-      opacity: 0.2,
-      zIndex: 5,
-    },
-    "hidden-left": {
-      x: -850,
-      z: -400,
-      rotateY: 35,
-      scale: 0.4,
-      opacity: 0,
-      zIndex: 1,
-    },
-    "hidden-right": {
-      x: 850,
-      z: -400,
-      rotateY: -35,
-      scale: 0.4,
-      opacity: 0,
-      zIndex: 1,
-    },
-  };
+
+
+const positionStyles = {
+  center: {
+    x: 0,
+    z: 40,
+    rotateY: 0,
+    scale: 0.88,
+    opacity: 1,
+    zIndex: 20,
+  },
+  left: {
+    x: -300,
+    z: -70,
+    rotateY: 8,
+    scale: 0.68,
+    opacity: 0.65,
+    zIndex: 10,
+  },
+  right: {
+    x: 300,
+    z: -70,
+    rotateY: -8,
+    scale: 0.68,
+    opacity: 0.65,
+    zIndex: 10,
+  },
+  hidden: {
+    x: 0,
+    z: -350,
+    rotateY: 0,
+    scale: 0.4,
+    opacity: 0,
+    zIndex: 1,
+  },
+};
+
+
 
   return (
-    <div
-      className="relative w-full"
-      onPointerLeave={() => setHoveredIndex(null)}
-    >
-      <div className="relative mx-auto h-[520px] md:h-[620px] lg:h-[650px] w-full max-w-[1400px] flex items-center justify-center [perspective:1400px]">
+    
+<div
+  className="relative w-full min-w-0 overflow-hidden"
+  
+onMouseEnter={() => setIsHovered(true)}
+onMouseLeave={() => {
+  setIsHovered(false);
+  hoverZoneRef.current = null;
+}}
+onMouseMove={(e) => {
+  const rect = e.currentTarget.getBoundingClientRect();
+  const mouseX = (e.clientX - rect.left) / rect.width;
+
+  const zone =
+    mouseX < 0.30
+      ? "left"
+      : mouseX > 0.70
+        ? "right"
+        : "center";
+
+  // Don't select repeatedly while the cursor stays in the same zone.
+  if (zone === hoverZoneRef.current) return;
+
+  hoverZoneRef.current = zone;
+
+  if (zone === "left") {
+    selectProject((currentIndex - 1 + total) % total);
+  } else if (zone === "right") {
+    selectProject((currentIndex + 1) % total);
+  }
+}}
+
+>
+
+      <div className="relative mx-auto h-[520px] md:h-[620px] lg:h-[650px] w-full max-w-[1400px] min-w-0 flex items-center justify-center [perspective:1400px] overflow-hidden">
         <div className="relative w-full h-full flex items-center justify-center [transform-style:preserve-3d]">
           {flagships.map(({ project, mockup }, i) => {
             const position = getPosition(i);
@@ -654,17 +722,7 @@ function FlagshipCarousel({
             return (
               <motion.div
                 key={project.slug}
-                className="
-                  absolute
-                  w-[88vw]
-                  h-[500px]
-                  md:w-[650px]
-                  md:h-[620px]
-                  max-w-[92vw]
-                  cursor-pointer
-                  [transform-style:preserve-3d]
-                  pointer-events-auto
-                "
+                className="absolute w-[88vw] h-[500px] md:w-[560px] md:h-[620px] lg:w-[600px] max-w-[92vw] [transform-style:preserve-3d]"
                 initial={false}
                 animate={{
                   x: style.x,
@@ -673,34 +731,51 @@ function FlagshipCarousel({
                   scale: style.scale,
                   opacity: style.opacity,
                 }}
-                transition={{
-                  duration: 0.2,
-                  ease: [0.22, 1, 0.36, 1],
-                }}
+                
+transition={{
+  x: {
+    type: "spring",
+    stiffness: 110,
+    damping: 28,
+    mass: 1,
+  },
+  z: {
+    type: "spring",
+    stiffness: 180,
+    damping: 26,
+    mass: 0.9,
+  },
+  rotateY: {
+    type: "spring",
+    stiffness: 160,
+    damping: 25,
+    mass: 0.9,
+  },
+  scale: {
+    type: "spring",
+    stiffness: 180,
+    damping: 26,
+    mass: 0.9,
+  },
+  opacity: {
+    duration: 0.45,
+    ease: "easeInOut",
+  },
+}}
+
                 style={{
                   zIndex: style.zIndex,
                   transformStyle: "preserve-3d",
                   transformOrigin: "center center",
-                }}
-                onPointerEnter={() => {
-                  setHoveredIndex(i);
-                  selectProject(i);
+                  pointerEvents:
+                    position === "hidden" ? "none" : "auto",
                 }}
               >
                 <div
-                  className="
-                    relative
-                    w-full
-                    h-full
-                    overflow-hidden
-                    rounded-2xl
-                    border border-card-border/50
-                    bg-background
-                    shadow-2xl
-                    pointer-events-auto
-                  "
+                  className="relative w-full h-full overflow-hidden rounded-2xl border border-card-border/50 bg-background shadow-2xl cursor-pointer"
+                  onMouseEnter={() => selectProject(i)}
                   onClick={() => {
-                    if (i === currentIndex) {
+                    if (position === "center") {
                       onOpen(project);
                     } else {
                       selectProject(i);
@@ -843,12 +918,14 @@ function ScrollPanel({
           <div className="flex flex-col gap-2 mt-3 md:mt-4 shrink-0">
             <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-2 sm:gap-4">
               <div className="flex gap-4 md:gap-8">
-                {metrics.map((m) => (
-                  <div key={m.label}>
-                    <p className="text-base sm:text-xl md:text-2xl font-bold font-mono text-foreground tracking-tight whitespace-nowrap">{m.value}</p>
-                    <p className={plain ? "text-[11px] md:text-xs text-muted/70 max-w-[11rem] leading-snug" : "text-[10px] md:text-caption font-mono text-muted/40 uppercase tracking-[0.15em]"}>{m.label}</p>
-                  </div>
-                ))}
+                {metrics.map((metric, mi) => (
+  <div key={mi} className="min-w-0">
+    <p className="text-lg md:text-2xl font-bold tracking-tight text-foreground truncate font-mono">
+      {metric.value}  {/* <-- This is the part you change */}
+    </p>
+    <p className="text-[10px] md:text-xs text-muted truncate uppercase tracking-wider font-mono">{metric.label}</p>
+  </div>
+))}
               </div>
               <div className="flex items-center gap-3">
                 {project.requestAccess && (
