@@ -15,9 +15,10 @@ import { AgentEmoji } from "./agent-bar";
 import { useStatus } from "@/lib/use-status";
 import { useLens } from "@/lib/use-lens";
 import { FLAGSHIP_STORIES } from "@/data/stories";
-import { ProjectChapter } from "./story/project-chapter";
 import { ProofBand } from "./story/proof-band";
 import { SideProjects } from "./story/side-projects";
+import Link from "next/link";
+import { BookOpen, ArrowUpRight } from "lucide-react";
 
 const EMOJI_COMMENTARY: Record<string, { mood: "proud" | "curious" | "default" | "surprised"; text: string }> = {
   openevent: { mood: "proud", text: "8 months, 100+ clients, zero AI errors." },
@@ -26,7 +27,14 @@ const EMOJI_COMMENTARY: Record<string, { mood: "proud" | "curious" | "default" |
   rasad: { mood: "default", text: "Built this so I could see inside the black box." },
 };
 import { useScrollLock } from "@/lib/use-scroll-lock";
-import { X, Maximize2, MessageSquare } from "lucide-react";
+import {
+  X,
+  Maximize2,
+  MessageSquare,
+  ChevronDown,
+  ChevronUp,
+  FolderOpen,
+} from "lucide-react";
 
 /* ------------------------------------------------------------------ */
 /*  Flagship config                                                    */
@@ -1562,6 +1570,22 @@ useEffect(() => {
 
 export function Projects(): React.ReactElement {
   const [activeProject, setActiveProjectRaw] = useState<ProjectData | null>(null);
+  const [showSmallProjects, setShowSmallProjects] = useState(false);
+  const smallProjectsRef = useRef<HTMLDivElement>(null);
+  const projectScrollPosition = useRef<number | null>(null);
+
+useEffect(() => {
+  if (!showSmallProjects) return;
+
+  const frame = window.requestAnimationFrame(() => {
+    smallProjectsRef.current?.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+  });
+
+  return () => window.cancelAnimationFrame(frame);
+}, [showSmallProjects]);
   const setActiveProject = useCallback((p: ProjectData | null | ((prev: ProjectData | null) => ProjectData | null)) => {
     setActiveProjectRaw((prev) => {
       const next = typeof p === "function" ? p(prev) : p;
@@ -1603,6 +1627,7 @@ useEffect(() => {
   autoProjectTimerRef.current = window.setInterval(() => {
     if (!isVisible) return;
     if (activeProject || expandedPanel) return;
+if (smallProjectsRef.current?.contains(document.activeElement)) return;
 
     autoProjectIndexRef.current =
       (autoProjectIndexRef.current + 1) % flagships.length;
@@ -1711,65 +1736,134 @@ useEffect(() => {
     <section id="projects" ref={sectionRef}>
       <ScrollProgress containerRef={sectionRef} />
 
-      {plain ? (
-        <>
-          {/* Plain lens: each flagship is told as a story, then every smaller build at once */}
-         <ProofBand />
+  
+{plain ? (
+  <>
+    <ProofBand />
 
-{/* Flagship 3D Project Carousel */}
-<FlagshipCarousel
-  flagships={flagships}
-  flagshipMeta={flagshipMeta}
-  onExpand={setExpandedPanel}
-  onOpen={setActiveProject}
-  plain
-/>
+    {/* Existing flagship carousel — unchanged */}
+    <FlagshipCarousel
+      flagships={flagships}
+      flagshipMeta={flagshipMeta}
+      onExpand={setExpandedPanel}
+      onOpen={setActiveProject}
+      plain
+    />
+  </>
+) : (
+  <>
+    {/* Existing technical intro */}
+    <div className="md:min-h-[45vh] flex flex-col items-center justify-center text-center px-5 md:px-8 py-8 md:py-20">
+      <FadeUp>
+        <p className="text-sm font-mono text-accent mb-4 uppercase tracking-[0.3em]">
+          what I&apos;ve shipped
+        </p>
+        <h2 className="mx-auto max-w-[760px] text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-[1.08] tracking-tight mb-5 text-balance">
+          4 production systems<span className="text-muted">.</span>
+          <br />
+          <span className="text-muted">Scroll to explore</span>
+          <span className="text-accent">.</span>
+        </h2>
+        <p className="text-sm md:text-base text-muted leading-relaxed max-w-md mx-auto">
+          Each one built from scratch, solving a real problem, running in production. Click the mockup or diagram to expand.
+        </p>
+      </FadeUp>
+    </div>
 
-<SideProjects
-  projects={others}
-  onOpen={setActiveProject}
-/>
-        </>
-      ) : (
-        <>
-          {/* Section intro */}
-          <div className="md:min-h-[45vh] flex flex-col items-center justify-center text-center px-5 md:px-8 py-8 md:py-20">
-            <FadeUp>
-              <p className="text-sm font-mono text-accent mb-4 uppercase tracking-[0.3em]">
-                what I&apos;ve shipped
-              </p>
-              <h2 className="mx-auto max-w-[760px] text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-[1.08] tracking-tight mb-5 text-balance">
-                4 production systems<span className="text-muted">.</span>
-                <br />
-                <span className="text-muted">Scroll to explore</span><span className="text-accent">.</span>
-              </h2>
-              <p className="text-sm md:text-base text-muted leading-relaxed max-w-md mx-auto">
-                Each one built from scratch, solving a real problem, running in production. Click the mockup or diagram to expand.
-              </p>
-            </FadeUp>
-          </div>
+    {/* Existing flagship carousel — unchanged */}
+    <FlagshipCarousel
+      flagships={flagships}
+      flagshipMeta={flagshipMeta}
+      onExpand={setExpandedPanel}
+      onOpen={setActiveProject}
+    />
+  </>
+)}
 
-         {/* Flagship 3D Project Carousel */}
-            <FlagshipCarousel
-             flagships={flagships}
-             flagshipMeta={flagshipMeta}
-             onExpand={setExpandedPanel}
-             onOpen={setActiveProject}
-           />  
 
-          {/* Other deployments carousel */}
-         <div className="py-6 md:py-10 px-4 md:px-8">
-  <OtherDeployments others={others} onOpen={setActiveProject} />
-</div>
-        </>
-      )}
+{/* Discover More Work + Read Blog buttons */}
+<div className="flex flex-col items-center px-5 pt-1 pb-4">
+  <div className="flex flex-wrap items-center justify-center gap-3">
+   <button
+  type="button"
+  onClick={() => setShowSmallProjects((previous) => !previous)}
+  className="inline-flex items-center gap-2 rounded-full border border-accent/40 px-6 py-3.5 text-sm font-medium text-foreground transition-all duration-300 hover:-translate-y-0.5 hover:border-accent hover:bg-accent/5"
+>
+  {showSmallProjects ? (
+    <>
+      Show Less
+      <ChevronUp size={16} className="text-accent" />
+    </>
+  ) : (
+    <>
+      <FolderOpen size={16} className="text-accent" />
+      Explore More Projects
+      <ArrowUpRight size={15} className="text-accent" />
+    </>
+  )}
+</button>
 
-      <ProjectModal
-        project={activeProject}
+    
 
-        onClose={() => setActiveProject(null)}
-        onNavigate={navigate}
+<Link
+  href="/writing"
+  onClick={() => {
+    window.history.scrollRestoration = "manual";
+  }}
+  className="inline-flex items-center gap-2 rounded-full border border-accent/40 px-6 py-3.5 text-sm font-medium text-foreground transition-all duration-300 hover:-translate-y-0.5 hover:border-accent hover:bg-accent/5"
+>
+  <BookOpen size={16} className="text-accent" />
+  Read Blog
+  <ArrowUpRight size={15} className="text-accent" />
+</Link>
+
+
+  </div>
+
+  <AnimatePresence initial={false}>
+  {showSmallProjects && (
+    <motion.div
+      ref={smallProjectsRef}
+      key="side-projects"
+      initial={{ opacity: 0, y: 16, height: 0 }}
+      animate={{ opacity: 1, y: 0, height: "auto" }}
+      exit={{ opacity: 0, y: 10, height: 0 }}
+      transition={{ duration: 0.35, ease: "easeOut" }}
+      className="mt-6 w-full max-w-[1200px] overflow-hidden scroll-mt-24"
+    >
+      <SideProjects
+        projects={others}
+        onOpen={setActiveProject}
       />
+    </motion.div>
+  )}
+</AnimatePresence>
+</div>
+
+
+
+{/* Small projects overlay */}
+<ProjectModal
+  project={activeProject}
+onClose={() => {
+  const savedPosition = projectScrollPosition.current;
+
+  setActiveProject(null);
+
+  if (savedPosition !== null) {
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        window.scrollTo({
+          top: savedPosition,
+          behavior: "instant",
+        });
+      });
+    });
+  }
+}}
+  onNavigate={navigate}
+/>
+
       <ExpandModal
         open={!!expandedPanel}
         onClose={() => setExpandedPanel(null)}

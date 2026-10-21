@@ -16,13 +16,22 @@ export function SideProjects({
   onOpen: (project: ProjectData) => void;
 }): React.ReactElement {
   return (
-    <div className="px-5 md:px-10 lg:pl-28 lg:pr-16 py-16 md:py-28 border-t border-card-border/60">
+   
+
+<div className="px-5 md:px-10 lg:pl-28 lg:pr-16 pt-0 pb-4 border-0">
+
+
       <div className="max-w-[1200px] mx-auto">
         <Reveal>
-          <Eyebrow className="mb-3">More work</Eyebrow>
-          <h2 className="font-heading font-bold text-3xl sm:text-4xl md:text-5xl leading-[1.08] tracking-tight mb-8 md:mb-12">
-            Smaller builds that are also in daily use.
-          </h2>
+         <Eyebrow className="mb-3">Selected Projects</Eyebrow>
+
+<h2 className="font-heading font-bold text-3xl sm:text-4xl md:text-5xl leading-[1.08] tracking-tight mb-5">
+  Other Projects, Real-World Impact.
+</h2>
+
+<p className="max-w-2xl text-sm md:text-base text-foreground/65 leading-relaxed mb-8 md:mb-12">
+  A selection of practical tools, focused experiments, and products built to solve real problems.
+</p>
         </Reveal>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-4 md:gap-5">

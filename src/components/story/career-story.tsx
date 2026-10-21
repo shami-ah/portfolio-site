@@ -1,10 +1,8 @@
 "use client";
 
-import Link from "next/link";
-import { ArrowRight } from "lucide-react";
 import { useStatus } from "@/lib/use-status";
 import { getCareerChapters } from "@/data/stories";
-import { getFeaturedArticles } from "@/data/writing";
+
 import { Eyebrow, Reveal } from "./primitives";
 
 /* ------------------------------------------------------------------ */
@@ -15,7 +13,7 @@ import { Eyebrow, Reveal } from "./primitives";
 export function CareerStory(): React.ReactElement {
   const { status } = useStatus();
   const chapters = getCareerChapters(status.openevent);
-  const articles = getFeaturedArticles().slice(0, 3);
+  
 
   return (
     <section id="log" className="px-5 md:px-10 lg:pl-28 lg:pr-16 py-10 md:py-16 border-t border-card-border/60">
@@ -53,26 +51,7 @@ export function CareerStory(): React.ReactElement {
           ))}
         </ol>
 
-        {articles.length > 0 && (
-          <Reveal className="mt-10 md:mt-16" >
-            <div id="writing" className="rounded-2xl border border-card-border bg-card/60 p-6 md:p-8">
-              <Eyebrow className="mb-4">I also write about what I learn</Eyebrow>
-              <ul className="divide-y divide-card-border/60">
-                {articles.map((a) => (
-                  <li key={a.slug}>
-                    <Link
-                      href={`/writing#${a.slug}`}
-                      className="group flex items-center justify-between gap-4 py-3.5 text-sm md:text-lg text-foreground/80 hover:text-foreground transition-colors"
-                    >
-                      <span>{a.title}</span>
-                      <ArrowRight size={16} className="shrink-0 text-foreground/40 group-hover:text-accent group-hover:translate-x-1 transition-all" />
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </Reveal>
-        )}
+    
       </div>
     </section>
   );

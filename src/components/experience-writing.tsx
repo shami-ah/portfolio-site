@@ -6,7 +6,7 @@ import { FadeUp } from "./motion";
 import { TiltCard } from "./tilt-card";
 import { TypeLabel } from "./type-label";
 import { useStatus } from "@/lib/use-status";
-import { getFeaturedArticles } from "@/data/writing";
+
 import Link from "next/link";
 import { useLens } from "@/lib/use-lens";
 import { CareerStory } from "./story/career-story";
@@ -77,30 +77,19 @@ function getRoles(oe: { clients: number; events: number }): Role[] {
 export function ExperienceAndWriting(): React.ReactElement {
   const { status } = useStatus();
   const roles = getRoles(status.openevent);
-  const featured = getFeaturedArticles();
+ 
   const lens = useLens();
 
   if (lens === "plain") return <CareerStory />;
 
   return (
-    <section id="log" className="py-10 md:py-16">
+    <section id="log" className="pt-6 pb-0">
       <div className="max-w-6xl mx-auto px-5 md:px-6">
         {/* Section header */}
-        <FadeUp>
-          <div className="text-center mb-8 md:mb-16">
-            <TypeLabel
-              text="$ systemctl status --all"
-              className="text-sm font-mono text-accent mb-4 uppercase tracking-wider"
-            />
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold leading-tight">
-              Where I&apos;ve shipped.{" "}
-              <span className="text-gradient">What I&apos;ve learned.</span>
-            </h2>
-          </div>
-        </FadeUp>
+        
 
         {/* ── Mobile layout: experience first, then writing ── */}
-        <div className="md:hidden space-y-8">
+       <div className="md:hidden space-y-4">
           {/* Experience section */}
           <div>
             <FadeUp>
@@ -153,60 +142,13 @@ export function ExperienceAndWriting(): React.ReactElement {
             </div>
           </div>
 
-          {/* Writing section */}
-          <div>
-            <FadeUp>
-              <div className="flex items-center gap-2 mb-4" id="writing">
-                <span className="w-1.5 h-1.5 rounded-full bg-accent-secondary" />
-                <span className="text-caption font-mono text-accent-secondary uppercase tracking-wider">
-                  $ cat ~/writing/*.md
-                </span>
-              </div>
-            </FadeUp>
-            <div className="space-y-3">
-              {featured.map((article, i) => (
-                <motion.div
-                  key={article.slug}
-                  initial={false}
-                  animate={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true, margin: "-50px" }}
-                  transition={{ duration: 0.6, delay: i * 0.1, ease: [0.22, 1, 0.36, 1] }}
-                >
-                  <TiltCard className="h-full">
-                  <Link
-                    href={`/writing#${article.slug}`}
-                    className="group card-glow card-gradient-border rounded-lg bg-card border border-card-border p-3 h-full flex flex-col font-mono hover:border-transparent transition-colors duration-300"
-                  >
-                    <div className="flex flex-wrap items-center gap-x-1.5 gap-y-0.5 mb-1.5 text-caption">
-                      <span className="text-accent-secondary">~/writing/{article.slug}.md</span>
-                      <span className="text-muted/30">{article.date}</span>
-                    </div>
-                    <h3 className="text-small font-bold font-sans mb-1.5 group-hover:text-accent transition-colors">
-                      <span className="text-accent-secondary/30 font-normal"># </span>{article.title}
-                    </h3>
-                    <div className="pl-2.5 border-l-2 border-card-border mb-2 flex-1">
-                      <p className="text-caption text-muted leading-snug font-sans line-clamp-3">{article.summary}</p>
-                    </div>
-                    <div className="flex items-center gap-2 text-caption text-muted/50 pt-1.5 border-t border-card-border/40">
-                      <span className="text-accent-secondary/60">~{(parseInt(article.readTime) * 200).toLocaleString()} words</span>
-                      <span>{article.readTime}</span>
-                      <span className="ml-auto text-muted/30 group-hover:text-accent transition-colors">→</span>
-                    </div>
-                  </Link>
-                  </TiltCard>
-                </motion.div>
-              ))}
-              <Link href="/writing" className="inline-flex items-center gap-1.5 font-mono text-caption text-muted/40 hover:text-accent-secondary transition-colors">
-                View all articles →
-              </Link>
-            </div>
-          </div>
+       
         </div>
 
         {/* ── Desktop layout: paired grid (experience left, writing right) ── */}
         <div className="hidden md:block">
           {/* Column headers */}
-          <div className="grid md:grid-cols-2 gap-14 mb-6">
+         <div className="mb-3">
             <FadeUp>
               <div className="flex items-center gap-2" id="experience-desktop">
                 <span className="w-1.5 h-1.5 rounded-full bg-accent" />
@@ -225,13 +167,13 @@ export function ExperienceAndWriting(): React.ReactElement {
             </FadeUp>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-x-12 gap-y-4 relative">
+          <div className="grid grid-cols-1 gap-y-4 relative">
             {/* Vertical divider */}
-            <div className="absolute left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-card-border/60 to-transparent" />
+           
 
             {/* Row by row: git card left, writing card right */}
             {roles.map((role, i) => {
-              const article = featured[i];
+              
               return (
                 <React.Fragment key={role.hash}>
                   {/* Left: Git commit card with branch line */}
@@ -278,42 +220,7 @@ export function ExperienceAndWriting(): React.ReactElement {
                     </TiltCard>
                   </motion.div>
 
-                  {/* Right: Writing .md card */}
-                  {article ? (
-                    <motion.div
-                      initial={false}
-                      animate={{ opacity: 1, x: 0 }}
-                      viewport={{ once: true, margin: "-50px" }}
-                      transition={{ duration: 0.6, delay: i * 0.1, ease: [0.22, 1, 0.36, 1] }}
-                    >
-                      <TiltCard className="h-full">
-                      <Link
-                        href={`/writing#${article.slug}`}
-                        className="group card-glow card-gradient-border rounded-lg bg-card border border-card-border p-4 h-full flex flex-col font-mono hover:border-transparent transition-colors duration-300"
-                      >
-                        {/* File path + date */}
-                        <div className="flex flex-wrap items-center gap-x-1.5 gap-y-0.5 mb-1.5 text-caption">
-                          <span className="text-accent-secondary">~/writing/{article.slug}.md</span>
-                          <span className="text-muted/30">{article.date}</span>
-                        </div>
-                        {/* Title */}
-                        <h3 className="text-small font-bold font-sans mb-1.5 group-hover:text-accent transition-colors">
-                          <span className="text-accent-secondary/30 font-normal"># </span>{article.title}
-                        </h3>
-                        {/* Summary */}
-                        <div className="pl-2.5 border-l-2 border-card-border mb-2 flex-1">
-                          <p className="text-caption text-muted leading-snug font-sans line-clamp-3">{article.summary}</p>
-                        </div>
-                        {/* Stats */}
-                        <div className="flex items-center gap-2 text-caption text-muted/50 pt-1.5 border-t border-card-border/40">
-                          <span className="text-accent-secondary/60">~{(parseInt(article.readTime) * 200).toLocaleString()} words</span>
-                          <span>{article.readTime}</span>
-                          <span className="ml-auto text-muted/30 group-hover:text-accent transition-colors">→</span>
-                        </div>
-                      </Link>
-                      </TiltCard>
-                    </motion.div>
-                  ) : <div />}
+                
                 </React.Fragment>
               );
             })}
