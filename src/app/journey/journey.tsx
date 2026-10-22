@@ -101,11 +101,12 @@ export function Journey(): React.ReactElement {
             <span className="text-accent">how I work</span> · behind the systems
           </p>
           <Link
-            href="/"
-            className="inline-flex items-center gap-2 text-xs font-mono text-muted hover:text-accent transition-colors"
-          >
-            ← back to portfolio
-          </Link>
+  href="/"
+  scroll={false}
+  className="inline-flex items-center gap-2 text-xs font-mono text-muted hover:text-accent transition-colors"
+>
+  ← back to portfolio
+</Link>
         </div>
       </header>
 

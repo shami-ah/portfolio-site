@@ -511,13 +511,17 @@ export function Uses(): React.ReactElement {
         </div>
         <div className="max-w-5xl mx-auto px-5 md:px-6 py-3 flex items-center justify-center">
           <span className="text-small font-mono text-muted/40">ahtesham.workbench</span>
-          <Link
-            href="/"
-            className="text-xs font-mono text-muted hover:text-accent transition-colors absolute right-5 md:right-6"
-          >
-            <span className="sm:hidden">← back</span>
-            <span className="hidden sm:inline">← back to portfolio</span>
-          </Link>
+        
+
+<Link
+  href="/"
+  className="text-xs font-mono text-muted hover:text-accent transition-colors absolute right-5 md:right-6"
+>
+  <span className="sm:hidden">← back</span>
+  <span className="hidden sm:inline">← back to portfolio</span>
+</Link>
+
+
         </div>
       </div>
 

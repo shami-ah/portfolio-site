@@ -1784,32 +1784,34 @@ if (smallProjectsRef.current?.contains(document.activeElement)) return;
 {/* Discover More Work + Read Blog buttons */}
 <div className="flex flex-col items-center px-5 pt-1 pb-4">
   <div className="flex flex-wrap items-center justify-center gap-3">
-   <button
+  <button
   type="button"
-  onClick={() => setShowSmallProjects((previous) => !previous)}
+  onClick={() => {
+    if (others.length > 0) {
+      projectScrollPosition.current = window.scrollY;
+      setActiveProject(others[0]);
+    }
+  }}
   className="inline-flex items-center gap-2 rounded-full border border-accent/40 px-6 py-3.5 text-sm font-medium text-foreground transition-all duration-300 hover:-translate-y-0.5 hover:border-accent hover:bg-accent/5"
 >
-  {showSmallProjects ? (
-    <>
-      Show Less
-      <ChevronUp size={16} className="text-accent" />
-    </>
-  ) : (
-    <>
-      <FolderOpen size={16} className="text-accent" />
-      Explore More Projects
-      <ArrowUpRight size={15} className="text-accent" />
-    </>
-  )}
+  <FolderOpen size={16} className="text-accent" />
+  Explore More Projects
+  <ArrowUpRight size={15} className="text-accent" />
 </button>
 
     
 
+
+
 <Link
   href="/writing"
   onClick={() => {
-    window.history.scrollRestoration = "manual";
+    sessionStorage.setItem(
+      "portfolio-scroll-position",
+      String(window.scrollY)
+    );
   }}
+  id="read-blog"
   className="inline-flex items-center gap-2 rounded-full border border-accent/40 px-6 py-3.5 text-sm font-medium text-foreground transition-all duration-300 hover:-translate-y-0.5 hover:border-accent hover:bg-accent/5"
 >
   <BookOpen size={16} className="text-accent" />
@@ -1818,25 +1820,13 @@ if (smallProjectsRef.current?.contains(document.activeElement)) return;
 </Link>
 
 
+
+
+
   </div>
 
   <AnimatePresence initial={false}>
-  {showSmallProjects && (
-    <motion.div
-      ref={smallProjectsRef}
-      key="side-projects"
-      initial={{ opacity: 0, y: 16, height: 0 }}
-      animate={{ opacity: 1, y: 0, height: "auto" }}
-      exit={{ opacity: 0, y: 10, height: 0 }}
-      transition={{ duration: 0.35, ease: "easeOut" }}
-      className="mt-6 w-full max-w-[1200px] overflow-hidden scroll-mt-24"
-    >
-      <SideProjects
-        projects={others}
-        onOpen={setActiveProject}
-      />
-    </motion.div>
-  )}
+  
 </AnimatePresence>
 </div>
 

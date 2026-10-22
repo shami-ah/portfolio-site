@@ -251,9 +251,20 @@ export function ExperienceAndWriting(): React.ReactElement {
               transition={{ duration: 0.5, delay: 0.2 }}
               className="flex items-start pt-1"
             >
-              <Link href="/writing" className="inline-flex items-center gap-1.5 font-mono text-caption text-muted/40 hover:text-accent-secondary transition-colors">
-                View all articles →
-              </Link>
+              
+<Link
+  href="/writing"
+  onClick={() => {
+    sessionStorage.setItem(
+      "portfolio-scroll-position",
+      String(window.scrollY)
+    );
+  }}
+  className="inline-flex items-center gap-1.5 font-mono text-caption text-muted/40 hover:text-accent-secondary transition-colors"
+>
+  View all articles →
+</Link>
+
             </motion.div>
           </div>
         </div>
