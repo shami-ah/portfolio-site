@@ -16,9 +16,14 @@ import { useStatus } from "@/lib/use-status";
 import { useLens } from "@/lib/use-lens";
 import { FLAGSHIP_STORIES } from "@/data/stories";
 import { ProofBand } from "./story/proof-band";
-import { SideProjects } from "./story/side-projects";
 import Link from "next/link";
-import { BookOpen, ArrowUpRight } from "lucide-react";
+import { BookOpen, ArrowUpRight, } from "lucide-react";
+import {
+  ArrowLeft,
+  ArrowRight,
+  ExternalLink,
+} from "lucide-react";
+
 
 const EMOJI_COMMENTARY: Record<string, { mood: "proud" | "curious" | "default" | "surprised"; text: string }> = {
   openevent: { mood: "proud", text: "8 months, 100+ clients, zero AI errors." },
@@ -1556,9 +1561,29 @@ useEffect(() => {
           })}
         </div>
 
-        <div className="flex gap-2.5 mt-4">
-        
-        </div>
+<div className="flex items-center justify-center gap-4 mt-6 relative z-50">
+  <button
+    type="button"
+    onClick={prev}
+    aria-label="Previous project"
+    className="flex h-12 w-12 items-center justify-center rounded-full border border-white/20 bg-slate-900 text-white text-2xl hover:bg-slate-700"
+  >
+    ←
+  </button>
+
+  <span className="text-sm text-white">
+    {current + 1} / {others.length}
+  </span>
+
+  <button
+    type="button"
+    onClick={next}
+    aria-label="Next project"
+    className="flex h-12 w-12 items-center justify-center rounded-full border border-white/20 bg-slate-900 text-white text-2xl hover:bg-slate-700"
+  >
+    →
+  </button>
+</div>
       </div>
     </FadeUp>
   );
@@ -1833,24 +1858,46 @@ if (smallProjectsRef.current?.contains(document.activeElement)) return;
 
 
 {/* Small projects overlay */}
+{activeProject && (
+  <div className="pointer-events-none fixed inset-0 z-[99999] flex items-center justify-between px-3 sm:px-6">
+    <button
+      type="button"
+      onClick={() => navigate(-1)}
+      aria-label="Previous project"
+      className="pointer-events-auto flex h-12 w-12 items-center justify-center rounded-full border border-accent/50 bg-[#050914]/95 text-3xl text-accent shadow-lg transition hover:scale-110 hover:bg-accent/20 sm:h-14 sm:w-14"
+    >
+      ‹
+    </button>
+
+    <button
+      type="button"
+      onClick={() => navigate(1)}
+      aria-label="Next project"
+      className="pointer-events-auto flex h-12 w-12 items-center justify-center rounded-full border border-accent/50 bg-[#050914]/95 text-3xl text-accent shadow-lg transition hover:scale-110 hover:bg-accent/20 sm:h-14 sm:w-14"
+    >
+      ›
+    </button>
+  </div>
+)}
+
 <ProjectModal
   project={activeProject}
-onClose={() => {
-  const savedPosition = projectScrollPosition.current;
+  onClose={() => {
+    const savedPosition = projectScrollPosition.current;
 
-  setActiveProject(null);
+    setActiveProject(null);
 
-  if (savedPosition !== null) {
-    requestAnimationFrame(() => {
+    if (savedPosition !== null) {
       requestAnimationFrame(() => {
-        window.scrollTo({
-          top: savedPosition,
-          behavior: "instant",
+        requestAnimationFrame(() => {
+          window.scrollTo({
+            top: savedPosition,
+            behavior: "instant",
+          });
         });
       });
-    });
-  }
-}}
+    }
+  }}
   onNavigate={navigate}
 />
 

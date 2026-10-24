@@ -162,6 +162,34 @@ export function ProjectModal({
         >
           {/* Backdrop */}
           <div className="absolute inset-0 bg-background/80 backdrop-blur-md" />
+          {/* Previous / Next project arrows */}
+{onNavigate && !["openevent", "codelens", "gogaa-cli", "rasad"].includes(project.slug) && (
+  <>
+    <button
+      type="button"
+      aria-label="Previous project"
+      onClick={(e) => {
+        e.stopPropagation();
+        onNavigate(-1);
+      }}
+ className="fixed left-3 md:left-[calc(50%-540px)] top-1/2 -translate-y-1/2 z-[200] flex h-9 w-9 md:h-11 md:w-11 items-center justify-center rounded-full border border-accent/40 bg-[#050914]/95 text-accent shadow-xl transition hover:scale-110 hover:bg-accent/20"
+    >
+      <ChevronLeft size={28} />
+    </button>
+
+    <button
+      type="button"
+      aria-label="Next project"
+      onClick={(e) => {
+        e.stopPropagation();
+        onNavigate(1);
+      }}
+    className="fixed right-3 md:right-[calc(50%-540px)] top-1/2 -translate-y-1/2 z-[200] flex h-9 w-9 md:h-11 md:w-11 items-center justify-center rounded-full border border-accent/40 bg-[#050914]/95 text-accent shadow-xl transition hover:scale-110 hover:bg-accent/20"
+    >
+      <ChevronRight size={28} />
+    </button>
+  </>
+)}
 
        
 
