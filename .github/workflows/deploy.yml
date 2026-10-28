@@ -24,7 +24,7 @@ jobs:
       - name: Package output
         run: |
           tar -czf out.tar.gz -C out .
-          tar -czf api.tar.gz -C api server.mjs Dockerfile
+          tar -czf api.tar.gz -C api .
 
       - name: Upload to server
         uses: appleboy/scp-action@v0.1.7
@@ -51,6 +51,8 @@ jobs:
             mkdir -p api
             tar -xzf api.tar.gz -C api/
             rm api.tar.gz
-            sudo docker restart shami
-            sudo docker compose -f /home/team/docker-compose.yml up -d --build shami-api
+            docker restart shami
+            docker compose -f /home/team/docker-compose.yml up -d --build shami-api || exit 1
+            sleep 5
+            docker exec shami-api node -e "fetch('http://localhost:3001/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))" || { echo "shami-api health check failed"; exit 1; }
             echo "Deploy complete: $(date)"
