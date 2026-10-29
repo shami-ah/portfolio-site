@@ -5,6 +5,8 @@ export interface ProjectData {
   type: string;
   /** Short 1-2 sentence summary for project cards. Falls back to impact if not set. */
   cardSummary?: string;
+  /** Jargon-free summary shown to recruiters and clients (plain lens). Falls back to cardSummary. */
+  plainSummary?: string;
   /** Single punchy sentence for full-screen flagship display. */
   oneLiner?: string;
   impact: string;
@@ -57,6 +59,7 @@ export const projects: ProjectData[] = [
     type: "Production SaaS",
     oneLiner: "AI turns client emails into approved bookings, invoices, and CRM updates.",
     cardSummary: "100+ clients in 8 months, no sales team. AI reads emails, proposes actions, humans approve with one click.",
+    
     impact: "Grew to 100+ clients across 150+ events in 8 months with zero sales team — product-led adoption. Saves each team ~1.5 hours per day. AI classifies emails, proposes actions, and executes after human approval.",
     problem:
       "Event companies drown in emails and manual coordination. Staff spend hours triaging requests, copying data between systems, and chasing approvals. Simple automation breaks on ambiguous language.",
@@ -445,6 +448,7 @@ export const projects: ProjectData[] = [
   /* ------------------------------------------------------------------ */
   {
     slug: "command-center",
+    plainSummary: "One screen for email, calendar and tasks, with AI sorting what matters first. Cuts inbox time by 60%.",
     title: "Command Center",
     subtitle: "Personal AI Operations PWA",
     type: "Developer Tool",
@@ -490,6 +494,7 @@ export const projects: ProjectData[] = [
   /* ------------------------------------------------------------------ */
   {
     slug: "gluten-free",
+    plainSummary: "A phone and web app that finds gluten-free deals from 40+ shops, nearby restaurants, and recipes.",
     title: "Gluten-Free Deals & Dining",
     subtitle: "Cross-Platform Consumer App",
     type: "Web + iOS + Android",
@@ -536,6 +541,7 @@ export const projects: ProjectData[] = [
   /* ------------------------------------------------------------------ */
   {
     slug: "dev-env",
+    plainSummary: "A ready-made work setup that takes a new developer from zero to their first contribution in 10 minutes.",
     title: "Portable Dev Environment",
     subtitle: "Containerized Full-Stack Workspace",
     type: "Developer Infrastructure",
@@ -581,6 +587,7 @@ export const projects: ProjectData[] = [
   /* ------------------------------------------------------------------ */
   {
     slug: "agent-orchestrator",
+    plainSummary: "A team of AI workers: one plans the job, others do it, and one checks the result before it is accepted.",
     title: "AI Agent Orchestrator",
     subtitle: "CAMEL Multi-Agent Framework",
     type: "AI Framework",
@@ -629,6 +636,7 @@ export const projects: ProjectData[] = [
   /* ------------------------------------------------------------------ */
   {
     slug: "agent-system",
+    plainSummary: "Five AI assistants that handle job search, research, code review, proposals and freelance admin on their own, at $0 a month to run.",
     title: "AI Agent System",
     subtitle: "5 Purpose-Built AI Agents",
     type: "AI Agents",

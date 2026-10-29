@@ -313,7 +313,7 @@ export function SidebarNav(): React.ReactElement {
                   ? "text-accent drop-shadow-[0_0_6px_rgba(160,120,104,0.5)]"
                   : isDone
                     ? "text-accent-status/70 group-hover:text-accent-status"
-                    : "text-muted/25 group-hover:text-muted/50"
+                    : "text-foreground/50 group-hover:text-foreground/80"
               }`}
             />
 
@@ -335,8 +335,12 @@ export function SidebarNav(): React.ReactElement {
               );
             })()}
 
-            {/* Tooltip */}
-            <span className="absolute left-full ml-3 px-2.5 py-1 rounded-lg bg-card/90 backdrop-blur-xl border border-card-border/50 text-[10px] text-foreground/80 whitespace-nowrap opacity-0 pointer-events-none group-hover:opacity-100 group-hover:translate-x-0 -translate-x-1 transition-all duration-200 shadow-lg z-10">
+            {/* Label — always visible so non-technical visitors can read the nav */}
+            <span
+              className={`absolute top-full left-1/2 -translate-x-1/2 mt-0.5 text-[9px] leading-none tracking-wide whitespace-nowrap pointer-events-none transition-colors duration-300 ${
+                isActive ? "text-accent" : "text-foreground/55 group-hover:text-foreground/90"
+              }`}
+            >
               {label}
             </span>
           </button>

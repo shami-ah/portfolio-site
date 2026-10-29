@@ -2,7 +2,10 @@
 
 import { useEffect, useState, useCallback } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
+import { ArrowDown, Calendar, FileText } from "lucide-react";
 import { useStatus } from "@/lib/use-status";
+import { useLens, useVisitorIntent } from "@/lib/use-lens";
+import { openCvDrawer } from "@/components/cv-drawer";
 
 /* ------------------------------------------------------------------ */
 /*  StreamingWords — reveals text word-by-word with a typing cursor    */
@@ -115,10 +118,23 @@ const TITLE_SEGMENTS: WordSegment[] = [
   { text: "break." },
 ];
 
-const DESC_SEGMENTS: WordSegment[] =
-  "OpenEvent runs with 100+ clients. CodeLens reviews PRs in under a second. Gogaa keeps coding work moving across 11 providers. I design the architecture, build the product, and own delivery."
-    .split(" ")
-    .map((text) => ({ text }));
+const toSegments = (copy: string): WordSegment[] => copy.split(" ").map((text) => ({ text }));
+
+const DESC_SEGMENTS = {
+  plain: toSegments(
+    "I build AI software that businesses rely on every day. OpenEvent serves 100+ event companies and saves each team about 90 minutes a day. I design it, build it, and keep it running.",
+  ),
+  technical: toSegments(
+    "OpenEvent runs with 100+ clients. CodeLens reviews PRs in under a second. Gogaa keeps coding work moving across 11 providers. I design the architecture, build the product, and own delivery.",
+  ),
+} as const;
+
+const BOOK_URL = "https://ahtesham.dev.wadwarehouse.com/book";
+const GITHUB_URL = "https://github.com/shami-ah";
+const CTA_PRIMARY =
+  "inline-flex items-center gap-2 px-5 py-2.5 rounded-lg btn-gradient font-semibold text-sm hover:shadow-lg hover:shadow-accent/25 hover:-translate-y-0.5 transition-all duration-200 cursor-pointer";
+const CTA_SECONDARY =
+  "inline-flex items-center gap-2 px-5 py-2.5 rounded-lg border border-card-border bg-card/40 text-sm text-foreground/80 hover:border-accent/40 hover:text-foreground transition-all duration-200 cursor-pointer";
 
 /* ------------------------------------------------------------------ */
 /*  Hero Section — Agent-first centered layout                         */
@@ -129,13 +145,11 @@ const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
 export function ConfigHero(): React.ReactElement {
   const { status } = useStatus();
+  const lens = useLens();
+  const intent = useVisitorIntent();
 
   // Materialization state — driven by particle arrival events
   const [materialized, setMaterialized] = useState<Set<string>>(new Set());
-
-  // Agent overlays — hero copy fades out while command output or chat is active
-  const [chatActive, setChatActive] = useState(false);
-  const [agentActive, setAgentActive] = useState(false);
 
   useEffect(() => {
     const frame = requestAnimationFrame(() => {
@@ -187,26 +201,13 @@ export function ConfigHero(): React.ReactElement {
       setMaterialized(new Set());
     };
 
-    const onChatOpen = (): void => setChatActive(true);
-    const onChatClose = (): void => setChatActive(false);
-    const onAgentOpen = (): void => setAgentActive(true);
-    const onAgentClose = (): void => setAgentActive(false);
-
     window.addEventListener("hero-reveal", onReveal);
     window.addEventListener("boot-complete", onBootComplete);
     window.addEventListener("replay-intro", onReplay);
-    window.addEventListener("chat-overlay-open", onChatOpen);
-    window.addEventListener("chat-overlay-close", onChatClose);
-    window.addEventListener("agent-overlay-open", onAgentOpen);
-    window.addEventListener("agent-overlay-close", onAgentClose);
     return () => {
       window.removeEventListener("hero-reveal", onReveal);
       window.removeEventListener("boot-complete", onBootComplete);
       window.removeEventListener("replay-intro", onReplay);
-      window.removeEventListener("chat-overlay-open", onChatOpen);
-      window.removeEventListener("chat-overlay-close", onChatClose);
-      window.removeEventListener("agent-overlay-open", onAgentOpen);
-      window.removeEventListener("agent-overlay-close", onAgentClose);
       cancelAnimationFrame(frame);
     };
   }, []);
@@ -221,7 +222,6 @@ export function ConfigHero(): React.ReactElement {
     [materialized],
   );
   const immediate = materialized.size === ALL_TARGETS.length;
-  const overlayActive = chatActive || agentActive;
 
   return (
     <section
@@ -242,16 +242,8 @@ export function ConfigHero(): React.ReactElement {
 
       <div className="relative w-full max-w-4xl mx-auto px-5 md:px-6 text-center">
 
-        {/* Hero text content — fades out when agent/chat overlays are open */}
-        <motion.div
-          animate={{
-            opacity: overlayActive ? 0 : 1,
-            y: overlayActive ? -12 : 0,
-            filter: overlayActive ? "blur(8px)" : "blur(0px)",
-          }}
-          transition={{ duration: 0.4, ease: EASE }}
-          style={{ pointerEvents: overlayActive ? "none" : "auto" }}
-        >
+        {/* Hero text content — the agent is docked bottom-right, so nothing here needs to make room for it */}
+        <div>
           {/* 1. Title — word-by-word streaming with cursor */}
           <h1
             data-hero="title"
@@ -272,7 +264,8 @@ export function ConfigHero(): React.ReactElement {
             className="text-base md:text-lg text-muted max-w-xl mx-auto leading-relaxed mb-6 tracking-[-0.01em]"
           >
             <StreamingWords
-              segments={DESC_SEGMENTS}
+              key={lens}
+              segments={DESC_SEGMENTS[lens]}
               active={m("desc")}
               immediate={immediate}
               speed={50}
@@ -280,37 +273,34 @@ export function ConfigHero(): React.ReactElement {
           </p>
 
           {/* 4. Compact stats strip — proof, not claims */}
+         
+
+          {/* 5. Labelled actions — the primary one follows what the visitor told the agent */}
           <motion.div
             data-hero="desc"
             initial={false}
-            animate={{
-              opacity: m("desc") ? 1 : 0,
-              y: m("desc") ? 0 : 8,
-            }}
-            transition={{ duration: immediate ? 0 : 0.6, delay: immediate ? 0 : 0.3, ease: EASE }}
-            className="flex items-center justify-center gap-4 md:gap-6 mb-4 md:mb-5 font-mono text-[11px] md:text-xs tracking-wide"
+            animate={{ opacity: m("desc") ? 1 : 0, y: m("desc") ? 0 : 8 }}
+            transition={{ duration: immediate ? 0 : 0.6, delay: immediate ? 0 : 0.45, ease: EASE }}
+            className="flex flex-wrap items-center justify-center gap-3 mt-4 md:mt-6"
           >
-            <span className="text-foreground font-semibold">{status.portfolio.productionSystems}+ <span className="text-muted/50 font-normal">systems shipped</span></span>
-            <span className="text-muted/20">/</span>
-            <span className="text-foreground font-semibold">10 <span className="text-muted/50 font-normal">showcased</span></span>
-            <span className="text-muted/20">/</span>
-            <span className="text-foreground font-semibold">{status.portfolio.yearsBuilding}+ <span className="text-muted/50 font-normal">years</span></span>
+           <button
+  type="button"
+  data-cv-open="true"
+  onClick={openCvDrawer}
+  className={CTA_PRIMARY}
+>
+  <FileText size={15} strokeWidth={1.5} />
+  View my CV
+</button>
+            <a href="#projects" className={CTA_SECONDARY}>
+              See my work
+              <ArrowDown size={14} strokeWidth={1.5} />
+            </a>
           </motion.div>
-        </motion.div>
+        </div>
 
-        {/* 5. Agent input container — agent-bar renders here via portal */}
-        <motion.div
-          id="hero-agent-mount"
-          data-hero="agent"
-          initial={false}
-          animate={{
-            opacity: m("agent") ? 1 : 0,
-            y: m("agent") ? 0 : 16,
-            filter: m("agent") ? "blur(0px)" : "blur(6px)",
-          }}
-          transition={{ duration: immediate ? 0 : 0.7, ease: EASE }}
-          className="mt-0 max-w-[700px] mx-auto min-h-[255px] md:min-h-[315px] flex items-center justify-center"
-        />
+        {/* The agent lives in the bottom-right dock now; this keeps the reveal target for the intro particles */}
+        <div data-hero="agent" aria-hidden />
       </div>
 
     </section>

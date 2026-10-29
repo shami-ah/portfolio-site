@@ -3,9 +3,11 @@
 import { useEffect, useState, useRef, useCallback } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { RefreshCcw, Wrench, TrendingUp, Sun, Moon } from "lucide-react";
+import { RefreshCcw, TrendingUp, Sun, Moon } from "lucide-react";
+
 
 export function TopBar(): React.ReactElement {
+
   const [modalOpen, setModalOpen] = useState(false);
   const [theme, setThemeState] = useState<"dark" | "light">("dark");
   const [themeMounted, setThemeMounted] = useState(false);
@@ -252,6 +254,12 @@ export function TopBar(): React.ReactElement {
 
   return (
     <>
+      {/* Soft backdrop so scrolling content never collides with the fixed bar */}
+      <div
+        aria-hidden
+        className="fixed top-0 inset-x-0 h-20 z-30 pointer-events-none bg-gradient-to-b from-background via-background/80 to-transparent"
+      />
+
       {/* Signature — top-left corner */}
       <motion.div
         initial={false}
@@ -401,90 +409,93 @@ export function TopBar(): React.ReactElement {
           </button>
         )}
 
-        {/* ── Reboot ── */}
-        <button
-          type="button"
-          onClick={reboot}
-          aria-label="Reboot system — replay intro"
-          className={`group relative flex items-center cursor-pointer glass rounded-full p-2.5 hover:px-4 hover:gap-2 transition-all overflow-hidden border border-transparent ${tremor ? "nav-tremor" : "duration-300"}`}
-          style={{
-            boxShadow: heavy
-              ? "0 6px 25px rgba(74,222,128,0.25), 0 0 40px rgba(74,222,128,0.15)"
-              : "0 4px 12px rgba(0,0,0,0.12), 0 0 4px rgba(0,0,0,0.06)",
-            transform: heavy ? "translateY(3px)" : "translateY(0)",
-            transition: "transform 1s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.8s",
-          }}
-        >
-          <span
-            className="absolute bottom-0 left-0 right-0 bg-accent-status/15 rounded-full pointer-events-none"
-            style={{ height: `${fillPct}%`, transition: "height 2s ease-out" }}
-          />
-          <RefreshCcw
-            size={10}
-            className={`relative z-10 shrink-0 transition-colors duration-500 ${
-              heavy ? "text-accent-status" : tremor ? "text-accent-status/70" : "text-muted/60 group-hover:text-accent-status"
-            }`}
-          />
-          <span className="relative z-10 max-w-0 overflow-hidden group-hover:max-w-[60px] transition-all duration-300 whitespace-nowrap font-mono text-small text-muted/60">
-            reboot
-          </span>
-        </button>
+       
 
-        {/* ── Setup ── */}
-        <Link
-          href="/uses"
-          onClick={() => markSeen("setup")}
-          aria-label="Tools, stack, and workflow"
-          className={`group relative hidden sm:flex items-center cursor-pointer glass rounded-full p-2.5 hover:px-4 hover:gap-2 transition-all duration-500 border border-transparent ${
-            !seenSetup && setupGlow ? "nav-setup-glow" : ""
-          }`}
-          style={{
-            boxShadow: setupGlow
-              ? "0 4px 20px rgba(160,120,104,0.15), 0 0 30px rgba(160,120,104,0.1)"
-              : "0 4px 12px rgba(0,0,0,0.12), 0 0 4px rgba(0,0,0,0.06)",
-          }}
-        >
-          <span className={`absolute w-[3px] h-[3px] rounded-full nav-orbit pointer-events-none ${setupGlow ? "bg-accent/60" : "bg-accent/20"}`} style={{ animationDuration: setupGlow ? "2s" : "4s" }} />
-          <span className={`absolute w-[2px] h-[2px] rounded-full nav-orbit pointer-events-none ${setupGlow ? "bg-accent-secondary/60" : "bg-accent-secondary/20"}`} style={{ animationDuration: setupGlow ? "3s" : "6s", animationDelay: "-2s" }} />
-          <span className={`absolute w-[2px] h-[2px] rounded-full nav-orbit pointer-events-none ${setupGlow ? "bg-accent/50" : "bg-accent/15"}`} style={{ animationDuration: setupGlow ? "2.5s" : "5s", animationDelay: "-3.5s" }} />
-          <Wrench
-            size={10}
-            className={`shrink-0 transition-all duration-500 group-hover:rotate-[-20deg] ${
-              setupGlow ? "text-accent" : "text-muted/60 group-hover:text-accent"
-            }`}
-          />
-          <span className="max-w-0 overflow-hidden group-hover:max-w-[60px] transition-all duration-300 whitespace-nowrap font-mono text-small text-muted/60">
-            setup
-          </span>
-        </Link>
+        
+
+       
+{/* ── Reboot ── */}
+<button
+  type="button"
+  onClick={reboot}
+  aria-label="Replay intro"
+  title="Replay intro"
+  className={`group relative flex items-center justify-center cursor-pointer glass rounded-full p-3 hover:px-4 hover:gap-2 transition-all duration-300 overflow-hidden border border-transparent ${
+    tremor ? "nav-tremor" : ""
+  }`}
+  style={{
+    boxShadow: heavy
+      ? "0 6px 25px rgba(74,222,128,0.25), 0 0 40px rgba(74,222,128,0.15)"
+      : "0 4px 12px rgba(0,0,0,0.12), 0 0 4px rgba(0,0,0,0.06)",
+    transform: heavy ? "translateY(3px)" : "translateY(0)",
+    transition:
+      "transform 1s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.8s",
+  }}
+>
+  <span
+    className="absolute bottom-0 left-0 right-0 bg-accent-status/15 rounded-full pointer-events-none"
+    style={{
+      height: `${fillPct}%`,
+      transition: "height 2s ease-out",
+    }}
+  />
+
+  <RefreshCcw
+    size={14}
+    className={`relative z-10 shrink-0 transition-colors duration-500 ${
+      heavy
+        ? "text-accent-status"
+        : tremor
+          ? "text-accent-status/70"
+          : "text-muted/60 group-hover:text-accent-status"
+    }`}
+  />
+
+  
+<span className="relative z-10 max-w-0 overflow-hidden opacity-0 group-hover:max-w-[120px] group-hover:opacity-100 transition-all duration-300 whitespace-nowrap font-mono text-small text-muted/80">
+  replay intro
+</span>
+
+</button>
+
+
 
         {/* ── Journey ── */}
-        <Link
-          ref={journeyBtnRef}
-          href="/journey"
-          onClick={() => markSeen("journey")}
-          aria-label="Walk through my career"
-          className={`group relative flex items-center cursor-pointer glass rounded-full p-2.5 hover:px-4 hover:gap-2 transition-all duration-500 ${
-            meteorLanded ? "nav-journey-active" : "nav-journey-idle"
-          }`}
-          style={{
-            boxShadow: meteorLanded
-              ? "0 0 20px rgba(74,222,128,0.3), 0 0 40px rgba(74,222,128,0.15)"
-              : "0 4px 12px rgba(0,0,0,0.12), 0 0 4px rgba(160,120,104,0.04)",
-          }}
-        >
-          <TrendingUp
-            size={10}
-            className={`shrink-0 transition-colors duration-500 ${
-              meteorLanded ? "text-accent-status" : "text-accent/70 group-hover:text-accent"
-            }`}
-          />
-          <span className={`max-w-0 overflow-hidden group-hover:max-w-[70px] transition-all duration-300 whitespace-nowrap font-mono text-small ${
-            meteorLanded ? "text-accent-status/60" : "text-accent/60"
-          }`}>
-            journey
-          </span>
-        </Link>
+      
+{/* ── Journey ── */}
+<Link
+  ref={journeyBtnRef}
+  href="/journey"
+  onClick={() => markSeen("journey")}
+  aria-label="My Story — walk through my career"
+  title="My Story"
+  className={`group relative flex items-center justify-center cursor-pointer glass rounded-full p-3 hover:px-4 hover:gap-2 transition-all duration-300 ${
+    meteorLanded ? "nav-journey-active" : "nav-journey-idle"
+  }`}
+  style={{
+    boxShadow: meteorLanded
+      ? "0 0 20px rgba(74,222,128,0.3), 0 0 40px rgba(74,222,128,0.15)"
+      : "0 4px 12px rgba(0,0,0,0.12), 0 0 4px rgba(160,120,104,0.04)",
+  }}
+>
+  <TrendingUp
+    size={14}
+    className={`shrink-0 transition-colors duration-500 ${
+      meteorLanded
+        ? "text-accent-status"
+        : "text-accent/70 group-hover:text-accent"
+    }`}
+  />
+
+  <span
+    className={`max-w-0 overflow-hidden opacity-0 group-hover:max-w-[90px] group-hover:opacity-100 transition-all duration-300 whitespace-nowrap font-mono text-small ${
+      meteorLanded ? "text-accent-status/60" : "text-accent/60"
+    }`}
+  >
+    my story
+  </span>
+</Link>
+
       </motion.div>
     </>
   );

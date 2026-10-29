@@ -167,7 +167,9 @@ export function TerminalBoot({ force = false, onDone }: BootProps): React.ReactE
     window.addEventListener("pageshow", closeRestoredOverlay);
     document.addEventListener("visibilitychange", closeRestoredOverlay);
 
-    if (force || !seen) {
+    // First-time visitors land straight on the hero. The terminal only plays
+    // when forced or replayed from the reboot button.
+    if (force) {
       const visibleFrame = requestAnimationFrame(() => setVisible(true));
       return () => {
         window.removeEventListener("replay-intro", onReplay);
@@ -178,6 +180,7 @@ export function TerminalBoot({ force = false, onDone }: BootProps): React.ReactE
       };
     }
 
+    if (!seen) localStorage.setItem("boot-ever-seen", "1");
     sessionStorage.setItem("boot-complete", "1");
     window.dispatchEvent(new CustomEvent("boot-complete"));
     window.dispatchEvent(new CustomEvent("agent-button-ready"));
