@@ -4,7 +4,7 @@ import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import ReactDOM from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Minus, Calendar, FileText, ArrowRight } from "lucide-react";
-import { findAnswer, starters } from "@/lib/kb";
+import { starters } from "@/lib/kb";
 import type { KbAction } from "@/lib/kb";
 import { openCvDrawer } from "@/components/cv-drawer";
 
@@ -283,10 +283,23 @@ export function ChatWidget(): React.ReactElement {
     setHistoryLoaded(true);
   }, []);
 
-  useEffect(() => {
-    if (!historyLoaded) return;
-    saveChatHistory(messages);
-  }, [historyLoaded, messages]);
+ 
+useEffect(() => {
+  const onOpen = (): void => setState("open");
+  const onClose = (): void => setState("closed");
+  const onMountReady = (): void => setMountRevision((n) => n + 1);
+
+  window.addEventListener("open-chat-widget", onOpen);
+  window.addEventListener("close-chat-widget", onClose);
+  window.addEventListener("agent-focus-mount-ready", onMountReady);
+
+  return () => {
+    window.removeEventListener("open-chat-widget", onOpen);
+    window.removeEventListener("close-chat-widget", onClose);
+    window.removeEventListener("agent-focus-mount-ready", onMountReady);
+  };
+}, []);
+
 
   useEffect(() => {
     const onOpen = (): void => setState("open");
@@ -346,60 +359,87 @@ export function ChatWidget(): React.ReactElement {
     [],
   );
 
-  const streamAnswer = useCallback(
-    async (query: string): Promise<void> => {
-      setIsThinking(true);
-      setShowFallbackChips(false);
-      const id = `a-${Date.now()}`;
-      let answer = "";
-      let actions: KbAction[] | undefined;
+ 
+const streamAnswer = useCallback(
+  async (query: string): Promise<void> => {
+    setIsThinking(true);
+    setShowFallbackChips(false);
 
-      const contextualQuery = buildContextualQuery(query, messages);
-      const entry = findAnswer(query) ?? findAnswer(contextualQuery);
-      const history = messages
-        .filter((m) => m.role === "user" || m.role === "assistant")
-        .slice(-8)
-        .map((m) => ({ role: m.role, content: m.content }));
+    const id = `a-${Date.now()}`;
+    let answer = "";
+    let actions: KbAction[] | undefined;
 
-      try {
-        const res = await fetch("/api/chat", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            message: query,
-            query,
-            history,
-            model: "groq",
-          }),
-        });
-        if (res.ok) {
-          const data = await res.json() as { answer?: string; actions?: KbAction[] };
-          if (data.answer?.trim()) {
-            answer = data.answer.trim();
-            actions = data.actions ?? entry?.actions;
-          }
-        }
-      } catch {
-        // Local KB fallback keeps the portfolio assistant reliable offline.
+    // Send recent conversation history to the RAG backend.
+    const history = messages
+      .filter(
+        (m) => m.role === "user" || m.role === "assistant",
+      )
+      .slice(-8)
+      .map((m) => ({
+        role: m.role,
+        content: m.content,
+      }));
+
+    try {
+      const res = await fetch("http://localhost:3001/api/chat", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          message: query,
+          history,
+          model: "groq",
+        }),
+      });
+
+      if (!res.ok) {
+        throw new Error(`Chat API failed: ${res.status}`);
       }
 
-      if (!answer) {
-        if (entry) {
-          answer = applyModelVoice(entry.response, "groq");
-          actions = entry.actions;
-        } else {
-          answer = applyModelVoice(FALLBACK, "groq");
-          setShowFallbackChips(true);
-        }
-      }
+      const data = (await res.json()) as {
+        answer?: string;
+        actions?: KbAction[];
+        sources?: {
+          id: string;
+          category?: string;
+          project?: string | null;
+        }[];
+      };
 
-      setIsThinking(false);
-      setMessages((prev) => [...prev, { id, role: "assistant", content: "", streaming: true, actions }]);
-      await streamWords(id, answer);
-      pendingQueriesRef.current.delete(query.toLowerCase());
-    },
-    [streamWords, messages],
-  );
+      if (data.answer?.trim()) {
+        answer = data.answer.trim();
+        actions = data.actions;
+      } else {
+        throw new Error("The chat API returned an empty answer.");
+      }
+    } catch (error) {
+      console.error("RAG chat request failed:", error);
+
+      answer = FALLBACK;
+      setShowFallbackChips(true);
+    }
+
+    setIsThinking(false);
+
+    setMessages((prev) => [
+      ...prev,
+      {
+        id,
+        role: "assistant",
+        content: "",
+        streaming: true,
+        actions,
+      },
+    ]);
+
+    await streamWords(id, answer);
+
+    pendingQueriesRef.current.delete(query.toLowerCase());
+  },
+  [streamWords, messages],
+);
+
 
   const send = useCallback(
     (q: string): void => {

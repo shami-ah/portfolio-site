@@ -567,15 +567,14 @@ export function AgentBar(): React.ReactElement {
   const isOpen = uiState === "panel" || uiState === "processing" || uiState === "responding";
   const isBusy = uiState === "processing" || uiState === "responding";
 
-  const closePanel = (): void => {
-    setActiveCmd(null);
-    setShownSteps(0);
-    setShowResponse(false);
-    setInput("");
-    setMoodPickerOpen(false);
-    if (chatOpen) window.dispatchEvent(new CustomEvent("close-chat-widget"));
-    setUiState("button");
-  };
+ const closePanel = (): void => {
+  setActiveCmd(null);
+  setShownSteps(0);
+  setShowResponse(false);
+  setInput("");
+  setMoodPickerOpen(false);
+  setUiState("button");
+};
 
   const handleChatToggle = (): void => {
     window.dispatchEvent(new CustomEvent(chatOpen ? "close-chat-widget" : "open-chat-widget"));
