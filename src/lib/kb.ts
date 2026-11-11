@@ -139,7 +139,7 @@ export const kb: KbEntry[] = [
       "linter", "static analysis", "analyze code", "code quality",
     ],
     response:
-      "CodeLens is my AI code review engine. 430 hand-crafted patterns across 9 stacks, source-to-sink taint tracking, PR risk scoring, and Guardian mode that injects rules into Claude Code / Cursor / Copilot so bugs are caught at generation time, not review time. Runs fully local, sub-second, zero runtime deps.",
+      "CodeLens is my AI code review engine. 624 hand-crafted patterns across 9 stacks, source-to-sink taint tracking, PR risk scoring, and Guardian mode that injects rules into Claude Code / Cursor / Copilot so bugs are caught at generation time, not review time. Runs fully local, sub-second, zero runtime deps.",
     tags: ["product"],
   },
   {

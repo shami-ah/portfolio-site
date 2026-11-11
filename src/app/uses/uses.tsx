@@ -70,7 +70,7 @@ function CodeReadme(): React.ReactElement {
       <CodeLine num={5}><span /></CodeLine>
       <CodeLine num={6}><C>## Proof</C></CodeLine>
       <CodeLine num={7}><V>- **OpenEvent** runs with 100+ clients</V></CodeLine>
-      <CodeLine num={8}><V>- **CodeLens** reviews with 430 patterns</V></CodeLine>
+      <CodeLine num={8}><V>- **CodeLens** reviews with 624 patterns</V></CodeLine>
       <CodeLine num={9}><V>- **Gogaa CLI** passes 1,418 tests</V></CodeLine>
       <CodeLine num={10}><V>- **WISC** keeps agent context scoped</V></CodeLine>
       <CodeLine num={11}><span /></CodeLine>
@@ -227,7 +227,7 @@ function CodePhilosophy(): React.ReactElement {
 
 const loopNodes = [
   { label: "Gogaa CLI", stat: "1,418 tests", color: "border-accent/40 text-accent" },
-  { label: "CodeLens", stat: "430 patterns", color: "border-accent-secondary/40 text-accent-secondary" },
+  { label: "CodeLens", stat: "624 patterns", color: "border-accent-secondary/40 text-accent-secondary" },
   { label: "OpenEvent", stat: "100+ clients", color: "border-accent/40 text-accent" },
   { label: "WISC", stat: "84% smaller context", color: "border-accent/40 text-accent" },
 ];
@@ -246,7 +246,7 @@ function PreviewReadme(): React.ReactElement {
       <div className="grid grid-cols-2 gap-2">
         {[
           ["100+", "OpenEvent clients"],
-          ["430", "CodeLens patterns"],
+          ["624", "CodeLens patterns"],
           ["1,418", "Gogaa tests"],
           ["84%", "context reduction"],
         ].map(([value, label]) => (
@@ -395,7 +395,7 @@ function PreviewWorkflow(): React.ReactElement {
           { n: "02", l: "Architect", d: "Sketch the data flow. Decide what talks to what." },
           { n: "03", l: "Spec", d: "Schema, RLS, edge cases. The boring stuff that prevents 3 AM debugging." },
           { n: "04", l: "Scaffold", d: "AI agent generates from the spec." },
-          { n: "05", l: "Review", d: "CodeLens runs ~430 patterns. Fix before commit." },
+          { n: "05", l: "Review", d: "CodeLens runs ~624 patterns. Fix before commit." },
           { n: "06", l: "Ship", d: "Feature flag, 10% rollout, then 100%." },
         ].map((s) => (
           <div key={s.n} className="flex gap-2 items-start">

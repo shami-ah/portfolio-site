@@ -1,6 +1,6 @@
 {
   "$schema": "https://ahtesham.dev/status.schema.json",
-  "updated": "2026-05-07",
+  "updated": "2026-11-11",
   "gogaa": {
     "version": "1.2.1",
     "tests": 1418,
@@ -8,8 +8,8 @@
     "status": "private beta"
   },
   "codelens": {
-    "version": "0.4.1",
-    "patterns": 544,
+    "version": "0.6.0",
+    "patterns": 624,
     "stacks": 9,
     "status": "private beta"
   },
