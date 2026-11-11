@@ -5,20 +5,18 @@ import {
   BOOK_URL,
   buildSystemPrompt,
   buildContextualMessage,
-  classifyQuestion,
-   getModelTemperature,
   shouldSuggestBooking,
-  polishAnswer,
 } from "./chat-context.mjs";
 
 import { retrieveKnowledge } from "./knowledge/retriever.mjs";
-import { classifyPortfolioQuestion } from "./knowledge/question-filter.mjs";
+import { embeddingProvider as INDEX_EMBEDDING_PROVIDER } from "./knowledge/index.mjs";
 
 // ── Configuration ─────────────────────────────────────────────────
 
 const PORT = Number(process.env.PORT ?? 3001);
 
-const CHAT_PROVIDER = process.env.CHAT_PROVIDER ?? "gemini";
+// NVIDIA NIM is the default chat provider; Gemini is optional (CHAT_PROVIDER=gemini).
+const CHAT_PROVIDER = process.env.CHAT_PROVIDER ?? "nvidia";
 
 const NVIDIA_API_KEY = process.env.NVIDIA_API_KEY ?? "";
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY ?? "";
@@ -43,8 +41,17 @@ const NVIDIA_EMBED_MODEL =
 const GEMINI_MODEL =
   process.env.GEMINI_MODEL ?? "gemini-flash-latest";
 
+// Query embeddings must come from the same provider that built api/knowledge/index.mjs.
 const EMBEDDING_PROVIDER =
-  process.env.EMBEDDING_PROVIDER ?? "nvidia";
+  process.env.EMBEDDING_PROVIDER ?? INDEX_EMBEDDING_PROVIDER ?? "nvidia";
+
+const TEMPERATURE = 0.2;
+
+// Request limits (see handover 2.4)
+const MAX_BODY_BYTES = 16 * 1024;
+const MAX_MESSAGE_CHARS = 600;
+const MAX_HISTORY_TURNS = 6;
+const MAX_TURN_CHARS = 1200;
 
 const EMBEDDING_API_KEY =
   EMBEDDING_PROVIDER === "gemini"
@@ -257,11 +264,12 @@ async function requestGeminiChat(messages, temperature = 0.2) {
 
   for (let attempt = 1; attempt <= maxAttempts; attempt++) {
     const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${encodeURIComponent(GEMINI_API_KEY)}`,
+      `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent`,
       {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "x-goog-api-key": GEMINI_API_KEY,
         },
         body: JSON.stringify({
           systemInstruction: {
@@ -296,8 +304,6 @@ async function requestGeminiChat(messages, temperature = 0.2) {
       };
     }
 
-    const errorBody = await response.text();
-
     const retryableStatuses = [429, 500, 502, 503, 504];
 
     if (
@@ -316,7 +322,7 @@ async function requestGeminiChat(messages, temperature = 0.2) {
     }
 
     const error = new Error(
-      `Gemini chat request failed (${response.status}): ${errorBody}`,
+      `Gemini chat request failed (${response.status})`,
     );
 
     error.status = response.status;
@@ -417,7 +423,7 @@ const server = createServer(async (req, res) => {
       for await (const chunk of req) {
         body += chunk;
 
-        if (body.length > 50_000) {
+        if (body.length > MAX_BODY_BYTES) {
           return json(res, 413, {
             answer: "Request is too large.",
           });
@@ -430,7 +436,6 @@ const server = createServer(async (req, res) => {
     }
 
     let message = "";
-    let modelId = "nvidia";
     let history = [];
 
     try {
@@ -447,11 +452,6 @@ const server = createServer(async (req, res) => {
           ? rawMessage.trim()
           : "";
 
-      modelId =
-        typeof parsed.model === "string"
-          ? parsed.model
-          : "nvidia";
-
       history = Array.isArray(parsed.history)
         ? parsed.history
           .filter(
@@ -460,10 +460,10 @@ const server = createServer(async (req, res) => {
                 item.role === "assistant") &&
               typeof item.content === "string",
           )
-          .slice(-8)
+          .slice(-MAX_HISTORY_TURNS)
           .map((item) => ({
             role: item.role,
-            content: item.content.slice(0, 1200),
+            content: item.content.slice(0, MAX_TURN_CHARS),
           }))
         : [];
     } catch {
@@ -478,26 +478,20 @@ const server = createServer(async (req, res) => {
       });
     }
 
+    if (message.length > MAX_MESSAGE_CHARS) {
+      return json(res, 200, {
+        answer: `Please keep your question under ${MAX_MESSAGE_CHARS} characters.`,
+      });
+    }
+
+    const startedAt = Date.now();
+
     try {
       // Build the contextual question.
       const contextualMessage = buildContextualMessage(
         message,
         history,
       );
-
-      // Check whether the question belongs to Ahtesham's portfolio.
-      const portfolioCheck = classifyPortfolioQuestion(contextualMessage);
-
-      console.log("Portfolio scope check:", portfolioCheck.reason);
-
-      if (!portfolioCheck.isRelated) {
-        return json(res, 200, {
-          answer:
-            "I can help with questions about Ahtesham's skills, experience, projects, and services. Please ask me something related to his portfolio.",
-          actions: [],
-        });
-      }
-
 
       // Retrieve relevant portfolio knowledge.
       const retrieval = await retrieveKnowledge(
@@ -511,12 +505,15 @@ const server = createServer(async (req, res) => {
         },
       );
 
-      console.log("RAG retrieval mode:", retrieval.mode);
-
-      console.log(
-        "Retrieved chunks:",
-        retrieval.results.map((item) => item.id),
-      );
+      // Nothing relevant at all: answer honestly without spending an LLM call.
+      if (retrieval.results.length === 0) {
+        return json(res, 200, {
+          answer:
+            "That's not something this portfolio covers. Ask me about Ahtesham's projects, stack, rates or availability, or book a 15-min call to ask him directly.",
+          actions: [{ label: "Book a 15-min call", href: BOOK_URL }],
+          sources: [],
+        });
+      }
 
       // Convert retrieved chunks into readable context.
       const retrievedContext = retrieval.results
@@ -532,7 +529,7 @@ const server = createServer(async (req, res) => {
 
       // Add retrieved knowledge to the system prompt.
       const ragSystemPrompt = [
-        buildSystemPrompt(modelId),
+        buildSystemPrompt(),
         "",
         "RETRIEVED PORTFOLIO KNOWLEDGE:",
         retrievedContext ||
@@ -563,16 +560,10 @@ const server = createServer(async (req, res) => {
       // Generate the answer.
       const result =
         CHAT_PROVIDER === "gemini"
-          ? await requestGeminiChat(
-            messages,
-            getModelTemperature(modelId),
-          )
-          : await requestNvidiaChat(
-            messages,
-            getModelTemperature(modelId),
-          );
+          ? await requestGeminiChat(messages, TEMPERATURE)
+          : await requestNvidiaChat(messages, TEMPERATURE);
 
-      const answer = polishAnswer(result.answer);
+      const answer = result.answer;
 
       const wantsBooking = shouldSuggestBooking(
         contextualMessage,
@@ -582,15 +573,14 @@ const server = createServer(async (req, res) => {
         JSON.stringify({
           event: "chat_answer",
           ts: new Date().toISOString(),
-          category: classifyQuestion(contextualMessage),
-          source: "rag",
           retrievalMode: retrieval.mode,
-          retrievedChunks: retrieval.results.length,
+          topScore: retrieval.results[0]?.score ?? null,
+          chunkIds: retrieval.results.map((item) => item.id),
           provider: CHAT_PROVIDER,
           model: result.model,
           fallbackUsed: result.fallbackUsed,
           booking: wantsBooking,
-          question: message.slice(0, 180),
+          latencyMs: Date.now() - startedAt,
           answerChars: answer.length,
         }),
       );
@@ -605,6 +595,11 @@ const server = createServer(async (req, res) => {
             },
           ]
           : [],
+        sources: retrieval.results.map((item) => ({
+          id: item.id,
+          project: item.project ?? null,
+          category: item.category ?? null,
+        })),
       });
     } catch (error) {
       console.error(

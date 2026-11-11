@@ -1,23 +1,9 @@
+// Prompt helpers for the portfolio chat API (api/server.mjs).
+// Facts are NOT written here: they come from the retrieved knowledge chunks.
 
-export const BOOK_URL = "https://ahtesham.dev.warehouse.com/book";
+export const BOOK_URL = "https://ahtesham.dev.wadwarehouse.com/book";
 
-export const GROQ_MODEL = "llama-3.3-70b-versatile";
-
-export const MODEL_VOICES = {
-  groq: "\n\nVOICE: Be concise and direct. Use short, clear sentences.",
-  claude: "\n\nVOICE: Be thoughtful and nuanced. Explain tradeoffs when useful.",
-  gpt4: "\n\nVOICE: Be well-structured and professional. Use bullets when helpful.",
-  nvidia: "\n\nVOICE: Be technically precise. Use relevant evidence and metrics.",
-};
-
-export const MODEL_TEMPS = {
-  groq: 0.25,
-  claude: 0.5,
-  gpt4: 0.2,
-  nvidia: 0.15,
-};
-
-export function buildSystemPrompt(modelId = "nvidia") {
+export function buildSystemPrompt() {
   return `
 You are Ahtesham's AI assistant on his portfolio website.
 
@@ -33,6 +19,7 @@ YOUR RESPONSIBILITIES:
 - Never mention Calendly or other booking platforms by name.
 - Only suggest a 15-minute call when the visitor asks about hiring, pricing, availability, project fit, or next steps.
 - Do not claim a technology is part of Ahtesham's stack unless the supplied context confirms it.
+- If the question has nothing to do with Ahtesham, his work, hiring him or this portfolio (general trivia, homework, writing code for the visitor), decline in one short sentence and suggest asking about his projects, stack, rates or availability.
 
 ANSWER QUALITY RULES:
 - Preserve important names, job titles, company names, dates, and achievements.
@@ -65,71 +52,13 @@ CONVERSATION CONTEXT RULES:
 - Answer the latest user question, not an earlier question.
 - Never mistake a follow-up question for a pricing or booking request unless the visitor actually asks about pricing or booking.
 - Preserve the topic of the conversation when the visitor asks a related follow-up.
-  `.trim() + (MODEL_VOICES[modelId] ?? MODEL_VOICES.nvidia);
-}
-
-export function getModelTemperature(modelId = "nvidia") {
-  return MODEL_TEMPS[modelId] ?? 0.2;
+  `.trim();
 }
 
 export function shouldSuggestBooking(message = "") {
   return /\b(hire|hiring|available|availability|rate|rates|price|pricing|cost|budget|hourly rate|project fee|salary|contract|full[- ]?time|work together|can you handle|fit|engagement|next steps)\b/i.test(
     message,
   );
-}
-
-export function classifyQuestion(message = "") {
-  const q = normalizedQuestion(message);
-
-  if (/\bgogaa\b/.test(q)) return "gogaa";
-  if (/\bopenevent\b|\bopen event\b/.test(q)) return "openevent";
-  if (/\bcodelens\b|\bcode lens\b/.test(q)) return "codelens";
-  if (/\brasad\b/.test(q)) return "rasad";
-  if (/\bcommand center\b/.test(q)) return "command-center";
-  if (/\bgluten[- ]free\b/.test(q)) return "gluten-free";
-  if (/\bportable dev\b/.test(q)) return "portable-dev";
-  if (/\borchestrator\b/.test(q)) return "orchestrator";
-
-  if (/\b(kubernetes|k8s|aws|azure|gcp)\b/.test(q)) {
-    return "unsupported-cloud";
-  }
-
-  if (
-    /\b(rate|rates|price|pricing|cost|budget|hourly rate|project fee|salary)\b/.test(q)
-  ) {
-    return "pricing";
-  }
-
-  if (
-    /\b(timeline|time line|how long|start|availability|available)\b/.test(q)
-  ) {
-    return "timeline";
-  }
-
-  if (
-    /\b(python|fastapi|django)\b/.test(q) &&
-    /\b(project|handle|fit|build|can you|can he)\b/.test(q)
-  ) {
-    return "python-fit";
-  }
-
-  if (/\b(python|fastapi|django)\b/.test(q)) return "python";
-
-  if (/\b(react|next\.js|typescript|javascript)\b/.test(q)) {
-    return "frontend";
-  }
-
-  if (/\b(stack|tech|technology|tools?)\b/.test(q)) {
-    return "stack";
-  }
-
-  if (
-    /\b(hire|hiring|proof|credibility|experience|why choose|senior)\b/.test(q)
-  ) {
-    return "senior-proof";
-  }
-
-  return "general";
 }
 
 export function buildContextualMessage(message = "", history = []) {
@@ -181,41 +110,4 @@ export function buildContextualMessage(message = "", history = []) {
   ]
     .filter(Boolean)
     .join("\n");
-}
-
-function normalizedQuestion(message = "") {
-  const followUp = message.match(/Follow-up:\s*([\s\S]+)$/i)?.[1];
-
-  return (followUp || message).toLowerCase().trim();
-}
-
-export function polishAnswer(rawAnswer = "") {
-  if (typeof rawAnswer !== "string") return "";
-
-  let answer = rawAnswer;
-
-  const spacingFixes = [
-    [/\b(booking)(emails)\b/gi, "$1 $2"],
-    [/\b(minutes)(of)\b/gi, "$1 $2"],
-    [/\b(hours)(of)\b/gi, "$1 $2"],
-    [/\b(minutes)(per)\b/gi, "$1 $2"],
-    [/\b(hours)(per)\b/gi, "$1 $2"],
-    [/\b(events)(over)\b/gi, "$1 $2"],
-    [/\b(teams)(with)\b/gi, "$1 $2"],
-    [/\b(approval)(for)\b/gi, "$1 $2"],
-    [/\b(and)(Docker)\b/gi, "$1 $2"],
-    [/\b(for)(historical)\b/gi, "$1 $2"],
-  ];
-
-  for (const [pattern, replacement] of spacingFixes) {
-    answer = answer.replace(pattern, replacement);
-  }
-
-  answer = answer
-    .replace(/([a-z])([A-Z])/g, "$1 $2")
-    .replace(/[ \t]{2,}/g, " ")
-    .replace(/[ \t]+([,.!?;:])/g, "$1")
-    .trim();
-
-  return answer;
 }

@@ -34,33 +34,18 @@ React, TypeScript, Supabase, OpenAI, pgvector, Stripe, and Docker.
     id: "openevent-impact",
     project: "OpenEvent",
     category: "results",
-    tags: ["metrics", "time-saving", "productivity", "90 minutes", "75 minutes"],
+    tags: ["metrics", "time-saving", "productivity", "90 minutes", "83%"],
     text: `
-OpenEvent has two separately documented time-saving figures.
-
-1. Client testimonial:
-River Soellner, Founder of More Life Hospitality, reported that
-OpenEvent's AI layer saves the team approximately 90 minutes
-(1.5 hours) of manual work per day. This is client-reported
-feedback, not an independently measured benchmark.
-
-2. Portfolio story:
-A separate portfolio story describes OpenEvent as giving event
-teams approximately 75 minutes of their day back.
-
-These figures come from separate sources. Never combine them,
-average them, or present them as the same measurement.
-
-The platform has supported 100+ active clients and processed
-150+ events over eight months.
-
-Do not claim that the workflow takes 15 minutes to review.
-Do not calculate or claim an 83% time reduction.
-Do not invent additional time-saving measurements.
-When asked about the client testimonial, report approximately
-90 minutes per day.
-When asked about the portfolio story, report approximately
-75 minutes per day.
+OpenEvent results (same figures as the portfolio's projects.ts):
+Before OpenEvent, each event team spent about 1.5 hours (90 minutes)
+a day reading and triaging booking emails. With OpenEvent they spend
+about 15 minutes reviewing the AI-drafted actions and approving them,
+roughly 83% less manual coordination time.
+River Soellner, Founder of More Life Hospitality, says the AI layer
+saves the team about 90 minutes a day (client testimonial).
+OpenEvent grew to 100+ active clients and 150+ events in eight months
+with no sales team. The platform has since grown into memberships,
+wallets, gift cards and in-venue POS.
     `.trim(),
   },
 
@@ -86,7 +71,7 @@ without requiring a large runtime dependency.
 CodeLens uses AST-aware parsing, a persistent call and schema index,
 and source-to-sink taint tracking. It checks code against security
 patterns related to OWASP and CWE. The knowledge base records
-430 detection patterns for this project. Its engine is approximately
+about 544 detection patterns across nine stacks. Its engine is approximately
 351 KB and has zero runtime dependencies.
     `.trim(),
   },
@@ -96,7 +81,7 @@ patterns related to OWASP and CWE. The knowledge base records
     category: "results",
     tags: ["metrics", "pull-requests", "coverage", "security"],
     text: `
-CodeLens has been used to review more than 860 production pull
+CodeLens patterns were learned from 3,360+ production pull
 requests across nine technology stacks. Analysis completes in
 under one second. A gap analysis against Greptile identified
 12 missed issues. Pattern improvements increased coverage from

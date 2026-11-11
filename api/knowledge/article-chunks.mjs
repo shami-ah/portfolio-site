@@ -58,9 +58,6 @@ The article reports that OpenEvent saves teams approximately
 90 minutes (1.5 hours) of manual work per day through automation.
 Human reviewers remain responsible for approving final actions.
 
-This article does not specify a 15-minute review duration
-or an 83% time reduction.
-
 Article date: 28 March 2026.
     `.trim(),
   },
@@ -151,8 +148,8 @@ to 11.7KB, an 84% reduction.
 Ahtesham explains how CodeLens combines deterministic bug
 patterns with focused AI security reasoning.
 
-CodeLens contains approximately 430 hand-crafted patterns
-across nine technology stacks. Each pattern targets a real
+When this article was written, CodeLens had about 430 hand-crafted
+patterns across nine technology stacks (it has about 544 today). Each pattern targets a real
 production failure mode and maps to OWASP or CWE where applicable.
 
 The deterministic scan runs in under one second and keeps

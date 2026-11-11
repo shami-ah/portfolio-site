@@ -85,13 +85,19 @@ export async function retrieveKnowledge(
       );
     }
 
+    // Every chunk takes part: chunks added after the last build-index run have no
+    // vector yet and compete on keywords only until the index is rebuilt.
+    const vectors = new Map(
+      index.chunks.map((chunk, i) => [chunk.id, index.embeddings[i]]),
+    );
+
     return {
       mode: "hybrid",
       results: retrieveHybrid(
         query,
-        index.chunks,
+        allChunks,
         queryEmbedding,
-        index.embeddings,
+        allChunks.map((chunk) => vectors.get(chunk.id) ?? null),
         { topK },
       ),
     };

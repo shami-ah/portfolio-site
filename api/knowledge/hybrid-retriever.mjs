@@ -50,6 +50,8 @@ export function retrieveHybrid(
   }
 
   for (const embedding of chunkEmbeddings) {
+    if (embedding === null) continue; // not embedded yet: keyword score only
+
     if (
       !Array.isArray(embedding) ||
       embedding.length !== queryEmbedding.length ||
@@ -76,10 +78,9 @@ export function retrieveHybrid(
   const results = chunks.map((chunk, index) => {
     const keywordScore = keywordScores.get(chunk.id) ?? 0;
 
-    const semanticScore = Math.max(
-      0,
-      cosineSimilarity(queryEmbedding, chunkEmbeddings[index])
-    );
+    const semanticScore = chunkEmbeddings[index]
+      ? Math.max(0, cosineSimilarity(queryEmbedding, chunkEmbeddings[index]))
+      : 0;
 
     const combinedScore =
       (
