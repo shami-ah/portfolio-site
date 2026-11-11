@@ -36,7 +36,7 @@ async function embedWithNvidia(
 
   if (!response.ok) {
     throw new Error(
-      `NVIDIA embedding request failed (${response.status}): ${await response.text()}`,
+      `NVIDIA embedding request failed (${response.status})`,
     );
   }
 
@@ -64,11 +64,12 @@ async function embedWithGemini(
   { apiKey, model, taskType },
 ) {
   const response = await fetch(
-    `${GEMINI_BASE_URL}/models/${model}:batchEmbedContents?key=${encodeURIComponent(apiKey)}`,
+    `${GEMINI_BASE_URL}/models/${model}:batchEmbedContents`,
     {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "x-goog-api-key": apiKey,
       },
       body: JSON.stringify({
         requests: texts.map((text) => ({
@@ -84,7 +85,7 @@ async function embedWithGemini(
 
   if (!response.ok) {
     throw new Error(
-      `Gemini embedding request failed (${response.status}): ${await response.text()}`,
+      `Gemini embedding request failed (${response.status})`,
     );
   }
 

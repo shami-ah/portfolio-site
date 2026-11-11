@@ -49,6 +49,10 @@ function loadChatHistory(): Message[] {
   }
 }
 
+/** Same origin in production (nginx proxies /api to shami-api). For local dev put
+ *  NEXT_PUBLIC_CHAT_API_URL=http://localhost:3001/api/chat in .env.local. */
+const CHAT_API_URL = process.env.NEXT_PUBLIC_CHAT_API_URL ?? "/api/chat";
+
 function saveChatHistory(messages: Message[]): void {
   try {
     if (typeof localStorage === "undefined") return;
@@ -217,53 +221,6 @@ const panelVariants = {
   },
 };
 
-function buildContextualQuery(query: string, messages: Message[]): string {
-  const lower = query.toLowerCase();
-  const mentionsSpecificProject = /\b(openevent|open event|codelens|code lens|gogaa|rasad|command center|gluten-free|portable dev|orchestrator)\b/.test(lower);
-  if (mentionsSpecificProject) return query;
-
-  const needsContext =
-    /\b(it|that|this|those|them|same|there)\b/.test(lower)
-    || /\b(can you handle|can you do|what about|how about)\b/.test(lower);
-
-  if (!needsContext) return query;
-
-  const previousUser = [...messages].reverse().find((m) => m.role === "user")?.content;
-  if (!previousUser) return query;
-
-  const previousAssistant = [...messages].reverse().find((m) => m.role === "assistant" && m.content.trim())?.content;
-  if (!previousAssistant) return `${previousUser}\nFollow-up: ${query}`;
-
-  return `Previous user question: ${previousUser}\nPrevious answer: ${previousAssistant.slice(0, 500)}\nFollow-up: ${query}`;
-}
-
-function toSentences(answer: string): string[] {
-  return answer
-    .split(/(?<=[.!?])\s+/)
-    .map((s) => s.trim())
-    .filter(Boolean);
-}
-
-function applyModelVoice(answer: string, model: string): string {
-  const sentences = toSentences(answer);
-  if (sentences.length === 0) return answer;
-
-  if (model === "claude") {
-    return `Concise read: ${answer}\n\nFit check: scope, constraints, timeline, and production risk decide the next move.`;
-  }
-
-  if (model === "gpt4") {
-    if (sentences.length === 1) return `Structured answer:\n- ${sentences[0]}`;
-    return `Structured answer:\n${sentences.slice(0, 4).map((s) => `- ${s}`).join("\n")}`;
-  }
-
-  if (model === "nvidia") {
-    return `${answer}\n\nSystems lens: confirm inputs, outputs, integration points, failure modes, and deployment constraints before implementation.`;
-  }
-
-  return answer;
-}
-
 /* ------------------------------------------------------------------ */
 /*  ChatWidget                                                         */
 /* ------------------------------------------------------------------ */
@@ -283,22 +240,10 @@ export function ChatWidget(): React.ReactElement {
     setHistoryLoaded(true);
   }, []);
 
- 
-useEffect(() => {
-  const onOpen = (): void => setState("open");
-  const onClose = (): void => setState("closed");
-  const onMountReady = (): void => setMountRevision((n) => n + 1);
-
-  window.addEventListener("open-chat-widget", onOpen);
-  window.addEventListener("close-chat-widget", onClose);
-  window.addEventListener("agent-focus-mount-ready", onMountReady);
-
-  return () => {
-    window.removeEventListener("open-chat-widget", onOpen);
-    window.removeEventListener("close-chat-widget", onClose);
-    window.removeEventListener("agent-focus-mount-ready", onMountReady);
-  };
-}, []);
+  useEffect(() => {
+    if (!historyLoaded) return;
+    saveChatHistory(messages);
+  }, [historyLoaded, messages]);
 
 
   useEffect(() => {
@@ -381,7 +326,7 @@ const streamAnswer = useCallback(
       }));
 
     try {
-      const res = await fetch("http://localhost:3001/api/chat", {
+      const res = await fetch(CHAT_API_URL, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -389,7 +334,6 @@ const streamAnswer = useCallback(
         body: JSON.stringify({
           message: query,
           history,
-          model: "groq",
         }),
       });
 

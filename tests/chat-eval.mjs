@@ -1,146 +1,48 @@
-import {
-  buildContextualMessage,
-  classifyQuestion,
-  polishAnswer,
-  shouldSuggestBooking,
-} from "../api/chat-context.mjs";
+// Offline retrieval eval for the portfolio chatbot (no API key needed).
+// Runs retrieveKnowledge() in keyword (BM25) mode and checks that the expected
+// source is in the top 5. Answer-level evals against the running server
+// (facts, refusals, no URLs) are still to do: handover Phase 3.
+//
+// Usage: npm run test:chat-eval
 
+import { retrieveKnowledge } from "../api/knowledge/retriever.mjs";
+import { allChunks } from "../api/knowledge/all-chunks.mjs";
+
+/** expect: chunk id prefix or project name that must appear in the top 5 */
 const cases = [
-  {
-    q: "tell me more about gogaa",
-    must: ["open-source AI coding agent", "11 LLM providers", "1,418"],
-    mustNot: ["Book a Call", "15-min call"],
-    category: "gogaa",
-    book: false,
-  },
-  {
-    q: "which stack do you use?",
-    must: ["TypeScript", "Supabase", "Python/FastAPI", "human-in-the-loop"],
-    mustNot: ["Book a Call"],
-    category: "stack",
-    book: false,
-  },
-  {
-    q: "can you handle a Python project?",
-    must: ["Yes", "FastAPI", "RAG", "timeline"],
-    category: "python-fit",
-    book: true,
-  },
-  {
-    q: "what is your rate?",
-    must: ["$80-120/hr", "$3k", "$4k-10k/mo"],
-    category: "pricing",
-    book: true,
-  },
-  {
-    q: "what about timeline?",
-    history: [
-      { role: "user", content: "can you handle a Python project?" },
-      { role: "assistant", content: "Yes, if the Python work is backend, automation, data pipelines, agent services, FastAPI, RAG, evaluation, or production hardening." },
-    ],
-    must: ["1-3 days", "weekly demos", "deployment constraints"],
-    category: "timeline",
-    book: true,
-  },
-  {
-    q: "tell me about OpenEvent",
-    must: ["production SaaS", "100+ clients", "human approval", "audit logs"],
-    category: "openevent",
-    book: false,
-  },
-  {
-    q: "what is CodeLens?",
-    must: ["430", "source-to-sink", "sub-second"],
-    category: "codelens",
-    book: false,
-  },
-  {
-    q: "what is Rasad?",
-    must: ["local AI session observatory", "700MB+", "model cost"],
-    category: "rasad",
-    book: false,
-  },
-  {
-    q: "why should I hire him as a senior AI engineer?",
-    must: ["OpenEvent", "CodeLens", "Gogaa", "production ownership"],
-    category: "senior-proof",
-    book: true,
-  },
-  {
-    q: "does he do Kubernetes or AWS?",
-    must: ["not core", "Docker Compose", "Traefik"],
-    mustNot: ["expert"],
-    category: "unsupported-cloud",
-    book: false,
-  },
-  {
-    q: "how much?",
-    history: [
-      { role: "user", content: "I have a SaaS automation project. Can he handle it?" },
-      { role: "assistant", content: "Likely yes. The fit depends on scope, integrations, timeline, and production risk." },
-    ],
-    must: ["$80-120/hr", "$3k", "scope"],
-    category: "pricing",
-    book: true,
-  },
-  {
-    q: "Walk me through Gogaa CLI: what problem it solves, the architecture, tradeoffs, and why it matters.",
-    must: ["open-source AI coding agent", "11 LLM providers", "1,418"],
-    category: "gogaa",
-    book: false,
-  },
-  {
-    q: "Walk me through OpenEvent: what problem it solves, the architecture, tradeoffs, and why it matters.",
-    history: [
-      { role: "user", content: "Walk me through CodeLens: what problem it solves, the architecture, tradeoffs, and why it matters." },
-      { role: "assistant", content: "CodeLens is Ahtesham's AI code review engine with 430 patterns." },
-    ],
-    must: ["OpenEvent", "production SaaS", "human approval"],
-    mustNot: ["CodeLens is Ahtesham's AI code review engine"],
-    category: "openevent",
-    book: false,
-  },
+  { q: "How many patterns does CodeLens have?", expect: "codelens" },
+  { q: "show me how CodeLens compares to Greptile", expect: "codelens" },
+  { q: "How much time does OpenEvent save a team?", expect: "openevent-impact" },
+  { q: "Why does OpenEvent need human approval?", expect: "openevent" },
+  { q: "Which AI providers does Gogaa support?", expect: "gogaa" },
+  { q: "how big are the logs Rasad handles?", expect: "rasad" },
+  { q: "Tell me about the agent orchestrator", expect: "orchestrator" },
+  { q: "What did you do at Rouelite?", expect: "career-rouelite" },
+  { q: "What's your hourly rate?", expect: "profile-rates" },
+  { q: "How much do you charge for a project?", expect: "profile-rates" },
+  { q: "Do you work with Kubernetes?", expect: "profile-stack" },
+  { q: "Which tech stack do you use?", expect: "profile-stack" },
+  { q: "Where are you based?", expect: "profile-identity" },
+  { q: "Are you available for full-time remote work?", expect: "profile-availability" },
+  { q: "How do you run a client project?", expect: "profile-process" },
 ];
 
-function fallbackFor(q) {
-  return `Raw model answer for: ${q}. For more details, consider booking a 15-min call.`;
-}
+const URL_PATTERN = /https?:\/\/|www\./i;
 
-const failures = [];
-
+let hits = 0;
 for (const c of cases) {
-  const contextual = buildContextualMessage(c.q, c.history ?? []);
-  const answer = polishAnswer(fallbackFor(c.q), contextual);
-  const booking = shouldSuggestBooking(contextual);
-
-  for (const needle of c.must ?? []) {
-    if (!answer.toLowerCase().includes(needle.toLowerCase())) {
-      failures.push(`${c.q}: missing "${needle}"\n  ${answer}`);
-    }
-  }
-
-  for (const needle of c.mustNot ?? []) {
-    if (answer.toLowerCase().includes(needle.toLowerCase())) {
-      failures.push(`${c.q}: should not include "${needle}"\n  ${answer}`);
-    }
-  }
-
-  if (typeof c.book === "boolean" && booking !== c.book) {
-    failures.push(`${c.q}: booking=${booking}, expected ${c.book}`);
-  }
-
-  if (c.category && classifyQuestion(contextual) !== c.category) {
-    failures.push(`${c.q}: category=${classifyQuestion(contextual)}, expected ${c.category}`);
-  }
-
-  if (answer.length > 520) {
-    failures.push(`${c.q}: answer too long (${answer.length})`);
-  }
+  const { results } = await retrieveKnowledge(c.q, {});
+  const ok = results.some(
+    (r) => r.id.startsWith(c.expect) || (r.project ?? "").toLowerCase().replace(/\s+/g, "-") === c.expect,
+  );
+  if (ok) hits += 1;
+  console.log(`${ok ? "PASS" : "FAIL"}  ${c.q}  ->  ${results.map((r) => r.id).join(", ") || "(nothing)"}`);
 }
 
-if (failures.length > 0) {
-  console.error(failures.join("\n\n"));
-  process.exit(1);
-}
+const withUrls = allChunks.filter((chunk) => URL_PATTERN.test(chunk.text)).map((chunk) => chunk.id);
 
-console.log(`chat eval passed (${cases.length} cases)`);
+const recall = (hits / cases.length) * 100;
+console.log(`\nrecall@5: ${recall.toFixed(1)}% (${hits}/${cases.length})`);
+console.log(`chunks containing URLs: ${withUrls.length ? withUrls.join(", ") : "none"}`);
+
+if (recall < 90 || withUrls.length > 0) process.exit(1);

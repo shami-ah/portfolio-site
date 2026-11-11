@@ -197,7 +197,7 @@ approximately 90 minutes (1.5 hours) per day.
       "event teams",
       "automation",
       "productivity",
-      "75 minutes",
+      "90 minutes",
       "portfolio story",
     ],
     text: `
@@ -205,14 +205,8 @@ OpenEvent is designed for event companies that handle large
 volumes of booking emails. Its AI reads and sorts booking emails
 and prepares actions for staff to review and approve.
 
-The portfolio story describes OpenEvent as giving event teams
-approximately 75 minutes of their day back.
-
-This is a separate portfolio-story figure. Do not combine
-75 minutes with the 90-minute client testimonial.
-
-When asked about the portfolio story's time-saving figure,
-answer approximately 75 minutes per day.
+The portfolio story: event teams cut about 90 minutes of daily
+email work down to about 15 minutes of reviewing and approving.
     `.trim(),
   },
 
