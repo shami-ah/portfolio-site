@@ -1,3 +1,4 @@
+
 export const knowledgeChunks = [
   // ─── OPENEVENT ──────────────────────────────────────────
   {
@@ -33,13 +34,33 @@ React, TypeScript, Supabase, OpenAI, pgvector, Stripe, and Docker.
     id: "openevent-impact",
     project: "OpenEvent",
     category: "results",
-    tags: ["metrics", "time-saving", "productivity"],
+    tags: ["metrics", "time-saving", "productivity", "90 minutes", "75 minutes"],
     text: `
-OpenEvent saves each team approximately 1.5 hours per day.
-The process was reduced from around 1.5 hours of manual work
-to approximately 15 minutes of review, representing about
-83% time saved. The platform has supported 100+ active clients
-and 150+ events over eight months.
+OpenEvent has two separately documented time-saving figures.
+
+1. Client testimonial:
+River Soellner, Founder of More Life Hospitality, reported that
+OpenEvent's AI layer saves the team approximately 90 minutes
+(1.5 hours) of manual work per day. This is client-reported
+feedback, not an independently measured benchmark.
+
+2. Portfolio story:
+A separate portfolio story describes OpenEvent as giving event
+teams approximately 75 minutes of their day back.
+
+These figures come from separate sources. Never combine them,
+average them, or present them as the same measurement.
+
+The platform has supported 100+ active clients and processed
+150+ events over eight months.
+
+Do not claim that the workflow takes 15 minutes to review.
+Do not calculate or claim an 83% time reduction.
+Do not invent additional time-saving measurements.
+When asked about the client testimonial, report approximately
+90 minutes per day.
+When asked about the portfolio story, report approximately
+75 minutes per day.
     `.trim(),
   },
 

@@ -54,8 +54,12 @@ The article explains that event coordination contains ambiguity,
 such as unclear dates, guest counts, venue restrictions, and
 deposit changes. Fully automated systems can make costly mistakes.
 
-The system saves teams roughly 1.5 hours per day by automating
-tedious work while keeping humans responsible for final decisions.
+The article reports that OpenEvent saves teams approximately
+90 minutes (1.5 hours) of manual work per day through automation.
+Human reviewers remain responsible for approving final actions.
+
+This article does not specify a 15-minute review duration
+or an 83% time reduction.
 
 Article date: 28 March 2026.
     `.trim(),
