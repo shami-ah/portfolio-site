@@ -14,6 +14,13 @@ const TECHNOLOGIES =
 const TECHNOLOGY_RELATION =
   /\b(ahtesham|he|his|you|your)\b/i;
 
+// Project comparisons and technical evaluation questions.
+const PROJECT_COMPARISON_INTENTS =
+  /\b(compare|comparison|differences?|different|versus|vs\.?|better|best suited|more suitable|which project|what project|why|pros and cons)\b/i;
+
+const PROJECT_EVALUATION_TOPICS =
+  /\b(offline|privacy|private|data security|security|secure|data storage|local data|local storage|outbound requests|internet connection|network requests|architecture|tech stack|technology stack|performance|scalability|features|integrations)\b/i;
+
 export function classifyPortfolioQuestion(question = "") {
   if (typeof question !== "string" || !question.trim()) {
     return {
@@ -51,7 +58,7 @@ export function classifyPortfolioQuestion(question = "") {
     };
   }
 
-  // Technology questions must be connected to Ahtesham.
+  // Technology questions connected to Ahtesham.
   if (
     TECHNOLOGIES.test(normalized) &&
     TECHNOLOGY_RELATION.test(normalized)
@@ -59,6 +66,20 @@ export function classifyPortfolioQuestion(question = "") {
     return {
       isRelated: true,
       reason: "portfolio_technology",
+    };
+  }
+
+  // Comparisons and evaluations of projects in the portfolio.
+  // Supports contextual questions such as:
+  // "Which project is better suited for users who require complete offline privacy, and why?"
+  if (
+    /\b(project|projects)\b/i.test(normalized) &&
+    PROJECT_COMPARISON_INTENTS.test(normalized) &&
+    PROJECT_EVALUATION_TOPICS.test(normalized)
+  ) {
+    return {
+      isRelated: true,
+      reason: "project_comparison",
     };
   }
 

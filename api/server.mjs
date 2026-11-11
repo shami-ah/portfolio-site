@@ -6,8 +6,9 @@ import {
   buildSystemPrompt,
   buildContextualMessage,
   classifyQuestion,
-  getModelTemperature,
+   getModelTemperature,
   shouldSuggestBooking,
+  polishAnswer,
 } from "./chat-context.mjs";
 
 import { retrieveKnowledge } from "./knowledge/retriever.mjs";
@@ -453,17 +454,17 @@ const server = createServer(async (req, res) => {
 
       history = Array.isArray(parsed.history)
         ? parsed.history
-            .filter(
-              (item) =>
-                (item.role === "user" ||
-                  item.role === "assistant") &&
-                typeof item.content === "string",
-            )
-            .slice(-8)
-            .map((item) => ({
-              role: item.role,
-              content: item.content.slice(0, 1200),
-            }))
+          .filter(
+            (item) =>
+              (item.role === "user" ||
+                item.role === "assistant") &&
+              typeof item.content === "string",
+          )
+          .slice(-8)
+          .map((item) => ({
+            role: item.role,
+            content: item.content.slice(0, 1200),
+          }))
         : [];
     } catch {
       return json(res, 400, {
@@ -483,19 +484,19 @@ const server = createServer(async (req, res) => {
         message,
         history,
       );
-      
-// Check whether the question belongs to Ahtesham's portfolio.
-const portfolioCheck = classifyPortfolioQuestion(contextualMessage);
 
-console.log("Portfolio scope check:", portfolioCheck.reason);
+      // Check whether the question belongs to Ahtesham's portfolio.
+      const portfolioCheck = classifyPortfolioQuestion(contextualMessage);
 
-if (!portfolioCheck.isRelated) {
-  return json(res, 200, {
-    answer:
-      "I can help with questions about Ahtesham's skills, experience, projects, and services. Please ask me something related to his portfolio.",
-    actions: [],
-  });
-}
+      console.log("Portfolio scope check:", portfolioCheck.reason);
+
+      if (!portfolioCheck.isRelated) {
+        return json(res, 200, {
+          answer:
+            "I can help with questions about Ahtesham's skills, experience, projects, and services. Please ask me something related to his portfolio.",
+          actions: [],
+        });
+      }
 
 
       // Retrieve relevant portfolio knowledge.
@@ -535,7 +536,7 @@ if (!portfolioCheck.isRelated) {
         "",
         "RETRIEVED PORTFOLIO KNOWLEDGE:",
         retrievedContext ||
-          "No relevant portfolio information was found.",
+        "No relevant portfolio information was found.",
         "",
         "RAG RESPONSE RULES:",
         "- Answer portfolio questions using the retrieved knowledge.",
@@ -563,15 +564,15 @@ if (!portfolioCheck.isRelated) {
       const result =
         CHAT_PROVIDER === "gemini"
           ? await requestGeminiChat(
-              messages,
-              getModelTemperature(modelId),
-            )
+            messages,
+            getModelTemperature(modelId),
+          )
           : await requestNvidiaChat(
-              messages,
-              getModelTemperature(modelId),
-            );
+            messages,
+            getModelTemperature(modelId),
+          );
 
-      const answer = result.answer;
+      const answer = polishAnswer(result.answer);
 
       const wantsBooking = shouldSuggestBooking(
         contextualMessage,
@@ -598,11 +599,11 @@ if (!portfolioCheck.isRelated) {
         answer,
         actions: wantsBooking
           ? [
-              {
-                label: "Book a 15-min call",
-                href: BOOK_URL,
-              },
-            ]
+            {
+              label: "Book a 15-min call",
+              href: BOOK_URL,
+            },
+          ]
           : [],
       });
     } catch (error) {

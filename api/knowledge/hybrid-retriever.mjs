@@ -95,13 +95,66 @@ export function retrieveHybrid(
     };
   });
 
-  // Sort by combined relevance and return the best matches.
-  return results
+  // Keep chunks with at least one relevant retrieval signal.
+  const rankedResults = results
     .filter(
       (item) =>
         item.keywordScore > 0 ||
         item.semanticScore > 0
     )
-    .sort((a, b) => b.score - a.score)
-    .slice(0, topK);
+    .sort((a, b) => b.score - a.score);
+
+  // Normalize names for matching project names in the question.
+  const normalize = (value = "") =>
+    value.toLowerCase().replace(/[^a-z0-9]/g, "");
+
+  const normalizedQuery = normalize(query);
+
+  // Find projects explicitly mentioned in the question.
+  const mentionedProjects = [
+    ...new Set(
+      chunks
+        .map((chunk) => chunk.project)
+        .filter(Boolean)
+    ),
+  ].filter((project) => {
+    const normalizedProject = normalize(project);
+
+    return (
+      normalizedProject.length > 0 &&
+      normalizedQuery.includes(normalizedProject)
+    );
+  });
+
+  // Reserve the best available result for each mentioned project.
+  const selected = [];
+  const selectedIds = new Set();
+
+  for (const project of mentionedProjects) {
+    const bestMatch = rankedResults.find(
+      (item) =>
+        item.project === project &&
+        !selectedIds.has(item.id)
+    );
+
+    if (bestMatch && selected.length < topK) {
+      selected.push(bestMatch);
+      selectedIds.add(bestMatch.id);
+    }
+  }
+
+  // Fill remaining positions using normal relevance ranking.
+  for (const item of rankedResults) {
+    if (selected.length >= topK) {
+      break;
+    }
+
+    if (!selectedIds.has(item.id)) {
+      selected.push(item);
+      selectedIds.add(item.id);
+    }
+  }
+
+  // Return selected chunks in relevance order.
+  return selected.sort((a, b) => b.score - a.score);
 }
