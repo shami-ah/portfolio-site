@@ -296,9 +296,9 @@ export const commands: AgentCommand[] = [
     confidence: 0.97,
     steps: [
       { name: "classify_intent", detail: "label: project_detail · conf 0.97", ms: 24 },
-      { name: "retrieve_context", detail: "codelens: 430 patterns", ms: 16 },
+      { name: "retrieve_context", detail: "codelens: 624 patterns", ms: 16 },
     ],
-    response: "CodeLens — AI code review engine. 430 hand-crafted patterns, source-to-sink taint tracking, sub-second scans. Single 351KB file, zero deps. Currently private beta. Ask me more about it.",
+    response: "CodeLens — AI code review engine. 624 hand-crafted patterns, source-to-sink taint tracking, sub-second scans. Single 351KB file, zero deps. Currently private beta. Ask me more about it.",
     action: () => openProjectDetail("codelens"),
   },
   {
@@ -576,9 +576,9 @@ export const PROJECT_METHODOLOGY: Record<string, { label: string; command: Agent
       steps: [
         { name: "classify_intent", detail: "label: methodology_query · conf 0.96", ms: 28 },
         { name: "load_principle", detail: "deterministic_first", ms: 11 },
-        { name: "retrieve_evidence", detail: "430 patterns, <1s, 8%→100%", ms: 24 },
+        { name: "retrieve_evidence", detail: "624 patterns, <1s, 8%→100%", ms: 24 },
       ],
-      response: "AI catches novel bugs but hallucinates on known ones. 430 hand-crafted patterns from real PRs run in <1s with zero false positives. AI layer runs after — only for what patterns can't express. When Greptile caught 12 issues I missed, I ran a gap analysis and closed all 12. Coverage: 8% → 100%.",
+      response: "AI catches novel bugs but hallucinates on known ones. 624 hand-crafted patterns from real PRs run in <1s with zero false positives. AI layer runs after — only for what patterns can't express. When Greptile caught 12 issues I missed, I ran a gap analysis and closed all 12. Coverage: 8% → 100%.",
     }},
     { label: "Why build your own?", command: {
       keyword: "why-build-own", intent: "methodology_query", confidence: 0.94,

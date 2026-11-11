@@ -27,7 +27,7 @@ import {
 
 const EMOJI_COMMENTARY: Record<string, { mood: "proud" | "curious" | "default" | "surprised"; text: string }> = {
   openevent: { mood: "proud", text: "8 months, 100+ clients, zero AI errors." },
-  codelens: { mood: "curious", text: "544 patterns from real PRs, not theory." },
+  codelens: { mood: "curious", text: "624 patterns from real PRs, not theory." },
   "gogaa-cli": { mood: "surprised", text: "1,418 tests. I don't ship without them." },
   rasad: { mood: "default", text: "Built this so I could see inside the black box." },
 };
@@ -153,9 +153,9 @@ const PANEL_CONTENT: Record<string, PanelContent> = {
   },
   codelens: {
     title: "CodeLens",
-    oneLiner: "544 bug patterns mined from 860+ real PRs. Reviews in under one second.",
+    oneLiner: "624 bug patterns mined from 860+ real PRs. Reviews in under one second.",
     problem: "Code review misses bugs that patterns catch in milliseconds.",
-    solution: "544 patterns from 860+ real PRs. Scans in <1s. Your code never leaves your machine.",
+    solution: "624 patterns from 860+ real PRs. Scans in <1s. Your code never leaves your machine.",
     glow: "radial-gradient(ellipse at 70% 40%, rgba(74,85,120,0.06), transparent 70%)",
     plain: {
       oneLiner: "An automatic proofreader for software. It checks new code for known mistakes in under a second, before they reach customers.",
@@ -514,7 +514,7 @@ function AnimatedMetric({
   const [displayValue, setDisplayValue] = useState(value);
   const hasAnimated = useRef(false);
 
-  // Animate plain numbers and values such as ~544, 83%, 860+ PRs, and ~1.5 h.
+  // Animate plain numbers and values such as ~624, 83%, 860+ PRs, and ~1.5 h.
   const match = value.match(/^([~]?)([\d,]+(?:\.\d+)?)(.*)$/);
   const numericValue = match
     ? Number(match[2].replace(/,/g, ""))

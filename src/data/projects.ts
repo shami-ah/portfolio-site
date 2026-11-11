@@ -156,9 +156,9 @@ export const projects: ProjectData[] = [
     title: "CodeLens",
     subtitle: "AI Code Review Engine",
     type: "AI Dev Tool",
-    cardSummary: "544 patterns mined from 860+ production PRs. Reviews in under one second, entirely on your machine.",
-    oneLiner: "544 bug patterns mined from 860+ real PRs. Under one second. Code never leaves your machine.",
-    impact: "544 hand-crafted patterns mined from 860+ production PRs across 9 stacks. Reviews in under one second, entirely on your machine. When a commercial AI reviewer (Greptile) caught 12 issues CodeLens missed, I ran a gap analysis and closed every one — coverage went from 8% to 100%.",
+    cardSummary: "624 patterns mined from 860+ production PRs. Reviews in under one second, entirely on your machine.",
+    oneLiner: "624 bug patterns mined from 860+ real PRs. Under one second. Code never leaves your machine.",
+    impact: "624 hand-crafted patterns mined from 860+ production PRs across 9 stacks. Reviews in under one second, entirely on your machine. When a commercial AI reviewer (Greptile) caught 12 issues CodeLens missed, I ran a gap analysis and closed every one — coverage went from 8% to 100%.",
     problem:
       "Existing tools are either fast but shallow (linters catching style, not logic) or deep but cloud-dependent (sending your code to a third party). Neither catches the bugs that actually ship: missing auth guards, silent N+1 queries, cross-file taint paths.",
     solution:
@@ -166,14 +166,14 @@ export const projects: ProjectData[] = [
     architecture: [
       "Git Diff → AST-aware Parser",
       "Persistent Index (call graph + schema graph)",
-      "Pattern Scan (~544 patterns, 9 stacks)",
+      "Pattern Scan (~624 patterns, 9 stacks)",
       "Source-to-Sink Taint Tracking",
       "Focused AI Security Probes",
       "PR Risk Score (8 factors)",
       "Self-Learning Noise Filter",
     ],
     features: [
-      "~544 patterns mapped to real production failures, tagged with OWASP/CWE",
+      "~624 patterns mapped to real production failures, tagged with OWASP/CWE",
       "Persistent codebase index with 60ms incremental updates",
       "Source-to-sink taint tracking across files with CWE mapping",
       "Guardian mode: injects rules into Claude Code, Cursor, Copilot at prompt level",
@@ -190,15 +190,15 @@ export const projects: ProjectData[] = [
       },
       {
         title: "Patterns first, AI second",
-        description: "544 deterministic patterns in <1s, then focused AI probes for semantic bugs no regex can catch. Coverage went from 8% to 100% on a head-to-head benchmark against a commercial AI reviewer.",
+        description: "624 deterministic patterns in <1s, then focused AI probes for semantic bugs no regex can catch. Coverage went from 8% to 100% on a head-to-head benchmark against a commercial AI reviewer.",
       },
     ],
     stack: ["TypeScript", "Docker", "esbuild", "Persistent JSON Index", "GitHub Actions", "GHCR"],
     results: [
-      "~544 patterns across 9 stacks, validated against real production repos",
+      "~624 patterns across 9 stacks, validated against real production repos",
       "7-file PR review in 780ms, full 456-file PR in 12s",
       "Zero deps: single 351KB file, Docker image auto-published to GHCR",
-      "Glean pipeline processed 3,360+ PRs, Agent Harvest added 34 patterns, Greptile parity added 66",
+      "Glean pipeline processed 4,000+ PRs, Agent Harvest added 34 patterns, Greptile parity added 66",
     ],
     giteaRepo: "shami/codelens",
     featured: true,
@@ -206,7 +206,7 @@ export const projects: ProjectData[] = [
       before: { value: "8%", unit: "", context: "coverage vs commercial AI reviewer (Greptile)" },
       after: { value: "100%", unit: "", context: "all 12 gaps closed after gap analysis" },
       highlights: [
-        { n: "544", l: "patterns" },
+        { n: "624", l: "patterns" },
         { n: "<1s", l: "review time" },
         { n: "351KB", l: "zero deps" },
       ],
@@ -228,7 +228,7 @@ export const projects: ProjectData[] = [
       mine: {
         title: "CodeLens",
         bullets: [
-          "~544 patterns validated against real failures",
+          "~624 patterns validated against real failures",
           "Persistent index, 60ms incremental updates",
           "Taint tracking across files with CWE mapping",
           "Zero deps, 351KB, runs anywhere Node runs",

@@ -16,7 +16,7 @@ import { useSoundFX } from "@/lib/use-sound-fx";
 
 const EMOJI_COMMENTARY: Record<string, { mood: "proud" | "curious" | "default" | "surprised"; text: string }> = {
   openevent: { mood: "proud", text: "8 months, 100+ clients, zero AI errors." },
-  codelens: { mood: "curious", text: "430 patterns from real PRs, not theory." },
+  codelens: { mood: "curious", text: "624 patterns from real PRs, not theory." },
   "gogaa-cli": { mood: "surprised", text: "1,418 tests. I don't ship without them." },
   rasad: { mood: "default", text: "Built this so I could see inside the black box." },
 };
