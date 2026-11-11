@@ -12,7 +12,7 @@ export interface Status {
 }
 
 /** Hardcoded fallback. Used if fetch fails — values kept in sync with
- *  status.json. If you update status.json, also update this to match
+ *  public/data/status.json. If you update it, also update this to match
  *  so SSR'd markup stays consistent. */
 const FALLBACK: Status = {
   updated: "2026-11-11",
@@ -29,7 +29,7 @@ let inflight: Promise<Status> | null = null;
 function fetchStatus(): Promise<Status> {
   if (cache) return Promise.resolve(cache);
   if (inflight) return inflight;
-  inflight = fetch("/status.json", { cache: "no-store" })
+  inflight = fetch("/data/status.json", { cache: "no-store" })
     .then((r) => r.json() as Promise<Status>)
     .then((data) => {
       cache = data;
@@ -43,7 +43,7 @@ function fetchStatus(): Promise<Status> {
   return inflight;
 }
 
-/** Returns live status from /status.json, with synchronous fallback so
+/** Returns live status from /data/status.json, with synchronous fallback so
  *  the first render shows real numbers (SSR-safe). */
 export function useStatus(): { status: Status; isLive: boolean } {
   const [status, setStatus] = useState<Status>(cache ?? FALLBACK);
