@@ -23,19 +23,19 @@ jobs:
           if [ -n "$GOGAA_VERSION" ]; then
             jq --arg v "$GOGAA_VERSION" --arg d "$(date +%Y-%m-%d)" \
               '.gogaa.version = $v | .updated = $d' \
-              public/status.json > /tmp/status.json && mv /tmp/status.json public/status.json
+              public/data/status.json > /tmp/status.json && mv /tmp/status.json public/data/status.json
           else
             # At minimum update the date
             jq --arg d "$(date +%Y-%m-%d)" '.updated = $d' \
-              public/status.json > /tmp/status.json && mv /tmp/status.json public/status.json
+              public/data/status.json > /tmp/status.json && mv /tmp/status.json public/data/status.json
           fi
 
-          cat public/status.json
+          cat public/data/status.json
 
       - name: Check for changes
         id: check
         run: |
-          if git diff --quiet public/status.json; then
+          if git diff --quiet public/data/status.json; then
             echo "changed=false" >> "$GITHUB_OUTPUT"
           else
             echo "changed=true" >> "$GITHUB_OUTPUT"
@@ -46,6 +46,6 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add public/status.json
+          git add public/data/status.json
           git commit -m "chore: auto-update status.json [skip ci]"
           git push
