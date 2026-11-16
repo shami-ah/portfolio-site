@@ -7,7 +7,7 @@ import { X, Minus, Calendar, FileText, ArrowRight } from "lucide-react";
 import { starters } from "@/lib/kb";
 import type { KbAction } from "@/lib/kb";
 import { openCvDrawer } from "@/components/cv-drawer";
-
+import { openProjectDetail } from "@/components/agent-commands";
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
 /* ------------------------------------------------------------------ */
@@ -18,6 +18,11 @@ interface Message {
   content: string;
   streaming?: boolean;
   actions?: KbAction[];
+  sources?: {
+    id: string;
+    category?: string;
+    project?: string | null;
+  }[];
 }
 
 type WidgetState = "closed" | "open";
@@ -319,6 +324,7 @@ const streamAnswer = useCallback(
     const id = `a-${Date.now()}`;
     let answer = "";
     let actions: KbAction[] | undefined;
+    let sources: Message["sources"];
 
     // Send recent conversation history to the RAG backend.
     const history = messages
@@ -359,8 +365,9 @@ const streamAnswer = useCallback(
       };
 
       if (data.answer?.trim()) {
-        answer = data.answer.trim();
-        actions = data.actions;
+       answer = data.answer.trim();
+actions = data.actions;
+sources = data.sources;
       } else {
         throw new Error("The chat API returned an empty answer.");
       }
@@ -376,12 +383,13 @@ const streamAnswer = useCallback(
     setMessages((prev) => [
       ...prev,
       {
-        id,
-        role: "assistant",
-        content: "",
-        streaming: true,
-        actions,
-      },
+  id,
+  role: "assistant",
+  content: "",
+  streaming: true,
+  actions,
+  sources,
+},
     ]);
 
     await streamWords(id, answer);
@@ -614,7 +622,69 @@ const streamAnswer = useCallback(
 /* ------------------------------------------------------------------ */
 /*  Message bubble — blur-to-sharp entrance + rich text + actions      */
 /* ------------------------------------------------------------------ */
+function SourceChips({
+  sources,
+}: {
+  sources: NonNullable<Message["sources"]>;
+}): React.ReactElement | null {
+  const seen = new Set<string>();
 
+  const items = sources.filter((source) => {
+    const key = `${source.category ?? ""}:${source.project ?? ""}:${source.id}`;
+
+    if (seen.has(key)) return false;
+    seen.add(key);
+
+    return Boolean(source.project || source.id);
+  });
+
+  if (items.length === 0) return null;
+
+  const getLabel = (source: (typeof items)[number]): string => {
+    const value =
+      source.category === "project" && source.project
+        ? source.project
+        : source.id.replace(/^(project|article|story|profile)-/, "");
+
+    return value
+      .split("-")
+      .filter(Boolean)
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(" ");
+  };
+
+  return (
+    <div className="flex flex-wrap gap-1.5 mt-2">
+      {items.map((source) => {
+        const isProject =
+          source.category === "project" && Boolean(source.project);
+
+        const label = getLabel(source);
+
+        return (
+          <button
+            key={`${source.category ?? "source"}-${source.id}`}
+            type="button"
+            onClick={() => {
+              if (isProject && source.project) {
+                openProjectDetail(source.project);
+              }
+            }}
+            disabled={!isProject}
+            className={`rounded-full border border-card-border/50 bg-background/40 px-2 py-1 text-[10px] text-foreground/55 transition-colors ${
+              isProject
+                ? "hover:border-accent/40 hover:text-accent cursor-pointer"
+                : "cursor-default"
+            }`}
+            title={isProject ? `View ${label}` : `Source: ${label}`}
+          >
+            {label}
+          </button>
+        );
+      })}
+    </div>
+  );
+}
 function WidgetMessage({ msg }: { msg: Message }): React.ReactElement {
   const isUser = msg.role === "user";
 
@@ -647,9 +717,13 @@ function WidgetMessage({ msg }: { msg: Message }): React.ReactElement {
                 )}
               </p>
             </div>
-            {!msg.streaming && msg.actions && msg.actions.length > 0 && (
-              <ActionButtons actions={msg.actions} />
-            )}
+           {!msg.streaming && msg.sources && msg.sources.length > 0 && (
+  <SourceChips sources={msg.sources} />
+)}
+
+{!msg.streaming && msg.actions && msg.actions.length > 0 && (
+  <ActionButtons actions={msg.actions} />
+)}
           </div>
         </div>
       )}

@@ -4,12 +4,11 @@ import { createServer } from "node:http";
 import {
   BOOK_URL,
   buildSystemPrompt,
-  buildContextualMessage,
   shouldSuggestBooking,
 } from "./chat-context.mjs";
 
 import { retrieveKnowledge } from "./knowledge/retriever.mjs";
-import { embeddingProvider as INDEX_EMBEDDING_PROVIDER } from "./knowledge/index.mjs";
+import { initializeEmbeddingIndex } from "./knowledge/load-index.mjs";
 
 // ── Configuration ─────────────────────────────────────────────────
 
@@ -42,11 +41,10 @@ const GEMINI_MODEL =
   process.env.GEMINI_MODEL ?? "gemini-flash-latest";
 
 // Query embeddings must come from the same provider that built api/knowledge/index.mjs.
-const EMBEDDING_PROVIDER =
-  process.env.EMBEDDING_PROVIDER ?? INDEX_EMBEDDING_PROVIDER ?? "nvidia";
+const EMBEDDING_PROVIDER = process.env.EMBEDDING_PROVIDER ?? "nvidia";
 
 const TEMPERATURE = 0.2;
-
+const CONFIDENCE_THRESHOLD = 0.45;
 // Request limits (see handover 2.4)
 const MAX_BODY_BYTES = 16 * 1024;
 const MAX_MESSAGE_CHARS = 600;
@@ -101,7 +99,11 @@ setInterval(() => {
 
 // ── NVIDIA Chat ───────────────────────────────────────────────────
 
-async function requestNvidiaChat(messages, temperature = 0.2) {
+async function requestNvidiaChat(
+  messages,
+  temperature = 0.2,
+  maxTokens = 700,
+) {
   if (!NVIDIA_API_KEY) {
     throw new Error("NVIDIA_API_KEY is not configured.");
   }
@@ -137,12 +139,12 @@ async function requestNvidiaChat(messages, temperature = 0.2) {
             "Content-Type": "application/json",
             Authorization: `Bearer ${NVIDIA_API_KEY}`,
           },
-          body: JSON.stringify({
-            model: model.id,
-            messages,
-            temperature,
-            max_tokens: 700,
-          }),
+         body: JSON.stringify({
+  model: model.id,
+  messages,
+  temperature,
+  max_tokens: maxTokens,
+}),
           signal: AbortSignal.timeout(model.timeout),
         },
       );
@@ -245,7 +247,11 @@ async function requestNvidiaChat(messages, temperature = 0.2) {
 // ── Gemini Chat ───────────────────────────────────────────────────
 
 
-async function requestGeminiChat(messages, temperature = 0.2) {
+async function requestGeminiChat(
+  messages,
+  temperature = 0.2,
+  maxTokens = 700,
+) {
   if (!GEMINI_API_KEY) {
     throw new Error("GEMINI_API_KEY is not configured.");
   }
@@ -278,7 +284,7 @@ async function requestGeminiChat(messages, temperature = 0.2) {
           contents,
           generationConfig: {
             temperature,
-            maxOutputTokens: 700,
+            maxOutputTokens: maxTokens,
           },
         }),
         signal: AbortSignal.timeout(30_000),
@@ -331,7 +337,86 @@ async function requestGeminiChat(messages, temperature = 0.2) {
     throw error;
   }
 }
+// ── Follow-up question rewriting ────────────────────────────────
 
+async function rewriteFollowUpQuestion(message, history = []) {
+  const originalQuestion =
+    typeof message === "string" ? message.trim() : "";
+
+  if (!originalQuestion || !Array.isArray(history) || history.length === 0) {
+    return originalQuestion;
+  }
+
+  const conversation = history
+    .filter(
+      (item) =>
+        (item.role === "user" || item.role === "assistant") &&
+        typeof item.content === "string" &&
+        item.content.trim(),
+    )
+    .slice(-MAX_HISTORY_TURNS);
+
+  if (conversation.length === 0) {
+    return originalQuestion;
+  }
+
+  const messages = [
+    {
+      role: "system",
+      content: [
+        "You rewrite follow-up questions for a portfolio chatbot.",
+        "Use the conversation history to understand the latest question.",
+        "Rewrite the latest question as one standalone question.",
+        "Preserve the visitor's exact intent.",
+        "Resolve unclear pronouns and references when possible.",
+        "Do not answer the question.",
+        "Do not add facts, assumptions, or new topics.",
+        "If the question is already clear, return it unchanged.",
+        "Return only the rewritten question. No explanation or quotation marks.",
+      ].join(" "),
+    },
+    ...conversation,
+    {
+      role: "user",
+      content: `Rewrite this latest question as a standalone question:\n${originalQuestion}`,
+    },
+  ];
+
+  try {
+    const result =
+      CHAT_PROVIDER === "gemini"
+        ? await requestGeminiChat(messages, 0, 300)
+        : await requestNvidiaChat(messages, 0, 300);
+
+    const rewritten = result.answer
+      ?.trim()
+      .replace(/^["']|["']$/g, "");
+
+    if (!rewritten || rewritten.length > MAX_MESSAGE_CHARS) {
+      return originalQuestion;
+    }
+
+    console.log(
+      JSON.stringify({
+        event: "followup_rewrite",
+        provider: CHAT_PROVIDER,
+        model: result.model,
+        rewritten: rewritten !== originalQuestion,
+      }),
+    );
+
+    return rewritten;
+  } catch (error) {
+    console.warn(
+      JSON.stringify({
+        event: "followup_rewrite_fallback",
+        error: error.message,
+      }),
+    );
+
+    return originalQuestion;
+  }
+}
 // ── HTTP helpers ──────────────────────────────────────────────────
 
 function json(res, status, data) {
@@ -437,9 +522,14 @@ const server = createServer(async (req, res) => {
 
     let message = "";
     let history = [];
+    let currentProject = "";
 
     try {
       const parsed = JSON.parse(body);
+     currentProject =
+  typeof parsed.currentProject === "string"
+    ? parsed.currentProject.trim()
+    : "";
 
       const rawMessage =
         parsed.message ??
@@ -462,9 +552,9 @@ const server = createServer(async (req, res) => {
           )
           .slice(-MAX_HISTORY_TURNS)
           .map((item) => ({
-            role: item.role,
-            content: item.content.slice(0, MAX_TURN_CHARS),
-          }))
+  role: item.role,
+  content: item.content.trim().slice(0, MAX_TURN_CHARS),
+}))
         : [];
     } catch {
       return json(res, 400, {
@@ -488,10 +578,10 @@ const server = createServer(async (req, res) => {
 
     try {
       // Build the contextual question.
-      const contextualMessage = buildContextualMessage(
-        message,
-        history,
-      );
+    const contextualMessage = await rewriteFollowUpQuestion(
+  message,
+  history,
+);
 
       // Retrieve relevant portfolio knowledge.
       const retrieval = await retrieveKnowledge(
@@ -500,8 +590,9 @@ const server = createServer(async (req, res) => {
           provider: EMBEDDING_PROVIDER,
           apiKey: EMBEDDING_API_KEY,
           model: EMBEDDING_MODEL,
-          baseUrl: NVIDIA_BASE_URL,
-          topK: 5,
+         baseUrl: NVIDIA_BASE_URL,
+topK: 5,
+currentProject,
         },
       );
 
@@ -514,7 +605,36 @@ const server = createServer(async (req, res) => {
           sources: [],
         });
       }
+// Skip answer generation when hybrid retrieval confidence is too low.
+// Profile-related results are allowed through.
+const topScore = retrieval.results[0]?.score ?? 0;
 
+const isProfileQuestion =
+  /\b(about ahtesham|who is ahtesham|background|experience|education|skills|tech stack|technology stack|availability|available|rates|pricing|price|cost|hire|hiring|timezone|location|services|career|work experience|development process)\b/i.test(
+    message,
+  );
+
+if (
+  retrieval.mode === "hybrid" &&
+  topScore < CONFIDENCE_THRESHOLD &&
+  !isProfileQuestion
+) {
+  console.log(
+    JSON.stringify({
+      event: "low_confidence_rejected",
+      topScore,
+      threshold: CONFIDENCE_THRESHOLD,
+      query: message,
+    }),
+  );
+
+  return json(res, 200, {
+    answer:
+      "I couldn't find enough relevant information to answer that confidently. Try asking about Ahtesham's projects, experience, skills or services.",
+    actions: [],
+    sources: [],
+  });
+}
       // Convert retrieved chunks into readable context.
       const retrievedContext = retrieval.results
         .map((item, index) => {
@@ -529,9 +649,17 @@ const server = createServer(async (req, res) => {
 
       // Add retrieved knowledge to the system prompt.
       const ragSystemPrompt = [
-        buildSystemPrompt(),
+  buildSystemPrompt(),
+  "",
+  ...(currentProject
+    ? [
+        `CURRENTLY VIEWED PROJECT: ${currentProject}`,
+        "When the user says 'this project', 'this', or asks about the current project, they mean the currently viewed project above.",
+        "Prioritize retrieved knowledge belonging to this project. Do not ask which project they mean when this context is available.",
         "",
-        "RETRIEVED PORTFOLIO KNOWLEDGE:",
+      ]
+    : []),
+  "RETRIEVED PORTFOLIO KNOWLEDGE:",
         retrievedContext ||
         "No relevant portfolio information was found.",
         "",
@@ -553,7 +681,7 @@ const server = createServer(async (req, res) => {
         ...history,
         {
           role: "user",
-          content: contextualMessage,
+         content: message,
         },
       ];
 
@@ -565,9 +693,7 @@ const server = createServer(async (req, res) => {
 
       const answer = result.answer;
 
-      const wantsBooking = shouldSuggestBooking(
-        contextualMessage,
-      );
+      const wantsBooking = shouldSuggestBooking(message);
 
       console.log(
         JSON.stringify({
@@ -624,6 +750,13 @@ const server = createServer(async (req, res) => {
   });
 });
 
-server.listen(PORT, () => {
-  console.log(`shami-api listening on :${PORT}`);
+initializeEmbeddingIndex({
+  provider: EMBEDDING_PROVIDER,
+  apiKey: EMBEDDING_API_KEY,
+  baseUrl: NVIDIA_BASE_URL,
+  model: EMBEDDING_MODEL,
+}).finally(() => {
+  server.listen(PORT, () => {
+    console.log(`shami-api listening on :${PORT}`);
+  });
 });

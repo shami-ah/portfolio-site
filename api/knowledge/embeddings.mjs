@@ -17,10 +17,7 @@ function validateTexts(texts) {
   return true;
 }
 
-async function embedWithNvidia(
-  texts,
-  { apiKey, baseUrl, model },
-) {
+async function embedWithNvidia(texts, { apiKey, baseUrl, model, inputType }) {
   const response = await fetch(`${baseUrl}/embeddings`, {
     method: "POST",
     headers: {
@@ -30,14 +27,13 @@ async function embedWithNvidia(
     body: JSON.stringify({
       model,
       input: texts,
+      input_type: inputType,
       encoding_format: "float",
     }),
   });
 
   if (!response.ok) {
-    throw new Error(
-      `NVIDIA embedding request failed (${response.status})`,
-    );
+    throw new Error(`NVIDIA embedding request failed (${response.status})`);
   }
 
   const result = await response.json();
@@ -46,12 +42,14 @@ async function embedWithNvidia(
     throw new Error("NVIDIA returned an unexpected embedding response.");
   }
 
-  const sortedData = [...result.data].sort(
-    (a, b) => a.index - b.index,
-  );
+  const sortedData = [...result.data].sort((a, b) => a.index - b.index);
 
   return sortedData.map((item) => {
-    if (!Array.isArray(item.embedding) || item.embedding.length === 0) {
+    if (
+      !Array.isArray(item.embedding) ||
+      item.embedding.length === 0 ||
+      !item.embedding.every(Number.isFinite)
+    ) {
       throw new Error("NVIDIA returned an invalid embedding vector.");
     }
 
@@ -59,10 +57,7 @@ async function embedWithNvidia(
   });
 }
 
-async function embedWithGemini(
-  texts,
-  { apiKey, model, taskType },
-) {
+async function embedWithGemini(texts, { apiKey, model, taskType }) {
   const response = await fetch(
     `${GEMINI_BASE_URL}/models/${model}:batchEmbedContents`,
     {
@@ -84,9 +79,7 @@ async function embedWithGemini(
   );
 
   if (!response.ok) {
-    throw new Error(
-      `Gemini embedding request failed (${response.status})`,
-    );
+    throw new Error(`Gemini embedding request failed (${response.status})`);
   }
 
   const result = await response.json();
@@ -99,7 +92,11 @@ async function embedWithGemini(
   }
 
   return result.embeddings.map((item) => {
-    if (!Array.isArray(item.values) || item.values.length === 0) {
+    if (
+      !Array.isArray(item.values) ||
+      item.values.length === 0 ||
+      !item.values.every(Number.isFinite)
+    ) {
       throw new Error("Gemini returned an invalid embedding vector.");
     }
 
@@ -115,6 +112,7 @@ export async function embedTexts(
     baseUrl = DEFAULT_NVIDIA_BASE_URL,
     model,
     taskType = "RETRIEVAL_DOCUMENT",
+    inputType = "passage",
   } = {},
 ) {
   if (!validateTexts(texts)) {
@@ -138,6 +136,7 @@ export async function embedTexts(
       apiKey,
       baseUrl,
       model: model ?? DEFAULT_NVIDIA_MODEL,
+      inputType,
     });
   }
 
@@ -148,6 +147,7 @@ export async function embedQuery(query, options = {}) {
   const vectors = await embedTexts([query], {
     ...options,
     taskType: "RETRIEVAL_QUERY",
+    inputType: "query",
   });
 
   return vectors[0];
