@@ -330,26 +330,26 @@ export function AgentBar(): React.ReactElement {
   }, []);
 
  
-const runCommand = useCallback((cmd: AgentCommand): void => {
-  recordCommand(cmd.keyword);
-  setActiveCmd(cmd);
-  setShownSteps(0);
-  setShowResponse(false);
-  setUiState("processing");
+  const runCommand = useCallback((cmd: AgentCommand): void => {
+    recordCommand(cmd.keyword);
+    setActiveCmd(cmd);
+    setShownSteps(0);
+    setShowResponse(false);
+    setUiState("processing");
 
-  // Easter eggs run immediately; navigation actions run after dismissal.
-  if (cmd.intent === "easter_egg") {
-    cmd.action?.();
-  }
-
-  if (cmd.intent === "easter_egg" && cmd.keyword === "dance") {
-    try {
-      sessionStorage.setItem("dance-tried", "1");
-    } catch {
-      // noop
+    // Easter eggs run immediately; navigation actions run after dismissal.
+    if (cmd.intent === "easter_egg") {
+      cmd.action?.();
     }
-  }
-}, []);
+
+    if (cmd.intent === "easter_egg" && cmd.keyword === "dance") {
+      try {
+        sessionStorage.setItem("dance-tried", "1");
+      } catch {
+        // noop
+      }
+    }
+  }, []);
 
 
   // Hide agent when modal is open
@@ -504,102 +504,103 @@ const runCommand = useCallback((cmd: AgentCommand): void => {
     return () => cancelAnimationFrame(frame);
   }, [chatOpen, uiState]);
 
-const handleAiQuery = (query: string): void => {
-  setInput("");
-  window.dispatchEvent(
-    new CustomEvent("chat-with-query", {
-      detail: {
-        query,
-        currentProject: viewingProject,
-      },
-    }),
-  );
-  setUiState("panel");
-};
-const onSubmit = (e: React.FormEvent): void => {
-  
-  e.preventDefault();
-
-  const raw = input.trim();
-  const q = raw.toLowerCase();
-
-  if (!q) return;
-
-  if (chatOpen) {
-    handleAiQuery(raw);
-    return;
-  }
-
-  // 1. Exact methodology chip keyword
-  const exactMethodology = methodologyChips.find(
-    (chip) => chip.command.keyword.toLowerCase() === q,
-  );
-
-  if (exactMethodology) {
-    runCommand(exactMethodology.command);
-    return;
-  }
-
-  // 2. Exact command/chip keyword
-  
-
-const chipCommands = Object.values(SECTION_CHIPS)
-  .flat()
-  .map((chip) => chip.command.toLowerCase());
-
-const localCommands = new Set([
-  ...chipCommands,
-  ...methodologyChips.map((chip) =>
-    chip.command.keyword.toLowerCase()
-  ),
-  "dance",
-  "sleep",
-  "surprise",
-]);
-
-const exactCommand = commands.find(
-  (command) =>
-    command.keyword.toLowerCase() === q &&
-    localCommands.has(command.keyword.toLowerCase()),
-);
-
-if (exactCommand) {
-  runCommand(exactCommand);
-  return;
-}
-
-  // 3. Explicit navigation only
-  // Examples: "open codelens", "show projects", "go to contact"
-  const navigationMatch = raw.match(
-   /^(open|show|go to|view)\s+(.+)$/i
-  );
-
-  if (navigationMatch) {
-    const target = navigationMatch[2].trim().toLowerCase().replace(/[\s-]+/g, "");
-
-    const aliases: Record<string, string> = {
-      openevent: "openevent",
-      codelens: "codelens",
-      gogaacli: "gogaa",
-    };
-
-    const normalizedTarget = aliases[target] ?? target;
-
-    const navigationCommand = commands.find(
-      (command) =>
-        command.keyword.toLowerCase().replace(/[\s-]+/g, "") ===
-        normalizedTarget,
+  const handleAiQuery = (query: string): void => {
+    setInput("");
+    window.dispatchEvent(
+      new CustomEvent("chat-with-query", {
+        detail: {
+          query,
+          currentProject: viewingProject,
+        },
+      }),
     );
+    setUiState("panel");
+  };
 
-    if (navigationCommand) {
-      runCommand(navigationCommand);
+  const onSubmit = (e: React.FormEvent): void => {
+    e.preventDefault();
+
+    const raw = input.trim();
+    const q = raw.toLowerCase();
+
+    if (!q) return;
+
+    if (chatOpen) {
+      handleAiQuery(raw);
       return;
     }
-  }
 
-  // 4. Everything else goes to RAG chat
-  handleAiQuery(raw);
-};
+    // 1. Exact methodology chip keyword
+    const exactMethodology = methodologyChips.find(
+      (chip) => chip.command.keyword.toLowerCase() === q,
+    );
+
+    if (exactMethodology) {
+      runCommand(exactMethodology.command);
+      return;
+    }
+
+    // 2. Exact command/chip keyword
+    const chipCommands = Object.values(SECTION_CHIPS)
+      .flat()
+      .map((chip) => chip.command.toLowerCase());
+
+    const localCommands = new Set([
+      ...chipCommands,
+      ...methodologyChips.map((chip) =>
+        chip.command.keyword.toLowerCase(),
+      ),
+      "dance",
+      "sleep",
+      "surprise",
+    ]);
+
+    const exactCommand = commands.find(
+      (command) =>
+        command.keyword.toLowerCase() === q &&
+        localCommands.has(command.keyword.toLowerCase()),
+    );
+
+    if (exactCommand) {
+      runCommand(exactCommand);
+      return;
+    }
+
+    // 3. Explicit navigation only
+    // Examples: "open codelens", "show projects", "go to contact"
+    const navigationMatch = raw.match(
+      /^(open|show|go to|view)\s+(.+)$/i,
+    );
+
+    if (navigationMatch) {
+      const target = navigationMatch[2]
+        .trim()
+        .toLowerCase()
+        .replace(/[\s-]+/g, "");
+
+      const aliases: Record<string, string> = {
+        openevent: "openevent",
+        codelens: "codelens",
+        gogaacli: "gogaa",
+      };
+
+      const normalizedTarget = aliases[target] ?? target;
+
+      const navigationCommand = commands.find(
+        (command) =>
+          command.keyword.toLowerCase().replace(/[\s-]+/g, "") ===
+          normalizedTarget,
+      );
+
+      if (navigationCommand) {
+        runCommand(navigationCommand);
+        return;
+      }
+    }
+
+    // 4. Everything else goes to RAG chat
+    handleAiQuery(raw);
+  };
 
 
   const onChipClick = (command: string): void => {
@@ -619,27 +620,36 @@ if (exactCommand) {
   const isOpen = uiState === "panel" || uiState === "processing" || uiState === "responding";
   const isBusy = uiState === "processing" || uiState === "responding";
 
- const closePanel = (): void => {
-  setActiveCmd(null);
-  setShownSteps(0);
-  setShowResponse(false);
-  setInput("");
-  setMoodPickerOpen(false);
-  setUiState("button");
-};
+  const closePanel = (): void => {
+    setActiveCmd(null);
+    setShownSteps(0);
+    setShowResponse(false);
+    setInput("");
+    setMoodPickerOpen(false);
+    setUiState("button");
+  };
 
   const handleChatToggle = (): void => {
-    window.dispatchEvent(new CustomEvent(chatOpen ? "close-chat-widget" : "open-chat-widget"));
+    window.dispatchEvent(
+      new CustomEvent(chatOpen ? "close-chat-widget" : "open-chat-widget"),
+    );
   };
 
   const followRoute = (route: DockRoute): void => {
     closePanel();
+
     if (route.kind === "scroll") {
-      document.getElementById(route.target)?.scrollIntoView({ behavior: "smooth", block: "start" });
+      document
+        .getElementById(route.target)
+        ?.scrollIntoView({ behavior: "smooth", block: "start" });
     } else if (route.kind === "cv") {
       openCvDrawer();
     } else if (route.kind === "expand") {
-      window.dispatchEvent(new CustomEvent("open-project-detail", { detail: { slug: route.slug, kind: route.view } }));
+      window.dispatchEvent(
+        new CustomEvent("open-project-detail", {
+          detail: { slug: route.slug, kind: route.view },
+        }),
+      );
     } else if (route.external || route.href.startsWith("mailto:")) {
       window.open(route.href, route.external ? "_blank" : "_self", "noopener");
     } else {

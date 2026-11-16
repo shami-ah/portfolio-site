@@ -533,29 +533,30 @@ function AnimatedMetric({
   const suffix = match?.[3] ?? "";
   const decimals = match?.[2].split(".")[1]?.length ?? 0;
 
-  useEffect(() => {
+    useEffect(() => {
     if (!active) return;
+
+    let frameId = 0;
 
     // Keep text-only metrics unchanged.
     if (numericValue === null || !Number.isFinite(numericValue)) {
-      setDisplayValue(value);
-      return;
+      frameId = requestAnimationFrame(() => setDisplayValue(value));
+      return () => cancelAnimationFrame(frameId);
     }
 
-    // If this metric has already animated, show any updated value directly.
+    // If this metric has already animated, show updated values directly.
     if (hasAnimated.current) {
-      setDisplayValue(value);
-      return;
+      frameId = requestAnimationFrame(() => setDisplayValue(value));
+      return () => cancelAnimationFrame(frameId);
     }
 
     hasAnimated.current = true;
 
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      setDisplayValue(value);
-      return;
+      frameId = requestAnimationFrame(() => setDisplayValue(value));
+      return () => cancelAnimationFrame(frameId);
     }
 
-    let frameId = 0;
     const duration = 1100;
     let startTime: number | null = null;
 
@@ -580,7 +581,6 @@ function AnimatedMetric({
       }
     };
 
-    setDisplayValue(`${prefix}${(0).toLocaleString("en-US")}${suffix}`);
     frameId = requestAnimationFrame(animate);
 
     return () => cancelAnimationFrame(frameId);

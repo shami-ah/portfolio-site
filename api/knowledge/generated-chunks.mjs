@@ -137,103 +137,676 @@ export const generatedChunks = [
     "text": "title: NOT in Stack\ncontent 1: Kubernetes, AWS, Azure and GCP managed services are not part of his current stack.\ncontent 2: He runs Docker Compose and Traefik on self-managed servers instead of Kubernetes, and can adopt them if a role requires it."
   },
   {
-    "id": "project-openevent",
+    "id": "project-openevent-summary-1",
     "project": "openevent",
     "category": "project",
     "tags": [
       "openevent",
       "OpenEvent",
-      "Production SaaS"
+      "Production SaaS",
+      "summary"
     ],
-    "text": "slug: openevent\ntitle: OpenEvent\nsubtitle: AI-Powered Event Management Platform\ntype: Production SaaS\noneLiner: AI turns client emails into approved bookings, invoices, and CRM updates.\ncardSummary: 100+ clients in 8 months, no sales team. AI reads emails, proposes actions, humans approve with one click.\nimpact: Grew to 100+ clients across 150+ events in 8 months with zero sales team — product-led adoption. Saves each team ~1.5 hours per day. AI classifies emails, proposes actions, and executes after human approval.\nproblem: Event companies drown in emails and manual coordination. Staff spend hours triaging requests, copying data between systems, and chasing approvals. Simple automation breaks on ambiguous language.\nsolution: An AI layer that ingests emails, classifies intent, extracts entities with pgvector context, and proposes actions. Humans approve with one click before anything touches money or commitments. Declarative JSON workflows make the system extensible without code changes.\narchitecture 1: Email Ingestion (Gmail / Outlook / IMAP)\narchitecture 2: AI Intent Classification\narchitecture 3: Entity Extraction + pgvector Context\narchitecture 4: Human-in-the-Loop Approval Gate\narchitecture 5: Declarative Workflow Engine (JSON/YAML)\narchitecture 6: Execution (Calendar, Stripe, CRM, Email)\narchitecture 7: Audit Log + Telemetry\nfeatures 1: Email-to-task pipeline with AI intent classification and entity extraction\nfeatures 2: Human-in-the-loop: AI drafts, humans approve before any execution\nfeatures 3: Declarative workflow engine — non-engineers can add steps without code\nfeatures 4: Semantic search via pgvector for template matching and client history\nfeatures 5: Full integrations: Calendar, Stripe invoicing, CRM sync, webhooks\ntechDecisions 1 title: Human-in-the-loop by default\ntechDecisions 1 description: Event coordination is full of ambiguity. AI proposes, humans approve — this trust boundary is why adoption was immediate. The fully automated competitor clients tried before failed on day two.\ntechDecisions 2 title: pgvector inside Postgres\ntechDecisions 2 description: No separate vector DB. Embeddings live next to relational data — one query joins both. Zero sync lag, zero extra infra.\ntechDecisions 3 title: Declarative workflow engine\ntechDecisions 3 description: Workflows are JSON/YAML, not TypeScript. Adding an approval step or integration is a config change, not a deploy.\nstack 1: React\nstack 2: TypeScript\nstack 3: Supabase\nstack 4: OpenAI\nstack 5: pgvector\nstack 6: Stripe\nstack 7: Docker\nresults 1: 100+ active clients, 150+ events managed\nresults 2: ~80% reduction in manual coordination time\nresults 3: Response time dropped from hours to minutes\nresults 4: Full CI/CD with staging and production environments\nfeatured: true\nmeasuredImpact before value: ~1.5\nmeasuredImpact before unit: hrs\nmeasuredImpact before context: per team, per day, reading & triaging email\nmeasuredImpact after value: ~15\nmeasuredImpact after unit: min\nmeasuredImpact after context: review AI-drafted actions & approve\nmeasuredImpact highlights 1 n: 100+\nmeasuredImpact highlights 1 l: active clients\nmeasuredImpact highlights 2 n: 150+\nmeasuredImpact highlights 2 l: events run\nmeasuredImpact highlights 3 n: 83%\nmeasuredImpact highlights 3 l: time saved\ndecision scenario: An event company gets 100+ ambiguous client emails daily. They want AI to handle it.\ndecision question: How do you design the system?\ndecision options 1: Full automation: AI reads, decides, executes\ndecision options 2: AI drafts action, human approves before execution\ndecision options 3: Classification only, humans do the rest\ndecision commonChoice: 0\ndecision myChoice: 1\ndecision reasoning: Full automation fails on the first misread. Event coordination needs judgment. I designed AI to handle extraction and proposal — humans approve before anything touches money. That trust boundary is why clients actually use it.\nvs mine title: OpenEvent\nvs mine bullets 1: AI classifies, extracts, proposes — human approves\nvs mine bullets 2: JSON/YAML workflows, extensible without code\nvs mine bullets 3: pgvector inside Postgres, no extra infra\nvs mine bullets 4: Full audit log with auto-approval learning\nvs standard title: Full-automation AI\nvs standard bullets 1: AI decides and executes with no human gate\nvs standard bullets 2: Breaks on ambiguous input, fast trust erosion\nvs standard bullets 3: Hardcoded workflows, every change = deploy\nvs standard bullets 4: No audit trail when AI makes wrong call"
+    "text": "title: OpenEvent subtitle: AI-Powered Event Management Platform oneLiner: AI turns client emails into approved bookings, invoices, and CRM updates. cardSummary: 100+ clients in 8 months, no sales team. AI reads emails, proposes actions, humans approve with one click. impact: Grew to 100+ clients across 150+ events in 8 months with zero sales team — product-led adoption. Saves each team ~1.5 hours per day. AI classifies emails, proposes actions, and executes after human approval. problem: Event companies drown in emails and manual coordination. Staff spend hours triaging requests, copying data"
   },
   {
-    "id": "project-codelens",
+    "id": "project-openevent-summary-2",
+    "project": "openevent",
+    "category": "project",
+    "tags": [
+      "openevent",
+      "OpenEvent",
+      "Production SaaS",
+      "summary"
+    ],
+    "text": "between systems, and chasing approvals. Simple automation breaks on ambiguous language. solution: An AI layer that ingests emails, classifies intent, extracts entities with pgvector context, and proposes actions. Humans approve with one click before anything touches money or commitments. Declarative JSON workflows make the system extensible without code changes."
+  },
+  {
+    "id": "project-openevent-architecture-1",
+    "project": "openevent",
+    "category": "project",
+    "tags": [
+      "openevent",
+      "OpenEvent",
+      "Production SaaS",
+      "architecture"
+    ],
+    "text": "architecture 1: Email Ingestion (Gmail / Outlook / IMAP) architecture 2: AI Intent Classification architecture 3: Entity Extraction + pgvector Context architecture 4: Human-in-the-Loop Approval Gate architecture 5: Declarative Workflow Engine (JSON/YAML) architecture 6: Execution (Calendar, Stripe, CRM, Email) architecture 7: Audit Log + Telemetry features 1: Email-to-task pipeline with AI intent classification and entity extraction features 2: Human-in-the-loop: AI drafts, humans approve before any execution features 3: Declarative workflow engine — non-engineers can add steps without code"
+  },
+  {
+    "id": "project-openevent-architecture-2",
+    "project": "openevent",
+    "category": "project",
+    "tags": [
+      "openevent",
+      "OpenEvent",
+      "Production SaaS",
+      "architecture"
+    ],
+    "text": "features 4: Semantic search via pgvector for template matching and client history features 5: Full integrations: Calendar, Stripe invoicing, CRM sync, webhooks stack 1: React stack 2: TypeScript stack 3: Supabase stack 4: OpenAI stack 5: pgvector stack 6: Stripe stack 7: Docker"
+  },
+  {
+    "id": "project-openevent-decisions-1",
+    "project": "openevent",
+    "category": "project",
+    "tags": [
+      "openevent",
+      "OpenEvent",
+      "Production SaaS",
+      "decisions"
+    ],
+    "text": "techDecisions 1 title: Human-in-the-loop by default techDecisions 1 description: Event coordination is full of ambiguity. AI proposes, humans approve — this trust boundary is why adoption was immediate. The fully automated competitor clients tried before failed on day two. techDecisions 2 title: pgvector inside Postgres techDecisions 2 description: No separate vector DB. Embeddings live next to relational data — one query joins both. Zero sync lag, zero extra infra. techDecisions 3 title: Declarative workflow engine techDecisions 3 description: Workflows are JSON/YAML, not TypeScript. Adding"
+  },
+  {
+    "id": "project-openevent-decisions-2",
+    "project": "openevent",
+    "category": "project",
+    "tags": [
+      "openevent",
+      "OpenEvent",
+      "Production SaaS",
+      "decisions"
+    ],
+    "text": "an approval step or integration is a config change, not a deploy. decision scenario: An event company gets 100+ ambiguous client emails daily. They want AI to handle it. decision question: How do you design the system? decision options 1: Full automation: AI reads, decides, executes decision options 2: AI drafts action, human approves before execution decision options 3: Classification only, humans do the rest decision commonChoice: 0 decision myChoice: 1 decision reasoning: Full automation fails on the first misread. Event coordination needs judgment. I designed AI to handle extraction and"
+  },
+  {
+    "id": "project-openevent-decisions-3",
+    "project": "openevent",
+    "category": "project",
+    "tags": [
+      "openevent",
+      "OpenEvent",
+      "Production SaaS",
+      "decisions"
+    ],
+    "text": "proposal — humans approve before anything touches money. That trust boundary is why clients actually use it. comparison mine title: OpenEvent comparison mine bullets 1: AI classifies, extracts, proposes — human approves comparison mine bullets 2: JSON/YAML workflows, extensible without code comparison mine bullets 3: pgvector inside Postgres, no extra infra comparison mine bullets 4: Full audit log with auto-approval learning comparison standard title: Full-automation AI comparison standard bullets 1: AI decides and executes with no human gate comparison standard bullets 2: Breaks on ambiguous input, fast trust erosion comparison standard bullets 3: Hardcoded workflows, every change = deploy comparison standard bullets 4: No audit trail when AI makes wrong call"
+  },
+  {
+    "id": "project-openevent-results",
+    "project": "openevent",
+    "category": "project",
+    "tags": [
+      "openevent",
+      "OpenEvent",
+      "Production SaaS",
+      "results"
+    ],
+    "text": "results 1: 100+ active clients, 150+ events managed results 2: ~80% reduction in manual coordination time results 3: Response time dropped from hours to minutes results 4: Full CI/CD with staging and production environments measuredImpact before value: ~1.5 measuredImpact before unit: hrs measuredImpact before context: per team, per day, reading & triaging email measuredImpact after value: ~15 measuredImpact after unit: min measuredImpact after context: review AI-drafted actions & approve measuredImpact highlights 1 n: 100+ measuredImpact highlights 1 l: active clients measuredImpact highlights 2 n: 150+ measuredImpact highlights 2 l: events run measuredImpact highlights 3 n: 83% measuredImpact highlights 3 l: time saved"
+  },
+  {
+    "id": "project-codelens-summary-1",
     "project": "codelens",
     "category": "project",
     "tags": [
       "codelens",
       "CodeLens",
-      "AI Dev Tool"
+      "AI Dev Tool",
+      "summary"
     ],
-    "text": "slug: codelens\ntitle: CodeLens\nsubtitle: AI Code Review Engine\ntype: AI Dev Tool\ncardSummary: 544 patterns mined from 860+ production PRs. Reviews in under one second, entirely on your machine.\noneLiner: 544 bug patterns mined from 860+ real PRs. Under one second. Code never leaves your machine.\nimpact: 544 hand-crafted patterns mined from 860+ production PRs across 9 stacks. Reviews in under one second, entirely on your machine. When a commercial AI reviewer (Greptile) caught 12 issues CodeLens missed, I ran a gap analysis and closed every one — coverage went from 8% to 100%.\nproblem: Existing tools are either fast but shallow (linters catching style, not logic) or deep but cloud-dependent (sending your code to a third party). Neither catches the bugs that actually ship: missing auth guards, silent N+1 queries, cross-file taint paths.\nsolution: Deterministic patterns first, then AI for what patterns can't express. A persistent codebase index (call graph, schema graph) enables cross-file analysis. Source-to-sink taint tracking follows user input to dangerous sinks. Guardian mode injects rules into AI coding assistants to prevent bugs at generation time.\narchitecture 1: Git Diff → AST-aware Parser\narchitecture 2: Persistent Index (call graph + schema graph)\narchitecture 3: Pattern Scan (~544 patterns, 9 stacks)\narchitecture 4: Source-to-Sink Taint Tracking\narchitecture 5: Focused AI Security Probes\narchitecture 6: PR Risk Score (8 factors)\narchitecture 7: Self-Learning Noise Filter\nfeatures 1: ~544 patterns mapped to real production failures, tagged with OWASP/CWE\nfeatures 2: Persistent codebase index with 60ms incremental updates\nfeatures 3: Source-to-sink taint tracking across files with CWE mapping\nfeatures 4: Guardian mode: injects rules into Claude Code, Cursor, Copilot at prompt level\nfeatures 5: Zero runtime deps — single 351KB file, runs anywhere Node runs\ntechDecisions 1 title: Hand-crafted patterns over imported rule sets\ntechDecisions 1 description: Existing rule sets cover style, not production failures. Every CodeLens pattern comes from a real bug: missing .limit() on Supabase queries, hooks after conditional returns, catch blocks swallowing errors silently.\ntechDecisions 2 title: Persistent index over re-parsing\ntechDecisions 2 description: First build: 4s on a 1,622-file codebase. After that: 60ms incremental. This makes cross-file analysis viable as a pre-commit hook.\ntechDecisions 3 title: Patterns first, AI second\ntechDecisions 3 description: 544 deterministic patterns in <1s, then focused AI probes for semantic bugs no regex can catch. Coverage went from 8% to 100% on a head-to-head benchmark against a commercial AI reviewer.\nstack 1: TypeScript\nstack 2: Docker\nstack 3: esbuild\nstack 4: Persistent JSON Index\nstack 5: GitHub Actions\nstack 6: GHCR\nresults 1: ~544 patterns across 9 stacks, validated against real production repos\nresults 2: 7-file PR review in 780ms, full 456-file PR in 12s\nresults 3: Zero deps: single 351KB file, Docker image auto-published to GHCR\nresults 4: Glean pipeline processed 3,360+ PRs, Agent Harvest added 34 patterns, Greptile parity added 66\ngiteaRepo: shami/codelens\nfeatured: true\nmeasuredImpact before value: 8%\nmeasuredImpact before context: coverage vs commercial AI reviewer (Greptile)\nmeasuredImpact after value: 100%\nmeasuredImpact after context: all 12 gaps closed after gap analysis\nmeasuredImpact highlights 1 n: 544\nmeasuredImpact highlights 1 l: patterns\nmeasuredImpact highlights 2 n: <1s\nmeasuredImpact highlights 2 l: review time\nmeasuredImpact highlights 3 n: 351KB\nmeasuredImpact highlights 3 l: zero deps\ndecision scenario: Production bugs keep slipping past SonarQube + ESLint + AI review. They span multiple files with user input reaching DB queries unvalidated.\ndecision question: What do you build?\ndecision options 1: More ESLint rules\ndecision options 2: Pay for commercial AI review SaaS\ndecision options 3: Custom engine with cross-file taint tracking\ndecision commonChoice: 1\ndecision myChoice: 2\ndecision reasoning: ESLint stays single-file. Commercial SaaS sends code to a third party and still misses schema bugs. I built a hybrid: hand-crafted patterns + persistent call graph + taint tracer. Runs fully local, <1s reviews.\nvs mine title: CodeLens\nvs mine bullets 1: ~544 patterns validated against real failures\nvs mine bullets 2: Persistent index, 60ms incremental updates\nvs mine bullets 3: Taint tracking across files with CWE mapping\nvs mine bullets 4: Zero deps, 351KB, runs anywhere Node runs\nvs standard title: SonarQube / commercial SaaS\nvs standard bullets 1: Generic style rules, not production failures\nvs standard bullets 2: Cloud-dependent, code leaves the repo\nvs standard bullets 3: Single-file analysis, no cross-file tracing\nvs standard bullets 4: Heavy setup: Java runtime, server, database"
+    "text": "title: CodeLens subtitle: AI Code Review Engine oneLiner: 624 bug patterns mined from 860+ real PRs. Under one second. Code never leaves your machine. cardSummary: 624 patterns mined from 860+ production PRs. Reviews in under one second, entirely on your machine. impact: 624 hand-crafted patterns mined from 860+ production PRs across 9 stacks. Reviews in under one second, entirely on your machine. When a commercial AI reviewer (Greptile) caught 12 issues CodeLens missed, I ran a gap analysis and closed every one — coverage went from 8% to 100%. problem: Existing tools are either fast but"
   },
   {
-    "id": "project-gogaa-cli",
+    "id": "project-codelens-summary-2",
+    "project": "codelens",
+    "category": "project",
+    "tags": [
+      "codelens",
+      "CodeLens",
+      "AI Dev Tool",
+      "summary"
+    ],
+    "text": "shallow (linters catching style, not logic) or deep but cloud-dependent (sending your code to a third party). Neither catches the bugs that actually ship: missing auth guards, silent N+1 queries, cross-file taint paths. solution: Deterministic patterns first, then AI for what patterns can't express. A persistent codebase index (call graph, schema graph) enables cross-file analysis. Source-to-sink taint tracking follows user input to dangerous sinks. Guardian mode injects rules into AI coding assistants to prevent bugs at generation time."
+  },
+  {
+    "id": "project-codelens-architecture-1",
+    "project": "codelens",
+    "category": "project",
+    "tags": [
+      "codelens",
+      "CodeLens",
+      "AI Dev Tool",
+      "architecture"
+    ],
+    "text": "architecture 1: Git Diff → AST-aware Parser architecture 2: Persistent Index (call graph + schema graph) architecture 3: Pattern Scan (~624 patterns, 9 stacks) architecture 4: Source-to-Sink Taint Tracking architecture 5: Focused AI Security Probes architecture 6: PR Risk Score (8 factors) architecture 7: Self-Learning Noise Filter features 1: ~624 patterns mapped to real production failures, tagged with OWASP/CWE features 2: Persistent codebase index with 60ms incremental updates features 3: Source-to-sink taint tracking across files with CWE mapping features 4: Guardian mode: injects rules"
+  },
+  {
+    "id": "project-codelens-architecture-2",
+    "project": "codelens",
+    "category": "project",
+    "tags": [
+      "codelens",
+      "CodeLens",
+      "AI Dev Tool",
+      "architecture"
+    ],
+    "text": "into Claude Code, Cursor, Copilot at prompt level features 5: Zero runtime deps — single 351KB file, runs anywhere Node runs stack 1: TypeScript stack 2: Docker stack 3: esbuild stack 4: Persistent JSON Index stack 5: GitHub Actions stack 6: GHCR"
+  },
+  {
+    "id": "project-codelens-decisions-1",
+    "project": "codelens",
+    "category": "project",
+    "tags": [
+      "codelens",
+      "CodeLens",
+      "AI Dev Tool",
+      "decisions"
+    ],
+    "text": "techDecisions 1 title: Hand-crafted patterns over imported rule sets techDecisions 1 description: Existing rule sets cover style, not production failures. Every CodeLens pattern comes from a real bug: missing .limit() on Supabase queries, hooks after conditional returns, catch blocks swallowing errors silently. techDecisions 2 title: Persistent index over re-parsing techDecisions 2 description: First build: 4s on a 1,622-file codebase. After that: 60ms incremental. This makes cross-file analysis viable as a pre-commit hook. techDecisions 3 title: Patterns first, AI second techDecisions 3"
+  },
+  {
+    "id": "project-codelens-decisions-2",
+    "project": "codelens",
+    "category": "project",
+    "tags": [
+      "codelens",
+      "CodeLens",
+      "AI Dev Tool",
+      "decisions"
+    ],
+    "text": "description: 624 deterministic patterns in <1s, then focused AI probes for semantic bugs no regex can catch. Coverage went from 8% to 100% on a head-to-head benchmark against a commercial AI reviewer. decision scenario: Production bugs keep slipping past SonarQube + ESLint + AI review. They span multiple files with user input reaching DB queries unvalidated. decision question: What do you build? decision options 1: More ESLint rules decision options 2: Pay for commercial AI review SaaS decision options 3: Custom engine with cross-file taint tracking decision commonChoice: 1 decision myChoice:"
+  },
+  {
+    "id": "project-codelens-decisions-3",
+    "project": "codelens",
+    "category": "project",
+    "tags": [
+      "codelens",
+      "CodeLens",
+      "AI Dev Tool",
+      "decisions"
+    ],
+    "text": "2 decision reasoning: ESLint stays single-file. Commercial SaaS sends code to a third party and still misses schema bugs. I built a hybrid: hand-crafted patterns + persistent call graph + taint tracer. Runs fully local, <1s reviews. comparison mine title: CodeLens comparison mine bullets 1: ~624 patterns validated against real failures comparison mine bullets 2: Persistent index, 60ms incremental updates comparison mine bullets 3: Taint tracking across files with CWE mapping comparison mine bullets 4: Zero deps, 351KB, runs anywhere Node runs comparison standard title: SonarQube / commercial"
+  },
+  {
+    "id": "project-codelens-decisions-4",
+    "project": "codelens",
+    "category": "project",
+    "tags": [
+      "codelens",
+      "CodeLens",
+      "AI Dev Tool",
+      "decisions"
+    ],
+    "text": "SaaS comparison standard bullets 1: Generic style rules, not production failures comparison standard bullets 2: Cloud-dependent, code leaves the repo comparison standard bullets 3: Single-file analysis, no cross-file tracing comparison standard bullets 4: Heavy setup: Java runtime, server, database"
+  },
+  {
+    "id": "project-codelens-results",
+    "project": "codelens",
+    "category": "project",
+    "tags": [
+      "codelens",
+      "CodeLens",
+      "AI Dev Tool",
+      "results"
+    ],
+    "text": "results 1: ~624 patterns across 9 stacks, validated against real production repos results 2: 7-file PR review in 780ms, full 456-file PR in 12s results 3: Zero deps: single 351KB file, Docker image auto-published to GHCR results 4: Glean pipeline processed 4,000+ PRs, Agent Harvest added 34 patterns, Greptile parity added 66 measuredImpact before value: 8% measuredImpact before context: coverage vs commercial AI reviewer (Greptile) measuredImpact after value: 100% measuredImpact after context: all 12 gaps closed after gap analysis measuredImpact highlights 1 n: 624 measuredImpact highlights 1 l: patterns measuredImpact highlights 2 n: <1s measuredImpact highlights 2 l: review time measuredImpact highlights 3 n: 351KB measuredImpact highlights 3 l: zero deps"
+  },
+  {
+    "id": "project-gogaa-cli-summary-1",
     "project": "gogaa-cli",
     "category": "project",
     "tags": [
       "gogaa-cli",
       "Gogaa CLI",
-      "Developer Tool / CLI"
+      "Developer Tool / CLI",
+      "summary"
     ],
-    "text": "slug: gogaa-cli\ntitle: Gogaa CLI\nsubtitle: AI Coding Agent — Any Model, Any Provider\ntype: Developer Tool / CLI\nfeatured: true\nrequestAccess: true\ncardSummary: 11 providers behind one interface. If one goes down, you don't stop working. 1,400+ tests, zero vendor lock-in.\noneLiner: 11 providers behind one interface. If one goes down, you don't stop working.\nimpact: The only open-source AI coding CLI where the provider is a variable — 11 providers with automatic fallback, so rate-limits never stop your work. Production-grade git workflow, polished React Ink TUI, plugin marketplace, and 1,400+ passing tests.\nproblem: Every AI coding tool makes you choose: provider freedom or deep integration. Polished TUI or serious git workflow. MCP support or surgical edits. If your provider rate-limits, you stop working.\nsolution: A TypeScript CLI where the provider is a variable. 11 providers behind one unified streaming interface with automatic fallback. Production-grade git workflow (repo map, SEARCH/REPLACE edits, LLM commits). React Ink TUI with 22 themes. Plugin marketplace, MCP support, parallel agent panes, scheduled triggers, and a companion web terminal.\narchitecture 1: Provider Manager (11 providers, auto-fallback)\narchitecture 2: Tool Registry (24+ tools)\narchitecture 3: SEARCH/REPLACE Editor\narchitecture 4: Agentic Loop (streaming, stuck detection, auto-retry)\narchitecture 5: Git Layer (repo map, LLM commits, watch mode)\narchitecture 6: React Ink TUI (22 themes, command palette)\narchitecture 7: Session Layer (WAL persistence, crash recovery)\nfeatures 1: 11 LLM providers with unified streaming and automatic fallback on rate-limits\nfeatures 2: Production git workflow: tier-aware repo map, surgical edits, LLM commits, watch mode\nfeatures 3: React Ink TUI with streaming output, inline diffs, 22 themes, plugin marketplace\nfeatures 4: 5-strategy JSON parser brought tool call success from ~70% to ~95%\nfeatures 5: WAL session persistence — crash mid-task, resume with zero lost work\ntechDecisions 1 title: 5-strategy JSON parser\ntechDecisions 1 description: Models don't return valid JSON in practice. Progressive fallback parsing (strict → trim → unescape → reconstruct → extract) brought tool call success from ~70% to ~95% on real sessions.\ntechDecisions 2 title: React Ink for TUI\ntechDecisions 2 description: Proper component model instead of raw ANSI escape codes. Streaming, permission prompts, status bar, and plugin manager are all independent stateful components.\ntechDecisions 3 title: WAL session persistence\ntechDecisions 3 description: Write-ahead log appends each message as it arrives. Resume by ID after crashes, model switches, or reboots with zero lost work.\nstack 1: TypeScript\nstack 2: Node.js\nstack 3: React Ink\nstack 4: Anthropic SDK\nstack 5: OpenAI SDK\nstack 6: LSP Protocol\nstack 7: WebSocket\nresults 1: 1,400+ passing tests, 0 failures\nresults 2: 11 providers with auto-fallback, 8/9 pass multi-file edit benchmarks\nresults 3: ~95% tool call success rate (up from ~70%)\nresults 4: Intent-based lazy context: 3,909 → 24 tokens for simple prompts\ngiteaRepo: shami/gogaa-ts\nmeasuredImpact before value: ~70%\nmeasuredImpact before context: tool call success rate with raw model JSON\nmeasuredImpact after value: ~95%\nmeasuredImpact after context: after 5-strategy progressive JSON parser\nmeasuredImpact highlights 1 n: 1,400+\nmeasuredImpact highlights 1 l: tests passing\nmeasuredImpact highlights 2 n: 11\nmeasuredImpact highlights 2 l: providers\nmeasuredImpact highlights 3 n: 84%\nmeasuredImpact highlights 3 l: context saved\ndecision scenario: Every AI coding CLI is locked to one vendor. If the API goes down, you stop working.\ndecision question: What would you build?\ndecision options 1: Fork an existing CLI and add providers\ndecision options 2: Thin wrapper with better UI\ndecision options 3: New CLI where the provider is a variable and everything is first-class\ndecision commonChoice: 0\ndecision myChoice: 2\ndecision reasoning: Forking means inheriting vendor assumptions. Wrapping means fighting their architecture. I built from scratch so every subsystem (provider, TUI, git, tools, session) is first-class and swappable.\nvs mine title: Gogaa CLI\nvs mine bullets 1: 11 providers, auto-fallback on rate-limits\nvs mine bullets 2: Production git: repo map, surgical edits, watch mode\nvs mine bullets 3: React Ink TUI with plugin marketplace\nvs mine bullets 4: WAL persistence — crash = zero lost work\nvs standard title: Single-vendor CLIs\nvs standard bullets 1: Locked to one provider\nvs standard bullets 2: No cross-tool feature completeness\nvs standard bullets 3: Spartan TUI, no plugins\nvs standard bullets 4: Stop working on rate-limits"
+    "text": "title: Gogaa CLI subtitle: AI Coding Agent — Any Model, Any Provider oneLiner: 11 providers behind one interface. If one goes down, you don't stop working. cardSummary: 11 providers behind one interface. If one goes down, you don't stop working. 1,400+ tests, zero vendor lock-in. impact: The only open-source AI coding CLI where the provider is a variable — 11 providers with automatic fallback, so rate-limits never stop your work. Production-grade git workflow, polished React Ink TUI, plugin marketplace, and 1,400+ passing tests. problem: Every AI coding tool makes you choose: provider freedom"
   },
   {
-    "id": "project-rasad",
+    "id": "project-gogaa-cli-summary-2",
+    "project": "gogaa-cli",
+    "category": "project",
+    "tags": [
+      "gogaa-cli",
+      "Gogaa CLI",
+      "Developer Tool / CLI",
+      "summary"
+    ],
+    "text": "or deep integration. Polished TUI or serious git workflow. MCP support or surgical edits. If your provider rate-limits, you stop working. solution: A TypeScript CLI where the provider is a variable. 11 providers behind one unified streaming interface with automatic fallback. Production-grade git workflow (repo map, SEARCH/REPLACE edits, LLM commits). React Ink TUI with 22 themes. Plugin marketplace, MCP support, parallel agent panes, scheduled triggers, and a companion web terminal."
+  },
+  {
+    "id": "project-gogaa-cli-architecture-1",
+    "project": "gogaa-cli",
+    "category": "project",
+    "tags": [
+      "gogaa-cli",
+      "Gogaa CLI",
+      "Developer Tool / CLI",
+      "architecture"
+    ],
+    "text": "architecture 1: Provider Manager (11 providers, auto-fallback) architecture 2: Tool Registry (24+ tools) architecture 3: SEARCH/REPLACE Editor architecture 4: Agentic Loop (streaming, stuck detection, auto-retry) architecture 5: Git Layer (repo map, LLM commits, watch mode) architecture 6: React Ink TUI (22 themes, command palette) architecture 7: Session Layer (WAL persistence, crash recovery) features 1: 11 LLM providers with unified streaming and automatic fallback on rate-limits features 2: Production git workflow: tier-aware repo map, surgical edits, LLM commits, watch mode features 3:"
+  },
+  {
+    "id": "project-gogaa-cli-architecture-2",
+    "project": "gogaa-cli",
+    "category": "project",
+    "tags": [
+      "gogaa-cli",
+      "Gogaa CLI",
+      "Developer Tool / CLI",
+      "architecture"
+    ],
+    "text": "React Ink TUI with streaming output, inline diffs, 22 themes, plugin marketplace features 4: 5-strategy JSON parser brought tool call success from ~70% to ~95% features 5: WAL session persistence — crash mid-task, resume with zero lost work stack 1: TypeScript stack 2: Node.js stack 3: React Ink stack 4: Anthropic SDK stack 5: OpenAI SDK stack 6: LSP Protocol stack 7: WebSocket"
+  },
+  {
+    "id": "project-gogaa-cli-decisions-1",
+    "project": "gogaa-cli",
+    "category": "project",
+    "tags": [
+      "gogaa-cli",
+      "Gogaa CLI",
+      "Developer Tool / CLI",
+      "decisions"
+    ],
+    "text": "techDecisions 1 title: 5-strategy JSON parser techDecisions 1 description: Models don't return valid JSON in practice. Progressive fallback parsing (strict → trim → unescape → reconstruct → extract) brought tool call success from ~70% to ~95% on real sessions. techDecisions 2 title: React Ink for TUI techDecisions 2 description: Proper component model instead of raw ANSI escape codes. Streaming, permission prompts, status bar, and plugin manager are all independent stateful components. techDecisions 3 title: WAL session persistence techDecisions 3 description: Write-ahead log appends each"
+  },
+  {
+    "id": "project-gogaa-cli-decisions-2",
+    "project": "gogaa-cli",
+    "category": "project",
+    "tags": [
+      "gogaa-cli",
+      "Gogaa CLI",
+      "Developer Tool / CLI",
+      "decisions"
+    ],
+    "text": "message as it arrives. Resume by ID after crashes, model switches, or reboots with zero lost work. decision scenario: Every AI coding CLI is locked to one vendor. If the API goes down, you stop working. decision question: What would you build? decision options 1: Fork an existing CLI and add providers decision options 2: Thin wrapper with better UI decision options 3: New CLI where the provider is a variable and everything is first-class decision commonChoice: 0 decision myChoice: 2 decision reasoning: Forking means inheriting vendor assumptions. Wrapping means fighting their architecture. I"
+  },
+  {
+    "id": "project-gogaa-cli-decisions-3",
+    "project": "gogaa-cli",
+    "category": "project",
+    "tags": [
+      "gogaa-cli",
+      "Gogaa CLI",
+      "Developer Tool / CLI",
+      "decisions"
+    ],
+    "text": "built from scratch so every subsystem (provider, TUI, git, tools, session) is first-class and swappable. comparison mine title: Gogaa CLI comparison mine bullets 1: 11 providers, auto-fallback on rate-limits comparison mine bullets 2: Production git: repo map, surgical edits, watch mode comparison mine bullets 3: React Ink TUI with plugin marketplace comparison mine bullets 4: WAL persistence — crash = zero lost work comparison standard title: Single-vendor CLIs comparison standard bullets 1: Locked to one provider comparison standard bullets 2: No cross-tool feature completeness comparison standard bullets 3: Spartan TUI, no plugins comparison standard bullets 4: Stop working on rate-limits"
+  },
+  {
+    "id": "project-gogaa-cli-results",
+    "project": "gogaa-cli",
+    "category": "project",
+    "tags": [
+      "gogaa-cli",
+      "Gogaa CLI",
+      "Developer Tool / CLI",
+      "results"
+    ],
+    "text": "results 1: 1,400+ passing tests, 0 failures results 2: 11 providers with auto-fallback, 8/9 pass multi-file edit benchmarks results 3: ~95% tool call success rate (up from ~70%) results 4: Intent-based lazy context: 3,909 → 24 tokens for simple prompts measuredImpact before value: ~70% measuredImpact before context: tool call success rate with raw model JSON measuredImpact after value: ~95% measuredImpact after context: after 5-strategy progressive JSON parser measuredImpact highlights 1 n: 1,400+ measuredImpact highlights 1 l: tests passing measuredImpact highlights 2 n: 11 measuredImpact highlights 2 l: providers measuredImpact highlights 3 n: 84% measuredImpact highlights 3 l: context saved"
+  },
+  {
+    "id": "project-rasad-summary-1",
     "project": "rasad",
     "category": "project",
     "tags": [
       "rasad",
       "Rasad",
-      "Developer Tool / CLI + Web"
+      "Developer Tool / CLI + Web",
+      "summary"
     ],
-    "text": "slug: rasad\ntitle: Rasad\nsubtitle: AI Session Observatory for Developers\ntype: Developer Tool / CLI + Web\nfeatured: true\ncardSummary: 656 sessions analyzed — every tool call, every file touch, graded A-F. Your data never leaves your machine.\noneLiner: 656 sessions analyzed — every tool call, every file touch, graded A-F. 100% local.\nimpact: The observability layer for AI-assisted development. 656 sessions across 4 tools, 38K messages, 14K tool calls — every action replayed, every session graded A-F. Found that routine tasks on Opus cost 18x more than Sonnet with no quality difference. 100% local, zero outbound requests.\nproblem: AI coding assistants are black boxes. You don't know how many tokens were burned, whether context was lost mid-session, or if that $87 session could have been three $8 sessions. Zero observability for a major engineering budget line.\nsolution: A local-first CLI + web dashboard that ingests session data from multiple AI tools. SQLite with FTS5 handles 700MB+ with streaming parsers. X-Ray replays sessions action-by-action. Quality grading scores A-F. Model comparison shows cost per session by model. Everything on localhost, zero outbound requests.\narchitecture 1: Data Adapters (Claude Code, Gogaa, Codex CLI)\narchitecture 2: SQLite (WAL mode, FTS5 full-text search)\narchitecture 3: Streaming Parsers (700MB+ without memory overflow)\narchitecture 4: Fastify API (localhost, WebSocket live updates)\narchitecture 5: React Dashboard (15+ views, Recharts)\narchitecture 6: React Ink TUI (real-time monitoring, alerts)\narchitecture 7: Quality Scoring Engine (A-F grading)\nfeatures 1: X-Ray: action-by-action session replay with phase labels and timing\nfeatures 2: Session Quality grading (A-F) based on efficiency, cost, and self-correction\nfeatures 3: Model comparison: cost per session by model, head-to-head analysis\nfeatures 4: Full-text search across 38K+ messages with SQLite FTS5\nfeatures 5: 100% local — zero outbound network requests, data never leaves your machine\ntechDecisions 1 title: SQLite over Postgres for a local tool\ntechDecisions 1 description: No database process, no connection strings. WAL mode gives concurrent reads/writes. FTS5 gives full-text search. The whole DB is one file at ~/.rasad/rasad.db.\ntechDecisions 2 title: Streaming parsers for ingestion\ntechDecisions 2 description: Claude Code session files can reach hundreds of MB. Line-by-line streaming never holds more than one line in memory.\ntechDecisions 3 title: Dual interface: web + terminal\ntechDecisions 3 description: Dashboard for rich visualizations, TUI for real-time monitoring without leaving the terminal. Same Fastify API backs both.\nstack 1: TypeScript\nstack 2: SQLite\nstack 3: Fastify\nstack 4: React 19\nstack 5: Vite\nstack 6: Recharts\nstack 7: React Ink\nresults 1: 656 sessions synced from 4 AI tools in one dashboard\nresults 2: 38K messages, 14K tool calls indexed with full-text search\nresults 3: First sync: 6.2s for 700MB+. Incremental: <1s\nresults 4: Zero outbound requests — 100% local-first\nmeasuredImpact before value: $0\nmeasuredImpact before context: visibility into AI tool behavior and cost\nmeasuredImpact after value: 656\nmeasuredImpact after context: sessions analyzed with action-level replay\nmeasuredImpact highlights 1 n: 38K\nmeasuredImpact highlights 1 l: messages indexed\nmeasuredImpact highlights 2 n: 14K\nmeasuredImpact highlights 2 l: tool calls tracked\nmeasuredImpact highlights 3 n: 6.2s\nmeasuredImpact highlights 3 l: first sync (700MB)\ndecision scenario: You're spending $500+/day on AI tools with zero visibility into what the AI is doing or whether sessions are efficient.\ndecision question: How do you get observability?\ndecision options 1: Check API billing dashboards\ndecision options 2: Build custom logging into each tool\ndecision options 3: Build a unified observatory that reads session files directly\ndecision commonChoice: 0\ndecision myChoice: 2\ndecision reasoning: Billing shows cost, not behavior. Custom logging requires modifying each tool. Rasad sits outside, reads session files directly, gives one dashboard with replay, grading, and cost tracking across every AI tool.\nvs mine title: Rasad\nvs mine bullets 1: Multi-tool: Claude Code + Gogaa + Codex in one view\nvs mine bullets 2: Action-level X-Ray replay\nvs mine bullets 3: Session quality grading (A-F)\nvs mine bullets 4: 100% local, data never leaves your machine\nvs standard title: API billing dashboards\nvs standard bullets 1: Single provider, no cross-tool view\nvs standard bullets 2: Cost only, no behavioral analysis\nvs standard bullets 3: No replay or action-level visibility\nvs standard bullets 4: Data on vendor servers"
+    "text": "title: Rasad subtitle: AI Session Observatory for Developers oneLiner: 656 sessions analyzed — every tool call, every file touch, graded A-F. 100% local. cardSummary: 656 sessions analyzed — every tool call, every file touch, graded A-F. Your data never leaves your machine. impact: The observability layer for AI-assisted development. 656 sessions across 4 tools, 38K messages, 14K tool calls — every action replayed, every session graded A-F. Found that routine tasks on Opus cost 18x more than Sonnet with no quality difference. 100% local, zero outbound requests. problem: AI coding assistants"
   },
   {
-    "id": "project-command-center",
+    "id": "project-rasad-summary-2",
+    "project": "rasad",
+    "category": "project",
+    "tags": [
+      "rasad",
+      "Rasad",
+      "Developer Tool / CLI + Web",
+      "summary"
+    ],
+    "text": "are black boxes. You don't know how many tokens were burned, whether context was lost mid-session, or if that $87 session could have been three $8 sessions. Zero observability for a major engineering budget line. solution: A local-first CLI + web dashboard that ingests session data from multiple AI tools. SQLite with FTS5 handles 700MB+ with streaming parsers. X-Ray replays sessions action-by-action. Quality grading scores A-F. Model comparison shows cost per session by model. Everything on localhost, zero outbound requests."
+  },
+  {
+    "id": "project-rasad-architecture-1",
+    "project": "rasad",
+    "category": "project",
+    "tags": [
+      "rasad",
+      "Rasad",
+      "Developer Tool / CLI + Web",
+      "architecture"
+    ],
+    "text": "architecture 1: Data Adapters (Claude Code, Gogaa, Codex CLI) architecture 2: SQLite (WAL mode, FTS5 full-text search) architecture 3: Streaming Parsers (700MB+ without memory overflow) architecture 4: Fastify API (localhost, WebSocket live updates) architecture 5: React Dashboard (15+ views, Recharts) architecture 6: React Ink TUI (real-time monitoring, alerts) architecture 7: Quality Scoring Engine (A-F grading) features 1: X-Ray: action-by-action session replay with phase labels and timing features 2: Session Quality grading (A-F) based on efficiency, cost, and self-correction features 3:"
+  },
+  {
+    "id": "project-rasad-architecture-2",
+    "project": "rasad",
+    "category": "project",
+    "tags": [
+      "rasad",
+      "Rasad",
+      "Developer Tool / CLI + Web",
+      "architecture"
+    ],
+    "text": "Model comparison: cost per session by model, head-to-head analysis features 4: Full-text search across 38K+ messages with SQLite FTS5 features 5: 100% local — zero outbound network requests, data never leaves your machine stack 1: TypeScript stack 2: SQLite stack 3: Fastify stack 4: React 19 stack 5: Vite stack 6: Recharts stack 7: React Ink"
+  },
+  {
+    "id": "project-rasad-decisions-1",
+    "project": "rasad",
+    "category": "project",
+    "tags": [
+      "rasad",
+      "Rasad",
+      "Developer Tool / CLI + Web",
+      "decisions"
+    ],
+    "text": "techDecisions 1 title: SQLite over Postgres for a local tool techDecisions 1 description: No database process, no connection strings. WAL mode gives concurrent reads/writes. FTS5 gives full-text search. The whole DB is one file at ~/.rasad/rasad.db. techDecisions 2 title: Streaming parsers for ingestion techDecisions 2 description: Claude Code session files can reach hundreds of MB. Line-by-line streaming never holds more than one line in memory. techDecisions 3 title: Dual interface: web + terminal techDecisions 3 description: Dashboard for rich visualizations, TUI for real-time monitoring"
+  },
+  {
+    "id": "project-rasad-decisions-2",
+    "project": "rasad",
+    "category": "project",
+    "tags": [
+      "rasad",
+      "Rasad",
+      "Developer Tool / CLI + Web",
+      "decisions"
+    ],
+    "text": "without leaving the terminal. Same Fastify API backs both. decision scenario: You're spending $500+/day on AI tools with zero visibility into what the AI is doing or whether sessions are efficient. decision question: How do you get observability? decision options 1: Check API billing dashboards decision options 2: Build custom logging into each tool decision options 3: Build a unified observatory that reads session files directly decision commonChoice: 0 decision myChoice: 2 decision reasoning: Billing shows cost, not behavior. Custom logging requires modifying each tool. Rasad sits outside,"
+  },
+  {
+    "id": "project-rasad-decisions-3",
+    "project": "rasad",
+    "category": "project",
+    "tags": [
+      "rasad",
+      "Rasad",
+      "Developer Tool / CLI + Web",
+      "decisions"
+    ],
+    "text": "reads session files directly, gives one dashboard with replay, grading, and cost tracking across every AI tool. comparison mine title: Rasad comparison mine bullets 1: Multi-tool: Claude Code + Gogaa + Codex in one view comparison mine bullets 2: Action-level X-Ray replay comparison mine bullets 3: Session quality grading (A-F) comparison mine bullets 4: 100% local, data never leaves your machine comparison standard title: API billing dashboards comparison standard bullets 1: Single provider, no cross-tool view comparison standard bullets 2: Cost only, no behavioral analysis comparison standard bullets 3: No replay or action-level visibility comparison standard bullets 4: Data on vendor servers"
+  },
+  {
+    "id": "project-rasad-results",
+    "project": "rasad",
+    "category": "project",
+    "tags": [
+      "rasad",
+      "Rasad",
+      "Developer Tool / CLI + Web",
+      "results"
+    ],
+    "text": "results 1: 656 sessions synced from 4 AI tools in one dashboard results 2: 38K messages, 14K tool calls indexed with full-text search results 3: First sync: 6.2s for 700MB+. Incremental: <1s results 4: Zero outbound requests — 100% local-first measuredImpact before value: $0 measuredImpact before context: visibility into AI tool behavior and cost measuredImpact after value: 656 measuredImpact after context: sessions analyzed with action-level replay measuredImpact highlights 1 n: 38K measuredImpact highlights 1 l: messages indexed measuredImpact highlights 2 n: 14K measuredImpact highlights 2 l: tool calls tracked measuredImpact highlights 3 n: 6.2s measuredImpact highlights 3 l: first sync (700MB)"
+  },
+  {
+    "id": "project-command-center-summary",
     "project": "command-center",
     "category": "project",
     "tags": [
       "command-center",
       "Command Center",
-      "Developer Tool"
+      "Developer Tool",
+      "summary"
     ],
-    "text": "slug: command-center\nplainSummary: One screen for email, calendar and tasks, with AI sorting what matters first. Cuts inbox time by 60%.\ntitle: Command Center\nsubtitle: Personal AI Operations PWA\ntype: Developer Tool\nimpact: A single interface unifying email, calendar, and tasks with AI triage. Dual AI backends (Claude + Gemini), real Gmail/Calendar integration, installable as PWA.\nproblem: Developers juggle Gmail, Calendar, Notion, and separate dashboards per client. Context switching kills productivity. No single tool combines AI triage with real integrations.\nsolution: A PWA that pulls Gmail and Calendar via API, applies dual-AI triage (Claude for reasoning, Gemini for classification), and surfaces everything in one dashboard with real-time Supabase sync across devices.\narchitecture 1: PWA Shell (React + TypeScript)\narchitecture 2: Dual AI: Claude + Gemini\narchitecture 3: Gmail API + Calendar API\narchitecture 4: Supabase (Postgres, Auth, Realtime)\narchitecture 5: Task Board + AI Triage\nfeatures 1: Unified inbox with AI-powered intent classification and priority scoring\nfeatures 2: Dual AI: Claude for complex reasoning, Gemini for fast classification\nfeatures 3: Calendar integration with conflict detection\nfeatures 4: PWA: installable on desktop and mobile, works offline\nfeatures 5: Real-time sync across devices via Supabase\ntechDecisions 1 title: Dual AI backends\ntechDecisions 1 description: Claude handles complex email reasoning. Gemini handles fast classification. No vendor lock-in, plays to each model's strengths.\ntechDecisions 2 title: PWA over native app\ntechDecisions 2 description: Single codebase serves web, iOS, Android. Service workers enable offline and push notifications. No App Store approval needed.\nstack 1: React\nstack 2: TypeScript\nstack 3: Anthropic SDK\nstack 4: Google Gemini\nstack 5: Supabase\nstack 6: Gmail API\nstack 7: PWA\nresults 1: Replaces 4+ separate tools in daily workflow\nresults 2: AI triage reduces inbox processing by 60%\nresults 3: Installable on desktop and mobile with offline support"
+    "text": "title: Command Center subtitle: Personal AI Operations PWA plainSummary: One screen for email, calendar and tasks, with AI sorting what matters first. Cuts inbox time by 60%. impact: A single interface unifying email, calendar, and tasks with AI triage. Dual AI backends (Claude + Gemini), real Gmail/Calendar integration, installable as PWA. problem: Developers juggle Gmail, Calendar, Notion, and separate dashboards per client. Context switching kills productivity. No single tool combines AI triage with real integrations. solution: A PWA that pulls Gmail and Calendar via API, applies dual-AI triage (Claude for reasoning, Gemini for classification), and surfaces everything in one dashboard with real-time Supabase sync across devices."
   },
   {
-    "id": "project-gluten-free",
+    "id": "project-command-center-architecture",
+    "project": "command-center",
+    "category": "project",
+    "tags": [
+      "command-center",
+      "Command Center",
+      "Developer Tool",
+      "architecture"
+    ],
+    "text": "architecture 1: PWA Shell (React + TypeScript) architecture 2: Dual AI: Claude + Gemini architecture 3: Gmail API + Calendar API architecture 4: Supabase (Postgres, Auth, Realtime) architecture 5: Task Board + AI Triage features 1: Unified inbox with AI-powered intent classification and priority scoring features 2: Dual AI: Claude for complex reasoning, Gemini for fast classification features 3: Calendar integration with conflict detection features 4: PWA: installable on desktop and mobile, works offline features 5: Real-time sync across devices via Supabase stack 1: React stack 2: TypeScript stack 3: Anthropic SDK stack 4: Google Gemini stack 5: Supabase stack 6: Gmail API stack 7: PWA"
+  },
+  {
+    "id": "project-command-center-decisions",
+    "project": "command-center",
+    "category": "project",
+    "tags": [
+      "command-center",
+      "Command Center",
+      "Developer Tool",
+      "decisions"
+    ],
+    "text": "techDecisions 1 title: Dual AI backends techDecisions 1 description: Claude handles complex email reasoning. Gemini handles fast classification. No vendor lock-in, plays to each model's strengths. techDecisions 2 title: PWA over native app techDecisions 2 description: Single codebase serves web, iOS, Android. Service workers enable offline and push notifications. No App Store approval needed."
+  },
+  {
+    "id": "project-command-center-results",
+    "project": "command-center",
+    "category": "project",
+    "tags": [
+      "command-center",
+      "Command Center",
+      "Developer Tool",
+      "results"
+    ],
+    "text": "results 1: Replaces 4+ separate tools in daily workflow results 2: AI triage reduces inbox processing by 60% results 3: Installable on desktop and mobile with offline support"
+  },
+  {
+    "id": "project-gluten-free-summary",
     "project": "gluten-free",
     "category": "project",
     "tags": [
       "gluten-free",
       "Gluten-Free Deals & Dining",
-      "Web + iOS + Android"
+      "Web + iOS + Android",
+      "summary"
     ],
-    "text": "slug: gluten-free\nplainSummary: A phone and web app that finds gluten-free deals from 40+ shops, nearby restaurants, and recipes.\ntitle: Gluten-Free Deals & Dining\nsubtitle: Cross-Platform Consumer App\ntype: Web + iOS + Android\nimpact: Cross-platform app aggregating deals from 40+ retailers, finding nearby restaurants, and generating recipes — powered by LLM-generated search queries.\nproblem: Gluten-free consumers search scattered retailer sites for deals, have no way to find nearby safe restaurants, and lack reliable recipe sources. Existing apps cover one aspect, not all three.\nsolution: An LLM generates 200+ targeted search queries per category (brands, retailers, products), concurrent scrapers aggregate deals, GPS finds nearby restaurants, and AI generates personalized recipes. Cross-platform via React Native + Next.js.\narchitecture 1: LLM Query Generator (200+ targeted queries)\narchitecture 2: Concurrent Scraping (SerpAPI + Tavily)\narchitecture 3: Deduplication & Relevance Scoring\narchitecture 4: GPS Restaurant Finder (Google Maps)\narchitecture 5: AI Recipe Generator\narchitecture 6: Cross-platform UI (React Native + Next.js)\nfeatures 1: LLM-generated search queries covering 40+ retailers and 30+ brands dynamically\nfeatures 2: Concurrent dual-API scraping with deduplication and freshness filtering\nfeatures 3: GPS-based restaurant finder with allergy-safe filtering\nfeatures 4: AI recipe generation with nutrition facts and substitution tips\nfeatures 5: Unified experience across Web, iOS, and Android\ntechDecisions 1 title: LLM query generation over hardcoded searches\ntechDecisions 1 description: The LLM generates 200+ targeted queries dynamically. Covers new brands and retailers without code changes.\ntechDecisions 2 title: React Native + Next.js shared codebase\ntechDecisions 2 description: One team ships to three platforms with shared TypeScript business logic.\nstack 1: React Native\nstack 2: Next.js\nstack 3: Python\nstack 4: OpenAI\nstack 5: Firebase\nstack 6: Google Maps\nstack 7: SerpAPI\nresults 1: Aggregates deals from 40+ retailers in real time\nresults 2: 200+ AI-generated queries per category\nresults 3: Cross-platform: Web, iOS, Android from shared codebase"
+    "text": "title: Gluten-Free Deals & Dining subtitle: Cross-Platform Consumer App plainSummary: A phone and web app that finds gluten-free deals from 40+ shops, nearby restaurants, and recipes. impact: Cross-platform app aggregating deals from 40+ retailers, finding nearby restaurants, and generating recipes — powered by LLM-generated search queries. problem: Gluten-free consumers search scattered retailer sites for deals, have no way to find nearby safe restaurants, and lack reliable recipe sources. Existing apps cover one aspect, not all three. solution: An LLM generates 200+ targeted search queries per category (brands, retailers, products), concurrent scrapers aggregate deals, GPS finds nearby restaurants, and AI generates personalized recipes. Cross-platform via React Native + Next.js."
   },
   {
-    "id": "project-dev-env",
+    "id": "project-gluten-free-architecture-1",
+    "project": "gluten-free",
+    "category": "project",
+    "tags": [
+      "gluten-free",
+      "Gluten-Free Deals & Dining",
+      "Web + iOS + Android",
+      "architecture"
+    ],
+    "text": "architecture 1: LLM Query Generator (200+ targeted queries) architecture 2: Concurrent Scraping (SerpAPI + Tavily) architecture 3: Deduplication & Relevance Scoring architecture 4: GPS Restaurant Finder (Google Maps) architecture 5: AI Recipe Generator architecture 6: Cross-platform UI (React Native + Next.js) features 1: LLM-generated search queries covering 40+ retailers and 30+ brands dynamically features 2: Concurrent dual-API scraping with deduplication and freshness filtering features 3: GPS-based restaurant finder with allergy-safe filtering features 4: AI recipe generation with"
+  },
+  {
+    "id": "project-gluten-free-architecture-2",
+    "project": "gluten-free",
+    "category": "project",
+    "tags": [
+      "gluten-free",
+      "Gluten-Free Deals & Dining",
+      "Web + iOS + Android",
+      "architecture"
+    ],
+    "text": "nutrition facts and substitution tips features 5: Unified experience across Web, iOS, and Android stack 1: React Native stack 2: Next.js stack 3: Python stack 4: OpenAI stack 5: Firebase stack 6: Google Maps stack 7: SerpAPI"
+  },
+  {
+    "id": "project-gluten-free-decisions",
+    "project": "gluten-free",
+    "category": "project",
+    "tags": [
+      "gluten-free",
+      "Gluten-Free Deals & Dining",
+      "Web + iOS + Android",
+      "decisions"
+    ],
+    "text": "techDecisions 1 title: LLM query generation over hardcoded searches techDecisions 1 description: The LLM generates 200+ targeted queries dynamically. Covers new brands and retailers without code changes. techDecisions 2 title: React Native + Next.js shared codebase techDecisions 2 description: One team ships to three platforms with shared TypeScript business logic."
+  },
+  {
+    "id": "project-gluten-free-results",
+    "project": "gluten-free",
+    "category": "project",
+    "tags": [
+      "gluten-free",
+      "Gluten-Free Deals & Dining",
+      "Web + iOS + Android",
+      "results"
+    ],
+    "text": "results 1: Aggregates deals from 40+ retailers in real time results 2: 200+ AI-generated queries per category results 3: Cross-platform: Web, iOS, Android from shared codebase"
+  },
+  {
+    "id": "project-dev-env-summary-1",
     "project": "dev-env",
     "category": "project",
     "tags": [
       "dev-env",
       "Portable Dev Environment",
-      "Developer Infrastructure"
+      "Developer Infrastructure",
+      "summary"
     ],
-    "text": "slug: dev-env\nplainSummary: A ready-made work setup that takes a new developer from zero to their first contribution in 10 minutes.\ntitle: Portable Dev Environment\nsubtitle: Containerized Full-Stack Workspace\ntype: Developer Infrastructure\nimpact: One-command developer onboarding in 10 minutes. Docker container with full toolchain, AI coding assistant integration, and WISC context engineering that cut token costs by 84%.\nproblem: Dev environments are fragile — different Node versions, missing CLIs, hours of setup. Add AI tooling: Claude Code was burning 72KB of context (35-40K tokens) before a single prompt.\nsolution: A Docker container packaging the full toolchain (Node, Python, Deno, Playwright, 10+ CLIs) with WISC context engineering: lazy-loaded skills, path-scoped rules, compressed agent definitions. 72KB context down to 11.7KB, all capabilities preserved.\narchitecture 1: Dockerfile (multi-layer, ARM/x86)\narchitecture 2: Docker Compose (dev + Postgres + Redis)\narchitecture 3: Volume Mounts (code, SSH, secrets)\narchitecture 4: Shell Environment (zsh + oh-my-zsh)\narchitecture 5: Claude Code Integration (WISC-optimized)\nfeatures 1: ARM + x86 architecture-aware builds\nfeatures 2: Full shell environment with Powerlevel10k, autosuggestions, syntax highlighting\nfeatures 3: Claude Code integration with WISC-optimized lazy loading\nfeatures 4: Playwright with Chromium for headless E2E inside the container\nfeatures 5: Secrets mounted at runtime, never baked into images\ntechDecisions 1 title: Volume mounts over baked-in code\ntechDecisions 1 description: Code lives on host, changes sync instantly. Deleting a container never loses work.\ntechDecisions 2 title: WISC context engineering\ntechDecisions 2 description: Write decisions to files, Isolate tasks per conversation, Select context by path, Compress agent definitions. 72KB → 11.7KB (84% reduction), zero capability loss.\nstack 1: Docker\nstack 2: Docker Compose\nstack 3: Ubuntu\nstack 4: Node.js\nstack 5: Playwright\nstack 6: PostgreSQL\nstack 7: Redis\nresults 1: 10 minutes from zero to first commit\nresults 2: Identical environment across Mac, Linux VPS, and phone SSH\nresults 3: WISC: 72KB → 11.7KB context (84% reduction)"
+    "text": "title: Portable Dev Environment subtitle: Containerized Full-Stack Workspace plainSummary: A ready-made work setup that takes a new developer from zero to their first contribution in 10 minutes. impact: One-command developer onboarding in 10 minutes. Docker container with full toolchain, AI coding assistant integration, and WISC context engineering that cut token costs by 84%. problem: Dev environments are fragile — different Node versions, missing CLIs, hours of setup. Add AI tooling: Claude Code was burning 72KB of context (35-40K tokens) before a single prompt. solution: A Docker container"
   },
   {
-    "id": "project-agent-orchestrator",
+    "id": "project-dev-env-summary-2",
+    "project": "dev-env",
+    "category": "project",
+    "tags": [
+      "dev-env",
+      "Portable Dev Environment",
+      "Developer Infrastructure",
+      "summary"
+    ],
+    "text": "packaging the full toolchain (Node, Python, Deno, Playwright, 10+ CLIs) with WISC context engineering: lazy-loaded skills, path-scoped rules, compressed agent definitions. 72KB context down to 11.7KB, all capabilities preserved."
+  },
+  {
+    "id": "project-dev-env-architecture",
+    "project": "dev-env",
+    "category": "project",
+    "tags": [
+      "dev-env",
+      "Portable Dev Environment",
+      "Developer Infrastructure",
+      "architecture"
+    ],
+    "text": "architecture 1: Dockerfile (multi-layer, ARM/x86) architecture 2: Docker Compose (dev + Postgres + Redis) architecture 3: Volume Mounts (code, SSH, secrets) architecture 4: Shell Environment (zsh + oh-my-zsh) architecture 5: Claude Code Integration (WISC-optimized) features 1: ARM + x86 architecture-aware builds features 2: Full shell environment with Powerlevel10k, autosuggestions, syntax highlighting features 3: Claude Code integration with WISC-optimized lazy loading features 4: Playwright with Chromium for headless E2E inside the container features 5: Secrets mounted at runtime, never baked into images stack 1: Docker stack 2: Docker Compose stack 3: Ubuntu stack 4: Node.js stack 5: Playwright stack 6: PostgreSQL stack 7: Redis"
+  },
+  {
+    "id": "project-dev-env-decisions",
+    "project": "dev-env",
+    "category": "project",
+    "tags": [
+      "dev-env",
+      "Portable Dev Environment",
+      "Developer Infrastructure",
+      "decisions"
+    ],
+    "text": "techDecisions 1 title: Volume mounts over baked-in code techDecisions 1 description: Code lives on host, changes sync instantly. Deleting a container never loses work. techDecisions 2 title: WISC context engineering techDecisions 2 description: Write decisions to files, Isolate tasks per conversation, Select context by path, Compress agent definitions. 72KB → 11.7KB (84% reduction), zero capability loss."
+  },
+  {
+    "id": "project-dev-env-results",
+    "project": "dev-env",
+    "category": "project",
+    "tags": [
+      "dev-env",
+      "Portable Dev Environment",
+      "Developer Infrastructure",
+      "results"
+    ],
+    "text": "results 1: 10 minutes from zero to first commit results 2: Identical environment across Mac, Linux VPS, and phone SSH results 3: WISC: 72KB → 11.7KB context (84% reduction)"
+  },
+  {
+    "id": "project-agent-orchestrator-summary-1",
     "project": "agent-orchestrator",
     "category": "project",
     "tags": [
       "agent-orchestrator",
       "AI Agent Orchestrator",
-      "AI Framework"
+      "AI Framework",
+      "summary"
     ],
-    "text": "slug: agent-orchestrator\nplainSummary: A team of AI workers: one plans the job, others do it, and one checks the result before it is accepted.\ntitle: AI Agent Orchestrator\nsubtitle: CAMEL Multi-Agent Framework\ntype: AI Framework\nimpact: A production-grade multi-agent framework implementing CAMEL: Planner decomposes goals, Workers execute with tools, Validator runs iterative critique loops. 18 files, clean architecture, fully open-source.\nproblem: Most agent frameworks are either toy demos or massive dependency trees that obscure what's happening. Needed something small enough to understand completely but production-grade enough for real tasks.\nsolution: Four agent roles (Planner, Worker, Validator, Orchestrator), a formal task state machine, and CAMEL-inspired iterative critique. The Validator generates structured feedback that gets injected into the Worker's next attempt. Error patterns persist in memory for cross-task learning.\narchitecture 1: Orchestrator (DAG-based task execution)\narchitecture 2: Planner Agent (goal decomposition)\narchitecture 3: Worker Agent (tool-use loop)\narchitecture 4: Validator Agent (iterative critique, 3 rounds)\narchitecture 5: Task State Machine (6 states)\narchitecture 6: Memory Store (error pattern persistence)\nfeatures 1: Iterative CAMEL critique: structured feedback loops, up to 3 rounds per task\nfeatures 2: Cross-task learning: error patterns persist in memory\nfeatures 3: Task DAG with dependency resolution and parallel execution\nfeatures 4: Human-in-the-loop approval gates with state-based pausing\nfeatures 5: Multi-provider: Claude and OpenAI adapters\ntechDecisions 1 title: Iterative critique over single-pass validation\ntechDecisions 1 description: Validation feedback pipes directly into the Worker's next attempt. First attempt is often 70% right; three rounds get it to 95%.\ntechDecisions 2 title: 18 files, zero unnecessary abstraction\ntechDecisions 2 description: Every file has one clear responsibility. No DI framework, no plugin system, no config format. Readable in an hour.\nstack 1: TypeScript\nstack 2: Node.js\nstack 3: Anthropic SDK\nstack 4: OpenAI SDK\nstack 5: Zod\nresults 1: Clean 18-file architecture, fully open-source\nresults 2: CAMEL critique loop with iterative refinement\nresults 3: Cross-task learning via error pattern memory\nresults 4: State machine prevents invalid task transitions"
+    "text": "title: AI Agent Orchestrator subtitle: CAMEL Multi-Agent Framework plainSummary: A team of AI workers: one plans the job, others do it, and one checks the result before it is accepted. impact: A production-grade multi-agent framework implementing CAMEL: Planner decomposes goals, Workers execute with tools, Validator runs iterative critique loops. 18 files, clean architecture, fully open-source. problem: Most agent frameworks are either toy demos or massive dependency trees that obscure what's happening. Needed something small enough to understand completely but production-grade enough for real"
   },
   {
-    "id": "project-agent-system",
+    "id": "project-agent-orchestrator-summary-2",
+    "project": "agent-orchestrator",
+    "category": "project",
+    "tags": [
+      "agent-orchestrator",
+      "AI Agent Orchestrator",
+      "AI Framework",
+      "summary"
+    ],
+    "text": "tasks. solution: Four agent roles (Planner, Worker, Validator, Orchestrator), a formal task state machine, and CAMEL-inspired iterative critique. The Validator generates structured feedback that gets injected into the Worker's next attempt. Error patterns persist in memory for cross-task learning."
+  },
+  {
+    "id": "project-agent-orchestrator-architecture",
+    "project": "agent-orchestrator",
+    "category": "project",
+    "tags": [
+      "agent-orchestrator",
+      "AI Agent Orchestrator",
+      "AI Framework",
+      "architecture"
+    ],
+    "text": "architecture 1: Orchestrator (DAG-based task execution) architecture 2: Planner Agent (goal decomposition) architecture 3: Worker Agent (tool-use loop) architecture 4: Validator Agent (iterative critique, 3 rounds) architecture 5: Task State Machine (6 states) architecture 6: Memory Store (error pattern persistence) features 1: Iterative CAMEL critique: structured feedback loops, up to 3 rounds per task features 2: Cross-task learning: error patterns persist in memory features 3: Task DAG with dependency resolution and parallel execution features 4: Human-in-the-loop approval gates with state-based pausing features 5: Multi-provider: Claude and OpenAI adapters stack 1: TypeScript stack 2: Node.js stack 3: Anthropic SDK stack 4: OpenAI SDK stack 5: Zod"
+  },
+  {
+    "id": "project-agent-orchestrator-decisions",
+    "project": "agent-orchestrator",
+    "category": "project",
+    "tags": [
+      "agent-orchestrator",
+      "AI Agent Orchestrator",
+      "AI Framework",
+      "decisions"
+    ],
+    "text": "techDecisions 1 title: Iterative critique over single-pass validation techDecisions 1 description: Validation feedback pipes directly into the Worker's next attempt. First attempt is often 70% right; three rounds get it to 95%. techDecisions 2 title: 18 files, zero unnecessary abstraction techDecisions 2 description: Every file has one clear responsibility. No DI framework, no plugin system, no config format. Readable in an hour."
+  },
+  {
+    "id": "project-agent-orchestrator-results",
+    "project": "agent-orchestrator",
+    "category": "project",
+    "tags": [
+      "agent-orchestrator",
+      "AI Agent Orchestrator",
+      "AI Framework",
+      "results"
+    ],
+    "text": "results 1: Clean 18-file architecture, fully open-source results 2: CAMEL critique loop with iterative refinement results 3: Cross-task learning via error pattern memory results 4: State machine prevents invalid task transitions"
+  },
+  {
+    "id": "project-agent-system-summary",
     "project": "agent-system",
     "category": "project",
     "tags": [
       "agent-system",
       "AI Agent System",
-      "AI Agents"
+      "AI Agents",
+      "summary"
     ],
-    "text": "slug: agent-system\nplainSummary: Five AI assistants that handle job search, research, code review, proposals and freelance admin on their own, at $0 a month to run.\ntitle: AI Agent System\nsubtitle: 5 Purpose-Built AI Agents\ntype: AI Agents\nfeatured: true\nimpact: 5 autonomous agents (job search, research, code review, proposals, freelance automation) with real tool-calling, deployed on HuggingFace Spaces at $0/month.\nproblem: Needed AI that could actually DO things — search jobs, research tech, review PRs, draft proposals — each requiring different tools and domain knowledge. Running separate tools was slow.\nsolution: A multi-agent system where each agent has a specific purpose, custom tools (web search, GitHub API, URL fetcher), and tailored prompts. Deployed on HuggingFace Spaces with a portfolio-ready web UI.\narchitecture 1: FastAPI Server (5 agent endpoints)\narchitecture 2: Tool-Calling Engine\narchitecture 3: Shared Tools (Tavily, URL fetcher, GitHub API)\narchitecture 4: Agent Definitions (system prompt + tools per use case)\narchitecture 5: Portfolio Web UI\nfeatures 1: Job Search Agent: multi-board search, fit evaluation, cover letter drafting\nfeatures 2: Research Agent: multi-source research with cross-referenced reports\nfeatures 3: Code Review Agent: fetches GitHub PR diffs, analyzes bugs and security\nfeatures 4: Upwork Proposal Agent: reads postings, matches skills, drafts proposals\nfeatures 5: n8n Webhook Agent: receives freelance messages, drafts replies\ntechDecisions 1 title: Groq for inference\ntechDecisions 1 description: Free tier, 300 tokens/sec, native tool-calling. Zero inference cost.\ntechDecisions 2 title: Agent-per-purpose over general assistant\ntechDecisions 2 description: Each agent has a focused prompt and curated tool set. Scoping prevents confusion and hallucination.\nstack 1: Python\nstack 2: FastAPI\nstack 3: Groq\nstack 4: Tavily\nstack 5: GitHub API\nstack 6: HuggingFace Spaces\nstack 7: Docker\nresults 1: 5 autonomous agents deployed and operational\nresults 2: 1-8 tool calls per request, fully automated\nresults 3: $0/month hosting on free tiers\nresults 4: API-first: callable from n8n, PWA, or any HTTP client"
+    "text": "title: AI Agent System subtitle: 5 Purpose-Built AI Agents plainSummary: Five AI assistants that handle job search, research, code review, proposals and freelance admin on their own, at $0 a month to run. impact: 5 autonomous agents (job search, research, code review, proposals, freelance automation) with real tool-calling, deployed on HuggingFace Spaces at $0/month. problem: Needed AI that could actually DO things — search jobs, research tech, review PRs, draft proposals — each requiring different tools and domain knowledge. Running separate tools was slow. solution: A multi-agent system where each agent has a specific purpose, custom tools (web search, GitHub API, URL fetcher), and tailored prompts. Deployed on HuggingFace Spaces with a portfolio-ready web UI."
+  },
+  {
+    "id": "project-agent-system-architecture",
+    "project": "agent-system",
+    "category": "project",
+    "tags": [
+      "agent-system",
+      "AI Agent System",
+      "AI Agents",
+      "architecture"
+    ],
+    "text": "architecture 1: FastAPI Server (5 agent endpoints) architecture 2: Tool-Calling Engine architecture 3: Shared Tools (Tavily, URL fetcher, GitHub API) architecture 4: Agent Definitions (system prompt + tools per use case) architecture 5: Portfolio Web UI features 1: Job Search Agent: multi-board search, fit evaluation, cover letter drafting features 2: Research Agent: multi-source research with cross-referenced reports features 3: Code Review Agent: fetches GitHub PR diffs, analyzes bugs and security features 4: Upwork Proposal Agent: reads postings, matches skills, drafts proposals features 5: n8n Webhook Agent: receives freelance messages, drafts replies stack 1: Python stack 2: FastAPI stack 3: Groq stack 4: Tavily stack 5: GitHub API stack 6: HuggingFace Spaces stack 7: Docker"
+  },
+  {
+    "id": "project-agent-system-decisions",
+    "project": "agent-system",
+    "category": "project",
+    "tags": [
+      "agent-system",
+      "AI Agent System",
+      "AI Agents",
+      "decisions"
+    ],
+    "text": "techDecisions 1 title: Groq for inference techDecisions 1 description: Free tier, 300 tokens/sec, native tool-calling. Zero inference cost. techDecisions 2 title: Agent-per-purpose over general assistant techDecisions 2 description: Each agent has a focused prompt and curated tool set. Scoping prevents confusion and hallucination."
+  },
+  {
+    "id": "project-agent-system-results",
+    "project": "agent-system",
+    "category": "project",
+    "tags": [
+      "agent-system",
+      "AI Agent System",
+      "AI Agents",
+      "results"
+    ],
+    "text": "results 1: 5 autonomous agents deployed and operational results 2: 1-8 tool calls per request, fully automated results 3: $0/month hosting on free tiers results 4: API-first: callable from n8n, PWA, or any HTTP client"
   },
   {
     "id": "story-openevent",

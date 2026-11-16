@@ -17,9 +17,14 @@ interface KnowledgeChunk {
   tags: string[];
   text: string;
 }
+
+const TARGET_CHUNK_SIZE = 600;
+const MAX_CHUNK_SIZE = 800;
+
 function cleanText(value: string): string {
   return value
     .replace(/https?:\/\/[^\s]+|www\.[^\s]+/gi, "")
+    .replace(/\s+/g, " ")
     .trim();
 }
 
@@ -29,12 +34,15 @@ function slugify(value: string): string {
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-|-$/g, "");
 }
-function flatten(value: unknown, prefix = ""): string[] {
-  if (value === null || value === undefined) {
-    return [];
-  }
 
-  if (typeof value === "string" || typeof value === "number" || typeof value === "boolean") {
+function flatten(value: unknown, prefix = ""): string[] {
+  if (value === null || value === undefined) return [];
+
+  if (
+    typeof value === "string" ||
+    typeof value === "number" ||
+    typeof value === "boolean"
+  ) {
     const text = cleanText(String(value));
     return text ? [`${prefix ? `${prefix}: ` : ""}${text}`] : [];
   }
@@ -54,6 +62,29 @@ function flatten(value: unknown, prefix = ""): string[] {
   return [];
 }
 
+function splitText(text: string): string[] {
+  const normalized = cleanText(text);
+  if (!normalized) return [];
+
+  const parts: string[] = [];
+  let remaining = normalized;
+
+  while (remaining.length > MAX_CHUNK_SIZE) {
+    let splitAt = remaining.lastIndexOf(" ", TARGET_CHUNK_SIZE);
+
+    if (splitAt < 300) {
+      splitAt = TARGET_CHUNK_SIZE;
+    }
+
+    parts.push(remaining.slice(0, splitAt).trim());
+    remaining = remaining.slice(splitAt).trim();
+  }
+
+  if (remaining) parts.push(remaining);
+
+  return parts;
+}
+
 function makeChunk(
   id: string,
   project: string,
@@ -70,21 +101,26 @@ function makeChunk(
   };
 }
 
-function extractMetric(
+function makeSectionChunks(
+  project: (typeof projects)[number],
+  section: string,
   source: unknown,
-  pattern: RegExp,
-  label: string,
-): number {
-  const text = JSON.stringify(source);
-  const match = text.match(pattern);
+): KnowledgeChunk[] {
+  const text = flatten(source).join("\n");
+  const parts = splitText(text);
 
-  if (!match?.[1]) {
-    throw new Error(
-      `Could not find the OpenEvent ${label} value in projects.ts.`,
-    );
-  }
-
-  return Number(match[1].replace(/,/g, ""));
+  return parts.map((part, index) => ({
+    id: `project-${project.slug}-${section}${parts.length > 1 ? `-${index + 1}` : ""}`,
+    project: project.slug,
+    category: "project",
+    tags: [
+      project.slug,
+      project.title,
+      project.type,
+      section,
+    ],
+    text: part,
+  }));
 }
 
 function generateProfileChunks(): KnowledgeChunk[] {
@@ -103,15 +139,42 @@ function generateProfileChunks(): KnowledgeChunk[] {
 }
 
 function generateProjectChunks(): KnowledgeChunk[] {
-  return projects.map((project) =>
-    makeChunk(
-      `project-${project.slug}`,
-      project.slug,
-      "project",
-      [project.slug, project.title, project.type],
-      project,
-    ),
-  );
+  return projects.flatMap((project) => {
+    const summary = {
+      title: project.title,
+      subtitle: project.subtitle,
+      oneLiner: project.oneLiner,
+      cardSummary: project.cardSummary,
+      plainSummary: project.plainSummary,
+      impact: project.impact,
+      problem: project.problem,
+      solution: project.solution,
+    };
+
+    const architecture = {
+      architecture: project.architecture,
+      features: project.features,
+      stack: project.stack,
+    };
+
+    const decisions = {
+      techDecisions: project.techDecisions,
+      decision: project.decision,
+      comparison: project.vs,
+    };
+
+    const results = {
+      results: project.results,
+      measuredImpact: project.measuredImpact,
+    };
+
+    return [
+      ...makeSectionChunks(project, "summary", summary),
+      ...makeSectionChunks(project, "architecture", architecture),
+      ...makeSectionChunks(project, "decisions", decisions),
+      ...makeSectionChunks(project, "results", results),
+    ];
+  });
 }
 
 function generateStoryChunks(): KnowledgeChunk[] {
@@ -124,6 +187,23 @@ function generateStoryChunks(): KnowledgeChunk[] {
       story,
     ),
   );
+}
+
+function extractMetric(
+  source: unknown,
+  pattern: RegExp,
+  label: string,
+): number {
+  const text = JSON.stringify(source);
+  const match = text.match(pattern);
+
+  if (!match?.[1]) {
+    throw new Error(
+      `Could not find the OpenEvent ${label} value in projects.ts.`,
+    );
+  }
+
+  return Number(match[1].replace(/,/g, ""));
 }
 
 function generateCareerChunks(): KnowledgeChunk[] {
@@ -150,8 +230,8 @@ function generateCareerChunks(): KnowledgeChunk[] {
   const chapters = getCareerChapters({ clients, events });
 
   return chapters.map((chapter) =>
-  makeChunk(
-    `career-${slugify(`${chapter.company}-${chapter.title}`)}`,
+    makeChunk(
+      `career-${slugify(`${chapter.company}-${chapter.title}`)}`,
       "career",
       "career",
       ["career", "experience", chapter.company, chapter.title],
@@ -185,17 +265,23 @@ async function buildKnowledgeBase(): Promise<void> {
     throw new Error("Knowledge-base generation produced no chunks.");
   }
 
-  const projectSlugs = projects.map((project) => project.slug);
-
-  for (const slug of projectSlugs) {
+  for (const project of projects) {
     const projectChunks = chunks.filter(
-      (chunk) => chunk.project === slug,
+      (chunk) => chunk.project === project.slug,
     );
 
     if (projectChunks.length === 0) {
       throw new Error(
-        `Project "${slug}" produced zero knowledge chunks.`,
+        `Project "${project.slug}" produced zero knowledge chunks.`,
       );
+    }
+
+    for (const section of ["summary", "architecture", "decisions", "results"]) {
+      if (!projectChunks.some((chunk) => chunk.tags.includes(section))) {
+        throw new Error(
+          `Project "${project.slug}" is missing its ${section} section.`,
+        );
+      }
     }
   }
 
@@ -231,8 +317,20 @@ async function buildKnowledgeBase(): Promise<void> {
   await writeFile(outputFile, output, "utf8");
 
   console.log("Knowledge base generated successfully.");
-  console.log(`Projects: ${projectSlugs.length}`);
+  console.log(`Projects: ${projects.length}`);
   console.log(`Total chunks: ${chunks.length}`);
+  console.log(
+    `Project chunks: ${chunks.filter((chunk) => chunk.category === "project").length}`,
+  );
+  console.log(
+    `Project chunks over ${MAX_CHUNK_SIZE} characters: ${
+      chunks.filter(
+        (chunk) =>
+          chunk.category === "project" &&
+          chunk.text.length > MAX_CHUNK_SIZE,
+      ).length
+    }`,
+  );
   console.log(`Output: ${outputFile}`);
 }
 

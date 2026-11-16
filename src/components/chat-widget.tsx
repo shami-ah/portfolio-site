@@ -269,9 +269,9 @@ export function ChatWidget(): React.ReactElement {
   }, []);
 
   // Accept pre-filled query from agent bar → open + auto-send (ref avoids declaration order issue)
-const sendRef = useRef<
-  (q: string, currentProject?: string | null) => void
->(() => {});
+  const sendRef = useRef<
+    (q: string, currentProject?: string | null) => void
+  >(() => {});
 
   useEffect(() => {
     if (state === "closed") {
@@ -313,101 +313,102 @@ const sendRef = useRef<
   );
 
  
-const streamAnswer = useCallback(
-  async (
-    query: string,
-    currentProject?: string | null,
-  ): Promise<void> => {
-    setIsThinking(true);
-    setShowFallbackChips(false);
+  const streamAnswer = useCallback(
+    async (
+      query: string,
+      currentProject?: string | null,
+    ): Promise<void> => {
+      setIsThinking(true);
+      setShowFallbackChips(false);
 
-    const id = `a-${Date.now()}`;
-    let answer = "";
-    let actions: KbAction[] | undefined;
-    let sources: Message["sources"];
+      const id = `a-${Date.now()}`;
+      let answer = "";
+      let actions: KbAction[] | undefined;
+      let sources: Message["sources"];
 
-    // Send recent conversation history to the RAG backend.
-    const history = messages
-      .filter(
-        (m) => m.role === "user" || m.role === "assistant",
-      )
-      .slice(-8)
-      .map((m) => ({
-        role: m.role,
-        content: m.content,
-      }));
+      // Send recent conversation history to the RAG backend.
+      const history = messages
+        .filter((m) => m.role === "user" || m.role === "assistant")
+        .slice(-8)
+        .map((m) => ({
+          role: m.role,
+          content: m.content,
+        }));
 
-    try {
-      const res = await fetch(CHAT_API_URL, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
+      try {
+        const res = await fetch(CHAT_API_URL, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            message: query,
+            history,
+            ...(currentProject ? { currentProject } : {}),
+          }),
+        });
+
+        if (!res.ok) {
+          throw new Error(`Chat API failed: ${res.status}`);
+        }
+
+        const data = (await res.json()) as {
+          answer?: string;
+          actions?: KbAction[];
+          sources?: {
+            id: string;
+            category?: string;
+            project?: string | null;
+          }[];
+        };
+
+        if (data.answer?.trim()) {
+          answer = data.answer.trim();
+          actions = data.actions;
+          sources = data.sources;
+        } else {
+          throw new Error("The chat API returned an empty answer.");
+        }
+      } catch (error) {
+        console.error("RAG chat request failed:", error);
+        answer = FALLBACK;
+        setShowFallbackChips(true);
+      }
+
+      setIsThinking(false);
+
+      setMessages((prev) => [
+        ...prev,
+        {
+          id,
+          role: "assistant",
+          content: "",
+          streaming: true,
+          actions,
+          sources,
         },
-       body: JSON.stringify({
-  message: query,
-  history,
-  ...(currentProject ? { currentProject } : {}),
-}),
-      });
+      ]);
 
-      if (!res.ok) {
-        throw new Error(`Chat API failed: ${res.status}`);
-      }
-
-      const data = (await res.json()) as {
-        answer?: string;
-        actions?: KbAction[];
-        sources?: {
-          id: string;
-          category?: string;
-          project?: string | null;
-        }[];
-      };
-
-      if (data.answer?.trim()) {
-       answer = data.answer.trim();
-actions = data.actions;
-sources = data.sources;
-      } else {
-        throw new Error("The chat API returned an empty answer.");
-      }
-    } catch (error) {
-      console.error("RAG chat request failed:", error);
-
-      answer = FALLBACK;
-      setShowFallbackChips(true);
-    }
-
-    setIsThinking(false);
-
-    setMessages((prev) => [
-      ...prev,
-      {
-  id,
-  role: "assistant",
-  content: "",
-  streaming: true,
-  actions,
-  sources,
-},
-    ]);
-
-    await streamWords(id, answer);
-
-    pendingQueriesRef.current.delete(query.toLowerCase());
-  },
-  [streamWords, messages],
-);
+      await streamWords(id, answer);
+      pendingQueriesRef.current.delete(query.toLowerCase());
+    },
+    [streamWords, messages],
+  );
 
 
-  const send = useCallback(
-(q: string, currentProject?: string | null): void => {
+   const send = useCallback(
+    (q: string, currentProject?: string | null): void => {
       const query = q.trim();
       if (!query) return;
-      const userCount = messages.filter((m) => m.role === "user").length + pendingQueriesRef.current.size;
+
+      const userCount =
+        messages.filter((m) => m.role === "user").length +
+        pendingQueriesRef.current.size;
+
       if (userCount >= CHAT_MESSAGE_LIMIT) {
         setMessages((prev) => {
           if (prev.some((m) => m.id === "chat-limit")) return prev;
+
           return [
             ...prev,
             {
@@ -420,43 +421,51 @@ sources = data.sources;
         });
         return;
       }
+
       const key = query.toLowerCase();
       if (pendingQueriesRef.current.has(key)) return;
+
       pendingQueriesRef.current.add(key);
       setShowFallbackChips(false);
-      setMessages((prev) => [...prev, { id: `u-${Date.now()}`, role: "user", content: query }]);
+      setMessages((prev) => [
+        ...prev,
+        { id: `u-${Date.now()}`, role: "user", content: query },
+      ]);
+
       void streamAnswer(query, currentProject);
     },
     [streamAnswer, messages],
   );
 
-  // Keep sendRef in sync for the event listener
+  // Keep sendRef in sync for the event listener.
+   // Keep sendRef in sync for the event listener.
   sendRef.current = send;
 
- useEffect(() => {
-  const handler = (e: Event): void => {
-    const detail = (
-      e as CustomEvent<{
-        query: string;
-        currentProject?: string | null;
-      }>
-    ).detail;
+  // Accept pre-filled query from agent bar — open chat and auto-send.
+  useEffect(() => {
+    const handler = (e: Event): void => {
+      const detail = (
+        e as CustomEvent<{
+          query: string;
+          currentProject?: string | null;
+        }>
+      ).detail;
 
-    if (!detail?.query) return;
+      if (!detail?.query) return;
 
-    setState("open");
+      setState("open");
 
-    setTimeout(() => {
-      sendRef.current(detail.query, detail.currentProject);
-    }, 400);
-  };
+      setTimeout(() => {
+        sendRef.current(detail.query, detail.currentProject);
+      }, 400);
+    };
 
-  window.addEventListener("chat-with-query", handler);
+    window.addEventListener("chat-with-query", handler);
 
-  return () => {
-    window.removeEventListener("chat-with-query", handler);
-  };
-}, []);
+    return () => {
+      window.removeEventListener("chat-with-query", handler);
+    };
+  }, []);
 
   const msgCount = messages.filter((m) => m.role === "user").length;
   // Broadcast message count to agent bar badge
@@ -717,13 +726,13 @@ function WidgetMessage({ msg }: { msg: Message }): React.ReactElement {
                 )}
               </p>
             </div>
-           {!msg.streaming && msg.sources && msg.sources.length > 0 && (
-  <SourceChips sources={msg.sources} />
-)}
+               {!msg.streaming && msg.sources && msg.sources.length > 0 && (
+              <SourceChips sources={msg.sources} />
+            )}
 
-{!msg.streaming && msg.actions && msg.actions.length > 0 && (
-  <ActionButtons actions={msg.actions} />
-)}
+            {!msg.streaming && msg.actions && msg.actions.length > 0 && (
+              <ActionButtons actions={msg.actions} />
+            )}
           </div>
         </div>
       )}
