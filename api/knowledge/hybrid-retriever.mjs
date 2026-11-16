@@ -12,6 +12,7 @@ export function retrieveHybrid(
   const topK = options.topK ?? 5;
   const keywordWeight = options.keywordWeight ?? 0.4;
   const semanticWeight = options.semanticWeight ?? 0.6;
+  const currentProject = options.currentProject ?? "";
 
   // Validate the query and knowledge chunks.
   if (
@@ -82,11 +83,21 @@ export function retrieveHybrid(
       ? Math.max(0, cosineSimilarity(queryEmbedding, chunkEmbeddings[index]))
       : 0;
 
-    const combinedScore =
-      (
-        keywordWeight * keywordScore +
-        semanticWeight * semanticScore
-      ) / (keywordWeight + semanticWeight);
+   const baseScore =
+  (
+    keywordWeight * keywordScore +
+    semanticWeight * semanticScore
+  ) / (keywordWeight + semanticWeight);
+
+const normalize = (value = "") =>
+  value.toLowerCase().replace(/[^a-z0-9]/g, "");
+
+const isCurrentProject =
+  currentProject &&
+  normalize(chunk.project) === normalize(currentProject);
+
+const combinedScore =
+  baseScore + (isCurrentProject ? 0.1 : 0);
 
     return {
       ...chunk,

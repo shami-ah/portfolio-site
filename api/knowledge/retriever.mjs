@@ -13,6 +13,7 @@ import { loadEmbeddingIndex } from "./load-index.mjs";
  *   baseUrl?: string,
  *   model?: string,
  *   topK?: number
+ *  currentProject?: string
  * }} options
  */
 export async function retrieveKnowledge(
@@ -21,8 +22,8 @@ export async function retrieveKnowledge(
     provider,
     apiKey,
     baseUrl = "https://integrate.api.nvidia.com/v1",
-    model,
-    topK = 5,
+    topK,
+    currentProject = "",
   } = {},
 ) {
   if (typeof query !== "string" || !query.trim()) {
@@ -34,7 +35,6 @@ export async function retrieveKnowledge(
 
   const index = loadEmbeddingIndex();
 
-  // Use BM25 if real embeddings are not available.
   if (
     index.chunks.length === 0 ||
     index.embeddings.length !== index.chunks.length ||
@@ -45,10 +45,6 @@ export async function retrieveKnowledge(
       results: retrieveBM25(query, allChunks, { topK }),
     };
   }
-
-  // Always use the provider and model that created the stored vectors.
-  const indexProvider = index.provider ?? provider ?? "nvidia";
-  const indexModel = index.model ?? model;
 
   if (provider && index.provider && provider !== index.provider) {
     console.warn(
@@ -61,7 +57,7 @@ export async function retrieveKnowledge(
     };
   }
 
-  if (!indexModel) {
+  if (!index.model) {
     return {
       mode: "bm25",
       results: retrieveBM25(query, allChunks, { topK }),
@@ -70,10 +66,11 @@ export async function retrieveKnowledge(
 
   try {
     const queryEmbedding = await embedQuery(query, {
-      provider: indexProvider,
+      provider: index.provider,
       apiKey,
       baseUrl,
-      model: indexModel,
+      model: index.model,
+      inputType: "query",
     });
 
     if (
@@ -85,8 +82,6 @@ export async function retrieveKnowledge(
       );
     }
 
-    // Every chunk takes part: chunks added after the last build-index run have no
-    // vector yet and compete on keywords only until the index is rebuilt.
     const vectors = new Map(
       index.chunks.map((chunk, i) => [chunk.id, index.embeddings[i]]),
     );
@@ -98,7 +93,7 @@ export async function retrieveKnowledge(
         allChunks,
         queryEmbedding,
         allChunks.map((chunk) => vectors.get(chunk.id) ?? null),
-        { topK },
+        { topK, currentProject },
       ),
     };
   } catch (error) {
