@@ -57,7 +57,7 @@ function loadChatHistory(): Message[] {
 /** Same origin in production (nginx proxies /api to shami-api). For local dev put
  *  NEXT_PUBLIC_CHAT_API_URL=http://localhost:3001/api/chat in .env.local. */
 const CHAT_API_URL =
-  process.env.NEXT_PUBLIC_CHAT_API_URL ?? "http://localhost:3001/api/chat";
+  process.env.NEXT_PUBLIC_CHAT_API_URL ?? "/api/chat";
 
 function saveChatHistory(messages: Message[]): void {
   try {

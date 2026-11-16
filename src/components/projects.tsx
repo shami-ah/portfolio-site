@@ -410,10 +410,20 @@ function ExpandModal({
   const commentary = projectSlug ? EMOJI_COMMENTARY[projectSlug] : undefined;
   const askAgentAboutProject = (): void => {
     if (!project) return;
+
     const query = `Walk me through ${project.title}: what problem it solves, the architecture, tradeoffs, and why it matters.`;
+
     onClose();
+
     window.setTimeout(() => {
-      window.dispatchEvent(new CustomEvent("chat-with-query", { detail: query }));
+      window.dispatchEvent(
+        new CustomEvent("chat-with-query", {
+          detail: {
+            query,
+            currentProject: project.slug,
+          },
+        })
+      );
     }, 220);
   };
 

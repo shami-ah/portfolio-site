@@ -1,6 +1,7 @@
 /* ── Agent Commands — pure data & logic, no React ── */
 
 import { openCvDrawer } from "@/components/cv-drawer";
+import { profile } from "@/data/profile";
 
 declare global {
   var __agentScrolling: boolean | undefined;
@@ -369,7 +370,7 @@ export const commands: AgentCommand[] = [
       { name: "classify_intent", detail: "label: pricing_query · conf 0.95", ms: 28 },
       { name: "retrieve_context", detail: "pricing_table", ms: 14 },
     ],
-    response: "Contract: $80-120/hr. Project-based: from $3k. Full-time: $4k-10k/mo. Rates vary by scope — best to discuss on a 15-min call.",
+    response: profile.rates.content.join(" "),
   },
   {
     keyword: "stack",
@@ -389,7 +390,7 @@ export const commands: AgentCommand[] = [
       { name: "classify_intent", detail: "label: availability_check · conf 0.93", ms: 26 },
       { name: "retrieve_context", detail: "availability_status", ms: 10 },
     ],
-    response: "Open to full-time remote roles and 90-day project engagements. UTC+5, overlaps EU mornings + Gulf business hours. Can start within a week.",
+    response: profile.availability.content.join(" "),
   },
   {
     keyword: "impact",

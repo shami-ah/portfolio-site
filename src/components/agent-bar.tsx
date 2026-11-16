@@ -337,8 +337,9 @@ const runCommand = useCallback((cmd: AgentCommand): void => {
   setShowResponse(false);
   setUiState("processing");
 
-  if (cmd.action) {
-    cmd.action();
+  // Easter eggs run immediately; navigation actions run after dismissal.
+  if (cmd.intent === "easter_egg") {
+    cmd.action?.();
   }
 
   if (cmd.intent === "easter_egg" && cmd.keyword === "dance") {
