@@ -51,7 +51,8 @@ function loadChatHistory(): Message[] {
 
 /** Same origin in production (nginx proxies /api to shami-api). For local dev put
  *  NEXT_PUBLIC_CHAT_API_URL=http://localhost:3001/api/chat in .env.local. */
-const CHAT_API_URL = process.env.NEXT_PUBLIC_CHAT_API_URL ?? "/api/chat";
+const CHAT_API_URL =
+  process.env.NEXT_PUBLIC_CHAT_API_URL ?? "http://localhost:3001/api/chat";
 
 function saveChatHistory(messages: Message[]): void {
   try {
@@ -263,7 +264,9 @@ export function ChatWidget(): React.ReactElement {
   }, []);
 
   // Accept pre-filled query from agent bar → open + auto-send (ref avoids declaration order issue)
-  const sendRef = useRef<(q: string) => void>(() => {});
+const sendRef = useRef<
+  (q: string, currentProject?: string | null) => void
+>(() => {});
 
   useEffect(() => {
     if (state === "closed") {
@@ -306,7 +309,10 @@ export function ChatWidget(): React.ReactElement {
 
  
 const streamAnswer = useCallback(
-  async (query: string): Promise<void> => {
+  async (
+    query: string,
+    currentProject?: string | null,
+  ): Promise<void> => {
     setIsThinking(true);
     setShowFallbackChips(false);
 
@@ -331,10 +337,11 @@ const streamAnswer = useCallback(
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          message: query,
-          history,
-        }),
+       body: JSON.stringify({
+  message: query,
+  history,
+  ...(currentProject ? { currentProject } : {}),
+}),
       });
 
       if (!res.ok) {
@@ -386,7 +393,7 @@ const streamAnswer = useCallback(
 
 
   const send = useCallback(
-    (q: string): void => {
+(q: string, currentProject?: string | null): void => {
       const query = q.trim();
       if (!query) return;
       const userCount = messages.filter((m) => m.role === "user").length + pendingQueriesRef.current.size;
@@ -410,7 +417,7 @@ const streamAnswer = useCallback(
       pendingQueriesRef.current.add(key);
       setShowFallbackChips(false);
       setMessages((prev) => [...prev, { id: `u-${Date.now()}`, role: "user", content: query }]);
-      void streamAnswer(query);
+      void streamAnswer(query, currentProject);
     },
     [streamAnswer, messages],
   );
@@ -418,16 +425,30 @@ const streamAnswer = useCallback(
   // Keep sendRef in sync for the event listener
   sendRef.current = send;
 
-  useEffect(() => {
-    const handler = (e: Event): void => {
-      const query = (e as CustomEvent<string>).detail;
-      if (!query) return;
-      setState("open");
-      setTimeout(() => sendRef.current(query), 400);
-    };
-    window.addEventListener("chat-with-query", handler);
-    return () => window.removeEventListener("chat-with-query", handler);
-  }, []);
+ useEffect(() => {
+  const handler = (e: Event): void => {
+    const detail = (
+      e as CustomEvent<{
+        query: string;
+        currentProject?: string | null;
+      }>
+    ).detail;
+
+    if (!detail?.query) return;
+
+    setState("open");
+
+    setTimeout(() => {
+      sendRef.current(detail.query, detail.currentProject);
+    }, 400);
+  };
+
+  window.addEventListener("chat-with-query", handler);
+
+  return () => {
+    window.removeEventListener("chat-with-query", handler);
+  };
+}, []);
 
   const msgCount = messages.filter((m) => m.role === "user").length;
   // Broadcast message count to agent bar badge
