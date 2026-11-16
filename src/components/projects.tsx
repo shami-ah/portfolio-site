@@ -504,6 +504,7 @@ function ExpandModal({
 /*  Scrollytelling panel                                               */
 /* ------------------------------------------------------------------ */
 
+
 function AnimatedMetric({
   value,
   active,
@@ -511,10 +512,8 @@ function AnimatedMetric({
   value: string;
   active: boolean;
 }): React.ReactElement {
-  const [displayValue, setDisplayValue] = useState(value);
-  const hasAnimated = useRef(false);
+  const [displayValue, setDisplayValue] = useState<string | null>(null);
 
-  // Animate plain numbers and values such as ~544, 83%, 860+ PRs, and ~1.5 h.
   const match = value.match(/^([~]?)([\d,]+(?:\.\d+)?)(.*)$/);
   const numericValue = match
     ? Number(match[2].replace(/,/g, ""))
@@ -524,24 +523,15 @@ function AnimatedMetric({
   const decimals = match?.[2].split(".")[1]?.length ?? 0;
 
   useEffect(() => {
-    if (!active) return;
-
-    // Keep text-only metrics unchanged.
-    if (numericValue === null || !Number.isFinite(numericValue)) {
-      setDisplayValue(value);
+    if (
+      !active ||
+      numericValue === null ||
+      !Number.isFinite(numericValue)
+    ) {
       return;
     }
-
-    // If this metric has already animated, show any updated value directly.
-    if (hasAnimated.current) {
-      setDisplayValue(value);
-      return;
-    }
-
-    hasAnimated.current = true;
 
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      setDisplayValue(value);
       return;
     }
 
@@ -570,14 +560,14 @@ function AnimatedMetric({
       }
     };
 
-    setDisplayValue(`${prefix}${(0).toLocaleString("en-US")}${suffix}`);
     frameId = requestAnimationFrame(animate);
 
     return () => cancelAnimationFrame(frameId);
   }, [active, value, numericValue, prefix, suffix, decimals]);
 
-  return <>{displayValue}</>;
+  return <>{active && numericValue !== null ? displayValue ?? value : value}</>;
 }
+
 
 
 function FlagshipCarousel({

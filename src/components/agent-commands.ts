@@ -41,65 +41,13 @@ export function openProjectDetail(slug: string): void {
 /*  Fuzzy intent matching for free-text queries                        */
 /* ------------------------------------------------------------------ */
 
-export interface FuzzyMatch {
-  command: AgentCommand;
-  score: number;
-}
 
-export const PROJECT_KEYWORDS: Record<string, string[]> = {
-  projects: ["show me your projects", "your projects", "portfolio", "what you built", "what have you built"],
-  openevent: ["event", "management", "booking", "openevent", "open event", "client", "crm", "invoice", "email automation", "event platform"],
-  codelens: ["code review", "lint", "pattern", "bug", "security", "pr review", "codelens", "code lens", "static analysis", "code quality"],
-  gogaa: ["coding agent", "ai coding", "terminal agent", "provider", "gogaa", "llm tool", "ai cli", "coding cli"],
-  rasad: ["observability", "session analytics", "cost tracking", "token usage", "rasad", "monitoring ai", "ai observatory", "session replay"],
-  rate: ["rate", "price", "pricing", "cost", "charge", "budget", "hourly", "salary", "pay", "compensation", "how much", "expensive", "fee", "quote"],
-  hire: ["hire", "hiring", "recruit", "work with", "engage", "freelance", "contract", "full-time", "looking for", "need a developer", "need an engineer"],
-  cv: ["resume", "cv", "qualification", "education", "degree"],
-  contact: ["contact", "reach", "email", "call", "talk", "connect", "meet", "book a call", "get in touch"],
-  chat: ["chat", "question", "explain", "help me", "more info", "tell me more"],
-  build: ["build process", "ship", "deliver", "methodology", "how do you work", "development process"],
-  tour: ["tour", "journey", "story", "who are you", "about you", "about yourself", "what do you do"],
-  stack: ["stack", "tools", "framework", "language", "react", "typescript", "supabase", "next", "python", "docker", "react native"],
-  availability: ["available", "availability", "when can you start", "timeline", "capacity", "schedule"],
-  impact: ["impact", "results", "numbers", "metrics", "achievement"],
-  experience: ["career", "worked at", "work at", "work in", "worked in", "company", "job history", "role", "position", "years of experience", "your work", "rouelite", "rouelite techno", "more life", "more life hospitality", "wadware", "wadware house", "outlier", "rws", "translated"],
-  skills: ["skills", "tech stack", "technology", "what do you know", "expertise", "proficient", "capable"],
-  agent: ["what is this", "what are you", "who are you", "what can you do", "what's this agent", "what is this agent", "what does this do", "how does this work", "what's the purpose", "purpose of this", "use of this", "what's this for", "help", "what can i do", "what can i ask", "instructions", "guide", "how to use"],
-};
+
+
 
 // Common words that should NOT count as meaningful token matches
-const STOP_WORDS = new Set(["the","a","an","is","are","was","were","do","does","did","how","what","why","who","when","where","can","you","your","his","her","its","my","our","their","this","that","with","for","from","have","has","had","not","but","and","or","if","in","on","at","to","of","by","about","more","any","all","also","just","very","too"]);
 
-export function fuzzyMatch(query: string, cmds: AgentCommand[]): FuzzyMatch | null {
-  const q = query.toLowerCase();
-  const tokens = q.split(/\s+/).filter((t) => t.length >= 3 && !STOP_WORDS.has(t));
 
-  let best: FuzzyMatch | null = null;
-
-  for (const [keyword, phrases] of Object.entries(PROJECT_KEYWORDS)) {
-    let score = 0;
-    for (const phrase of phrases) {
-      // Full phrase match — high confidence
-      if (q.includes(phrase)) {
-        score += phrase.split(/\s+/).length * 3;
-      } else {
-        // Token match — only meaningful tokens, require length >= 4
-        for (const token of tokens) {
-          if (token.length >= 4 && phrase.includes(token)) score += 1;
-        }
-      }
-    }
-    if (score > 0) {
-      const cmd = cmds.find((c) => c.keyword === keyword);
-      if (cmd && (!best || score > best.score)) {
-        best = { score, command: { ...cmd, confidence: Math.min(0.95, 0.6 + score * 0.05) } };
-      }
-    }
-  }
-
-  // Raise threshold — need strong signal to match
-  return best && best.score >= 3 ? best : null;
-}
 
 export const commands: AgentCommand[] = [
   {

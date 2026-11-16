@@ -7,7 +7,6 @@ import { MessageSquare, X } from "lucide-react";
 import {
   type AgentCommand,
   commands,
-  fuzzyMatch,
   SECTION_ORDER,
   SECTION_PERSONALITY,
   PROJECT_METHODOLOGY,
@@ -330,20 +329,27 @@ export function AgentBar(): React.ReactElement {
     return () => window.removeEventListener("replay-intro", onReplay);
   }, []);
 
-  const runCommand = useCallback((cmd: AgentCommand): void => {
-    recordCommand(cmd.keyword);
-    setActiveCmd(cmd);
-    setShownSteps(0);
-    setShowResponse(false);
-    setUiState("processing");
-    // Easter eggs: fire mood change immediately so the hero emoji reacts while processing
-    if (cmd.intent === "easter_egg" && cmd.action) {
-      cmd.action();
-      if (cmd.keyword === "dance") {
-        try { sessionStorage.setItem("dance-tried", "1"); } catch { /* noop */ }
-      }
+ 
+const runCommand = useCallback((cmd: AgentCommand): void => {
+  recordCommand(cmd.keyword);
+  setActiveCmd(cmd);
+  setShownSteps(0);
+  setShowResponse(false);
+  setUiState("processing");
+
+  if (cmd.action) {
+    cmd.action();
+  }
+
+  if (cmd.intent === "easter_egg" && cmd.keyword === "dance") {
+    try {
+      sessionStorage.setItem("dance-tried", "1");
+    } catch {
+      // noop
     }
-  }, []);
+  }
+}, []);
+
 
   // Hide agent when modal is open
   const [modalOpen, setModalOpen] = useState(false);
@@ -497,58 +503,103 @@ export function AgentBar(): React.ReactElement {
     return () => cancelAnimationFrame(frame);
   }, [chatOpen, uiState]);
 
-  const onSubmit = (e: React.FormEvent): void => {
-    e.preventDefault();
-    const raw = input.trim();
-    const q = raw.toLowerCase();
-    if (!q) return;
+const handleAiQuery = (query: string): void => {
+  setInput("");
+  window.dispatchEvent(
+    new CustomEvent("chat-with-query", {
+      detail: {
+        query,
+        currentProject: viewingProject,
+      },
+    }),
+  );
+  setUiState("panel");
+};
+const onSubmit = (e: React.FormEvent): void => {
+  
+  e.preventDefault();
 
-    if (chatOpen) {
-      handleAiQuery(raw);
+  const raw = input.trim();
+  const q = raw.toLowerCase();
+
+  if (!q) return;
+
+  if (chatOpen) {
+    handleAiQuery(raw);
+    return;
+  }
+
+  // 1. Exact methodology chip keyword
+  const exactMethodology = methodologyChips.find(
+    (chip) => chip.command.keyword.toLowerCase() === q,
+  );
+
+  if (exactMethodology) {
+    runCommand(exactMethodology.command);
+    return;
+  }
+
+  // 2. Exact command/chip keyword
+  
+
+const chipCommands = Object.values(SECTION_CHIPS)
+  .flat()
+  .map((chip) => chip.command.toLowerCase());
+
+const localCommands = new Set([
+  ...chipCommands,
+  ...methodologyChips.map((chip) =>
+    chip.command.keyword.toLowerCase()
+  ),
+  "dance",
+  "sleep",
+  "surprise",
+]);
+
+const exactCommand = commands.find(
+  (command) =>
+    command.keyword.toLowerCase() === q &&
+    localCommands.has(command.keyword.toLowerCase()),
+);
+
+if (exactCommand) {
+  runCommand(exactCommand);
+  return;
+}
+
+  // 3. Explicit navigation only
+  // Examples: "open codelens", "show projects", "go to contact"
+  const navigationMatch = raw.match(
+   /^(open|show|go to|view)\s+(.+)$/i
+  );
+
+  if (navigationMatch) {
+    const target = navigationMatch[2].trim().toLowerCase().replace(/[\s-]+/g, "");
+
+    const aliases: Record<string, string> = {
+      openevent: "openevent",
+      codelens: "codelens",
+      gogaacli: "gogaa",
+    };
+
+    const normalizedTarget = aliases[target] ?? target;
+
+    const navigationCommand = commands.find(
+      (command) =>
+        command.keyword.toLowerCase().replace(/[\s-]+/g, "") ===
+        normalizedTarget,
+    );
+
+    if (navigationCommand) {
+      runCommand(navigationCommand);
       return;
     }
+  }
 
-    // 0. Project-context queries — "why", "how", "architecture" map to methodology chips
-    if (viewingProject && methodologyChips.length > 0) {
-      const contextKeywords: Record<string, number> = {
-        why: 0, "why this": 0, "why not": 0, reason: 0,
-        how: 2, "how did": 2, ship: 2, process: 2, shipped: 2,
-        architecture: 1, arch: 1, design: 1, "why this architecture": 1,
-      };
-      for (const [kw, idx] of Object.entries(contextKeywords)) {
-        if (q.includes(kw) && methodologyChips[idx]) {
-          runCommand(methodologyChips[idx].command);
-          return;
-        }
-      }
-    }
+  // 4. Everything else goes to RAG chat
+  handleAiQuery(raw);
+};
 
-    // 1. Exact keyword match — instant
-    const exact = commands.find((c) => c.keyword === q);
-    if (exact) { runCommand(exact); return; }
-    // 1.5 Project-name mention — route to the exact case study before generic "tell me more" chat intent.
-    const projectMention = commands.find((c) =>
-      c.intent === "project_detail" && (
-        q.includes(c.keyword)
-        || (c.keyword === "openevent" && q.includes("open event"))
-        || (c.keyword === "codelens" && q.includes("code lens"))
-        || (c.keyword === "gogaa" && q.includes("gogaa cli"))
-      ),
-    );
-    if (projectMention) { runCommand(projectMention); return; }
-    // 2. Fuzzy intent match — instant
-    const fuzzy = fuzzyMatch(q, commands);
-    if (fuzzy) { runCommand(fuzzy.command); return; }
-    // 3. Free-text → AI dispatch (tier 2)
-    handleAiQuery(raw);
-  };
-
-  const handleAiQuery = (query: string): void => {
-    setInput("");
-    // Route free-text queries to ChatWidget
-    window.dispatchEvent(new CustomEvent("chat-with-query", { detail: query }));
-    setUiState("panel");
-  };
 
   const onChipClick = (command: string): void => {
     const match = commands.find((c) => c.keyword === command);
