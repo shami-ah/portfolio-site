@@ -8,7 +8,11 @@ import {
 } from "./chat-context.mjs";
 
 import { retrieveKnowledge } from "./knowledge/retriever.mjs";
-import { initializeEmbeddingIndex } from "./knowledge/load-index.mjs";
+import {
+  initializeEmbeddingIndex,
+  loadEmbeddingIndex,
+  embeddingIndexReady,
+} from "./knowledge/load-index.mjs";
 
 // ── Configuration ─────────────────────────────────────────────────
 
@@ -35,7 +39,7 @@ const NVIDIA_CHAT_FALLBACKS = (
   .filter(Boolean);
 
 const NVIDIA_EMBED_MODEL =
-  process.env.NVIDIA_EMBED_MODEL ?? "";
+  process.env.NVIDIA_EMBED_MODEL || "nvidia/nemotron-3.5-embed-1b";
 
 const GEMINI_MODEL =
   process.env.GEMINI_MODEL ?? "gemini-flash-latest";
@@ -470,6 +474,8 @@ const server = createServer(async (req, res) => {
           : NVIDIA_CHAT_MODEL || null,
       embeddingProvider: EMBEDDING_PROVIDER,
       embeddingConfigured: Boolean(EMBEDDING_API_KEY),
+      embeddingIndexReady,
+      embeddingChunkCount: loadEmbeddingIndex().chunks.length,
       embedModel: EMBEDDING_MODEL || null,
       retrieval: "hybrid-with-bm25-fallback",
       version: process.env.GIT_SHA ?? "local",
@@ -600,40 +606,52 @@ currentProject,
       if (retrieval.results.length === 0) {
         return json(res, 200, {
           answer:
-            "That's not something this portfolio covers. Ask me about Ahtesham's projects, stack, rates or availability, or book a 15-min call to ask him directly.",
-          actions: [{ label: "Book a 15-min call", href: BOOK_URL }],
+            "I couldn't find enough relevant information to answer that confidently. Try asking about Ahtesham's projects, experience, skills or services, or book a 15-min call to ask him directly.",
+          actions: [
+            {
+              label: "Book a 15-min call",
+              href: BOOK_URL,
+            },
+          ],
           sources: [],
         });
       }
-// Skip answer generation when hybrid retrieval confidence is too low.
-// Profile-related results are allowed through.
-const topScore = retrieval.results[0]?.score ?? 0;
 
-const isProfileQuestion =
-  /\b(about ahtesham|who is ahtesham|background|experience|education|skills|tech stack|technology stack|availability|available|rates|pricing|price|cost|hire|hiring|timezone|location|services|career|work experience|development process)\b/i.test(
-    message,
-  );
+      // Skip answer generation when hybrid retrieval confidence is too low.
+      // Profile-related results are allowed through.
+      const topScore = retrieval.results[0]?.score ?? 0;
 
-if (
-  retrieval.mode === "hybrid" &&
-  topScore < CONFIDENCE_THRESHOLD &&
-  !isProfileQuestion
-) {
- console.log(
-  JSON.stringify({
-    event: "low_confidence_rejected",
-    topScore,
-    threshold: CONFIDENCE_THRESHOLD,
-  }),
-);
+      const isProfileQuestion =
+        /\b(about ahtesham|who is ahtesham|background|experience|education|skills|tech stack|technology stack|availability|available|rates|pricing|price|cost|hire|hiring|timezone|location|services|career|work experience|development process)\b/i.test(
+          message,
+        );
 
-  return json(res, 200, {
-    answer:
-      "I couldn't find enough relevant information to answer that confidently. Try asking about Ahtesham's projects, experience, skills or services.",
-    actions: [],
-    sources: [],
-  });
-}
+      if (
+        retrieval.mode === "hybrid" &&
+        topScore < CONFIDENCE_THRESHOLD &&
+        !isProfileQuestion
+      ) {
+        console.log(
+          JSON.stringify({
+            event: "low_confidence_rejected",
+            topScore,
+            threshold: CONFIDENCE_THRESHOLD,
+          }),
+        );
+
+        return json(res, 200, {
+          answer:
+            "I couldn't find enough relevant information to answer that confidently. Try asking about Ahtesham's projects, experience, skills or services, or book a 15-min call to ask him directly.",
+          actions: [
+            {
+              label: "Book a 15-min call",
+              href: BOOK_URL,
+            },
+          ],
+          sources: [],
+        });
+      }
+
       // Convert retrieved chunks into readable context.
       const retrievedContext = retrieval.results
         .map((item, index) => {

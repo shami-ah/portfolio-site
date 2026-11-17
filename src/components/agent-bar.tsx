@@ -330,26 +330,27 @@ export function AgentBar(): React.ReactElement {
   }, []);
 
  
-  const runCommand = useCallback((cmd: AgentCommand): void => {
-    recordCommand(cmd.keyword);
-    setActiveCmd(cmd);
-    setShownSteps(0);
-    setShowResponse(false);
-    setUiState("processing");
+const runCommand = useCallback((cmd: AgentCommand): void => {
+  recordCommand(cmd.keyword);
+  setActiveCmd(cmd);
+  setShownSteps(0);
+  setShowResponse(false);
+  setUiState("processing");
 
-    // Easter eggs run immediately; navigation actions run after dismissal.
-    if (cmd.intent === "easter_egg") {
-      cmd.action?.();
-    }
+  // Easter eggs execute immediately.
+  // Navigation actions execute after the response panel dismisses.
+  if (cmd.intent === "easter_egg") {
+    cmd.action?.();
+  }
 
-    if (cmd.intent === "easter_egg" && cmd.keyword === "dance") {
-      try {
-        sessionStorage.setItem("dance-tried", "1");
-      } catch {
-        // noop
-      }
+  if (cmd.intent === "easter_egg" && cmd.keyword === "dance") {
+    try {
+      sessionStorage.setItem("dance-tried", "1");
+    } catch {
+      // noop
     }
-  }, []);
+  }
+}, []);
 
 
   // Hide agent when modal is open

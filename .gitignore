@@ -43,3 +43,7 @@ next-env.d.ts
 # CodeLens review artifacts
 .code-review/
 
+
+# Playwright test artifacts
+test-results/
+playwright-report/

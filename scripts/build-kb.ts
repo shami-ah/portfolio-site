@@ -62,28 +62,46 @@ function flatten(value: unknown, prefix = ""): string[] {
   return [];
 }
 
-function splitText(text: string): string[] {
+
+
+function splitText(text: string, maxSize = MAX_CHUNK_SIZE): string[] {
   const normalized = cleanText(text);
   if (!normalized) return [];
 
+  // Split at sentence boundaries without breaking decimals or URLs.
+  const sentences = normalized.split(/(?<=[.!?])\s+/);
+
   const parts: string[] = [];
-  let remaining = normalized;
+  let current = "";
 
-  while (remaining.length > MAX_CHUNK_SIZE) {
-    let splitAt = remaining.lastIndexOf(" ", TARGET_CHUNK_SIZE);
+  for (const rawSentence of sentences) {
+    const sentence = rawSentence.trim();
+    if (!sentence) continue;
 
-    if (splitAt < 300) {
-      splitAt = TARGET_CHUNK_SIZE;
+    if (sentence.length > maxSize) {
+      throw new Error(
+        `Sentence exceeds ${maxSize} characters. Actual length: ${sentence.length}. Preview: "${sentence.slice(0, 250)}"`,
+      );
     }
 
-    parts.push(remaining.slice(0, splitAt).trim());
-    remaining = remaining.slice(splitAt).trim();
+    const candidate = current
+      ? `${current} ${sentence}`
+      : sentence;
+
+    if (candidate.length > maxSize) {
+      if (current) parts.push(current);
+      current = sentence;
+    } else {
+      current = candidate;
+    }
   }
 
-  if (remaining) parts.push(remaining);
+  if (current) parts.push(current);
 
   return parts;
 }
+
+
 
 function makeChunk(
   id: string,
@@ -100,14 +118,14 @@ function makeChunk(
     text: flatten(source).join("\n"),
   };
 }
-
 function makeSectionChunks(
   project: (typeof projects)[number],
   section: string,
   source: unknown,
 ): KnowledgeChunk[] {
-  const text = flatten(source).join("\n");
-  const parts = splitText(text);
+  // Split each flattened value independently.
+  // This preserves boundaries between architecture items, features, and technologies.
+  const parts = flatten(source).flatMap((item) => splitText(item));
 
   return parts.map((part, index) => ({
     id: `project-${project.slug}-${section}${parts.length > 1 ? `-${index + 1}` : ""}`,
@@ -123,20 +141,27 @@ function makeSectionChunks(
   }));
 }
 
+
 function generateProfileChunks(): KnowledgeChunk[] {
-  return Object.values(profile).map((section) =>
-    makeChunk(
-      section.id,
-      "profile",
-      section.category,
-      section.tags,
-      {
-        title: section.title,
-        content: section.content,
-      },
-    ),
-  );
+  return Object.values(profile).flatMap((section) => {
+    const title = cleanText(section.title);
+    const prefix = `${title}: `;
+    const availableSize = MAX_CHUNK_SIZE - prefix.length;
+
+    const parts = flatten(section.content).flatMap((item) =>
+      splitText(item, availableSize),
+    );
+
+    return parts.map((part, index) => ({
+      id: `${section.id}${parts.length > 1 ? `-${index + 1}` : ""}`,
+      project: "profile",
+      category: section.category,
+      tags: [...section.tags, title],
+      text: `${prefix}${part}`,
+    }));
+  });
 }
+
 
 function generateProjectChunks(): KnowledgeChunk[] {
   return projects.flatMap((project) => {
@@ -240,17 +265,54 @@ function generateCareerChunks(): KnowledgeChunk[] {
   );
 }
 
+
+
 function generateArticleChunks(): KnowledgeChunk[] {
-  return articles.map((article) =>
-    makeChunk(
-      `article-${article.slug}`,
-      "writing",
-      "article",
-      ["article", "writing", article.slug, article.title],
-      article,
-    ),
-  );
+  return articles.flatMap((article) => {
+    const title = cleanText(article.title);
+
+    if (!title) {
+      throw new Error(
+        `Article "${article.slug}" is missing its title.`,
+      );
+    }
+
+    const prefix = `${title}: `;
+    const availableSize = MAX_CHUNK_SIZE - prefix.length;
+
+    if (availableSize <= 0) {
+      throw new Error(`Article title is too long: ${title}`);
+    }
+
+    // Keep the summary and individual body sections separate.
+    const contentParts = [
+      ...flatten({ summary: article.summary }),
+      ...article.body.flatMap((section, sectionIndex) => [
+        ...(section.heading
+          ? [`Section ${sectionIndex + 1}: ${section.heading}`]
+          : []),
+        ...section.paragraphs.map(
+          (paragraph) =>
+            `Section ${sectionIndex + 1}: ${paragraph}`,
+        ),
+      ]),
+    ];
+
+    const articleParts = contentParts.flatMap((content) =>
+      splitText(content, availableSize),
+    );
+
+    return articleParts.map((part, index) => ({
+      id: `article-${article.slug}-${index + 1}`,
+      project: "writing",
+      category: "article",
+      tags: ["article", "writing", article.slug, title],
+      text: `${prefix}${part}`,
+    }));
+  });
 }
+
+
 
 async function buildKnowledgeBase(): Promise<void> {
   const chunks: KnowledgeChunk[] = [

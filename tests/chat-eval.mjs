@@ -371,7 +371,7 @@ if (serverAvailable) {
 
     // Stay below the API's 10 requests/minute limit.
     if (index > 0) {
-      await delay(6500);
+      await delay(7000);
     }
 
     try {
@@ -426,7 +426,7 @@ const refusalCases = [
 if (serverAvailable) {
   for (let index = 0; index < refusalCases.length; index++) {
     if (index > 0) {
-      await delay(6500);
+      await delay(7000);
     }
 
     try {

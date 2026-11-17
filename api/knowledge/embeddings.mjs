@@ -5,6 +5,8 @@ const DEFAULT_NVIDIA_MODEL = "nvidia/nemotron-3.5-embed-1b";
 const DEFAULT_GEMINI_MODEL = "gemini-embedding-001";
 const GEMINI_BASE_URL = "https://generativelanguage.googleapis.com/v1beta";
 
+const EMBEDDING_TIMEOUT_MS = 60_000;
+
 function validateTexts(texts) {
   if (!Array.isArray(texts) || texts.length === 0) {
     return false;
@@ -20,6 +22,7 @@ function validateTexts(texts) {
 async function embedWithNvidia(texts, { apiKey, baseUrl, model, inputType }) {
   const response = await fetch(`${baseUrl}/embeddings`, {
     method: "POST",
+    signal: AbortSignal.timeout(EMBEDDING_TIMEOUT_MS),
     headers: {
       Authorization: `Bearer ${apiKey}`,
       "Content-Type": "application/json",
@@ -62,6 +65,7 @@ async function embedWithGemini(texts, { apiKey, model, taskType }) {
     `${GEMINI_BASE_URL}/models/${model}:batchEmbedContents`,
     {
       method: "POST",
+      signal: AbortSignal.timeout(EMBEDDING_TIMEOUT_MS),
       headers: {
         "Content-Type": "application/json",
         "x-goog-api-key": apiKey,
@@ -79,7 +83,11 @@ async function embedWithGemini(texts, { apiKey, model, taskType }) {
   );
 
   if (!response.ok) {
-    throw new Error(`Gemini embedding request failed (${response.status})`);
+    const errorBody = await response.text();
+
+    throw new Error(
+      `Gemini embedding request failed (${response.status}): ${errorBody.slice(0, 1000)}`,
+    );
   }
 
   const result = await response.json();
@@ -126,7 +134,7 @@ export async function embedTexts(
   if (provider === "gemini") {
     return embedWithGemini(texts, {
       apiKey,
-      model: model ?? DEFAULT_GEMINI_MODEL,
+      model: model || DEFAULT_GEMINI_MODEL,
       taskType,
     });
   }
@@ -135,7 +143,7 @@ export async function embedTexts(
     return embedWithNvidia(texts, {
       apiKey,
       baseUrl,
-      model: model ?? DEFAULT_NVIDIA_MODEL,
+      model: model || DEFAULT_NVIDIA_MODEL,
       inputType,
     });
   }

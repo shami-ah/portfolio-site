@@ -142,7 +142,7 @@ export const profile: ProfileData = {
     ],
   },
 
- 
+
   stack: {
     id: "profile-stack",
     category: "profile",
@@ -167,14 +167,16 @@ export const profile: ProfileData = {
       "AI",
       "development tools",
     ],
+
     content: [
-      "His technology stack, tech stack, and technical skills include AI engineering, full-stack development, programming languages, frameworks, libraries, and infrastructure tools.",
+      "His technology stack and technical skills include AI engineering, full-stack development, programming languages, frameworks, libraries, and infrastructure tools.",
       "AI stack: Claude (Opus, Sonnet), OpenAI (GPT-4o, o1), RAG (pgvector, Pinecone), LangChain, multi-agent orchestration, human-in-the-loop.",
       "Full-stack technologies: React, Next.js, React Native (Expo), TypeScript, Python, FastAPI, Supabase, Stripe, Docker.",
       "Infrastructure tools: GitHub Actions CI/CD, Docker Compose, Traefik, Sentry, Grafana, n8n, Cloudflare, Vercel.",
-      "Kubernetes, AWS, Azure and GCP managed services are not part of his current technology stack.",
+      "Kubernetes, AWS, Azure, and GCP managed services are not part of his current technology stack.",
       "He runs Docker Compose and Traefik on self-managed servers instead of Kubernetes, and can adopt it if a role requires it.",
     ],
+
   },
 
 
