@@ -619,14 +619,13 @@ if (
   topScore < CONFIDENCE_THRESHOLD &&
   !isProfileQuestion
 ) {
-  console.log(
-    JSON.stringify({
-      event: "low_confidence_rejected",
-      topScore,
-      threshold: CONFIDENCE_THRESHOLD,
-      query: message,
-    }),
-  );
+ console.log(
+  JSON.stringify({
+    event: "low_confidence_rejected",
+    topScore,
+    threshold: CONFIDENCE_THRESHOLD,
+  }),
+);
 
   return json(res, 200, {
     answer:
