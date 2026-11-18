@@ -4,10 +4,10 @@ import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import ReactDOM from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Minus, Calendar, FileText, ArrowRight } from "lucide-react";
-import { findAnswer, starters } from "@/lib/kb";
+import { starters } from "@/lib/kb";
 import type { KbAction } from "@/lib/kb";
 import { openCvDrawer } from "@/components/cv-drawer";
-
+import { openProjectDetail } from "@/components/agent-commands";
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
 /* ------------------------------------------------------------------ */
@@ -18,6 +18,11 @@ interface Message {
   content: string;
   streaming?: boolean;
   actions?: KbAction[];
+  sources?: {
+    id: string;
+    category?: string;
+    project?: string | null;
+  }[];
 }
 
 type WidgetState = "closed" | "open";
@@ -48,6 +53,11 @@ function loadChatHistory(): Message[] {
     return [];
   }
 }
+
+/** Same origin in production (nginx proxies /api to shami-api). For local dev put
+ *  NEXT_PUBLIC_CHAT_API_URL=http://localhost:3001/api/chat in .env.local. */
+const CHAT_API_URL =
+  process.env.NEXT_PUBLIC_CHAT_API_URL ?? "/api/chat";
 
 function saveChatHistory(messages: Message[]): void {
   try {
@@ -217,53 +227,6 @@ const panelVariants = {
   },
 };
 
-function buildContextualQuery(query: string, messages: Message[]): string {
-  const lower = query.toLowerCase();
-  const mentionsSpecificProject = /\b(openevent|open event|codelens|code lens|gogaa|rasad|command center|gluten-free|portable dev|orchestrator)\b/.test(lower);
-  if (mentionsSpecificProject) return query;
-
-  const needsContext =
-    /\b(it|that|this|those|them|same|there)\b/.test(lower)
-    || /\b(can you handle|can you do|what about|how about)\b/.test(lower);
-
-  if (!needsContext) return query;
-
-  const previousUser = [...messages].reverse().find((m) => m.role === "user")?.content;
-  if (!previousUser) return query;
-
-  const previousAssistant = [...messages].reverse().find((m) => m.role === "assistant" && m.content.trim())?.content;
-  if (!previousAssistant) return `${previousUser}\nFollow-up: ${query}`;
-
-  return `Previous user question: ${previousUser}\nPrevious answer: ${previousAssistant.slice(0, 500)}\nFollow-up: ${query}`;
-}
-
-function toSentences(answer: string): string[] {
-  return answer
-    .split(/(?<=[.!?])\s+/)
-    .map((s) => s.trim())
-    .filter(Boolean);
-}
-
-function applyModelVoice(answer: string, model: string): string {
-  const sentences = toSentences(answer);
-  if (sentences.length === 0) return answer;
-
-  if (model === "claude") {
-    return `Concise read: ${answer}\n\nFit check: scope, constraints, timeline, and production risk decide the next move.`;
-  }
-
-  if (model === "gpt4") {
-    if (sentences.length === 1) return `Structured answer:\n- ${sentences[0]}`;
-    return `Structured answer:\n${sentences.slice(0, 4).map((s) => `- ${s}`).join("\n")}`;
-  }
-
-  if (model === "nvidia") {
-    return `${answer}\n\nSystems lens: confirm inputs, outputs, integration points, failure modes, and deployment constraints before implementation.`;
-  }
-
-  return answer;
-}
-
 /* ------------------------------------------------------------------ */
 /*  ChatWidget                                                         */
 /* ------------------------------------------------------------------ */
@@ -288,6 +251,7 @@ export function ChatWidget(): React.ReactElement {
     saveChatHistory(messages);
   }, [historyLoaded, messages]);
 
+
   useEffect(() => {
     const onOpen = (): void => setState("open");
     const onClose = (): void => setState("closed");
@@ -305,7 +269,9 @@ export function ChatWidget(): React.ReactElement {
   }, []);
 
   // Accept pre-filled query from agent bar → open + auto-send (ref avoids declaration order issue)
-  const sendRef = useRef<(q: string) => void>(() => {});
+  const sendRef = useRef<
+    (q: string, currentProject?: string | null) => void
+  >(() => {});
 
   useEffect(() => {
     if (state === "closed") {
@@ -346,69 +312,103 @@ export function ChatWidget(): React.ReactElement {
     [],
   );
 
+ 
   const streamAnswer = useCallback(
-    async (query: string): Promise<void> => {
+    async (
+      query: string,
+      currentProject?: string | null,
+    ): Promise<void> => {
       setIsThinking(true);
       setShowFallbackChips(false);
+
       const id = `a-${Date.now()}`;
       let answer = "";
       let actions: KbAction[] | undefined;
+      let sources: Message["sources"];
 
-      const contextualQuery = buildContextualQuery(query, messages);
-      const entry = findAnswer(query) ?? findAnswer(contextualQuery);
+      // Send recent conversation history to the RAG backend.
       const history = messages
         .filter((m) => m.role === "user" || m.role === "assistant")
         .slice(-8)
-        .map((m) => ({ role: m.role, content: m.content }));
+        .map((m) => ({
+          role: m.role,
+          content: m.content,
+        }));
 
       try {
-        const res = await fetch("/api/chat", {
+        const res = await fetch(CHAT_API_URL, {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: {
+            "Content-Type": "application/json",
+          },
           body: JSON.stringify({
             message: query,
-            query,
             history,
-            model: "groq",
+            ...(currentProject ? { currentProject } : {}),
           }),
         });
-        if (res.ok) {
-          const data = await res.json() as { answer?: string; actions?: KbAction[] };
-          if (data.answer?.trim()) {
-            answer = data.answer.trim();
-            actions = data.actions ?? entry?.actions;
-          }
-        }
-      } catch {
-        // Local KB fallback keeps the portfolio assistant reliable offline.
-      }
 
-      if (!answer) {
-        if (entry) {
-          answer = applyModelVoice(entry.response, "groq");
-          actions = entry.actions;
-        } else {
-          answer = applyModelVoice(FALLBACK, "groq");
-          setShowFallbackChips(true);
+        if (!res.ok) {
+          throw new Error(`Chat API failed: ${res.status}`);
         }
+
+        const data = (await res.json()) as {
+          answer?: string;
+          actions?: KbAction[];
+          sources?: {
+            id: string;
+            category?: string;
+            project?: string | null;
+          }[];
+        };
+
+        if (data.answer?.trim()) {
+          answer = data.answer.trim();
+          actions = data.actions;
+          sources = data.sources;
+        } else {
+          throw new Error("The chat API returned an empty answer.");
+        }
+      } catch (error) {
+        console.error("RAG chat request failed:", error);
+        answer = FALLBACK;
+        setShowFallbackChips(true);
       }
 
       setIsThinking(false);
-      setMessages((prev) => [...prev, { id, role: "assistant", content: "", streaming: true, actions }]);
+
+      setMessages((prev) => [
+        ...prev,
+        {
+          id,
+          role: "assistant",
+          content: "",
+          streaming: true,
+          actions,
+          sources,
+        },
+      ]);
+
       await streamWords(id, answer);
       pendingQueriesRef.current.delete(query.toLowerCase());
     },
     [streamWords, messages],
   );
 
-  const send = useCallback(
-    (q: string): void => {
+
+   const send = useCallback(
+    (q: string, currentProject?: string | null): void => {
       const query = q.trim();
       if (!query) return;
-      const userCount = messages.filter((m) => m.role === "user").length + pendingQueriesRef.current.size;
+
+      const userCount =
+        messages.filter((m) => m.role === "user").length +
+        pendingQueriesRef.current.size;
+
       if (userCount >= CHAT_MESSAGE_LIMIT) {
         setMessages((prev) => {
           if (prev.some((m) => m.id === "chat-limit")) return prev;
+
           return [
             ...prev,
             {
@@ -421,28 +421,50 @@ export function ChatWidget(): React.ReactElement {
         });
         return;
       }
+
       const key = query.toLowerCase();
       if (pendingQueriesRef.current.has(key)) return;
+
       pendingQueriesRef.current.add(key);
       setShowFallbackChips(false);
-      setMessages((prev) => [...prev, { id: `u-${Date.now()}`, role: "user", content: query }]);
-      void streamAnswer(query);
+      setMessages((prev) => [
+        ...prev,
+        { id: `u-${Date.now()}`, role: "user", content: query },
+      ]);
+
+      void streamAnswer(query, currentProject);
     },
     [streamAnswer, messages],
   );
 
-  // Keep sendRef in sync for the event listener
+  // Keep sendRef in sync for the event listener.
+   // Keep sendRef in sync for the event listener.
   sendRef.current = send;
 
+  // Accept pre-filled query from agent bar — open chat and auto-send.
   useEffect(() => {
     const handler = (e: Event): void => {
-      const query = (e as CustomEvent<string>).detail;
-      if (!query) return;
+      const detail = (
+        e as CustomEvent<{
+          query: string;
+          currentProject?: string | null;
+        }>
+      ).detail;
+
+      if (!detail?.query) return;
+
       setState("open");
-      setTimeout(() => sendRef.current(query), 400);
+
+      setTimeout(() => {
+        sendRef.current(detail.query, detail.currentProject);
+      }, 400);
     };
+
     window.addEventListener("chat-with-query", handler);
-    return () => window.removeEventListener("chat-with-query", handler);
+
+    return () => {
+      window.removeEventListener("chat-with-query", handler);
+    };
   }, []);
 
   const msgCount = messages.filter((m) => m.role === "user").length;
@@ -609,7 +631,69 @@ export function ChatWidget(): React.ReactElement {
 /* ------------------------------------------------------------------ */
 /*  Message bubble — blur-to-sharp entrance + rich text + actions      */
 /* ------------------------------------------------------------------ */
+function SourceChips({
+  sources,
+}: {
+  sources: NonNullable<Message["sources"]>;
+}): React.ReactElement | null {
+  const seen = new Set<string>();
 
+  const items = sources.filter((source) => {
+    const key = `${source.category ?? ""}:${source.project ?? ""}:${source.id}`;
+
+    if (seen.has(key)) return false;
+    seen.add(key);
+
+    return Boolean(source.project || source.id);
+  });
+
+  if (items.length === 0) return null;
+
+  const getLabel = (source: (typeof items)[number]): string => {
+    const value =
+      source.category === "project" && source.project
+        ? source.project
+        : source.id.replace(/^(project|article|story|profile)-/, "");
+
+    return value
+      .split("-")
+      .filter(Boolean)
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(" ");
+  };
+
+  return (
+    <div className="flex flex-wrap gap-1.5 mt-2">
+      {items.map((source) => {
+        const isProject =
+          source.category === "project" && Boolean(source.project);
+
+        const label = getLabel(source);
+
+        return (
+          <button
+            key={`${source.category ?? "source"}-${source.id}`}
+            type="button"
+            onClick={() => {
+              if (isProject && source.project) {
+                openProjectDetail(source.project);
+              }
+            }}
+            disabled={!isProject}
+            className={`rounded-full border border-card-border/50 bg-background/40 px-2 py-1 text-[10px] text-foreground/55 transition-colors ${
+              isProject
+                ? "hover:border-accent/40 hover:text-accent cursor-pointer"
+                : "cursor-default"
+            }`}
+            title={isProject ? `View ${label}` : `Source: ${label}`}
+          >
+            {label}
+          </button>
+        );
+      })}
+    </div>
+  );
+}
 function WidgetMessage({ msg }: { msg: Message }): React.ReactElement {
   const isUser = msg.role === "user";
 
@@ -642,6 +726,10 @@ function WidgetMessage({ msg }: { msg: Message }): React.ReactElement {
                 )}
               </p>
             </div>
+               {!msg.streaming && msg.sources && msg.sources.length > 0 && (
+              <SourceChips sources={msg.sources} />
+            )}
+
             {!msg.streaming && msg.actions && msg.actions.length > 0 && (
               <ActionButtons actions={msg.actions} />
             )}

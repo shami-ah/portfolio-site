@@ -142,25 +142,25 @@ const PANEL_CONTENT: Record<string, PanelContent> = {
   openevent: {
     title: "OpenEvent",
     oneLiner: "AI turns client emails into approved bookings, invoices, and CRM updates.",
-    problem: "Event teams waste 90 min/day on email to CRM data entry.",
-    solution: "AI reads emails, creates bookings, detects conflicts, updates CRM. Zero manual entry.",
+    problem: "Event teams lose about 90 minutes a day copying booking emails into their CRM.",
+    solution: "AI reads each email, drafts the booking, flags conflicts and updates the CRM. A human approves before anything touches money.",
     glow: "radial-gradient(ellipse at 30% 50%, rgba(160,120,104,0.06), transparent 70%)",
     plain: {
       oneLiner: "A booking request arrives by email. The AI reads it and prepares the booking, the invoice and the customer record. A person approves with one click.",
       problem: "Event teams lose about 90 minutes a day copying details from emails into their systems.",
-      solution: "The AI does the reading and the typing. Staff only approve, so nothing touches money without a human saying yes.",
+      solution: "The AI does the reading and the typing. Staff only approve, so nothing touches money without a human saying yes. The same platform now also runs memberships, gift cards and in-venue payments.",
     },
   },
   codelens: {
     title: "CodeLens",
-    oneLiner: "624 bug patterns mined from 860+ real PRs. Reviews in under one second.",
-    problem: "Code review misses bugs that patterns catch in milliseconds.",
-    solution: "624 patterns from 860+ real PRs. Scans in <1s. Your code never leaves your machine.",
+    oneLiner: "624 bug patterns mined from 860+ real PRs. Reviews in under one second, fully local.",
+    problem: "Linters check style and rushed reviewers miss logic: auth gaps, races, input that reaches the database unchecked.",
+    solution: "Patterns first, AI second. 624 patterns across 9 stacks scan in <1s, focused AI probes cover the rest. Code never leaves your machine.",
     glow: "radial-gradient(ellipse at 70% 40%, rgba(74,85,120,0.06), transparent 70%)",
     plain: {
       oneLiner: "An automatic proofreader for software. It checks new code for known mistakes in under a second, before they reach customers.",
       problem: "Human reviewers miss bugs when they are rushed, and those bugs get expensive once customers hit them.",
-      solution: "I collected hundreds of real mistakes from past projects and built a tool that spots them instantly. The code never leaves the company's computer.",
+      solution: "I studied 860+ real code changes, turned every mistake into an automatic check, and built a tool that spots them instantly. The code never leaves the company's computer.",
     },
   },
   "gogaa-cli": {
@@ -177,12 +177,12 @@ const PANEL_CONTENT: Record<string, PanelContent> = {
   },
   rasad: {
     title: "Rasad",
-    oneLiner: "Every tool call, every file touch, graded A-F. 656 sessions analyzed. 100% local.",
-    problem: "AI coding sessions are black boxes — no way to know what worked.",
-    solution: "Every tool call, every file touch, graded A-F. 656 sessions analyzed. 100% local.",
+    oneLiner: "Every tool call and file touch replayed, every session graded A to F. Open source on npm, 100% local.",
+    problem: "AI coding sessions are black boxes. Nobody can tell what worked or what it cost.",
+    solution: "Reads session files from 4 AI tools, replays every action in X-Ray and grades each session A to F. 656 sessions analyzed, live view in the terminal.",
     glow: "radial-gradient(ellipse at 50% 50%, rgba(160,120,104,0.06), transparent 70%)",
     plain: {
-      oneLiner: "A dashboard that shows what AI coding assistants really did, what it cost, and whether it was worth it.",
+      oneLiner: "A free, open-source dashboard that shows what AI coding assistants really did, what it cost, and whether it was worth it.",
       problem: "Companies pay for AI coding tools but cannot see what the AI did or whether the money was well spent.",
       solution: "Rasad records every AI work session, grades it from A to F, and shows where money is wasted. It found routine tasks costing 18x more than they needed to.",
     },
@@ -410,10 +410,20 @@ function ExpandModal({
   const commentary = projectSlug ? EMOJI_COMMENTARY[projectSlug] : undefined;
   const askAgentAboutProject = (): void => {
     if (!project) return;
+
     const query = `Walk me through ${project.title}: what problem it solves, the architecture, tradeoffs, and why it matters.`;
+
     onClose();
+
     window.setTimeout(() => {
-      window.dispatchEvent(new CustomEvent("chat-with-query", { detail: query }));
+      window.dispatchEvent(
+        new CustomEvent("chat-with-query", {
+          detail: {
+            query,
+            currentProject: project.slug,
+          },
+        })
+      );
     }, 220);
   };
 
@@ -523,29 +533,30 @@ function AnimatedMetric({
   const suffix = match?.[3] ?? "";
   const decimals = match?.[2].split(".")[1]?.length ?? 0;
 
-  useEffect(() => {
+    useEffect(() => {
     if (!active) return;
+
+    let frameId = 0;
 
     // Keep text-only metrics unchanged.
     if (numericValue === null || !Number.isFinite(numericValue)) {
-      setDisplayValue(value);
-      return;
+      frameId = requestAnimationFrame(() => setDisplayValue(value));
+      return () => cancelAnimationFrame(frameId);
     }
 
-    // If this metric has already animated, show any updated value directly.
+    // If this metric has already animated, show updated values directly.
     if (hasAnimated.current) {
-      setDisplayValue(value);
-      return;
+      frameId = requestAnimationFrame(() => setDisplayValue(value));
+      return () => cancelAnimationFrame(frameId);
     }
 
     hasAnimated.current = true;
 
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      setDisplayValue(value);
-      return;
+      frameId = requestAnimationFrame(() => setDisplayValue(value));
+      return () => cancelAnimationFrame(frameId);
     }
 
-    let frameId = 0;
     const duration = 1100;
     let startTime: number | null = null;
 
@@ -570,7 +581,6 @@ function AnimatedMetric({
       }
     };
 
-    setDisplayValue(`${prefix}${(0).toLocaleString("en-US")}${suffix}`);
     frameId = requestAnimationFrame(animate);
 
     return () => cancelAnimationFrame(frameId);
@@ -594,33 +604,33 @@ function FlagshipCarousel({
   plain?: boolean;
 }): React.ReactElement {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [isHovered, setIsHovered] = useState(false);  
-const hoverZoneRef = useRef<"left" | "right" | "center" | null>(null);
-
-
   const total = flagships.length;
 
-  const selectProject = useCallback(
-    (index: number) => {
-      setCurrentIndex(index);
-    },
-    [],
-  );
+  /*
+   * Cursor-driven only (no autoplay). Hovering a side card pulls it to the centre,
+   * one move per gesture: after a move, that same side stays locked until the pointer
+   * visits the centre card or leaves the carousel. Otherwise the next card sliding in
+   * under the cursor would chain-scroll through every project.
+   */
+  const lockedSideRef = useRef<"left" | "right" | null>(null);
+  /* Cards slide for ~0.8s; the incoming centre card passes under the cursor and must not unlock */
+  const movedAtRef = useRef(0);
+  const touchXRef = useRef<number | null>(null);
 
-  const nextProject = useCallback(() => {
-    setCurrentIndex((prev) => (prev + 1) % total);
+  const selectProject = useCallback((index: number) => {
+    setCurrentIndex(((index % total) + total) % total);
   }, [total]);
 
-  // Rotate automatically only while the pointer is outside the carousel.
-  useEffect(() => {
-    if (isHovered || total <= 1) return;
-
-    const timer = window.setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % total);
-    }, 3000);
-
-    return () => window.clearInterval(timer);
-  }, [isHovered, total]);
+  const onSideHover = useCallback(
+    (index: number, side: "left" | "right") => {
+      if (lockedSideRef.current === side) return;
+      if (performance.now() - movedAtRef.current < 800) return;
+      lockedSideRef.current = side;
+      movedAtRef.current = performance.now();
+      selectProject(index);
+    },
+    [selectProject],
+  );
 
   const getPosition = (
     index: number,
@@ -674,45 +684,36 @@ const positionStyles = {
   },
 };
 
-
-
   return (
-    
 <div
-  className="relative w-full min-w-0 overflow-hidden"
-  
-onMouseEnter={() => setIsHovered(true)}
-onMouseLeave={() => {
-  setIsHovered(false);
-  hoverZoneRef.current = null;
-}}
-onMouseMove={(e) => {
-  const rect = e.currentTarget.getBoundingClientRect();
-  const mouseX = (e.clientX - rect.left) / rect.width;
-
-  const zone =
-    mouseX < 0.30
-      ? "left"
-      : mouseX > 0.70
-        ? "right"
-        : "center";
-
-  // Don't select repeatedly while the cursor stays in the same zone.
-  if (zone === hoverZoneRef.current) return;
-
-  hoverZoneRef.current = zone;
-
-  if (zone === "left") {
-    selectProject((currentIndex - 1 + total) % total);
-  } else if (zone === "right") {
-    selectProject((currentIndex + 1) % total);
-  }
-}}
-
+  className="relative w-full min-w-0 overflow-hidden outline-none"
+  tabIndex={0}
+  role="region"
+  aria-roledescription="carousel"
+  aria-label="Flagship projects. Hover or use arrow keys to browse."
+  onPointerLeave={() => {
+    lockedSideRef.current = null;
+  }}
+  onKeyDown={(e) => {
+    if (e.key === "ArrowLeft") selectProject(currentIndex - 1);
+    if (e.key === "ArrowRight") selectProject(currentIndex + 1);
+  }}
+  onTouchStart={(e) => {
+    touchXRef.current = e.touches[0]?.clientX ?? null;
+  }}
+  onTouchEnd={(e) => {
+    const start = touchXRef.current;
+    const endX = e.changedTouches[0]?.clientX;
+    touchXRef.current = null;
+    if (start === null || endX === undefined) return;
+    const dx = endX - start;
+    if (Math.abs(dx) > 50) selectProject(currentIndex + (dx < 0 ? 1 : -1));
+  }}
 >
 
-      <div className="relative mx-auto h-[520px] md:h-[620px] lg:h-[650px] w-full max-w-[1400px] min-w-0 flex items-center justify-center [perspective:1400px] overflow-hidden">
-        <div className="relative w-full h-full flex items-center justify-center [transform-style:preserve-3d]">
+      {/* Wrappers ignore the pointer: side cards sit behind z=0, and a flat wrapper would win the hit-test */}
+      <div className="pointer-events-none relative mx-auto h-[520px] md:h-[620px] lg:h-[650px] w-full max-w-[1400px] min-w-0 flex items-center justify-center [perspective:1400px] overflow-hidden">
+        <div className="pointer-events-none relative w-full h-full flex items-center justify-center [transform-style:preserve-3d]">
           {flagships.map(({ project, mockup }, i) => {
             const position = getPosition(i);
             const style = positionStyles[position];
@@ -786,7 +787,13 @@ transition={{
               >
                 <div
                   className="relative w-full h-full overflow-hidden rounded-2xl border border-card-border/50 bg-background shadow-2xl cursor-pointer"
-                  onMouseEnter={() => selectProject(i)}
+                  onPointerMove={(e) => {
+                    if (e.pointerType !== "mouse") return;
+                    if (position === "center") {
+                      if (performance.now() - movedAtRef.current > 800) lockedSideRef.current = null;
+                    }
+                    else if (position !== "hidden") onSideHover(i, position);
+                  }}
                   onClick={() => {
                     if (position === "center") {
                       onOpen(project);
@@ -1173,13 +1180,16 @@ function ScrollProgress({ containerRef }: { containerRef: React.RefObject<HTMLEl
 
   if (progress <= 0) return <></>;
 
-  return (
+  // Portal: the section sits inside `.cv-auto` (content-visibility), whose containment
+  // turns `position: fixed` into "fixed to the section", so the bar drew as a stray line.
+  return ReactDOM.createPortal(
     <div className="fixed top-0 left-0 right-0 z-[200] h-[3px] bg-card-border/30 pointer-events-none">
       <div
         className="h-full bg-gradient-to-r from-accent to-accent-secondary transition-[width] duration-200 ease-out"
         style={{ width: `${progress}%` }}
       />
-    </div>
+    </div>,
+    document.body,
   );
 }
 

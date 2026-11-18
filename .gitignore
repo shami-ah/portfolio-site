@@ -43,3 +43,10 @@ next-env.d.ts
 # CodeLens review artifacts
 .code-review/
 
+
+# Playwright test artifacts
+test-results/
+playwright-report/
+
+# Local embedding cache (EMBEDDING_CACHE_PATH)
+.embedding-cache*.json
