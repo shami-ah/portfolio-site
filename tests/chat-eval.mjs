@@ -98,7 +98,7 @@ const retrievalCases = [
   },
   {
     q: "Do you work with Kubernetes?",
-    expect: "profile-stack",
+    expect: "profile-not-in-stack",
   },
   {
     q: "Which tech stack do you use?",

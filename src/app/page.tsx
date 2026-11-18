@@ -1,5 +1,5 @@
 import { TopBar } from "@/components/top-bar";
-import { ConfigHero } from "@/components/config-hero";
+import { SpotlightHero } from "@/components/spotlight-hero";
 import { SidebarNav } from "@/components/sidebar-nav";
 import { Projects } from "@/components/projects";
 import { ExperienceAndWriting } from "@/components/experience-writing";
@@ -23,7 +23,7 @@ export default function Home(): React.ReactElement {
       <SidebarNav />
       <CursorGlow />
       <div className="relative z-10">
-        <ConfigHero />
+        <SpotlightHero />
         <div className="cv-auto">
           <Projects />
         </div>

@@ -655,7 +655,7 @@ export const generatedChunks = [
       "Production SaaS",
       "summary"
     ],
-    "text": "impact: Grew to 100+ clients across 150+ events in 8 months with zero sales team — product-led adoption. Saves each team ~1.5 hours per day. AI classifies emails, proposes actions, and executes after human approval."
+    "text": "impact: Grew to 100+ clients across 150+ events in 8 months with no sales team, all product-led. Saves each team about 1.5 hours a day. AI classifies emails, proposes actions, and executes only after a human approves. The platform has since grown into memberships, wallets, gift cards and in-venue POS."
   },
   {
     "id": "project-openevent-summary-6",
@@ -1219,7 +1219,7 @@ export const generatedChunks = [
       "Production SaaS",
       "results"
     ],
-    "text": "results 2: ~80% reduction in manual coordination time"
+    "text": "results 2: ~83% less manual coordination time (about 1.5 h down to 15 min a day)"
   },
   {
     "id": "project-openevent-results-3",
@@ -1243,7 +1243,7 @@ export const generatedChunks = [
       "Production SaaS",
       "results"
     ],
-    "text": "results 4: Full CI/CD with staging and production environments"
+    "text": "results 4: Grew past email AI into memberships, wallets, gift cards, POS and KYC-verified signup"
   },
   {
     "id": "project-openevent-results-5",
@@ -1255,7 +1255,7 @@ export const generatedChunks = [
       "Production SaaS",
       "results"
     ],
-    "text": "measuredImpact before value: ~1.5"
+    "text": "results 5: Full CI/CD with staging and production environments"
   },
   {
     "id": "project-openevent-results-6",
@@ -1267,7 +1267,7 @@ export const generatedChunks = [
       "Production SaaS",
       "results"
     ],
-    "text": "measuredImpact before unit: hrs"
+    "text": "measuredImpact before value: ~1.5"
   },
   {
     "id": "project-openevent-results-7",
@@ -1279,7 +1279,7 @@ export const generatedChunks = [
       "Production SaaS",
       "results"
     ],
-    "text": "measuredImpact before context: per team, per day, reading & triaging email"
+    "text": "measuredImpact before unit: hrs"
   },
   {
     "id": "project-openevent-results-8",
@@ -1291,7 +1291,7 @@ export const generatedChunks = [
       "Production SaaS",
       "results"
     ],
-    "text": "measuredImpact after value: ~15"
+    "text": "measuredImpact before context: per team, per day, reading & triaging email"
   },
   {
     "id": "project-openevent-results-9",
@@ -1303,7 +1303,7 @@ export const generatedChunks = [
       "Production SaaS",
       "results"
     ],
-    "text": "measuredImpact after unit: min"
+    "text": "measuredImpact after value: ~15"
   },
   {
     "id": "project-openevent-results-10",
@@ -1315,7 +1315,7 @@ export const generatedChunks = [
       "Production SaaS",
       "results"
     ],
-    "text": "measuredImpact after context: review AI-drafted actions & approve"
+    "text": "measuredImpact after unit: min"
   },
   {
     "id": "project-openevent-results-11",
@@ -1327,7 +1327,7 @@ export const generatedChunks = [
       "Production SaaS",
       "results"
     ],
-    "text": "measuredImpact highlights 1 n: 100+"
+    "text": "measuredImpact after context: review AI-drafted actions & approve"
   },
   {
     "id": "project-openevent-results-12",
@@ -1339,7 +1339,7 @@ export const generatedChunks = [
       "Production SaaS",
       "results"
     ],
-    "text": "measuredImpact highlights 1 l: active clients"
+    "text": "measuredImpact highlights 1 n: 100+"
   },
   {
     "id": "project-openevent-results-13",
@@ -1351,7 +1351,7 @@ export const generatedChunks = [
       "Production SaaS",
       "results"
     ],
-    "text": "measuredImpact highlights 2 n: 150+"
+    "text": "measuredImpact highlights 1 l: active clients"
   },
   {
     "id": "project-openevent-results-14",
@@ -1363,7 +1363,7 @@ export const generatedChunks = [
       "Production SaaS",
       "results"
     ],
-    "text": "measuredImpact highlights 2 l: events run"
+    "text": "measuredImpact highlights 2 n: 150+"
   },
   {
     "id": "project-openevent-results-15",
@@ -1375,10 +1375,22 @@ export const generatedChunks = [
       "Production SaaS",
       "results"
     ],
-    "text": "measuredImpact highlights 3 n: 83%"
+    "text": "measuredImpact highlights 2 l: events run"
   },
   {
     "id": "project-openevent-results-16",
+    "project": "openevent",
+    "category": "project",
+    "tags": [
+      "openevent",
+      "OpenEvent",
+      "Production SaaS",
+      "results"
+    ],
+    "text": "measuredImpact highlights 3 n: 83%"
+  },
+  {
+    "id": "project-openevent-results-17",
     "project": "openevent",
     "category": "project",
     "tags": [
@@ -1447,7 +1459,7 @@ export const generatedChunks = [
       "AI Dev Tool",
       "summary"
     ],
-    "text": "impact: 624 hand-crafted patterns mined from 860+ production PRs across 9 stacks. Reviews in under one second, entirely on your machine. When a commercial AI reviewer (Greptile) caught 12 issues CodeLens missed, I ran a gap analysis and closed every one — coverage went from 8% to 100%."
+    "text": "impact: 624 hand-crafted patterns mined from 860+ production PRs across 9 stacks. Reviews in under one second, entirely on your machine. When a commercial AI reviewer (Greptile) caught 12 issues CodeLens missed, I ran a gap analysis and closed every one. Coverage went from 8% to 100%."
   },
   {
     "id": "project-codelens-summary-6",
@@ -2167,7 +2179,7 @@ export const generatedChunks = [
       "Developer Tool / CLI",
       "summary"
     ],
-    "text": "subtitle: AI Coding Agent — Any Model, Any Provider"
+    "text": "subtitle: AI Coding Agent for Any Model, Any Provider"
   },
   {
     "id": "project-gogaa-cli-summary-3",
@@ -2203,7 +2215,7 @@ export const generatedChunks = [
       "Developer Tool / CLI",
       "summary"
     ],
-    "text": "impact: The only open-source AI coding CLI where the provider is a variable — 11 providers with automatic fallback, so rate-limits never stop your work. Production-grade git workflow, polished React Ink TUI, plugin marketplace, and 1,400+ passing tests."
+    "text": "impact: An AI coding CLI where the provider is a variable: 11 providers with automatic fallback, so a rate limit never stops your work. Production-grade git workflow, a polished React Ink TUI, a plugin marketplace and 1,400+ passing tests. Ships through my own private registry with checksummed builds, self-update and installers for macOS, Linux and Windows."
   },
   {
     "id": "project-gogaa-cli-summary-6",
@@ -2803,7 +2815,7 @@ export const generatedChunks = [
       "Developer Tool / CLI",
       "results"
     ],
-    "text": "measuredImpact before value: ~70%"
+    "text": "results 5: Private registry: checksummed builds, self-update with rollback, per-device access tokens"
   },
   {
     "id": "project-gogaa-cli-results-6",
@@ -2815,7 +2827,7 @@ export const generatedChunks = [
       "Developer Tool / CLI",
       "results"
     ],
-    "text": "measuredImpact before context: tool call success rate with raw model JSON"
+    "text": "measuredImpact before value: ~70%"
   },
   {
     "id": "project-gogaa-cli-results-7",
@@ -2827,7 +2839,7 @@ export const generatedChunks = [
       "Developer Tool / CLI",
       "results"
     ],
-    "text": "measuredImpact after value: ~95%"
+    "text": "measuredImpact before context: tool call success rate with raw model JSON"
   },
   {
     "id": "project-gogaa-cli-results-8",
@@ -2839,7 +2851,7 @@ export const generatedChunks = [
       "Developer Tool / CLI",
       "results"
     ],
-    "text": "measuredImpact after context: after 5-strategy progressive JSON parser"
+    "text": "measuredImpact after value: ~95%"
   },
   {
     "id": "project-gogaa-cli-results-9",
@@ -2851,7 +2863,7 @@ export const generatedChunks = [
       "Developer Tool / CLI",
       "results"
     ],
-    "text": "measuredImpact highlights 1 n: 1,400+"
+    "text": "measuredImpact after context: after 5-strategy progressive JSON parser"
   },
   {
     "id": "project-gogaa-cli-results-10",
@@ -2863,7 +2875,7 @@ export const generatedChunks = [
       "Developer Tool / CLI",
       "results"
     ],
-    "text": "measuredImpact highlights 1 l: tests passing"
+    "text": "measuredImpact highlights 1 n: 1,400+"
   },
   {
     "id": "project-gogaa-cli-results-11",
@@ -2875,7 +2887,7 @@ export const generatedChunks = [
       "Developer Tool / CLI",
       "results"
     ],
-    "text": "measuredImpact highlights 2 n: 11"
+    "text": "measuredImpact highlights 1 l: tests passing"
   },
   {
     "id": "project-gogaa-cli-results-12",
@@ -2887,7 +2899,7 @@ export const generatedChunks = [
       "Developer Tool / CLI",
       "results"
     ],
-    "text": "measuredImpact highlights 2 l: providers"
+    "text": "measuredImpact highlights 2 n: 11"
   },
   {
     "id": "project-gogaa-cli-results-13",
@@ -2899,10 +2911,22 @@ export const generatedChunks = [
       "Developer Tool / CLI",
       "results"
     ],
-    "text": "measuredImpact highlights 3 n: 84%"
+    "text": "measuredImpact highlights 2 l: providers"
   },
   {
     "id": "project-gogaa-cli-results-14",
+    "project": "gogaa-cli",
+    "category": "project",
+    "tags": [
+      "gogaa-cli",
+      "Gogaa CLI",
+      "Developer Tool / CLI",
+      "results"
+    ],
+    "text": "measuredImpact highlights 3 n: 84%"
+  },
+  {
+    "id": "project-gogaa-cli-results-15",
     "project": "gogaa-cli",
     "category": "project",
     "tags": [
@@ -2947,7 +2971,7 @@ export const generatedChunks = [
       "Developer Tool / CLI + Web",
       "summary"
     ],
-    "text": "oneLiner: 656 sessions analyzed — every tool call, every file touch, graded A-F. 100% local."
+    "text": "oneLiner: 656 sessions analyzed, every action replayed, every session graded A to F. Open source, 100% local."
   },
   {
     "id": "project-rasad-summary-4",
@@ -2959,7 +2983,7 @@ export const generatedChunks = [
       "Developer Tool / CLI + Web",
       "summary"
     ],
-    "text": "cardSummary: 656 sessions analyzed — every tool call, every file touch, graded A-F. Your data never leaves your machine."
+    "text": "cardSummary: 656 sessions analyzed. Every tool call and file touch replayed, every session graded A to F. Open source on npm, 100% local."
   },
   {
     "id": "project-rasad-summary-5",
@@ -2971,7 +2995,7 @@ export const generatedChunks = [
       "Developer Tool / CLI + Web",
       "summary"
     ],
-    "text": "impact: The observability layer for AI-assisted development. 656 sessions across 4 tools, 38K messages, 14K tool calls — every action replayed, every session graded A-F. Found that routine tasks on Opus cost 18x more than Sonnet with no quality difference. 100% local, zero outbound requests."
+    "text": "impact: The observability layer for AI-assisted development. 656 sessions across 4 tools, 38K messages and 14K tool calls, every action replayed and every session graded A to F. Found that routine tasks on Opus cost 18x more than Sonnet with no quality difference. Published on npm as rasad-ai (MIT). 100% local, zero outbound requests."
   },
   {
     "id": "project-rasad-summary-6",
@@ -3559,7 +3583,7 @@ export const generatedChunks = [
       "Developer Tool / CLI + Web",
       "results"
     ],
-    "text": "results 4: Zero outbound requests — 100% local-first"
+    "text": "results 4: Zero outbound requests, 100% local-first"
   },
   {
     "id": "project-rasad-results-5",
@@ -3571,7 +3595,7 @@ export const generatedChunks = [
       "Developer Tool / CLI + Web",
       "results"
     ],
-    "text": "measuredImpact before value: $0"
+    "text": "results 5: Published on npm as rasad-ai (MIT) with a live terminal view: rasad watch"
   },
   {
     "id": "project-rasad-results-6",
@@ -3583,7 +3607,7 @@ export const generatedChunks = [
       "Developer Tool / CLI + Web",
       "results"
     ],
-    "text": "measuredImpact before context: visibility into AI tool behavior and cost"
+    "text": "measuredImpact before value: $0"
   },
   {
     "id": "project-rasad-results-7",
@@ -3595,7 +3619,7 @@ export const generatedChunks = [
       "Developer Tool / CLI + Web",
       "results"
     ],
-    "text": "measuredImpact after value: 656"
+    "text": "measuredImpact before context: visibility into AI tool behavior and cost"
   },
   {
     "id": "project-rasad-results-8",
@@ -3607,7 +3631,7 @@ export const generatedChunks = [
       "Developer Tool / CLI + Web",
       "results"
     ],
-    "text": "measuredImpact after context: sessions analyzed with action-level replay"
+    "text": "measuredImpact after value: 656"
   },
   {
     "id": "project-rasad-results-9",
@@ -3619,7 +3643,7 @@ export const generatedChunks = [
       "Developer Tool / CLI + Web",
       "results"
     ],
-    "text": "measuredImpact highlights 1 n: 38K"
+    "text": "measuredImpact after context: sessions analyzed with action-level replay"
   },
   {
     "id": "project-rasad-results-10",
@@ -3631,7 +3655,7 @@ export const generatedChunks = [
       "Developer Tool / CLI + Web",
       "results"
     ],
-    "text": "measuredImpact highlights 1 l: messages indexed"
+    "text": "measuredImpact highlights 1 n: 38K"
   },
   {
     "id": "project-rasad-results-11",
@@ -3643,7 +3667,7 @@ export const generatedChunks = [
       "Developer Tool / CLI + Web",
       "results"
     ],
-    "text": "measuredImpact highlights 2 n: 14K"
+    "text": "measuredImpact highlights 1 l: messages indexed"
   },
   {
     "id": "project-rasad-results-12",
@@ -3655,7 +3679,7 @@ export const generatedChunks = [
       "Developer Tool / CLI + Web",
       "results"
     ],
-    "text": "measuredImpact highlights 2 l: tool calls tracked"
+    "text": "measuredImpact highlights 2 n: 14K"
   },
   {
     "id": "project-rasad-results-13",
@@ -3667,10 +3691,22 @@ export const generatedChunks = [
       "Developer Tool / CLI + Web",
       "results"
     ],
-    "text": "measuredImpact highlights 3 n: 6.2s"
+    "text": "measuredImpact highlights 2 l: tool calls tracked"
   },
   {
     "id": "project-rasad-results-14",
+    "project": "rasad",
+    "category": "project",
+    "tags": [
+      "rasad",
+      "Rasad",
+      "Developer Tool / CLI + Web",
+      "results"
+    ],
+    "text": "measuredImpact highlights 3 n: 6.2s"
+  },
+  {
+    "id": "project-rasad-results-15",
     "project": "rasad",
     "category": "project",
     "tags": [
@@ -5514,7 +5550,7 @@ export const generatedChunks = [
       "story",
       "case study"
     ],
-    "text": "headline: Event teams got 75 minutes of their day back.\naudience: For event companies buried in booking emails\nbeforeContext: per team, every day, reading and sorting booking emails\nafterContext: to check what the AI prepared and press approve\nnarration mood: proud\nnarration text: He built the entire AI side of this. 100+ companies started using it in 8 months, with no sales team.\nquote text: The AI layer saves our team 90 minutes a day. No engineer designed the human-in-the-loop gate the way he did.\nquote name: River Soellner\nquote role: Founder, More Life Hospitality"
+    "text": "headline: 90 minutes of daily email work, down to 15.\naudience: For event companies buried in booking emails\nbeforeContext: per team, every day, reading and sorting booking emails\nafterContext: to check what the AI prepared and press approve\nnarration mood: proud\nnarration text: He built the entire AI side of this. 100+ companies started using it in 8 months, with no sales team.\nquote text: The AI layer saves our team 90 minutes a day. No engineer designed the human-in-the-loop gate the way he did.\nquote name: River Soellner\nquote role: Founder, More Life Hospitality"
   },
   {
     "id": "story-codelens",

@@ -21,7 +21,7 @@ export interface FlagshipStory {
 
 export const FLAGSHIP_STORIES: Record<string, FlagshipStory> = {
   openevent: {
-    headline: "Event teams got 75 minutes of their day back.",
+    headline: "90 minutes of daily email work, down to 15.",
     audience: "For event companies buried in booking emails",
     beforeContext: "per team, every day, reading and sorting booking emails",
     afterContext: "to check what the AI prepared and press approve",

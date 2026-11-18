@@ -16,12 +16,13 @@ export function CareerStory(): React.ReactElement {
   
 
   return (
-    <section id="log" className="px-5 md:px-10 lg:pl-28 lg:pr-16 py-10 md:py-16 border-t border-card-border/60">
+    <section id="log" className="px-5 md:px-10 lg:px-28 py-10 md:py-16 border-t border-card-border/60">
       <div className="max-w-[1200px] mx-auto">
-        <Reveal>
+        <Reveal className="text-center">
           <Eyebrow className="mb-3">Experience</Eyebrow>
-          <h2 className="font-heading font-bold text-3xl sm:text-4xl md:text-6xl leading-[1.05] tracking-tight max-w-[18ch] text-balance">
-            Where I&apos;ve done it before.
+          <h2 className="font-heading font-bold text-3xl sm:text-4xl md:text-6xl leading-[1.05] tracking-tight max-w-[18ch] mx-auto text-balance">
+            Where I&apos;ve
+            <span className="block text-gradient">done it before.</span>
           </h2>
         </Reveal>
 
