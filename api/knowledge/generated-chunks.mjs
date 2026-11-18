@@ -607,7 +607,7 @@ export const generatedChunks = [
       "Production SaaS",
       "summary"
     ],
-    "text": "title: OpenEvent"
+    "text": "OpenEvent · summary: title: OpenEvent"
   },
   {
     "id": "project-openevent-summary-2",
@@ -619,7 +619,7 @@ export const generatedChunks = [
       "Production SaaS",
       "summary"
     ],
-    "text": "subtitle: AI-Powered Event Management Platform"
+    "text": "OpenEvent · summary: subtitle: AI-Powered Event Management Platform"
   },
   {
     "id": "project-openevent-summary-3",
@@ -631,7 +631,7 @@ export const generatedChunks = [
       "Production SaaS",
       "summary"
     ],
-    "text": "oneLiner: AI turns client emails into approved bookings, invoices, and CRM updates."
+    "text": "OpenEvent · summary: oneLiner: AI turns client emails into approved bookings, invoices, and CRM updates."
   },
   {
     "id": "project-openevent-summary-4",
@@ -643,7 +643,7 @@ export const generatedChunks = [
       "Production SaaS",
       "summary"
     ],
-    "text": "cardSummary: 100+ clients in 8 months, no sales team. AI reads emails, proposes actions, humans approve with one click."
+    "text": "OpenEvent · summary: cardSummary: 100+ clients in 8 months, no sales team. AI reads emails, proposes actions, humans approve with one click."
   },
   {
     "id": "project-openevent-summary-5",
@@ -655,7 +655,7 @@ export const generatedChunks = [
       "Production SaaS",
       "summary"
     ],
-    "text": "impact: Grew to 100+ clients across 150+ events in 8 months with no sales team, all product-led. Saves each team about 1.5 hours a day. AI classifies emails, proposes actions, and executes only after a human approves. The platform has since grown into memberships, wallets, gift cards and in-venue POS."
+    "text": "OpenEvent · summary: impact: Grew to 100+ clients across 150+ events in 8 months with no sales team, all product-led. Saves each team about 1.5 hours a day. AI classifies emails, proposes actions, and executes only after a human approves. The platform has since grown into memberships, wallets, gift cards and in-venue POS."
   },
   {
     "id": "project-openevent-summary-6",
@@ -667,7 +667,7 @@ export const generatedChunks = [
       "Production SaaS",
       "summary"
     ],
-    "text": "problem: Event companies drown in emails and manual coordination. Staff spend hours triaging requests, copying data between systems, and chasing approvals. Simple automation breaks on ambiguous language."
+    "text": "OpenEvent · summary: problem: Event companies drown in emails and manual coordination. Staff spend hours triaging requests, copying data between systems, and chasing approvals. Simple automation breaks on ambiguous language."
   },
   {
     "id": "project-openevent-summary-7",
@@ -679,7 +679,7 @@ export const generatedChunks = [
       "Production SaaS",
       "summary"
     ],
-    "text": "solution: An AI layer that ingests emails, classifies intent, extracts entities with pgvector context, and proposes actions. Humans approve with one click before anything touches money or commitments. Declarative JSON workflows make the system extensible without code changes."
+    "text": "OpenEvent · summary: solution: An AI layer that ingests emails, classifies intent, extracts entities with pgvector context, and proposes actions. Humans approve with one click before anything touches money or commitments. Declarative JSON workflows make the system extensible without code changes."
   },
   {
     "id": "project-openevent-architecture-1",
@@ -691,7 +691,7 @@ export const generatedChunks = [
       "Production SaaS",
       "architecture"
     ],
-    "text": "architecture 1: Email Ingestion (Gmail / Outlook / IMAP)"
+    "text": "OpenEvent · architecture: architecture 1: Email Ingestion (Gmail / Outlook / IMAP)"
   },
   {
     "id": "project-openevent-architecture-2",
@@ -703,7 +703,7 @@ export const generatedChunks = [
       "Production SaaS",
       "architecture"
     ],
-    "text": "architecture 2: AI Intent Classification"
+    "text": "OpenEvent · architecture: architecture 2: AI Intent Classification"
   },
   {
     "id": "project-openevent-architecture-3",
@@ -715,7 +715,7 @@ export const generatedChunks = [
       "Production SaaS",
       "architecture"
     ],
-    "text": "architecture 3: Entity Extraction + pgvector Context"
+    "text": "OpenEvent · architecture: architecture 3: Entity Extraction + pgvector Context"
   },
   {
     "id": "project-openevent-architecture-4",
@@ -727,7 +727,7 @@ export const generatedChunks = [
       "Production SaaS",
       "architecture"
     ],
-    "text": "architecture 4: Human-in-the-Loop Approval Gate"
+    "text": "OpenEvent · architecture: architecture 4: Human-in-the-Loop Approval Gate"
   },
   {
     "id": "project-openevent-architecture-5",
@@ -739,7 +739,7 @@ export const generatedChunks = [
       "Production SaaS",
       "architecture"
     ],
-    "text": "architecture 5: Declarative Workflow Engine (JSON/YAML)"
+    "text": "OpenEvent · architecture: architecture 5: Declarative Workflow Engine (JSON/YAML)"
   },
   {
     "id": "project-openevent-architecture-6",
@@ -751,7 +751,7 @@ export const generatedChunks = [
       "Production SaaS",
       "architecture"
     ],
-    "text": "architecture 6: Execution (Calendar, Stripe, CRM, Email)"
+    "text": "OpenEvent · architecture: architecture 6: Execution (Calendar, Stripe, CRM, Email)"
   },
   {
     "id": "project-openevent-architecture-7",
@@ -763,7 +763,7 @@ export const generatedChunks = [
       "Production SaaS",
       "architecture"
     ],
-    "text": "architecture 7: Audit Log + Telemetry"
+    "text": "OpenEvent · architecture: architecture 7: Audit Log + Telemetry"
   },
   {
     "id": "project-openevent-architecture-8",
@@ -775,7 +775,7 @@ export const generatedChunks = [
       "Production SaaS",
       "architecture"
     ],
-    "text": "features 1: Email-to-task pipeline with AI intent classification and entity extraction"
+    "text": "OpenEvent · architecture: features 1: Email-to-task pipeline with AI intent classification and entity extraction"
   },
   {
     "id": "project-openevent-architecture-9",
@@ -787,7 +787,7 @@ export const generatedChunks = [
       "Production SaaS",
       "architecture"
     ],
-    "text": "features 2: Human-in-the-loop: AI drafts, humans approve before any execution"
+    "text": "OpenEvent · architecture: features 2: Human-in-the-loop: AI drafts, humans approve before any execution"
   },
   {
     "id": "project-openevent-architecture-10",
@@ -799,7 +799,7 @@ export const generatedChunks = [
       "Production SaaS",
       "architecture"
     ],
-    "text": "features 3: Declarative workflow engine — non-engineers can add steps without code"
+    "text": "OpenEvent · architecture: features 3: Declarative workflow engine — non-engineers can add steps without code"
   },
   {
     "id": "project-openevent-architecture-11",
@@ -811,7 +811,7 @@ export const generatedChunks = [
       "Production SaaS",
       "architecture"
     ],
-    "text": "features 4: Semantic search via pgvector for template matching and client history"
+    "text": "OpenEvent · architecture: features 4: Semantic search via pgvector for template matching and client history"
   },
   {
     "id": "project-openevent-architecture-12",
@@ -823,7 +823,7 @@ export const generatedChunks = [
       "Production SaaS",
       "architecture"
     ],
-    "text": "features 5: Full integrations: Calendar, Stripe invoicing, CRM sync, webhooks"
+    "text": "OpenEvent · architecture: features 5: Full integrations: Calendar, Stripe invoicing, CRM sync, webhooks"
   },
   {
     "id": "project-openevent-architecture-13",
@@ -835,7 +835,7 @@ export const generatedChunks = [
       "Production SaaS",
       "architecture"
     ],
-    "text": "stack 1: React"
+    "text": "OpenEvent · architecture: stack 1: React"
   },
   {
     "id": "project-openevent-architecture-14",
@@ -847,7 +847,7 @@ export const generatedChunks = [
       "Production SaaS",
       "architecture"
     ],
-    "text": "stack 2: TypeScript"
+    "text": "OpenEvent · architecture: stack 2: TypeScript"
   },
   {
     "id": "project-openevent-architecture-15",
@@ -859,7 +859,7 @@ export const generatedChunks = [
       "Production SaaS",
       "architecture"
     ],
-    "text": "stack 3: Supabase"
+    "text": "OpenEvent · architecture: stack 3: Supabase"
   },
   {
     "id": "project-openevent-architecture-16",
@@ -871,7 +871,7 @@ export const generatedChunks = [
       "Production SaaS",
       "architecture"
     ],
-    "text": "stack 4: OpenAI"
+    "text": "OpenEvent · architecture: stack 4: OpenAI"
   },
   {
     "id": "project-openevent-architecture-17",
@@ -883,7 +883,7 @@ export const generatedChunks = [
       "Production SaaS",
       "architecture"
     ],
-    "text": "stack 5: pgvector"
+    "text": "OpenEvent · architecture: stack 5: pgvector"
   },
   {
     "id": "project-openevent-architecture-18",
@@ -895,7 +895,7 @@ export const generatedChunks = [
       "Production SaaS",
       "architecture"
     ],
-    "text": "stack 6: Stripe"
+    "text": "OpenEvent · architecture: stack 6: Stripe"
   },
   {
     "id": "project-openevent-architecture-19",
@@ -907,7 +907,7 @@ export const generatedChunks = [
       "Production SaaS",
       "architecture"
     ],
-    "text": "stack 7: Docker"
+    "text": "OpenEvent · architecture: stack 7: Docker"
   },
   {
     "id": "project-openevent-decisions-1",
@@ -919,7 +919,7 @@ export const generatedChunks = [
       "Production SaaS",
       "decisions"
     ],
-    "text": "techDecisions 1 title: Human-in-the-loop by default"
+    "text": "OpenEvent · decisions: techDecisions 1 title: Human-in-the-loop by default"
   },
   {
     "id": "project-openevent-decisions-2",
@@ -931,7 +931,7 @@ export const generatedChunks = [
       "Production SaaS",
       "decisions"
     ],
-    "text": "techDecisions 1 description: Event coordination is full of ambiguity. AI proposes, humans approve — this trust boundary is why adoption was immediate. The fully automated competitor clients tried before failed on day two."
+    "text": "OpenEvent · decisions: techDecisions 1 description: Event coordination is full of ambiguity. AI proposes, humans approve — this trust boundary is why adoption was immediate. The fully automated competitor clients tried before failed on day two."
   },
   {
     "id": "project-openevent-decisions-3",
@@ -943,7 +943,7 @@ export const generatedChunks = [
       "Production SaaS",
       "decisions"
     ],
-    "text": "techDecisions 2 title: pgvector inside Postgres"
+    "text": "OpenEvent · decisions: techDecisions 2 title: pgvector inside Postgres"
   },
   {
     "id": "project-openevent-decisions-4",
@@ -955,7 +955,7 @@ export const generatedChunks = [
       "Production SaaS",
       "decisions"
     ],
-    "text": "techDecisions 2 description: No separate vector DB. Embeddings live next to relational data — one query joins both. Zero sync lag, zero extra infra."
+    "text": "OpenEvent · decisions: techDecisions 2 description: No separate vector DB. Embeddings live next to relational data — one query joins both. Zero sync lag, zero extra infra."
   },
   {
     "id": "project-openevent-decisions-5",
@@ -967,7 +967,7 @@ export const generatedChunks = [
       "Production SaaS",
       "decisions"
     ],
-    "text": "techDecisions 3 title: Declarative workflow engine"
+    "text": "OpenEvent · decisions: techDecisions 3 title: Declarative workflow engine"
   },
   {
     "id": "project-openevent-decisions-6",
@@ -979,7 +979,7 @@ export const generatedChunks = [
       "Production SaaS",
       "decisions"
     ],
-    "text": "techDecisions 3 description: Workflows are JSON/YAML, not TypeScript. Adding an approval step or integration is a config change, not a deploy."
+    "text": "OpenEvent · decisions: techDecisions 3 description: Workflows are JSON/YAML, not TypeScript. Adding an approval step or integration is a config change, not a deploy."
   },
   {
     "id": "project-openevent-decisions-7",
@@ -991,7 +991,7 @@ export const generatedChunks = [
       "Production SaaS",
       "decisions"
     ],
-    "text": "decision scenario: An event company gets 100+ ambiguous client emails daily. They want AI to handle it."
+    "text": "OpenEvent · decisions: decision scenario: An event company gets 100+ ambiguous client emails daily. They want AI to handle it."
   },
   {
     "id": "project-openevent-decisions-8",
@@ -1003,7 +1003,7 @@ export const generatedChunks = [
       "Production SaaS",
       "decisions"
     ],
-    "text": "decision question: How do you design the system?"
+    "text": "OpenEvent · decisions: decision question: How do you design the system?"
   },
   {
     "id": "project-openevent-decisions-9",
@@ -1015,7 +1015,7 @@ export const generatedChunks = [
       "Production SaaS",
       "decisions"
     ],
-    "text": "decision options 1: Full automation: AI reads, decides, executes"
+    "text": "OpenEvent · decisions: decision options 1: Full automation: AI reads, decides, executes"
   },
   {
     "id": "project-openevent-decisions-10",
@@ -1027,7 +1027,7 @@ export const generatedChunks = [
       "Production SaaS",
       "decisions"
     ],
-    "text": "decision options 2: AI drafts action, human approves before execution"
+    "text": "OpenEvent · decisions: decision options 2: AI drafts action, human approves before execution"
   },
   {
     "id": "project-openevent-decisions-11",
@@ -1039,7 +1039,7 @@ export const generatedChunks = [
       "Production SaaS",
       "decisions"
     ],
-    "text": "decision options 3: Classification only, humans do the rest"
+    "text": "OpenEvent · decisions: decision options 3: Classification only, humans do the rest"
   },
   {
     "id": "project-openevent-decisions-12",
@@ -1051,7 +1051,7 @@ export const generatedChunks = [
       "Production SaaS",
       "decisions"
     ],
-    "text": "decision commonChoice: 0"
+    "text": "OpenEvent · decisions: decision commonChoice: 0"
   },
   {
     "id": "project-openevent-decisions-13",
@@ -1063,7 +1063,7 @@ export const generatedChunks = [
       "Production SaaS",
       "decisions"
     ],
-    "text": "decision myChoice: 1"
+    "text": "OpenEvent · decisions: decision myChoice: 1"
   },
   {
     "id": "project-openevent-decisions-14",
@@ -1075,7 +1075,7 @@ export const generatedChunks = [
       "Production SaaS",
       "decisions"
     ],
-    "text": "decision reasoning: Full automation fails on the first misread. Event coordination needs judgment. I designed AI to handle extraction and proposal — humans approve before anything touches money. That trust boundary is why clients actually use it."
+    "text": "OpenEvent · decisions: decision reasoning: Full automation fails on the first misread. Event coordination needs judgment. I designed AI to handle extraction and proposal — humans approve before anything touches money. That trust boundary is why clients actually use it."
   },
   {
     "id": "project-openevent-decisions-15",
@@ -1087,7 +1087,7 @@ export const generatedChunks = [
       "Production SaaS",
       "decisions"
     ],
-    "text": "comparison mine title: OpenEvent"
+    "text": "OpenEvent · decisions: comparison mine title: OpenEvent"
   },
   {
     "id": "project-openevent-decisions-16",
@@ -1099,7 +1099,7 @@ export const generatedChunks = [
       "Production SaaS",
       "decisions"
     ],
-    "text": "comparison mine bullets 1: AI classifies, extracts, proposes — human approves"
+    "text": "OpenEvent · decisions: comparison mine bullets 1: AI classifies, extracts, proposes — human approves"
   },
   {
     "id": "project-openevent-decisions-17",
@@ -1111,7 +1111,7 @@ export const generatedChunks = [
       "Production SaaS",
       "decisions"
     ],
-    "text": "comparison mine bullets 2: JSON/YAML workflows, extensible without code"
+    "text": "OpenEvent · decisions: comparison mine bullets 2: JSON/YAML workflows, extensible without code"
   },
   {
     "id": "project-openevent-decisions-18",
@@ -1123,7 +1123,7 @@ export const generatedChunks = [
       "Production SaaS",
       "decisions"
     ],
-    "text": "comparison mine bullets 3: pgvector inside Postgres, no extra infra"
+    "text": "OpenEvent · decisions: comparison mine bullets 3: pgvector inside Postgres, no extra infra"
   },
   {
     "id": "project-openevent-decisions-19",
@@ -1135,7 +1135,7 @@ export const generatedChunks = [
       "Production SaaS",
       "decisions"
     ],
-    "text": "comparison mine bullets 4: Full audit log with auto-approval learning"
+    "text": "OpenEvent · decisions: comparison mine bullets 4: Full audit log with auto-approval learning"
   },
   {
     "id": "project-openevent-decisions-20",
@@ -1147,7 +1147,7 @@ export const generatedChunks = [
       "Production SaaS",
       "decisions"
     ],
-    "text": "comparison standard title: Full-automation AI"
+    "text": "OpenEvent · decisions: comparison standard title: Full-automation AI"
   },
   {
     "id": "project-openevent-decisions-21",
@@ -1159,7 +1159,7 @@ export const generatedChunks = [
       "Production SaaS",
       "decisions"
     ],
-    "text": "comparison standard bullets 1: AI decides and executes with no human gate"
+    "text": "OpenEvent · decisions: comparison standard bullets 1: AI decides and executes with no human gate"
   },
   {
     "id": "project-openevent-decisions-22",
@@ -1171,7 +1171,7 @@ export const generatedChunks = [
       "Production SaaS",
       "decisions"
     ],
-    "text": "comparison standard bullets 2: Breaks on ambiguous input, fast trust erosion"
+    "text": "OpenEvent · decisions: comparison standard bullets 2: Breaks on ambiguous input, fast trust erosion"
   },
   {
     "id": "project-openevent-decisions-23",
@@ -1183,7 +1183,7 @@ export const generatedChunks = [
       "Production SaaS",
       "decisions"
     ],
-    "text": "comparison standard bullets 3: Hardcoded workflows, every change = deploy"
+    "text": "OpenEvent · decisions: comparison standard bullets 3: Hardcoded workflows, every change = deploy"
   },
   {
     "id": "project-openevent-decisions-24",
@@ -1195,7 +1195,7 @@ export const generatedChunks = [
       "Production SaaS",
       "decisions"
     ],
-    "text": "comparison standard bullets 4: No audit trail when AI makes wrong call"
+    "text": "OpenEvent · decisions: comparison standard bullets 4: No audit trail when AI makes wrong call"
   },
   {
     "id": "project-openevent-results-1",
@@ -1207,7 +1207,7 @@ export const generatedChunks = [
       "Production SaaS",
       "results"
     ],
-    "text": "results 1: 100+ active clients, 150+ events managed"
+    "text": "OpenEvent · results: results 1: 100+ active clients, 150+ events managed"
   },
   {
     "id": "project-openevent-results-2",
@@ -1219,7 +1219,7 @@ export const generatedChunks = [
       "Production SaaS",
       "results"
     ],
-    "text": "results 2: ~83% less manual coordination time (about 1.5 h down to 15 min a day)"
+    "text": "OpenEvent · results: results 2: ~83% less manual coordination time (about 1.5 h down to 15 min a day)"
   },
   {
     "id": "project-openevent-results-3",
@@ -1231,7 +1231,7 @@ export const generatedChunks = [
       "Production SaaS",
       "results"
     ],
-    "text": "results 3: Response time dropped from hours to minutes"
+    "text": "OpenEvent · results: results 3: Response time dropped from hours to minutes"
   },
   {
     "id": "project-openevent-results-4",
@@ -1243,7 +1243,7 @@ export const generatedChunks = [
       "Production SaaS",
       "results"
     ],
-    "text": "results 4: Grew past email AI into memberships, wallets, gift cards, POS and KYC-verified signup"
+    "text": "OpenEvent · results: results 4: Grew past email AI into memberships, wallets, gift cards, POS and KYC-verified signup"
   },
   {
     "id": "project-openevent-results-5",
@@ -1255,7 +1255,7 @@ export const generatedChunks = [
       "Production SaaS",
       "results"
     ],
-    "text": "results 5: Full CI/CD with staging and production environments"
+    "text": "OpenEvent · results: results 5: Full CI/CD with staging and production environments"
   },
   {
     "id": "project-openevent-results-6",
@@ -1267,7 +1267,7 @@ export const generatedChunks = [
       "Production SaaS",
       "results"
     ],
-    "text": "measuredImpact before value: ~1.5"
+    "text": "OpenEvent · results: measuredImpact before value: ~1.5"
   },
   {
     "id": "project-openevent-results-7",
@@ -1279,7 +1279,7 @@ export const generatedChunks = [
       "Production SaaS",
       "results"
     ],
-    "text": "measuredImpact before unit: hrs"
+    "text": "OpenEvent · results: measuredImpact before unit: hrs"
   },
   {
     "id": "project-openevent-results-8",
@@ -1291,7 +1291,7 @@ export const generatedChunks = [
       "Production SaaS",
       "results"
     ],
-    "text": "measuredImpact before context: per team, per day, reading & triaging email"
+    "text": "OpenEvent · results: measuredImpact before context: per team, per day, reading & triaging email"
   },
   {
     "id": "project-openevent-results-9",
@@ -1303,7 +1303,7 @@ export const generatedChunks = [
       "Production SaaS",
       "results"
     ],
-    "text": "measuredImpact after value: ~15"
+    "text": "OpenEvent · results: measuredImpact after value: ~15"
   },
   {
     "id": "project-openevent-results-10",
@@ -1315,7 +1315,7 @@ export const generatedChunks = [
       "Production SaaS",
       "results"
     ],
-    "text": "measuredImpact after unit: min"
+    "text": "OpenEvent · results: measuredImpact after unit: min"
   },
   {
     "id": "project-openevent-results-11",
@@ -1327,7 +1327,7 @@ export const generatedChunks = [
       "Production SaaS",
       "results"
     ],
-    "text": "measuredImpact after context: review AI-drafted actions & approve"
+    "text": "OpenEvent · results: measuredImpact after context: review AI-drafted actions & approve"
   },
   {
     "id": "project-openevent-results-12",
@@ -1339,7 +1339,7 @@ export const generatedChunks = [
       "Production SaaS",
       "results"
     ],
-    "text": "measuredImpact highlights 1 n: 100+"
+    "text": "OpenEvent · results: measuredImpact highlights 1 n: 100+"
   },
   {
     "id": "project-openevent-results-13",
@@ -1351,7 +1351,7 @@ export const generatedChunks = [
       "Production SaaS",
       "results"
     ],
-    "text": "measuredImpact highlights 1 l: active clients"
+    "text": "OpenEvent · results: measuredImpact highlights 1 l: active clients"
   },
   {
     "id": "project-openevent-results-14",
@@ -1363,7 +1363,7 @@ export const generatedChunks = [
       "Production SaaS",
       "results"
     ],
-    "text": "measuredImpact highlights 2 n: 150+"
+    "text": "OpenEvent · results: measuredImpact highlights 2 n: 150+"
   },
   {
     "id": "project-openevent-results-15",
@@ -1375,7 +1375,7 @@ export const generatedChunks = [
       "Production SaaS",
       "results"
     ],
-    "text": "measuredImpact highlights 2 l: events run"
+    "text": "OpenEvent · results: measuredImpact highlights 2 l: events run"
   },
   {
     "id": "project-openevent-results-16",
@@ -1387,7 +1387,7 @@ export const generatedChunks = [
       "Production SaaS",
       "results"
     ],
-    "text": "measuredImpact highlights 3 n: 83%"
+    "text": "OpenEvent · results: measuredImpact highlights 3 n: 83%"
   },
   {
     "id": "project-openevent-results-17",
@@ -1399,7 +1399,7 @@ export const generatedChunks = [
       "Production SaaS",
       "results"
     ],
-    "text": "measuredImpact highlights 3 l: time saved"
+    "text": "OpenEvent · results: measuredImpact highlights 3 l: time saved"
   },
   {
     "id": "project-codelens-summary-1",
@@ -1411,7 +1411,7 @@ export const generatedChunks = [
       "AI Dev Tool",
       "summary"
     ],
-    "text": "title: CodeLens"
+    "text": "CodeLens · summary: title: CodeLens"
   },
   {
     "id": "project-codelens-summary-2",
@@ -1423,7 +1423,7 @@ export const generatedChunks = [
       "AI Dev Tool",
       "summary"
     ],
-    "text": "subtitle: AI Code Review Engine"
+    "text": "CodeLens · summary: subtitle: AI Code Review Engine"
   },
   {
     "id": "project-codelens-summary-3",
@@ -1435,7 +1435,7 @@ export const generatedChunks = [
       "AI Dev Tool",
       "summary"
     ],
-    "text": "oneLiner: 624 bug patterns mined from 860+ real PRs. Under one second. Code never leaves your machine."
+    "text": "CodeLens · summary: oneLiner: 624 bug patterns mined from 860+ real PRs. Under one second. Code never leaves your machine."
   },
   {
     "id": "project-codelens-summary-4",
@@ -1447,7 +1447,7 @@ export const generatedChunks = [
       "AI Dev Tool",
       "summary"
     ],
-    "text": "cardSummary: 624 patterns mined from 860+ production PRs. Reviews in under one second, entirely on your machine."
+    "text": "CodeLens · summary: cardSummary: 624 patterns mined from 860+ production PRs. Reviews in under one second, entirely on your machine."
   },
   {
     "id": "project-codelens-summary-5",
@@ -1459,7 +1459,7 @@ export const generatedChunks = [
       "AI Dev Tool",
       "summary"
     ],
-    "text": "impact: 624 hand-crafted patterns mined from 860+ production PRs across 9 stacks. Reviews in under one second, entirely on your machine. When a commercial AI reviewer (Greptile) caught 12 issues CodeLens missed, I ran a gap analysis and closed every one. Coverage went from 8% to 100%."
+    "text": "CodeLens · summary: impact: 624 hand-crafted patterns mined from 860+ production PRs across 9 stacks. Reviews in under one second, entirely on your machine. When a commercial AI reviewer (Greptile) caught 12 issues CodeLens missed, I ran a gap analysis and closed every one. Coverage went from 8% to 100%."
   },
   {
     "id": "project-codelens-summary-6",
@@ -1471,7 +1471,7 @@ export const generatedChunks = [
       "AI Dev Tool",
       "summary"
     ],
-    "text": "problem: Existing tools are either fast but shallow (linters catching style, not logic) or deep but cloud-dependent (sending your code to a third party). Neither catches the bugs that actually ship: missing auth guards, silent N+1 queries, cross-file taint paths."
+    "text": "CodeLens · summary: problem: Existing tools are either fast but shallow (linters catching style, not logic) or deep but cloud-dependent (sending your code to a third party). Neither catches the bugs that actually ship: missing auth guards, silent N+1 queries, cross-file taint paths."
   },
   {
     "id": "project-codelens-summary-7",
@@ -1483,7 +1483,7 @@ export const generatedChunks = [
       "AI Dev Tool",
       "summary"
     ],
-    "text": "solution: Deterministic patterns first, then AI for what patterns can't express. A persistent codebase index (call graph, schema graph) enables cross-file analysis. Source-to-sink taint tracking follows user input to dangerous sinks. Guardian mode injects rules into AI coding assistants to prevent bugs at generation time."
+    "text": "CodeLens · summary: solution: Deterministic patterns first, then AI for what patterns can't express. A persistent codebase index (call graph, schema graph) enables cross-file analysis. Source-to-sink taint tracking follows user input to dangerous sinks. Guardian mode injects rules into AI coding assistants to prevent bugs at generation time."
   },
   {
     "id": "project-codelens-architecture-1",
@@ -1495,7 +1495,7 @@ export const generatedChunks = [
       "AI Dev Tool",
       "architecture"
     ],
-    "text": "architecture 1: Git Diff → AST-aware Parser"
+    "text": "CodeLens · architecture: architecture 1: Git Diff → AST-aware Parser"
   },
   {
     "id": "project-codelens-architecture-2",
@@ -1507,7 +1507,7 @@ export const generatedChunks = [
       "AI Dev Tool",
       "architecture"
     ],
-    "text": "architecture 2: Persistent Index (call graph + schema graph)"
+    "text": "CodeLens · architecture: architecture 2: Persistent Index (call graph + schema graph)"
   },
   {
     "id": "project-codelens-architecture-3",
@@ -1519,7 +1519,7 @@ export const generatedChunks = [
       "AI Dev Tool",
       "architecture"
     ],
-    "text": "architecture 3: Pattern Scan (~624 patterns, 9 stacks)"
+    "text": "CodeLens · architecture: architecture 3: Pattern Scan (~624 patterns, 9 stacks)"
   },
   {
     "id": "project-codelens-architecture-4",
@@ -1531,7 +1531,7 @@ export const generatedChunks = [
       "AI Dev Tool",
       "architecture"
     ],
-    "text": "architecture 4: Source-to-Sink Taint Tracking"
+    "text": "CodeLens · architecture: architecture 4: Source-to-Sink Taint Tracking"
   },
   {
     "id": "project-codelens-architecture-5",
@@ -1543,7 +1543,7 @@ export const generatedChunks = [
       "AI Dev Tool",
       "architecture"
     ],
-    "text": "architecture 5: Focused AI Security Probes"
+    "text": "CodeLens · architecture: architecture 5: Focused AI Security Probes"
   },
   {
     "id": "project-codelens-architecture-6",
@@ -1555,7 +1555,7 @@ export const generatedChunks = [
       "AI Dev Tool",
       "architecture"
     ],
-    "text": "architecture 6: PR Risk Score (8 factors)"
+    "text": "CodeLens · architecture: architecture 6: PR Risk Score (8 factors)"
   },
   {
     "id": "project-codelens-architecture-7",
@@ -1567,7 +1567,7 @@ export const generatedChunks = [
       "AI Dev Tool",
       "architecture"
     ],
-    "text": "architecture 7: Self-Learning Noise Filter"
+    "text": "CodeLens · architecture: architecture 7: Self-Learning Noise Filter"
   },
   {
     "id": "project-codelens-architecture-8",
@@ -1579,7 +1579,7 @@ export const generatedChunks = [
       "AI Dev Tool",
       "architecture"
     ],
-    "text": "features 1: ~624 patterns mapped to real production failures, tagged with OWASP/CWE"
+    "text": "CodeLens · architecture: features 1: ~624 patterns mapped to real production failures, tagged with OWASP/CWE"
   },
   {
     "id": "project-codelens-architecture-9",
@@ -1591,7 +1591,7 @@ export const generatedChunks = [
       "AI Dev Tool",
       "architecture"
     ],
-    "text": "features 2: Persistent codebase index with 60ms incremental updates"
+    "text": "CodeLens · architecture: features 2: Persistent codebase index with 60ms incremental updates"
   },
   {
     "id": "project-codelens-architecture-10",
@@ -1603,7 +1603,7 @@ export const generatedChunks = [
       "AI Dev Tool",
       "architecture"
     ],
-    "text": "features 3: Source-to-sink taint tracking across files with CWE mapping"
+    "text": "CodeLens · architecture: features 3: Source-to-sink taint tracking across files with CWE mapping"
   },
   {
     "id": "project-codelens-architecture-11",
@@ -1615,7 +1615,7 @@ export const generatedChunks = [
       "AI Dev Tool",
       "architecture"
     ],
-    "text": "features 4: Guardian mode: injects rules into Claude Code, Cursor, Copilot at prompt level"
+    "text": "CodeLens · architecture: features 4: Guardian mode: injects rules into Claude Code, Cursor, Copilot at prompt level"
   },
   {
     "id": "project-codelens-architecture-12",
@@ -1627,7 +1627,7 @@ export const generatedChunks = [
       "AI Dev Tool",
       "architecture"
     ],
-    "text": "features 5: Zero runtime deps — single 351KB file, runs anywhere Node runs"
+    "text": "CodeLens · architecture: features 5: Zero runtime deps — single 351KB file, runs anywhere Node runs"
   },
   {
     "id": "project-codelens-architecture-13",
@@ -1639,7 +1639,7 @@ export const generatedChunks = [
       "AI Dev Tool",
       "architecture"
     ],
-    "text": "stack 1: TypeScript"
+    "text": "CodeLens · architecture: stack 1: TypeScript"
   },
   {
     "id": "project-codelens-architecture-14",
@@ -1651,7 +1651,7 @@ export const generatedChunks = [
       "AI Dev Tool",
       "architecture"
     ],
-    "text": "stack 2: Docker"
+    "text": "CodeLens · architecture: stack 2: Docker"
   },
   {
     "id": "project-codelens-architecture-15",
@@ -1663,7 +1663,7 @@ export const generatedChunks = [
       "AI Dev Tool",
       "architecture"
     ],
-    "text": "stack 3: esbuild"
+    "text": "CodeLens · architecture: stack 3: esbuild"
   },
   {
     "id": "project-codelens-architecture-16",
@@ -1675,7 +1675,7 @@ export const generatedChunks = [
       "AI Dev Tool",
       "architecture"
     ],
-    "text": "stack 4: Persistent JSON Index"
+    "text": "CodeLens · architecture: stack 4: Persistent JSON Index"
   },
   {
     "id": "project-codelens-architecture-17",
@@ -1687,7 +1687,7 @@ export const generatedChunks = [
       "AI Dev Tool",
       "architecture"
     ],
-    "text": "stack 5: GitHub Actions"
+    "text": "CodeLens · architecture: stack 5: GitHub Actions"
   },
   {
     "id": "project-codelens-architecture-18",
@@ -1699,7 +1699,7 @@ export const generatedChunks = [
       "AI Dev Tool",
       "architecture"
     ],
-    "text": "stack 6: GHCR"
+    "text": "CodeLens · architecture: stack 6: GHCR"
   },
   {
     "id": "project-codelens-decisions-1",
@@ -1711,7 +1711,7 @@ export const generatedChunks = [
       "AI Dev Tool",
       "decisions"
     ],
-    "text": "techDecisions 1 title: Hand-crafted patterns over imported rule sets"
+    "text": "CodeLens · decisions: techDecisions 1 title: Hand-crafted patterns over imported rule sets"
   },
   {
     "id": "project-codelens-decisions-2",
@@ -1723,7 +1723,7 @@ export const generatedChunks = [
       "AI Dev Tool",
       "decisions"
     ],
-    "text": "techDecisions 1 description: Existing rule sets cover style, not production failures. Every CodeLens pattern comes from a real bug: missing .limit() on Supabase queries, hooks after conditional returns, catch blocks swallowing errors silently."
+    "text": "CodeLens · decisions: techDecisions 1 description: Existing rule sets cover style, not production failures. Every CodeLens pattern comes from a real bug: missing .limit() on Supabase queries, hooks after conditional returns, catch blocks swallowing errors silently."
   },
   {
     "id": "project-codelens-decisions-3",
@@ -1735,7 +1735,7 @@ export const generatedChunks = [
       "AI Dev Tool",
       "decisions"
     ],
-    "text": "techDecisions 2 title: Persistent index over re-parsing"
+    "text": "CodeLens · decisions: techDecisions 2 title: Persistent index over re-parsing"
   },
   {
     "id": "project-codelens-decisions-4",
@@ -1747,7 +1747,7 @@ export const generatedChunks = [
       "AI Dev Tool",
       "decisions"
     ],
-    "text": "techDecisions 2 description: First build: 4s on a 1,622-file codebase. After that: 60ms incremental. This makes cross-file analysis viable as a pre-commit hook."
+    "text": "CodeLens · decisions: techDecisions 2 description: First build: 4s on a 1,622-file codebase. After that: 60ms incremental. This makes cross-file analysis viable as a pre-commit hook."
   },
   {
     "id": "project-codelens-decisions-5",
@@ -1759,7 +1759,7 @@ export const generatedChunks = [
       "AI Dev Tool",
       "decisions"
     ],
-    "text": "techDecisions 3 title: Patterns first, AI second"
+    "text": "CodeLens · decisions: techDecisions 3 title: Patterns first, AI second"
   },
   {
     "id": "project-codelens-decisions-6",
@@ -1771,7 +1771,7 @@ export const generatedChunks = [
       "AI Dev Tool",
       "decisions"
     ],
-    "text": "techDecisions 3 description: 624 deterministic patterns in <1s, then focused AI probes for semantic bugs no regex can catch. Coverage went from 8% to 100% on a head-to-head benchmark against a commercial AI reviewer."
+    "text": "CodeLens · decisions: techDecisions 3 description: 624 deterministic patterns in <1s, then focused AI probes for semantic bugs no regex can catch. Coverage went from 8% to 100% on a head-to-head benchmark against a commercial AI reviewer."
   },
   {
     "id": "project-codelens-decisions-7",
@@ -1783,7 +1783,7 @@ export const generatedChunks = [
       "AI Dev Tool",
       "decisions"
     ],
-    "text": "decision scenario: Production bugs keep slipping past SonarQube + ESLint + AI review. They span multiple files with user input reaching DB queries unvalidated."
+    "text": "CodeLens · decisions: decision scenario: Production bugs keep slipping past SonarQube + ESLint + AI review. They span multiple files with user input reaching DB queries unvalidated."
   },
   {
     "id": "project-codelens-decisions-8",
@@ -1795,7 +1795,7 @@ export const generatedChunks = [
       "AI Dev Tool",
       "decisions"
     ],
-    "text": "decision question: What do you build?"
+    "text": "CodeLens · decisions: decision question: What do you build?"
   },
   {
     "id": "project-codelens-decisions-9",
@@ -1807,7 +1807,7 @@ export const generatedChunks = [
       "AI Dev Tool",
       "decisions"
     ],
-    "text": "decision options 1: More ESLint rules"
+    "text": "CodeLens · decisions: decision options 1: More ESLint rules"
   },
   {
     "id": "project-codelens-decisions-10",
@@ -1819,7 +1819,7 @@ export const generatedChunks = [
       "AI Dev Tool",
       "decisions"
     ],
-    "text": "decision options 2: Pay for commercial AI review SaaS"
+    "text": "CodeLens · decisions: decision options 2: Pay for commercial AI review SaaS"
   },
   {
     "id": "project-codelens-decisions-11",
@@ -1831,7 +1831,7 @@ export const generatedChunks = [
       "AI Dev Tool",
       "decisions"
     ],
-    "text": "decision options 3: Custom engine with cross-file taint tracking"
+    "text": "CodeLens · decisions: decision options 3: Custom engine with cross-file taint tracking"
   },
   {
     "id": "project-codelens-decisions-12",
@@ -1843,7 +1843,7 @@ export const generatedChunks = [
       "AI Dev Tool",
       "decisions"
     ],
-    "text": "decision commonChoice: 1"
+    "text": "CodeLens · decisions: decision commonChoice: 1"
   },
   {
     "id": "project-codelens-decisions-13",
@@ -1855,7 +1855,7 @@ export const generatedChunks = [
       "AI Dev Tool",
       "decisions"
     ],
-    "text": "decision myChoice: 2"
+    "text": "CodeLens · decisions: decision myChoice: 2"
   },
   {
     "id": "project-codelens-decisions-14",
@@ -1867,7 +1867,7 @@ export const generatedChunks = [
       "AI Dev Tool",
       "decisions"
     ],
-    "text": "decision reasoning: ESLint stays single-file. Commercial SaaS sends code to a third party and still misses schema bugs. I built a hybrid: hand-crafted patterns + persistent call graph + taint tracer. Runs fully local, <1s reviews."
+    "text": "CodeLens · decisions: decision reasoning: ESLint stays single-file. Commercial SaaS sends code to a third party and still misses schema bugs. I built a hybrid: hand-crafted patterns + persistent call graph + taint tracer. Runs fully local, <1s reviews."
   },
   {
     "id": "project-codelens-decisions-15",
@@ -1879,7 +1879,7 @@ export const generatedChunks = [
       "AI Dev Tool",
       "decisions"
     ],
-    "text": "comparison mine title: CodeLens"
+    "text": "CodeLens · decisions: comparison mine title: CodeLens"
   },
   {
     "id": "project-codelens-decisions-16",
@@ -1891,7 +1891,7 @@ export const generatedChunks = [
       "AI Dev Tool",
       "decisions"
     ],
-    "text": "comparison mine bullets 1: ~624 patterns validated against real failures"
+    "text": "CodeLens · decisions: comparison mine bullets 1: ~624 patterns validated against real failures"
   },
   {
     "id": "project-codelens-decisions-17",
@@ -1903,7 +1903,7 @@ export const generatedChunks = [
       "AI Dev Tool",
       "decisions"
     ],
-    "text": "comparison mine bullets 2: Persistent index, 60ms incremental updates"
+    "text": "CodeLens · decisions: comparison mine bullets 2: Persistent index, 60ms incremental updates"
   },
   {
     "id": "project-codelens-decisions-18",
@@ -1915,7 +1915,7 @@ export const generatedChunks = [
       "AI Dev Tool",
       "decisions"
     ],
-    "text": "comparison mine bullets 3: Taint tracking across files with CWE mapping"
+    "text": "CodeLens · decisions: comparison mine bullets 3: Taint tracking across files with CWE mapping"
   },
   {
     "id": "project-codelens-decisions-19",
@@ -1927,7 +1927,7 @@ export const generatedChunks = [
       "AI Dev Tool",
       "decisions"
     ],
-    "text": "comparison mine bullets 4: Zero deps, 351KB, runs anywhere Node runs"
+    "text": "CodeLens · decisions: comparison mine bullets 4: Zero deps, 351KB, runs anywhere Node runs"
   },
   {
     "id": "project-codelens-decisions-20",
@@ -1939,7 +1939,7 @@ export const generatedChunks = [
       "AI Dev Tool",
       "decisions"
     ],
-    "text": "comparison standard title: SonarQube / commercial SaaS"
+    "text": "CodeLens · decisions: comparison standard title: SonarQube / commercial SaaS"
   },
   {
     "id": "project-codelens-decisions-21",
@@ -1951,7 +1951,7 @@ export const generatedChunks = [
       "AI Dev Tool",
       "decisions"
     ],
-    "text": "comparison standard bullets 1: Generic style rules, not production failures"
+    "text": "CodeLens · decisions: comparison standard bullets 1: Generic style rules, not production failures"
   },
   {
     "id": "project-codelens-decisions-22",
@@ -1963,7 +1963,7 @@ export const generatedChunks = [
       "AI Dev Tool",
       "decisions"
     ],
-    "text": "comparison standard bullets 2: Cloud-dependent, code leaves the repo"
+    "text": "CodeLens · decisions: comparison standard bullets 2: Cloud-dependent, code leaves the repo"
   },
   {
     "id": "project-codelens-decisions-23",
@@ -1975,7 +1975,7 @@ export const generatedChunks = [
       "AI Dev Tool",
       "decisions"
     ],
-    "text": "comparison standard bullets 3: Single-file analysis, no cross-file tracing"
+    "text": "CodeLens · decisions: comparison standard bullets 3: Single-file analysis, no cross-file tracing"
   },
   {
     "id": "project-codelens-decisions-24",
@@ -1987,7 +1987,7 @@ export const generatedChunks = [
       "AI Dev Tool",
       "decisions"
     ],
-    "text": "comparison standard bullets 4: Heavy setup: Java runtime, server, database"
+    "text": "CodeLens · decisions: comparison standard bullets 4: Heavy setup: Java runtime, server, database"
   },
   {
     "id": "project-codelens-results-1",
@@ -1999,7 +1999,7 @@ export const generatedChunks = [
       "AI Dev Tool",
       "results"
     ],
-    "text": "results 1: ~624 patterns across 9 stacks, validated against real production repos"
+    "text": "CodeLens · results: results 1: ~624 patterns across 9 stacks, validated against real production repos"
   },
   {
     "id": "project-codelens-results-2",
@@ -2011,7 +2011,7 @@ export const generatedChunks = [
       "AI Dev Tool",
       "results"
     ],
-    "text": "results 2: 7-file PR review in 780ms, full 456-file PR in 12s"
+    "text": "CodeLens · results: results 2: 7-file PR review in 780ms, full 456-file PR in 12s"
   },
   {
     "id": "project-codelens-results-3",
@@ -2023,7 +2023,7 @@ export const generatedChunks = [
       "AI Dev Tool",
       "results"
     ],
-    "text": "results 3: Zero deps: single 351KB file, Docker image auto-published to GHCR"
+    "text": "CodeLens · results: results 3: Zero deps: single 351KB file, Docker image auto-published to GHCR"
   },
   {
     "id": "project-codelens-results-4",
@@ -2035,7 +2035,7 @@ export const generatedChunks = [
       "AI Dev Tool",
       "results"
     ],
-    "text": "results 4: Glean pipeline processed 4,000+ PRs, Agent Harvest added 34 patterns, Greptile parity added 66"
+    "text": "CodeLens · results: results 4: Glean pipeline processed 4,000+ PRs, Agent Harvest added 34 patterns, Greptile parity added 66"
   },
   {
     "id": "project-codelens-results-5",
@@ -2047,7 +2047,7 @@ export const generatedChunks = [
       "AI Dev Tool",
       "results"
     ],
-    "text": "measuredImpact before value: 8%"
+    "text": "CodeLens · results: measuredImpact before value: 8%"
   },
   {
     "id": "project-codelens-results-6",
@@ -2059,7 +2059,7 @@ export const generatedChunks = [
       "AI Dev Tool",
       "results"
     ],
-    "text": "measuredImpact before context: coverage vs commercial AI reviewer (Greptile)"
+    "text": "CodeLens · results: measuredImpact before context: coverage vs commercial AI reviewer (Greptile)"
   },
   {
     "id": "project-codelens-results-7",
@@ -2071,7 +2071,7 @@ export const generatedChunks = [
       "AI Dev Tool",
       "results"
     ],
-    "text": "measuredImpact after value: 100%"
+    "text": "CodeLens · results: measuredImpact after value: 100%"
   },
   {
     "id": "project-codelens-results-8",
@@ -2083,7 +2083,7 @@ export const generatedChunks = [
       "AI Dev Tool",
       "results"
     ],
-    "text": "measuredImpact after context: all 12 gaps closed after gap analysis"
+    "text": "CodeLens · results: measuredImpact after context: all 12 gaps closed after gap analysis"
   },
   {
     "id": "project-codelens-results-9",
@@ -2095,7 +2095,7 @@ export const generatedChunks = [
       "AI Dev Tool",
       "results"
     ],
-    "text": "measuredImpact highlights 1 n: 624"
+    "text": "CodeLens · results: measuredImpact highlights 1 n: 624"
   },
   {
     "id": "project-codelens-results-10",
@@ -2107,7 +2107,7 @@ export const generatedChunks = [
       "AI Dev Tool",
       "results"
     ],
-    "text": "measuredImpact highlights 1 l: patterns"
+    "text": "CodeLens · results: measuredImpact highlights 1 l: patterns"
   },
   {
     "id": "project-codelens-results-11",
@@ -2119,7 +2119,7 @@ export const generatedChunks = [
       "AI Dev Tool",
       "results"
     ],
-    "text": "measuredImpact highlights 2 n: <1s"
+    "text": "CodeLens · results: measuredImpact highlights 2 n: <1s"
   },
   {
     "id": "project-codelens-results-12",
@@ -2131,7 +2131,7 @@ export const generatedChunks = [
       "AI Dev Tool",
       "results"
     ],
-    "text": "measuredImpact highlights 2 l: review time"
+    "text": "CodeLens · results: measuredImpact highlights 2 l: review time"
   },
   {
     "id": "project-codelens-results-13",
@@ -2143,7 +2143,7 @@ export const generatedChunks = [
       "AI Dev Tool",
       "results"
     ],
-    "text": "measuredImpact highlights 3 n: 351KB"
+    "text": "CodeLens · results: measuredImpact highlights 3 n: 351KB"
   },
   {
     "id": "project-codelens-results-14",
@@ -2155,7 +2155,7 @@ export const generatedChunks = [
       "AI Dev Tool",
       "results"
     ],
-    "text": "measuredImpact highlights 3 l: zero deps"
+    "text": "CodeLens · results: measuredImpact highlights 3 l: zero deps"
   },
   {
     "id": "project-gogaa-cli-summary-1",
@@ -2167,7 +2167,7 @@ export const generatedChunks = [
       "Developer Tool / CLI",
       "summary"
     ],
-    "text": "title: Gogaa CLI"
+    "text": "Gogaa CLI · summary: title: Gogaa CLI"
   },
   {
     "id": "project-gogaa-cli-summary-2",
@@ -2179,7 +2179,7 @@ export const generatedChunks = [
       "Developer Tool / CLI",
       "summary"
     ],
-    "text": "subtitle: AI Coding Agent for Any Model, Any Provider"
+    "text": "Gogaa CLI · summary: subtitle: AI Coding Agent for Any Model, Any Provider"
   },
   {
     "id": "project-gogaa-cli-summary-3",
@@ -2191,7 +2191,7 @@ export const generatedChunks = [
       "Developer Tool / CLI",
       "summary"
     ],
-    "text": "oneLiner: 11 providers behind one interface. If one goes down, you don't stop working."
+    "text": "Gogaa CLI · summary: oneLiner: 11 providers behind one interface. If one goes down, you don't stop working."
   },
   {
     "id": "project-gogaa-cli-summary-4",
@@ -2203,7 +2203,7 @@ export const generatedChunks = [
       "Developer Tool / CLI",
       "summary"
     ],
-    "text": "cardSummary: 11 providers behind one interface. If one goes down, you don't stop working. 1,400+ tests, zero vendor lock-in."
+    "text": "Gogaa CLI · summary: cardSummary: 11 providers behind one interface. If one goes down, you don't stop working. 1,400+ tests, zero vendor lock-in."
   },
   {
     "id": "project-gogaa-cli-summary-5",
@@ -2215,7 +2215,7 @@ export const generatedChunks = [
       "Developer Tool / CLI",
       "summary"
     ],
-    "text": "impact: An AI coding CLI where the provider is a variable: 11 providers with automatic fallback, so a rate limit never stops your work. Production-grade git workflow, a polished React Ink TUI, a plugin marketplace and 1,400+ passing tests. Ships through my own private registry with checksummed builds, self-update and installers for macOS, Linux and Windows."
+    "text": "Gogaa CLI · summary: impact: An AI coding CLI where the provider is a variable: 11 providers with automatic fallback, so a rate limit never stops your work. Production-grade git workflow, a polished React Ink TUI, a plugin marketplace and 1,400+ passing tests. Ships through my own private registry with checksummed builds, self-update and installers for macOS, Linux and Windows."
   },
   {
     "id": "project-gogaa-cli-summary-6",
@@ -2227,7 +2227,7 @@ export const generatedChunks = [
       "Developer Tool / CLI",
       "summary"
     ],
-    "text": "problem: Every AI coding tool makes you choose: provider freedom or deep integration. Polished TUI or serious git workflow. MCP support or surgical edits. If your provider rate-limits, you stop working."
+    "text": "Gogaa CLI · summary: problem: Every AI coding tool makes you choose: provider freedom or deep integration. Polished TUI or serious git workflow. MCP support or surgical edits. If your provider rate-limits, you stop working."
   },
   {
     "id": "project-gogaa-cli-summary-7",
@@ -2239,7 +2239,7 @@ export const generatedChunks = [
       "Developer Tool / CLI",
       "summary"
     ],
-    "text": "solution: A TypeScript CLI where the provider is a variable. 11 providers behind one unified streaming interface with automatic fallback. Production-grade git workflow (repo map, SEARCH/REPLACE edits, LLM commits). React Ink TUI with 22 themes. Plugin marketplace, MCP support, parallel agent panes, scheduled triggers, and a companion web terminal."
+    "text": "Gogaa CLI · summary: solution: A TypeScript CLI where the provider is a variable. 11 providers behind one unified streaming interface with automatic fallback. Production-grade git workflow (repo map, SEARCH/REPLACE edits, LLM commits). React Ink TUI with 22 themes. Plugin marketplace, MCP support, parallel agent panes, scheduled triggers, and a companion web terminal."
   },
   {
     "id": "project-gogaa-cli-architecture-1",
@@ -2251,7 +2251,7 @@ export const generatedChunks = [
       "Developer Tool / CLI",
       "architecture"
     ],
-    "text": "architecture 1: Provider Manager (11 providers, auto-fallback)"
+    "text": "Gogaa CLI · architecture: architecture 1: Provider Manager (11 providers, auto-fallback)"
   },
   {
     "id": "project-gogaa-cli-architecture-2",
@@ -2263,7 +2263,7 @@ export const generatedChunks = [
       "Developer Tool / CLI",
       "architecture"
     ],
-    "text": "architecture 2: Tool Registry (24+ tools)"
+    "text": "Gogaa CLI · architecture: architecture 2: Tool Registry (24+ tools)"
   },
   {
     "id": "project-gogaa-cli-architecture-3",
@@ -2275,7 +2275,7 @@ export const generatedChunks = [
       "Developer Tool / CLI",
       "architecture"
     ],
-    "text": "architecture 3: SEARCH/REPLACE Editor"
+    "text": "Gogaa CLI · architecture: architecture 3: SEARCH/REPLACE Editor"
   },
   {
     "id": "project-gogaa-cli-architecture-4",
@@ -2287,7 +2287,7 @@ export const generatedChunks = [
       "Developer Tool / CLI",
       "architecture"
     ],
-    "text": "architecture 4: Agentic Loop (streaming, stuck detection, auto-retry)"
+    "text": "Gogaa CLI · architecture: architecture 4: Agentic Loop (streaming, stuck detection, auto-retry)"
   },
   {
     "id": "project-gogaa-cli-architecture-5",
@@ -2299,7 +2299,7 @@ export const generatedChunks = [
       "Developer Tool / CLI",
       "architecture"
     ],
-    "text": "architecture 5: Git Layer (repo map, LLM commits, watch mode)"
+    "text": "Gogaa CLI · architecture: architecture 5: Git Layer (repo map, LLM commits, watch mode)"
   },
   {
     "id": "project-gogaa-cli-architecture-6",
@@ -2311,7 +2311,7 @@ export const generatedChunks = [
       "Developer Tool / CLI",
       "architecture"
     ],
-    "text": "architecture 6: React Ink TUI (22 themes, command palette)"
+    "text": "Gogaa CLI · architecture: architecture 6: React Ink TUI (22 themes, command palette)"
   },
   {
     "id": "project-gogaa-cli-architecture-7",
@@ -2323,7 +2323,7 @@ export const generatedChunks = [
       "Developer Tool / CLI",
       "architecture"
     ],
-    "text": "architecture 7: Session Layer (WAL persistence, crash recovery)"
+    "text": "Gogaa CLI · architecture: architecture 7: Session Layer (WAL persistence, crash recovery)"
   },
   {
     "id": "project-gogaa-cli-architecture-8",
@@ -2335,7 +2335,7 @@ export const generatedChunks = [
       "Developer Tool / CLI",
       "architecture"
     ],
-    "text": "features 1: 11 LLM providers with unified streaming and automatic fallback on rate-limits"
+    "text": "Gogaa CLI · architecture: features 1: 11 LLM providers with unified streaming and automatic fallback on rate-limits"
   },
   {
     "id": "project-gogaa-cli-architecture-9",
@@ -2347,7 +2347,7 @@ export const generatedChunks = [
       "Developer Tool / CLI",
       "architecture"
     ],
-    "text": "features 2: Production git workflow: tier-aware repo map, surgical edits, LLM commits, watch mode"
+    "text": "Gogaa CLI · architecture: features 2: Production git workflow: tier-aware repo map, surgical edits, LLM commits, watch mode"
   },
   {
     "id": "project-gogaa-cli-architecture-10",
@@ -2359,7 +2359,7 @@ export const generatedChunks = [
       "Developer Tool / CLI",
       "architecture"
     ],
-    "text": "features 3: React Ink TUI with streaming output, inline diffs, 22 themes, plugin marketplace"
+    "text": "Gogaa CLI · architecture: features 3: React Ink TUI with streaming output, inline diffs, 22 themes, plugin marketplace"
   },
   {
     "id": "project-gogaa-cli-architecture-11",
@@ -2371,7 +2371,7 @@ export const generatedChunks = [
       "Developer Tool / CLI",
       "architecture"
     ],
-    "text": "features 4: 5-strategy JSON parser brought tool call success from ~70% to ~95%"
+    "text": "Gogaa CLI · architecture: features 4: 5-strategy JSON parser brought tool call success from ~70% to ~95%"
   },
   {
     "id": "project-gogaa-cli-architecture-12",
@@ -2383,7 +2383,7 @@ export const generatedChunks = [
       "Developer Tool / CLI",
       "architecture"
     ],
-    "text": "features 5: WAL session persistence — crash mid-task, resume with zero lost work"
+    "text": "Gogaa CLI · architecture: features 5: WAL session persistence — crash mid-task, resume with zero lost work"
   },
   {
     "id": "project-gogaa-cli-architecture-13",
@@ -2395,7 +2395,7 @@ export const generatedChunks = [
       "Developer Tool / CLI",
       "architecture"
     ],
-    "text": "stack 1: TypeScript"
+    "text": "Gogaa CLI · architecture: stack 1: TypeScript"
   },
   {
     "id": "project-gogaa-cli-architecture-14",
@@ -2407,7 +2407,7 @@ export const generatedChunks = [
       "Developer Tool / CLI",
       "architecture"
     ],
-    "text": "stack 2: Node.js"
+    "text": "Gogaa CLI · architecture: stack 2: Node.js"
   },
   {
     "id": "project-gogaa-cli-architecture-15",
@@ -2419,7 +2419,7 @@ export const generatedChunks = [
       "Developer Tool / CLI",
       "architecture"
     ],
-    "text": "stack 3: React Ink"
+    "text": "Gogaa CLI · architecture: stack 3: React Ink"
   },
   {
     "id": "project-gogaa-cli-architecture-16",
@@ -2431,7 +2431,7 @@ export const generatedChunks = [
       "Developer Tool / CLI",
       "architecture"
     ],
-    "text": "stack 4: Anthropic SDK"
+    "text": "Gogaa CLI · architecture: stack 4: Anthropic SDK"
   },
   {
     "id": "project-gogaa-cli-architecture-17",
@@ -2443,7 +2443,7 @@ export const generatedChunks = [
       "Developer Tool / CLI",
       "architecture"
     ],
-    "text": "stack 5: OpenAI SDK"
+    "text": "Gogaa CLI · architecture: stack 5: OpenAI SDK"
   },
   {
     "id": "project-gogaa-cli-architecture-18",
@@ -2455,7 +2455,7 @@ export const generatedChunks = [
       "Developer Tool / CLI",
       "architecture"
     ],
-    "text": "stack 6: LSP Protocol"
+    "text": "Gogaa CLI · architecture: stack 6: LSP Protocol"
   },
   {
     "id": "project-gogaa-cli-architecture-19",
@@ -2467,7 +2467,7 @@ export const generatedChunks = [
       "Developer Tool / CLI",
       "architecture"
     ],
-    "text": "stack 7: WebSocket"
+    "text": "Gogaa CLI · architecture: stack 7: WebSocket"
   },
   {
     "id": "project-gogaa-cli-decisions-1",
@@ -2479,7 +2479,7 @@ export const generatedChunks = [
       "Developer Tool / CLI",
       "decisions"
     ],
-    "text": "techDecisions 1 title: 5-strategy JSON parser"
+    "text": "Gogaa CLI · decisions: techDecisions 1 title: 5-strategy JSON parser"
   },
   {
     "id": "project-gogaa-cli-decisions-2",
@@ -2491,7 +2491,7 @@ export const generatedChunks = [
       "Developer Tool / CLI",
       "decisions"
     ],
-    "text": "techDecisions 1 description: Models don't return valid JSON in practice. Progressive fallback parsing (strict → trim → unescape → reconstruct → extract) brought tool call success from ~70% to ~95% on real sessions."
+    "text": "Gogaa CLI · decisions: techDecisions 1 description: Models don't return valid JSON in practice. Progressive fallback parsing (strict → trim → unescape → reconstruct → extract) brought tool call success from ~70% to ~95% on real sessions."
   },
   {
     "id": "project-gogaa-cli-decisions-3",
@@ -2503,7 +2503,7 @@ export const generatedChunks = [
       "Developer Tool / CLI",
       "decisions"
     ],
-    "text": "techDecisions 2 title: React Ink for TUI"
+    "text": "Gogaa CLI · decisions: techDecisions 2 title: React Ink for TUI"
   },
   {
     "id": "project-gogaa-cli-decisions-4",
@@ -2515,7 +2515,7 @@ export const generatedChunks = [
       "Developer Tool / CLI",
       "decisions"
     ],
-    "text": "techDecisions 2 description: Proper component model instead of raw ANSI escape codes. Streaming, permission prompts, status bar, and plugin manager are all independent stateful components."
+    "text": "Gogaa CLI · decisions: techDecisions 2 description: Proper component model instead of raw ANSI escape codes. Streaming, permission prompts, status bar, and plugin manager are all independent stateful components."
   },
   {
     "id": "project-gogaa-cli-decisions-5",
@@ -2527,7 +2527,7 @@ export const generatedChunks = [
       "Developer Tool / CLI",
       "decisions"
     ],
-    "text": "techDecisions 3 title: WAL session persistence"
+    "text": "Gogaa CLI · decisions: techDecisions 3 title: WAL session persistence"
   },
   {
     "id": "project-gogaa-cli-decisions-6",
@@ -2539,7 +2539,7 @@ export const generatedChunks = [
       "Developer Tool / CLI",
       "decisions"
     ],
-    "text": "techDecisions 3 description: Write-ahead log appends each message as it arrives. Resume by ID after crashes, model switches, or reboots with zero lost work."
+    "text": "Gogaa CLI · decisions: techDecisions 3 description: Write-ahead log appends each message as it arrives. Resume by ID after crashes, model switches, or reboots with zero lost work."
   },
   {
     "id": "project-gogaa-cli-decisions-7",
@@ -2551,7 +2551,7 @@ export const generatedChunks = [
       "Developer Tool / CLI",
       "decisions"
     ],
-    "text": "decision scenario: Every AI coding CLI is locked to one vendor. If the API goes down, you stop working."
+    "text": "Gogaa CLI · decisions: decision scenario: Every AI coding CLI is locked to one vendor. If the API goes down, you stop working."
   },
   {
     "id": "project-gogaa-cli-decisions-8",
@@ -2563,7 +2563,7 @@ export const generatedChunks = [
       "Developer Tool / CLI",
       "decisions"
     ],
-    "text": "decision question: What would you build?"
+    "text": "Gogaa CLI · decisions: decision question: What would you build?"
   },
   {
     "id": "project-gogaa-cli-decisions-9",
@@ -2575,7 +2575,7 @@ export const generatedChunks = [
       "Developer Tool / CLI",
       "decisions"
     ],
-    "text": "decision options 1: Fork an existing CLI and add providers"
+    "text": "Gogaa CLI · decisions: decision options 1: Fork an existing CLI and add providers"
   },
   {
     "id": "project-gogaa-cli-decisions-10",
@@ -2587,7 +2587,7 @@ export const generatedChunks = [
       "Developer Tool / CLI",
       "decisions"
     ],
-    "text": "decision options 2: Thin wrapper with better UI"
+    "text": "Gogaa CLI · decisions: decision options 2: Thin wrapper with better UI"
   },
   {
     "id": "project-gogaa-cli-decisions-11",
@@ -2599,7 +2599,7 @@ export const generatedChunks = [
       "Developer Tool / CLI",
       "decisions"
     ],
-    "text": "decision options 3: New CLI where the provider is a variable and everything is first-class"
+    "text": "Gogaa CLI · decisions: decision options 3: New CLI where the provider is a variable and everything is first-class"
   },
   {
     "id": "project-gogaa-cli-decisions-12",
@@ -2611,7 +2611,7 @@ export const generatedChunks = [
       "Developer Tool / CLI",
       "decisions"
     ],
-    "text": "decision commonChoice: 0"
+    "text": "Gogaa CLI · decisions: decision commonChoice: 0"
   },
   {
     "id": "project-gogaa-cli-decisions-13",
@@ -2623,7 +2623,7 @@ export const generatedChunks = [
       "Developer Tool / CLI",
       "decisions"
     ],
-    "text": "decision myChoice: 2"
+    "text": "Gogaa CLI · decisions: decision myChoice: 2"
   },
   {
     "id": "project-gogaa-cli-decisions-14",
@@ -2635,7 +2635,7 @@ export const generatedChunks = [
       "Developer Tool / CLI",
       "decisions"
     ],
-    "text": "decision reasoning: Forking means inheriting vendor assumptions. Wrapping means fighting their architecture. I built from scratch so every subsystem (provider, TUI, git, tools, session) is first-class and swappable."
+    "text": "Gogaa CLI · decisions: decision reasoning: Forking means inheriting vendor assumptions. Wrapping means fighting their architecture. I built from scratch so every subsystem (provider, TUI, git, tools, session) is first-class and swappable."
   },
   {
     "id": "project-gogaa-cli-decisions-15",
@@ -2647,7 +2647,7 @@ export const generatedChunks = [
       "Developer Tool / CLI",
       "decisions"
     ],
-    "text": "comparison mine title: Gogaa CLI"
+    "text": "Gogaa CLI · decisions: comparison mine title: Gogaa CLI"
   },
   {
     "id": "project-gogaa-cli-decisions-16",
@@ -2659,7 +2659,7 @@ export const generatedChunks = [
       "Developer Tool / CLI",
       "decisions"
     ],
-    "text": "comparison mine bullets 1: 11 providers, auto-fallback on rate-limits"
+    "text": "Gogaa CLI · decisions: comparison mine bullets 1: 11 providers, auto-fallback on rate-limits"
   },
   {
     "id": "project-gogaa-cli-decisions-17",
@@ -2671,7 +2671,7 @@ export const generatedChunks = [
       "Developer Tool / CLI",
       "decisions"
     ],
-    "text": "comparison mine bullets 2: Production git: repo map, surgical edits, watch mode"
+    "text": "Gogaa CLI · decisions: comparison mine bullets 2: Production git: repo map, surgical edits, watch mode"
   },
   {
     "id": "project-gogaa-cli-decisions-18",
@@ -2683,7 +2683,7 @@ export const generatedChunks = [
       "Developer Tool / CLI",
       "decisions"
     ],
-    "text": "comparison mine bullets 3: React Ink TUI with plugin marketplace"
+    "text": "Gogaa CLI · decisions: comparison mine bullets 3: React Ink TUI with plugin marketplace"
   },
   {
     "id": "project-gogaa-cli-decisions-19",
@@ -2695,7 +2695,7 @@ export const generatedChunks = [
       "Developer Tool / CLI",
       "decisions"
     ],
-    "text": "comparison mine bullets 4: WAL persistence — crash = zero lost work"
+    "text": "Gogaa CLI · decisions: comparison mine bullets 4: WAL persistence — crash = zero lost work"
   },
   {
     "id": "project-gogaa-cli-decisions-20",
@@ -2707,7 +2707,7 @@ export const generatedChunks = [
       "Developer Tool / CLI",
       "decisions"
     ],
-    "text": "comparison standard title: Single-vendor CLIs"
+    "text": "Gogaa CLI · decisions: comparison standard title: Single-vendor CLIs"
   },
   {
     "id": "project-gogaa-cli-decisions-21",
@@ -2719,7 +2719,7 @@ export const generatedChunks = [
       "Developer Tool / CLI",
       "decisions"
     ],
-    "text": "comparison standard bullets 1: Locked to one provider"
+    "text": "Gogaa CLI · decisions: comparison standard bullets 1: Locked to one provider"
   },
   {
     "id": "project-gogaa-cli-decisions-22",
@@ -2731,7 +2731,7 @@ export const generatedChunks = [
       "Developer Tool / CLI",
       "decisions"
     ],
-    "text": "comparison standard bullets 2: No cross-tool feature completeness"
+    "text": "Gogaa CLI · decisions: comparison standard bullets 2: No cross-tool feature completeness"
   },
   {
     "id": "project-gogaa-cli-decisions-23",
@@ -2743,7 +2743,7 @@ export const generatedChunks = [
       "Developer Tool / CLI",
       "decisions"
     ],
-    "text": "comparison standard bullets 3: Spartan TUI, no plugins"
+    "text": "Gogaa CLI · decisions: comparison standard bullets 3: Spartan TUI, no plugins"
   },
   {
     "id": "project-gogaa-cli-decisions-24",
@@ -2755,7 +2755,7 @@ export const generatedChunks = [
       "Developer Tool / CLI",
       "decisions"
     ],
-    "text": "comparison standard bullets 4: Stop working on rate-limits"
+    "text": "Gogaa CLI · decisions: comparison standard bullets 4: Stop working on rate-limits"
   },
   {
     "id": "project-gogaa-cli-results-1",
@@ -2767,7 +2767,7 @@ export const generatedChunks = [
       "Developer Tool / CLI",
       "results"
     ],
-    "text": "results 1: 1,400+ passing tests, 0 failures"
+    "text": "Gogaa CLI · results: results 1: 1,400+ passing tests, 0 failures"
   },
   {
     "id": "project-gogaa-cli-results-2",
@@ -2779,7 +2779,7 @@ export const generatedChunks = [
       "Developer Tool / CLI",
       "results"
     ],
-    "text": "results 2: 11 providers with auto-fallback, 8/9 pass multi-file edit benchmarks"
+    "text": "Gogaa CLI · results: results 2: 11 providers with auto-fallback, 8/9 pass multi-file edit benchmarks"
   },
   {
     "id": "project-gogaa-cli-results-3",
@@ -2791,7 +2791,7 @@ export const generatedChunks = [
       "Developer Tool / CLI",
       "results"
     ],
-    "text": "results 3: ~95% tool call success rate (up from ~70%)"
+    "text": "Gogaa CLI · results: results 3: ~95% tool call success rate (up from ~70%)"
   },
   {
     "id": "project-gogaa-cli-results-4",
@@ -2803,7 +2803,7 @@ export const generatedChunks = [
       "Developer Tool / CLI",
       "results"
     ],
-    "text": "results 4: Intent-based lazy context: 3,909 → 24 tokens for simple prompts"
+    "text": "Gogaa CLI · results: results 4: Intent-based lazy context: 3,909 → 24 tokens for simple prompts"
   },
   {
     "id": "project-gogaa-cli-results-5",
@@ -2815,7 +2815,7 @@ export const generatedChunks = [
       "Developer Tool / CLI",
       "results"
     ],
-    "text": "results 5: Private registry: checksummed builds, self-update with rollback, per-device access tokens"
+    "text": "Gogaa CLI · results: results 5: Private registry: checksummed builds, self-update with rollback, per-device access tokens"
   },
   {
     "id": "project-gogaa-cli-results-6",
@@ -2827,7 +2827,7 @@ export const generatedChunks = [
       "Developer Tool / CLI",
       "results"
     ],
-    "text": "measuredImpact before value: ~70%"
+    "text": "Gogaa CLI · results: measuredImpact before value: ~70%"
   },
   {
     "id": "project-gogaa-cli-results-7",
@@ -2839,7 +2839,7 @@ export const generatedChunks = [
       "Developer Tool / CLI",
       "results"
     ],
-    "text": "measuredImpact before context: tool call success rate with raw model JSON"
+    "text": "Gogaa CLI · results: measuredImpact before context: tool call success rate with raw model JSON"
   },
   {
     "id": "project-gogaa-cli-results-8",
@@ -2851,7 +2851,7 @@ export const generatedChunks = [
       "Developer Tool / CLI",
       "results"
     ],
-    "text": "measuredImpact after value: ~95%"
+    "text": "Gogaa CLI · results: measuredImpact after value: ~95%"
   },
   {
     "id": "project-gogaa-cli-results-9",
@@ -2863,7 +2863,7 @@ export const generatedChunks = [
       "Developer Tool / CLI",
       "results"
     ],
-    "text": "measuredImpact after context: after 5-strategy progressive JSON parser"
+    "text": "Gogaa CLI · results: measuredImpact after context: after 5-strategy progressive JSON parser"
   },
   {
     "id": "project-gogaa-cli-results-10",
@@ -2875,7 +2875,7 @@ export const generatedChunks = [
       "Developer Tool / CLI",
       "results"
     ],
-    "text": "measuredImpact highlights 1 n: 1,400+"
+    "text": "Gogaa CLI · results: measuredImpact highlights 1 n: 1,400+"
   },
   {
     "id": "project-gogaa-cli-results-11",
@@ -2887,7 +2887,7 @@ export const generatedChunks = [
       "Developer Tool / CLI",
       "results"
     ],
-    "text": "measuredImpact highlights 1 l: tests passing"
+    "text": "Gogaa CLI · results: measuredImpact highlights 1 l: tests passing"
   },
   {
     "id": "project-gogaa-cli-results-12",
@@ -2899,7 +2899,7 @@ export const generatedChunks = [
       "Developer Tool / CLI",
       "results"
     ],
-    "text": "measuredImpact highlights 2 n: 11"
+    "text": "Gogaa CLI · results: measuredImpact highlights 2 n: 11"
   },
   {
     "id": "project-gogaa-cli-results-13",
@@ -2911,7 +2911,7 @@ export const generatedChunks = [
       "Developer Tool / CLI",
       "results"
     ],
-    "text": "measuredImpact highlights 2 l: providers"
+    "text": "Gogaa CLI · results: measuredImpact highlights 2 l: providers"
   },
   {
     "id": "project-gogaa-cli-results-14",
@@ -2923,7 +2923,7 @@ export const generatedChunks = [
       "Developer Tool / CLI",
       "results"
     ],
-    "text": "measuredImpact highlights 3 n: 84%"
+    "text": "Gogaa CLI · results: measuredImpact highlights 3 n: 84%"
   },
   {
     "id": "project-gogaa-cli-results-15",
@@ -2935,7 +2935,7 @@ export const generatedChunks = [
       "Developer Tool / CLI",
       "results"
     ],
-    "text": "measuredImpact highlights 3 l: context saved"
+    "text": "Gogaa CLI · results: measuredImpact highlights 3 l: context saved"
   },
   {
     "id": "project-rasad-summary-1",
@@ -2947,7 +2947,7 @@ export const generatedChunks = [
       "Developer Tool / CLI + Web",
       "summary"
     ],
-    "text": "title: Rasad"
+    "text": "Rasad · summary: title: Rasad"
   },
   {
     "id": "project-rasad-summary-2",
@@ -2959,7 +2959,7 @@ export const generatedChunks = [
       "Developer Tool / CLI + Web",
       "summary"
     ],
-    "text": "subtitle: AI Session Observatory for Developers"
+    "text": "Rasad · summary: subtitle: AI Session Observatory for Developers"
   },
   {
     "id": "project-rasad-summary-3",
@@ -2971,7 +2971,7 @@ export const generatedChunks = [
       "Developer Tool / CLI + Web",
       "summary"
     ],
-    "text": "oneLiner: 656 sessions analyzed, every action replayed, every session graded A to F. Open source, 100% local."
+    "text": "Rasad · summary: oneLiner: 656 sessions analyzed, every action replayed, every session graded A to F. Open source, 100% local."
   },
   {
     "id": "project-rasad-summary-4",
@@ -2983,7 +2983,7 @@ export const generatedChunks = [
       "Developer Tool / CLI + Web",
       "summary"
     ],
-    "text": "cardSummary: 656 sessions analyzed. Every tool call and file touch replayed, every session graded A to F. Open source on npm, 100% local."
+    "text": "Rasad · summary: cardSummary: 656 sessions analyzed. Every tool call and file touch replayed, every session graded A to F. Open source on npm, 100% local."
   },
   {
     "id": "project-rasad-summary-5",
@@ -2995,7 +2995,7 @@ export const generatedChunks = [
       "Developer Tool / CLI + Web",
       "summary"
     ],
-    "text": "impact: The observability layer for AI-assisted development. 656 sessions across 4 tools, 38K messages and 14K tool calls, every action replayed and every session graded A to F. Found that routine tasks on Opus cost 18x more than Sonnet with no quality difference. Published on npm as rasad-ai (MIT). 100% local, zero outbound requests."
+    "text": "Rasad · summary: impact: The observability layer for AI-assisted development. 656 sessions across 4 tools, 38K messages and 14K tool calls, every action replayed and every session graded A to F. Found that routine tasks on Opus cost 18x more than Sonnet with no quality difference. Published on npm as rasad-ai (MIT). 100% local, zero outbound requests."
   },
   {
     "id": "project-rasad-summary-6",
@@ -3007,7 +3007,7 @@ export const generatedChunks = [
       "Developer Tool / CLI + Web",
       "summary"
     ],
-    "text": "problem: AI coding assistants are black boxes. You don't know how many tokens were burned, whether context was lost mid-session, or if that $87 session could have been three $8 sessions. Zero observability for a major engineering budget line."
+    "text": "Rasad · summary: problem: AI coding assistants are black boxes. You don't know how many tokens were burned, whether context was lost mid-session, or if that $87 session could have been three $8 sessions. Zero observability for a major engineering budget line."
   },
   {
     "id": "project-rasad-summary-7",
@@ -3019,7 +3019,7 @@ export const generatedChunks = [
       "Developer Tool / CLI + Web",
       "summary"
     ],
-    "text": "solution: A local-first CLI + web dashboard that ingests session data from multiple AI tools. SQLite with FTS5 handles 700MB+ with streaming parsers. X-Ray replays sessions action-by-action. Quality grading scores A-F. Model comparison shows cost per session by model. Everything on localhost, zero outbound requests."
+    "text": "Rasad · summary: solution: A local-first CLI + web dashboard that ingests session data from multiple AI tools. SQLite with FTS5 handles 700MB+ with streaming parsers. X-Ray replays sessions action-by-action. Quality grading scores A-F. Model comparison shows cost per session by model. Everything on localhost, zero outbound requests."
   },
   {
     "id": "project-rasad-architecture-1",
@@ -3031,7 +3031,7 @@ export const generatedChunks = [
       "Developer Tool / CLI + Web",
       "architecture"
     ],
-    "text": "architecture 1: Data Adapters (Claude Code, Gogaa, Codex CLI)"
+    "text": "Rasad · architecture: architecture 1: Data Adapters (Claude Code, Gogaa, Codex CLI)"
   },
   {
     "id": "project-rasad-architecture-2",
@@ -3043,7 +3043,7 @@ export const generatedChunks = [
       "Developer Tool / CLI + Web",
       "architecture"
     ],
-    "text": "architecture 2: SQLite (WAL mode, FTS5 full-text search)"
+    "text": "Rasad · architecture: architecture 2: SQLite (WAL mode, FTS5 full-text search)"
   },
   {
     "id": "project-rasad-architecture-3",
@@ -3055,7 +3055,7 @@ export const generatedChunks = [
       "Developer Tool / CLI + Web",
       "architecture"
     ],
-    "text": "architecture 3: Streaming Parsers (700MB+ without memory overflow)"
+    "text": "Rasad · architecture: architecture 3: Streaming Parsers (700MB+ without memory overflow)"
   },
   {
     "id": "project-rasad-architecture-4",
@@ -3067,7 +3067,7 @@ export const generatedChunks = [
       "Developer Tool / CLI + Web",
       "architecture"
     ],
-    "text": "architecture 4: Fastify API (localhost, WebSocket live updates)"
+    "text": "Rasad · architecture: architecture 4: Fastify API (localhost, WebSocket live updates)"
   },
   {
     "id": "project-rasad-architecture-5",
@@ -3079,7 +3079,7 @@ export const generatedChunks = [
       "Developer Tool / CLI + Web",
       "architecture"
     ],
-    "text": "architecture 5: React Dashboard (15+ views, Recharts)"
+    "text": "Rasad · architecture: architecture 5: React Dashboard (15+ views, Recharts)"
   },
   {
     "id": "project-rasad-architecture-6",
@@ -3091,7 +3091,7 @@ export const generatedChunks = [
       "Developer Tool / CLI + Web",
       "architecture"
     ],
-    "text": "architecture 6: React Ink TUI (real-time monitoring, alerts)"
+    "text": "Rasad · architecture: architecture 6: React Ink TUI (real-time monitoring, alerts)"
   },
   {
     "id": "project-rasad-architecture-7",
@@ -3103,7 +3103,7 @@ export const generatedChunks = [
       "Developer Tool / CLI + Web",
       "architecture"
     ],
-    "text": "architecture 7: Quality Scoring Engine (A-F grading)"
+    "text": "Rasad · architecture: architecture 7: Quality Scoring Engine (A-F grading)"
   },
   {
     "id": "project-rasad-architecture-8",
@@ -3115,7 +3115,7 @@ export const generatedChunks = [
       "Developer Tool / CLI + Web",
       "architecture"
     ],
-    "text": "features 1: X-Ray: action-by-action session replay with phase labels and timing"
+    "text": "Rasad · architecture: features 1: X-Ray: action-by-action session replay with phase labels and timing"
   },
   {
     "id": "project-rasad-architecture-9",
@@ -3127,7 +3127,7 @@ export const generatedChunks = [
       "Developer Tool / CLI + Web",
       "architecture"
     ],
-    "text": "features 2: Session Quality grading (A-F) based on efficiency, cost, and self-correction"
+    "text": "Rasad · architecture: features 2: Session Quality grading (A-F) based on efficiency, cost, and self-correction"
   },
   {
     "id": "project-rasad-architecture-10",
@@ -3139,7 +3139,7 @@ export const generatedChunks = [
       "Developer Tool / CLI + Web",
       "architecture"
     ],
-    "text": "features 3: Model comparison: cost per session by model, head-to-head analysis"
+    "text": "Rasad · architecture: features 3: Model comparison: cost per session by model, head-to-head analysis"
   },
   {
     "id": "project-rasad-architecture-11",
@@ -3151,7 +3151,7 @@ export const generatedChunks = [
       "Developer Tool / CLI + Web",
       "architecture"
     ],
-    "text": "features 4: Full-text search across 38K+ messages with SQLite FTS5"
+    "text": "Rasad · architecture: features 4: Full-text search across 38K+ messages with SQLite FTS5"
   },
   {
     "id": "project-rasad-architecture-12",
@@ -3163,7 +3163,7 @@ export const generatedChunks = [
       "Developer Tool / CLI + Web",
       "architecture"
     ],
-    "text": "features 5: 100% local — zero outbound network requests, data never leaves your machine"
+    "text": "Rasad · architecture: features 5: 100% local — zero outbound network requests, data never leaves your machine"
   },
   {
     "id": "project-rasad-architecture-13",
@@ -3175,7 +3175,7 @@ export const generatedChunks = [
       "Developer Tool / CLI + Web",
       "architecture"
     ],
-    "text": "stack 1: TypeScript"
+    "text": "Rasad · architecture: stack 1: TypeScript"
   },
   {
     "id": "project-rasad-architecture-14",
@@ -3187,7 +3187,7 @@ export const generatedChunks = [
       "Developer Tool / CLI + Web",
       "architecture"
     ],
-    "text": "stack 2: SQLite"
+    "text": "Rasad · architecture: stack 2: SQLite"
   },
   {
     "id": "project-rasad-architecture-15",
@@ -3199,7 +3199,7 @@ export const generatedChunks = [
       "Developer Tool / CLI + Web",
       "architecture"
     ],
-    "text": "stack 3: Fastify"
+    "text": "Rasad · architecture: stack 3: Fastify"
   },
   {
     "id": "project-rasad-architecture-16",
@@ -3211,7 +3211,7 @@ export const generatedChunks = [
       "Developer Tool / CLI + Web",
       "architecture"
     ],
-    "text": "stack 4: React 19"
+    "text": "Rasad · architecture: stack 4: React 19"
   },
   {
     "id": "project-rasad-architecture-17",
@@ -3223,7 +3223,7 @@ export const generatedChunks = [
       "Developer Tool / CLI + Web",
       "architecture"
     ],
-    "text": "stack 5: Vite"
+    "text": "Rasad · architecture: stack 5: Vite"
   },
   {
     "id": "project-rasad-architecture-18",
@@ -3235,7 +3235,7 @@ export const generatedChunks = [
       "Developer Tool / CLI + Web",
       "architecture"
     ],
-    "text": "stack 6: Recharts"
+    "text": "Rasad · architecture: stack 6: Recharts"
   },
   {
     "id": "project-rasad-architecture-19",
@@ -3247,7 +3247,7 @@ export const generatedChunks = [
       "Developer Tool / CLI + Web",
       "architecture"
     ],
-    "text": "stack 7: React Ink"
+    "text": "Rasad · architecture: stack 7: React Ink"
   },
   {
     "id": "project-rasad-decisions-1",
@@ -3259,7 +3259,7 @@ export const generatedChunks = [
       "Developer Tool / CLI + Web",
       "decisions"
     ],
-    "text": "techDecisions 1 title: SQLite over Postgres for a local tool"
+    "text": "Rasad · decisions: techDecisions 1 title: SQLite over Postgres for a local tool"
   },
   {
     "id": "project-rasad-decisions-2",
@@ -3271,7 +3271,7 @@ export const generatedChunks = [
       "Developer Tool / CLI + Web",
       "decisions"
     ],
-    "text": "techDecisions 1 description: No database process, no connection strings. WAL mode gives concurrent reads/writes. FTS5 gives full-text search. The whole DB is one file at ~/.rasad/rasad.db."
+    "text": "Rasad · decisions: techDecisions 1 description: No database process, no connection strings. WAL mode gives concurrent reads/writes. FTS5 gives full-text search. The whole DB is one file at ~/.rasad/rasad.db."
   },
   {
     "id": "project-rasad-decisions-3",
@@ -3283,7 +3283,7 @@ export const generatedChunks = [
       "Developer Tool / CLI + Web",
       "decisions"
     ],
-    "text": "techDecisions 2 title: Streaming parsers for ingestion"
+    "text": "Rasad · decisions: techDecisions 2 title: Streaming parsers for ingestion"
   },
   {
     "id": "project-rasad-decisions-4",
@@ -3295,7 +3295,7 @@ export const generatedChunks = [
       "Developer Tool / CLI + Web",
       "decisions"
     ],
-    "text": "techDecisions 2 description: Claude Code session files can reach hundreds of MB. Line-by-line streaming never holds more than one line in memory."
+    "text": "Rasad · decisions: techDecisions 2 description: Claude Code session files can reach hundreds of MB. Line-by-line streaming never holds more than one line in memory."
   },
   {
     "id": "project-rasad-decisions-5",
@@ -3307,7 +3307,7 @@ export const generatedChunks = [
       "Developer Tool / CLI + Web",
       "decisions"
     ],
-    "text": "techDecisions 3 title: Dual interface: web + terminal"
+    "text": "Rasad · decisions: techDecisions 3 title: Dual interface: web + terminal"
   },
   {
     "id": "project-rasad-decisions-6",
@@ -3319,7 +3319,7 @@ export const generatedChunks = [
       "Developer Tool / CLI + Web",
       "decisions"
     ],
-    "text": "techDecisions 3 description: Dashboard for rich visualizations, TUI for real-time monitoring without leaving the terminal. Same Fastify API backs both."
+    "text": "Rasad · decisions: techDecisions 3 description: Dashboard for rich visualizations, TUI for real-time monitoring without leaving the terminal. Same Fastify API backs both."
   },
   {
     "id": "project-rasad-decisions-7",
@@ -3331,7 +3331,7 @@ export const generatedChunks = [
       "Developer Tool / CLI + Web",
       "decisions"
     ],
-    "text": "decision scenario: You're spending $500+/day on AI tools with zero visibility into what the AI is doing or whether sessions are efficient."
+    "text": "Rasad · decisions: decision scenario: You're spending $500+/day on AI tools with zero visibility into what the AI is doing or whether sessions are efficient."
   },
   {
     "id": "project-rasad-decisions-8",
@@ -3343,7 +3343,7 @@ export const generatedChunks = [
       "Developer Tool / CLI + Web",
       "decisions"
     ],
-    "text": "decision question: How do you get observability?"
+    "text": "Rasad · decisions: decision question: How do you get observability?"
   },
   {
     "id": "project-rasad-decisions-9",
@@ -3355,7 +3355,7 @@ export const generatedChunks = [
       "Developer Tool / CLI + Web",
       "decisions"
     ],
-    "text": "decision options 1: Check API billing dashboards"
+    "text": "Rasad · decisions: decision options 1: Check API billing dashboards"
   },
   {
     "id": "project-rasad-decisions-10",
@@ -3367,7 +3367,7 @@ export const generatedChunks = [
       "Developer Tool / CLI + Web",
       "decisions"
     ],
-    "text": "decision options 2: Build custom logging into each tool"
+    "text": "Rasad · decisions: decision options 2: Build custom logging into each tool"
   },
   {
     "id": "project-rasad-decisions-11",
@@ -3379,7 +3379,7 @@ export const generatedChunks = [
       "Developer Tool / CLI + Web",
       "decisions"
     ],
-    "text": "decision options 3: Build a unified observatory that reads session files directly"
+    "text": "Rasad · decisions: decision options 3: Build a unified observatory that reads session files directly"
   },
   {
     "id": "project-rasad-decisions-12",
@@ -3391,7 +3391,7 @@ export const generatedChunks = [
       "Developer Tool / CLI + Web",
       "decisions"
     ],
-    "text": "decision commonChoice: 0"
+    "text": "Rasad · decisions: decision commonChoice: 0"
   },
   {
     "id": "project-rasad-decisions-13",
@@ -3403,7 +3403,7 @@ export const generatedChunks = [
       "Developer Tool / CLI + Web",
       "decisions"
     ],
-    "text": "decision myChoice: 2"
+    "text": "Rasad · decisions: decision myChoice: 2"
   },
   {
     "id": "project-rasad-decisions-14",
@@ -3415,7 +3415,7 @@ export const generatedChunks = [
       "Developer Tool / CLI + Web",
       "decisions"
     ],
-    "text": "decision reasoning: Billing shows cost, not behavior. Custom logging requires modifying each tool. Rasad sits outside, reads session files directly, gives one dashboard with replay, grading, and cost tracking across every AI tool."
+    "text": "Rasad · decisions: decision reasoning: Billing shows cost, not behavior. Custom logging requires modifying each tool. Rasad sits outside, reads session files directly, gives one dashboard with replay, grading, and cost tracking across every AI tool."
   },
   {
     "id": "project-rasad-decisions-15",
@@ -3427,7 +3427,7 @@ export const generatedChunks = [
       "Developer Tool / CLI + Web",
       "decisions"
     ],
-    "text": "comparison mine title: Rasad"
+    "text": "Rasad · decisions: comparison mine title: Rasad"
   },
   {
     "id": "project-rasad-decisions-16",
@@ -3439,7 +3439,7 @@ export const generatedChunks = [
       "Developer Tool / CLI + Web",
       "decisions"
     ],
-    "text": "comparison mine bullets 1: Multi-tool: Claude Code + Gogaa + Codex in one view"
+    "text": "Rasad · decisions: comparison mine bullets 1: Multi-tool: Claude Code + Gogaa + Codex in one view"
   },
   {
     "id": "project-rasad-decisions-17",
@@ -3451,7 +3451,7 @@ export const generatedChunks = [
       "Developer Tool / CLI + Web",
       "decisions"
     ],
-    "text": "comparison mine bullets 2: Action-level X-Ray replay"
+    "text": "Rasad · decisions: comparison mine bullets 2: Action-level X-Ray replay"
   },
   {
     "id": "project-rasad-decisions-18",
@@ -3463,7 +3463,7 @@ export const generatedChunks = [
       "Developer Tool / CLI + Web",
       "decisions"
     ],
-    "text": "comparison mine bullets 3: Session quality grading (A-F)"
+    "text": "Rasad · decisions: comparison mine bullets 3: Session quality grading (A-F)"
   },
   {
     "id": "project-rasad-decisions-19",
@@ -3475,7 +3475,7 @@ export const generatedChunks = [
       "Developer Tool / CLI + Web",
       "decisions"
     ],
-    "text": "comparison mine bullets 4: 100% local, data never leaves your machine"
+    "text": "Rasad · decisions: comparison mine bullets 4: 100% local, data never leaves your machine"
   },
   {
     "id": "project-rasad-decisions-20",
@@ -3487,7 +3487,7 @@ export const generatedChunks = [
       "Developer Tool / CLI + Web",
       "decisions"
     ],
-    "text": "comparison standard title: API billing dashboards"
+    "text": "Rasad · decisions: comparison standard title: API billing dashboards"
   },
   {
     "id": "project-rasad-decisions-21",
@@ -3499,7 +3499,7 @@ export const generatedChunks = [
       "Developer Tool / CLI + Web",
       "decisions"
     ],
-    "text": "comparison standard bullets 1: Single provider, no cross-tool view"
+    "text": "Rasad · decisions: comparison standard bullets 1: Single provider, no cross-tool view"
   },
   {
     "id": "project-rasad-decisions-22",
@@ -3511,7 +3511,7 @@ export const generatedChunks = [
       "Developer Tool / CLI + Web",
       "decisions"
     ],
-    "text": "comparison standard bullets 2: Cost only, no behavioral analysis"
+    "text": "Rasad · decisions: comparison standard bullets 2: Cost only, no behavioral analysis"
   },
   {
     "id": "project-rasad-decisions-23",
@@ -3523,7 +3523,7 @@ export const generatedChunks = [
       "Developer Tool / CLI + Web",
       "decisions"
     ],
-    "text": "comparison standard bullets 3: No replay or action-level visibility"
+    "text": "Rasad · decisions: comparison standard bullets 3: No replay or action-level visibility"
   },
   {
     "id": "project-rasad-decisions-24",
@@ -3535,7 +3535,7 @@ export const generatedChunks = [
       "Developer Tool / CLI + Web",
       "decisions"
     ],
-    "text": "comparison standard bullets 4: Data on vendor servers"
+    "text": "Rasad · decisions: comparison standard bullets 4: Data on vendor servers"
   },
   {
     "id": "project-rasad-results-1",
@@ -3547,7 +3547,7 @@ export const generatedChunks = [
       "Developer Tool / CLI + Web",
       "results"
     ],
-    "text": "results 1: 656 sessions synced from 4 AI tools in one dashboard"
+    "text": "Rasad · results: results 1: 656 sessions synced from 4 AI tools in one dashboard"
   },
   {
     "id": "project-rasad-results-2",
@@ -3559,7 +3559,7 @@ export const generatedChunks = [
       "Developer Tool / CLI + Web",
       "results"
     ],
-    "text": "results 2: 38K messages, 14K tool calls indexed with full-text search"
+    "text": "Rasad · results: results 2: 38K messages, 14K tool calls indexed with full-text search"
   },
   {
     "id": "project-rasad-results-3",
@@ -3571,7 +3571,7 @@ export const generatedChunks = [
       "Developer Tool / CLI + Web",
       "results"
     ],
-    "text": "results 3: First sync: 6.2s for 700MB+. Incremental: <1s"
+    "text": "Rasad · results: results 3: First sync: 6.2s for 700MB+. Incremental: <1s"
   },
   {
     "id": "project-rasad-results-4",
@@ -3583,7 +3583,7 @@ export const generatedChunks = [
       "Developer Tool / CLI + Web",
       "results"
     ],
-    "text": "results 4: Zero outbound requests, 100% local-first"
+    "text": "Rasad · results: results 4: Zero outbound requests, 100% local-first"
   },
   {
     "id": "project-rasad-results-5",
@@ -3595,7 +3595,7 @@ export const generatedChunks = [
       "Developer Tool / CLI + Web",
       "results"
     ],
-    "text": "results 5: Published on npm as rasad-ai (MIT) with a live terminal view: rasad watch"
+    "text": "Rasad · results: results 5: Published on npm as rasad-ai (MIT) with a live terminal view: rasad watch"
   },
   {
     "id": "project-rasad-results-6",
@@ -3607,7 +3607,7 @@ export const generatedChunks = [
       "Developer Tool / CLI + Web",
       "results"
     ],
-    "text": "measuredImpact before value: $0"
+    "text": "Rasad · results: measuredImpact before value: $0"
   },
   {
     "id": "project-rasad-results-7",
@@ -3619,7 +3619,7 @@ export const generatedChunks = [
       "Developer Tool / CLI + Web",
       "results"
     ],
-    "text": "measuredImpact before context: visibility into AI tool behavior and cost"
+    "text": "Rasad · results: measuredImpact before context: visibility into AI tool behavior and cost"
   },
   {
     "id": "project-rasad-results-8",
@@ -3631,7 +3631,7 @@ export const generatedChunks = [
       "Developer Tool / CLI + Web",
       "results"
     ],
-    "text": "measuredImpact after value: 656"
+    "text": "Rasad · results: measuredImpact after value: 656"
   },
   {
     "id": "project-rasad-results-9",
@@ -3643,7 +3643,7 @@ export const generatedChunks = [
       "Developer Tool / CLI + Web",
       "results"
     ],
-    "text": "measuredImpact after context: sessions analyzed with action-level replay"
+    "text": "Rasad · results: measuredImpact after context: sessions analyzed with action-level replay"
   },
   {
     "id": "project-rasad-results-10",
@@ -3655,7 +3655,7 @@ export const generatedChunks = [
       "Developer Tool / CLI + Web",
       "results"
     ],
-    "text": "measuredImpact highlights 1 n: 38K"
+    "text": "Rasad · results: measuredImpact highlights 1 n: 38K"
   },
   {
     "id": "project-rasad-results-11",
@@ -3667,7 +3667,7 @@ export const generatedChunks = [
       "Developer Tool / CLI + Web",
       "results"
     ],
-    "text": "measuredImpact highlights 1 l: messages indexed"
+    "text": "Rasad · results: measuredImpact highlights 1 l: messages indexed"
   },
   {
     "id": "project-rasad-results-12",
@@ -3679,7 +3679,7 @@ export const generatedChunks = [
       "Developer Tool / CLI + Web",
       "results"
     ],
-    "text": "measuredImpact highlights 2 n: 14K"
+    "text": "Rasad · results: measuredImpact highlights 2 n: 14K"
   },
   {
     "id": "project-rasad-results-13",
@@ -3691,7 +3691,7 @@ export const generatedChunks = [
       "Developer Tool / CLI + Web",
       "results"
     ],
-    "text": "measuredImpact highlights 2 l: tool calls tracked"
+    "text": "Rasad · results: measuredImpact highlights 2 l: tool calls tracked"
   },
   {
     "id": "project-rasad-results-14",
@@ -3703,7 +3703,7 @@ export const generatedChunks = [
       "Developer Tool / CLI + Web",
       "results"
     ],
-    "text": "measuredImpact highlights 3 n: 6.2s"
+    "text": "Rasad · results: measuredImpact highlights 3 n: 6.2s"
   },
   {
     "id": "project-rasad-results-15",
@@ -3715,7 +3715,7 @@ export const generatedChunks = [
       "Developer Tool / CLI + Web",
       "results"
     ],
-    "text": "measuredImpact highlights 3 l: first sync (700MB)"
+    "text": "Rasad · results: measuredImpact highlights 3 l: first sync (700MB)"
   },
   {
     "id": "project-command-center-summary-1",
@@ -3727,7 +3727,7 @@ export const generatedChunks = [
       "Developer Tool",
       "summary"
     ],
-    "text": "title: Command Center"
+    "text": "Command Center · summary: title: Command Center"
   },
   {
     "id": "project-command-center-summary-2",
@@ -3739,7 +3739,7 @@ export const generatedChunks = [
       "Developer Tool",
       "summary"
     ],
-    "text": "subtitle: Personal AI Operations PWA"
+    "text": "Command Center · summary: subtitle: Personal AI Operations PWA"
   },
   {
     "id": "project-command-center-summary-3",
@@ -3751,7 +3751,7 @@ export const generatedChunks = [
       "Developer Tool",
       "summary"
     ],
-    "text": "plainSummary: One screen for email, calendar and tasks, with AI sorting what matters first. Cuts inbox time by 60%."
+    "text": "Command Center · summary: plainSummary: One screen for email, calendar and tasks, with AI sorting what matters first. Cuts inbox time by 60%."
   },
   {
     "id": "project-command-center-summary-4",
@@ -3763,7 +3763,7 @@ export const generatedChunks = [
       "Developer Tool",
       "summary"
     ],
-    "text": "impact: A single interface unifying email, calendar, and tasks with AI triage. Dual AI backends (Claude + Gemini), real Gmail/Calendar integration, installable as PWA."
+    "text": "Command Center · summary: impact: A single interface unifying email, calendar, and tasks with AI triage. Dual AI backends (Claude + Gemini), real Gmail/Calendar integration, installable as PWA."
   },
   {
     "id": "project-command-center-summary-5",
@@ -3775,7 +3775,7 @@ export const generatedChunks = [
       "Developer Tool",
       "summary"
     ],
-    "text": "problem: Developers juggle Gmail, Calendar, Notion, and separate dashboards per client. Context switching kills productivity. No single tool combines AI triage with real integrations."
+    "text": "Command Center · summary: problem: Developers juggle Gmail, Calendar, Notion, and separate dashboards per client. Context switching kills productivity. No single tool combines AI triage with real integrations."
   },
   {
     "id": "project-command-center-summary-6",
@@ -3787,7 +3787,7 @@ export const generatedChunks = [
       "Developer Tool",
       "summary"
     ],
-    "text": "solution: A PWA that pulls Gmail and Calendar via API, applies dual-AI triage (Claude for reasoning, Gemini for classification), and surfaces everything in one dashboard with real-time Supabase sync across devices."
+    "text": "Command Center · summary: solution: A PWA that pulls Gmail and Calendar via API, applies dual-AI triage (Claude for reasoning, Gemini for classification), and surfaces everything in one dashboard with real-time Supabase sync across devices."
   },
   {
     "id": "project-command-center-architecture-1",
@@ -3799,7 +3799,7 @@ export const generatedChunks = [
       "Developer Tool",
       "architecture"
     ],
-    "text": "architecture 1: PWA Shell (React + TypeScript)"
+    "text": "Command Center · architecture: architecture 1: PWA Shell (React + TypeScript)"
   },
   {
     "id": "project-command-center-architecture-2",
@@ -3811,7 +3811,7 @@ export const generatedChunks = [
       "Developer Tool",
       "architecture"
     ],
-    "text": "architecture 2: Dual AI: Claude + Gemini"
+    "text": "Command Center · architecture: architecture 2: Dual AI: Claude + Gemini"
   },
   {
     "id": "project-command-center-architecture-3",
@@ -3823,7 +3823,7 @@ export const generatedChunks = [
       "Developer Tool",
       "architecture"
     ],
-    "text": "architecture 3: Gmail API + Calendar API"
+    "text": "Command Center · architecture: architecture 3: Gmail API + Calendar API"
   },
   {
     "id": "project-command-center-architecture-4",
@@ -3835,7 +3835,7 @@ export const generatedChunks = [
       "Developer Tool",
       "architecture"
     ],
-    "text": "architecture 4: Supabase (Postgres, Auth, Realtime)"
+    "text": "Command Center · architecture: architecture 4: Supabase (Postgres, Auth, Realtime)"
   },
   {
     "id": "project-command-center-architecture-5",
@@ -3847,7 +3847,7 @@ export const generatedChunks = [
       "Developer Tool",
       "architecture"
     ],
-    "text": "architecture 5: Task Board + AI Triage"
+    "text": "Command Center · architecture: architecture 5: Task Board + AI Triage"
   },
   {
     "id": "project-command-center-architecture-6",
@@ -3859,7 +3859,7 @@ export const generatedChunks = [
       "Developer Tool",
       "architecture"
     ],
-    "text": "features 1: Unified inbox with AI-powered intent classification and priority scoring"
+    "text": "Command Center · architecture: features 1: Unified inbox with AI-powered intent classification and priority scoring"
   },
   {
     "id": "project-command-center-architecture-7",
@@ -3871,7 +3871,7 @@ export const generatedChunks = [
       "Developer Tool",
       "architecture"
     ],
-    "text": "features 2: Dual AI: Claude for complex reasoning, Gemini for fast classification"
+    "text": "Command Center · architecture: features 2: Dual AI: Claude for complex reasoning, Gemini for fast classification"
   },
   {
     "id": "project-command-center-architecture-8",
@@ -3883,7 +3883,7 @@ export const generatedChunks = [
       "Developer Tool",
       "architecture"
     ],
-    "text": "features 3: Calendar integration with conflict detection"
+    "text": "Command Center · architecture: features 3: Calendar integration with conflict detection"
   },
   {
     "id": "project-command-center-architecture-9",
@@ -3895,7 +3895,7 @@ export const generatedChunks = [
       "Developer Tool",
       "architecture"
     ],
-    "text": "features 4: PWA: installable on desktop and mobile, works offline"
+    "text": "Command Center · architecture: features 4: PWA: installable on desktop and mobile, works offline"
   },
   {
     "id": "project-command-center-architecture-10",
@@ -3907,7 +3907,7 @@ export const generatedChunks = [
       "Developer Tool",
       "architecture"
     ],
-    "text": "features 5: Real-time sync across devices via Supabase"
+    "text": "Command Center · architecture: features 5: Real-time sync across devices via Supabase"
   },
   {
     "id": "project-command-center-architecture-11",
@@ -3919,7 +3919,7 @@ export const generatedChunks = [
       "Developer Tool",
       "architecture"
     ],
-    "text": "stack 1: React"
+    "text": "Command Center · architecture: stack 1: React"
   },
   {
     "id": "project-command-center-architecture-12",
@@ -3931,7 +3931,7 @@ export const generatedChunks = [
       "Developer Tool",
       "architecture"
     ],
-    "text": "stack 2: TypeScript"
+    "text": "Command Center · architecture: stack 2: TypeScript"
   },
   {
     "id": "project-command-center-architecture-13",
@@ -3943,7 +3943,7 @@ export const generatedChunks = [
       "Developer Tool",
       "architecture"
     ],
-    "text": "stack 3: Anthropic SDK"
+    "text": "Command Center · architecture: stack 3: Anthropic SDK"
   },
   {
     "id": "project-command-center-architecture-14",
@@ -3955,7 +3955,7 @@ export const generatedChunks = [
       "Developer Tool",
       "architecture"
     ],
-    "text": "stack 4: Google Gemini"
+    "text": "Command Center · architecture: stack 4: Google Gemini"
   },
   {
     "id": "project-command-center-architecture-15",
@@ -3967,7 +3967,7 @@ export const generatedChunks = [
       "Developer Tool",
       "architecture"
     ],
-    "text": "stack 5: Supabase"
+    "text": "Command Center · architecture: stack 5: Supabase"
   },
   {
     "id": "project-command-center-architecture-16",
@@ -3979,7 +3979,7 @@ export const generatedChunks = [
       "Developer Tool",
       "architecture"
     ],
-    "text": "stack 6: Gmail API"
+    "text": "Command Center · architecture: stack 6: Gmail API"
   },
   {
     "id": "project-command-center-architecture-17",
@@ -3991,7 +3991,7 @@ export const generatedChunks = [
       "Developer Tool",
       "architecture"
     ],
-    "text": "stack 7: PWA"
+    "text": "Command Center · architecture: stack 7: PWA"
   },
   {
     "id": "project-command-center-decisions-1",
@@ -4003,7 +4003,7 @@ export const generatedChunks = [
       "Developer Tool",
       "decisions"
     ],
-    "text": "techDecisions 1 title: Dual AI backends"
+    "text": "Command Center · decisions: techDecisions 1 title: Dual AI backends"
   },
   {
     "id": "project-command-center-decisions-2",
@@ -4015,7 +4015,7 @@ export const generatedChunks = [
       "Developer Tool",
       "decisions"
     ],
-    "text": "techDecisions 1 description: Claude handles complex email reasoning. Gemini handles fast classification. No vendor lock-in, plays to each model's strengths."
+    "text": "Command Center · decisions: techDecisions 1 description: Claude handles complex email reasoning. Gemini handles fast classification. No vendor lock-in, plays to each model's strengths."
   },
   {
     "id": "project-command-center-decisions-3",
@@ -4027,7 +4027,7 @@ export const generatedChunks = [
       "Developer Tool",
       "decisions"
     ],
-    "text": "techDecisions 2 title: PWA over native app"
+    "text": "Command Center · decisions: techDecisions 2 title: PWA over native app"
   },
   {
     "id": "project-command-center-decisions-4",
@@ -4039,7 +4039,7 @@ export const generatedChunks = [
       "Developer Tool",
       "decisions"
     ],
-    "text": "techDecisions 2 description: Single codebase serves web, iOS, Android. Service workers enable offline and push notifications. No App Store approval needed."
+    "text": "Command Center · decisions: techDecisions 2 description: Single codebase serves web, iOS, Android. Service workers enable offline and push notifications. No App Store approval needed."
   },
   {
     "id": "project-command-center-results-1",
@@ -4051,7 +4051,7 @@ export const generatedChunks = [
       "Developer Tool",
       "results"
     ],
-    "text": "results 1: Replaces 4+ separate tools in daily workflow"
+    "text": "Command Center · results: results 1: Replaces 4+ separate tools in daily workflow"
   },
   {
     "id": "project-command-center-results-2",
@@ -4063,7 +4063,7 @@ export const generatedChunks = [
       "Developer Tool",
       "results"
     ],
-    "text": "results 2: AI triage reduces inbox processing by 60%"
+    "text": "Command Center · results: results 2: AI triage reduces inbox processing by 60%"
   },
   {
     "id": "project-command-center-results-3",
@@ -4075,7 +4075,7 @@ export const generatedChunks = [
       "Developer Tool",
       "results"
     ],
-    "text": "results 3: Installable on desktop and mobile with offline support"
+    "text": "Command Center · results: results 3: Installable on desktop and mobile with offline support"
   },
   {
     "id": "project-gluten-free-summary-1",
@@ -4087,7 +4087,7 @@ export const generatedChunks = [
       "Web + iOS + Android",
       "summary"
     ],
-    "text": "title: Gluten-Free Deals & Dining"
+    "text": "Gluten-Free Deals & Dining · summary: title: Gluten-Free Deals & Dining"
   },
   {
     "id": "project-gluten-free-summary-2",
@@ -4099,7 +4099,7 @@ export const generatedChunks = [
       "Web + iOS + Android",
       "summary"
     ],
-    "text": "subtitle: Cross-Platform Consumer App"
+    "text": "Gluten-Free Deals & Dining · summary: subtitle: Cross-Platform Consumer App"
   },
   {
     "id": "project-gluten-free-summary-3",
@@ -4111,7 +4111,7 @@ export const generatedChunks = [
       "Web + iOS + Android",
       "summary"
     ],
-    "text": "plainSummary: A phone and web app that finds gluten-free deals from 40+ shops, nearby restaurants, and recipes."
+    "text": "Gluten-Free Deals & Dining · summary: plainSummary: A phone and web app that finds gluten-free deals from 40+ shops, nearby restaurants, and recipes."
   },
   {
     "id": "project-gluten-free-summary-4",
@@ -4123,7 +4123,7 @@ export const generatedChunks = [
       "Web + iOS + Android",
       "summary"
     ],
-    "text": "impact: Cross-platform app aggregating deals from 40+ retailers, finding nearby restaurants, and generating recipes — powered by LLM-generated search queries."
+    "text": "Gluten-Free Deals & Dining · summary: impact: Cross-platform app aggregating deals from 40+ retailers, finding nearby restaurants, and generating recipes — powered by LLM-generated search queries."
   },
   {
     "id": "project-gluten-free-summary-5",
@@ -4135,7 +4135,7 @@ export const generatedChunks = [
       "Web + iOS + Android",
       "summary"
     ],
-    "text": "problem: Gluten-free consumers search scattered retailer sites for deals, have no way to find nearby safe restaurants, and lack reliable recipe sources. Existing apps cover one aspect, not all three."
+    "text": "Gluten-Free Deals & Dining · summary: problem: Gluten-free consumers search scattered retailer sites for deals, have no way to find nearby safe restaurants, and lack reliable recipe sources. Existing apps cover one aspect, not all three."
   },
   {
     "id": "project-gluten-free-summary-6",
@@ -4147,7 +4147,7 @@ export const generatedChunks = [
       "Web + iOS + Android",
       "summary"
     ],
-    "text": "solution: An LLM generates 200+ targeted search queries per category (brands, retailers, products), concurrent scrapers aggregate deals, GPS finds nearby restaurants, and AI generates personalized recipes. Cross-platform via React Native + Next.js."
+    "text": "Gluten-Free Deals & Dining · summary: solution: An LLM generates 200+ targeted search queries per category (brands, retailers, products), concurrent scrapers aggregate deals, GPS finds nearby restaurants, and AI generates personalized recipes. Cross-platform via React Native + Next.js."
   },
   {
     "id": "project-gluten-free-architecture-1",
@@ -4159,7 +4159,7 @@ export const generatedChunks = [
       "Web + iOS + Android",
       "architecture"
     ],
-    "text": "architecture 1: LLM Query Generator (200+ targeted queries)"
+    "text": "Gluten-Free Deals & Dining · architecture: architecture 1: LLM Query Generator (200+ targeted queries)"
   },
   {
     "id": "project-gluten-free-architecture-2",
@@ -4171,7 +4171,7 @@ export const generatedChunks = [
       "Web + iOS + Android",
       "architecture"
     ],
-    "text": "architecture 2: Concurrent Scraping (SerpAPI + Tavily)"
+    "text": "Gluten-Free Deals & Dining · architecture: architecture 2: Concurrent Scraping (SerpAPI + Tavily)"
   },
   {
     "id": "project-gluten-free-architecture-3",
@@ -4183,7 +4183,7 @@ export const generatedChunks = [
       "Web + iOS + Android",
       "architecture"
     ],
-    "text": "architecture 3: Deduplication & Relevance Scoring"
+    "text": "Gluten-Free Deals & Dining · architecture: architecture 3: Deduplication & Relevance Scoring"
   },
   {
     "id": "project-gluten-free-architecture-4",
@@ -4195,7 +4195,7 @@ export const generatedChunks = [
       "Web + iOS + Android",
       "architecture"
     ],
-    "text": "architecture 4: GPS Restaurant Finder (Google Maps)"
+    "text": "Gluten-Free Deals & Dining · architecture: architecture 4: GPS Restaurant Finder (Google Maps)"
   },
   {
     "id": "project-gluten-free-architecture-5",
@@ -4207,7 +4207,7 @@ export const generatedChunks = [
       "Web + iOS + Android",
       "architecture"
     ],
-    "text": "architecture 5: AI Recipe Generator"
+    "text": "Gluten-Free Deals & Dining · architecture: architecture 5: AI Recipe Generator"
   },
   {
     "id": "project-gluten-free-architecture-6",
@@ -4219,7 +4219,7 @@ export const generatedChunks = [
       "Web + iOS + Android",
       "architecture"
     ],
-    "text": "architecture 6: Cross-platform UI (React Native + Next.js)"
+    "text": "Gluten-Free Deals & Dining · architecture: architecture 6: Cross-platform UI (React Native + Next.js)"
   },
   {
     "id": "project-gluten-free-architecture-7",
@@ -4231,7 +4231,7 @@ export const generatedChunks = [
       "Web + iOS + Android",
       "architecture"
     ],
-    "text": "features 1: LLM-generated search queries covering 40+ retailers and 30+ brands dynamically"
+    "text": "Gluten-Free Deals & Dining · architecture: features 1: LLM-generated search queries covering 40+ retailers and 30+ brands dynamically"
   },
   {
     "id": "project-gluten-free-architecture-8",
@@ -4243,7 +4243,7 @@ export const generatedChunks = [
       "Web + iOS + Android",
       "architecture"
     ],
-    "text": "features 2: Concurrent dual-API scraping with deduplication and freshness filtering"
+    "text": "Gluten-Free Deals & Dining · architecture: features 2: Concurrent dual-API scraping with deduplication and freshness filtering"
   },
   {
     "id": "project-gluten-free-architecture-9",
@@ -4255,7 +4255,7 @@ export const generatedChunks = [
       "Web + iOS + Android",
       "architecture"
     ],
-    "text": "features 3: GPS-based restaurant finder with allergy-safe filtering"
+    "text": "Gluten-Free Deals & Dining · architecture: features 3: GPS-based restaurant finder with allergy-safe filtering"
   },
   {
     "id": "project-gluten-free-architecture-10",
@@ -4267,7 +4267,7 @@ export const generatedChunks = [
       "Web + iOS + Android",
       "architecture"
     ],
-    "text": "features 4: AI recipe generation with nutrition facts and substitution tips"
+    "text": "Gluten-Free Deals & Dining · architecture: features 4: AI recipe generation with nutrition facts and substitution tips"
   },
   {
     "id": "project-gluten-free-architecture-11",
@@ -4279,7 +4279,7 @@ export const generatedChunks = [
       "Web + iOS + Android",
       "architecture"
     ],
-    "text": "features 5: Unified experience across Web, iOS, and Android"
+    "text": "Gluten-Free Deals & Dining · architecture: features 5: Unified experience across Web, iOS, and Android"
   },
   {
     "id": "project-gluten-free-architecture-12",
@@ -4291,7 +4291,7 @@ export const generatedChunks = [
       "Web + iOS + Android",
       "architecture"
     ],
-    "text": "stack 1: React Native"
+    "text": "Gluten-Free Deals & Dining · architecture: stack 1: React Native"
   },
   {
     "id": "project-gluten-free-architecture-13",
@@ -4303,7 +4303,7 @@ export const generatedChunks = [
       "Web + iOS + Android",
       "architecture"
     ],
-    "text": "stack 2: Next.js"
+    "text": "Gluten-Free Deals & Dining · architecture: stack 2: Next.js"
   },
   {
     "id": "project-gluten-free-architecture-14",
@@ -4315,7 +4315,7 @@ export const generatedChunks = [
       "Web + iOS + Android",
       "architecture"
     ],
-    "text": "stack 3: Python"
+    "text": "Gluten-Free Deals & Dining · architecture: stack 3: Python"
   },
   {
     "id": "project-gluten-free-architecture-15",
@@ -4327,7 +4327,7 @@ export const generatedChunks = [
       "Web + iOS + Android",
       "architecture"
     ],
-    "text": "stack 4: OpenAI"
+    "text": "Gluten-Free Deals & Dining · architecture: stack 4: OpenAI"
   },
   {
     "id": "project-gluten-free-architecture-16",
@@ -4339,7 +4339,7 @@ export const generatedChunks = [
       "Web + iOS + Android",
       "architecture"
     ],
-    "text": "stack 5: Firebase"
+    "text": "Gluten-Free Deals & Dining · architecture: stack 5: Firebase"
   },
   {
     "id": "project-gluten-free-architecture-17",
@@ -4351,7 +4351,7 @@ export const generatedChunks = [
       "Web + iOS + Android",
       "architecture"
     ],
-    "text": "stack 6: Google Maps"
+    "text": "Gluten-Free Deals & Dining · architecture: stack 6: Google Maps"
   },
   {
     "id": "project-gluten-free-architecture-18",
@@ -4363,7 +4363,7 @@ export const generatedChunks = [
       "Web + iOS + Android",
       "architecture"
     ],
-    "text": "stack 7: SerpAPI"
+    "text": "Gluten-Free Deals & Dining · architecture: stack 7: SerpAPI"
   },
   {
     "id": "project-gluten-free-decisions-1",
@@ -4375,7 +4375,7 @@ export const generatedChunks = [
       "Web + iOS + Android",
       "decisions"
     ],
-    "text": "techDecisions 1 title: LLM query generation over hardcoded searches"
+    "text": "Gluten-Free Deals & Dining · decisions: techDecisions 1 title: LLM query generation over hardcoded searches"
   },
   {
     "id": "project-gluten-free-decisions-2",
@@ -4387,7 +4387,7 @@ export const generatedChunks = [
       "Web + iOS + Android",
       "decisions"
     ],
-    "text": "techDecisions 1 description: The LLM generates 200+ targeted queries dynamically. Covers new brands and retailers without code changes."
+    "text": "Gluten-Free Deals & Dining · decisions: techDecisions 1 description: The LLM generates 200+ targeted queries dynamically. Covers new brands and retailers without code changes."
   },
   {
     "id": "project-gluten-free-decisions-3",
@@ -4399,7 +4399,7 @@ export const generatedChunks = [
       "Web + iOS + Android",
       "decisions"
     ],
-    "text": "techDecisions 2 title: React Native + Next.js shared codebase"
+    "text": "Gluten-Free Deals & Dining · decisions: techDecisions 2 title: React Native + Next.js shared codebase"
   },
   {
     "id": "project-gluten-free-decisions-4",
@@ -4411,7 +4411,7 @@ export const generatedChunks = [
       "Web + iOS + Android",
       "decisions"
     ],
-    "text": "techDecisions 2 description: One team ships to three platforms with shared TypeScript business logic."
+    "text": "Gluten-Free Deals & Dining · decisions: techDecisions 2 description: One team ships to three platforms with shared TypeScript business logic."
   },
   {
     "id": "project-gluten-free-results-1",
@@ -4423,7 +4423,7 @@ export const generatedChunks = [
       "Web + iOS + Android",
       "results"
     ],
-    "text": "results 1: Aggregates deals from 40+ retailers in real time"
+    "text": "Gluten-Free Deals & Dining · results: results 1: Aggregates deals from 40+ retailers in real time"
   },
   {
     "id": "project-gluten-free-results-2",
@@ -4435,7 +4435,7 @@ export const generatedChunks = [
       "Web + iOS + Android",
       "results"
     ],
-    "text": "results 2: 200+ AI-generated queries per category"
+    "text": "Gluten-Free Deals & Dining · results: results 2: 200+ AI-generated queries per category"
   },
   {
     "id": "project-gluten-free-results-3",
@@ -4447,7 +4447,7 @@ export const generatedChunks = [
       "Web + iOS + Android",
       "results"
     ],
-    "text": "results 3: Cross-platform: Web, iOS, Android from shared codebase"
+    "text": "Gluten-Free Deals & Dining · results: results 3: Cross-platform: Web, iOS, Android from shared codebase"
   },
   {
     "id": "project-dev-env-summary-1",
@@ -4459,7 +4459,7 @@ export const generatedChunks = [
       "Developer Infrastructure",
       "summary"
     ],
-    "text": "title: Portable Dev Environment"
+    "text": "Portable Dev Environment · summary: title: Portable Dev Environment"
   },
   {
     "id": "project-dev-env-summary-2",
@@ -4471,7 +4471,7 @@ export const generatedChunks = [
       "Developer Infrastructure",
       "summary"
     ],
-    "text": "subtitle: Containerized Full-Stack Workspace"
+    "text": "Portable Dev Environment · summary: subtitle: Containerized Full-Stack Workspace"
   },
   {
     "id": "project-dev-env-summary-3",
@@ -4483,7 +4483,7 @@ export const generatedChunks = [
       "Developer Infrastructure",
       "summary"
     ],
-    "text": "plainSummary: A ready-made work setup that takes a new developer from zero to their first contribution in 10 minutes."
+    "text": "Portable Dev Environment · summary: plainSummary: A ready-made work setup that takes a new developer from zero to their first contribution in 10 minutes."
   },
   {
     "id": "project-dev-env-summary-4",
@@ -4495,7 +4495,7 @@ export const generatedChunks = [
       "Developer Infrastructure",
       "summary"
     ],
-    "text": "impact: One-command developer onboarding in 10 minutes. Docker container with full toolchain, AI coding assistant integration, and WISC context engineering that cut token costs by 84%."
+    "text": "Portable Dev Environment · summary: impact: One-command developer onboarding in 10 minutes. Docker container with full toolchain, AI coding assistant integration, and WISC context engineering that cut token costs by 84%."
   },
   {
     "id": "project-dev-env-summary-5",
@@ -4507,7 +4507,7 @@ export const generatedChunks = [
       "Developer Infrastructure",
       "summary"
     ],
-    "text": "problem: Dev environments are fragile — different Node versions, missing CLIs, hours of setup. Add AI tooling: Claude Code was burning 72KB of context (35-40K tokens) before a single prompt."
+    "text": "Portable Dev Environment · summary: problem: Dev environments are fragile — different Node versions, missing CLIs, hours of setup. Add AI tooling: Claude Code was burning 72KB of context (35-40K tokens) before a single prompt."
   },
   {
     "id": "project-dev-env-summary-6",
@@ -4519,7 +4519,7 @@ export const generatedChunks = [
       "Developer Infrastructure",
       "summary"
     ],
-    "text": "solution: A Docker container packaging the full toolchain (Node, Python, Deno, Playwright, 10+ CLIs) with WISC context engineering: lazy-loaded skills, path-scoped rules, compressed agent definitions. 72KB context down to 11.7KB, all capabilities preserved."
+    "text": "Portable Dev Environment · summary: solution: A Docker container packaging the full toolchain (Node, Python, Deno, Playwright, 10+ CLIs) with WISC context engineering: lazy-loaded skills, path-scoped rules, compressed agent definitions. 72KB context down to 11.7KB, all capabilities preserved."
   },
   {
     "id": "project-dev-env-architecture-1",
@@ -4531,7 +4531,7 @@ export const generatedChunks = [
       "Developer Infrastructure",
       "architecture"
     ],
-    "text": "architecture 1: Dockerfile (multi-layer, ARM/x86)"
+    "text": "Portable Dev Environment · architecture: architecture 1: Dockerfile (multi-layer, ARM/x86)"
   },
   {
     "id": "project-dev-env-architecture-2",
@@ -4543,7 +4543,7 @@ export const generatedChunks = [
       "Developer Infrastructure",
       "architecture"
     ],
-    "text": "architecture 2: Docker Compose (dev + Postgres + Redis)"
+    "text": "Portable Dev Environment · architecture: architecture 2: Docker Compose (dev + Postgres + Redis)"
   },
   {
     "id": "project-dev-env-architecture-3",
@@ -4555,7 +4555,7 @@ export const generatedChunks = [
       "Developer Infrastructure",
       "architecture"
     ],
-    "text": "architecture 3: Volume Mounts (code, SSH, secrets)"
+    "text": "Portable Dev Environment · architecture: architecture 3: Volume Mounts (code, SSH, secrets)"
   },
   {
     "id": "project-dev-env-architecture-4",
@@ -4567,7 +4567,7 @@ export const generatedChunks = [
       "Developer Infrastructure",
       "architecture"
     ],
-    "text": "architecture 4: Shell Environment (zsh + oh-my-zsh)"
+    "text": "Portable Dev Environment · architecture: architecture 4: Shell Environment (zsh + oh-my-zsh)"
   },
   {
     "id": "project-dev-env-architecture-5",
@@ -4579,7 +4579,7 @@ export const generatedChunks = [
       "Developer Infrastructure",
       "architecture"
     ],
-    "text": "architecture 5: Claude Code Integration (WISC-optimized)"
+    "text": "Portable Dev Environment · architecture: architecture 5: Claude Code Integration (WISC-optimized)"
   },
   {
     "id": "project-dev-env-architecture-6",
@@ -4591,7 +4591,7 @@ export const generatedChunks = [
       "Developer Infrastructure",
       "architecture"
     ],
-    "text": "features 1: ARM + x86 architecture-aware builds"
+    "text": "Portable Dev Environment · architecture: features 1: ARM + x86 architecture-aware builds"
   },
   {
     "id": "project-dev-env-architecture-7",
@@ -4603,7 +4603,7 @@ export const generatedChunks = [
       "Developer Infrastructure",
       "architecture"
     ],
-    "text": "features 2: Full shell environment with Powerlevel10k, autosuggestions, syntax highlighting"
+    "text": "Portable Dev Environment · architecture: features 2: Full shell environment with Powerlevel10k, autosuggestions, syntax highlighting"
   },
   {
     "id": "project-dev-env-architecture-8",
@@ -4615,7 +4615,7 @@ export const generatedChunks = [
       "Developer Infrastructure",
       "architecture"
     ],
-    "text": "features 3: Claude Code integration with WISC-optimized lazy loading"
+    "text": "Portable Dev Environment · architecture: features 3: Claude Code integration with WISC-optimized lazy loading"
   },
   {
     "id": "project-dev-env-architecture-9",
@@ -4627,7 +4627,7 @@ export const generatedChunks = [
       "Developer Infrastructure",
       "architecture"
     ],
-    "text": "features 4: Playwright with Chromium for headless E2E inside the container"
+    "text": "Portable Dev Environment · architecture: features 4: Playwright with Chromium for headless E2E inside the container"
   },
   {
     "id": "project-dev-env-architecture-10",
@@ -4639,7 +4639,7 @@ export const generatedChunks = [
       "Developer Infrastructure",
       "architecture"
     ],
-    "text": "features 5: Secrets mounted at runtime, never baked into images"
+    "text": "Portable Dev Environment · architecture: features 5: Secrets mounted at runtime, never baked into images"
   },
   {
     "id": "project-dev-env-architecture-11",
@@ -4651,7 +4651,7 @@ export const generatedChunks = [
       "Developer Infrastructure",
       "architecture"
     ],
-    "text": "stack 1: Docker"
+    "text": "Portable Dev Environment · architecture: stack 1: Docker"
   },
   {
     "id": "project-dev-env-architecture-12",
@@ -4663,7 +4663,7 @@ export const generatedChunks = [
       "Developer Infrastructure",
       "architecture"
     ],
-    "text": "stack 2: Docker Compose"
+    "text": "Portable Dev Environment · architecture: stack 2: Docker Compose"
   },
   {
     "id": "project-dev-env-architecture-13",
@@ -4675,7 +4675,7 @@ export const generatedChunks = [
       "Developer Infrastructure",
       "architecture"
     ],
-    "text": "stack 3: Ubuntu"
+    "text": "Portable Dev Environment · architecture: stack 3: Ubuntu"
   },
   {
     "id": "project-dev-env-architecture-14",
@@ -4687,7 +4687,7 @@ export const generatedChunks = [
       "Developer Infrastructure",
       "architecture"
     ],
-    "text": "stack 4: Node.js"
+    "text": "Portable Dev Environment · architecture: stack 4: Node.js"
   },
   {
     "id": "project-dev-env-architecture-15",
@@ -4699,7 +4699,7 @@ export const generatedChunks = [
       "Developer Infrastructure",
       "architecture"
     ],
-    "text": "stack 5: Playwright"
+    "text": "Portable Dev Environment · architecture: stack 5: Playwright"
   },
   {
     "id": "project-dev-env-architecture-16",
@@ -4711,7 +4711,7 @@ export const generatedChunks = [
       "Developer Infrastructure",
       "architecture"
     ],
-    "text": "stack 6: PostgreSQL"
+    "text": "Portable Dev Environment · architecture: stack 6: PostgreSQL"
   },
   {
     "id": "project-dev-env-architecture-17",
@@ -4723,7 +4723,7 @@ export const generatedChunks = [
       "Developer Infrastructure",
       "architecture"
     ],
-    "text": "stack 7: Redis"
+    "text": "Portable Dev Environment · architecture: stack 7: Redis"
   },
   {
     "id": "project-dev-env-decisions-1",
@@ -4735,7 +4735,7 @@ export const generatedChunks = [
       "Developer Infrastructure",
       "decisions"
     ],
-    "text": "techDecisions 1 title: Volume mounts over baked-in code"
+    "text": "Portable Dev Environment · decisions: techDecisions 1 title: Volume mounts over baked-in code"
   },
   {
     "id": "project-dev-env-decisions-2",
@@ -4747,7 +4747,7 @@ export const generatedChunks = [
       "Developer Infrastructure",
       "decisions"
     ],
-    "text": "techDecisions 1 description: Code lives on host, changes sync instantly. Deleting a container never loses work."
+    "text": "Portable Dev Environment · decisions: techDecisions 1 description: Code lives on host, changes sync instantly. Deleting a container never loses work."
   },
   {
     "id": "project-dev-env-decisions-3",
@@ -4759,7 +4759,7 @@ export const generatedChunks = [
       "Developer Infrastructure",
       "decisions"
     ],
-    "text": "techDecisions 2 title: WISC context engineering"
+    "text": "Portable Dev Environment · decisions: techDecisions 2 title: WISC context engineering"
   },
   {
     "id": "project-dev-env-decisions-4",
@@ -4771,7 +4771,7 @@ export const generatedChunks = [
       "Developer Infrastructure",
       "decisions"
     ],
-    "text": "techDecisions 2 description: Write decisions to files, Isolate tasks per conversation, Select context by path, Compress agent definitions. 72KB → 11.7KB (84% reduction), zero capability loss."
+    "text": "Portable Dev Environment · decisions: techDecisions 2 description: Write decisions to files, Isolate tasks per conversation, Select context by path, Compress agent definitions. 72KB → 11.7KB (84% reduction), zero capability loss."
   },
   {
     "id": "project-dev-env-results-1",
@@ -4783,7 +4783,7 @@ export const generatedChunks = [
       "Developer Infrastructure",
       "results"
     ],
-    "text": "results 1: 10 minutes from zero to first commit"
+    "text": "Portable Dev Environment · results: results 1: 10 minutes from zero to first commit"
   },
   {
     "id": "project-dev-env-results-2",
@@ -4795,7 +4795,7 @@ export const generatedChunks = [
       "Developer Infrastructure",
       "results"
     ],
-    "text": "results 2: Identical environment across Mac, Linux VPS, and phone SSH"
+    "text": "Portable Dev Environment · results: results 2: Identical environment across Mac, Linux VPS, and phone SSH"
   },
   {
     "id": "project-dev-env-results-3",
@@ -4807,7 +4807,7 @@ export const generatedChunks = [
       "Developer Infrastructure",
       "results"
     ],
-    "text": "results 3: WISC: 72KB → 11.7KB context (84% reduction)"
+    "text": "Portable Dev Environment · results: results 3: WISC: 72KB → 11.7KB context (84% reduction)"
   },
   {
     "id": "project-agent-orchestrator-summary-1",
@@ -4819,7 +4819,7 @@ export const generatedChunks = [
       "AI Framework",
       "summary"
     ],
-    "text": "title: AI Agent Orchestrator"
+    "text": "AI Agent Orchestrator · summary: title: AI Agent Orchestrator"
   },
   {
     "id": "project-agent-orchestrator-summary-2",
@@ -4831,7 +4831,7 @@ export const generatedChunks = [
       "AI Framework",
       "summary"
     ],
-    "text": "subtitle: CAMEL Multi-Agent Framework"
+    "text": "AI Agent Orchestrator · summary: subtitle: CAMEL Multi-Agent Framework"
   },
   {
     "id": "project-agent-orchestrator-summary-3",
@@ -4843,7 +4843,7 @@ export const generatedChunks = [
       "AI Framework",
       "summary"
     ],
-    "text": "plainSummary: A team of AI workers: one plans the job, others do it, and one checks the result before it is accepted."
+    "text": "AI Agent Orchestrator · summary: plainSummary: A team of AI workers: one plans the job, others do it, and one checks the result before it is accepted."
   },
   {
     "id": "project-agent-orchestrator-summary-4",
@@ -4855,7 +4855,7 @@ export const generatedChunks = [
       "AI Framework",
       "summary"
     ],
-    "text": "impact: A production-grade multi-agent framework implementing CAMEL: Planner decomposes goals, Workers execute with tools, Validator runs iterative critique loops. 18 files, clean architecture, fully open-source."
+    "text": "AI Agent Orchestrator · summary: impact: A production-grade multi-agent framework implementing CAMEL: Planner decomposes goals, Workers execute with tools, Validator runs iterative critique loops. 18 files, clean architecture, fully open-source."
   },
   {
     "id": "project-agent-orchestrator-summary-5",
@@ -4867,7 +4867,7 @@ export const generatedChunks = [
       "AI Framework",
       "summary"
     ],
-    "text": "problem: Most agent frameworks are either toy demos or massive dependency trees that obscure what's happening. Needed something small enough to understand completely but production-grade enough for real tasks."
+    "text": "AI Agent Orchestrator · summary: problem: Most agent frameworks are either toy demos or massive dependency trees that obscure what's happening. Needed something small enough to understand completely but production-grade enough for real tasks."
   },
   {
     "id": "project-agent-orchestrator-summary-6",
@@ -4879,7 +4879,7 @@ export const generatedChunks = [
       "AI Framework",
       "summary"
     ],
-    "text": "solution: Four agent roles (Planner, Worker, Validator, Orchestrator), a formal task state machine, and CAMEL-inspired iterative critique. The Validator generates structured feedback that gets injected into the Worker's next attempt. Error patterns persist in memory for cross-task learning."
+    "text": "AI Agent Orchestrator · summary: solution: Four agent roles (Planner, Worker, Validator, Orchestrator), a formal task state machine, and CAMEL-inspired iterative critique. The Validator generates structured feedback that gets injected into the Worker's next attempt. Error patterns persist in memory for cross-task learning."
   },
   {
     "id": "project-agent-orchestrator-architecture-1",
@@ -4891,7 +4891,7 @@ export const generatedChunks = [
       "AI Framework",
       "architecture"
     ],
-    "text": "architecture 1: Orchestrator (DAG-based task execution)"
+    "text": "AI Agent Orchestrator · architecture: architecture 1: Orchestrator (DAG-based task execution)"
   },
   {
     "id": "project-agent-orchestrator-architecture-2",
@@ -4903,7 +4903,7 @@ export const generatedChunks = [
       "AI Framework",
       "architecture"
     ],
-    "text": "architecture 2: Planner Agent (goal decomposition)"
+    "text": "AI Agent Orchestrator · architecture: architecture 2: Planner Agent (goal decomposition)"
   },
   {
     "id": "project-agent-orchestrator-architecture-3",
@@ -4915,7 +4915,7 @@ export const generatedChunks = [
       "AI Framework",
       "architecture"
     ],
-    "text": "architecture 3: Worker Agent (tool-use loop)"
+    "text": "AI Agent Orchestrator · architecture: architecture 3: Worker Agent (tool-use loop)"
   },
   {
     "id": "project-agent-orchestrator-architecture-4",
@@ -4927,7 +4927,7 @@ export const generatedChunks = [
       "AI Framework",
       "architecture"
     ],
-    "text": "architecture 4: Validator Agent (iterative critique, 3 rounds)"
+    "text": "AI Agent Orchestrator · architecture: architecture 4: Validator Agent (iterative critique, 3 rounds)"
   },
   {
     "id": "project-agent-orchestrator-architecture-5",
@@ -4939,7 +4939,7 @@ export const generatedChunks = [
       "AI Framework",
       "architecture"
     ],
-    "text": "architecture 5: Task State Machine (6 states)"
+    "text": "AI Agent Orchestrator · architecture: architecture 5: Task State Machine (6 states)"
   },
   {
     "id": "project-agent-orchestrator-architecture-6",
@@ -4951,7 +4951,7 @@ export const generatedChunks = [
       "AI Framework",
       "architecture"
     ],
-    "text": "architecture 6: Memory Store (error pattern persistence)"
+    "text": "AI Agent Orchestrator · architecture: architecture 6: Memory Store (error pattern persistence)"
   },
   {
     "id": "project-agent-orchestrator-architecture-7",
@@ -4963,7 +4963,7 @@ export const generatedChunks = [
       "AI Framework",
       "architecture"
     ],
-    "text": "features 1: Iterative CAMEL critique: structured feedback loops, up to 3 rounds per task"
+    "text": "AI Agent Orchestrator · architecture: features 1: Iterative CAMEL critique: structured feedback loops, up to 3 rounds per task"
   },
   {
     "id": "project-agent-orchestrator-architecture-8",
@@ -4975,7 +4975,7 @@ export const generatedChunks = [
       "AI Framework",
       "architecture"
     ],
-    "text": "features 2: Cross-task learning: error patterns persist in memory"
+    "text": "AI Agent Orchestrator · architecture: features 2: Cross-task learning: error patterns persist in memory"
   },
   {
     "id": "project-agent-orchestrator-architecture-9",
@@ -4987,7 +4987,7 @@ export const generatedChunks = [
       "AI Framework",
       "architecture"
     ],
-    "text": "features 3: Task DAG with dependency resolution and parallel execution"
+    "text": "AI Agent Orchestrator · architecture: features 3: Task DAG with dependency resolution and parallel execution"
   },
   {
     "id": "project-agent-orchestrator-architecture-10",
@@ -4999,7 +4999,7 @@ export const generatedChunks = [
       "AI Framework",
       "architecture"
     ],
-    "text": "features 4: Human-in-the-loop approval gates with state-based pausing"
+    "text": "AI Agent Orchestrator · architecture: features 4: Human-in-the-loop approval gates with state-based pausing"
   },
   {
     "id": "project-agent-orchestrator-architecture-11",
@@ -5011,7 +5011,7 @@ export const generatedChunks = [
       "AI Framework",
       "architecture"
     ],
-    "text": "features 5: Multi-provider: Claude and OpenAI adapters"
+    "text": "AI Agent Orchestrator · architecture: features 5: Multi-provider: Claude and OpenAI adapters"
   },
   {
     "id": "project-agent-orchestrator-architecture-12",
@@ -5023,7 +5023,7 @@ export const generatedChunks = [
       "AI Framework",
       "architecture"
     ],
-    "text": "stack 1: TypeScript"
+    "text": "AI Agent Orchestrator · architecture: stack 1: TypeScript"
   },
   {
     "id": "project-agent-orchestrator-architecture-13",
@@ -5035,7 +5035,7 @@ export const generatedChunks = [
       "AI Framework",
       "architecture"
     ],
-    "text": "stack 2: Node.js"
+    "text": "AI Agent Orchestrator · architecture: stack 2: Node.js"
   },
   {
     "id": "project-agent-orchestrator-architecture-14",
@@ -5047,7 +5047,7 @@ export const generatedChunks = [
       "AI Framework",
       "architecture"
     ],
-    "text": "stack 3: Anthropic SDK"
+    "text": "AI Agent Orchestrator · architecture: stack 3: Anthropic SDK"
   },
   {
     "id": "project-agent-orchestrator-architecture-15",
@@ -5059,7 +5059,7 @@ export const generatedChunks = [
       "AI Framework",
       "architecture"
     ],
-    "text": "stack 4: OpenAI SDK"
+    "text": "AI Agent Orchestrator · architecture: stack 4: OpenAI SDK"
   },
   {
     "id": "project-agent-orchestrator-architecture-16",
@@ -5071,7 +5071,7 @@ export const generatedChunks = [
       "AI Framework",
       "architecture"
     ],
-    "text": "stack 5: Zod"
+    "text": "AI Agent Orchestrator · architecture: stack 5: Zod"
   },
   {
     "id": "project-agent-orchestrator-decisions-1",
@@ -5083,7 +5083,7 @@ export const generatedChunks = [
       "AI Framework",
       "decisions"
     ],
-    "text": "techDecisions 1 title: Iterative critique over single-pass validation"
+    "text": "AI Agent Orchestrator · decisions: techDecisions 1 title: Iterative critique over single-pass validation"
   },
   {
     "id": "project-agent-orchestrator-decisions-2",
@@ -5095,7 +5095,7 @@ export const generatedChunks = [
       "AI Framework",
       "decisions"
     ],
-    "text": "techDecisions 1 description: Validation feedback pipes directly into the Worker's next attempt. First attempt is often 70% right; three rounds get it to 95%."
+    "text": "AI Agent Orchestrator · decisions: techDecisions 1 description: Validation feedback pipes directly into the Worker's next attempt. First attempt is often 70% right; three rounds get it to 95%."
   },
   {
     "id": "project-agent-orchestrator-decisions-3",
@@ -5107,7 +5107,7 @@ export const generatedChunks = [
       "AI Framework",
       "decisions"
     ],
-    "text": "techDecisions 2 title: 18 files, zero unnecessary abstraction"
+    "text": "AI Agent Orchestrator · decisions: techDecisions 2 title: 18 files, zero unnecessary abstraction"
   },
   {
     "id": "project-agent-orchestrator-decisions-4",
@@ -5119,7 +5119,7 @@ export const generatedChunks = [
       "AI Framework",
       "decisions"
     ],
-    "text": "techDecisions 2 description: Every file has one clear responsibility. No DI framework, no plugin system, no config format. Readable in an hour."
+    "text": "AI Agent Orchestrator · decisions: techDecisions 2 description: Every file has one clear responsibility. No DI framework, no plugin system, no config format. Readable in an hour."
   },
   {
     "id": "project-agent-orchestrator-results-1",
@@ -5131,7 +5131,7 @@ export const generatedChunks = [
       "AI Framework",
       "results"
     ],
-    "text": "results 1: Clean 18-file architecture, fully open-source"
+    "text": "AI Agent Orchestrator · results: results 1: Clean 18-file architecture, fully open-source"
   },
   {
     "id": "project-agent-orchestrator-results-2",
@@ -5143,7 +5143,7 @@ export const generatedChunks = [
       "AI Framework",
       "results"
     ],
-    "text": "results 2: CAMEL critique loop with iterative refinement"
+    "text": "AI Agent Orchestrator · results: results 2: CAMEL critique loop with iterative refinement"
   },
   {
     "id": "project-agent-orchestrator-results-3",
@@ -5155,7 +5155,7 @@ export const generatedChunks = [
       "AI Framework",
       "results"
     ],
-    "text": "results 3: Cross-task learning via error pattern memory"
+    "text": "AI Agent Orchestrator · results: results 3: Cross-task learning via error pattern memory"
   },
   {
     "id": "project-agent-orchestrator-results-4",
@@ -5167,7 +5167,7 @@ export const generatedChunks = [
       "AI Framework",
       "results"
     ],
-    "text": "results 4: State machine prevents invalid task transitions"
+    "text": "AI Agent Orchestrator · results: results 4: State machine prevents invalid task transitions"
   },
   {
     "id": "project-agent-system-summary-1",
@@ -5179,7 +5179,7 @@ export const generatedChunks = [
       "AI Agents",
       "summary"
     ],
-    "text": "title: AI Agent System"
+    "text": "AI Agent System · summary: title: AI Agent System"
   },
   {
     "id": "project-agent-system-summary-2",
@@ -5191,7 +5191,7 @@ export const generatedChunks = [
       "AI Agents",
       "summary"
     ],
-    "text": "subtitle: 5 Purpose-Built AI Agents"
+    "text": "AI Agent System · summary: subtitle: 5 Purpose-Built AI Agents"
   },
   {
     "id": "project-agent-system-summary-3",
@@ -5203,7 +5203,7 @@ export const generatedChunks = [
       "AI Agents",
       "summary"
     ],
-    "text": "plainSummary: Five AI assistants that handle job search, research, code review, proposals and freelance admin on their own, at $0 a month to run."
+    "text": "AI Agent System · summary: plainSummary: Five AI assistants that handle job search, research, code review, proposals and freelance admin on their own, at $0 a month to run."
   },
   {
     "id": "project-agent-system-summary-4",
@@ -5215,7 +5215,7 @@ export const generatedChunks = [
       "AI Agents",
       "summary"
     ],
-    "text": "impact: 5 autonomous agents (job search, research, code review, proposals, freelance automation) with real tool-calling, deployed on HuggingFace Spaces at $0/month."
+    "text": "AI Agent System · summary: impact: 5 autonomous agents (job search, research, code review, proposals, freelance automation) with real tool-calling, deployed on HuggingFace Spaces at $0/month."
   },
   {
     "id": "project-agent-system-summary-5",
@@ -5227,7 +5227,7 @@ export const generatedChunks = [
       "AI Agents",
       "summary"
     ],
-    "text": "problem: Needed AI that could actually DO things — search jobs, research tech, review PRs, draft proposals — each requiring different tools and domain knowledge. Running separate tools was slow."
+    "text": "AI Agent System · summary: problem: Needed AI that could actually DO things — search jobs, research tech, review PRs, draft proposals — each requiring different tools and domain knowledge. Running separate tools was slow."
   },
   {
     "id": "project-agent-system-summary-6",
@@ -5239,7 +5239,7 @@ export const generatedChunks = [
       "AI Agents",
       "summary"
     ],
-    "text": "solution: A multi-agent system where each agent has a specific purpose, custom tools (web search, GitHub API, URL fetcher), and tailored prompts. Deployed on HuggingFace Spaces with a portfolio-ready web UI."
+    "text": "AI Agent System · summary: solution: A multi-agent system where each agent has a specific purpose, custom tools (web search, GitHub API, URL fetcher), and tailored prompts. Deployed on HuggingFace Spaces with a portfolio-ready web UI."
   },
   {
     "id": "project-agent-system-architecture-1",
@@ -5251,7 +5251,7 @@ export const generatedChunks = [
       "AI Agents",
       "architecture"
     ],
-    "text": "architecture 1: FastAPI Server (5 agent endpoints)"
+    "text": "AI Agent System · architecture: architecture 1: FastAPI Server (5 agent endpoints)"
   },
   {
     "id": "project-agent-system-architecture-2",
@@ -5263,7 +5263,7 @@ export const generatedChunks = [
       "AI Agents",
       "architecture"
     ],
-    "text": "architecture 2: Tool-Calling Engine"
+    "text": "AI Agent System · architecture: architecture 2: Tool-Calling Engine"
   },
   {
     "id": "project-agent-system-architecture-3",
@@ -5275,7 +5275,7 @@ export const generatedChunks = [
       "AI Agents",
       "architecture"
     ],
-    "text": "architecture 3: Shared Tools (Tavily, URL fetcher, GitHub API)"
+    "text": "AI Agent System · architecture: architecture 3: Shared Tools (Tavily, URL fetcher, GitHub API)"
   },
   {
     "id": "project-agent-system-architecture-4",
@@ -5287,7 +5287,7 @@ export const generatedChunks = [
       "AI Agents",
       "architecture"
     ],
-    "text": "architecture 4: Agent Definitions (system prompt + tools per use case)"
+    "text": "AI Agent System · architecture: architecture 4: Agent Definitions (system prompt + tools per use case)"
   },
   {
     "id": "project-agent-system-architecture-5",
@@ -5299,7 +5299,7 @@ export const generatedChunks = [
       "AI Agents",
       "architecture"
     ],
-    "text": "architecture 5: Portfolio Web UI"
+    "text": "AI Agent System · architecture: architecture 5: Portfolio Web UI"
   },
   {
     "id": "project-agent-system-architecture-6",
@@ -5311,7 +5311,7 @@ export const generatedChunks = [
       "AI Agents",
       "architecture"
     ],
-    "text": "features 1: Job Search Agent: multi-board search, fit evaluation, cover letter drafting"
+    "text": "AI Agent System · architecture: features 1: Job Search Agent: multi-board search, fit evaluation, cover letter drafting"
   },
   {
     "id": "project-agent-system-architecture-7",
@@ -5323,7 +5323,7 @@ export const generatedChunks = [
       "AI Agents",
       "architecture"
     ],
-    "text": "features 2: Research Agent: multi-source research with cross-referenced reports"
+    "text": "AI Agent System · architecture: features 2: Research Agent: multi-source research with cross-referenced reports"
   },
   {
     "id": "project-agent-system-architecture-8",
@@ -5335,7 +5335,7 @@ export const generatedChunks = [
       "AI Agents",
       "architecture"
     ],
-    "text": "features 3: Code Review Agent: fetches GitHub PR diffs, analyzes bugs and security"
+    "text": "AI Agent System · architecture: features 3: Code Review Agent: fetches GitHub PR diffs, analyzes bugs and security"
   },
   {
     "id": "project-agent-system-architecture-9",
@@ -5347,7 +5347,7 @@ export const generatedChunks = [
       "AI Agents",
       "architecture"
     ],
-    "text": "features 4: Upwork Proposal Agent: reads postings, matches skills, drafts proposals"
+    "text": "AI Agent System · architecture: features 4: Upwork Proposal Agent: reads postings, matches skills, drafts proposals"
   },
   {
     "id": "project-agent-system-architecture-10",
@@ -5359,7 +5359,7 @@ export const generatedChunks = [
       "AI Agents",
       "architecture"
     ],
-    "text": "features 5: n8n Webhook Agent: receives freelance messages, drafts replies"
+    "text": "AI Agent System · architecture: features 5: n8n Webhook Agent: receives freelance messages, drafts replies"
   },
   {
     "id": "project-agent-system-architecture-11",
@@ -5371,7 +5371,7 @@ export const generatedChunks = [
       "AI Agents",
       "architecture"
     ],
-    "text": "stack 1: Python"
+    "text": "AI Agent System · architecture: stack 1: Python"
   },
   {
     "id": "project-agent-system-architecture-12",
@@ -5383,7 +5383,7 @@ export const generatedChunks = [
       "AI Agents",
       "architecture"
     ],
-    "text": "stack 2: FastAPI"
+    "text": "AI Agent System · architecture: stack 2: FastAPI"
   },
   {
     "id": "project-agent-system-architecture-13",
@@ -5395,7 +5395,7 @@ export const generatedChunks = [
       "AI Agents",
       "architecture"
     ],
-    "text": "stack 3: Groq"
+    "text": "AI Agent System · architecture: stack 3: Groq"
   },
   {
     "id": "project-agent-system-architecture-14",
@@ -5407,7 +5407,7 @@ export const generatedChunks = [
       "AI Agents",
       "architecture"
     ],
-    "text": "stack 4: Tavily"
+    "text": "AI Agent System · architecture: stack 4: Tavily"
   },
   {
     "id": "project-agent-system-architecture-15",
@@ -5419,7 +5419,7 @@ export const generatedChunks = [
       "AI Agents",
       "architecture"
     ],
-    "text": "stack 5: GitHub API"
+    "text": "AI Agent System · architecture: stack 5: GitHub API"
   },
   {
     "id": "project-agent-system-architecture-16",
@@ -5431,7 +5431,7 @@ export const generatedChunks = [
       "AI Agents",
       "architecture"
     ],
-    "text": "stack 6: HuggingFace Spaces"
+    "text": "AI Agent System · architecture: stack 6: HuggingFace Spaces"
   },
   {
     "id": "project-agent-system-architecture-17",
@@ -5443,7 +5443,7 @@ export const generatedChunks = [
       "AI Agents",
       "architecture"
     ],
-    "text": "stack 7: Docker"
+    "text": "AI Agent System · architecture: stack 7: Docker"
   },
   {
     "id": "project-agent-system-decisions-1",
@@ -5455,7 +5455,7 @@ export const generatedChunks = [
       "AI Agents",
       "decisions"
     ],
-    "text": "techDecisions 1 title: Groq for inference"
+    "text": "AI Agent System · decisions: techDecisions 1 title: Groq for inference"
   },
   {
     "id": "project-agent-system-decisions-2",
@@ -5467,7 +5467,7 @@ export const generatedChunks = [
       "AI Agents",
       "decisions"
     ],
-    "text": "techDecisions 1 description: Free tier, 300 tokens/sec, native tool-calling. Zero inference cost."
+    "text": "AI Agent System · decisions: techDecisions 1 description: Free tier, 300 tokens/sec, native tool-calling. Zero inference cost."
   },
   {
     "id": "project-agent-system-decisions-3",
@@ -5479,7 +5479,7 @@ export const generatedChunks = [
       "AI Agents",
       "decisions"
     ],
-    "text": "techDecisions 2 title: Agent-per-purpose over general assistant"
+    "text": "AI Agent System · decisions: techDecisions 2 title: Agent-per-purpose over general assistant"
   },
   {
     "id": "project-agent-system-decisions-4",
@@ -5491,7 +5491,7 @@ export const generatedChunks = [
       "AI Agents",
       "decisions"
     ],
-    "text": "techDecisions 2 description: Each agent has a focused prompt and curated tool set. Scoping prevents confusion and hallucination."
+    "text": "AI Agent System · decisions: techDecisions 2 description: Each agent has a focused prompt and curated tool set. Scoping prevents confusion and hallucination."
   },
   {
     "id": "project-agent-system-results-1",
@@ -5503,7 +5503,7 @@ export const generatedChunks = [
       "AI Agents",
       "results"
     ],
-    "text": "results 1: 5 autonomous agents deployed and operational"
+    "text": "AI Agent System · results: results 1: 5 autonomous agents deployed and operational"
   },
   {
     "id": "project-agent-system-results-2",
@@ -5515,7 +5515,7 @@ export const generatedChunks = [
       "AI Agents",
       "results"
     ],
-    "text": "results 2: 1-8 tool calls per request, fully automated"
+    "text": "AI Agent System · results: results 2: 1-8 tool calls per request, fully automated"
   },
   {
     "id": "project-agent-system-results-3",
@@ -5527,7 +5527,7 @@ export const generatedChunks = [
       "AI Agents",
       "results"
     ],
-    "text": "results 3: $0/month hosting on free tiers"
+    "text": "AI Agent System · results: results 3: $0/month hosting on free tiers"
   },
   {
     "id": "project-agent-system-results-4",
@@ -5539,7 +5539,7 @@ export const generatedChunks = [
       "AI Agents",
       "results"
     ],
-    "text": "results 4: API-first: callable from n8n, PWA, or any HTTP client"
+    "text": "AI Agent System · results: results 4: API-first: callable from n8n, PWA, or any HTTP client"
   },
   {
     "id": "story-openevent",

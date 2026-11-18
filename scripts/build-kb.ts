@@ -123,9 +123,15 @@ function makeSectionChunks(
   section: string,
   source: unknown,
 ): KnowledgeChunk[] {
+  // Every chunk names its project and section, so a chunk read on its own
+  // (BM25, embeddings, the LLM context) still says what it is about.
+  const prefix = `${cleanText(project.title)} · ${section}: `;
+
   // Split each flattened value independently.
   // This preserves boundaries between architecture items, features, and technologies.
-  const parts = flatten(source).flatMap((item) => splitText(item));
+  const parts = flatten(source).flatMap((item) =>
+    splitText(item, MAX_CHUNK_SIZE - prefix.length),
+  );
 
   return parts.map((part, index) => ({
     id: `project-${project.slug}-${section}${parts.length > 1 ? `-${index + 1}` : ""}`,
@@ -137,7 +143,7 @@ function makeSectionChunks(
       project.type,
       section,
     ],
-    text: part,
+    text: `${prefix}${part}`,
   }));
 }
 
