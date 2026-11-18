@@ -453,6 +453,16 @@ h1, h2, h3, h4, h5, h6 {
   color: #0c0d10;
 }
 
+/* ── Spotlight hero display type (wide, heavy, uppercase) ── */
+.font-display-wide {
+  font-family: var(--font-display), var(--font-heading), system-ui, sans-serif;
+  font-stretch: 118%;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  line-height: 0.86;
+}
+
 /* ── Content visibility — skip layout/paint for off-screen sections ── */
 .cv-auto {
   content-visibility: auto;

@@ -60,7 +60,7 @@ export const projects: ProjectData[] = [
     oneLiner: "AI turns client emails into approved bookings, invoices, and CRM updates.",
     cardSummary: "100+ clients in 8 months, no sales team. AI reads emails, proposes actions, humans approve with one click.",
     
-    impact: "Grew to 100+ clients across 150+ events in 8 months with zero sales team — product-led adoption. Saves each team ~1.5 hours per day. AI classifies emails, proposes actions, and executes after human approval.",
+    impact: "Grew to 100+ clients across 150+ events in 8 months with no sales team, all product-led. Saves each team about 1.5 hours a day. AI classifies emails, proposes actions, and executes only after a human approves. The platform has since grown into memberships, wallets, gift cards and in-venue POS.",
     problem:
       "Event companies drown in emails and manual coordination. Staff spend hours triaging requests, copying data between systems, and chasing approvals. Simple automation breaks on ambiguous language.",
     solution:
@@ -98,8 +98,9 @@ export const projects: ProjectData[] = [
     stack: ["React", "TypeScript", "Supabase", "OpenAI", "pgvector", "Stripe", "Docker"],
     results: [
       "100+ active clients, 150+ events managed",
-      "~80% reduction in manual coordination time",
+      "~83% less manual coordination time (about 1.5 h down to 15 min a day)",
       "Response time dropped from hours to minutes",
+      "Grew past email AI into memberships, wallets, gift cards, POS and KYC-verified signup",
       "Full CI/CD with staging and production environments",
     ],
     live: "https://openevent.io",
@@ -156,9 +157,9 @@ export const projects: ProjectData[] = [
     title: "CodeLens",
     subtitle: "AI Code Review Engine",
     type: "AI Dev Tool",
-    cardSummary: "544 patterns mined from 860+ production PRs. Reviews in under one second, entirely on your machine.",
-    oneLiner: "544 bug patterns mined from 860+ real PRs. Under one second. Code never leaves your machine.",
-    impact: "544 hand-crafted patterns mined from 860+ production PRs across 9 stacks. Reviews in under one second, entirely on your machine. When a commercial AI reviewer (Greptile) caught 12 issues CodeLens missed, I ran a gap analysis and closed every one — coverage went from 8% to 100%.",
+    cardSummary: "544 patterns learned from 3,360+ production PRs. Reviews in under one second, entirely on your machine.",
+    oneLiner: "544 bug patterns learned from 3,360+ real PRs. Under one second. Code never leaves your machine.",
+    impact: "544 hand-crafted patterns learned from 3,360+ production PRs across 9 stacks. Reviews in under one second, entirely on your machine. When a commercial AI reviewer (Greptile) caught 12 issues CodeLens missed, I ran a gap analysis and closed every one. Coverage went from 8% to 100%.",
     problem:
       "Existing tools are either fast but shallow (linters catching style, not logic) or deep but cloud-dependent (sending your code to a third party). Neither catches the bugs that actually ship: missing auth guards, silent N+1 queries, cross-file taint paths.",
     solution:
@@ -252,13 +253,13 @@ export const projects: ProjectData[] = [
   {
     slug: "gogaa-cli",
     title: "Gogaa CLI",
-    subtitle: "AI Coding Agent — Any Model, Any Provider",
+    subtitle: "AI Coding Agent for Any Model, Any Provider",
     type: "Developer Tool / CLI",
     featured: true,
     requestAccess: true,
     cardSummary: "11 providers behind one interface. If one goes down, you don't stop working. 1,400+ tests, zero vendor lock-in.",
     oneLiner: "11 providers behind one interface. If one goes down, you don't stop working.",
-    impact: "The only open-source AI coding CLI where the provider is a variable — 11 providers with automatic fallback, so rate-limits never stop your work. Production-grade git workflow, polished React Ink TUI, plugin marketplace, and 1,400+ passing tests.",
+    impact: "An AI coding CLI where the provider is a variable: 11 providers with automatic fallback, so a rate limit never stops your work. Production-grade git workflow, a polished React Ink TUI, a plugin marketplace and 1,400+ passing tests. Ships through my own private registry with checksummed builds, self-update and installers for macOS, Linux and Windows.",
     problem:
       "Every AI coding tool makes you choose: provider freedom or deep integration. Polished TUI or serious git workflow. MCP support or surgical edits. If your provider rate-limits, you stop working.",
     solution:
@@ -299,6 +300,7 @@ export const projects: ProjectData[] = [
       "11 providers with auto-fallback, 8/9 pass multi-file edit benchmarks",
       "~95% tool call success rate (up from ~70%)",
       "Intent-based lazy context: 3,909 → 24 tokens for simple prompts",
+      "Private registry: checksummed builds, self-update with rollback, per-device access tokens",
     ],
     giteaRepo: "shami/gogaa-ts",
     measuredImpact: {
@@ -354,9 +356,9 @@ export const projects: ProjectData[] = [
     subtitle: "AI Session Observatory for Developers",
     type: "Developer Tool / CLI + Web",
     featured: true,
-    cardSummary: "656 sessions analyzed — every tool call, every file touch, graded A-F. Your data never leaves your machine.",
-    oneLiner: "656 sessions analyzed — every tool call, every file touch, graded A-F. 100% local.",
-    impact: "The observability layer for AI-assisted development. 656 sessions across 4 tools, 38K messages, 14K tool calls — every action replayed, every session graded A-F. Found that routine tasks on Opus cost 18x more than Sonnet with no quality difference. 100% local, zero outbound requests.",
+    cardSummary: "656 sessions analyzed. Every tool call and file touch replayed, every session graded A to F. Open source on npm, 100% local.",
+    oneLiner: "656 sessions analyzed, every action replayed, every session graded A to F. Open source, 100% local.",
+    impact: "The observability layer for AI-assisted development. 656 sessions across 4 tools, 38K messages and 14K tool calls, every action replayed and every session graded A to F. Found that routine tasks on Opus cost 18x more than Sonnet with no quality difference. Published on npm as rasad-ai (MIT). 100% local, zero outbound requests.",
     problem:
       "AI coding assistants are black boxes. You don't know how many tokens were burned, whether context was lost mid-session, or if that $87 session could have been three $8 sessions. Zero observability for a major engineering budget line.",
     solution:
@@ -396,7 +398,8 @@ export const projects: ProjectData[] = [
       "656 sessions synced from 4 AI tools in one dashboard",
       "38K messages, 14K tool calls indexed with full-text search",
       "First sync: 6.2s for 700MB+. Incremental: <1s",
-      "Zero outbound requests — 100% local-first",
+      "Zero outbound requests, 100% local-first",
+      "Published on npm as rasad-ai (MIT) with a live terminal view: rasad watch",
     ],
     github: "https://github.com/shami-ah/rasad",
     measuredImpact: {
