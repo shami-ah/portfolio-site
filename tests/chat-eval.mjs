@@ -183,7 +183,7 @@ const factCases = [
   {
     name: "CodeLens review speed",
     message: "How quickly does CodeLens review code?",
-    expected: /under\s+(one|1)\s+second|<\s*1\s*s/i,
+    expected: /under\s+(one|1)\s+second|<\s*1\s*s|sub-second|\b\d{2,3}\s?ms\b/i,
     expectedProject: "codelens",
   },
   {

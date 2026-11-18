@@ -47,3 +47,6 @@ next-env.d.ts
 # Playwright test artifacts
 test-results/
 playwright-report/
+
+# Local embedding cache (EMBEDDING_CACHE_PATH)
+.embedding-cache*.json

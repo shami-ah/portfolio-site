@@ -1,11 +1,13 @@
 
 const DEFAULT_NVIDIA_BASE_URL = "https://integrate.api.nvidia.com/v1";
-const DEFAULT_NVIDIA_MODEL = "nvidia/nemotron-3.5-embed-1b";
+const DEFAULT_NVIDIA_MODEL = "nvidia/nemotron-3-embed-1b";
 
 const DEFAULT_GEMINI_MODEL = "gemini-embedding-001";
 const GEMINI_BASE_URL = "https://generativelanguage.googleapis.com/v1beta";
 
-const EMBEDDING_TIMEOUT_MS = 60_000;
+/** Document batches at startup can be slow on a cold provider; visitor queries must fail fast to BM25. */
+const DOCUMENT_TIMEOUT_MS = Number(process.env.EMBEDDING_TIMEOUT_MS) || 30_000;
+const QUERY_TIMEOUT_MS = Number(process.env.EMBEDDING_QUERY_TIMEOUT_MS) || 8_000;
 
 function validateTexts(texts) {
   if (!Array.isArray(texts) || texts.length === 0) {
@@ -19,10 +21,10 @@ function validateTexts(texts) {
   return true;
 }
 
-async function embedWithNvidia(texts, { apiKey, baseUrl, model, inputType }) {
+async function embedWithNvidia(texts, { apiKey, baseUrl, model, inputType, timeoutMs }) {
   const response = await fetch(`${baseUrl}/embeddings`, {
     method: "POST",
-    signal: AbortSignal.timeout(EMBEDDING_TIMEOUT_MS),
+    signal: AbortSignal.timeout(timeoutMs),
     headers: {
       Authorization: `Bearer ${apiKey}`,
       "Content-Type": "application/json",
@@ -60,12 +62,12 @@ async function embedWithNvidia(texts, { apiKey, baseUrl, model, inputType }) {
   });
 }
 
-async function embedWithGemini(texts, { apiKey, model, taskType }) {
+async function embedWithGemini(texts, { apiKey, model, taskType, timeoutMs }) {
   const response = await fetch(
     `${GEMINI_BASE_URL}/models/${model}:batchEmbedContents`,
     {
       method: "POST",
-      signal: AbortSignal.timeout(EMBEDDING_TIMEOUT_MS),
+      signal: AbortSignal.timeout(timeoutMs),
       headers: {
         "Content-Type": "application/json",
         "x-goog-api-key": apiKey,
@@ -83,11 +85,8 @@ async function embedWithGemini(texts, { apiKey, model, taskType }) {
   );
 
   if (!response.ok) {
-    const errorBody = await response.text();
-
-    throw new Error(
-      `Gemini embedding request failed (${response.status}): ${errorBody.slice(0, 1000)}`,
-    );
+    // Status only: provider error bodies can echo request details.
+    throw new Error(`Gemini embedding request failed (${response.status})`);
   }
 
   const result = await response.json();
@@ -121,6 +120,7 @@ export async function embedTexts(
     model,
     taskType = "RETRIEVAL_DOCUMENT",
     inputType = "passage",
+    timeoutMs = DOCUMENT_TIMEOUT_MS,
   } = {},
 ) {
   if (!validateTexts(texts)) {
@@ -136,6 +136,7 @@ export async function embedTexts(
       apiKey,
       model: model || DEFAULT_GEMINI_MODEL,
       taskType,
+      timeoutMs,
     });
   }
 
@@ -145,6 +146,7 @@ export async function embedTexts(
       baseUrl,
       model: model || DEFAULT_NVIDIA_MODEL,
       inputType,
+      timeoutMs,
     });
   }
 
@@ -156,6 +158,7 @@ export async function embedQuery(query, options = {}) {
     ...options,
     taskType: "RETRIEVAL_QUERY",
     inputType: "query",
+    timeoutMs: options.timeoutMs ?? QUERY_TIMEOUT_MS,
   });
 
   return vectors[0];

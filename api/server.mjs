@@ -39,16 +39,19 @@ const NVIDIA_CHAT_FALLBACKS = (
   .filter(Boolean);
 
 const NVIDIA_EMBED_MODEL =
-  process.env.NVIDIA_EMBED_MODEL || "nvidia/nemotron-3.5-embed-1b";
+  // nemotron-3.5-embed-1b hung on most requests in Nov 2026; nemotron-3-embed-1b answers in ~0.5s.
+  process.env.NVIDIA_EMBED_MODEL || "nvidia/nemotron-3-embed-1b";
 
 const GEMINI_MODEL =
   process.env.GEMINI_MODEL ?? "gemini-flash-latest";
 
-// Query embeddings must come from the same provider that built api/knowledge/index.mjs.
+// Query and chunk embeddings come from the same provider (index built in memory at startup).
 const EMBEDDING_PROVIDER = process.env.EMBEDDING_PROVIDER ?? "nvidia";
 
 const TEMPERATURE = 0.2;
-const CONFIDENCE_THRESHOLD = 0.45;
+// Hybrid top score below which the bot skips the LLM and offers a call instead.
+// Scale depends on the embedding model: retune with tests/chat-eval.mjs when the model changes.
+const CONFIDENCE_THRESHOLD = Number(process.env.CONFIDENCE_THRESHOLD) || 0.25;
 // Request limits (see handover 2.4)
 const MAX_BODY_BYTES = 16 * 1024;
 const MAX_MESSAGE_CHARS = 600;
@@ -622,14 +625,20 @@ currentProject,
       const topScore = retrieval.results[0]?.score ?? 0;
 
       const isProfileQuestion =
-        /\b(about ahtesham|who is ahtesham|background|experience|education|skills|tech stack|technology stack|availability|available|rates|pricing|price|cost|hire|hiring|timezone|location|services|career|work experience|development process)\b/i.test(
+        /\b(about ahtesham|who is ahtesham|background|experience|education|skills|tech stack|technology stack|availability|available|rates|pricing|price|cost|hire|hiring|timezone|location|based|where are you|services|career|work experience|development process)\b/i.test(
+          message,
+        );
+      // A bare greeting retrieves nothing useful but deserves a friendly reply, not a refusal.
+      const isGreeting =
+        /^\s*(hi|hello|hey|salam|assalam[ou]?\s*alaikum|good (morning|afternoon|evening))\b[\s!.?]*$/i.test(
           message,
         );
 
       if (
         retrieval.mode === "hybrid" &&
         topScore < CONFIDENCE_THRESHOLD &&
-        !isProfileQuestion
+        !isProfileQuestion &&
+        !isGreeting
       ) {
         console.log(
           JSON.stringify({
@@ -767,13 +776,14 @@ currentProject,
   });
 });
 
-initializeEmbeddingIndex({
+// Serve straight away (BM25) and build the embedding index in the background.
+server.listen(PORT, () => {
+  console.log(`shami-api listening on :${PORT}`);
+});
+
+void initializeEmbeddingIndex({
   provider: EMBEDDING_PROVIDER,
   apiKey: EMBEDDING_API_KEY,
   baseUrl: NVIDIA_BASE_URL,
   model: EMBEDDING_MODEL,
-}).finally(() => {
-  server.listen(PORT, () => {
-    console.log(`shami-api listening on :${PORT}`);
-  });
 });
