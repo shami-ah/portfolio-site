@@ -351,6 +351,14 @@ async function requestGeminiChat(
     throw error;
   }
 }
+// ── Grounding guard ──────────────────────────────────────────────
+
+/** Years (1990 to 2039) in the answer that never appear in the grounding text. */
+function findUnsupportedYears(answer = "", groundText = "") {
+  const years = new Set(answer.match(/\b(?:199\d|20[0-3]\d)\b/g) ?? []);
+  return [...years].filter((year) => !groundText.includes(year));
+}
+
 // ── Follow-up question rewriting ────────────────────────────────
 
 // Non-ASCII letters (Urdu, Arabic, umlauts) or common German/Urdu words.
@@ -744,12 +752,54 @@ currentProject,
       ];
 
       // Generate the answer.
-      const result =
+      const generate = (msgs) =>
         CHAT_PROVIDER === "gemini"
-          ? await requestGeminiChat(messages, TEMPERATURE)
-          : await requestNvidiaChat(messages, TEMPERATURE);
+          ? requestGeminiChat(msgs, TEMPERATURE)
+          : requestNvidiaChat(msgs, TEMPERATURE);
 
-      const answer = result.answer;
+      let result = await generate(messages);
+      let answer = result.answer;
+
+      // Grounding guard: a year the model writes must appear in the retrieved
+      // knowledge or the conversation. A Roman Urdu answer once claimed
+      // "remote since 2020" when the context only said "2023 to now".
+      const groundText = [
+        retrievedContext,
+        message,
+        ...history.map((item) => item.content),
+      ].join("\n");
+      let unsupportedYears = findUnsupportedYears(answer, groundText);
+
+      if (unsupportedYears.length > 0) {
+        console.warn(
+          JSON.stringify({
+            event: "ungrounded_years_retry",
+            years: unsupportedYears,
+          }),
+        );
+
+        result = await generate([
+          ...messages,
+          { role: "assistant", content: answer },
+          {
+            role: "user",
+            content: `Your answer mentions ${unsupportedYears.join(", ")}, which is not in the retrieved portfolio knowledge. Rewrite the answer to my previous question using only facts and dates from the retrieved knowledge, in the same language.`,
+          },
+        ]);
+        answer = result.answer;
+        unsupportedYears = findUnsupportedYears(answer, groundText);
+
+        if (unsupportedYears.length > 0) {
+          console.warn(
+            JSON.stringify({
+              event: "ungrounded_years_rejected",
+              years: unsupportedYears,
+            }),
+          );
+          answer =
+            "I couldn't find enough relevant information to answer that confidently. Try asking about Ahtesham's projects, experience, skills or services, or book a 15-min call to ask him directly.";
+        }
+      }
 
       const wantsBooking = shouldSuggestBooking(message);
 

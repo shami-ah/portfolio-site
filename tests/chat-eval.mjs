@@ -378,6 +378,13 @@ const factCases = [
     expected: /shami8024@gmail\.com/i,
   },
   {
+    // Once answered "remote since 2020"; the knowledge only says 2023 to now.
+    name: "Roman Urdu remote question",
+    message: "Kya aap remote kaam karte hain?",
+    expected: /remote/i,
+    forbidden: /\b2020\b/,
+  },
+  {
     name: "German pricing question",
     message: "Was kostet ein Projekt bei dir?",
     expected: /3\s?k|3[.,]000|\$\s?80|80\s?(bis|to|-)\s?\$?120/i,
