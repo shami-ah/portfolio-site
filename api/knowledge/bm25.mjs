@@ -8,7 +8,13 @@ const STOP_WORDS = new Set([
   "when", "why", "who", "which", "to", "of",
   "in", "on", "at", "for", "from", "with",
   "about", "he", "she", "it", "his", "her",
-  "they", "them", "this", "that", "can"
+  "they", "them", "this", "that", "can",
+  // Conversational words that matched first-person article prose
+  // ("you", "your") and pulled unrelated chunks into the top five.
+  "you", "your", "yours", "are", "was", "were", "be", "been",
+  "has", "have", "had", "me", "my", "we", "our", "us", "tell",
+  "there", "any", "some", "will", "would", "could", "should",
+  "if", "so", "also", "just", "get", "whats"
 ]);
 
 function tokenize(value = "") {

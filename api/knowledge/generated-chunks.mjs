@@ -2,7 +2,7 @@
 
 export const generatedChunks = [
   {
-    "id": "profile-identity-1",
+    "id": "profile-identity",
     "project": "profile",
     "category": "profile",
     "tags": [
@@ -15,42 +15,10 @@ export const generatedChunks = [
       "remote",
       "Identity"
     ],
-    "text": "Identity: Engr. Ahtesham Ahmad is an AI Automation Architect and Lead AI Developer."
+    "text": "Identity: Engr. Ahtesham Ahmad is an AI Automation Architect and Lead AI Developer.\nHis focus is AI engineering: OpenEvent, CodeLens, Gogaa CLI, production workflow automation and developer tools.\nHe is based in Islamabad, Pakistan (UTC+5) and works remote-first."
   },
   {
-    "id": "profile-identity-2",
-    "project": "profile",
-    "category": "profile",
-    "tags": [
-      "about",
-      "who",
-      "role",
-      "location",
-      "timezone",
-      "based",
-      "remote",
-      "Identity"
-    ],
-    "text": "Identity: His focus is AI engineering: OpenEvent, CodeLens, Gogaa CLI, production workflow automation and developer tools."
-  },
-  {
-    "id": "profile-identity-3",
-    "project": "profile",
-    "category": "profile",
-    "tags": [
-      "about",
-      "who",
-      "role",
-      "location",
-      "timezone",
-      "based",
-      "remote",
-      "Identity"
-    ],
-    "text": "Identity: He is based in Islamabad, Pakistan (UTC+5) and works remote-first."
-  },
-  {
-    "id": "profile-availability-1",
+    "id": "profile-availability",
     "project": "profile",
     "category": "profile",
     "tags": [
@@ -64,61 +32,10 @@ export const generatedChunks = [
       "relocation",
       "Availability"
     ],
-    "text": "Availability: Ahtesham is open to full-time remote roles and 90-day project engagements."
+    "text": "Availability: Ahtesham is open to full-time remote roles and 90-day project engagements.\nTimezone UTC+5, which overlaps EU mornings and Gulf business hours.\nHe replies within 24 hours.\nThe fastest way to reach him is the Book a Call button on the page."
   },
   {
-    "id": "profile-availability-2",
-    "project": "profile",
-    "category": "profile",
-    "tags": [
-      "availability",
-      "available",
-      "hire",
-      "full-time",
-      "remote",
-      "timezone",
-      "response time",
-      "relocation",
-      "Availability"
-    ],
-    "text": "Availability: Timezone UTC+5, which overlaps EU mornings and Gulf business hours."
-  },
-  {
-    "id": "profile-availability-3",
-    "project": "profile",
-    "category": "profile",
-    "tags": [
-      "availability",
-      "available",
-      "hire",
-      "full-time",
-      "remote",
-      "timezone",
-      "response time",
-      "relocation",
-      "Availability"
-    ],
-    "text": "Availability: He replies within 24 hours."
-  },
-  {
-    "id": "profile-availability-4",
-    "project": "profile",
-    "category": "profile",
-    "tags": [
-      "availability",
-      "available",
-      "hire",
-      "full-time",
-      "remote",
-      "timezone",
-      "response time",
-      "relocation",
-      "Availability"
-    ],
-    "text": "Availability: The fastest way to reach him is the Book a Call button on the page."
-  },
-  {
-    "id": "profile-timezone-1",
+    "id": "profile-timezone",
     "project": "profile",
     "category": "profile",
     "tags": [
@@ -130,25 +47,10 @@ export const generatedChunks = [
       "working hours",
       "Timezone"
     ],
-    "text": "Timezone: He is based in Islamabad, Pakistan (UTC+5)."
+    "text": "Timezone: He is based in Islamabad, Pakistan (UTC+5).\nHis timezone overlaps EU mornings and Gulf business hours."
   },
   {
-    "id": "profile-timezone-2",
-    "project": "profile",
-    "category": "profile",
-    "tags": [
-      "timezone",
-      "utc",
-      "utc+5",
-      "islamabad",
-      "pakistan",
-      "working hours",
-      "Timezone"
-    ],
-    "text": "Timezone: His timezone overlaps EU mornings and Gulf business hours."
-  },
-  {
-    "id": "profile-rates-1",
+    "id": "profile-rates",
     "project": "profile",
     "category": "profile",
     "tags": [
@@ -165,90 +67,10 @@ export const generatedChunks = [
       "project",
       "Rates"
     ],
-    "text": "Rates: Contract work is $80 to $120 per hour for direct engagements."
+    "text": "Rates: Contract work is $80 to $120 per hour for direct engagements.\nProject-based work starts from $3k for scoped deliveries and scales with complexity.\nFull-time roles: $4k to $10k per month depending on scope, location and impact.\nRates vary by engagement type.\nThe best next step is a 15-min call via the Book a Call button."
   },
   {
-    "id": "profile-rates-2",
-    "project": "profile",
-    "category": "profile",
-    "tags": [
-      "rate",
-      "rates",
-      "hourly",
-      "price",
-      "pricing",
-      "cost",
-      "budget",
-      "salary",
-      "contract",
-      "charge",
-      "project",
-      "Rates"
-    ],
-    "text": "Rates: Project-based work starts from $3k for scoped deliveries and scales with complexity."
-  },
-  {
-    "id": "profile-rates-3",
-    "project": "profile",
-    "category": "profile",
-    "tags": [
-      "rate",
-      "rates",
-      "hourly",
-      "price",
-      "pricing",
-      "cost",
-      "budget",
-      "salary",
-      "contract",
-      "charge",
-      "project",
-      "Rates"
-    ],
-    "text": "Rates: Full-time roles: $4k to $10k per month depending on scope, location and impact."
-  },
-  {
-    "id": "profile-rates-4",
-    "project": "profile",
-    "category": "profile",
-    "tags": [
-      "rate",
-      "rates",
-      "hourly",
-      "price",
-      "pricing",
-      "cost",
-      "budget",
-      "salary",
-      "contract",
-      "charge",
-      "project",
-      "Rates"
-    ],
-    "text": "Rates: Rates vary by engagement type."
-  },
-  {
-    "id": "profile-rates-5",
-    "project": "profile",
-    "category": "profile",
-    "tags": [
-      "rate",
-      "rates",
-      "hourly",
-      "price",
-      "pricing",
-      "cost",
-      "budget",
-      "salary",
-      "contract",
-      "charge",
-      "project",
-      "Rates"
-    ],
-    "text": "Rates: The best next step is a 15-min call via the Book a Call button."
-  },
-  {
-    "id": "profile-process-1",
+    "id": "profile-process",
     "project": "profile",
     "category": "profile",
     "tags": [
@@ -265,70 +87,10 @@ export const generatedChunks = [
       "discovery",
       "Process"
     ],
-    "text": "Process: Every engagement starts with an architecture document (1 to 3 days of discovery)."
+    "text": "Process: Every engagement starts with an architecture document (1 to 3 days of discovery).\nDelivery is sprint-based with weekly demos.\nCodeLens runs on every pull request, so findings ship alongside every change.\nClients get full transparency: shared staging, the Supabase dashboard and PR-by-PR visibility."
   },
   {
-    "id": "profile-process-2",
-    "project": "profile",
-    "category": "profile",
-    "tags": [
-      "process",
-      "how he works",
-      "workflow",
-      "delivery",
-      "sprints",
-      "demos",
-      "run",
-      "client",
-      "project",
-      "engagement",
-      "discovery",
-      "Process"
-    ],
-    "text": "Process: Delivery is sprint-based with weekly demos."
-  },
-  {
-    "id": "profile-process-3",
-    "project": "profile",
-    "category": "profile",
-    "tags": [
-      "process",
-      "how he works",
-      "workflow",
-      "delivery",
-      "sprints",
-      "demos",
-      "run",
-      "client",
-      "project",
-      "engagement",
-      "discovery",
-      "Process"
-    ],
-    "text": "Process: CodeLens runs on every pull request, so findings ship alongside every change."
-  },
-  {
-    "id": "profile-process-4",
-    "project": "profile",
-    "category": "profile",
-    "tags": [
-      "process",
-      "how he works",
-      "workflow",
-      "delivery",
-      "sprints",
-      "demos",
-      "run",
-      "client",
-      "project",
-      "engagement",
-      "discovery",
-      "Process"
-    ],
-    "text": "Process: Clients get full transparency: shared staging, the Supabase dashboard and PR-by-PR visibility."
-  },
-  {
-    "id": "profile-principles-1",
+    "id": "profile-principles",
     "project": "profile",
     "category": "profile",
     "tags": [
@@ -338,72 +100,7 @@ export const generatedChunks = [
       "human-in-the-loop",
       "Principles"
     ],
-    "text": "Principles: Human-in-the-loop by default for anything that touches money or commitments."
-  },
-  {
-    "id": "profile-principles-2",
-    "project": "profile",
-    "category": "profile",
-    "tags": [
-      "principles",
-      "approach",
-      "philosophy",
-      "human-in-the-loop",
-      "Principles"
-    ],
-    "text": "Principles: Architect first, code second."
-  },
-  {
-    "id": "profile-principles-3",
-    "project": "profile",
-    "category": "profile",
-    "tags": [
-      "principles",
-      "approach",
-      "philosophy",
-      "human-in-the-loop",
-      "Principles"
-    ],
-    "text": "Principles: Strict at system boundaries, trust internal invariants."
-  },
-  {
-    "id": "profile-principles-4",
-    "project": "profile",
-    "category": "profile",
-    "tags": [
-      "principles",
-      "approach",
-      "philosophy",
-      "human-in-the-loop",
-      "Principles"
-    ],
-    "text": "Principles: Both a consumer and a producer of AI tooling."
-  },
-  {
-    "id": "profile-principles-5",
-    "project": "profile",
-    "category": "profile",
-    "tags": [
-      "principles",
-      "approach",
-      "philosophy",
-      "human-in-the-loop",
-      "Principles"
-    ],
-    "text": "Principles: One task per agent session, no context contamination."
-  },
-  {
-    "id": "profile-principles-6",
-    "project": "profile",
-    "category": "profile",
-    "tags": [
-      "principles",
-      "approach",
-      "philosophy",
-      "human-in-the-loop",
-      "Principles"
-    ],
-    "text": "Principles: Deploy behind feature flags: 10% rollout, monitor, then full."
+    "text": "Principles: Human-in-the-loop by default for anything that touches money or commitments.\nArchitect first, code second.\nStrict at system boundaries, trust internal invariants.\nBoth a consumer and a producer of AI tooling.\nOne task per agent session, no context contamination.\nDeploy behind feature flags: 10% rollout, monitor, then full."
   },
   {
     "id": "profile-stack-1",
@@ -430,7 +127,7 @@ export const generatedChunks = [
       "development tools",
       "Technology Stack and Technical Skills"
     ],
-    "text": "Technology Stack and Technical Skills: His technology stack and technical skills include AI engineering, full-stack development, programming languages, frameworks, libraries, and infrastructure tools."
+    "text": "Technology Stack and Technical Skills: His technology stack and technical skills include AI engineering, full-stack development, programming languages, frameworks, libraries, and infrastructure tools.\nAI stack: Claude (Opus, Sonnet), OpenAI (GPT-4o, o1), RAG (pgvector, Pinecone), LangChain, multi-agent orchestration, human-in-the-loop.\nFull-stack technologies: React, Next.js, React Native (Expo), TypeScript, Python, FastAPI, Supabase, Stripe, Docker.\nInfrastructure tools: GitHub Actions CI/CD, Docker Compose, Traefik, Sentry, Grafana, n8n, Cloudflare, Vercel."
   },
   {
     "id": "profile-stack-2",
@@ -457,118 +154,10 @@ export const generatedChunks = [
       "development tools",
       "Technology Stack and Technical Skills"
     ],
-    "text": "Technology Stack and Technical Skills: AI stack: Claude (Opus, Sonnet), OpenAI (GPT-4o, o1), RAG (pgvector, Pinecone), LangChain, multi-agent orchestration, human-in-the-loop."
+    "text": "Technology Stack and Technical Skills: Kubernetes, AWS, Azure, and GCP managed services are not part of his current technology stack.\nHe runs Docker Compose and Traefik on self-managed servers instead of Kubernetes, and can adopt it if a role requires it."
   },
   {
-    "id": "profile-stack-3",
-    "project": "profile",
-    "category": "profile",
-    "tags": [
-      "stack",
-      "tech stack",
-      "technology stack",
-      "technical stack",
-      "technologies",
-      "technology",
-      "technical skills",
-      "tools",
-      "languages",
-      "programming languages",
-      "frameworks",
-      "libraries",
-      "frontend",
-      "backend",
-      "full-stack",
-      "infrastructure",
-      "AI",
-      "development tools",
-      "Technology Stack and Technical Skills"
-    ],
-    "text": "Technology Stack and Technical Skills: Full-stack technologies: React, Next.js, React Native (Expo), TypeScript, Python, FastAPI, Supabase, Stripe, Docker."
-  },
-  {
-    "id": "profile-stack-4",
-    "project": "profile",
-    "category": "profile",
-    "tags": [
-      "stack",
-      "tech stack",
-      "technology stack",
-      "technical stack",
-      "technologies",
-      "technology",
-      "technical skills",
-      "tools",
-      "languages",
-      "programming languages",
-      "frameworks",
-      "libraries",
-      "frontend",
-      "backend",
-      "full-stack",
-      "infrastructure",
-      "AI",
-      "development tools",
-      "Technology Stack and Technical Skills"
-    ],
-    "text": "Technology Stack and Technical Skills: Infrastructure tools: GitHub Actions CI/CD, Docker Compose, Traefik, Sentry, Grafana, n8n, Cloudflare, Vercel."
-  },
-  {
-    "id": "profile-stack-5",
-    "project": "profile",
-    "category": "profile",
-    "tags": [
-      "stack",
-      "tech stack",
-      "technology stack",
-      "technical stack",
-      "technologies",
-      "technology",
-      "technical skills",
-      "tools",
-      "languages",
-      "programming languages",
-      "frameworks",
-      "libraries",
-      "frontend",
-      "backend",
-      "full-stack",
-      "infrastructure",
-      "AI",
-      "development tools",
-      "Technology Stack and Technical Skills"
-    ],
-    "text": "Technology Stack and Technical Skills: Kubernetes, AWS, Azure, and GCP managed services are not part of his current technology stack."
-  },
-  {
-    "id": "profile-stack-6",
-    "project": "profile",
-    "category": "profile",
-    "tags": [
-      "stack",
-      "tech stack",
-      "technology stack",
-      "technical stack",
-      "technologies",
-      "technology",
-      "technical skills",
-      "tools",
-      "languages",
-      "programming languages",
-      "frameworks",
-      "libraries",
-      "frontend",
-      "backend",
-      "full-stack",
-      "infrastructure",
-      "AI",
-      "development tools",
-      "Technology Stack and Technical Skills"
-    ],
-    "text": "Technology Stack and Technical Skills: He runs Docker Compose and Traefik on self-managed servers instead of Kubernetes, and can adopt it if a role requires it."
-  },
-  {
-    "id": "profile-not-in-stack-1",
+    "id": "profile-not-in-stack",
     "project": "profile",
     "category": "profile",
     "tags": [
@@ -580,22 +169,25 @@ export const generatedChunks = [
       "cloud infrastructure",
       "NOT in Stack"
     ],
-    "text": "NOT in Stack: Kubernetes, AWS, Azure and GCP managed services are not part of his current stack."
+    "text": "NOT in Stack: Kubernetes, AWS, Azure and GCP managed services are not part of his current stack.\nHe runs Docker Compose and Traefik on self-managed servers instead of Kubernetes, and can adopt them if a role requires it."
   },
   {
-    "id": "profile-not-in-stack-2",
+    "id": "profile-contact",
     "project": "profile",
     "category": "profile",
     "tags": [
-      "not in stack",
-      "kubernetes",
-      "aws",
-      "azure",
-      "gcp",
-      "cloud infrastructure",
-      "NOT in Stack"
+      "contact",
+      "email",
+      "reach",
+      "get in touch",
+      "message",
+      "linkedin",
+      "github",
+      "call",
+      "book",
+      "Contact"
     ],
-    "text": "NOT in Stack: He runs Docker Compose and Traefik on self-managed servers instead of Kubernetes, and can adopt them if a role requires it."
+    "text": "Contact: Email: shami8024@gmail.com.\nThe fastest way to reach Ahtesham is the Book a Call button on the page, which books a 15-min call.\nHe is also on LinkedIn (Muhammad Ahtesham Ahmad) and GitHub (shami-ah); both are linked in the page footer.\nHe replies within 24 hours."
   },
   {
     "id": "project-openevent-summary-1",
@@ -607,7 +199,7 @@ export const generatedChunks = [
       "Production SaaS",
       "summary"
     ],
-    "text": "OpenEvent · summary: title: OpenEvent"
+    "text": "OpenEvent · summary: title: OpenEvent\nsubtitle: AI-Powered Event Management Platform\noneLiner: AI turns client emails into approved bookings, invoices, and CRM updates.\ncardSummary: 100+ clients in 8 months, no sales team. AI reads emails, proposes actions, humans approve with one click.\nimpact: Grew to 100+ clients across 150+ events in 8 months with no sales team, all product-led. Saves each team about 1.5 hours a day. AI classifies emails, proposes actions, and executes only after a human approves. The platform has since grown into memberships, wallets, gift cards and in-venue POS."
   },
   {
     "id": "project-openevent-summary-2",
@@ -619,67 +211,7 @@ export const generatedChunks = [
       "Production SaaS",
       "summary"
     ],
-    "text": "OpenEvent · summary: subtitle: AI-Powered Event Management Platform"
-  },
-  {
-    "id": "project-openevent-summary-3",
-    "project": "openevent",
-    "category": "project",
-    "tags": [
-      "openevent",
-      "OpenEvent",
-      "Production SaaS",
-      "summary"
-    ],
-    "text": "OpenEvent · summary: oneLiner: AI turns client emails into approved bookings, invoices, and CRM updates."
-  },
-  {
-    "id": "project-openevent-summary-4",
-    "project": "openevent",
-    "category": "project",
-    "tags": [
-      "openevent",
-      "OpenEvent",
-      "Production SaaS",
-      "summary"
-    ],
-    "text": "OpenEvent · summary: cardSummary: 100+ clients in 8 months, no sales team. AI reads emails, proposes actions, humans approve with one click."
-  },
-  {
-    "id": "project-openevent-summary-5",
-    "project": "openevent",
-    "category": "project",
-    "tags": [
-      "openevent",
-      "OpenEvent",
-      "Production SaaS",
-      "summary"
-    ],
-    "text": "OpenEvent · summary: impact: Grew to 100+ clients across 150+ events in 8 months with no sales team, all product-led. Saves each team about 1.5 hours a day. AI classifies emails, proposes actions, and executes only after a human approves. The platform has since grown into memberships, wallets, gift cards and in-venue POS."
-  },
-  {
-    "id": "project-openevent-summary-6",
-    "project": "openevent",
-    "category": "project",
-    "tags": [
-      "openevent",
-      "OpenEvent",
-      "Production SaaS",
-      "summary"
-    ],
-    "text": "OpenEvent · summary: problem: Event companies drown in emails and manual coordination. Staff spend hours triaging requests, copying data between systems, and chasing approvals. Simple automation breaks on ambiguous language."
-  },
-  {
-    "id": "project-openevent-summary-7",
-    "project": "openevent",
-    "category": "project",
-    "tags": [
-      "openevent",
-      "OpenEvent",
-      "Production SaaS",
-      "summary"
-    ],
-    "text": "OpenEvent · summary: solution: An AI layer that ingests emails, classifies intent, extracts entities with pgvector context, and proposes actions. Humans approve with one click before anything touches money or commitments. Declarative JSON workflows make the system extensible without code changes."
+    "text": "OpenEvent · summary: problem: Event companies drown in emails and manual coordination. Staff spend hours triaging requests, copying data between systems, and chasing approvals. Simple automation breaks on ambiguous language.\nsolution: An AI layer that ingests emails, classifies intent, extracts entities with pgvector context, and proposes actions. Humans approve with one click before anything touches money or commitments. Declarative JSON workflows make the system extensible without code changes."
   },
   {
     "id": "project-openevent-architecture-1",
@@ -691,7 +223,7 @@ export const generatedChunks = [
       "Production SaaS",
       "architecture"
     ],
-    "text": "OpenEvent · architecture: architecture 1: Email Ingestion (Gmail / Outlook / IMAP)"
+    "text": "OpenEvent · architecture: architecture 1: Email Ingestion (Gmail / Outlook / IMAP)\narchitecture 2: AI Intent Classification\narchitecture 3: Entity Extraction + pgvector Context\narchitecture 4: Human-in-the-Loop Approval Gate\narchitecture 5: Declarative Workflow Engine (JSON/YAML)\narchitecture 6: Execution (Calendar, Stripe, CRM, Email)\narchitecture 7: Audit Log + Telemetry\nfeatures 1: Email-to-task pipeline with AI intent classification and entity extraction\nfeatures 2: Human-in-the-loop: AI drafts, humans approve before any execution\nfeatures 3: Declarative workflow engine — non-engineers can add steps without code"
   },
   {
     "id": "project-openevent-architecture-2",
@@ -703,211 +235,7 @@ export const generatedChunks = [
       "Production SaaS",
       "architecture"
     ],
-    "text": "OpenEvent · architecture: architecture 2: AI Intent Classification"
-  },
-  {
-    "id": "project-openevent-architecture-3",
-    "project": "openevent",
-    "category": "project",
-    "tags": [
-      "openevent",
-      "OpenEvent",
-      "Production SaaS",
-      "architecture"
-    ],
-    "text": "OpenEvent · architecture: architecture 3: Entity Extraction + pgvector Context"
-  },
-  {
-    "id": "project-openevent-architecture-4",
-    "project": "openevent",
-    "category": "project",
-    "tags": [
-      "openevent",
-      "OpenEvent",
-      "Production SaaS",
-      "architecture"
-    ],
-    "text": "OpenEvent · architecture: architecture 4: Human-in-the-Loop Approval Gate"
-  },
-  {
-    "id": "project-openevent-architecture-5",
-    "project": "openevent",
-    "category": "project",
-    "tags": [
-      "openevent",
-      "OpenEvent",
-      "Production SaaS",
-      "architecture"
-    ],
-    "text": "OpenEvent · architecture: architecture 5: Declarative Workflow Engine (JSON/YAML)"
-  },
-  {
-    "id": "project-openevent-architecture-6",
-    "project": "openevent",
-    "category": "project",
-    "tags": [
-      "openevent",
-      "OpenEvent",
-      "Production SaaS",
-      "architecture"
-    ],
-    "text": "OpenEvent · architecture: architecture 6: Execution (Calendar, Stripe, CRM, Email)"
-  },
-  {
-    "id": "project-openevent-architecture-7",
-    "project": "openevent",
-    "category": "project",
-    "tags": [
-      "openevent",
-      "OpenEvent",
-      "Production SaaS",
-      "architecture"
-    ],
-    "text": "OpenEvent · architecture: architecture 7: Audit Log + Telemetry"
-  },
-  {
-    "id": "project-openevent-architecture-8",
-    "project": "openevent",
-    "category": "project",
-    "tags": [
-      "openevent",
-      "OpenEvent",
-      "Production SaaS",
-      "architecture"
-    ],
-    "text": "OpenEvent · architecture: features 1: Email-to-task pipeline with AI intent classification and entity extraction"
-  },
-  {
-    "id": "project-openevent-architecture-9",
-    "project": "openevent",
-    "category": "project",
-    "tags": [
-      "openevent",
-      "OpenEvent",
-      "Production SaaS",
-      "architecture"
-    ],
-    "text": "OpenEvent · architecture: features 2: Human-in-the-loop: AI drafts, humans approve before any execution"
-  },
-  {
-    "id": "project-openevent-architecture-10",
-    "project": "openevent",
-    "category": "project",
-    "tags": [
-      "openevent",
-      "OpenEvent",
-      "Production SaaS",
-      "architecture"
-    ],
-    "text": "OpenEvent · architecture: features 3: Declarative workflow engine — non-engineers can add steps without code"
-  },
-  {
-    "id": "project-openevent-architecture-11",
-    "project": "openevent",
-    "category": "project",
-    "tags": [
-      "openevent",
-      "OpenEvent",
-      "Production SaaS",
-      "architecture"
-    ],
-    "text": "OpenEvent · architecture: features 4: Semantic search via pgvector for template matching and client history"
-  },
-  {
-    "id": "project-openevent-architecture-12",
-    "project": "openevent",
-    "category": "project",
-    "tags": [
-      "openevent",
-      "OpenEvent",
-      "Production SaaS",
-      "architecture"
-    ],
-    "text": "OpenEvent · architecture: features 5: Full integrations: Calendar, Stripe invoicing, CRM sync, webhooks"
-  },
-  {
-    "id": "project-openevent-architecture-13",
-    "project": "openevent",
-    "category": "project",
-    "tags": [
-      "openevent",
-      "OpenEvent",
-      "Production SaaS",
-      "architecture"
-    ],
-    "text": "OpenEvent · architecture: stack 1: React"
-  },
-  {
-    "id": "project-openevent-architecture-14",
-    "project": "openevent",
-    "category": "project",
-    "tags": [
-      "openevent",
-      "OpenEvent",
-      "Production SaaS",
-      "architecture"
-    ],
-    "text": "OpenEvent · architecture: stack 2: TypeScript"
-  },
-  {
-    "id": "project-openevent-architecture-15",
-    "project": "openevent",
-    "category": "project",
-    "tags": [
-      "openevent",
-      "OpenEvent",
-      "Production SaaS",
-      "architecture"
-    ],
-    "text": "OpenEvent · architecture: stack 3: Supabase"
-  },
-  {
-    "id": "project-openevent-architecture-16",
-    "project": "openevent",
-    "category": "project",
-    "tags": [
-      "openevent",
-      "OpenEvent",
-      "Production SaaS",
-      "architecture"
-    ],
-    "text": "OpenEvent · architecture: stack 4: OpenAI"
-  },
-  {
-    "id": "project-openevent-architecture-17",
-    "project": "openevent",
-    "category": "project",
-    "tags": [
-      "openevent",
-      "OpenEvent",
-      "Production SaaS",
-      "architecture"
-    ],
-    "text": "OpenEvent · architecture: stack 5: pgvector"
-  },
-  {
-    "id": "project-openevent-architecture-18",
-    "project": "openevent",
-    "category": "project",
-    "tags": [
-      "openevent",
-      "OpenEvent",
-      "Production SaaS",
-      "architecture"
-    ],
-    "text": "OpenEvent · architecture: stack 6: Stripe"
-  },
-  {
-    "id": "project-openevent-architecture-19",
-    "project": "openevent",
-    "category": "project",
-    "tags": [
-      "openevent",
-      "OpenEvent",
-      "Production SaaS",
-      "architecture"
-    ],
-    "text": "OpenEvent · architecture: stack 7: Docker"
+    "text": "OpenEvent · architecture: features 4: Semantic search via pgvector for template matching and client history\nfeatures 5: Full integrations: Calendar, Stripe invoicing, CRM sync, webhooks\nstack 1: React\nstack 2: TypeScript\nstack 3: Supabase\nstack 4: OpenAI\nstack 5: pgvector\nstack 6: Stripe\nstack 7: Docker"
   },
   {
     "id": "project-openevent-decisions-1",
@@ -919,7 +247,7 @@ export const generatedChunks = [
       "Production SaaS",
       "decisions"
     ],
-    "text": "OpenEvent · decisions: techDecisions 1 title: Human-in-the-loop by default"
+    "text": "OpenEvent · decisions: techDecisions 1 title: Human-in-the-loop by default\ntechDecisions 1 description: Event coordination is full of ambiguity. AI proposes, humans approve — this trust boundary is why adoption was immediate. The fully automated competitor clients tried before failed on day two.\ntechDecisions 2 title: pgvector inside Postgres\ntechDecisions 2 description: No separate vector DB. Embeddings live next to relational data — one query joins both. Zero sync lag, zero extra infra.\ntechDecisions 3 title: Declarative workflow engine"
   },
   {
     "id": "project-openevent-decisions-2",
@@ -931,7 +259,7 @@ export const generatedChunks = [
       "Production SaaS",
       "decisions"
     ],
-    "text": "OpenEvent · decisions: techDecisions 1 description: Event coordination is full of ambiguity. AI proposes, humans approve — this trust boundary is why adoption was immediate. The fully automated competitor clients tried before failed on day two."
+    "text": "OpenEvent · decisions: techDecisions 3 description: Workflows are JSON/YAML, not TypeScript. Adding an approval step or integration is a config change, not a deploy.\ndecision scenario: An event company gets 100+ ambiguous client emails daily. They want AI to handle it.\ndecision question: How do you design the system?\ndecision options 1: Full automation: AI reads, decides, executes\ndecision options 2: AI drafts action, human approves before execution\ndecision options 3: Classification only, humans do the rest\ndecision commonChoice: 0\ndecision myChoice: 1"
   },
   {
     "id": "project-openevent-decisions-3",
@@ -943,7 +271,7 @@ export const generatedChunks = [
       "Production SaaS",
       "decisions"
     ],
-    "text": "OpenEvent · decisions: techDecisions 2 title: pgvector inside Postgres"
+    "text": "OpenEvent · decisions: decision reasoning: Full automation fails on the first misread. Event coordination needs judgment. I designed AI to handle extraction and proposal — humans approve before anything touches money. That trust boundary is why clients actually use it.\ncomparison mine title: OpenEvent\ncomparison mine bullets 1: AI classifies, extracts, proposes — human approves\ncomparison mine bullets 2: JSON/YAML workflows, extensible without code\ncomparison mine bullets 3: pgvector inside Postgres, no extra infra\ncomparison mine bullets 4: Full audit log with auto-approval learning"
   },
   {
     "id": "project-openevent-decisions-4",
@@ -955,247 +283,7 @@ export const generatedChunks = [
       "Production SaaS",
       "decisions"
     ],
-    "text": "OpenEvent · decisions: techDecisions 2 description: No separate vector DB. Embeddings live next to relational data — one query joins both. Zero sync lag, zero extra infra."
-  },
-  {
-    "id": "project-openevent-decisions-5",
-    "project": "openevent",
-    "category": "project",
-    "tags": [
-      "openevent",
-      "OpenEvent",
-      "Production SaaS",
-      "decisions"
-    ],
-    "text": "OpenEvent · decisions: techDecisions 3 title: Declarative workflow engine"
-  },
-  {
-    "id": "project-openevent-decisions-6",
-    "project": "openevent",
-    "category": "project",
-    "tags": [
-      "openevent",
-      "OpenEvent",
-      "Production SaaS",
-      "decisions"
-    ],
-    "text": "OpenEvent · decisions: techDecisions 3 description: Workflows are JSON/YAML, not TypeScript. Adding an approval step or integration is a config change, not a deploy."
-  },
-  {
-    "id": "project-openevent-decisions-7",
-    "project": "openevent",
-    "category": "project",
-    "tags": [
-      "openevent",
-      "OpenEvent",
-      "Production SaaS",
-      "decisions"
-    ],
-    "text": "OpenEvent · decisions: decision scenario: An event company gets 100+ ambiguous client emails daily. They want AI to handle it."
-  },
-  {
-    "id": "project-openevent-decisions-8",
-    "project": "openevent",
-    "category": "project",
-    "tags": [
-      "openevent",
-      "OpenEvent",
-      "Production SaaS",
-      "decisions"
-    ],
-    "text": "OpenEvent · decisions: decision question: How do you design the system?"
-  },
-  {
-    "id": "project-openevent-decisions-9",
-    "project": "openevent",
-    "category": "project",
-    "tags": [
-      "openevent",
-      "OpenEvent",
-      "Production SaaS",
-      "decisions"
-    ],
-    "text": "OpenEvent · decisions: decision options 1: Full automation: AI reads, decides, executes"
-  },
-  {
-    "id": "project-openevent-decisions-10",
-    "project": "openevent",
-    "category": "project",
-    "tags": [
-      "openevent",
-      "OpenEvent",
-      "Production SaaS",
-      "decisions"
-    ],
-    "text": "OpenEvent · decisions: decision options 2: AI drafts action, human approves before execution"
-  },
-  {
-    "id": "project-openevent-decisions-11",
-    "project": "openevent",
-    "category": "project",
-    "tags": [
-      "openevent",
-      "OpenEvent",
-      "Production SaaS",
-      "decisions"
-    ],
-    "text": "OpenEvent · decisions: decision options 3: Classification only, humans do the rest"
-  },
-  {
-    "id": "project-openevent-decisions-12",
-    "project": "openevent",
-    "category": "project",
-    "tags": [
-      "openevent",
-      "OpenEvent",
-      "Production SaaS",
-      "decisions"
-    ],
-    "text": "OpenEvent · decisions: decision commonChoice: 0"
-  },
-  {
-    "id": "project-openevent-decisions-13",
-    "project": "openevent",
-    "category": "project",
-    "tags": [
-      "openevent",
-      "OpenEvent",
-      "Production SaaS",
-      "decisions"
-    ],
-    "text": "OpenEvent · decisions: decision myChoice: 1"
-  },
-  {
-    "id": "project-openevent-decisions-14",
-    "project": "openevent",
-    "category": "project",
-    "tags": [
-      "openevent",
-      "OpenEvent",
-      "Production SaaS",
-      "decisions"
-    ],
-    "text": "OpenEvent · decisions: decision reasoning: Full automation fails on the first misread. Event coordination needs judgment. I designed AI to handle extraction and proposal — humans approve before anything touches money. That trust boundary is why clients actually use it."
-  },
-  {
-    "id": "project-openevent-decisions-15",
-    "project": "openevent",
-    "category": "project",
-    "tags": [
-      "openevent",
-      "OpenEvent",
-      "Production SaaS",
-      "decisions"
-    ],
-    "text": "OpenEvent · decisions: comparison mine title: OpenEvent"
-  },
-  {
-    "id": "project-openevent-decisions-16",
-    "project": "openevent",
-    "category": "project",
-    "tags": [
-      "openevent",
-      "OpenEvent",
-      "Production SaaS",
-      "decisions"
-    ],
-    "text": "OpenEvent · decisions: comparison mine bullets 1: AI classifies, extracts, proposes — human approves"
-  },
-  {
-    "id": "project-openevent-decisions-17",
-    "project": "openevent",
-    "category": "project",
-    "tags": [
-      "openevent",
-      "OpenEvent",
-      "Production SaaS",
-      "decisions"
-    ],
-    "text": "OpenEvent · decisions: comparison mine bullets 2: JSON/YAML workflows, extensible without code"
-  },
-  {
-    "id": "project-openevent-decisions-18",
-    "project": "openevent",
-    "category": "project",
-    "tags": [
-      "openevent",
-      "OpenEvent",
-      "Production SaaS",
-      "decisions"
-    ],
-    "text": "OpenEvent · decisions: comparison mine bullets 3: pgvector inside Postgres, no extra infra"
-  },
-  {
-    "id": "project-openevent-decisions-19",
-    "project": "openevent",
-    "category": "project",
-    "tags": [
-      "openevent",
-      "OpenEvent",
-      "Production SaaS",
-      "decisions"
-    ],
-    "text": "OpenEvent · decisions: comparison mine bullets 4: Full audit log with auto-approval learning"
-  },
-  {
-    "id": "project-openevent-decisions-20",
-    "project": "openevent",
-    "category": "project",
-    "tags": [
-      "openevent",
-      "OpenEvent",
-      "Production SaaS",
-      "decisions"
-    ],
-    "text": "OpenEvent · decisions: comparison standard title: Full-automation AI"
-  },
-  {
-    "id": "project-openevent-decisions-21",
-    "project": "openevent",
-    "category": "project",
-    "tags": [
-      "openevent",
-      "OpenEvent",
-      "Production SaaS",
-      "decisions"
-    ],
-    "text": "OpenEvent · decisions: comparison standard bullets 1: AI decides and executes with no human gate"
-  },
-  {
-    "id": "project-openevent-decisions-22",
-    "project": "openevent",
-    "category": "project",
-    "tags": [
-      "openevent",
-      "OpenEvent",
-      "Production SaaS",
-      "decisions"
-    ],
-    "text": "OpenEvent · decisions: comparison standard bullets 2: Breaks on ambiguous input, fast trust erosion"
-  },
-  {
-    "id": "project-openevent-decisions-23",
-    "project": "openevent",
-    "category": "project",
-    "tags": [
-      "openevent",
-      "OpenEvent",
-      "Production SaaS",
-      "decisions"
-    ],
-    "text": "OpenEvent · decisions: comparison standard bullets 3: Hardcoded workflows, every change = deploy"
-  },
-  {
-    "id": "project-openevent-decisions-24",
-    "project": "openevent",
-    "category": "project",
-    "tags": [
-      "openevent",
-      "OpenEvent",
-      "Production SaaS",
-      "decisions"
-    ],
-    "text": "OpenEvent · decisions: comparison standard bullets 4: No audit trail when AI makes wrong call"
+    "text": "OpenEvent · decisions: comparison standard title: Full-automation AI\ncomparison standard bullets 1: AI decides and executes with no human gate\ncomparison standard bullets 2: Breaks on ambiguous input, fast trust erosion\ncomparison standard bullets 3: Hardcoded workflows, every change = deploy\ncomparison standard bullets 4: No audit trail when AI makes wrong call"
   },
   {
     "id": "project-openevent-results-1",
@@ -1207,7 +295,7 @@ export const generatedChunks = [
       "Production SaaS",
       "results"
     ],
-    "text": "OpenEvent · results: results 1: 100+ active clients, 150+ events managed"
+    "text": "OpenEvent · results: results 1: 100+ active clients, 150+ events managed\nresults 2: ~83% less manual coordination time (about 1.5 h down to 15 min a day)\nresults 3: Response time dropped from hours to minutes\nresults 4: Grew past email AI into memberships, wallets, gift cards, POS and KYC-verified signup\nresults 5: Full CI/CD with staging and production environments\nmeasuredImpact before value: ~1.5\nmeasuredImpact before unit: hrs\nmeasuredImpact before context: per team, per day, reading & triaging email\nmeasuredImpact after value: ~15\nmeasuredImpact after unit: min"
   },
   {
     "id": "project-openevent-results-2",
@@ -1219,187 +307,7 @@ export const generatedChunks = [
       "Production SaaS",
       "results"
     ],
-    "text": "OpenEvent · results: results 2: ~83% less manual coordination time (about 1.5 h down to 15 min a day)"
-  },
-  {
-    "id": "project-openevent-results-3",
-    "project": "openevent",
-    "category": "project",
-    "tags": [
-      "openevent",
-      "OpenEvent",
-      "Production SaaS",
-      "results"
-    ],
-    "text": "OpenEvent · results: results 3: Response time dropped from hours to minutes"
-  },
-  {
-    "id": "project-openevent-results-4",
-    "project": "openevent",
-    "category": "project",
-    "tags": [
-      "openevent",
-      "OpenEvent",
-      "Production SaaS",
-      "results"
-    ],
-    "text": "OpenEvent · results: results 4: Grew past email AI into memberships, wallets, gift cards, POS and KYC-verified signup"
-  },
-  {
-    "id": "project-openevent-results-5",
-    "project": "openevent",
-    "category": "project",
-    "tags": [
-      "openevent",
-      "OpenEvent",
-      "Production SaaS",
-      "results"
-    ],
-    "text": "OpenEvent · results: results 5: Full CI/CD with staging and production environments"
-  },
-  {
-    "id": "project-openevent-results-6",
-    "project": "openevent",
-    "category": "project",
-    "tags": [
-      "openevent",
-      "OpenEvent",
-      "Production SaaS",
-      "results"
-    ],
-    "text": "OpenEvent · results: measuredImpact before value: ~1.5"
-  },
-  {
-    "id": "project-openevent-results-7",
-    "project": "openevent",
-    "category": "project",
-    "tags": [
-      "openevent",
-      "OpenEvent",
-      "Production SaaS",
-      "results"
-    ],
-    "text": "OpenEvent · results: measuredImpact before unit: hrs"
-  },
-  {
-    "id": "project-openevent-results-8",
-    "project": "openevent",
-    "category": "project",
-    "tags": [
-      "openevent",
-      "OpenEvent",
-      "Production SaaS",
-      "results"
-    ],
-    "text": "OpenEvent · results: measuredImpact before context: per team, per day, reading & triaging email"
-  },
-  {
-    "id": "project-openevent-results-9",
-    "project": "openevent",
-    "category": "project",
-    "tags": [
-      "openevent",
-      "OpenEvent",
-      "Production SaaS",
-      "results"
-    ],
-    "text": "OpenEvent · results: measuredImpact after value: ~15"
-  },
-  {
-    "id": "project-openevent-results-10",
-    "project": "openevent",
-    "category": "project",
-    "tags": [
-      "openevent",
-      "OpenEvent",
-      "Production SaaS",
-      "results"
-    ],
-    "text": "OpenEvent · results: measuredImpact after unit: min"
-  },
-  {
-    "id": "project-openevent-results-11",
-    "project": "openevent",
-    "category": "project",
-    "tags": [
-      "openevent",
-      "OpenEvent",
-      "Production SaaS",
-      "results"
-    ],
-    "text": "OpenEvent · results: measuredImpact after context: review AI-drafted actions & approve"
-  },
-  {
-    "id": "project-openevent-results-12",
-    "project": "openevent",
-    "category": "project",
-    "tags": [
-      "openevent",
-      "OpenEvent",
-      "Production SaaS",
-      "results"
-    ],
-    "text": "OpenEvent · results: measuredImpact highlights 1 n: 100+"
-  },
-  {
-    "id": "project-openevent-results-13",
-    "project": "openevent",
-    "category": "project",
-    "tags": [
-      "openevent",
-      "OpenEvent",
-      "Production SaaS",
-      "results"
-    ],
-    "text": "OpenEvent · results: measuredImpact highlights 1 l: active clients"
-  },
-  {
-    "id": "project-openevent-results-14",
-    "project": "openevent",
-    "category": "project",
-    "tags": [
-      "openevent",
-      "OpenEvent",
-      "Production SaaS",
-      "results"
-    ],
-    "text": "OpenEvent · results: measuredImpact highlights 2 n: 150+"
-  },
-  {
-    "id": "project-openevent-results-15",
-    "project": "openevent",
-    "category": "project",
-    "tags": [
-      "openevent",
-      "OpenEvent",
-      "Production SaaS",
-      "results"
-    ],
-    "text": "OpenEvent · results: measuredImpact highlights 2 l: events run"
-  },
-  {
-    "id": "project-openevent-results-16",
-    "project": "openevent",
-    "category": "project",
-    "tags": [
-      "openevent",
-      "OpenEvent",
-      "Production SaaS",
-      "results"
-    ],
-    "text": "OpenEvent · results: measuredImpact highlights 3 n: 83%"
-  },
-  {
-    "id": "project-openevent-results-17",
-    "project": "openevent",
-    "category": "project",
-    "tags": [
-      "openevent",
-      "OpenEvent",
-      "Production SaaS",
-      "results"
-    ],
-    "text": "OpenEvent · results: measuredImpact highlights 3 l: time saved"
+    "text": "OpenEvent · results: measuredImpact after context: review AI-drafted actions & approve\nmeasuredImpact highlights 1 n: 100+\nmeasuredImpact highlights 1 l: active clients\nmeasuredImpact highlights 2 n: 150+\nmeasuredImpact highlights 2 l: events run\nmeasuredImpact highlights 3 n: 83%\nmeasuredImpact highlights 3 l: time saved"
   },
   {
     "id": "project-codelens-summary-1",
@@ -1411,7 +319,7 @@ export const generatedChunks = [
       "AI Dev Tool",
       "summary"
     ],
-    "text": "CodeLens · summary: title: CodeLens"
+    "text": "CodeLens · summary: title: CodeLens\nsubtitle: AI Code Review Engine\noneLiner: 624 bug patterns mined from 860+ real PRs. Under one second. Code never leaves your machine.\ncardSummary: 624 patterns mined from 860+ production PRs. Reviews in under one second, entirely on your machine.\nimpact: 624 hand-crafted patterns mined from 860+ production PRs across 9 stacks. Reviews in under one second, entirely on your machine. When a commercial AI reviewer (Greptile) caught 12 issues CodeLens missed, I ran a gap analysis and closed every one. Coverage went from 8% to 100%."
   },
   {
     "id": "project-codelens-summary-2",
@@ -1423,67 +331,7 @@ export const generatedChunks = [
       "AI Dev Tool",
       "summary"
     ],
-    "text": "CodeLens · summary: subtitle: AI Code Review Engine"
-  },
-  {
-    "id": "project-codelens-summary-3",
-    "project": "codelens",
-    "category": "project",
-    "tags": [
-      "codelens",
-      "CodeLens",
-      "AI Dev Tool",
-      "summary"
-    ],
-    "text": "CodeLens · summary: oneLiner: 624 bug patterns mined from 860+ real PRs. Under one second. Code never leaves your machine."
-  },
-  {
-    "id": "project-codelens-summary-4",
-    "project": "codelens",
-    "category": "project",
-    "tags": [
-      "codelens",
-      "CodeLens",
-      "AI Dev Tool",
-      "summary"
-    ],
-    "text": "CodeLens · summary: cardSummary: 624 patterns mined from 860+ production PRs. Reviews in under one second, entirely on your machine."
-  },
-  {
-    "id": "project-codelens-summary-5",
-    "project": "codelens",
-    "category": "project",
-    "tags": [
-      "codelens",
-      "CodeLens",
-      "AI Dev Tool",
-      "summary"
-    ],
-    "text": "CodeLens · summary: impact: 624 hand-crafted patterns mined from 860+ production PRs across 9 stacks. Reviews in under one second, entirely on your machine. When a commercial AI reviewer (Greptile) caught 12 issues CodeLens missed, I ran a gap analysis and closed every one. Coverage went from 8% to 100%."
-  },
-  {
-    "id": "project-codelens-summary-6",
-    "project": "codelens",
-    "category": "project",
-    "tags": [
-      "codelens",
-      "CodeLens",
-      "AI Dev Tool",
-      "summary"
-    ],
-    "text": "CodeLens · summary: problem: Existing tools are either fast but shallow (linters catching style, not logic) or deep but cloud-dependent (sending your code to a third party). Neither catches the bugs that actually ship: missing auth guards, silent N+1 queries, cross-file taint paths."
-  },
-  {
-    "id": "project-codelens-summary-7",
-    "project": "codelens",
-    "category": "project",
-    "tags": [
-      "codelens",
-      "CodeLens",
-      "AI Dev Tool",
-      "summary"
-    ],
-    "text": "CodeLens · summary: solution: Deterministic patterns first, then AI for what patterns can't express. A persistent codebase index (call graph, schema graph) enables cross-file analysis. Source-to-sink taint tracking follows user input to dangerous sinks. Guardian mode injects rules into AI coding assistants to prevent bugs at generation time."
+    "text": "CodeLens · summary: problem: Existing tools are either fast but shallow (linters catching style, not logic) or deep but cloud-dependent (sending your code to a third party). Neither catches the bugs that actually ship: missing auth guards, silent N+1 queries, cross-file taint paths.\nsolution: Deterministic patterns first, then AI for what patterns can't express. A persistent codebase index (call graph, schema graph) enables cross-file analysis. Source-to-sink taint tracking follows user input to dangerous sinks. Guardian mode injects rules into AI coding assistants to prevent bugs at generation time."
   },
   {
     "id": "project-codelens-architecture-1",
@@ -1495,7 +343,7 @@ export const generatedChunks = [
       "AI Dev Tool",
       "architecture"
     ],
-    "text": "CodeLens · architecture: architecture 1: Git Diff → AST-aware Parser"
+    "text": "CodeLens · architecture: architecture 1: Git Diff → AST-aware Parser\narchitecture 2: Persistent Index (call graph + schema graph)\narchitecture 3: Pattern Scan (~624 patterns, 9 stacks)\narchitecture 4: Source-to-Sink Taint Tracking\narchitecture 5: Focused AI Security Probes\narchitecture 6: PR Risk Score (8 factors)\narchitecture 7: Self-Learning Noise Filter\nfeatures 1: ~624 patterns mapped to real production failures, tagged with OWASP/CWE\nfeatures 2: Persistent codebase index with 60ms incremental updates\nfeatures 3: Source-to-sink taint tracking across files with CWE mapping"
   },
   {
     "id": "project-codelens-architecture-2",
@@ -1507,199 +355,7 @@ export const generatedChunks = [
       "AI Dev Tool",
       "architecture"
     ],
-    "text": "CodeLens · architecture: architecture 2: Persistent Index (call graph + schema graph)"
-  },
-  {
-    "id": "project-codelens-architecture-3",
-    "project": "codelens",
-    "category": "project",
-    "tags": [
-      "codelens",
-      "CodeLens",
-      "AI Dev Tool",
-      "architecture"
-    ],
-    "text": "CodeLens · architecture: architecture 3: Pattern Scan (~624 patterns, 9 stacks)"
-  },
-  {
-    "id": "project-codelens-architecture-4",
-    "project": "codelens",
-    "category": "project",
-    "tags": [
-      "codelens",
-      "CodeLens",
-      "AI Dev Tool",
-      "architecture"
-    ],
-    "text": "CodeLens · architecture: architecture 4: Source-to-Sink Taint Tracking"
-  },
-  {
-    "id": "project-codelens-architecture-5",
-    "project": "codelens",
-    "category": "project",
-    "tags": [
-      "codelens",
-      "CodeLens",
-      "AI Dev Tool",
-      "architecture"
-    ],
-    "text": "CodeLens · architecture: architecture 5: Focused AI Security Probes"
-  },
-  {
-    "id": "project-codelens-architecture-6",
-    "project": "codelens",
-    "category": "project",
-    "tags": [
-      "codelens",
-      "CodeLens",
-      "AI Dev Tool",
-      "architecture"
-    ],
-    "text": "CodeLens · architecture: architecture 6: PR Risk Score (8 factors)"
-  },
-  {
-    "id": "project-codelens-architecture-7",
-    "project": "codelens",
-    "category": "project",
-    "tags": [
-      "codelens",
-      "CodeLens",
-      "AI Dev Tool",
-      "architecture"
-    ],
-    "text": "CodeLens · architecture: architecture 7: Self-Learning Noise Filter"
-  },
-  {
-    "id": "project-codelens-architecture-8",
-    "project": "codelens",
-    "category": "project",
-    "tags": [
-      "codelens",
-      "CodeLens",
-      "AI Dev Tool",
-      "architecture"
-    ],
-    "text": "CodeLens · architecture: features 1: ~624 patterns mapped to real production failures, tagged with OWASP/CWE"
-  },
-  {
-    "id": "project-codelens-architecture-9",
-    "project": "codelens",
-    "category": "project",
-    "tags": [
-      "codelens",
-      "CodeLens",
-      "AI Dev Tool",
-      "architecture"
-    ],
-    "text": "CodeLens · architecture: features 2: Persistent codebase index with 60ms incremental updates"
-  },
-  {
-    "id": "project-codelens-architecture-10",
-    "project": "codelens",
-    "category": "project",
-    "tags": [
-      "codelens",
-      "CodeLens",
-      "AI Dev Tool",
-      "architecture"
-    ],
-    "text": "CodeLens · architecture: features 3: Source-to-sink taint tracking across files with CWE mapping"
-  },
-  {
-    "id": "project-codelens-architecture-11",
-    "project": "codelens",
-    "category": "project",
-    "tags": [
-      "codelens",
-      "CodeLens",
-      "AI Dev Tool",
-      "architecture"
-    ],
-    "text": "CodeLens · architecture: features 4: Guardian mode: injects rules into Claude Code, Cursor, Copilot at prompt level"
-  },
-  {
-    "id": "project-codelens-architecture-12",
-    "project": "codelens",
-    "category": "project",
-    "tags": [
-      "codelens",
-      "CodeLens",
-      "AI Dev Tool",
-      "architecture"
-    ],
-    "text": "CodeLens · architecture: features 5: Zero runtime deps — single 351KB file, runs anywhere Node runs"
-  },
-  {
-    "id": "project-codelens-architecture-13",
-    "project": "codelens",
-    "category": "project",
-    "tags": [
-      "codelens",
-      "CodeLens",
-      "AI Dev Tool",
-      "architecture"
-    ],
-    "text": "CodeLens · architecture: stack 1: TypeScript"
-  },
-  {
-    "id": "project-codelens-architecture-14",
-    "project": "codelens",
-    "category": "project",
-    "tags": [
-      "codelens",
-      "CodeLens",
-      "AI Dev Tool",
-      "architecture"
-    ],
-    "text": "CodeLens · architecture: stack 2: Docker"
-  },
-  {
-    "id": "project-codelens-architecture-15",
-    "project": "codelens",
-    "category": "project",
-    "tags": [
-      "codelens",
-      "CodeLens",
-      "AI Dev Tool",
-      "architecture"
-    ],
-    "text": "CodeLens · architecture: stack 3: esbuild"
-  },
-  {
-    "id": "project-codelens-architecture-16",
-    "project": "codelens",
-    "category": "project",
-    "tags": [
-      "codelens",
-      "CodeLens",
-      "AI Dev Tool",
-      "architecture"
-    ],
-    "text": "CodeLens · architecture: stack 4: Persistent JSON Index"
-  },
-  {
-    "id": "project-codelens-architecture-17",
-    "project": "codelens",
-    "category": "project",
-    "tags": [
-      "codelens",
-      "CodeLens",
-      "AI Dev Tool",
-      "architecture"
-    ],
-    "text": "CodeLens · architecture: stack 5: GitHub Actions"
-  },
-  {
-    "id": "project-codelens-architecture-18",
-    "project": "codelens",
-    "category": "project",
-    "tags": [
-      "codelens",
-      "CodeLens",
-      "AI Dev Tool",
-      "architecture"
-    ],
-    "text": "CodeLens · architecture: stack 6: GHCR"
+    "text": "CodeLens · architecture: features 4: Guardian mode: injects rules into Claude Code, Cursor, Copilot at prompt level\nfeatures 5: Zero runtime deps — single 351KB file, runs anywhere Node runs\nstack 1: TypeScript\nstack 2: Docker\nstack 3: esbuild\nstack 4: Persistent JSON Index\nstack 5: GitHub Actions\nstack 6: GHCR"
   },
   {
     "id": "project-codelens-decisions-1",
@@ -1711,7 +367,7 @@ export const generatedChunks = [
       "AI Dev Tool",
       "decisions"
     ],
-    "text": "CodeLens · decisions: techDecisions 1 title: Hand-crafted patterns over imported rule sets"
+    "text": "CodeLens · decisions: techDecisions 1 title: Hand-crafted patterns over imported rule sets\ntechDecisions 1 description: Existing rule sets cover style, not production failures. Every CodeLens pattern comes from a real bug: missing .limit() on Supabase queries, hooks after conditional returns, catch blocks swallowing errors silently.\ntechDecisions 2 title: Persistent index over re-parsing\ntechDecisions 2 description: First build: 4s on a 1,622-file codebase. After that: 60ms incremental. This makes cross-file analysis viable as a pre-commit hook.\ntechDecisions 3 title: Patterns first, AI second"
   },
   {
     "id": "project-codelens-decisions-2",
@@ -1723,7 +379,7 @@ export const generatedChunks = [
       "AI Dev Tool",
       "decisions"
     ],
-    "text": "CodeLens · decisions: techDecisions 1 description: Existing rule sets cover style, not production failures. Every CodeLens pattern comes from a real bug: missing .limit() on Supabase queries, hooks after conditional returns, catch blocks swallowing errors silently."
+    "text": "CodeLens · decisions: techDecisions 3 description: 624 deterministic patterns in <1s, then focused AI probes for semantic bugs no regex can catch. Coverage went from 8% to 100% on a head-to-head benchmark against a commercial AI reviewer.\ndecision scenario: Production bugs keep slipping past SonarQube + ESLint + AI review. They span multiple files with user input reaching DB queries unvalidated.\ndecision question: What do you build?\ndecision options 1: More ESLint rules\ndecision options 2: Pay for commercial AI review SaaS\ndecision options 3: Custom engine with cross-file taint tracking\ndecision commonChoice: 1"
   },
   {
     "id": "project-codelens-decisions-3",
@@ -1735,7 +391,7 @@ export const generatedChunks = [
       "AI Dev Tool",
       "decisions"
     ],
-    "text": "CodeLens · decisions: techDecisions 2 title: Persistent index over re-parsing"
+    "text": "CodeLens · decisions: decision myChoice: 2\ndecision reasoning: ESLint stays single-file. Commercial SaaS sends code to a third party and still misses schema bugs. I built a hybrid: hand-crafted patterns + persistent call graph + taint tracer. Runs fully local, <1s reviews.\ncomparison mine title: CodeLens\ncomparison mine bullets 1: ~624 patterns validated against real failures\ncomparison mine bullets 2: Persistent index, 60ms incremental updates\ncomparison mine bullets 3: Taint tracking across files with CWE mapping\ncomparison mine bullets 4: Zero deps, 351KB, runs anywhere Node runs"
   },
   {
     "id": "project-codelens-decisions-4",
@@ -1747,247 +403,7 @@ export const generatedChunks = [
       "AI Dev Tool",
       "decisions"
     ],
-    "text": "CodeLens · decisions: techDecisions 2 description: First build: 4s on a 1,622-file codebase. After that: 60ms incremental. This makes cross-file analysis viable as a pre-commit hook."
-  },
-  {
-    "id": "project-codelens-decisions-5",
-    "project": "codelens",
-    "category": "project",
-    "tags": [
-      "codelens",
-      "CodeLens",
-      "AI Dev Tool",
-      "decisions"
-    ],
-    "text": "CodeLens · decisions: techDecisions 3 title: Patterns first, AI second"
-  },
-  {
-    "id": "project-codelens-decisions-6",
-    "project": "codelens",
-    "category": "project",
-    "tags": [
-      "codelens",
-      "CodeLens",
-      "AI Dev Tool",
-      "decisions"
-    ],
-    "text": "CodeLens · decisions: techDecisions 3 description: 624 deterministic patterns in <1s, then focused AI probes for semantic bugs no regex can catch. Coverage went from 8% to 100% on a head-to-head benchmark against a commercial AI reviewer."
-  },
-  {
-    "id": "project-codelens-decisions-7",
-    "project": "codelens",
-    "category": "project",
-    "tags": [
-      "codelens",
-      "CodeLens",
-      "AI Dev Tool",
-      "decisions"
-    ],
-    "text": "CodeLens · decisions: decision scenario: Production bugs keep slipping past SonarQube + ESLint + AI review. They span multiple files with user input reaching DB queries unvalidated."
-  },
-  {
-    "id": "project-codelens-decisions-8",
-    "project": "codelens",
-    "category": "project",
-    "tags": [
-      "codelens",
-      "CodeLens",
-      "AI Dev Tool",
-      "decisions"
-    ],
-    "text": "CodeLens · decisions: decision question: What do you build?"
-  },
-  {
-    "id": "project-codelens-decisions-9",
-    "project": "codelens",
-    "category": "project",
-    "tags": [
-      "codelens",
-      "CodeLens",
-      "AI Dev Tool",
-      "decisions"
-    ],
-    "text": "CodeLens · decisions: decision options 1: More ESLint rules"
-  },
-  {
-    "id": "project-codelens-decisions-10",
-    "project": "codelens",
-    "category": "project",
-    "tags": [
-      "codelens",
-      "CodeLens",
-      "AI Dev Tool",
-      "decisions"
-    ],
-    "text": "CodeLens · decisions: decision options 2: Pay for commercial AI review SaaS"
-  },
-  {
-    "id": "project-codelens-decisions-11",
-    "project": "codelens",
-    "category": "project",
-    "tags": [
-      "codelens",
-      "CodeLens",
-      "AI Dev Tool",
-      "decisions"
-    ],
-    "text": "CodeLens · decisions: decision options 3: Custom engine with cross-file taint tracking"
-  },
-  {
-    "id": "project-codelens-decisions-12",
-    "project": "codelens",
-    "category": "project",
-    "tags": [
-      "codelens",
-      "CodeLens",
-      "AI Dev Tool",
-      "decisions"
-    ],
-    "text": "CodeLens · decisions: decision commonChoice: 1"
-  },
-  {
-    "id": "project-codelens-decisions-13",
-    "project": "codelens",
-    "category": "project",
-    "tags": [
-      "codelens",
-      "CodeLens",
-      "AI Dev Tool",
-      "decisions"
-    ],
-    "text": "CodeLens · decisions: decision myChoice: 2"
-  },
-  {
-    "id": "project-codelens-decisions-14",
-    "project": "codelens",
-    "category": "project",
-    "tags": [
-      "codelens",
-      "CodeLens",
-      "AI Dev Tool",
-      "decisions"
-    ],
-    "text": "CodeLens · decisions: decision reasoning: ESLint stays single-file. Commercial SaaS sends code to a third party and still misses schema bugs. I built a hybrid: hand-crafted patterns + persistent call graph + taint tracer. Runs fully local, <1s reviews."
-  },
-  {
-    "id": "project-codelens-decisions-15",
-    "project": "codelens",
-    "category": "project",
-    "tags": [
-      "codelens",
-      "CodeLens",
-      "AI Dev Tool",
-      "decisions"
-    ],
-    "text": "CodeLens · decisions: comparison mine title: CodeLens"
-  },
-  {
-    "id": "project-codelens-decisions-16",
-    "project": "codelens",
-    "category": "project",
-    "tags": [
-      "codelens",
-      "CodeLens",
-      "AI Dev Tool",
-      "decisions"
-    ],
-    "text": "CodeLens · decisions: comparison mine bullets 1: ~624 patterns validated against real failures"
-  },
-  {
-    "id": "project-codelens-decisions-17",
-    "project": "codelens",
-    "category": "project",
-    "tags": [
-      "codelens",
-      "CodeLens",
-      "AI Dev Tool",
-      "decisions"
-    ],
-    "text": "CodeLens · decisions: comparison mine bullets 2: Persistent index, 60ms incremental updates"
-  },
-  {
-    "id": "project-codelens-decisions-18",
-    "project": "codelens",
-    "category": "project",
-    "tags": [
-      "codelens",
-      "CodeLens",
-      "AI Dev Tool",
-      "decisions"
-    ],
-    "text": "CodeLens · decisions: comparison mine bullets 3: Taint tracking across files with CWE mapping"
-  },
-  {
-    "id": "project-codelens-decisions-19",
-    "project": "codelens",
-    "category": "project",
-    "tags": [
-      "codelens",
-      "CodeLens",
-      "AI Dev Tool",
-      "decisions"
-    ],
-    "text": "CodeLens · decisions: comparison mine bullets 4: Zero deps, 351KB, runs anywhere Node runs"
-  },
-  {
-    "id": "project-codelens-decisions-20",
-    "project": "codelens",
-    "category": "project",
-    "tags": [
-      "codelens",
-      "CodeLens",
-      "AI Dev Tool",
-      "decisions"
-    ],
-    "text": "CodeLens · decisions: comparison standard title: SonarQube / commercial SaaS"
-  },
-  {
-    "id": "project-codelens-decisions-21",
-    "project": "codelens",
-    "category": "project",
-    "tags": [
-      "codelens",
-      "CodeLens",
-      "AI Dev Tool",
-      "decisions"
-    ],
-    "text": "CodeLens · decisions: comparison standard bullets 1: Generic style rules, not production failures"
-  },
-  {
-    "id": "project-codelens-decisions-22",
-    "project": "codelens",
-    "category": "project",
-    "tags": [
-      "codelens",
-      "CodeLens",
-      "AI Dev Tool",
-      "decisions"
-    ],
-    "text": "CodeLens · decisions: comparison standard bullets 2: Cloud-dependent, code leaves the repo"
-  },
-  {
-    "id": "project-codelens-decisions-23",
-    "project": "codelens",
-    "category": "project",
-    "tags": [
-      "codelens",
-      "CodeLens",
-      "AI Dev Tool",
-      "decisions"
-    ],
-    "text": "CodeLens · decisions: comparison standard bullets 3: Single-file analysis, no cross-file tracing"
-  },
-  {
-    "id": "project-codelens-decisions-24",
-    "project": "codelens",
-    "category": "project",
-    "tags": [
-      "codelens",
-      "CodeLens",
-      "AI Dev Tool",
-      "decisions"
-    ],
-    "text": "CodeLens · decisions: comparison standard bullets 4: Heavy setup: Java runtime, server, database"
+    "text": "CodeLens · decisions: comparison standard title: SonarQube / commercial SaaS\ncomparison standard bullets 1: Generic style rules, not production failures\ncomparison standard bullets 2: Cloud-dependent, code leaves the repo\ncomparison standard bullets 3: Single-file analysis, no cross-file tracing\ncomparison standard bullets 4: Heavy setup: Java runtime, server, database"
   },
   {
     "id": "project-codelens-results-1",
@@ -1999,7 +415,7 @@ export const generatedChunks = [
       "AI Dev Tool",
       "results"
     ],
-    "text": "CodeLens · results: results 1: ~624 patterns across 9 stacks, validated against real production repos"
+    "text": "CodeLens · results: results 1: ~624 patterns across 9 stacks, validated against real production repos\nresults 2: 7-file PR review in 780ms, full 456-file PR in 12s\nresults 3: Zero deps: single 351KB file, Docker image auto-published to GHCR\nresults 4: Glean pipeline processed 4,000+ PRs, Agent Harvest added 34 patterns, Greptile parity added 66\nmeasuredImpact before value: 8%\nmeasuredImpact before context: coverage vs commercial AI reviewer (Greptile)\nmeasuredImpact after value: 100%\nmeasuredImpact after context: all 12 gaps closed after gap analysis\nmeasuredImpact highlights 1 n: 624"
   },
   {
     "id": "project-codelens-results-2",
@@ -2011,151 +427,7 @@ export const generatedChunks = [
       "AI Dev Tool",
       "results"
     ],
-    "text": "CodeLens · results: results 2: 7-file PR review in 780ms, full 456-file PR in 12s"
-  },
-  {
-    "id": "project-codelens-results-3",
-    "project": "codelens",
-    "category": "project",
-    "tags": [
-      "codelens",
-      "CodeLens",
-      "AI Dev Tool",
-      "results"
-    ],
-    "text": "CodeLens · results: results 3: Zero deps: single 351KB file, Docker image auto-published to GHCR"
-  },
-  {
-    "id": "project-codelens-results-4",
-    "project": "codelens",
-    "category": "project",
-    "tags": [
-      "codelens",
-      "CodeLens",
-      "AI Dev Tool",
-      "results"
-    ],
-    "text": "CodeLens · results: results 4: Glean pipeline processed 4,000+ PRs, Agent Harvest added 34 patterns, Greptile parity added 66"
-  },
-  {
-    "id": "project-codelens-results-5",
-    "project": "codelens",
-    "category": "project",
-    "tags": [
-      "codelens",
-      "CodeLens",
-      "AI Dev Tool",
-      "results"
-    ],
-    "text": "CodeLens · results: measuredImpact before value: 8%"
-  },
-  {
-    "id": "project-codelens-results-6",
-    "project": "codelens",
-    "category": "project",
-    "tags": [
-      "codelens",
-      "CodeLens",
-      "AI Dev Tool",
-      "results"
-    ],
-    "text": "CodeLens · results: measuredImpact before context: coverage vs commercial AI reviewer (Greptile)"
-  },
-  {
-    "id": "project-codelens-results-7",
-    "project": "codelens",
-    "category": "project",
-    "tags": [
-      "codelens",
-      "CodeLens",
-      "AI Dev Tool",
-      "results"
-    ],
-    "text": "CodeLens · results: measuredImpact after value: 100%"
-  },
-  {
-    "id": "project-codelens-results-8",
-    "project": "codelens",
-    "category": "project",
-    "tags": [
-      "codelens",
-      "CodeLens",
-      "AI Dev Tool",
-      "results"
-    ],
-    "text": "CodeLens · results: measuredImpact after context: all 12 gaps closed after gap analysis"
-  },
-  {
-    "id": "project-codelens-results-9",
-    "project": "codelens",
-    "category": "project",
-    "tags": [
-      "codelens",
-      "CodeLens",
-      "AI Dev Tool",
-      "results"
-    ],
-    "text": "CodeLens · results: measuredImpact highlights 1 n: 624"
-  },
-  {
-    "id": "project-codelens-results-10",
-    "project": "codelens",
-    "category": "project",
-    "tags": [
-      "codelens",
-      "CodeLens",
-      "AI Dev Tool",
-      "results"
-    ],
-    "text": "CodeLens · results: measuredImpact highlights 1 l: patterns"
-  },
-  {
-    "id": "project-codelens-results-11",
-    "project": "codelens",
-    "category": "project",
-    "tags": [
-      "codelens",
-      "CodeLens",
-      "AI Dev Tool",
-      "results"
-    ],
-    "text": "CodeLens · results: measuredImpact highlights 2 n: <1s"
-  },
-  {
-    "id": "project-codelens-results-12",
-    "project": "codelens",
-    "category": "project",
-    "tags": [
-      "codelens",
-      "CodeLens",
-      "AI Dev Tool",
-      "results"
-    ],
-    "text": "CodeLens · results: measuredImpact highlights 2 l: review time"
-  },
-  {
-    "id": "project-codelens-results-13",
-    "project": "codelens",
-    "category": "project",
-    "tags": [
-      "codelens",
-      "CodeLens",
-      "AI Dev Tool",
-      "results"
-    ],
-    "text": "CodeLens · results: measuredImpact highlights 3 n: 351KB"
-  },
-  {
-    "id": "project-codelens-results-14",
-    "project": "codelens",
-    "category": "project",
-    "tags": [
-      "codelens",
-      "CodeLens",
-      "AI Dev Tool",
-      "results"
-    ],
-    "text": "CodeLens · results: measuredImpact highlights 3 l: zero deps"
+    "text": "CodeLens · results: measuredImpact highlights 1 l: patterns\nmeasuredImpact highlights 2 n: <1s\nmeasuredImpact highlights 2 l: review time\nmeasuredImpact highlights 3 n: 351KB\nmeasuredImpact highlights 3 l: zero deps"
   },
   {
     "id": "project-gogaa-cli-summary-1",
@@ -2167,7 +439,7 @@ export const generatedChunks = [
       "Developer Tool / CLI",
       "summary"
     ],
-    "text": "Gogaa CLI · summary: title: Gogaa CLI"
+    "text": "Gogaa CLI · summary: title: Gogaa CLI\nsubtitle: AI Coding Agent for Any Model, Any Provider\noneLiner: 11 providers behind one interface. If one goes down, you don't stop working.\ncardSummary: 11 providers behind one interface. If one goes down, you don't stop working. 1,400+ tests, zero vendor lock-in."
   },
   {
     "id": "project-gogaa-cli-summary-2",
@@ -2179,58 +451,10 @@ export const generatedChunks = [
       "Developer Tool / CLI",
       "summary"
     ],
-    "text": "Gogaa CLI · summary: subtitle: AI Coding Agent for Any Model, Any Provider"
+    "text": "Gogaa CLI · summary: impact: An AI coding CLI where the provider is a variable: 11 providers with automatic fallback, so a rate limit never stops your work. Production-grade git workflow, a polished React Ink TUI, a plugin marketplace and 1,400+ passing tests. Ships through my own private registry with checksummed builds, self-update and installers for macOS, Linux and Windows.\nproblem: Every AI coding tool makes you choose: provider freedom or deep integration. Polished TUI or serious git workflow. MCP support or surgical edits. If your provider rate-limits, you stop working."
   },
   {
     "id": "project-gogaa-cli-summary-3",
-    "project": "gogaa-cli",
-    "category": "project",
-    "tags": [
-      "gogaa-cli",
-      "Gogaa CLI",
-      "Developer Tool / CLI",
-      "summary"
-    ],
-    "text": "Gogaa CLI · summary: oneLiner: 11 providers behind one interface. If one goes down, you don't stop working."
-  },
-  {
-    "id": "project-gogaa-cli-summary-4",
-    "project": "gogaa-cli",
-    "category": "project",
-    "tags": [
-      "gogaa-cli",
-      "Gogaa CLI",
-      "Developer Tool / CLI",
-      "summary"
-    ],
-    "text": "Gogaa CLI · summary: cardSummary: 11 providers behind one interface. If one goes down, you don't stop working. 1,400+ tests, zero vendor lock-in."
-  },
-  {
-    "id": "project-gogaa-cli-summary-5",
-    "project": "gogaa-cli",
-    "category": "project",
-    "tags": [
-      "gogaa-cli",
-      "Gogaa CLI",
-      "Developer Tool / CLI",
-      "summary"
-    ],
-    "text": "Gogaa CLI · summary: impact: An AI coding CLI where the provider is a variable: 11 providers with automatic fallback, so a rate limit never stops your work. Production-grade git workflow, a polished React Ink TUI, a plugin marketplace and 1,400+ passing tests. Ships through my own private registry with checksummed builds, self-update and installers for macOS, Linux and Windows."
-  },
-  {
-    "id": "project-gogaa-cli-summary-6",
-    "project": "gogaa-cli",
-    "category": "project",
-    "tags": [
-      "gogaa-cli",
-      "Gogaa CLI",
-      "Developer Tool / CLI",
-      "summary"
-    ],
-    "text": "Gogaa CLI · summary: problem: Every AI coding tool makes you choose: provider freedom or deep integration. Polished TUI or serious git workflow. MCP support or surgical edits. If your provider rate-limits, you stop working."
-  },
-  {
-    "id": "project-gogaa-cli-summary-7",
     "project": "gogaa-cli",
     "category": "project",
     "tags": [
@@ -2251,7 +475,7 @@ export const generatedChunks = [
       "Developer Tool / CLI",
       "architecture"
     ],
-    "text": "Gogaa CLI · architecture: architecture 1: Provider Manager (11 providers, auto-fallback)"
+    "text": "Gogaa CLI · architecture: architecture 1: Provider Manager (11 providers, auto-fallback)\narchitecture 2: Tool Registry (24+ tools)\narchitecture 3: SEARCH/REPLACE Editor\narchitecture 4: Agentic Loop (streaming, stuck detection, auto-retry)\narchitecture 5: Git Layer (repo map, LLM commits, watch mode)\narchitecture 6: React Ink TUI (22 themes, command palette)\narchitecture 7: Session Layer (WAL persistence, crash recovery)\nfeatures 1: 11 LLM providers with unified streaming and automatic fallback on rate-limits\nfeatures 2: Production git workflow: tier-aware repo map, surgical edits, LLM commits, watch mode"
   },
   {
     "id": "project-gogaa-cli-architecture-2",
@@ -2263,211 +487,7 @@ export const generatedChunks = [
       "Developer Tool / CLI",
       "architecture"
     ],
-    "text": "Gogaa CLI · architecture: architecture 2: Tool Registry (24+ tools)"
-  },
-  {
-    "id": "project-gogaa-cli-architecture-3",
-    "project": "gogaa-cli",
-    "category": "project",
-    "tags": [
-      "gogaa-cli",
-      "Gogaa CLI",
-      "Developer Tool / CLI",
-      "architecture"
-    ],
-    "text": "Gogaa CLI · architecture: architecture 3: SEARCH/REPLACE Editor"
-  },
-  {
-    "id": "project-gogaa-cli-architecture-4",
-    "project": "gogaa-cli",
-    "category": "project",
-    "tags": [
-      "gogaa-cli",
-      "Gogaa CLI",
-      "Developer Tool / CLI",
-      "architecture"
-    ],
-    "text": "Gogaa CLI · architecture: architecture 4: Agentic Loop (streaming, stuck detection, auto-retry)"
-  },
-  {
-    "id": "project-gogaa-cli-architecture-5",
-    "project": "gogaa-cli",
-    "category": "project",
-    "tags": [
-      "gogaa-cli",
-      "Gogaa CLI",
-      "Developer Tool / CLI",
-      "architecture"
-    ],
-    "text": "Gogaa CLI · architecture: architecture 5: Git Layer (repo map, LLM commits, watch mode)"
-  },
-  {
-    "id": "project-gogaa-cli-architecture-6",
-    "project": "gogaa-cli",
-    "category": "project",
-    "tags": [
-      "gogaa-cli",
-      "Gogaa CLI",
-      "Developer Tool / CLI",
-      "architecture"
-    ],
-    "text": "Gogaa CLI · architecture: architecture 6: React Ink TUI (22 themes, command palette)"
-  },
-  {
-    "id": "project-gogaa-cli-architecture-7",
-    "project": "gogaa-cli",
-    "category": "project",
-    "tags": [
-      "gogaa-cli",
-      "Gogaa CLI",
-      "Developer Tool / CLI",
-      "architecture"
-    ],
-    "text": "Gogaa CLI · architecture: architecture 7: Session Layer (WAL persistence, crash recovery)"
-  },
-  {
-    "id": "project-gogaa-cli-architecture-8",
-    "project": "gogaa-cli",
-    "category": "project",
-    "tags": [
-      "gogaa-cli",
-      "Gogaa CLI",
-      "Developer Tool / CLI",
-      "architecture"
-    ],
-    "text": "Gogaa CLI · architecture: features 1: 11 LLM providers with unified streaming and automatic fallback on rate-limits"
-  },
-  {
-    "id": "project-gogaa-cli-architecture-9",
-    "project": "gogaa-cli",
-    "category": "project",
-    "tags": [
-      "gogaa-cli",
-      "Gogaa CLI",
-      "Developer Tool / CLI",
-      "architecture"
-    ],
-    "text": "Gogaa CLI · architecture: features 2: Production git workflow: tier-aware repo map, surgical edits, LLM commits, watch mode"
-  },
-  {
-    "id": "project-gogaa-cli-architecture-10",
-    "project": "gogaa-cli",
-    "category": "project",
-    "tags": [
-      "gogaa-cli",
-      "Gogaa CLI",
-      "Developer Tool / CLI",
-      "architecture"
-    ],
-    "text": "Gogaa CLI · architecture: features 3: React Ink TUI with streaming output, inline diffs, 22 themes, plugin marketplace"
-  },
-  {
-    "id": "project-gogaa-cli-architecture-11",
-    "project": "gogaa-cli",
-    "category": "project",
-    "tags": [
-      "gogaa-cli",
-      "Gogaa CLI",
-      "Developer Tool / CLI",
-      "architecture"
-    ],
-    "text": "Gogaa CLI · architecture: features 4: 5-strategy JSON parser brought tool call success from ~70% to ~95%"
-  },
-  {
-    "id": "project-gogaa-cli-architecture-12",
-    "project": "gogaa-cli",
-    "category": "project",
-    "tags": [
-      "gogaa-cli",
-      "Gogaa CLI",
-      "Developer Tool / CLI",
-      "architecture"
-    ],
-    "text": "Gogaa CLI · architecture: features 5: WAL session persistence — crash mid-task, resume with zero lost work"
-  },
-  {
-    "id": "project-gogaa-cli-architecture-13",
-    "project": "gogaa-cli",
-    "category": "project",
-    "tags": [
-      "gogaa-cli",
-      "Gogaa CLI",
-      "Developer Tool / CLI",
-      "architecture"
-    ],
-    "text": "Gogaa CLI · architecture: stack 1: TypeScript"
-  },
-  {
-    "id": "project-gogaa-cli-architecture-14",
-    "project": "gogaa-cli",
-    "category": "project",
-    "tags": [
-      "gogaa-cli",
-      "Gogaa CLI",
-      "Developer Tool / CLI",
-      "architecture"
-    ],
-    "text": "Gogaa CLI · architecture: stack 2: Node.js"
-  },
-  {
-    "id": "project-gogaa-cli-architecture-15",
-    "project": "gogaa-cli",
-    "category": "project",
-    "tags": [
-      "gogaa-cli",
-      "Gogaa CLI",
-      "Developer Tool / CLI",
-      "architecture"
-    ],
-    "text": "Gogaa CLI · architecture: stack 3: React Ink"
-  },
-  {
-    "id": "project-gogaa-cli-architecture-16",
-    "project": "gogaa-cli",
-    "category": "project",
-    "tags": [
-      "gogaa-cli",
-      "Gogaa CLI",
-      "Developer Tool / CLI",
-      "architecture"
-    ],
-    "text": "Gogaa CLI · architecture: stack 4: Anthropic SDK"
-  },
-  {
-    "id": "project-gogaa-cli-architecture-17",
-    "project": "gogaa-cli",
-    "category": "project",
-    "tags": [
-      "gogaa-cli",
-      "Gogaa CLI",
-      "Developer Tool / CLI",
-      "architecture"
-    ],
-    "text": "Gogaa CLI · architecture: stack 5: OpenAI SDK"
-  },
-  {
-    "id": "project-gogaa-cli-architecture-18",
-    "project": "gogaa-cli",
-    "category": "project",
-    "tags": [
-      "gogaa-cli",
-      "Gogaa CLI",
-      "Developer Tool / CLI",
-      "architecture"
-    ],
-    "text": "Gogaa CLI · architecture: stack 6: LSP Protocol"
-  },
-  {
-    "id": "project-gogaa-cli-architecture-19",
-    "project": "gogaa-cli",
-    "category": "project",
-    "tags": [
-      "gogaa-cli",
-      "Gogaa CLI",
-      "Developer Tool / CLI",
-      "architecture"
-    ],
-    "text": "Gogaa CLI · architecture: stack 7: WebSocket"
+    "text": "Gogaa CLI · architecture: features 3: React Ink TUI with streaming output, inline diffs, 22 themes, plugin marketplace\nfeatures 4: 5-strategy JSON parser brought tool call success from ~70% to ~95%\nfeatures 5: WAL session persistence — crash mid-task, resume with zero lost work\nstack 1: TypeScript\nstack 2: Node.js\nstack 3: React Ink\nstack 4: Anthropic SDK\nstack 5: OpenAI SDK\nstack 6: LSP Protocol\nstack 7: WebSocket"
   },
   {
     "id": "project-gogaa-cli-decisions-1",
@@ -2479,7 +499,7 @@ export const generatedChunks = [
       "Developer Tool / CLI",
       "decisions"
     ],
-    "text": "Gogaa CLI · decisions: techDecisions 1 title: 5-strategy JSON parser"
+    "text": "Gogaa CLI · decisions: techDecisions 1 title: 5-strategy JSON parser\ntechDecisions 1 description: Models don't return valid JSON in practice. Progressive fallback parsing (strict → trim → unescape → reconstruct → extract) brought tool call success from ~70% to ~95% on real sessions.\ntechDecisions 2 title: React Ink for TUI\ntechDecisions 2 description: Proper component model instead of raw ANSI escape codes. Streaming, permission prompts, status bar, and plugin manager are all independent stateful components.\ntechDecisions 3 title: WAL session persistence"
   },
   {
     "id": "project-gogaa-cli-decisions-2",
@@ -2491,7 +511,7 @@ export const generatedChunks = [
       "Developer Tool / CLI",
       "decisions"
     ],
-    "text": "Gogaa CLI · decisions: techDecisions 1 description: Models don't return valid JSON in practice. Progressive fallback parsing (strict → trim → unescape → reconstruct → extract) brought tool call success from ~70% to ~95% on real sessions."
+    "text": "Gogaa CLI · decisions: techDecisions 3 description: Write-ahead log appends each message as it arrives. Resume by ID after crashes, model switches, or reboots with zero lost work.\ndecision scenario: Every AI coding CLI is locked to one vendor. If the API goes down, you stop working.\ndecision question: What would you build?\ndecision options 1: Fork an existing CLI and add providers\ndecision options 2: Thin wrapper with better UI\ndecision options 3: New CLI where the provider is a variable and everything is first-class\ndecision commonChoice: 0\ndecision myChoice: 2"
   },
   {
     "id": "project-gogaa-cli-decisions-3",
@@ -2503,7 +523,7 @@ export const generatedChunks = [
       "Developer Tool / CLI",
       "decisions"
     ],
-    "text": "Gogaa CLI · decisions: techDecisions 2 title: React Ink for TUI"
+    "text": "Gogaa CLI · decisions: decision reasoning: Forking means inheriting vendor assumptions. Wrapping means fighting their architecture. I built from scratch so every subsystem (provider, TUI, git, tools, session) is first-class and swappable.\ncomparison mine title: Gogaa CLI\ncomparison mine bullets 1: 11 providers, auto-fallback on rate-limits\ncomparison mine bullets 2: Production git: repo map, surgical edits, watch mode\ncomparison mine bullets 3: React Ink TUI with plugin marketplace\ncomparison mine bullets 4: WAL persistence — crash = zero lost work\ncomparison standard title: Single-vendor CLIs"
   },
   {
     "id": "project-gogaa-cli-decisions-4",
@@ -2515,247 +535,7 @@ export const generatedChunks = [
       "Developer Tool / CLI",
       "decisions"
     ],
-    "text": "Gogaa CLI · decisions: techDecisions 2 description: Proper component model instead of raw ANSI escape codes. Streaming, permission prompts, status bar, and plugin manager are all independent stateful components."
-  },
-  {
-    "id": "project-gogaa-cli-decisions-5",
-    "project": "gogaa-cli",
-    "category": "project",
-    "tags": [
-      "gogaa-cli",
-      "Gogaa CLI",
-      "Developer Tool / CLI",
-      "decisions"
-    ],
-    "text": "Gogaa CLI · decisions: techDecisions 3 title: WAL session persistence"
-  },
-  {
-    "id": "project-gogaa-cli-decisions-6",
-    "project": "gogaa-cli",
-    "category": "project",
-    "tags": [
-      "gogaa-cli",
-      "Gogaa CLI",
-      "Developer Tool / CLI",
-      "decisions"
-    ],
-    "text": "Gogaa CLI · decisions: techDecisions 3 description: Write-ahead log appends each message as it arrives. Resume by ID after crashes, model switches, or reboots with zero lost work."
-  },
-  {
-    "id": "project-gogaa-cli-decisions-7",
-    "project": "gogaa-cli",
-    "category": "project",
-    "tags": [
-      "gogaa-cli",
-      "Gogaa CLI",
-      "Developer Tool / CLI",
-      "decisions"
-    ],
-    "text": "Gogaa CLI · decisions: decision scenario: Every AI coding CLI is locked to one vendor. If the API goes down, you stop working."
-  },
-  {
-    "id": "project-gogaa-cli-decisions-8",
-    "project": "gogaa-cli",
-    "category": "project",
-    "tags": [
-      "gogaa-cli",
-      "Gogaa CLI",
-      "Developer Tool / CLI",
-      "decisions"
-    ],
-    "text": "Gogaa CLI · decisions: decision question: What would you build?"
-  },
-  {
-    "id": "project-gogaa-cli-decisions-9",
-    "project": "gogaa-cli",
-    "category": "project",
-    "tags": [
-      "gogaa-cli",
-      "Gogaa CLI",
-      "Developer Tool / CLI",
-      "decisions"
-    ],
-    "text": "Gogaa CLI · decisions: decision options 1: Fork an existing CLI and add providers"
-  },
-  {
-    "id": "project-gogaa-cli-decisions-10",
-    "project": "gogaa-cli",
-    "category": "project",
-    "tags": [
-      "gogaa-cli",
-      "Gogaa CLI",
-      "Developer Tool / CLI",
-      "decisions"
-    ],
-    "text": "Gogaa CLI · decisions: decision options 2: Thin wrapper with better UI"
-  },
-  {
-    "id": "project-gogaa-cli-decisions-11",
-    "project": "gogaa-cli",
-    "category": "project",
-    "tags": [
-      "gogaa-cli",
-      "Gogaa CLI",
-      "Developer Tool / CLI",
-      "decisions"
-    ],
-    "text": "Gogaa CLI · decisions: decision options 3: New CLI where the provider is a variable and everything is first-class"
-  },
-  {
-    "id": "project-gogaa-cli-decisions-12",
-    "project": "gogaa-cli",
-    "category": "project",
-    "tags": [
-      "gogaa-cli",
-      "Gogaa CLI",
-      "Developer Tool / CLI",
-      "decisions"
-    ],
-    "text": "Gogaa CLI · decisions: decision commonChoice: 0"
-  },
-  {
-    "id": "project-gogaa-cli-decisions-13",
-    "project": "gogaa-cli",
-    "category": "project",
-    "tags": [
-      "gogaa-cli",
-      "Gogaa CLI",
-      "Developer Tool / CLI",
-      "decisions"
-    ],
-    "text": "Gogaa CLI · decisions: decision myChoice: 2"
-  },
-  {
-    "id": "project-gogaa-cli-decisions-14",
-    "project": "gogaa-cli",
-    "category": "project",
-    "tags": [
-      "gogaa-cli",
-      "Gogaa CLI",
-      "Developer Tool / CLI",
-      "decisions"
-    ],
-    "text": "Gogaa CLI · decisions: decision reasoning: Forking means inheriting vendor assumptions. Wrapping means fighting their architecture. I built from scratch so every subsystem (provider, TUI, git, tools, session) is first-class and swappable."
-  },
-  {
-    "id": "project-gogaa-cli-decisions-15",
-    "project": "gogaa-cli",
-    "category": "project",
-    "tags": [
-      "gogaa-cli",
-      "Gogaa CLI",
-      "Developer Tool / CLI",
-      "decisions"
-    ],
-    "text": "Gogaa CLI · decisions: comparison mine title: Gogaa CLI"
-  },
-  {
-    "id": "project-gogaa-cli-decisions-16",
-    "project": "gogaa-cli",
-    "category": "project",
-    "tags": [
-      "gogaa-cli",
-      "Gogaa CLI",
-      "Developer Tool / CLI",
-      "decisions"
-    ],
-    "text": "Gogaa CLI · decisions: comparison mine bullets 1: 11 providers, auto-fallback on rate-limits"
-  },
-  {
-    "id": "project-gogaa-cli-decisions-17",
-    "project": "gogaa-cli",
-    "category": "project",
-    "tags": [
-      "gogaa-cli",
-      "Gogaa CLI",
-      "Developer Tool / CLI",
-      "decisions"
-    ],
-    "text": "Gogaa CLI · decisions: comparison mine bullets 2: Production git: repo map, surgical edits, watch mode"
-  },
-  {
-    "id": "project-gogaa-cli-decisions-18",
-    "project": "gogaa-cli",
-    "category": "project",
-    "tags": [
-      "gogaa-cli",
-      "Gogaa CLI",
-      "Developer Tool / CLI",
-      "decisions"
-    ],
-    "text": "Gogaa CLI · decisions: comparison mine bullets 3: React Ink TUI with plugin marketplace"
-  },
-  {
-    "id": "project-gogaa-cli-decisions-19",
-    "project": "gogaa-cli",
-    "category": "project",
-    "tags": [
-      "gogaa-cli",
-      "Gogaa CLI",
-      "Developer Tool / CLI",
-      "decisions"
-    ],
-    "text": "Gogaa CLI · decisions: comparison mine bullets 4: WAL persistence — crash = zero lost work"
-  },
-  {
-    "id": "project-gogaa-cli-decisions-20",
-    "project": "gogaa-cli",
-    "category": "project",
-    "tags": [
-      "gogaa-cli",
-      "Gogaa CLI",
-      "Developer Tool / CLI",
-      "decisions"
-    ],
-    "text": "Gogaa CLI · decisions: comparison standard title: Single-vendor CLIs"
-  },
-  {
-    "id": "project-gogaa-cli-decisions-21",
-    "project": "gogaa-cli",
-    "category": "project",
-    "tags": [
-      "gogaa-cli",
-      "Gogaa CLI",
-      "Developer Tool / CLI",
-      "decisions"
-    ],
-    "text": "Gogaa CLI · decisions: comparison standard bullets 1: Locked to one provider"
-  },
-  {
-    "id": "project-gogaa-cli-decisions-22",
-    "project": "gogaa-cli",
-    "category": "project",
-    "tags": [
-      "gogaa-cli",
-      "Gogaa CLI",
-      "Developer Tool / CLI",
-      "decisions"
-    ],
-    "text": "Gogaa CLI · decisions: comparison standard bullets 2: No cross-tool feature completeness"
-  },
-  {
-    "id": "project-gogaa-cli-decisions-23",
-    "project": "gogaa-cli",
-    "category": "project",
-    "tags": [
-      "gogaa-cli",
-      "Gogaa CLI",
-      "Developer Tool / CLI",
-      "decisions"
-    ],
-    "text": "Gogaa CLI · decisions: comparison standard bullets 3: Spartan TUI, no plugins"
-  },
-  {
-    "id": "project-gogaa-cli-decisions-24",
-    "project": "gogaa-cli",
-    "category": "project",
-    "tags": [
-      "gogaa-cli",
-      "Gogaa CLI",
-      "Developer Tool / CLI",
-      "decisions"
-    ],
-    "text": "Gogaa CLI · decisions: comparison standard bullets 4: Stop working on rate-limits"
+    "text": "Gogaa CLI · decisions: comparison standard bullets 1: Locked to one provider\ncomparison standard bullets 2: No cross-tool feature completeness\ncomparison standard bullets 3: Spartan TUI, no plugins\ncomparison standard bullets 4: Stop working on rate-limits"
   },
   {
     "id": "project-gogaa-cli-results-1",
@@ -2767,7 +547,7 @@ export const generatedChunks = [
       "Developer Tool / CLI",
       "results"
     ],
-    "text": "Gogaa CLI · results: results 1: 1,400+ passing tests, 0 failures"
+    "text": "Gogaa CLI · results: results 1: 1,400+ passing tests, 0 failures\nresults 2: 11 providers with auto-fallback, 8/9 pass multi-file edit benchmarks\nresults 3: ~95% tool call success rate (up from ~70%)\nresults 4: Intent-based lazy context: 3,909 → 24 tokens for simple prompts\nresults 5: Private registry: checksummed builds, self-update with rollback, per-device access tokens\nmeasuredImpact before value: ~70%\nmeasuredImpact before context: tool call success rate with raw model JSON\nmeasuredImpact after value: ~95%\nmeasuredImpact after context: after 5-strategy progressive JSON parser"
   },
   {
     "id": "project-gogaa-cli-results-2",
@@ -2779,163 +559,7 @@ export const generatedChunks = [
       "Developer Tool / CLI",
       "results"
     ],
-    "text": "Gogaa CLI · results: results 2: 11 providers with auto-fallback, 8/9 pass multi-file edit benchmarks"
-  },
-  {
-    "id": "project-gogaa-cli-results-3",
-    "project": "gogaa-cli",
-    "category": "project",
-    "tags": [
-      "gogaa-cli",
-      "Gogaa CLI",
-      "Developer Tool / CLI",
-      "results"
-    ],
-    "text": "Gogaa CLI · results: results 3: ~95% tool call success rate (up from ~70%)"
-  },
-  {
-    "id": "project-gogaa-cli-results-4",
-    "project": "gogaa-cli",
-    "category": "project",
-    "tags": [
-      "gogaa-cli",
-      "Gogaa CLI",
-      "Developer Tool / CLI",
-      "results"
-    ],
-    "text": "Gogaa CLI · results: results 4: Intent-based lazy context: 3,909 → 24 tokens for simple prompts"
-  },
-  {
-    "id": "project-gogaa-cli-results-5",
-    "project": "gogaa-cli",
-    "category": "project",
-    "tags": [
-      "gogaa-cli",
-      "Gogaa CLI",
-      "Developer Tool / CLI",
-      "results"
-    ],
-    "text": "Gogaa CLI · results: results 5: Private registry: checksummed builds, self-update with rollback, per-device access tokens"
-  },
-  {
-    "id": "project-gogaa-cli-results-6",
-    "project": "gogaa-cli",
-    "category": "project",
-    "tags": [
-      "gogaa-cli",
-      "Gogaa CLI",
-      "Developer Tool / CLI",
-      "results"
-    ],
-    "text": "Gogaa CLI · results: measuredImpact before value: ~70%"
-  },
-  {
-    "id": "project-gogaa-cli-results-7",
-    "project": "gogaa-cli",
-    "category": "project",
-    "tags": [
-      "gogaa-cli",
-      "Gogaa CLI",
-      "Developer Tool / CLI",
-      "results"
-    ],
-    "text": "Gogaa CLI · results: measuredImpact before context: tool call success rate with raw model JSON"
-  },
-  {
-    "id": "project-gogaa-cli-results-8",
-    "project": "gogaa-cli",
-    "category": "project",
-    "tags": [
-      "gogaa-cli",
-      "Gogaa CLI",
-      "Developer Tool / CLI",
-      "results"
-    ],
-    "text": "Gogaa CLI · results: measuredImpact after value: ~95%"
-  },
-  {
-    "id": "project-gogaa-cli-results-9",
-    "project": "gogaa-cli",
-    "category": "project",
-    "tags": [
-      "gogaa-cli",
-      "Gogaa CLI",
-      "Developer Tool / CLI",
-      "results"
-    ],
-    "text": "Gogaa CLI · results: measuredImpact after context: after 5-strategy progressive JSON parser"
-  },
-  {
-    "id": "project-gogaa-cli-results-10",
-    "project": "gogaa-cli",
-    "category": "project",
-    "tags": [
-      "gogaa-cli",
-      "Gogaa CLI",
-      "Developer Tool / CLI",
-      "results"
-    ],
-    "text": "Gogaa CLI · results: measuredImpact highlights 1 n: 1,400+"
-  },
-  {
-    "id": "project-gogaa-cli-results-11",
-    "project": "gogaa-cli",
-    "category": "project",
-    "tags": [
-      "gogaa-cli",
-      "Gogaa CLI",
-      "Developer Tool / CLI",
-      "results"
-    ],
-    "text": "Gogaa CLI · results: measuredImpact highlights 1 l: tests passing"
-  },
-  {
-    "id": "project-gogaa-cli-results-12",
-    "project": "gogaa-cli",
-    "category": "project",
-    "tags": [
-      "gogaa-cli",
-      "Gogaa CLI",
-      "Developer Tool / CLI",
-      "results"
-    ],
-    "text": "Gogaa CLI · results: measuredImpact highlights 2 n: 11"
-  },
-  {
-    "id": "project-gogaa-cli-results-13",
-    "project": "gogaa-cli",
-    "category": "project",
-    "tags": [
-      "gogaa-cli",
-      "Gogaa CLI",
-      "Developer Tool / CLI",
-      "results"
-    ],
-    "text": "Gogaa CLI · results: measuredImpact highlights 2 l: providers"
-  },
-  {
-    "id": "project-gogaa-cli-results-14",
-    "project": "gogaa-cli",
-    "category": "project",
-    "tags": [
-      "gogaa-cli",
-      "Gogaa CLI",
-      "Developer Tool / CLI",
-      "results"
-    ],
-    "text": "Gogaa CLI · results: measuredImpact highlights 3 n: 84%"
-  },
-  {
-    "id": "project-gogaa-cli-results-15",
-    "project": "gogaa-cli",
-    "category": "project",
-    "tags": [
-      "gogaa-cli",
-      "Gogaa CLI",
-      "Developer Tool / CLI",
-      "results"
-    ],
-    "text": "Gogaa CLI · results: measuredImpact highlights 3 l: context saved"
+    "text": "Gogaa CLI · results: measuredImpact highlights 1 n: 1,400+\nmeasuredImpact highlights 1 l: tests passing\nmeasuredImpact highlights 2 n: 11\nmeasuredImpact highlights 2 l: providers\nmeasuredImpact highlights 3 n: 84%\nmeasuredImpact highlights 3 l: context saved"
   },
   {
     "id": "project-rasad-summary-1",
@@ -2947,7 +571,7 @@ export const generatedChunks = [
       "Developer Tool / CLI + Web",
       "summary"
     ],
-    "text": "Rasad · summary: title: Rasad"
+    "text": "Rasad · summary: title: Rasad\nsubtitle: AI Session Observatory for Developers\noneLiner: 656 sessions analyzed, every action replayed, every session graded A to F. Open source, 100% local.\ncardSummary: 656 sessions analyzed. Every tool call and file touch replayed, every session graded A to F. Open source on npm, 100% local."
   },
   {
     "id": "project-rasad-summary-2",
@@ -2959,58 +583,10 @@ export const generatedChunks = [
       "Developer Tool / CLI + Web",
       "summary"
     ],
-    "text": "Rasad · summary: subtitle: AI Session Observatory for Developers"
+    "text": "Rasad · summary: impact: The observability layer for AI-assisted development. 656 sessions across 4 tools, 38K messages and 14K tool calls, every action replayed and every session graded A to F. Found that routine tasks on Opus cost 18x more than Sonnet with no quality difference. Published on npm as rasad-ai (MIT). 100% local, zero outbound requests.\nproblem: AI coding assistants are black boxes. You don't know how many tokens were burned, whether context was lost mid-session, or if that $87 session could have been three $8 sessions. Zero observability for a major engineering budget line."
   },
   {
     "id": "project-rasad-summary-3",
-    "project": "rasad",
-    "category": "project",
-    "tags": [
-      "rasad",
-      "Rasad",
-      "Developer Tool / CLI + Web",
-      "summary"
-    ],
-    "text": "Rasad · summary: oneLiner: 656 sessions analyzed, every action replayed, every session graded A to F. Open source, 100% local."
-  },
-  {
-    "id": "project-rasad-summary-4",
-    "project": "rasad",
-    "category": "project",
-    "tags": [
-      "rasad",
-      "Rasad",
-      "Developer Tool / CLI + Web",
-      "summary"
-    ],
-    "text": "Rasad · summary: cardSummary: 656 sessions analyzed. Every tool call and file touch replayed, every session graded A to F. Open source on npm, 100% local."
-  },
-  {
-    "id": "project-rasad-summary-5",
-    "project": "rasad",
-    "category": "project",
-    "tags": [
-      "rasad",
-      "Rasad",
-      "Developer Tool / CLI + Web",
-      "summary"
-    ],
-    "text": "Rasad · summary: impact: The observability layer for AI-assisted development. 656 sessions across 4 tools, 38K messages and 14K tool calls, every action replayed and every session graded A to F. Found that routine tasks on Opus cost 18x more than Sonnet with no quality difference. Published on npm as rasad-ai (MIT). 100% local, zero outbound requests."
-  },
-  {
-    "id": "project-rasad-summary-6",
-    "project": "rasad",
-    "category": "project",
-    "tags": [
-      "rasad",
-      "Rasad",
-      "Developer Tool / CLI + Web",
-      "summary"
-    ],
-    "text": "Rasad · summary: problem: AI coding assistants are black boxes. You don't know how many tokens were burned, whether context was lost mid-session, or if that $87 session could have been three $8 sessions. Zero observability for a major engineering budget line."
-  },
-  {
-    "id": "project-rasad-summary-7",
     "project": "rasad",
     "category": "project",
     "tags": [
@@ -3031,7 +607,7 @@ export const generatedChunks = [
       "Developer Tool / CLI + Web",
       "architecture"
     ],
-    "text": "Rasad · architecture: architecture 1: Data Adapters (Claude Code, Gogaa, Codex CLI)"
+    "text": "Rasad · architecture: architecture 1: Data Adapters (Claude Code, Gogaa, Codex CLI)\narchitecture 2: SQLite (WAL mode, FTS5 full-text search)\narchitecture 3: Streaming Parsers (700MB+ without memory overflow)\narchitecture 4: Fastify API (localhost, WebSocket live updates)\narchitecture 5: React Dashboard (15+ views, Recharts)\narchitecture 6: React Ink TUI (real-time monitoring, alerts)\narchitecture 7: Quality Scoring Engine (A-F grading)\nfeatures 1: X-Ray: action-by-action session replay with phase labels and timing\nfeatures 2: Session Quality grading (A-F) based on efficiency, cost, and self-correction"
   },
   {
     "id": "project-rasad-architecture-2",
@@ -3043,211 +619,7 @@ export const generatedChunks = [
       "Developer Tool / CLI + Web",
       "architecture"
     ],
-    "text": "Rasad · architecture: architecture 2: SQLite (WAL mode, FTS5 full-text search)"
-  },
-  {
-    "id": "project-rasad-architecture-3",
-    "project": "rasad",
-    "category": "project",
-    "tags": [
-      "rasad",
-      "Rasad",
-      "Developer Tool / CLI + Web",
-      "architecture"
-    ],
-    "text": "Rasad · architecture: architecture 3: Streaming Parsers (700MB+ without memory overflow)"
-  },
-  {
-    "id": "project-rasad-architecture-4",
-    "project": "rasad",
-    "category": "project",
-    "tags": [
-      "rasad",
-      "Rasad",
-      "Developer Tool / CLI + Web",
-      "architecture"
-    ],
-    "text": "Rasad · architecture: architecture 4: Fastify API (localhost, WebSocket live updates)"
-  },
-  {
-    "id": "project-rasad-architecture-5",
-    "project": "rasad",
-    "category": "project",
-    "tags": [
-      "rasad",
-      "Rasad",
-      "Developer Tool / CLI + Web",
-      "architecture"
-    ],
-    "text": "Rasad · architecture: architecture 5: React Dashboard (15+ views, Recharts)"
-  },
-  {
-    "id": "project-rasad-architecture-6",
-    "project": "rasad",
-    "category": "project",
-    "tags": [
-      "rasad",
-      "Rasad",
-      "Developer Tool / CLI + Web",
-      "architecture"
-    ],
-    "text": "Rasad · architecture: architecture 6: React Ink TUI (real-time monitoring, alerts)"
-  },
-  {
-    "id": "project-rasad-architecture-7",
-    "project": "rasad",
-    "category": "project",
-    "tags": [
-      "rasad",
-      "Rasad",
-      "Developer Tool / CLI + Web",
-      "architecture"
-    ],
-    "text": "Rasad · architecture: architecture 7: Quality Scoring Engine (A-F grading)"
-  },
-  {
-    "id": "project-rasad-architecture-8",
-    "project": "rasad",
-    "category": "project",
-    "tags": [
-      "rasad",
-      "Rasad",
-      "Developer Tool / CLI + Web",
-      "architecture"
-    ],
-    "text": "Rasad · architecture: features 1: X-Ray: action-by-action session replay with phase labels and timing"
-  },
-  {
-    "id": "project-rasad-architecture-9",
-    "project": "rasad",
-    "category": "project",
-    "tags": [
-      "rasad",
-      "Rasad",
-      "Developer Tool / CLI + Web",
-      "architecture"
-    ],
-    "text": "Rasad · architecture: features 2: Session Quality grading (A-F) based on efficiency, cost, and self-correction"
-  },
-  {
-    "id": "project-rasad-architecture-10",
-    "project": "rasad",
-    "category": "project",
-    "tags": [
-      "rasad",
-      "Rasad",
-      "Developer Tool / CLI + Web",
-      "architecture"
-    ],
-    "text": "Rasad · architecture: features 3: Model comparison: cost per session by model, head-to-head analysis"
-  },
-  {
-    "id": "project-rasad-architecture-11",
-    "project": "rasad",
-    "category": "project",
-    "tags": [
-      "rasad",
-      "Rasad",
-      "Developer Tool / CLI + Web",
-      "architecture"
-    ],
-    "text": "Rasad · architecture: features 4: Full-text search across 38K+ messages with SQLite FTS5"
-  },
-  {
-    "id": "project-rasad-architecture-12",
-    "project": "rasad",
-    "category": "project",
-    "tags": [
-      "rasad",
-      "Rasad",
-      "Developer Tool / CLI + Web",
-      "architecture"
-    ],
-    "text": "Rasad · architecture: features 5: 100% local — zero outbound network requests, data never leaves your machine"
-  },
-  {
-    "id": "project-rasad-architecture-13",
-    "project": "rasad",
-    "category": "project",
-    "tags": [
-      "rasad",
-      "Rasad",
-      "Developer Tool / CLI + Web",
-      "architecture"
-    ],
-    "text": "Rasad · architecture: stack 1: TypeScript"
-  },
-  {
-    "id": "project-rasad-architecture-14",
-    "project": "rasad",
-    "category": "project",
-    "tags": [
-      "rasad",
-      "Rasad",
-      "Developer Tool / CLI + Web",
-      "architecture"
-    ],
-    "text": "Rasad · architecture: stack 2: SQLite"
-  },
-  {
-    "id": "project-rasad-architecture-15",
-    "project": "rasad",
-    "category": "project",
-    "tags": [
-      "rasad",
-      "Rasad",
-      "Developer Tool / CLI + Web",
-      "architecture"
-    ],
-    "text": "Rasad · architecture: stack 3: Fastify"
-  },
-  {
-    "id": "project-rasad-architecture-16",
-    "project": "rasad",
-    "category": "project",
-    "tags": [
-      "rasad",
-      "Rasad",
-      "Developer Tool / CLI + Web",
-      "architecture"
-    ],
-    "text": "Rasad · architecture: stack 4: React 19"
-  },
-  {
-    "id": "project-rasad-architecture-17",
-    "project": "rasad",
-    "category": "project",
-    "tags": [
-      "rasad",
-      "Rasad",
-      "Developer Tool / CLI + Web",
-      "architecture"
-    ],
-    "text": "Rasad · architecture: stack 5: Vite"
-  },
-  {
-    "id": "project-rasad-architecture-18",
-    "project": "rasad",
-    "category": "project",
-    "tags": [
-      "rasad",
-      "Rasad",
-      "Developer Tool / CLI + Web",
-      "architecture"
-    ],
-    "text": "Rasad · architecture: stack 6: Recharts"
-  },
-  {
-    "id": "project-rasad-architecture-19",
-    "project": "rasad",
-    "category": "project",
-    "tags": [
-      "rasad",
-      "Rasad",
-      "Developer Tool / CLI + Web",
-      "architecture"
-    ],
-    "text": "Rasad · architecture: stack 7: React Ink"
+    "text": "Rasad · architecture: features 3: Model comparison: cost per session by model, head-to-head analysis\nfeatures 4: Full-text search across 38K+ messages with SQLite FTS5\nfeatures 5: 100% local — zero outbound network requests, data never leaves your machine\nstack 1: TypeScript\nstack 2: SQLite\nstack 3: Fastify\nstack 4: React 19\nstack 5: Vite\nstack 6: Recharts\nstack 7: React Ink"
   },
   {
     "id": "project-rasad-decisions-1",
@@ -3259,7 +631,7 @@ export const generatedChunks = [
       "Developer Tool / CLI + Web",
       "decisions"
     ],
-    "text": "Rasad · decisions: techDecisions 1 title: SQLite over Postgres for a local tool"
+    "text": "Rasad · decisions: techDecisions 1 title: SQLite over Postgres for a local tool\ntechDecisions 1 description: No database process, no connection strings. WAL mode gives concurrent reads/writes. FTS5 gives full-text search. The whole DB is one file at ~/.rasad/rasad.db.\ntechDecisions 2 title: Streaming parsers for ingestion\ntechDecisions 2 description: Claude Code session files can reach hundreds of MB. Line-by-line streaming never holds more than one line in memory.\ntechDecisions 3 title: Dual interface: web + terminal"
   },
   {
     "id": "project-rasad-decisions-2",
@@ -3271,7 +643,7 @@ export const generatedChunks = [
       "Developer Tool / CLI + Web",
       "decisions"
     ],
-    "text": "Rasad · decisions: techDecisions 1 description: No database process, no connection strings. WAL mode gives concurrent reads/writes. FTS5 gives full-text search. The whole DB is one file at ~/.rasad/rasad.db."
+    "text": "Rasad · decisions: techDecisions 3 description: Dashboard for rich visualizations, TUI for real-time monitoring without leaving the terminal. Same Fastify API backs both.\ndecision scenario: You're spending $500+/day on AI tools with zero visibility into what the AI is doing or whether sessions are efficient.\ndecision question: How do you get observability?\ndecision options 1: Check API billing dashboards\ndecision options 2: Build custom logging into each tool\ndecision options 3: Build a unified observatory that reads session files directly\ndecision commonChoice: 0\ndecision myChoice: 2"
   },
   {
     "id": "project-rasad-decisions-3",
@@ -3283,7 +655,7 @@ export const generatedChunks = [
       "Developer Tool / CLI + Web",
       "decisions"
     ],
-    "text": "Rasad · decisions: techDecisions 2 title: Streaming parsers for ingestion"
+    "text": "Rasad · decisions: decision reasoning: Billing shows cost, not behavior. Custom logging requires modifying each tool. Rasad sits outside, reads session files directly, gives one dashboard with replay, grading, and cost tracking across every AI tool.\ncomparison mine title: Rasad\ncomparison mine bullets 1: Multi-tool: Claude Code + Gogaa + Codex in one view\ncomparison mine bullets 2: Action-level X-Ray replay\ncomparison mine bullets 3: Session quality grading (A-F)\ncomparison mine bullets 4: 100% local, data never leaves your machine\ncomparison standard title: API billing dashboards"
   },
   {
     "id": "project-rasad-decisions-4",
@@ -3295,247 +667,7 @@ export const generatedChunks = [
       "Developer Tool / CLI + Web",
       "decisions"
     ],
-    "text": "Rasad · decisions: techDecisions 2 description: Claude Code session files can reach hundreds of MB. Line-by-line streaming never holds more than one line in memory."
-  },
-  {
-    "id": "project-rasad-decisions-5",
-    "project": "rasad",
-    "category": "project",
-    "tags": [
-      "rasad",
-      "Rasad",
-      "Developer Tool / CLI + Web",
-      "decisions"
-    ],
-    "text": "Rasad · decisions: techDecisions 3 title: Dual interface: web + terminal"
-  },
-  {
-    "id": "project-rasad-decisions-6",
-    "project": "rasad",
-    "category": "project",
-    "tags": [
-      "rasad",
-      "Rasad",
-      "Developer Tool / CLI + Web",
-      "decisions"
-    ],
-    "text": "Rasad · decisions: techDecisions 3 description: Dashboard for rich visualizations, TUI for real-time monitoring without leaving the terminal. Same Fastify API backs both."
-  },
-  {
-    "id": "project-rasad-decisions-7",
-    "project": "rasad",
-    "category": "project",
-    "tags": [
-      "rasad",
-      "Rasad",
-      "Developer Tool / CLI + Web",
-      "decisions"
-    ],
-    "text": "Rasad · decisions: decision scenario: You're spending $500+/day on AI tools with zero visibility into what the AI is doing or whether sessions are efficient."
-  },
-  {
-    "id": "project-rasad-decisions-8",
-    "project": "rasad",
-    "category": "project",
-    "tags": [
-      "rasad",
-      "Rasad",
-      "Developer Tool / CLI + Web",
-      "decisions"
-    ],
-    "text": "Rasad · decisions: decision question: How do you get observability?"
-  },
-  {
-    "id": "project-rasad-decisions-9",
-    "project": "rasad",
-    "category": "project",
-    "tags": [
-      "rasad",
-      "Rasad",
-      "Developer Tool / CLI + Web",
-      "decisions"
-    ],
-    "text": "Rasad · decisions: decision options 1: Check API billing dashboards"
-  },
-  {
-    "id": "project-rasad-decisions-10",
-    "project": "rasad",
-    "category": "project",
-    "tags": [
-      "rasad",
-      "Rasad",
-      "Developer Tool / CLI + Web",
-      "decisions"
-    ],
-    "text": "Rasad · decisions: decision options 2: Build custom logging into each tool"
-  },
-  {
-    "id": "project-rasad-decisions-11",
-    "project": "rasad",
-    "category": "project",
-    "tags": [
-      "rasad",
-      "Rasad",
-      "Developer Tool / CLI + Web",
-      "decisions"
-    ],
-    "text": "Rasad · decisions: decision options 3: Build a unified observatory that reads session files directly"
-  },
-  {
-    "id": "project-rasad-decisions-12",
-    "project": "rasad",
-    "category": "project",
-    "tags": [
-      "rasad",
-      "Rasad",
-      "Developer Tool / CLI + Web",
-      "decisions"
-    ],
-    "text": "Rasad · decisions: decision commonChoice: 0"
-  },
-  {
-    "id": "project-rasad-decisions-13",
-    "project": "rasad",
-    "category": "project",
-    "tags": [
-      "rasad",
-      "Rasad",
-      "Developer Tool / CLI + Web",
-      "decisions"
-    ],
-    "text": "Rasad · decisions: decision myChoice: 2"
-  },
-  {
-    "id": "project-rasad-decisions-14",
-    "project": "rasad",
-    "category": "project",
-    "tags": [
-      "rasad",
-      "Rasad",
-      "Developer Tool / CLI + Web",
-      "decisions"
-    ],
-    "text": "Rasad · decisions: decision reasoning: Billing shows cost, not behavior. Custom logging requires modifying each tool. Rasad sits outside, reads session files directly, gives one dashboard with replay, grading, and cost tracking across every AI tool."
-  },
-  {
-    "id": "project-rasad-decisions-15",
-    "project": "rasad",
-    "category": "project",
-    "tags": [
-      "rasad",
-      "Rasad",
-      "Developer Tool / CLI + Web",
-      "decisions"
-    ],
-    "text": "Rasad · decisions: comparison mine title: Rasad"
-  },
-  {
-    "id": "project-rasad-decisions-16",
-    "project": "rasad",
-    "category": "project",
-    "tags": [
-      "rasad",
-      "Rasad",
-      "Developer Tool / CLI + Web",
-      "decisions"
-    ],
-    "text": "Rasad · decisions: comparison mine bullets 1: Multi-tool: Claude Code + Gogaa + Codex in one view"
-  },
-  {
-    "id": "project-rasad-decisions-17",
-    "project": "rasad",
-    "category": "project",
-    "tags": [
-      "rasad",
-      "Rasad",
-      "Developer Tool / CLI + Web",
-      "decisions"
-    ],
-    "text": "Rasad · decisions: comparison mine bullets 2: Action-level X-Ray replay"
-  },
-  {
-    "id": "project-rasad-decisions-18",
-    "project": "rasad",
-    "category": "project",
-    "tags": [
-      "rasad",
-      "Rasad",
-      "Developer Tool / CLI + Web",
-      "decisions"
-    ],
-    "text": "Rasad · decisions: comparison mine bullets 3: Session quality grading (A-F)"
-  },
-  {
-    "id": "project-rasad-decisions-19",
-    "project": "rasad",
-    "category": "project",
-    "tags": [
-      "rasad",
-      "Rasad",
-      "Developer Tool / CLI + Web",
-      "decisions"
-    ],
-    "text": "Rasad · decisions: comparison mine bullets 4: 100% local, data never leaves your machine"
-  },
-  {
-    "id": "project-rasad-decisions-20",
-    "project": "rasad",
-    "category": "project",
-    "tags": [
-      "rasad",
-      "Rasad",
-      "Developer Tool / CLI + Web",
-      "decisions"
-    ],
-    "text": "Rasad · decisions: comparison standard title: API billing dashboards"
-  },
-  {
-    "id": "project-rasad-decisions-21",
-    "project": "rasad",
-    "category": "project",
-    "tags": [
-      "rasad",
-      "Rasad",
-      "Developer Tool / CLI + Web",
-      "decisions"
-    ],
-    "text": "Rasad · decisions: comparison standard bullets 1: Single provider, no cross-tool view"
-  },
-  {
-    "id": "project-rasad-decisions-22",
-    "project": "rasad",
-    "category": "project",
-    "tags": [
-      "rasad",
-      "Rasad",
-      "Developer Tool / CLI + Web",
-      "decisions"
-    ],
-    "text": "Rasad · decisions: comparison standard bullets 2: Cost only, no behavioral analysis"
-  },
-  {
-    "id": "project-rasad-decisions-23",
-    "project": "rasad",
-    "category": "project",
-    "tags": [
-      "rasad",
-      "Rasad",
-      "Developer Tool / CLI + Web",
-      "decisions"
-    ],
-    "text": "Rasad · decisions: comparison standard bullets 3: No replay or action-level visibility"
-  },
-  {
-    "id": "project-rasad-decisions-24",
-    "project": "rasad",
-    "category": "project",
-    "tags": [
-      "rasad",
-      "Rasad",
-      "Developer Tool / CLI + Web",
-      "decisions"
-    ],
-    "text": "Rasad · decisions: comparison standard bullets 4: Data on vendor servers"
+    "text": "Rasad · decisions: comparison standard bullets 1: Single provider, no cross-tool view\ncomparison standard bullets 2: Cost only, no behavioral analysis\ncomparison standard bullets 3: No replay or action-level visibility\ncomparison standard bullets 4: Data on vendor servers"
   },
   {
     "id": "project-rasad-results-1",
@@ -3547,7 +679,7 @@ export const generatedChunks = [
       "Developer Tool / CLI + Web",
       "results"
     ],
-    "text": "Rasad · results: results 1: 656 sessions synced from 4 AI tools in one dashboard"
+    "text": "Rasad · results: results 1: 656 sessions synced from 4 AI tools in one dashboard\nresults 2: 38K messages, 14K tool calls indexed with full-text search\nresults 3: First sync: 6.2s for 700MB+. Incremental: <1s\nresults 4: Zero outbound requests, 100% local-first\nresults 5: Published on npm as rasad-ai (MIT) with a live terminal view: rasad watch\nmeasuredImpact before value: $0\nmeasuredImpact before context: visibility into AI tool behavior and cost\nmeasuredImpact after value: 656\nmeasuredImpact after context: sessions analyzed with action-level replay\nmeasuredImpact highlights 1 n: 38K"
   },
   {
     "id": "project-rasad-results-2",
@@ -3559,163 +691,7 @@ export const generatedChunks = [
       "Developer Tool / CLI + Web",
       "results"
     ],
-    "text": "Rasad · results: results 2: 38K messages, 14K tool calls indexed with full-text search"
-  },
-  {
-    "id": "project-rasad-results-3",
-    "project": "rasad",
-    "category": "project",
-    "tags": [
-      "rasad",
-      "Rasad",
-      "Developer Tool / CLI + Web",
-      "results"
-    ],
-    "text": "Rasad · results: results 3: First sync: 6.2s for 700MB+. Incremental: <1s"
-  },
-  {
-    "id": "project-rasad-results-4",
-    "project": "rasad",
-    "category": "project",
-    "tags": [
-      "rasad",
-      "Rasad",
-      "Developer Tool / CLI + Web",
-      "results"
-    ],
-    "text": "Rasad · results: results 4: Zero outbound requests, 100% local-first"
-  },
-  {
-    "id": "project-rasad-results-5",
-    "project": "rasad",
-    "category": "project",
-    "tags": [
-      "rasad",
-      "Rasad",
-      "Developer Tool / CLI + Web",
-      "results"
-    ],
-    "text": "Rasad · results: results 5: Published on npm as rasad-ai (MIT) with a live terminal view: rasad watch"
-  },
-  {
-    "id": "project-rasad-results-6",
-    "project": "rasad",
-    "category": "project",
-    "tags": [
-      "rasad",
-      "Rasad",
-      "Developer Tool / CLI + Web",
-      "results"
-    ],
-    "text": "Rasad · results: measuredImpact before value: $0"
-  },
-  {
-    "id": "project-rasad-results-7",
-    "project": "rasad",
-    "category": "project",
-    "tags": [
-      "rasad",
-      "Rasad",
-      "Developer Tool / CLI + Web",
-      "results"
-    ],
-    "text": "Rasad · results: measuredImpact before context: visibility into AI tool behavior and cost"
-  },
-  {
-    "id": "project-rasad-results-8",
-    "project": "rasad",
-    "category": "project",
-    "tags": [
-      "rasad",
-      "Rasad",
-      "Developer Tool / CLI + Web",
-      "results"
-    ],
-    "text": "Rasad · results: measuredImpact after value: 656"
-  },
-  {
-    "id": "project-rasad-results-9",
-    "project": "rasad",
-    "category": "project",
-    "tags": [
-      "rasad",
-      "Rasad",
-      "Developer Tool / CLI + Web",
-      "results"
-    ],
-    "text": "Rasad · results: measuredImpact after context: sessions analyzed with action-level replay"
-  },
-  {
-    "id": "project-rasad-results-10",
-    "project": "rasad",
-    "category": "project",
-    "tags": [
-      "rasad",
-      "Rasad",
-      "Developer Tool / CLI + Web",
-      "results"
-    ],
-    "text": "Rasad · results: measuredImpact highlights 1 n: 38K"
-  },
-  {
-    "id": "project-rasad-results-11",
-    "project": "rasad",
-    "category": "project",
-    "tags": [
-      "rasad",
-      "Rasad",
-      "Developer Tool / CLI + Web",
-      "results"
-    ],
-    "text": "Rasad · results: measuredImpact highlights 1 l: messages indexed"
-  },
-  {
-    "id": "project-rasad-results-12",
-    "project": "rasad",
-    "category": "project",
-    "tags": [
-      "rasad",
-      "Rasad",
-      "Developer Tool / CLI + Web",
-      "results"
-    ],
-    "text": "Rasad · results: measuredImpact highlights 2 n: 14K"
-  },
-  {
-    "id": "project-rasad-results-13",
-    "project": "rasad",
-    "category": "project",
-    "tags": [
-      "rasad",
-      "Rasad",
-      "Developer Tool / CLI + Web",
-      "results"
-    ],
-    "text": "Rasad · results: measuredImpact highlights 2 l: tool calls tracked"
-  },
-  {
-    "id": "project-rasad-results-14",
-    "project": "rasad",
-    "category": "project",
-    "tags": [
-      "rasad",
-      "Rasad",
-      "Developer Tool / CLI + Web",
-      "results"
-    ],
-    "text": "Rasad · results: measuredImpact highlights 3 n: 6.2s"
-  },
-  {
-    "id": "project-rasad-results-15",
-    "project": "rasad",
-    "category": "project",
-    "tags": [
-      "rasad",
-      "Rasad",
-      "Developer Tool / CLI + Web",
-      "results"
-    ],
-    "text": "Rasad · results: measuredImpact highlights 3 l: first sync (700MB)"
+    "text": "Rasad · results: measuredImpact highlights 1 l: messages indexed\nmeasuredImpact highlights 2 n: 14K\nmeasuredImpact highlights 2 l: tool calls tracked\nmeasuredImpact highlights 3 n: 6.2s\nmeasuredImpact highlights 3 l: first sync (700MB)"
   },
   {
     "id": "project-command-center-summary-1",
@@ -3727,58 +703,10 @@ export const generatedChunks = [
       "Developer Tool",
       "summary"
     ],
-    "text": "Command Center · summary: title: Command Center"
+    "text": "Command Center · summary: title: Command Center\nsubtitle: Personal AI Operations PWA\nplainSummary: One screen for email, calendar and tasks, with AI sorting what matters first. Cuts inbox time by 60%.\nimpact: A single interface unifying email, calendar, and tasks with AI triage. Dual AI backends (Claude + Gemini), real Gmail/Calendar integration, installable as PWA.\nproblem: Developers juggle Gmail, Calendar, Notion, and separate dashboards per client. Context switching kills productivity. No single tool combines AI triage with real integrations."
   },
   {
     "id": "project-command-center-summary-2",
-    "project": "command-center",
-    "category": "project",
-    "tags": [
-      "command-center",
-      "Command Center",
-      "Developer Tool",
-      "summary"
-    ],
-    "text": "Command Center · summary: subtitle: Personal AI Operations PWA"
-  },
-  {
-    "id": "project-command-center-summary-3",
-    "project": "command-center",
-    "category": "project",
-    "tags": [
-      "command-center",
-      "Command Center",
-      "Developer Tool",
-      "summary"
-    ],
-    "text": "Command Center · summary: plainSummary: One screen for email, calendar and tasks, with AI sorting what matters first. Cuts inbox time by 60%."
-  },
-  {
-    "id": "project-command-center-summary-4",
-    "project": "command-center",
-    "category": "project",
-    "tags": [
-      "command-center",
-      "Command Center",
-      "Developer Tool",
-      "summary"
-    ],
-    "text": "Command Center · summary: impact: A single interface unifying email, calendar, and tasks with AI triage. Dual AI backends (Claude + Gemini), real Gmail/Calendar integration, installable as PWA."
-  },
-  {
-    "id": "project-command-center-summary-5",
-    "project": "command-center",
-    "category": "project",
-    "tags": [
-      "command-center",
-      "Command Center",
-      "Developer Tool",
-      "summary"
-    ],
-    "text": "Command Center · summary: problem: Developers juggle Gmail, Calendar, Notion, and separate dashboards per client. Context switching kills productivity. No single tool combines AI triage with real integrations."
-  },
-  {
-    "id": "project-command-center-summary-6",
     "project": "command-center",
     "category": "project",
     "tags": [
@@ -3799,7 +727,7 @@ export const generatedChunks = [
       "Developer Tool",
       "architecture"
     ],
-    "text": "Command Center · architecture: architecture 1: PWA Shell (React + TypeScript)"
+    "text": "Command Center · architecture: architecture 1: PWA Shell (React + TypeScript)\narchitecture 2: Dual AI: Claude + Gemini\narchitecture 3: Gmail API + Calendar API\narchitecture 4: Supabase (Postgres, Auth, Realtime)\narchitecture 5: Task Board + AI Triage\nfeatures 1: Unified inbox with AI-powered intent classification and priority scoring\nfeatures 2: Dual AI: Claude for complex reasoning, Gemini for fast classification\nfeatures 3: Calendar integration with conflict detection\nfeatures 4: PWA: installable on desktop and mobile, works offline\nfeatures 5: Real-time sync across devices via Supabase\nstack 1: React\nstack 2: TypeScript"
   },
   {
     "id": "project-command-center-architecture-2",
@@ -3811,190 +739,10 @@ export const generatedChunks = [
       "Developer Tool",
       "architecture"
     ],
-    "text": "Command Center · architecture: architecture 2: Dual AI: Claude + Gemini"
+    "text": "Command Center · architecture: stack 3: Anthropic SDK\nstack 4: Google Gemini\nstack 5: Supabase\nstack 6: Gmail API\nstack 7: PWA"
   },
   {
-    "id": "project-command-center-architecture-3",
-    "project": "command-center",
-    "category": "project",
-    "tags": [
-      "command-center",
-      "Command Center",
-      "Developer Tool",
-      "architecture"
-    ],
-    "text": "Command Center · architecture: architecture 3: Gmail API + Calendar API"
-  },
-  {
-    "id": "project-command-center-architecture-4",
-    "project": "command-center",
-    "category": "project",
-    "tags": [
-      "command-center",
-      "Command Center",
-      "Developer Tool",
-      "architecture"
-    ],
-    "text": "Command Center · architecture: architecture 4: Supabase (Postgres, Auth, Realtime)"
-  },
-  {
-    "id": "project-command-center-architecture-5",
-    "project": "command-center",
-    "category": "project",
-    "tags": [
-      "command-center",
-      "Command Center",
-      "Developer Tool",
-      "architecture"
-    ],
-    "text": "Command Center · architecture: architecture 5: Task Board + AI Triage"
-  },
-  {
-    "id": "project-command-center-architecture-6",
-    "project": "command-center",
-    "category": "project",
-    "tags": [
-      "command-center",
-      "Command Center",
-      "Developer Tool",
-      "architecture"
-    ],
-    "text": "Command Center · architecture: features 1: Unified inbox with AI-powered intent classification and priority scoring"
-  },
-  {
-    "id": "project-command-center-architecture-7",
-    "project": "command-center",
-    "category": "project",
-    "tags": [
-      "command-center",
-      "Command Center",
-      "Developer Tool",
-      "architecture"
-    ],
-    "text": "Command Center · architecture: features 2: Dual AI: Claude for complex reasoning, Gemini for fast classification"
-  },
-  {
-    "id": "project-command-center-architecture-8",
-    "project": "command-center",
-    "category": "project",
-    "tags": [
-      "command-center",
-      "Command Center",
-      "Developer Tool",
-      "architecture"
-    ],
-    "text": "Command Center · architecture: features 3: Calendar integration with conflict detection"
-  },
-  {
-    "id": "project-command-center-architecture-9",
-    "project": "command-center",
-    "category": "project",
-    "tags": [
-      "command-center",
-      "Command Center",
-      "Developer Tool",
-      "architecture"
-    ],
-    "text": "Command Center · architecture: features 4: PWA: installable on desktop and mobile, works offline"
-  },
-  {
-    "id": "project-command-center-architecture-10",
-    "project": "command-center",
-    "category": "project",
-    "tags": [
-      "command-center",
-      "Command Center",
-      "Developer Tool",
-      "architecture"
-    ],
-    "text": "Command Center · architecture: features 5: Real-time sync across devices via Supabase"
-  },
-  {
-    "id": "project-command-center-architecture-11",
-    "project": "command-center",
-    "category": "project",
-    "tags": [
-      "command-center",
-      "Command Center",
-      "Developer Tool",
-      "architecture"
-    ],
-    "text": "Command Center · architecture: stack 1: React"
-  },
-  {
-    "id": "project-command-center-architecture-12",
-    "project": "command-center",
-    "category": "project",
-    "tags": [
-      "command-center",
-      "Command Center",
-      "Developer Tool",
-      "architecture"
-    ],
-    "text": "Command Center · architecture: stack 2: TypeScript"
-  },
-  {
-    "id": "project-command-center-architecture-13",
-    "project": "command-center",
-    "category": "project",
-    "tags": [
-      "command-center",
-      "Command Center",
-      "Developer Tool",
-      "architecture"
-    ],
-    "text": "Command Center · architecture: stack 3: Anthropic SDK"
-  },
-  {
-    "id": "project-command-center-architecture-14",
-    "project": "command-center",
-    "category": "project",
-    "tags": [
-      "command-center",
-      "Command Center",
-      "Developer Tool",
-      "architecture"
-    ],
-    "text": "Command Center · architecture: stack 4: Google Gemini"
-  },
-  {
-    "id": "project-command-center-architecture-15",
-    "project": "command-center",
-    "category": "project",
-    "tags": [
-      "command-center",
-      "Command Center",
-      "Developer Tool",
-      "architecture"
-    ],
-    "text": "Command Center · architecture: stack 5: Supabase"
-  },
-  {
-    "id": "project-command-center-architecture-16",
-    "project": "command-center",
-    "category": "project",
-    "tags": [
-      "command-center",
-      "Command Center",
-      "Developer Tool",
-      "architecture"
-    ],
-    "text": "Command Center · architecture: stack 6: Gmail API"
-  },
-  {
-    "id": "project-command-center-architecture-17",
-    "project": "command-center",
-    "category": "project",
-    "tags": [
-      "command-center",
-      "Command Center",
-      "Developer Tool",
-      "architecture"
-    ],
-    "text": "Command Center · architecture: stack 7: PWA"
-  },
-  {
-    "id": "project-command-center-decisions-1",
+    "id": "project-command-center-decisions",
     "project": "command-center",
     "category": "project",
     "tags": [
@@ -4003,46 +751,10 @@ export const generatedChunks = [
       "Developer Tool",
       "decisions"
     ],
-    "text": "Command Center · decisions: techDecisions 1 title: Dual AI backends"
+    "text": "Command Center · decisions: techDecisions 1 title: Dual AI backends\ntechDecisions 1 description: Claude handles complex email reasoning. Gemini handles fast classification. No vendor lock-in, plays to each model's strengths.\ntechDecisions 2 title: PWA over native app\ntechDecisions 2 description: Single codebase serves web, iOS, Android. Service workers enable offline and push notifications. No App Store approval needed."
   },
   {
-    "id": "project-command-center-decisions-2",
-    "project": "command-center",
-    "category": "project",
-    "tags": [
-      "command-center",
-      "Command Center",
-      "Developer Tool",
-      "decisions"
-    ],
-    "text": "Command Center · decisions: techDecisions 1 description: Claude handles complex email reasoning. Gemini handles fast classification. No vendor lock-in, plays to each model's strengths."
-  },
-  {
-    "id": "project-command-center-decisions-3",
-    "project": "command-center",
-    "category": "project",
-    "tags": [
-      "command-center",
-      "Command Center",
-      "Developer Tool",
-      "decisions"
-    ],
-    "text": "Command Center · decisions: techDecisions 2 title: PWA over native app"
-  },
-  {
-    "id": "project-command-center-decisions-4",
-    "project": "command-center",
-    "category": "project",
-    "tags": [
-      "command-center",
-      "Command Center",
-      "Developer Tool",
-      "decisions"
-    ],
-    "text": "Command Center · decisions: techDecisions 2 description: Single codebase serves web, iOS, Android. Service workers enable offline and push notifications. No App Store approval needed."
-  },
-  {
-    "id": "project-command-center-results-1",
+    "id": "project-command-center-results",
     "project": "command-center",
     "category": "project",
     "tags": [
@@ -4051,31 +763,7 @@ export const generatedChunks = [
       "Developer Tool",
       "results"
     ],
-    "text": "Command Center · results: results 1: Replaces 4+ separate tools in daily workflow"
-  },
-  {
-    "id": "project-command-center-results-2",
-    "project": "command-center",
-    "category": "project",
-    "tags": [
-      "command-center",
-      "Command Center",
-      "Developer Tool",
-      "results"
-    ],
-    "text": "Command Center · results: results 2: AI triage reduces inbox processing by 60%"
-  },
-  {
-    "id": "project-command-center-results-3",
-    "project": "command-center",
-    "category": "project",
-    "tags": [
-      "command-center",
-      "Command Center",
-      "Developer Tool",
-      "results"
-    ],
-    "text": "Command Center · results: results 3: Installable on desktop and mobile with offline support"
+    "text": "Command Center · results: results 1: Replaces 4+ separate tools in daily workflow\nresults 2: AI triage reduces inbox processing by 60%\nresults 3: Installable on desktop and mobile with offline support"
   },
   {
     "id": "project-gluten-free-summary-1",
@@ -4087,58 +775,10 @@ export const generatedChunks = [
       "Web + iOS + Android",
       "summary"
     ],
-    "text": "Gluten-Free Deals & Dining · summary: title: Gluten-Free Deals & Dining"
+    "text": "Gluten-Free Deals & Dining · summary: title: Gluten-Free Deals & Dining\nsubtitle: Cross-Platform Consumer App\nplainSummary: A phone and web app that finds gluten-free deals from 40+ shops, nearby restaurants, and recipes.\nimpact: Cross-platform app aggregating deals from 40+ retailers, finding nearby restaurants, and generating recipes — powered by LLM-generated search queries.\nproblem: Gluten-free consumers search scattered retailer sites for deals, have no way to find nearby safe restaurants, and lack reliable recipe sources. Existing apps cover one aspect, not all three."
   },
   {
     "id": "project-gluten-free-summary-2",
-    "project": "gluten-free",
-    "category": "project",
-    "tags": [
-      "gluten-free",
-      "Gluten-Free Deals & Dining",
-      "Web + iOS + Android",
-      "summary"
-    ],
-    "text": "Gluten-Free Deals & Dining · summary: subtitle: Cross-Platform Consumer App"
-  },
-  {
-    "id": "project-gluten-free-summary-3",
-    "project": "gluten-free",
-    "category": "project",
-    "tags": [
-      "gluten-free",
-      "Gluten-Free Deals & Dining",
-      "Web + iOS + Android",
-      "summary"
-    ],
-    "text": "Gluten-Free Deals & Dining · summary: plainSummary: A phone and web app that finds gluten-free deals from 40+ shops, nearby restaurants, and recipes."
-  },
-  {
-    "id": "project-gluten-free-summary-4",
-    "project": "gluten-free",
-    "category": "project",
-    "tags": [
-      "gluten-free",
-      "Gluten-Free Deals & Dining",
-      "Web + iOS + Android",
-      "summary"
-    ],
-    "text": "Gluten-Free Deals & Dining · summary: impact: Cross-platform app aggregating deals from 40+ retailers, finding nearby restaurants, and generating recipes — powered by LLM-generated search queries."
-  },
-  {
-    "id": "project-gluten-free-summary-5",
-    "project": "gluten-free",
-    "category": "project",
-    "tags": [
-      "gluten-free",
-      "Gluten-Free Deals & Dining",
-      "Web + iOS + Android",
-      "summary"
-    ],
-    "text": "Gluten-Free Deals & Dining · summary: problem: Gluten-free consumers search scattered retailer sites for deals, have no way to find nearby safe restaurants, and lack reliable recipe sources. Existing apps cover one aspect, not all three."
-  },
-  {
-    "id": "project-gluten-free-summary-6",
     "project": "gluten-free",
     "category": "project",
     "tags": [
@@ -4159,7 +799,7 @@ export const generatedChunks = [
       "Web + iOS + Android",
       "architecture"
     ],
-    "text": "Gluten-Free Deals & Dining · architecture: architecture 1: LLM Query Generator (200+ targeted queries)"
+    "text": "Gluten-Free Deals & Dining · architecture: architecture 1: LLM Query Generator (200+ targeted queries)\narchitecture 2: Concurrent Scraping (SerpAPI + Tavily)\narchitecture 3: Deduplication & Relevance Scoring\narchitecture 4: GPS Restaurant Finder (Google Maps)\narchitecture 5: AI Recipe Generator\narchitecture 6: Cross-platform UI (React Native + Next.js)\nfeatures 1: LLM-generated search queries covering 40+ retailers and 30+ brands dynamically\nfeatures 2: Concurrent dual-API scraping with deduplication and freshness filtering\nfeatures 3: GPS-based restaurant finder with allergy-safe filtering"
   },
   {
     "id": "project-gluten-free-architecture-2",
@@ -4171,202 +811,10 @@ export const generatedChunks = [
       "Web + iOS + Android",
       "architecture"
     ],
-    "text": "Gluten-Free Deals & Dining · architecture: architecture 2: Concurrent Scraping (SerpAPI + Tavily)"
+    "text": "Gluten-Free Deals & Dining · architecture: features 4: AI recipe generation with nutrition facts and substitution tips\nfeatures 5: Unified experience across Web, iOS, and Android\nstack 1: React Native\nstack 2: Next.js\nstack 3: Python\nstack 4: OpenAI\nstack 5: Firebase\nstack 6: Google Maps\nstack 7: SerpAPI"
   },
   {
-    "id": "project-gluten-free-architecture-3",
-    "project": "gluten-free",
-    "category": "project",
-    "tags": [
-      "gluten-free",
-      "Gluten-Free Deals & Dining",
-      "Web + iOS + Android",
-      "architecture"
-    ],
-    "text": "Gluten-Free Deals & Dining · architecture: architecture 3: Deduplication & Relevance Scoring"
-  },
-  {
-    "id": "project-gluten-free-architecture-4",
-    "project": "gluten-free",
-    "category": "project",
-    "tags": [
-      "gluten-free",
-      "Gluten-Free Deals & Dining",
-      "Web + iOS + Android",
-      "architecture"
-    ],
-    "text": "Gluten-Free Deals & Dining · architecture: architecture 4: GPS Restaurant Finder (Google Maps)"
-  },
-  {
-    "id": "project-gluten-free-architecture-5",
-    "project": "gluten-free",
-    "category": "project",
-    "tags": [
-      "gluten-free",
-      "Gluten-Free Deals & Dining",
-      "Web + iOS + Android",
-      "architecture"
-    ],
-    "text": "Gluten-Free Deals & Dining · architecture: architecture 5: AI Recipe Generator"
-  },
-  {
-    "id": "project-gluten-free-architecture-6",
-    "project": "gluten-free",
-    "category": "project",
-    "tags": [
-      "gluten-free",
-      "Gluten-Free Deals & Dining",
-      "Web + iOS + Android",
-      "architecture"
-    ],
-    "text": "Gluten-Free Deals & Dining · architecture: architecture 6: Cross-platform UI (React Native + Next.js)"
-  },
-  {
-    "id": "project-gluten-free-architecture-7",
-    "project": "gluten-free",
-    "category": "project",
-    "tags": [
-      "gluten-free",
-      "Gluten-Free Deals & Dining",
-      "Web + iOS + Android",
-      "architecture"
-    ],
-    "text": "Gluten-Free Deals & Dining · architecture: features 1: LLM-generated search queries covering 40+ retailers and 30+ brands dynamically"
-  },
-  {
-    "id": "project-gluten-free-architecture-8",
-    "project": "gluten-free",
-    "category": "project",
-    "tags": [
-      "gluten-free",
-      "Gluten-Free Deals & Dining",
-      "Web + iOS + Android",
-      "architecture"
-    ],
-    "text": "Gluten-Free Deals & Dining · architecture: features 2: Concurrent dual-API scraping with deduplication and freshness filtering"
-  },
-  {
-    "id": "project-gluten-free-architecture-9",
-    "project": "gluten-free",
-    "category": "project",
-    "tags": [
-      "gluten-free",
-      "Gluten-Free Deals & Dining",
-      "Web + iOS + Android",
-      "architecture"
-    ],
-    "text": "Gluten-Free Deals & Dining · architecture: features 3: GPS-based restaurant finder with allergy-safe filtering"
-  },
-  {
-    "id": "project-gluten-free-architecture-10",
-    "project": "gluten-free",
-    "category": "project",
-    "tags": [
-      "gluten-free",
-      "Gluten-Free Deals & Dining",
-      "Web + iOS + Android",
-      "architecture"
-    ],
-    "text": "Gluten-Free Deals & Dining · architecture: features 4: AI recipe generation with nutrition facts and substitution tips"
-  },
-  {
-    "id": "project-gluten-free-architecture-11",
-    "project": "gluten-free",
-    "category": "project",
-    "tags": [
-      "gluten-free",
-      "Gluten-Free Deals & Dining",
-      "Web + iOS + Android",
-      "architecture"
-    ],
-    "text": "Gluten-Free Deals & Dining · architecture: features 5: Unified experience across Web, iOS, and Android"
-  },
-  {
-    "id": "project-gluten-free-architecture-12",
-    "project": "gluten-free",
-    "category": "project",
-    "tags": [
-      "gluten-free",
-      "Gluten-Free Deals & Dining",
-      "Web + iOS + Android",
-      "architecture"
-    ],
-    "text": "Gluten-Free Deals & Dining · architecture: stack 1: React Native"
-  },
-  {
-    "id": "project-gluten-free-architecture-13",
-    "project": "gluten-free",
-    "category": "project",
-    "tags": [
-      "gluten-free",
-      "Gluten-Free Deals & Dining",
-      "Web + iOS + Android",
-      "architecture"
-    ],
-    "text": "Gluten-Free Deals & Dining · architecture: stack 2: Next.js"
-  },
-  {
-    "id": "project-gluten-free-architecture-14",
-    "project": "gluten-free",
-    "category": "project",
-    "tags": [
-      "gluten-free",
-      "Gluten-Free Deals & Dining",
-      "Web + iOS + Android",
-      "architecture"
-    ],
-    "text": "Gluten-Free Deals & Dining · architecture: stack 3: Python"
-  },
-  {
-    "id": "project-gluten-free-architecture-15",
-    "project": "gluten-free",
-    "category": "project",
-    "tags": [
-      "gluten-free",
-      "Gluten-Free Deals & Dining",
-      "Web + iOS + Android",
-      "architecture"
-    ],
-    "text": "Gluten-Free Deals & Dining · architecture: stack 4: OpenAI"
-  },
-  {
-    "id": "project-gluten-free-architecture-16",
-    "project": "gluten-free",
-    "category": "project",
-    "tags": [
-      "gluten-free",
-      "Gluten-Free Deals & Dining",
-      "Web + iOS + Android",
-      "architecture"
-    ],
-    "text": "Gluten-Free Deals & Dining · architecture: stack 5: Firebase"
-  },
-  {
-    "id": "project-gluten-free-architecture-17",
-    "project": "gluten-free",
-    "category": "project",
-    "tags": [
-      "gluten-free",
-      "Gluten-Free Deals & Dining",
-      "Web + iOS + Android",
-      "architecture"
-    ],
-    "text": "Gluten-Free Deals & Dining · architecture: stack 6: Google Maps"
-  },
-  {
-    "id": "project-gluten-free-architecture-18",
-    "project": "gluten-free",
-    "category": "project",
-    "tags": [
-      "gluten-free",
-      "Gluten-Free Deals & Dining",
-      "Web + iOS + Android",
-      "architecture"
-    ],
-    "text": "Gluten-Free Deals & Dining · architecture: stack 7: SerpAPI"
-  },
-  {
-    "id": "project-gluten-free-decisions-1",
+    "id": "project-gluten-free-decisions",
     "project": "gluten-free",
     "category": "project",
     "tags": [
@@ -4375,46 +823,10 @@ export const generatedChunks = [
       "Web + iOS + Android",
       "decisions"
     ],
-    "text": "Gluten-Free Deals & Dining · decisions: techDecisions 1 title: LLM query generation over hardcoded searches"
+    "text": "Gluten-Free Deals & Dining · decisions: techDecisions 1 title: LLM query generation over hardcoded searches\ntechDecisions 1 description: The LLM generates 200+ targeted queries dynamically. Covers new brands and retailers without code changes.\ntechDecisions 2 title: React Native + Next.js shared codebase\ntechDecisions 2 description: One team ships to three platforms with shared TypeScript business logic."
   },
   {
-    "id": "project-gluten-free-decisions-2",
-    "project": "gluten-free",
-    "category": "project",
-    "tags": [
-      "gluten-free",
-      "Gluten-Free Deals & Dining",
-      "Web + iOS + Android",
-      "decisions"
-    ],
-    "text": "Gluten-Free Deals & Dining · decisions: techDecisions 1 description: The LLM generates 200+ targeted queries dynamically. Covers new brands and retailers without code changes."
-  },
-  {
-    "id": "project-gluten-free-decisions-3",
-    "project": "gluten-free",
-    "category": "project",
-    "tags": [
-      "gluten-free",
-      "Gluten-Free Deals & Dining",
-      "Web + iOS + Android",
-      "decisions"
-    ],
-    "text": "Gluten-Free Deals & Dining · decisions: techDecisions 2 title: React Native + Next.js shared codebase"
-  },
-  {
-    "id": "project-gluten-free-decisions-4",
-    "project": "gluten-free",
-    "category": "project",
-    "tags": [
-      "gluten-free",
-      "Gluten-Free Deals & Dining",
-      "Web + iOS + Android",
-      "decisions"
-    ],
-    "text": "Gluten-Free Deals & Dining · decisions: techDecisions 2 description: One team ships to three platforms with shared TypeScript business logic."
-  },
-  {
-    "id": "project-gluten-free-results-1",
+    "id": "project-gluten-free-results",
     "project": "gluten-free",
     "category": "project",
     "tags": [
@@ -4423,31 +835,7 @@ export const generatedChunks = [
       "Web + iOS + Android",
       "results"
     ],
-    "text": "Gluten-Free Deals & Dining · results: results 1: Aggregates deals from 40+ retailers in real time"
-  },
-  {
-    "id": "project-gluten-free-results-2",
-    "project": "gluten-free",
-    "category": "project",
-    "tags": [
-      "gluten-free",
-      "Gluten-Free Deals & Dining",
-      "Web + iOS + Android",
-      "results"
-    ],
-    "text": "Gluten-Free Deals & Dining · results: results 2: 200+ AI-generated queries per category"
-  },
-  {
-    "id": "project-gluten-free-results-3",
-    "project": "gluten-free",
-    "category": "project",
-    "tags": [
-      "gluten-free",
-      "Gluten-Free Deals & Dining",
-      "Web + iOS + Android",
-      "results"
-    ],
-    "text": "Gluten-Free Deals & Dining · results: results 3: Cross-platform: Web, iOS, Android from shared codebase"
+    "text": "Gluten-Free Deals & Dining · results: results 1: Aggregates deals from 40+ retailers in real time\nresults 2: 200+ AI-generated queries per category\nresults 3: Cross-platform: Web, iOS, Android from shared codebase"
   },
   {
     "id": "project-dev-env-summary-1",
@@ -4459,58 +847,10 @@ export const generatedChunks = [
       "Developer Infrastructure",
       "summary"
     ],
-    "text": "Portable Dev Environment · summary: title: Portable Dev Environment"
+    "text": "Portable Dev Environment · summary: title: Portable Dev Environment\nsubtitle: Containerized Full-Stack Workspace\nplainSummary: A ready-made work setup that takes a new developer from zero to their first contribution in 10 minutes.\nimpact: One-command developer onboarding in 10 minutes. Docker container with full toolchain, AI coding assistant integration, and WISC context engineering that cut token costs by 84%.\nproblem: Dev environments are fragile — different Node versions, missing CLIs, hours of setup. Add AI tooling: Claude Code was burning 72KB of context (35-40K tokens) before a single prompt."
   },
   {
     "id": "project-dev-env-summary-2",
-    "project": "dev-env",
-    "category": "project",
-    "tags": [
-      "dev-env",
-      "Portable Dev Environment",
-      "Developer Infrastructure",
-      "summary"
-    ],
-    "text": "Portable Dev Environment · summary: subtitle: Containerized Full-Stack Workspace"
-  },
-  {
-    "id": "project-dev-env-summary-3",
-    "project": "dev-env",
-    "category": "project",
-    "tags": [
-      "dev-env",
-      "Portable Dev Environment",
-      "Developer Infrastructure",
-      "summary"
-    ],
-    "text": "Portable Dev Environment · summary: plainSummary: A ready-made work setup that takes a new developer from zero to their first contribution in 10 minutes."
-  },
-  {
-    "id": "project-dev-env-summary-4",
-    "project": "dev-env",
-    "category": "project",
-    "tags": [
-      "dev-env",
-      "Portable Dev Environment",
-      "Developer Infrastructure",
-      "summary"
-    ],
-    "text": "Portable Dev Environment · summary: impact: One-command developer onboarding in 10 minutes. Docker container with full toolchain, AI coding assistant integration, and WISC context engineering that cut token costs by 84%."
-  },
-  {
-    "id": "project-dev-env-summary-5",
-    "project": "dev-env",
-    "category": "project",
-    "tags": [
-      "dev-env",
-      "Portable Dev Environment",
-      "Developer Infrastructure",
-      "summary"
-    ],
-    "text": "Portable Dev Environment · summary: problem: Dev environments are fragile — different Node versions, missing CLIs, hours of setup. Add AI tooling: Claude Code was burning 72KB of context (35-40K tokens) before a single prompt."
-  },
-  {
-    "id": "project-dev-env-summary-6",
     "project": "dev-env",
     "category": "project",
     "tags": [
@@ -4531,7 +871,7 @@ export const generatedChunks = [
       "Developer Infrastructure",
       "architecture"
     ],
-    "text": "Portable Dev Environment · architecture: architecture 1: Dockerfile (multi-layer, ARM/x86)"
+    "text": "Portable Dev Environment · architecture: architecture 1: Dockerfile (multi-layer, ARM/x86)\narchitecture 2: Docker Compose (dev + Postgres + Redis)\narchitecture 3: Volume Mounts (code, SSH, secrets)\narchitecture 4: Shell Environment (zsh + oh-my-zsh)\narchitecture 5: Claude Code Integration (WISC-optimized)\nfeatures 1: ARM + x86 architecture-aware builds\nfeatures 2: Full shell environment with Powerlevel10k, autosuggestions, syntax highlighting\nfeatures 3: Claude Code integration with WISC-optimized lazy loading\nfeatures 4: Playwright with Chromium for headless E2E inside the container"
   },
   {
     "id": "project-dev-env-architecture-2",
@@ -4543,190 +883,10 @@ export const generatedChunks = [
       "Developer Infrastructure",
       "architecture"
     ],
-    "text": "Portable Dev Environment · architecture: architecture 2: Docker Compose (dev + Postgres + Redis)"
+    "text": "Portable Dev Environment · architecture: features 5: Secrets mounted at runtime, never baked into images\nstack 1: Docker\nstack 2: Docker Compose\nstack 3: Ubuntu\nstack 4: Node.js\nstack 5: Playwright\nstack 6: PostgreSQL\nstack 7: Redis"
   },
   {
-    "id": "project-dev-env-architecture-3",
-    "project": "dev-env",
-    "category": "project",
-    "tags": [
-      "dev-env",
-      "Portable Dev Environment",
-      "Developer Infrastructure",
-      "architecture"
-    ],
-    "text": "Portable Dev Environment · architecture: architecture 3: Volume Mounts (code, SSH, secrets)"
-  },
-  {
-    "id": "project-dev-env-architecture-4",
-    "project": "dev-env",
-    "category": "project",
-    "tags": [
-      "dev-env",
-      "Portable Dev Environment",
-      "Developer Infrastructure",
-      "architecture"
-    ],
-    "text": "Portable Dev Environment · architecture: architecture 4: Shell Environment (zsh + oh-my-zsh)"
-  },
-  {
-    "id": "project-dev-env-architecture-5",
-    "project": "dev-env",
-    "category": "project",
-    "tags": [
-      "dev-env",
-      "Portable Dev Environment",
-      "Developer Infrastructure",
-      "architecture"
-    ],
-    "text": "Portable Dev Environment · architecture: architecture 5: Claude Code Integration (WISC-optimized)"
-  },
-  {
-    "id": "project-dev-env-architecture-6",
-    "project": "dev-env",
-    "category": "project",
-    "tags": [
-      "dev-env",
-      "Portable Dev Environment",
-      "Developer Infrastructure",
-      "architecture"
-    ],
-    "text": "Portable Dev Environment · architecture: features 1: ARM + x86 architecture-aware builds"
-  },
-  {
-    "id": "project-dev-env-architecture-7",
-    "project": "dev-env",
-    "category": "project",
-    "tags": [
-      "dev-env",
-      "Portable Dev Environment",
-      "Developer Infrastructure",
-      "architecture"
-    ],
-    "text": "Portable Dev Environment · architecture: features 2: Full shell environment with Powerlevel10k, autosuggestions, syntax highlighting"
-  },
-  {
-    "id": "project-dev-env-architecture-8",
-    "project": "dev-env",
-    "category": "project",
-    "tags": [
-      "dev-env",
-      "Portable Dev Environment",
-      "Developer Infrastructure",
-      "architecture"
-    ],
-    "text": "Portable Dev Environment · architecture: features 3: Claude Code integration with WISC-optimized lazy loading"
-  },
-  {
-    "id": "project-dev-env-architecture-9",
-    "project": "dev-env",
-    "category": "project",
-    "tags": [
-      "dev-env",
-      "Portable Dev Environment",
-      "Developer Infrastructure",
-      "architecture"
-    ],
-    "text": "Portable Dev Environment · architecture: features 4: Playwright with Chromium for headless E2E inside the container"
-  },
-  {
-    "id": "project-dev-env-architecture-10",
-    "project": "dev-env",
-    "category": "project",
-    "tags": [
-      "dev-env",
-      "Portable Dev Environment",
-      "Developer Infrastructure",
-      "architecture"
-    ],
-    "text": "Portable Dev Environment · architecture: features 5: Secrets mounted at runtime, never baked into images"
-  },
-  {
-    "id": "project-dev-env-architecture-11",
-    "project": "dev-env",
-    "category": "project",
-    "tags": [
-      "dev-env",
-      "Portable Dev Environment",
-      "Developer Infrastructure",
-      "architecture"
-    ],
-    "text": "Portable Dev Environment · architecture: stack 1: Docker"
-  },
-  {
-    "id": "project-dev-env-architecture-12",
-    "project": "dev-env",
-    "category": "project",
-    "tags": [
-      "dev-env",
-      "Portable Dev Environment",
-      "Developer Infrastructure",
-      "architecture"
-    ],
-    "text": "Portable Dev Environment · architecture: stack 2: Docker Compose"
-  },
-  {
-    "id": "project-dev-env-architecture-13",
-    "project": "dev-env",
-    "category": "project",
-    "tags": [
-      "dev-env",
-      "Portable Dev Environment",
-      "Developer Infrastructure",
-      "architecture"
-    ],
-    "text": "Portable Dev Environment · architecture: stack 3: Ubuntu"
-  },
-  {
-    "id": "project-dev-env-architecture-14",
-    "project": "dev-env",
-    "category": "project",
-    "tags": [
-      "dev-env",
-      "Portable Dev Environment",
-      "Developer Infrastructure",
-      "architecture"
-    ],
-    "text": "Portable Dev Environment · architecture: stack 4: Node.js"
-  },
-  {
-    "id": "project-dev-env-architecture-15",
-    "project": "dev-env",
-    "category": "project",
-    "tags": [
-      "dev-env",
-      "Portable Dev Environment",
-      "Developer Infrastructure",
-      "architecture"
-    ],
-    "text": "Portable Dev Environment · architecture: stack 5: Playwright"
-  },
-  {
-    "id": "project-dev-env-architecture-16",
-    "project": "dev-env",
-    "category": "project",
-    "tags": [
-      "dev-env",
-      "Portable Dev Environment",
-      "Developer Infrastructure",
-      "architecture"
-    ],
-    "text": "Portable Dev Environment · architecture: stack 6: PostgreSQL"
-  },
-  {
-    "id": "project-dev-env-architecture-17",
-    "project": "dev-env",
-    "category": "project",
-    "tags": [
-      "dev-env",
-      "Portable Dev Environment",
-      "Developer Infrastructure",
-      "architecture"
-    ],
-    "text": "Portable Dev Environment · architecture: stack 7: Redis"
-  },
-  {
-    "id": "project-dev-env-decisions-1",
+    "id": "project-dev-env-decisions",
     "project": "dev-env",
     "category": "project",
     "tags": [
@@ -4735,46 +895,10 @@ export const generatedChunks = [
       "Developer Infrastructure",
       "decisions"
     ],
-    "text": "Portable Dev Environment · decisions: techDecisions 1 title: Volume mounts over baked-in code"
+    "text": "Portable Dev Environment · decisions: techDecisions 1 title: Volume mounts over baked-in code\ntechDecisions 1 description: Code lives on host, changes sync instantly. Deleting a container never loses work.\ntechDecisions 2 title: WISC context engineering\ntechDecisions 2 description: Write decisions to files, Isolate tasks per conversation, Select context by path, Compress agent definitions. 72KB → 11.7KB (84% reduction), zero capability loss."
   },
   {
-    "id": "project-dev-env-decisions-2",
-    "project": "dev-env",
-    "category": "project",
-    "tags": [
-      "dev-env",
-      "Portable Dev Environment",
-      "Developer Infrastructure",
-      "decisions"
-    ],
-    "text": "Portable Dev Environment · decisions: techDecisions 1 description: Code lives on host, changes sync instantly. Deleting a container never loses work."
-  },
-  {
-    "id": "project-dev-env-decisions-3",
-    "project": "dev-env",
-    "category": "project",
-    "tags": [
-      "dev-env",
-      "Portable Dev Environment",
-      "Developer Infrastructure",
-      "decisions"
-    ],
-    "text": "Portable Dev Environment · decisions: techDecisions 2 title: WISC context engineering"
-  },
-  {
-    "id": "project-dev-env-decisions-4",
-    "project": "dev-env",
-    "category": "project",
-    "tags": [
-      "dev-env",
-      "Portable Dev Environment",
-      "Developer Infrastructure",
-      "decisions"
-    ],
-    "text": "Portable Dev Environment · decisions: techDecisions 2 description: Write decisions to files, Isolate tasks per conversation, Select context by path, Compress agent definitions. 72KB → 11.7KB (84% reduction), zero capability loss."
-  },
-  {
-    "id": "project-dev-env-results-1",
+    "id": "project-dev-env-results",
     "project": "dev-env",
     "category": "project",
     "tags": [
@@ -4783,31 +907,7 @@ export const generatedChunks = [
       "Developer Infrastructure",
       "results"
     ],
-    "text": "Portable Dev Environment · results: results 1: 10 minutes from zero to first commit"
-  },
-  {
-    "id": "project-dev-env-results-2",
-    "project": "dev-env",
-    "category": "project",
-    "tags": [
-      "dev-env",
-      "Portable Dev Environment",
-      "Developer Infrastructure",
-      "results"
-    ],
-    "text": "Portable Dev Environment · results: results 2: Identical environment across Mac, Linux VPS, and phone SSH"
-  },
-  {
-    "id": "project-dev-env-results-3",
-    "project": "dev-env",
-    "category": "project",
-    "tags": [
-      "dev-env",
-      "Portable Dev Environment",
-      "Developer Infrastructure",
-      "results"
-    ],
-    "text": "Portable Dev Environment · results: results 3: WISC: 72KB → 11.7KB context (84% reduction)"
+    "text": "Portable Dev Environment · results: results 1: 10 minutes from zero to first commit\nresults 2: Identical environment across Mac, Linux VPS, and phone SSH\nresults 3: WISC: 72KB → 11.7KB context (84% reduction)"
   },
   {
     "id": "project-agent-orchestrator-summary-1",
@@ -4819,7 +919,7 @@ export const generatedChunks = [
       "AI Framework",
       "summary"
     ],
-    "text": "AI Agent Orchestrator · summary: title: AI Agent Orchestrator"
+    "text": "AI Agent Orchestrator · summary: title: AI Agent Orchestrator\nsubtitle: CAMEL Multi-Agent Framework\nplainSummary: A team of AI workers: one plans the job, others do it, and one checks the result before it is accepted.\nimpact: A production-grade multi-agent framework implementing CAMEL: Planner decomposes goals, Workers execute with tools, Validator runs iterative critique loops. 18 files, clean architecture, fully open-source."
   },
   {
     "id": "project-agent-orchestrator-summary-2",
@@ -4831,55 +931,7 @@ export const generatedChunks = [
       "AI Framework",
       "summary"
     ],
-    "text": "AI Agent Orchestrator · summary: subtitle: CAMEL Multi-Agent Framework"
-  },
-  {
-    "id": "project-agent-orchestrator-summary-3",
-    "project": "agent-orchestrator",
-    "category": "project",
-    "tags": [
-      "agent-orchestrator",
-      "AI Agent Orchestrator",
-      "AI Framework",
-      "summary"
-    ],
-    "text": "AI Agent Orchestrator · summary: plainSummary: A team of AI workers: one plans the job, others do it, and one checks the result before it is accepted."
-  },
-  {
-    "id": "project-agent-orchestrator-summary-4",
-    "project": "agent-orchestrator",
-    "category": "project",
-    "tags": [
-      "agent-orchestrator",
-      "AI Agent Orchestrator",
-      "AI Framework",
-      "summary"
-    ],
-    "text": "AI Agent Orchestrator · summary: impact: A production-grade multi-agent framework implementing CAMEL: Planner decomposes goals, Workers execute with tools, Validator runs iterative critique loops. 18 files, clean architecture, fully open-source."
-  },
-  {
-    "id": "project-agent-orchestrator-summary-5",
-    "project": "agent-orchestrator",
-    "category": "project",
-    "tags": [
-      "agent-orchestrator",
-      "AI Agent Orchestrator",
-      "AI Framework",
-      "summary"
-    ],
-    "text": "AI Agent Orchestrator · summary: problem: Most agent frameworks are either toy demos or massive dependency trees that obscure what's happening. Needed something small enough to understand completely but production-grade enough for real tasks."
-  },
-  {
-    "id": "project-agent-orchestrator-summary-6",
-    "project": "agent-orchestrator",
-    "category": "project",
-    "tags": [
-      "agent-orchestrator",
-      "AI Agent Orchestrator",
-      "AI Framework",
-      "summary"
-    ],
-    "text": "AI Agent Orchestrator · summary: solution: Four agent roles (Planner, Worker, Validator, Orchestrator), a formal task state machine, and CAMEL-inspired iterative critique. The Validator generates structured feedback that gets injected into the Worker's next attempt. Error patterns persist in memory for cross-task learning."
+    "text": "AI Agent Orchestrator · summary: problem: Most agent frameworks are either toy demos or massive dependency trees that obscure what's happening. Needed something small enough to understand completely but production-grade enough for real tasks.\nsolution: Four agent roles (Planner, Worker, Validator, Orchestrator), a formal task state machine, and CAMEL-inspired iterative critique. The Validator generates structured feedback that gets injected into the Worker's next attempt. Error patterns persist in memory for cross-task learning."
   },
   {
     "id": "project-agent-orchestrator-architecture-1",
@@ -4891,7 +943,7 @@ export const generatedChunks = [
       "AI Framework",
       "architecture"
     ],
-    "text": "AI Agent Orchestrator · architecture: architecture 1: Orchestrator (DAG-based task execution)"
+    "text": "AI Agent Orchestrator · architecture: architecture 1: Orchestrator (DAG-based task execution)\narchitecture 2: Planner Agent (goal decomposition)\narchitecture 3: Worker Agent (tool-use loop)\narchitecture 4: Validator Agent (iterative critique, 3 rounds)\narchitecture 5: Task State Machine (6 states)\narchitecture 6: Memory Store (error pattern persistence)\nfeatures 1: Iterative CAMEL critique: structured feedback loops, up to 3 rounds per task\nfeatures 2: Cross-task learning: error patterns persist in memory\nfeatures 3: Task DAG with dependency resolution and parallel execution"
   },
   {
     "id": "project-agent-orchestrator-architecture-2",
@@ -4903,178 +955,10 @@ export const generatedChunks = [
       "AI Framework",
       "architecture"
     ],
-    "text": "AI Agent Orchestrator · architecture: architecture 2: Planner Agent (goal decomposition)"
+    "text": "AI Agent Orchestrator · architecture: features 4: Human-in-the-loop approval gates with state-based pausing\nfeatures 5: Multi-provider: Claude and OpenAI adapters\nstack 1: TypeScript\nstack 2: Node.js\nstack 3: Anthropic SDK\nstack 4: OpenAI SDK\nstack 5: Zod"
   },
   {
-    "id": "project-agent-orchestrator-architecture-3",
-    "project": "agent-orchestrator",
-    "category": "project",
-    "tags": [
-      "agent-orchestrator",
-      "AI Agent Orchestrator",
-      "AI Framework",
-      "architecture"
-    ],
-    "text": "AI Agent Orchestrator · architecture: architecture 3: Worker Agent (tool-use loop)"
-  },
-  {
-    "id": "project-agent-orchestrator-architecture-4",
-    "project": "agent-orchestrator",
-    "category": "project",
-    "tags": [
-      "agent-orchestrator",
-      "AI Agent Orchestrator",
-      "AI Framework",
-      "architecture"
-    ],
-    "text": "AI Agent Orchestrator · architecture: architecture 4: Validator Agent (iterative critique, 3 rounds)"
-  },
-  {
-    "id": "project-agent-orchestrator-architecture-5",
-    "project": "agent-orchestrator",
-    "category": "project",
-    "tags": [
-      "agent-orchestrator",
-      "AI Agent Orchestrator",
-      "AI Framework",
-      "architecture"
-    ],
-    "text": "AI Agent Orchestrator · architecture: architecture 5: Task State Machine (6 states)"
-  },
-  {
-    "id": "project-agent-orchestrator-architecture-6",
-    "project": "agent-orchestrator",
-    "category": "project",
-    "tags": [
-      "agent-orchestrator",
-      "AI Agent Orchestrator",
-      "AI Framework",
-      "architecture"
-    ],
-    "text": "AI Agent Orchestrator · architecture: architecture 6: Memory Store (error pattern persistence)"
-  },
-  {
-    "id": "project-agent-orchestrator-architecture-7",
-    "project": "agent-orchestrator",
-    "category": "project",
-    "tags": [
-      "agent-orchestrator",
-      "AI Agent Orchestrator",
-      "AI Framework",
-      "architecture"
-    ],
-    "text": "AI Agent Orchestrator · architecture: features 1: Iterative CAMEL critique: structured feedback loops, up to 3 rounds per task"
-  },
-  {
-    "id": "project-agent-orchestrator-architecture-8",
-    "project": "agent-orchestrator",
-    "category": "project",
-    "tags": [
-      "agent-orchestrator",
-      "AI Agent Orchestrator",
-      "AI Framework",
-      "architecture"
-    ],
-    "text": "AI Agent Orchestrator · architecture: features 2: Cross-task learning: error patterns persist in memory"
-  },
-  {
-    "id": "project-agent-orchestrator-architecture-9",
-    "project": "agent-orchestrator",
-    "category": "project",
-    "tags": [
-      "agent-orchestrator",
-      "AI Agent Orchestrator",
-      "AI Framework",
-      "architecture"
-    ],
-    "text": "AI Agent Orchestrator · architecture: features 3: Task DAG with dependency resolution and parallel execution"
-  },
-  {
-    "id": "project-agent-orchestrator-architecture-10",
-    "project": "agent-orchestrator",
-    "category": "project",
-    "tags": [
-      "agent-orchestrator",
-      "AI Agent Orchestrator",
-      "AI Framework",
-      "architecture"
-    ],
-    "text": "AI Agent Orchestrator · architecture: features 4: Human-in-the-loop approval gates with state-based pausing"
-  },
-  {
-    "id": "project-agent-orchestrator-architecture-11",
-    "project": "agent-orchestrator",
-    "category": "project",
-    "tags": [
-      "agent-orchestrator",
-      "AI Agent Orchestrator",
-      "AI Framework",
-      "architecture"
-    ],
-    "text": "AI Agent Orchestrator · architecture: features 5: Multi-provider: Claude and OpenAI adapters"
-  },
-  {
-    "id": "project-agent-orchestrator-architecture-12",
-    "project": "agent-orchestrator",
-    "category": "project",
-    "tags": [
-      "agent-orchestrator",
-      "AI Agent Orchestrator",
-      "AI Framework",
-      "architecture"
-    ],
-    "text": "AI Agent Orchestrator · architecture: stack 1: TypeScript"
-  },
-  {
-    "id": "project-agent-orchestrator-architecture-13",
-    "project": "agent-orchestrator",
-    "category": "project",
-    "tags": [
-      "agent-orchestrator",
-      "AI Agent Orchestrator",
-      "AI Framework",
-      "architecture"
-    ],
-    "text": "AI Agent Orchestrator · architecture: stack 2: Node.js"
-  },
-  {
-    "id": "project-agent-orchestrator-architecture-14",
-    "project": "agent-orchestrator",
-    "category": "project",
-    "tags": [
-      "agent-orchestrator",
-      "AI Agent Orchestrator",
-      "AI Framework",
-      "architecture"
-    ],
-    "text": "AI Agent Orchestrator · architecture: stack 3: Anthropic SDK"
-  },
-  {
-    "id": "project-agent-orchestrator-architecture-15",
-    "project": "agent-orchestrator",
-    "category": "project",
-    "tags": [
-      "agent-orchestrator",
-      "AI Agent Orchestrator",
-      "AI Framework",
-      "architecture"
-    ],
-    "text": "AI Agent Orchestrator · architecture: stack 4: OpenAI SDK"
-  },
-  {
-    "id": "project-agent-orchestrator-architecture-16",
-    "project": "agent-orchestrator",
-    "category": "project",
-    "tags": [
-      "agent-orchestrator",
-      "AI Agent Orchestrator",
-      "AI Framework",
-      "architecture"
-    ],
-    "text": "AI Agent Orchestrator · architecture: stack 5: Zod"
-  },
-  {
-    "id": "project-agent-orchestrator-decisions-1",
+    "id": "project-agent-orchestrator-decisions",
     "project": "agent-orchestrator",
     "category": "project",
     "tags": [
@@ -5083,46 +967,10 @@ export const generatedChunks = [
       "AI Framework",
       "decisions"
     ],
-    "text": "AI Agent Orchestrator · decisions: techDecisions 1 title: Iterative critique over single-pass validation"
+    "text": "AI Agent Orchestrator · decisions: techDecisions 1 title: Iterative critique over single-pass validation\ntechDecisions 1 description: Validation feedback pipes directly into the Worker's next attempt. First attempt is often 70% right; three rounds get it to 95%.\ntechDecisions 2 title: 18 files, zero unnecessary abstraction\ntechDecisions 2 description: Every file has one clear responsibility. No DI framework, no plugin system, no config format. Readable in an hour."
   },
   {
-    "id": "project-agent-orchestrator-decisions-2",
-    "project": "agent-orchestrator",
-    "category": "project",
-    "tags": [
-      "agent-orchestrator",
-      "AI Agent Orchestrator",
-      "AI Framework",
-      "decisions"
-    ],
-    "text": "AI Agent Orchestrator · decisions: techDecisions 1 description: Validation feedback pipes directly into the Worker's next attempt. First attempt is often 70% right; three rounds get it to 95%."
-  },
-  {
-    "id": "project-agent-orchestrator-decisions-3",
-    "project": "agent-orchestrator",
-    "category": "project",
-    "tags": [
-      "agent-orchestrator",
-      "AI Agent Orchestrator",
-      "AI Framework",
-      "decisions"
-    ],
-    "text": "AI Agent Orchestrator · decisions: techDecisions 2 title: 18 files, zero unnecessary abstraction"
-  },
-  {
-    "id": "project-agent-orchestrator-decisions-4",
-    "project": "agent-orchestrator",
-    "category": "project",
-    "tags": [
-      "agent-orchestrator",
-      "AI Agent Orchestrator",
-      "AI Framework",
-      "decisions"
-    ],
-    "text": "AI Agent Orchestrator · decisions: techDecisions 2 description: Every file has one clear responsibility. No DI framework, no plugin system, no config format. Readable in an hour."
-  },
-  {
-    "id": "project-agent-orchestrator-results-1",
+    "id": "project-agent-orchestrator-results",
     "project": "agent-orchestrator",
     "category": "project",
     "tags": [
@@ -5131,43 +979,7 @@ export const generatedChunks = [
       "AI Framework",
       "results"
     ],
-    "text": "AI Agent Orchestrator · results: results 1: Clean 18-file architecture, fully open-source"
-  },
-  {
-    "id": "project-agent-orchestrator-results-2",
-    "project": "agent-orchestrator",
-    "category": "project",
-    "tags": [
-      "agent-orchestrator",
-      "AI Agent Orchestrator",
-      "AI Framework",
-      "results"
-    ],
-    "text": "AI Agent Orchestrator · results: results 2: CAMEL critique loop with iterative refinement"
-  },
-  {
-    "id": "project-agent-orchestrator-results-3",
-    "project": "agent-orchestrator",
-    "category": "project",
-    "tags": [
-      "agent-orchestrator",
-      "AI Agent Orchestrator",
-      "AI Framework",
-      "results"
-    ],
-    "text": "AI Agent Orchestrator · results: results 3: Cross-task learning via error pattern memory"
-  },
-  {
-    "id": "project-agent-orchestrator-results-4",
-    "project": "agent-orchestrator",
-    "category": "project",
-    "tags": [
-      "agent-orchestrator",
-      "AI Agent Orchestrator",
-      "AI Framework",
-      "results"
-    ],
-    "text": "AI Agent Orchestrator · results: results 4: State machine prevents invalid task transitions"
+    "text": "AI Agent Orchestrator · results: results 1: Clean 18-file architecture, fully open-source\nresults 2: CAMEL critique loop with iterative refinement\nresults 3: Cross-task learning via error pattern memory\nresults 4: State machine prevents invalid task transitions"
   },
   {
     "id": "project-agent-system-summary-1",
@@ -5179,58 +991,10 @@ export const generatedChunks = [
       "AI Agents",
       "summary"
     ],
-    "text": "AI Agent System · summary: title: AI Agent System"
+    "text": "AI Agent System · summary: title: AI Agent System\nsubtitle: 5 Purpose-Built AI Agents\nplainSummary: Five AI assistants that handle job search, research, code review, proposals and freelance admin on their own, at $0 a month to run.\nimpact: 5 autonomous agents (job search, research, code review, proposals, freelance automation) with real tool-calling, deployed on HuggingFace Spaces at $0/month.\nproblem: Needed AI that could actually DO things — search jobs, research tech, review PRs, draft proposals — each requiring different tools and domain knowledge. Running separate tools was slow."
   },
   {
     "id": "project-agent-system-summary-2",
-    "project": "agent-system",
-    "category": "project",
-    "tags": [
-      "agent-system",
-      "AI Agent System",
-      "AI Agents",
-      "summary"
-    ],
-    "text": "AI Agent System · summary: subtitle: 5 Purpose-Built AI Agents"
-  },
-  {
-    "id": "project-agent-system-summary-3",
-    "project": "agent-system",
-    "category": "project",
-    "tags": [
-      "agent-system",
-      "AI Agent System",
-      "AI Agents",
-      "summary"
-    ],
-    "text": "AI Agent System · summary: plainSummary: Five AI assistants that handle job search, research, code review, proposals and freelance admin on their own, at $0 a month to run."
-  },
-  {
-    "id": "project-agent-system-summary-4",
-    "project": "agent-system",
-    "category": "project",
-    "tags": [
-      "agent-system",
-      "AI Agent System",
-      "AI Agents",
-      "summary"
-    ],
-    "text": "AI Agent System · summary: impact: 5 autonomous agents (job search, research, code review, proposals, freelance automation) with real tool-calling, deployed on HuggingFace Spaces at $0/month."
-  },
-  {
-    "id": "project-agent-system-summary-5",
-    "project": "agent-system",
-    "category": "project",
-    "tags": [
-      "agent-system",
-      "AI Agent System",
-      "AI Agents",
-      "summary"
-    ],
-    "text": "AI Agent System · summary: problem: Needed AI that could actually DO things — search jobs, research tech, review PRs, draft proposals — each requiring different tools and domain knowledge. Running separate tools was slow."
-  },
-  {
-    "id": "project-agent-system-summary-6",
     "project": "agent-system",
     "category": "project",
     "tags": [
@@ -5251,7 +1015,7 @@ export const generatedChunks = [
       "AI Agents",
       "architecture"
     ],
-    "text": "AI Agent System · architecture: architecture 1: FastAPI Server (5 agent endpoints)"
+    "text": "AI Agent System · architecture: architecture 1: FastAPI Server (5 agent endpoints)\narchitecture 2: Tool-Calling Engine\narchitecture 3: Shared Tools (Tavily, URL fetcher, GitHub API)\narchitecture 4: Agent Definitions (system prompt + tools per use case)\narchitecture 5: Portfolio Web UI\nfeatures 1: Job Search Agent: multi-board search, fit evaluation, cover letter drafting\nfeatures 2: Research Agent: multi-source research with cross-referenced reports\nfeatures 3: Code Review Agent: fetches GitHub PR diffs, analyzes bugs and security\nfeatures 4: Upwork Proposal Agent: reads postings, matches skills, drafts proposals"
   },
   {
     "id": "project-agent-system-architecture-2",
@@ -5263,190 +1027,10 @@ export const generatedChunks = [
       "AI Agents",
       "architecture"
     ],
-    "text": "AI Agent System · architecture: architecture 2: Tool-Calling Engine"
+    "text": "AI Agent System · architecture: features 5: n8n Webhook Agent: receives freelance messages, drafts replies\nstack 1: Python\nstack 2: FastAPI\nstack 3: Groq\nstack 4: Tavily\nstack 5: GitHub API\nstack 6: HuggingFace Spaces\nstack 7: Docker"
   },
   {
-    "id": "project-agent-system-architecture-3",
-    "project": "agent-system",
-    "category": "project",
-    "tags": [
-      "agent-system",
-      "AI Agent System",
-      "AI Agents",
-      "architecture"
-    ],
-    "text": "AI Agent System · architecture: architecture 3: Shared Tools (Tavily, URL fetcher, GitHub API)"
-  },
-  {
-    "id": "project-agent-system-architecture-4",
-    "project": "agent-system",
-    "category": "project",
-    "tags": [
-      "agent-system",
-      "AI Agent System",
-      "AI Agents",
-      "architecture"
-    ],
-    "text": "AI Agent System · architecture: architecture 4: Agent Definitions (system prompt + tools per use case)"
-  },
-  {
-    "id": "project-agent-system-architecture-5",
-    "project": "agent-system",
-    "category": "project",
-    "tags": [
-      "agent-system",
-      "AI Agent System",
-      "AI Agents",
-      "architecture"
-    ],
-    "text": "AI Agent System · architecture: architecture 5: Portfolio Web UI"
-  },
-  {
-    "id": "project-agent-system-architecture-6",
-    "project": "agent-system",
-    "category": "project",
-    "tags": [
-      "agent-system",
-      "AI Agent System",
-      "AI Agents",
-      "architecture"
-    ],
-    "text": "AI Agent System · architecture: features 1: Job Search Agent: multi-board search, fit evaluation, cover letter drafting"
-  },
-  {
-    "id": "project-agent-system-architecture-7",
-    "project": "agent-system",
-    "category": "project",
-    "tags": [
-      "agent-system",
-      "AI Agent System",
-      "AI Agents",
-      "architecture"
-    ],
-    "text": "AI Agent System · architecture: features 2: Research Agent: multi-source research with cross-referenced reports"
-  },
-  {
-    "id": "project-agent-system-architecture-8",
-    "project": "agent-system",
-    "category": "project",
-    "tags": [
-      "agent-system",
-      "AI Agent System",
-      "AI Agents",
-      "architecture"
-    ],
-    "text": "AI Agent System · architecture: features 3: Code Review Agent: fetches GitHub PR diffs, analyzes bugs and security"
-  },
-  {
-    "id": "project-agent-system-architecture-9",
-    "project": "agent-system",
-    "category": "project",
-    "tags": [
-      "agent-system",
-      "AI Agent System",
-      "AI Agents",
-      "architecture"
-    ],
-    "text": "AI Agent System · architecture: features 4: Upwork Proposal Agent: reads postings, matches skills, drafts proposals"
-  },
-  {
-    "id": "project-agent-system-architecture-10",
-    "project": "agent-system",
-    "category": "project",
-    "tags": [
-      "agent-system",
-      "AI Agent System",
-      "AI Agents",
-      "architecture"
-    ],
-    "text": "AI Agent System · architecture: features 5: n8n Webhook Agent: receives freelance messages, drafts replies"
-  },
-  {
-    "id": "project-agent-system-architecture-11",
-    "project": "agent-system",
-    "category": "project",
-    "tags": [
-      "agent-system",
-      "AI Agent System",
-      "AI Agents",
-      "architecture"
-    ],
-    "text": "AI Agent System · architecture: stack 1: Python"
-  },
-  {
-    "id": "project-agent-system-architecture-12",
-    "project": "agent-system",
-    "category": "project",
-    "tags": [
-      "agent-system",
-      "AI Agent System",
-      "AI Agents",
-      "architecture"
-    ],
-    "text": "AI Agent System · architecture: stack 2: FastAPI"
-  },
-  {
-    "id": "project-agent-system-architecture-13",
-    "project": "agent-system",
-    "category": "project",
-    "tags": [
-      "agent-system",
-      "AI Agent System",
-      "AI Agents",
-      "architecture"
-    ],
-    "text": "AI Agent System · architecture: stack 3: Groq"
-  },
-  {
-    "id": "project-agent-system-architecture-14",
-    "project": "agent-system",
-    "category": "project",
-    "tags": [
-      "agent-system",
-      "AI Agent System",
-      "AI Agents",
-      "architecture"
-    ],
-    "text": "AI Agent System · architecture: stack 4: Tavily"
-  },
-  {
-    "id": "project-agent-system-architecture-15",
-    "project": "agent-system",
-    "category": "project",
-    "tags": [
-      "agent-system",
-      "AI Agent System",
-      "AI Agents",
-      "architecture"
-    ],
-    "text": "AI Agent System · architecture: stack 5: GitHub API"
-  },
-  {
-    "id": "project-agent-system-architecture-16",
-    "project": "agent-system",
-    "category": "project",
-    "tags": [
-      "agent-system",
-      "AI Agent System",
-      "AI Agents",
-      "architecture"
-    ],
-    "text": "AI Agent System · architecture: stack 6: HuggingFace Spaces"
-  },
-  {
-    "id": "project-agent-system-architecture-17",
-    "project": "agent-system",
-    "category": "project",
-    "tags": [
-      "agent-system",
-      "AI Agent System",
-      "AI Agents",
-      "architecture"
-    ],
-    "text": "AI Agent System · architecture: stack 7: Docker"
-  },
-  {
-    "id": "project-agent-system-decisions-1",
+    "id": "project-agent-system-decisions",
     "project": "agent-system",
     "category": "project",
     "tags": [
@@ -5455,46 +1039,10 @@ export const generatedChunks = [
       "AI Agents",
       "decisions"
     ],
-    "text": "AI Agent System · decisions: techDecisions 1 title: Groq for inference"
+    "text": "AI Agent System · decisions: techDecisions 1 title: Groq for inference\ntechDecisions 1 description: Free tier, 300 tokens/sec, native tool-calling. Zero inference cost.\ntechDecisions 2 title: Agent-per-purpose over general assistant\ntechDecisions 2 description: Each agent has a focused prompt and curated tool set. Scoping prevents confusion and hallucination."
   },
   {
-    "id": "project-agent-system-decisions-2",
-    "project": "agent-system",
-    "category": "project",
-    "tags": [
-      "agent-system",
-      "AI Agent System",
-      "AI Agents",
-      "decisions"
-    ],
-    "text": "AI Agent System · decisions: techDecisions 1 description: Free tier, 300 tokens/sec, native tool-calling. Zero inference cost."
-  },
-  {
-    "id": "project-agent-system-decisions-3",
-    "project": "agent-system",
-    "category": "project",
-    "tags": [
-      "agent-system",
-      "AI Agent System",
-      "AI Agents",
-      "decisions"
-    ],
-    "text": "AI Agent System · decisions: techDecisions 2 title: Agent-per-purpose over general assistant"
-  },
-  {
-    "id": "project-agent-system-decisions-4",
-    "project": "agent-system",
-    "category": "project",
-    "tags": [
-      "agent-system",
-      "AI Agent System",
-      "AI Agents",
-      "decisions"
-    ],
-    "text": "AI Agent System · decisions: techDecisions 2 description: Each agent has a focused prompt and curated tool set. Scoping prevents confusion and hallucination."
-  },
-  {
-    "id": "project-agent-system-results-1",
+    "id": "project-agent-system-results",
     "project": "agent-system",
     "category": "project",
     "tags": [
@@ -5503,43 +1051,7 @@ export const generatedChunks = [
       "AI Agents",
       "results"
     ],
-    "text": "AI Agent System · results: results 1: 5 autonomous agents deployed and operational"
-  },
-  {
-    "id": "project-agent-system-results-2",
-    "project": "agent-system",
-    "category": "project",
-    "tags": [
-      "agent-system",
-      "AI Agent System",
-      "AI Agents",
-      "results"
-    ],
-    "text": "AI Agent System · results: results 2: 1-8 tool calls per request, fully automated"
-  },
-  {
-    "id": "project-agent-system-results-3",
-    "project": "agent-system",
-    "category": "project",
-    "tags": [
-      "agent-system",
-      "AI Agent System",
-      "AI Agents",
-      "results"
-    ],
-    "text": "AI Agent System · results: results 3: $0/month hosting on free tiers"
-  },
-  {
-    "id": "project-agent-system-results-4",
-    "project": "agent-system",
-    "category": "project",
-    "tags": [
-      "agent-system",
-      "AI Agent System",
-      "AI Agents",
-      "results"
-    ],
-    "text": "AI Agent System · results: results 4: API-first: callable from n8n, PWA, or any HTTP client"
+    "text": "AI Agent System · results: results 1: 5 autonomous agents deployed and operational\nresults 2: 1-8 tool calls per request, fully automated\nresults 3: $0/month hosting on free tiers\nresults 4: API-first: callable from n8n, PWA, or any HTTP client"
   },
   {
     "id": "story-openevent",
@@ -5667,7 +1179,7 @@ export const generatedChunks = [
       "five-strategy-json-parser",
       "The 5-Strategy JSON Parser That Took Tool Calls from 70% to 95%"
     ],
-    "text": "The 5-Strategy JSON Parser That Took Tool Calls from 70% to 95%: Section 2: The problem nobody talks about"
+    "text": "The 5-Strategy JSON Parser That Took Tool Calls from 70% to 95%: Section 2 (The problem nobody talks about): A single JSON.parse throws on any of these, and the tool call is lost. The agent retries, burns tokens, and often produces a worse result the second time because its context now includes a confusing error message. On real agentic sessions across multiple providers, I measured a ~70% success rate for tool call parsing with naive JSON.parse.\nThirty percent of tool calls silently failing is not a minor inconvenience. It is the difference between an agent that reliably completes multi-step tasks and one that randomly falls apart."
   },
   {
     "id": "article-five-strategy-json-parser-5",
@@ -5679,7 +1191,7 @@ export const generatedChunks = [
       "five-strategy-json-parser",
       "The 5-Strategy JSON Parser That Took Tool Calls from 70% to 95%"
     ],
-    "text": "The 5-Strategy JSON Parser That Took Tool Calls from 70% to 95%: Section 2: A single JSON.parse throws on any of these, and the tool call is lost. The agent retries, burns tokens, and often produces a worse result the second time because its context now includes a confusing error message. On real agentic sessions across multiple providers, I measured a ~70% success rate for tool call parsing with naive JSON.parse."
+    "text": "The 5-Strategy JSON Parser That Took Tool Calls from 70% to 95%: Section 3 (Five strategies, progressive fallback): The parser tries five strategies in order, each progressively looser: strict JSON.parse on the raw input. Trim whitespace and strip markdown code fences, then parse. Unescape double-escaped characters (\\\\n to \\n, \\\\\" to \\\"), then parse. Attempt partial object reconstruction by finding the last complete key-value pair and closing the object. Finally, extract any JSON-like substring from the response and parse that."
   },
   {
     "id": "article-five-strategy-json-parser-6",
@@ -5691,7 +1203,7 @@ export const generatedChunks = [
       "five-strategy-json-parser",
       "The 5-Strategy JSON Parser That Took Tool Calls from 70% to 95%"
     ],
-    "text": "The 5-Strategy JSON Parser That Took Tool Calls from 70% to 95%: Section 2: Thirty percent of tool calls silently failing is not a minor inconvenience. It is the difference between an agent that reliably completes multi-step tasks and one that randomly falls apart."
+    "text": "The 5-Strategy JSON Parser That Took Tool Calls from 70% to 95%: Section 3 (Five strategies, progressive fallback): When a strategy partially recovers the input, it injects an error recovery hint into the tool result. The model sees something like 'Parsed with recovery: original input had trailing truncation. Please verify the file_path argument.' This gives the model enough information to retry correctly if the recovered parse was wrong, without the confusing generic error that causes hallucinated retries."
   },
   {
     "id": "article-five-strategy-json-parser-7",
@@ -5703,67 +1215,7 @@ export const generatedChunks = [
       "five-strategy-json-parser",
       "The 5-Strategy JSON Parser That Took Tool Calls from 70% to 95%"
     ],
-    "text": "The 5-Strategy JSON Parser That Took Tool Calls from 70% to 95%: Section 3: Five strategies, progressive fallback"
-  },
-  {
-    "id": "article-five-strategy-json-parser-8",
-    "project": "writing",
-    "category": "article",
-    "tags": [
-      "article",
-      "writing",
-      "five-strategy-json-parser",
-      "The 5-Strategy JSON Parser That Took Tool Calls from 70% to 95%"
-    ],
-    "text": "The 5-Strategy JSON Parser That Took Tool Calls from 70% to 95%: Section 3: The parser tries five strategies in order, each progressively looser: strict JSON.parse on the raw input. Trim whitespace and strip markdown code fences, then parse. Unescape double-escaped characters (\\\\n to \\n, \\\\\" to \\\"), then parse. Attempt partial object reconstruction by finding the last complete key-value pair and closing the object. Finally, extract any JSON-like substring from the response and parse that."
-  },
-  {
-    "id": "article-five-strategy-json-parser-9",
-    "project": "writing",
-    "category": "article",
-    "tags": [
-      "article",
-      "writing",
-      "five-strategy-json-parser",
-      "The 5-Strategy JSON Parser That Took Tool Calls from 70% to 95%"
-    ],
-    "text": "The 5-Strategy JSON Parser That Took Tool Calls from 70% to 95%: Section 3: When a strategy partially recovers the input, it injects an error recovery hint into the tool result. The model sees something like 'Parsed with recovery: original input had trailing truncation. Please verify the file_path argument.' This gives the model enough information to retry correctly if the recovered parse was wrong, without the confusing generic error that causes hallucinated retries."
-  },
-  {
-    "id": "article-five-strategy-json-parser-10",
-    "project": "writing",
-    "category": "article",
-    "tags": [
-      "article",
-      "writing",
-      "five-strategy-json-parser",
-      "The 5-Strategy JSON Parser That Took Tool Calls from 70% to 95%"
-    ],
-    "text": "The 5-Strategy JSON Parser That Took Tool Calls from 70% to 95%: Section 4: The result"
-  },
-  {
-    "id": "article-five-strategy-json-parser-11",
-    "project": "writing",
-    "category": "article",
-    "tags": [
-      "article",
-      "writing",
-      "five-strategy-json-parser",
-      "The 5-Strategy JSON Parser That Took Tool Calls from 70% to 95%"
-    ],
-    "text": "The 5-Strategy JSON Parser That Took Tool Calls from 70% to 95%: Section 4: Tool call success went from ~70% to ~95% on real agentic sessions. The remaining 5% are genuinely malformed outputs where the model produced something that isn't JSON at all, and those get a clear error message that leads to a clean retry."
-  },
-  {
-    "id": "article-five-strategy-json-parser-12",
-    "project": "writing",
-    "category": "article",
-    "tags": [
-      "article",
-      "writing",
-      "five-strategy-json-parser",
-      "The 5-Strategy JSON Parser That Took Tool Calls from 70% to 95%"
-    ],
-    "text": "The 5-Strategy JSON Parser That Took Tool Calls from 70% to 95%: Section 4: This is not glamorous work. Nobody writes conference talks about JSON parsing. But it is the kind of infrastructure that separates a demo from a tool people actually use for hours at a time. If you are building an AI agent and your tool calls occasionally fail for no apparent reason, your parser is probably the problem."
+    "text": "The 5-Strategy JSON Parser That Took Tool Calls from 70% to 95%: Section 4 (The result): Tool call success went from ~70% to ~95% on real agentic sessions. The remaining 5% are genuinely malformed outputs where the model produced something that isn't JSON at all, and those get a clear error message that leads to a clean retry.\nThis is not glamorous work. Nobody writes conference talks about JSON parsing. But it is the kind of infrastructure that separates a demo from a tool people actually use for hours at a time. If you are building an AI agent and your tool calls occasionally fail for no apparent reason, your parser is probably the problem."
   },
   {
     "id": "article-human-in-the-loop-not-a-compromise-1",
@@ -5787,7 +1239,7 @@ export const generatedChunks = [
       "human-in-the-loop-not-a-compromise",
       "Human-in-the-Loop Is Not a Compromise"
     ],
-    "text": "Human-in-the-Loop Is Not a Compromise: Section 1: When we started building the AI layer for OpenEvent, the obvious pitch was full automation. Email arrives, AI reads it, books the calendar, sends the invoice. Zero human involvement. It sounds impressive in a demo."
+    "text": "Human-in-the-Loop Is Not a Compromise: Section 1: When we started building the AI layer for OpenEvent, the obvious pitch was full automation. Email arrives, AI reads it, books the calendar, sends the invoice. Zero human involvement. It sounds impressive in a demo.\nWe deliberately did not build that. And the decision to not automate is the reason the system is now live with 100+ clients across 150+ events."
   },
   {
     "id": "article-human-in-the-loop-not-a-compromise-3",
@@ -5799,7 +1251,7 @@ export const generatedChunks = [
       "human-in-the-loop-not-a-compromise",
       "Human-in-the-Loop Is Not a Compromise"
     ],
-    "text": "Human-in-the-Loop Is Not a Compromise: Section 1: We deliberately did not build that. And the decision to not automate is the reason the system is now live with 100+ clients across 150+ events."
+    "text": "Human-in-the-Loop Is Not a Compromise: Section 2 (Where full automation breaks): Event coordination is full of ambiguity. A client writes 'sometime next week' and means Thursday afternoon because that is when their venue is available, but they did not say that. Another writes 'add catering for 15' but the venue contract caps food service at 12 and requires a different vendor above that threshold. A third sends 'change the deposit' with no amount specified."
   },
   {
     "id": "article-human-in-the-loop-not-a-compromise-4",
@@ -5811,7 +1263,7 @@ export const generatedChunks = [
       "human-in-the-loop-not-a-compromise",
       "Human-in-the-Loop Is Not a Compromise"
     ],
-    "text": "Human-in-the-Loop Is Not a Compromise: Section 2: Where full automation breaks"
+    "text": "Human-in-the-Loop Is Not a Compromise: Section 2 (Where full automation breaks): A slot-filling algorithm treats these as missing fields and either guesses or asks a follow-up. But the right response requires judgment. It requires knowing that this particular client always means Thursday, that the venue cap is a hard constraint, that 'change the deposit' from this sender historically means 'match what we did last time.'\nFull automation fails the first time the AI misreads 'sometime next week' and books the wrong slot. The client loses trust. The operations team goes back to manual processing. The whole AI investment is wasted."
   },
   {
     "id": "article-human-in-the-loop-not-a-compromise-5",
@@ -5823,7 +1275,7 @@ export const generatedChunks = [
       "human-in-the-loop-not-a-compromise",
       "Human-in-the-Loop Is Not a Compromise"
     ],
-    "text": "Human-in-the-Loop Is Not a Compromise: Section 2: Event coordination is full of ambiguity. A client writes 'sometime next week' and means Thursday afternoon because that is when their venue is available, but they did not say that. Another writes 'add catering for 15' but the venue contract caps food service at 12 and requires a different vendor above that threshold. A third sends 'change the deposit' with no amount specified."
+    "text": "Human-in-the-Loop Is Not a Compromise: Section 3 (The right boundary): The system we built draws a clear line: AI handles extraction, classification, and proposal. Humans approve before anything touches money or commitments."
   },
   {
     "id": "article-human-in-the-loop-not-a-compromise-6",
@@ -5835,7 +1287,7 @@ export const generatedChunks = [
       "human-in-the-loop-not-a-compromise",
       "Human-in-the-Loop Is Not a Compromise"
     ],
-    "text": "Human-in-the-Loop Is Not a Compromise: Section 2: A slot-filling algorithm treats these as missing fields and either guesses or asks a follow-up. But the right response requires judgment. It requires knowing that this particular client always means Thursday, that the venue cap is a hard constraint, that 'change the deposit' from this sender historically means 'match what we did last time.'"
+    "text": "Human-in-the-Loop Is Not a Compromise: Section 3 (The right boundary): An email arrives. The AI classifies the intent (booking request, change request, inquiry). It extracts entities (dates, counts, amounts). It looks up historical context via pgvector embeddings. It proposes an action: 'Book Thursday 2pm, 15 guests, standard catering package, based on last 3 bookings from this client.' The human sees the proposal, the reasoning, and the confidence score. One click to approve, one click to edit, one click to reject."
   },
   {
     "id": "article-human-in-the-loop-not-a-compromise-7",
@@ -5847,7 +1299,7 @@ export const generatedChunks = [
       "human-in-the-loop-not-a-compromise",
       "Human-in-the-Loop Is Not a Compromise"
     ],
-    "text": "Human-in-the-Loop Is Not a Compromise: Section 2: Full automation fails the first time the AI misreads 'sometime next week' and books the wrong slot. The client loses trust. The operations team goes back to manual processing. The whole AI investment is wasted."
+    "text": "Human-in-the-Loop Is Not a Compromise: Section 3 (The right boundary): This is not a compromise. This is the correct architecture for a domain where the cost of a wrong automated action (double-booking a venue, sending a wrong invoice) far exceeds the cost of a human spending three seconds reviewing a proposal."
   },
   {
     "id": "article-human-in-the-loop-not-a-compromise-8",
@@ -5859,7 +1311,7 @@ export const generatedChunks = [
       "human-in-the-loop-not-a-compromise",
       "Human-in-the-Loop Is Not a Compromise"
     ],
-    "text": "Human-in-the-Loop Is Not a Compromise: Section 3: The right boundary"
+    "text": "Human-in-the-Loop Is Not a Compromise: Section 4 (Trust compounds): The system now saves each team roughly 1.5 hours per day. Not by eliminating humans from the loop, but by eliminating the tedious parts: reading emails, copying data between systems, looking up client history, drafting responses. The AI does all of that. The human just makes the final call.\nTeams trust it because it never acts without asking. That trust is why adoption was immediate and sticky. The fully automated competitor they tried before OpenEvent booked a wrong venue on day two, and they went back to spreadsheets."
   },
   {
     "id": "article-human-in-the-loop-not-a-compromise-9",
@@ -5871,79 +1323,7 @@ export const generatedChunks = [
       "human-in-the-loop-not-a-compromise",
       "Human-in-the-Loop Is Not a Compromise"
     ],
-    "text": "Human-in-the-Loop Is Not a Compromise: Section 3: The system we built draws a clear line: AI handles extraction, classification, and proposal. Humans approve before anything touches money or commitments."
-  },
-  {
-    "id": "article-human-in-the-loop-not-a-compromise-10",
-    "project": "writing",
-    "category": "article",
-    "tags": [
-      "article",
-      "writing",
-      "human-in-the-loop-not-a-compromise",
-      "Human-in-the-Loop Is Not a Compromise"
-    ],
-    "text": "Human-in-the-Loop Is Not a Compromise: Section 3: An email arrives. The AI classifies the intent (booking request, change request, inquiry). It extracts entities (dates, counts, amounts). It looks up historical context via pgvector embeddings. It proposes an action: 'Book Thursday 2pm, 15 guests, standard catering package, based on last 3 bookings from this client.' The human sees the proposal, the reasoning, and the confidence score. One click to approve, one click to edit, one click to reject."
-  },
-  {
-    "id": "article-human-in-the-loop-not-a-compromise-11",
-    "project": "writing",
-    "category": "article",
-    "tags": [
-      "article",
-      "writing",
-      "human-in-the-loop-not-a-compromise",
-      "Human-in-the-Loop Is Not a Compromise"
-    ],
-    "text": "Human-in-the-Loop Is Not a Compromise: Section 3: This is not a compromise. This is the correct architecture for a domain where the cost of a wrong automated action (double-booking a venue, sending a wrong invoice) far exceeds the cost of a human spending three seconds reviewing a proposal."
-  },
-  {
-    "id": "article-human-in-the-loop-not-a-compromise-12",
-    "project": "writing",
-    "category": "article",
-    "tags": [
-      "article",
-      "writing",
-      "human-in-the-loop-not-a-compromise",
-      "Human-in-the-Loop Is Not a Compromise"
-    ],
-    "text": "Human-in-the-Loop Is Not a Compromise: Section 4: Trust compounds"
-  },
-  {
-    "id": "article-human-in-the-loop-not-a-compromise-13",
-    "project": "writing",
-    "category": "article",
-    "tags": [
-      "article",
-      "writing",
-      "human-in-the-loop-not-a-compromise",
-      "Human-in-the-Loop Is Not a Compromise"
-    ],
-    "text": "Human-in-the-Loop Is Not a Compromise: Section 4: The system now saves each team roughly 1.5 hours per day. Not by eliminating humans from the loop, but by eliminating the tedious parts: reading emails, copying data between systems, looking up client history, drafting responses. The AI does all of that. The human just makes the final call."
-  },
-  {
-    "id": "article-human-in-the-loop-not-a-compromise-14",
-    "project": "writing",
-    "category": "article",
-    "tags": [
-      "article",
-      "writing",
-      "human-in-the-loop-not-a-compromise",
-      "Human-in-the-Loop Is Not a Compromise"
-    ],
-    "text": "Human-in-the-Loop Is Not a Compromise: Section 4: Teams trust it because it never acts without asking. That trust is why adoption was immediate and sticky. The fully automated competitor they tried before OpenEvent booked a wrong venue on day two, and they went back to spreadsheets."
-  },
-  {
-    "id": "article-human-in-the-loop-not-a-compromise-15",
-    "project": "writing",
-    "category": "article",
-    "tags": [
-      "article",
-      "writing",
-      "human-in-the-loop-not-a-compromise",
-      "Human-in-the-Loop Is Not a Compromise"
-    ],
-    "text": "Human-in-the-Loop Is Not a Compromise: Section 4: If you are building AI for a domain where mistakes are expensive, think carefully about where the automation boundary should be. 'AI proposes, human approves' is not a limitation. It is a feature."
+    "text": "Human-in-the-Loop Is Not a Compromise: Section 4 (Trust compounds): If you are building AI for a domain where mistakes are expensive, think carefully about where the automation boundary should be. 'AI proposes, human approves' is not a limitation. It is a feature."
   },
   {
     "id": "article-wisc-context-engineering-1",
@@ -5967,7 +1347,7 @@ export const generatedChunks = [
       "wisc-context-engineering",
       "WISC: A Framework for AI Agent Context Engineering"
     ],
-    "text": "WISC: A Framework for AI Agent Context Engineering: Section 1: I had a well-configured Claude Code setup. 5 agents, 10 commands, 23 plugins, 7 rules. It worked great. It also loaded 72KB of system prompt on every single conversation, burning 35-40K tokens before I typed a word."
+    "text": "WISC: A Framework for AI Agent Context Engineering: Section 1: I had a well-configured Claude Code setup. 5 agents, 10 commands, 23 plugins, 7 rules. It worked great. It also loaded 72KB of system prompt on every single conversation, burning 35-40K tokens before I typed a word.\nOn a paid tier, that is real money. More importantly, it wastes context window for every session. A greeting that should cost 24 tokens was costing 3,909. I needed a systematic way to keep every capability while dramatically reducing the always-loaded footprint."
   },
   {
     "id": "article-wisc-context-engineering-3",
@@ -5979,7 +1359,7 @@ export const generatedChunks = [
       "wisc-context-engineering",
       "WISC: A Framework for AI Agent Context Engineering"
     ],
-    "text": "WISC: A Framework for AI Agent Context Engineering: Section 1: On a paid tier, that is real money. More importantly, it wastes context window for every session. A greeting that should cost 24 tokens was costing 3,909. I needed a systematic way to keep every capability while dramatically reducing the always-loaded footprint."
+    "text": "WISC: A Framework for AI Agent Context Engineering: Section 2 (Write: persist decisions to files, not conversation): The first principle is simple: anything the AI needs to know across sessions should be in a file, not re-explained every time. CLAUDE.md files, memory records, decision logs. Every session starts informed because the context is on disk, not in your head. This eliminates the 'let me explain the project again' overhead that makes long-running projects expensive."
   },
   {
     "id": "article-wisc-context-engineering-4",
@@ -5991,7 +1371,7 @@ export const generatedChunks = [
       "wisc-context-engineering",
       "WISC: A Framework for AI Agent Context Engineering"
     ],
-    "text": "WISC: A Framework for AI Agent Context Engineering: Section 2: Write: persist decisions to files, not conversation"
+    "text": "WISC: A Framework for AI Agent Context Engineering: Section 3 (Isolate: one task per conversation): Context contamination is the silent killer of AI-assisted development. A debugging session should not carry the context of a feature discussion from 30 turns ago. One task per conversation. Subagents for research that might pull in irrelevant context. Worktrees for parallel branches so agents never share git state. This keeps each conversation focused and prevents the gradual degradation that happens when context accumulates."
   },
   {
     "id": "article-wisc-context-engineering-5",
@@ -6003,7 +1383,7 @@ export const generatedChunks = [
       "wisc-context-engineering",
       "WISC: A Framework for AI Agent Context Engineering"
     ],
-    "text": "WISC: A Framework for AI Agent Context Engineering: Section 2: The first principle is simple: anything the AI needs to know across sessions should be in a file, not re-explained every time. CLAUDE.md files, memory records, decision logs. Every session starts informed because the context is on disk, not in your head. This eliminates the 'let me explain the project again' overhead that makes long-running projects expensive."
+    "text": "WISC: A Framework for AI Agent Context Engineering: Section 4 (Select: load only what matches): This is where the biggest savings came from. Path-scoped rules only load when matching files are opened. TypeScript rules do not load when you are editing SQL. Database rules do not load when you are writing React components. Skills load their body only on invoke, not at startup. A project hook injects context only when inside a known project directory.\nThe same principle applied in Gogaa CLI through intent-based lazy context. An intent classifier categorizes each prompt (chat, code, search, memory, skill) and loads only the matching context slices. A greeting loads 24 tokens instead of 3,909."
   },
   {
     "id": "article-wisc-context-engineering-6",
@@ -6015,7 +1395,7 @@ export const generatedChunks = [
       "wisc-context-engineering",
       "WISC: A Framework for AI Agent Context Engineering"
     ],
-    "text": "WISC: A Framework for AI Agent Context Engineering: Section 3: Isolate: one task per conversation"
+    "text": "WISC: A Framework for AI Agent Context Engineering: Section 5 (Compress: strip what the model already knows): Agent definitions had grown to 58KB. Most of that was generic advice: 'write clean code', 'handle errors properly', 'use meaningful variable names.' The model already knows this. Stripping generic advice and keeping only stack-specific rules, project-specific conventions, and non-obvious constraints brought agent definitions from 58KB to 5KB.\nEight commands were converted to lazy-loaded skills. Same capability, but the body only loads when invoked. Rules were trimmed to essentials. The result: 72KB always-loaded context down to 11.7KB. Every capability preserved. 84% reduction."
   },
   {
     "id": "article-wisc-context-engineering-7",
@@ -6027,103 +1407,7 @@ export const generatedChunks = [
       "wisc-context-engineering",
       "WISC: A Framework for AI Agent Context Engineering"
     ],
-    "text": "WISC: A Framework for AI Agent Context Engineering: Section 3: Context contamination is the silent killer of AI-assisted development. A debugging session should not carry the context of a feature discussion from 30 turns ago. One task per conversation. Subagents for research that might pull in irrelevant context. Worktrees for parallel branches so agents never share git state. This keeps each conversation focused and prevents the gradual degradation that happens when context accumulates."
-  },
-  {
-    "id": "article-wisc-context-engineering-8",
-    "project": "writing",
-    "category": "article",
-    "tags": [
-      "article",
-      "writing",
-      "wisc-context-engineering",
-      "WISC: A Framework for AI Agent Context Engineering"
-    ],
-    "text": "WISC: A Framework for AI Agent Context Engineering: Section 4: Select: load only what matches"
-  },
-  {
-    "id": "article-wisc-context-engineering-9",
-    "project": "writing",
-    "category": "article",
-    "tags": [
-      "article",
-      "writing",
-      "wisc-context-engineering",
-      "WISC: A Framework for AI Agent Context Engineering"
-    ],
-    "text": "WISC: A Framework for AI Agent Context Engineering: Section 4: This is where the biggest savings came from. Path-scoped rules only load when matching files are opened. TypeScript rules do not load when you are editing SQL. Database rules do not load when you are writing React components. Skills load their body only on invoke, not at startup. A project hook injects context only when inside a known project directory."
-  },
-  {
-    "id": "article-wisc-context-engineering-10",
-    "project": "writing",
-    "category": "article",
-    "tags": [
-      "article",
-      "writing",
-      "wisc-context-engineering",
-      "WISC: A Framework for AI Agent Context Engineering"
-    ],
-    "text": "WISC: A Framework for AI Agent Context Engineering: Section 4: The same principle applied in Gogaa CLI through intent-based lazy context. An intent classifier categorizes each prompt (chat, code, search, memory, skill) and loads only the matching context slices. A greeting loads 24 tokens instead of 3,909."
-  },
-  {
-    "id": "article-wisc-context-engineering-11",
-    "project": "writing",
-    "category": "article",
-    "tags": [
-      "article",
-      "writing",
-      "wisc-context-engineering",
-      "WISC: A Framework for AI Agent Context Engineering"
-    ],
-    "text": "WISC: A Framework for AI Agent Context Engineering: Section 5: Compress: strip what the model already knows"
-  },
-  {
-    "id": "article-wisc-context-engineering-12",
-    "project": "writing",
-    "category": "article",
-    "tags": [
-      "article",
-      "writing",
-      "wisc-context-engineering",
-      "WISC: A Framework for AI Agent Context Engineering"
-    ],
-    "text": "WISC: A Framework for AI Agent Context Engineering: Section 5: Agent definitions had grown to 58KB. Most of that was generic advice: 'write clean code', 'handle errors properly', 'use meaningful variable names.' The model already knows this. Stripping generic advice and keeping only stack-specific rules, project-specific conventions, and non-obvious constraints brought agent definitions from 58KB to 5KB."
-  },
-  {
-    "id": "article-wisc-context-engineering-13",
-    "project": "writing",
-    "category": "article",
-    "tags": [
-      "article",
-      "writing",
-      "wisc-context-engineering",
-      "WISC: A Framework for AI Agent Context Engineering"
-    ],
-    "text": "WISC: A Framework for AI Agent Context Engineering: Section 5: Eight commands were converted to lazy-loaded skills. Same capability, but the body only loads when invoked. Rules were trimmed to essentials. The result: 72KB always-loaded context down to 11.7KB. Every capability preserved. 84% reduction."
-  },
-  {
-    "id": "article-wisc-context-engineering-14",
-    "project": "writing",
-    "category": "article",
-    "tags": [
-      "article",
-      "writing",
-      "wisc-context-engineering",
-      "WISC: A Framework for AI Agent Context Engineering"
-    ],
-    "text": "WISC: A Framework for AI Agent Context Engineering: Section 6: Apply it to your own setup"
-  },
-  {
-    "id": "article-wisc-context-engineering-15",
-    "project": "writing",
-    "category": "article",
-    "tags": [
-      "article",
-      "writing",
-      "wisc-context-engineering",
-      "WISC: A Framework for AI Agent Context Engineering"
-    ],
-    "text": "WISC: A Framework for AI Agent Context Engineering: Section 6: WISC is not a tool. It is a design discipline. If you are using Claude Code, Cursor, or any AI coding assistant with a growing configuration, audit your context budget. Check what loads on every conversation. Ask: does the model need this right now, or only when relevant? The answer is almost always 'only when relevant.' Structure your configuration accordingly."
+    "text": "WISC: A Framework for AI Agent Context Engineering: Section 6 (Apply it to your own setup): WISC is not a tool. It is a design discipline. If you are using Claude Code, Cursor, or any AI coding assistant with a growing configuration, audit your context budget. Check what loads on every conversation. Ask: does the model need this right now, or only when relevant? The answer is almost always 'only when relevant.' Structure your configuration accordingly."
   },
   {
     "id": "article-hand-crafted-patterns-beat-ai-review-1",
@@ -6171,7 +1455,7 @@ export const generatedChunks = [
       "hand-crafted-patterns-beat-ai-review",
       "430 Hand-Crafted Bug Patterns Beat AI Review (Most of the Time)"
     ],
-    "text": "430 Hand-Crafted Bug Patterns Beat AI Review (Most of the Time): Section 2: Why patterns work"
+    "text": "430 Hand-Crafted Bug Patterns Beat AI Review (Most of the Time): Section 2 (Why patterns work): A hand-crafted pattern for 'Supabase query without .limit()' runs in microseconds, never hallucinates, produces zero false positives when written correctly, and catches the exact bug it was designed for. An AI reviewer might catch it, might not, might flag something else instead, and will definitely cost 10-50x more in compute."
   },
   {
     "id": "article-hand-crafted-patterns-beat-ai-review-5",
@@ -6183,7 +1467,7 @@ export const generatedChunks = [
       "hand-crafted-patterns-beat-ai-review",
       "430 Hand-Crafted Bug Patterns Beat AI Review (Most of the Time)"
     ],
-    "text": "430 Hand-Crafted Bug Patterns Beat AI Review (Most of the Time): Section 2: A hand-crafted pattern for 'Supabase query without .limit()' runs in microseconds, never hallucinates, produces zero false positives when written correctly, and catches the exact bug it was designed for. An AI reviewer might catch it, might not, might flag something else instead, and will definitely cost 10-50x more in compute."
+    "text": "430 Hand-Crafted Bug Patterns Beat AI Review (Most of the Time): Section 2 (Why patterns work): Over months of reviewing production code across client projects, I built a library of ~430 patterns across 9 stacks. Every pattern maps to a real production failure mode, tagged with OWASP/CWE where applicable. The full scan runs in under a second on the developer's machine. Code never leaves the repo."
   },
   {
     "id": "article-hand-crafted-patterns-beat-ai-review-6",
@@ -6195,7 +1479,7 @@ export const generatedChunks = [
       "hand-crafted-patterns-beat-ai-review",
       "430 Hand-Crafted Bug Patterns Beat AI Review (Most of the Time)"
     ],
-    "text": "430 Hand-Crafted Bug Patterns Beat AI Review (Most of the Time): Section 2: Over months of reviewing production code across client projects, I built a library of ~430 patterns across 9 stacks. Every pattern maps to a real production failure mode, tagged with OWASP/CWE where applicable. The full scan runs in under a second on the developer's machine. Code never leaves the repo."
+    "text": "430 Hand-Crafted Bug Patterns Beat AI Review (Most of the Time): Section 3 (Where patterns fail): Patterns cannot reason about intent. They cannot look at an authorization check and ask 'but does this verify that the user owns the resource, or just that they are authenticated?' They cannot detect that a fallback path silently succeeds when it should propagate the error. They cannot notice that a refactor changed behavior in a way that no single line reveals."
   },
   {
     "id": "article-hand-crafted-patterns-beat-ai-review-7",
@@ -6207,7 +1491,7 @@ export const generatedChunks = [
       "hand-crafted-patterns-beat-ai-review",
       "430 Hand-Crafted Bug Patterns Beat AI Review (Most of the Time)"
     ],
-    "text": "430 Hand-Crafted Bug Patterns Beat AI Review (Most of the Time): Section 3: Where patterns fail"
+    "text": "430 Hand-Crafted Bug Patterns Beat AI Review (Most of the Time): Section 3 (Where patterns fail): After a commercial AI reviewer (Greptile) caught 12 issues on a production PR that CodeLens missed, I ran a systematic gap analysis. Six of the twelve were fixable with new regex patterns. Four required semantic reasoning that no pattern can express. For those four, I added focused security probes: structured questions the AI must answer per-file with YES/NO and line evidence."
   },
   {
     "id": "article-hand-crafted-patterns-beat-ai-review-8",
@@ -6219,7 +1503,7 @@ export const generatedChunks = [
       "hand-crafted-patterns-beat-ai-review",
       "430 Hand-Crafted Bug Patterns Beat AI Review (Most of the Time)"
     ],
-    "text": "430 Hand-Crafted Bug Patterns Beat AI Review (Most of the Time): Section 3: Patterns cannot reason about intent. They cannot look at an authorization check and ask 'but does this verify that the user owns the resource, or just that they are authenticated?' They cannot detect that a fallback path silently succeeds when it should propagate the error. They cannot notice that a refactor changed behavior in a way that no single line reveals."
+    "text": "430 Hand-Crafted Bug Patterns Beat AI Review (Most of the Time): Section 4 (The hybrid approach): The right architecture is not patterns or AI. It is patterns first, then AI for what patterns cannot express. Run 430 deterministic patterns in <1 second. Build a persistent codebase index (call graph, schema graph, type graph). Then layer AI reasoning with focused probes on top.\nThe AI phase is expensive, so it needs to be focused. Instead of 'review this code,' the probes ask specific questions: 'Does this endpoint verify resource ownership, not just authentication? YES/NO with line evidence.' Structured questions produce structured answers. The signal-to-noise ratio stays high."
   },
   {
     "id": "article-hand-crafted-patterns-beat-ai-review-9",
@@ -6231,55 +1515,7 @@ export const generatedChunks = [
       "hand-crafted-patterns-beat-ai-review",
       "430 Hand-Crafted Bug Patterns Beat AI Review (Most of the Time)"
     ],
-    "text": "430 Hand-Crafted Bug Patterns Beat AI Review (Most of the Time): Section 3: After a commercial AI reviewer (Greptile) caught 12 issues on a production PR that CodeLens missed, I ran a systematic gap analysis. Six of the twelve were fixable with new regex patterns. Four required semantic reasoning that no pattern can express. For those four, I added focused security probes: structured questions the AI must answer per-file with YES/NO and line evidence."
-  },
-  {
-    "id": "article-hand-crafted-patterns-beat-ai-review-10",
-    "project": "writing",
-    "category": "article",
-    "tags": [
-      "article",
-      "writing",
-      "hand-crafted-patterns-beat-ai-review",
-      "430 Hand-Crafted Bug Patterns Beat AI Review (Most of the Time)"
-    ],
-    "text": "430 Hand-Crafted Bug Patterns Beat AI Review (Most of the Time): Section 4: The hybrid approach"
-  },
-  {
-    "id": "article-hand-crafted-patterns-beat-ai-review-11",
-    "project": "writing",
-    "category": "article",
-    "tags": [
-      "article",
-      "writing",
-      "hand-crafted-patterns-beat-ai-review",
-      "430 Hand-Crafted Bug Patterns Beat AI Review (Most of the Time)"
-    ],
-    "text": "430 Hand-Crafted Bug Patterns Beat AI Review (Most of the Time): Section 4: The right architecture is not patterns or AI. It is patterns first, then AI for what patterns cannot express. Run 430 deterministic patterns in <1 second. Build a persistent codebase index (call graph, schema graph, type graph). Then layer AI reasoning with focused probes on top."
-  },
-  {
-    "id": "article-hand-crafted-patterns-beat-ai-review-12",
-    "project": "writing",
-    "category": "article",
-    "tags": [
-      "article",
-      "writing",
-      "hand-crafted-patterns-beat-ai-review",
-      "430 Hand-Crafted Bug Patterns Beat AI Review (Most of the Time)"
-    ],
-    "text": "430 Hand-Crafted Bug Patterns Beat AI Review (Most of the Time): Section 4: The AI phase is expensive, so it needs to be focused. Instead of 'review this code,' the probes ask specific questions: 'Does this endpoint verify resource ownership, not just authentication? YES/NO with line evidence.' Structured questions produce structured answers. The signal-to-noise ratio stays high."
-  },
-  {
-    "id": "article-hand-crafted-patterns-beat-ai-review-13",
-    "project": "writing",
-    "category": "article",
-    "tags": [
-      "article",
-      "writing",
-      "hand-crafted-patterns-beat-ai-review",
-      "430 Hand-Crafted Bug Patterns Beat AI Review (Most of the Time)"
-    ],
-    "text": "430 Hand-Crafted Bug Patterns Beat AI Review (Most of the Time): Section 4: Coverage on the Greptile benchmark PR went from 8% (patterns alone) to 67% (new patterns) to 100% (patterns + AI probes). The patterns handle the volume. The AI handles the nuance. Neither is sufficient alone."
+    "text": "430 Hand-Crafted Bug Patterns Beat AI Review (Most of the Time): Section 4 (The hybrid approach): Coverage on the Greptile benchmark PR went from 8% (patterns alone) to 67% (new patterns) to 100% (patterns + AI probes). The patterns handle the volume. The AI handles the nuance. Neither is sufficient alone."
   },
   {
     "id": "article-building-ai-observatory-1",
@@ -6327,7 +1563,7 @@ export const generatedChunks = [
       "building-ai-observatory",
       "Why Developers Need an Observatory for Their AI Sessions"
     ],
-    "text": "Why Developers Need an Observatory for Their AI Sessions: Section 2: The observability gap"
+    "text": "Why Developers Need an Observatory for Their AI Sessions: Section 2 (The observability gap): Every production system has monitoring. You know your API latency, error rates, database query times, memory usage. But AI coding assistants, which now account for a significant portion of engineering budgets, have zero observability.\nYou do not know: How many tokens were burned on retries because the AI read 67 files but only changed 3. Whether context was lost mid-session causing the AI to contradict its own earlier decisions. Whether a $87 session could have been three $8 sessions with better task isolation. Which model performs best for your specific codebase and task types."
   },
   {
     "id": "article-building-ai-observatory-5",
@@ -6339,7 +1575,7 @@ export const generatedChunks = [
       "building-ai-observatory",
       "Why Developers Need an Observatory for Their AI Sessions"
     ],
-    "text": "Why Developers Need an Observatory for Their AI Sessions: Section 2: Every production system has monitoring. You know your API latency, error rates, database query times, memory usage. But AI coding assistants, which now account for a significant portion of engineering budgets, have zero observability."
+    "text": "Why Developers Need an Observatory for Their AI Sessions: Section 3 (What an observatory shows you): Rasad ingests session data from Claude Code, Gogaa CLI, and Codex CLI. It builds a SQLite database with full-text search across 38K+ messages and 14K+ tool calls. The X-Ray view replays any session action-by-action: every file read, every edit, every bash command, with timing and phase labels (planning, exploring, executing, verifying, refining)."
   },
   {
     "id": "article-building-ai-observatory-6",
@@ -6351,7 +1587,7 @@ export const generatedChunks = [
       "building-ai-observatory",
       "Why Developers Need an Observatory for Their AI Sessions"
     ],
-    "text": "Why Developers Need an Observatory for Their AI Sessions: Section 2: You do not know: How many tokens were burned on retries because the AI read 67 files but only changed 3. Whether context was lost mid-session causing the AI to contradict its own earlier decisions. Whether a $87 session could have been three $8 sessions with better task isolation. Which model performs best for your specific codebase and task types."
+    "text": "Why Developers Need an Observatory for Their AI Sessions: Section 3 (What an observatory shows you): Session Quality grading scores each session A-F based on efficiency, self-correction patterns, cost, and whether the AI actually verified its work. The model comparison view shows cost per session by model, so you can see that your Opus sessions average $87 while your Sonnet sessions average $4.83 with no measurable quality difference on routine tasks.\nEverything runs on localhost. Zero outbound network requests. Your session data, which contains your entire codebase and conversation history, never leaves your machine."
   },
   {
     "id": "article-building-ai-observatory-7",
@@ -6363,7 +1599,7 @@ export const generatedChunks = [
       "building-ai-observatory",
       "Why Developers Need an Observatory for Their AI Sessions"
     ],
-    "text": "Why Developers Need an Observatory for Their AI Sessions: Section 3: What an observatory shows you"
+    "text": "Why Developers Need an Observatory for Their AI Sessions: Section 4 (The lesson): The uncomfortable truth is that AI coding tools are not self-optimizing. They use whatever model you point them at, for whatever task you give them, with no feedback loop. An observatory gives you the feedback loop. It turns 'I think AI is helping' into 'here is exactly how much it costs, where it wastes time, and which sessions are worth it.'"
   },
   {
     "id": "article-building-ai-observatory-8",
@@ -6375,66 +1611,6 @@ export const generatedChunks = [
       "building-ai-observatory",
       "Why Developers Need an Observatory for Their AI Sessions"
     ],
-    "text": "Why Developers Need an Observatory for Their AI Sessions: Section 3: Rasad ingests session data from Claude Code, Gogaa CLI, and Codex CLI. It builds a SQLite database with full-text search across 38K+ messages and 14K+ tool calls. The X-Ray view replays any session action-by-action: every file read, every edit, every bash command, with timing and phase labels (planning, exploring, executing, verifying, refining)."
-  },
-  {
-    "id": "article-building-ai-observatory-9",
-    "project": "writing",
-    "category": "article",
-    "tags": [
-      "article",
-      "writing",
-      "building-ai-observatory",
-      "Why Developers Need an Observatory for Their AI Sessions"
-    ],
-    "text": "Why Developers Need an Observatory for Their AI Sessions: Section 3: Session Quality grading scores each session A-F based on efficiency, self-correction patterns, cost, and whether the AI actually verified its work. The model comparison view shows cost per session by model, so you can see that your Opus sessions average $87 while your Sonnet sessions average $4.83 with no measurable quality difference on routine tasks."
-  },
-  {
-    "id": "article-building-ai-observatory-10",
-    "project": "writing",
-    "category": "article",
-    "tags": [
-      "article",
-      "writing",
-      "building-ai-observatory",
-      "Why Developers Need an Observatory for Their AI Sessions"
-    ],
-    "text": "Why Developers Need an Observatory for Their AI Sessions: Section 3: Everything runs on localhost. Zero outbound network requests. Your session data, which contains your entire codebase and conversation history, never leaves your machine."
-  },
-  {
-    "id": "article-building-ai-observatory-11",
-    "project": "writing",
-    "category": "article",
-    "tags": [
-      "article",
-      "writing",
-      "building-ai-observatory",
-      "Why Developers Need an Observatory for Their AI Sessions"
-    ],
-    "text": "Why Developers Need an Observatory for Their AI Sessions: Section 4: The lesson"
-  },
-  {
-    "id": "article-building-ai-observatory-12",
-    "project": "writing",
-    "category": "article",
-    "tags": [
-      "article",
-      "writing",
-      "building-ai-observatory",
-      "Why Developers Need an Observatory for Their AI Sessions"
-    ],
-    "text": "Why Developers Need an Observatory for Their AI Sessions: Section 4: The uncomfortable truth is that AI coding tools are not self-optimizing. They use whatever model you point them at, for whatever task you give them, with no feedback loop. An observatory gives you the feedback loop. It turns 'I think AI is helping' into 'here is exactly how much it costs, where it wastes time, and which sessions are worth it.'"
-  },
-  {
-    "id": "article-building-ai-observatory-13",
-    "project": "writing",
-    "category": "article",
-    "tags": [
-      "article",
-      "writing",
-      "building-ai-observatory",
-      "Why Developers Need an Observatory for Their AI Sessions"
-    ],
-    "text": "Why Developers Need an Observatory for Their AI Sessions: Section 4: After two weeks with Rasad, I restructured my workflow: Opus for architecture decisions and complex debugging, Sonnet for implementation, Haiku for quick questions. Same output quality. Significantly lower cost. But I could not have made that decision without data."
+    "text": "Why Developers Need an Observatory for Their AI Sessions: Section 4 (The lesson): After two weeks with Rasad, I restructured my workflow: Opus for architecture decisions and complex debugging, Sonnet for implementation, Haiku for quick questions. Same output quality. Significantly lower cost. But I could not have made that decision without data."
   }
 ];

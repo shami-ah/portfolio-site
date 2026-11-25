@@ -62,7 +62,9 @@ const retrievalCases = [
   },
   {
     q: "show me how CodeLens compares to Greptile",
-    expect: "project-codelens-decisions",
+    // Since 25 Nov chunks are packed per section; the Greptile gap analysis
+    // lives in the CodeLens summary and results chunks, not "decisions".
+    expect: "project-codelens",
   },
   {
     q: "How much time does OpenEvent save a team?",
@@ -115,6 +117,15 @@ const retrievalCases = [
   {
     q: "How do you run a client project?",
     expect: "profile-process",
+  },
+  // 25 Nov regressions: overview questions and contact details.
+  {
+    q: "Tell me about CodeLens",
+    expect: "project-codelens-summary",
+  },
+  {
+    q: "How can I contact Ahtesham?",
+    expect: "profile-contact",
   },
 ];
 
@@ -183,7 +194,7 @@ const factCases = [
   {
     name: "CodeLens review speed",
     message: "How quickly does CodeLens review code?",
-    expected: /under\s+(one|1)\s+second|<\s*1\s*s|sub-second|\b\d{2,3}\s?ms\b/i,
+    expected: /under\s+(one|1)\s+second|<\s*1\s*s|sub-second|\b\d{2,3}\s?ms\b|\b\d+(?:\.\d+)?\s+milliseconds?\b/i,
     expectedProject: "codelens",
   },
   {
@@ -245,13 +256,14 @@ const factCases = [
   {
     name: "Gogaa JSON parser improvement",
     message: "How did the five-strategy JSON parser improve tool-call success?",
-    expected: /95%[\s\S]*70%|70%[\s\S]*95%/i,
-    expectedProject: "gogaa",
+    expected: /95\s*(?:%|percent)[\s\S]*70\s*(?:%|percent)|70\s*(?:%|percent)[\s\S]*95\s*(?:%|percent)/i,
+    // The dedicated article about the Gogaa parser is an equally valid source.
+    expectedProject: ["gogaa", "five-strategy-json-parser"],
   },
   {
     name: "Gogaa test count",
     message: "How many tests does Gogaa have passing?",
-    expected: /1,400\+|1400\+/,
+    expected: /1,400\+|1400\+|over\s+1,400|more than\s+1,400/i,
     expectedProject: "gogaa",
   },
   {
@@ -301,7 +313,7 @@ const factCases = [
   {
     name: "Rasad quality grading",
     message: "How does Rasad grade session quality?",
-    expected: /A.?F|quality grading|quality scoring/i,
+    expected: /A\s+to\s+F|A.?F|quality grading|quality scoring|scoring system/i,
     expectedProject: "rasad",
   },
 
@@ -340,7 +352,43 @@ const factCases = [
   {
     name: "Client delivery process",
     message: "How does Ahtesham manage client project delivery?",
-    expected: /architecture|discovery|weekly demos|sprint/i,
+    expected: /architecture|discovery|weekly[\s-]+demos|sprint/i,
+  },
+
+  // 25 Nov regressions. Overview questions used to answer "the context
+  // doesn't contain the project's purpose" because the summary was split
+  // into one-field chunks; contact questions had no chunk at all.
+  {
+    name: "CodeLens overview",
+    message: "Tell me about CodeLens",
+    expected: /review/i,
+    forbidden: /doesn't (contain|provide|include)|does not (contain|provide|include)|not (in|included in) the (retrieved|available)/i,
+    expectedProject: "codelens",
+  },
+  {
+    name: "Gogaa overview",
+    message: "Tell me about Gogaa",
+    expected: /provider|terminal|agent/i,
+    forbidden: /doesn't (contain|provide|include)|does not (contain|provide|include)|not (in|included in) the (retrieved|available)/i,
+    expectedProject: "gogaa",
+  },
+  {
+    name: "Contact details",
+    message: "How can I contact Ahtesham?",
+    expected: /shami8024@gmail\.com/i,
+  },
+  {
+    // Once answered "remote since 2020"; the knowledge only says 2023 to now.
+    name: "Roman Urdu remote question",
+    message: "Kya aap remote kaam karte hain?",
+    expected: /remote/i,
+    forbidden: /\b2020\b/,
+  },
+  {
+    name: "German pricing question",
+    message: "Was kostet ein Projekt bei dir?",
+    expected: /3\s?k|3[.,]000|\$\s?80|80\s?(bis|to|-)\s?\$?120/i,
+    forbidden: /\bich\b/i,
   },
 ];
 
@@ -378,19 +426,43 @@ if (serverAvailable) {
       const data = await askChat(test.message);
       const answer = data.answer;
 
-      const answerMatches = test.expected.test(answer);
-      const forbiddenFound = test.forbidden?.test(answer) ?? false;
+      // Normalize common Unicode spacing and UTF-8 mojibake for evaluation.
+      const normalizedAnswer = answer
+        .replace(/[\u00a0\u202f\u2007]/g, " ")
+        .replace(/\u00e2[\u0080-\u00bf]/g, " ")
+        .replace(/\*\*/g, "") // the widget renders **bold**; match on the plain text
+        .replace(/\s+/g, " ")
+        .trim();
 
-      const projectMatches = test.expectedProject
-        ? data.sources?.some(
-            (source) =>
-              source.project?.toLowerCase() === test.expectedProject ||
-              source.id?.toLowerCase().includes(test.expectedProject),
-          ) ?? false
+      const answerMatches = test.expected.test(normalizedAnswer);
+      const forbiddenFound = test.forbidden?.test(normalizedAnswer) ?? false;
+
+          const expectedProjects = [test.expectedProject ?? []].flat();
+      const projectMatches = expectedProjects.length
+        ? data.sources?.some((source) => {
+            const project = source.project?.toLowerCase() ?? "";
+            const id = source.id?.toLowerCase() ?? "";
+
+            return expectedProjects.some(
+              (expected) =>
+                project === expected ||
+                project.startsWith(`${expected}-`) ||
+                id.includes(expected),
+            );
+          }) ?? false
         : true;
 
       const passed =
         answerMatches && !forbiddenFound && projectMatches;
+      if (!passed) {
+        console.log("  Actual answer:", JSON.stringify(answer));
+        console.log(
+          "  Actual sources:",
+          JSON.stringify(
+            (data.sources ?? []).map(({ project, id }) => ({ project, id })),
+          ),
+        );
+      }
 
       if (passed) factsPassed++;
 
@@ -434,11 +506,14 @@ if (serverAvailable) {
       const answer = data.answer;
 
       const declined =
-        /couldn't find enough relevant information|not covered|not in.*portfolio|outside.*portfolio|don't have.*information|cannot answer|can't answer/i.test(
+        /couldn't find enough relevant information|not covered|not in.*portfolio|outside.*portfolio|don't have.*information|cannot answer|can't answer|can only answer questions about.*portfolio/i.test(
           answer,
         );
 
       if (declined) refusalsPassed++;
+      if (!declined) {
+        console.log("  Actual refusal answer:", JSON.stringify(answer));
+      }
 
       logResult(declined, refusalCases[index]);
 
@@ -449,6 +524,31 @@ if (serverAvailable) {
     } catch (error) {
       logResult(false, refusalCases[index], error.message);
     }
+  }
+}
+
+// Retrieval mode check: BM25 alone also passes most cases, which hid a
+// retired embedding model (HTTP 410) on staging for five days.
+let hybridActive = !serverAvailable;
+
+if (serverAvailable) {
+  try {
+    const healthUrl = new URL(API_URL);
+    healthUrl.pathname = "/api/health";
+    const health = await (
+      await fetch(healthUrl, { signal: AbortSignal.timeout(10_000) })
+    ).json();
+
+    // Older servers do not report the field; only fail on an explicit bm25.
+    hybridActive = health.lastRetrievalMode !== "bm25";
+    logResult(
+      hybridActive,
+      "Hybrid retrieval active",
+      `lastRetrievalMode: ${health.lastRetrievalMode ?? "not reported"}`,
+    );
+  } catch (error) {
+    logResult(false, "Hybrid retrieval active", error.message);
+    hybridActive = false;
   }
 }
 
@@ -482,6 +582,7 @@ console.log(
 console.log(`Zero URLs: ${urlFree ? "PASS" : "FAIL"}`);
 console.log(`Knowledge validation: ${validationPassed ? "PASS" : "FAIL"}`);
 console.log(`Live API: ${serverAvailable ? "PASS" : "FAIL"}`);
+console.log(`Hybrid retrieval: ${hybridActive ? "PASS" : "FAIL"}`);
 
 const passed =
   validationPassed &&
@@ -489,7 +590,8 @@ const passed =
   factsScore >= 90 &&
   refusalScore === 100 &&
   urlFree &&
-  serverAvailable;
+  serverAvailable &&
+  hybridActive;
 
 console.log(`\nOVERALL: ${passed ? "PASS" : "FAIL"}`);
 

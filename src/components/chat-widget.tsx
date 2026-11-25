@@ -3,11 +3,12 @@
 import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import ReactDOM from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Minus, Calendar, FileText, ArrowRight } from "lucide-react";
+import { X, Calendar, FileText, ArrowRight } from "lucide-react";
 import { starters } from "@/lib/kb";
 import type { KbAction } from "@/lib/kb";
 import { openCvDrawer } from "@/components/cv-drawer";
 import { openProjectDetail } from "@/components/agent-commands";
+import { projects } from "@/data/projects";
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
 /* ------------------------------------------------------------------ */
@@ -80,7 +81,35 @@ function saveChatHistory(messages: Message[]): void {
 const URL_REGEX =
   /(https?:\/\/\S+|[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}|(?:linkedin|github)\.com\/\S+)/g;
 
+const BOLD_REGEX = /(\*\*[^*\n]+\*\*)/;
+
+/**
+ * Renders the small markdown subset the model uses (bold, bullets, headings)
+ * plus links. Everything else stays plain text; no HTML is injected.
+ */
 function RichText({ text }: { text: string }): React.ReactElement {
+  const normalized = text
+    .replace(/^#{1,6}\s+/gm, "")
+    .replace(/^(\s*)[-*]\s+/gm, "$1• ");
+  const parts = normalized.split(BOLD_REGEX);
+  return (
+    <>
+      {parts.map((part, i) => {
+        if (!part) return null;
+        if (/^\*\*[^*\n]+\*\*$/.test(part)) {
+          return (
+            <strong key={i} className="font-semibold text-foreground/90">
+              <LinkedText text={part.slice(2, -2)} />
+            </strong>
+          );
+        }
+        return <LinkedText key={i} text={part} />;
+      })}
+    </>
+  );
+}
+
+function LinkedText({ text }: { text: string }): React.ReactElement {
   const parts = text.split(URL_REGEX);
   return (
     <>
@@ -483,9 +512,11 @@ export function ChatWidget(): React.ReactElement {
               initial="hidden"
               animate="visible"
               exit="exit"
-              className="w-full flex flex-col rounded-xl overflow-hidden card-gradient-border pointer-events-auto"
+              // The dock mount caps at 300px (mobile) / 400px with 8px padding and a 1px border
+              // on each side; staying inside it keeps the footer visible and
+              // avoids a second scrollbar around the panel.
+              className="w-full flex flex-col rounded-xl overflow-hidden card-gradient-border pointer-events-auto max-h-[min(282px,calc(100dvh_-_14rem))] md:max-h-[min(382px,calc(100dvh_-_12rem))]"
               style={{
-                maxHeight: "min(400px, calc(100vh - 12rem))",
                 boxShadow: "0 8px 32px rgba(0,0,0,0.3)",
               }}
             >
@@ -506,13 +537,10 @@ export function ChatWidget(): React.ReactElement {
                   </div>
                   <div className="min-w-0 text-left leading-tight">
                     <span className="block font-mono text-[13px] font-semibold text-foreground tracking-normal truncate">Ahtesham Agent</span>
-                    <p className="text-[10px] leading-4 font-mono text-muted/50 truncate">portfolio intelligence · scoped to his work</p>
+                    <p className="text-[10px] leading-4 font-mono text-muted/50 truncate">answers from his portfolio</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-1">
-                  <button type="button" onClick={() => setState("closed")} className="p-1.5 rounded-lg text-muted/40 hover:text-foreground/70 hover:bg-foreground/5 transition-colors" aria-label="Minimize chat">
-                    <Minus size={14} />
-                  </button>
                   <button type="button" onClick={() => setState("closed")} className="p-1.5 rounded-lg text-muted/40 hover:text-foreground/70 hover:bg-foreground/5 transition-colors" aria-label="Close chat">
                     <X size={14} />
                   </button>
@@ -612,8 +640,8 @@ export function ChatWidget(): React.ReactElement {
               )}
             </div>
 
-            <div className="relative z-10 shrink-0 border-t border-card-border/30 px-3 py-2 flex items-center justify-between">
-              <span className="text-caption font-mono text-muted/25">Ahtesham portfolio context</span>
+            <div className="relative z-10 shrink-0 border-t border-card-border/30 px-3 py-2 flex items-center justify-between gap-3">
+              <span className="text-caption font-mono text-muted/25 truncate">portfolio context</span>
               <span className="text-caption font-mono text-muted/25">{Math.min(msgCount, CHAT_MESSAGE_LIMIT)}/{CHAT_MESSAGE_LIMIT}</span>
             </div>
             </motion.div>
@@ -624,59 +652,113 @@ export function ChatWidget(): React.ReactElement {
 
   const agentMount = typeof document !== "undefined" ? document.getElementById("agent-focus-mount") : null;
   void mountRevision;
-  if (agentMount) return ReactDOM.createPortal(panel, agentMount);
+  // Mobile only: dim the page behind the open chat so hero text does not
+  // show through between the panel and the dock (dock is z-[100]).
+  const scrim =
+    typeof document !== "undefined"
+      ? ReactDOM.createPortal(
+          <AnimatePresence>
+            {state === "open" && (
+              <motion.div
+                key="chat-scrim"
+                aria-hidden="true"
+                onClick={() => setState("closed")}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.2 }}
+                className="fixed inset-0 z-[99] bg-background/70 backdrop-blur-sm md:hidden"
+              />
+            )}
+          </AnimatePresence>,
+          document.body,
+        )
+      : null;
+  if (agentMount) {
+    return (
+      <>
+        {scrim}
+        {ReactDOM.createPortal(panel, agentMount)}
+      </>
+    );
+  }
   return <></>;
 }
 
 /* ------------------------------------------------------------------ */
 /*  Message bubble — blur-to-sharp entrance + rich text + actions      */
 /* ------------------------------------------------------------------ */
+const PROJECT_TITLES = new Map(projects.map((p) => [p.slug, p.title]));
+
+function titleCase(value: string): string {
+  return value
+    .split("-")
+    .filter(Boolean)
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
+}
+
+interface SourceChip {
+  key: string;
+  label: string;
+  project: string | null;
+}
+
+function getSourceChip(
+  source: NonNullable<Message["sources"]>[number],
+): SourceChip | null {
+  const id = source.id ?? "";
+  const project = source.project ?? "";
+  const title = PROJECT_TITLES.get(project);
+
+  // Project and story chunks open the project detail.
+  if (title) return { key: `project-${project}`, label: title, project };
+
+  if (source.category === "article" || id.startsWith("article-")) {
+    return { key: "writing", label: "Writing", project: null };
+  }
+  if (source.category === "career" || id.startsWith("career-")) {
+    return { key: "career", label: "Career", project: null };
+  }
+  if (id.startsWith("profile-")) {
+    const section = id.replace(/^profile-/, "").replace(/-\d+$/, "");
+    return { key: id, label: titleCase(section), project: null };
+  }
+  if (!id && !project) return null;
+  return { key: id || project, label: titleCase(project || id), project: null };
+}
+
 function SourceChips({
   sources,
 }: {
   sources: NonNullable<Message["sources"]>;
 }): React.ReactElement | null {
+  // One chip per topic: five chunks from one project used to render as
+  // "Codelens Codelens Codelens", and profile chunks as "Rates 1", "Rates 2".
   const seen = new Set<string>();
+  const items: SourceChip[] = [];
 
-  const items = sources.filter((source) => {
-    const key = `${source.category ?? ""}:${source.project ?? ""}:${source.id}`;
-
-    if (seen.has(key)) return false;
-    seen.add(key);
-
-    return Boolean(source.project || source.id);
-  });
+  for (const source of sources) {
+    const chip = getSourceChip(source);
+    if (!chip || seen.has(chip.label)) continue;
+    seen.add(chip.label);
+    items.push(chip);
+  }
 
   if (items.length === 0) return null;
 
-  const getLabel = (source: (typeof items)[number]): string => {
-    const value =
-      source.category === "project" && source.project
-        ? source.project
-        : source.id.replace(/^(project|article|story|profile)-/, "");
-
-    return value
-      .split("-")
-      .filter(Boolean)
-      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-      .join(" ");
-  };
-
   return (
     <div className="flex flex-wrap gap-1.5 mt-2">
-      {items.map((source) => {
-        const isProject =
-          source.category === "project" && Boolean(source.project);
-
-        const label = getLabel(source);
+      {items.map(({ key, label, project }) => {
+        const isProject = Boolean(project);
 
         return (
           <button
-            key={`${source.category ?? "source"}-${source.id}`}
+            key={key}
             type="button"
             onClick={() => {
-              if (isProject && source.project) {
-                openProjectDetail(source.project);
+              if (project) {
+                openProjectDetail(project);
               }
             }}
             disabled={!isProject}
