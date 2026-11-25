@@ -16,6 +16,7 @@ export interface ProfileData {
   principles: ProfileSection;
   stack: ProfileSection;
   notInStack: ProfileSection;
+  contact: ProfileSection;
 }
 
 export const profile: ProfileData = {
@@ -195,6 +196,29 @@ export const profile: ProfileData = {
     content: [
       "Kubernetes, AWS, Azure and GCP managed services are not part of his current stack.",
       "He runs Docker Compose and Traefik on self-managed servers instead of Kubernetes, and can adopt them if a role requires it.",
+    ],
+  },
+
+  contact: {
+    id: "profile-contact",
+    category: "profile",
+    title: "Contact",
+    tags: [
+      "contact",
+      "email",
+      "reach",
+      "get in touch",
+      "message",
+      "linkedin",
+      "github",
+      "call",
+      "book",
+    ],
+    content: [
+      "Email: shami8024@gmail.com.",
+      "The fastest way to reach Ahtesham is the Book a Call button on the page, which books a 15-min call.",
+      "He is also on LinkedIn (Muhammad Ahtesham Ahmad) and GitHub (shami-ah); both are linked in the page footer.",
+      "He replies within 24 hours.",
     ],
   },
 };

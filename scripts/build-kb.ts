@@ -103,6 +103,32 @@ function splitText(text: string, maxSize = MAX_CHUNK_SIZE): string[] {
 
 
 
+/**
+ * Pack short items into chunks of roughly TARGET_CHUNK_SIZE characters
+ * (never above maxSize), keeping each item whole where it fits.
+ */
+function packItems(items: string[], maxSize = MAX_CHUNK_SIZE): string[] {
+  const target = Math.min(TARGET_CHUNK_SIZE, maxSize);
+  const pieces = items.flatMap((item) => splitText(item, maxSize));
+  const parts: string[] = [];
+  let current = "";
+
+  for (const piece of pieces) {
+    const candidate = current ? `${current}\n${piece}` : piece;
+
+    if (current && candidate.length > target) {
+      parts.push(current);
+      current = piece;
+    } else {
+      current = candidate;
+    }
+  }
+
+  if (current) parts.push(current);
+
+  return parts;
+}
+
 function makeChunk(
   id: string,
   project: string,
@@ -127,11 +153,10 @@ function makeSectionChunks(
   // (BM25, embeddings, the LLM context) still says what it is about.
   const prefix = `${cleanText(project.title)} · ${section}: `;
 
-  // Split each flattened value independently.
-  // This preserves boundaries between architecture items, features, and technologies.
-  const parts = flatten(source).flatMap((item) =>
-    splitText(item, MAX_CHUNK_SIZE - prefix.length),
-  );
+  // Pack related fields together. One chunk per field produced hundreds of
+  // fragments such as "CodeLens · summary: title: CodeLens" that matched the
+  // project name and crowded the real summary out of the top results.
+  const parts = packItems(flatten(source), MAX_CHUNK_SIZE - prefix.length);
 
   return parts.map((part, index) => ({
     id: `project-${project.slug}-${section}${parts.length > 1 ? `-${index + 1}` : ""}`,
@@ -154,9 +179,7 @@ function generateProfileChunks(): KnowledgeChunk[] {
     const prefix = `${title}: `;
     const availableSize = MAX_CHUNK_SIZE - prefix.length;
 
-    const parts = flatten(section.content).flatMap((item) =>
-      splitText(item, availableSize),
-    );
+    const parts = packItems(flatten(section.content), availableSize);
 
     return parts.map((part, index) => ({
       id: `${section.id}${parts.length > 1 ? `-${index + 1}` : ""}`,
@@ -290,23 +313,21 @@ function generateArticleChunks(): KnowledgeChunk[] {
       throw new Error(`Article title is too long: ${title}`);
     }
 
-    // Keep the summary and individual body sections separate.
-    const contentParts = [
-      ...flatten({ summary: article.summary }),
-      ...article.body.flatMap((section, sectionIndex) => [
-        ...(section.heading
-          ? [`Section ${sectionIndex + 1}: ${section.heading}`]
-          : []),
-        ...section.paragraphs.map(
-          (paragraph) =>
-            `Section ${sectionIndex + 1}: ${paragraph}`,
-        ),
-      ]),
-    ];
+    // Summary on its own, then each body section packed with its heading,
+    // so a heading never becomes a chunk with no content under it.
+    const articleParts = [
+      ...packItems(flatten({ summary: article.summary }), availableSize),
+      ...article.body.flatMap((section, sectionIndex) => {
+        const label = `Section ${sectionIndex + 1}${
+          section.heading ? ` (${cleanText(section.heading)})` : ""
+        }: `;
 
-    const articleParts = contentParts.flatMap((content) =>
-      splitText(content, availableSize),
-    );
+        return packItems(
+          section.paragraphs,
+          availableSize - label.length,
+        ).map((part) => `${label}${part}`);
+      }),
+    ];
 
     return articleParts.map((part, index) => ({
       id: `article-${article.slug}-${index + 1}`,

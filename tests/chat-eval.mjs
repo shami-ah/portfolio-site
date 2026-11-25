@@ -62,7 +62,9 @@ const retrievalCases = [
   },
   {
     q: "show me how CodeLens compares to Greptile",
-    expect: "project-codelens-decisions",
+    // Since 25 Nov chunks are packed per section; the Greptile gap analysis
+    // lives in the CodeLens summary and results chunks, not "decisions".
+    expect: "project-codelens",
   },
   {
     q: "How much time does OpenEvent save a team?",
@@ -115,6 +117,15 @@ const retrievalCases = [
   {
     q: "How do you run a client project?",
     expect: "profile-process",
+  },
+  // 25 Nov regressions: overview questions and contact details.
+  {
+    q: "Tell me about CodeLens",
+    expect: "project-codelens-summary",
+  },
+  {
+    q: "How can I contact Ahtesham?",
+    expect: "profile-contact",
   },
 ];
 
@@ -246,7 +257,8 @@ const factCases = [
     name: "Gogaa JSON parser improvement",
     message: "How did the five-strategy JSON parser improve tool-call success?",
     expected: /95\s*(?:%|percent)[\s\S]*70\s*(?:%|percent)|70\s*(?:%|percent)[\s\S]*95\s*(?:%|percent)/i,
-    expectedProject: "gogaa",
+    // The dedicated article about the Gogaa parser is an equally valid source.
+    expectedProject: ["gogaa", "five-strategy-json-parser"],
   },
   {
     name: "Gogaa test count",
@@ -342,6 +354,35 @@ const factCases = [
     message: "How does Ahtesham manage client project delivery?",
     expected: /architecture|discovery|weekly[\s-]+demos|sprint/i,
   },
+
+  // 25 Nov regressions. Overview questions used to answer "the context
+  // doesn't contain the project's purpose" because the summary was split
+  // into one-field chunks; contact questions had no chunk at all.
+  {
+    name: "CodeLens overview",
+    message: "Tell me about CodeLens",
+    expected: /review/i,
+    forbidden: /doesn't (contain|provide|include)|does not (contain|provide|include)|not (in|included in) the (retrieved|available)/i,
+    expectedProject: "codelens",
+  },
+  {
+    name: "Gogaa overview",
+    message: "Tell me about Gogaa",
+    expected: /provider|terminal|agent/i,
+    forbidden: /doesn't (contain|provide|include)|does not (contain|provide|include)|not (in|included in) the (retrieved|available)/i,
+    expectedProject: "gogaa",
+  },
+  {
+    name: "Contact details",
+    message: "How can I contact Ahtesham?",
+    expected: /shami8024@gmail\.com/i,
+  },
+  {
+    name: "German pricing question",
+    message: "Was kostet ein Projekt bei dir?",
+    expected: /3\s?k|3[.,]000|\$\s?80|80\s?(bis|to|-)\s?\$?120/i,
+    forbidden: /\bich\b/i,
+  },
 ];
 
 let factsPassed = 0;
@@ -382,28 +423,31 @@ if (serverAvailable) {
       const normalizedAnswer = answer
         .replace(/[\u00a0\u202f\u2007]/g, " ")
         .replace(/\u00e2[\u0080-\u00bf]/g, " ")
+        .replace(/\*\*/g, "") // the widget renders **bold**; match on the plain text
         .replace(/\s+/g, " ")
         .trim();
 
       const answerMatches = test.expected.test(normalizedAnswer);
       const forbiddenFound = test.forbidden?.test(normalizedAnswer) ?? false;
 
-      const projectMatches = test.expectedProject
+          const expectedProjects = [test.expectedProject ?? []].flat();
+      const projectMatches = expectedProjects.length
         ? data.sources?.some((source) => {
             const project = source.project?.toLowerCase() ?? "";
             const id = source.id?.toLowerCase() ?? "";
 
-            return (
-              project === test.expectedProject ||
-              project.startsWith(`${test.expectedProject}-`) ||
-              id.includes(test.expectedProject)
+            return expectedProjects.some(
+              (expected) =>
+                project === expected ||
+                project.startsWith(`${expected}-`) ||
+                id.includes(expected),
             );
           }) ?? false
         : true;
 
       const passed =
         answerMatches && !forbiddenFound && projectMatches;
-           if (!passed) {
+      if (!passed) {
         console.log("  Actual answer:", JSON.stringify(answer));
         console.log(
           "  Actual sources:",
@@ -454,13 +498,13 @@ if (serverAvailable) {
       const data = await askChat(refusalCases[index]);
       const answer = data.answer;
 
-          const declined =
+      const declined =
         /couldn't find enough relevant information|not covered|not in.*portfolio|outside.*portfolio|don't have.*information|cannot answer|can't answer|can only answer questions about.*portfolio/i.test(
           answer,
         );
 
       if (declined) refusalsPassed++;
-            if (!declined) {
+      if (!declined) {
         console.log("  Actual refusal answer:", JSON.stringify(answer));
       }
 
@@ -473,6 +517,31 @@ if (serverAvailable) {
     } catch (error) {
       logResult(false, refusalCases[index], error.message);
     }
+  }
+}
+
+// Retrieval mode check: BM25 alone also passes most cases, which hid a
+// retired embedding model (HTTP 410) on staging for five days.
+let hybridActive = !serverAvailable;
+
+if (serverAvailable) {
+  try {
+    const healthUrl = new URL(API_URL);
+    healthUrl.pathname = "/api/health";
+    const health = await (
+      await fetch(healthUrl, { signal: AbortSignal.timeout(10_000) })
+    ).json();
+
+    // Older servers do not report the field; only fail on an explicit bm25.
+    hybridActive = health.lastRetrievalMode !== "bm25";
+    logResult(
+      hybridActive,
+      "Hybrid retrieval active",
+      `lastRetrievalMode: ${health.lastRetrievalMode ?? "not reported"}`,
+    );
+  } catch (error) {
+    logResult(false, "Hybrid retrieval active", error.message);
+    hybridActive = false;
   }
 }
 
@@ -506,6 +575,7 @@ console.log(
 console.log(`Zero URLs: ${urlFree ? "PASS" : "FAIL"}`);
 console.log(`Knowledge validation: ${validationPassed ? "PASS" : "FAIL"}`);
 console.log(`Live API: ${serverAvailable ? "PASS" : "FAIL"}`);
+console.log(`Hybrid retrieval: ${hybridActive ? "PASS" : "FAIL"}`);
 
 const passed =
   validationPassed &&
@@ -513,7 +583,8 @@ const passed =
   factsScore >= 90 &&
   refusalScore === 100 &&
   urlFree &&
-  serverAvailable;
+  serverAvailable &&
+  hybridActive;
 
 console.log(`\nOVERALL: ${passed ? "PASS" : "FAIL"}`);
 

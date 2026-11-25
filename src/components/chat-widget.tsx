@@ -8,6 +8,7 @@ import { starters } from "@/lib/kb";
 import type { KbAction } from "@/lib/kb";
 import { openCvDrawer } from "@/components/cv-drawer";
 import { openProjectDetail } from "@/components/agent-commands";
+import { projects } from "@/data/projects";
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
 /* ------------------------------------------------------------------ */
@@ -80,7 +81,35 @@ function saveChatHistory(messages: Message[]): void {
 const URL_REGEX =
   /(https?:\/\/\S+|[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}|(?:linkedin|github)\.com\/\S+)/g;
 
+const BOLD_REGEX = /(\*\*[^*\n]+\*\*)/;
+
+/**
+ * Renders the small markdown subset the model uses (bold, bullets, headings)
+ * plus links. Everything else stays plain text; no HTML is injected.
+ */
 function RichText({ text }: { text: string }): React.ReactElement {
+  const normalized = text
+    .replace(/^#{1,6}\s+/gm, "")
+    .replace(/^(\s*)[-*]\s+/gm, "$1• ");
+  const parts = normalized.split(BOLD_REGEX);
+  return (
+    <>
+      {parts.map((part, i) => {
+        if (!part) return null;
+        if (/^\*\*[^*\n]+\*\*$/.test(part)) {
+          return (
+            <strong key={i} className="font-semibold text-foreground/90">
+              <LinkedText text={part.slice(2, -2)} />
+            </strong>
+          );
+        }
+        return <LinkedText key={i} text={part} />;
+      })}
+    </>
+  );
+}
+
+function LinkedText({ text }: { text: string }): React.ReactElement {
   const parts = text.split(URL_REGEX);
   return (
     <>
@@ -631,52 +660,77 @@ export function ChatWidget(): React.ReactElement {
 /* ------------------------------------------------------------------ */
 /*  Message bubble — blur-to-sharp entrance + rich text + actions      */
 /* ------------------------------------------------------------------ */
+const PROJECT_TITLES = new Map(projects.map((p) => [p.slug, p.title]));
+
+function titleCase(value: string): string {
+  return value
+    .split("-")
+    .filter(Boolean)
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
+}
+
+interface SourceChip {
+  key: string;
+  label: string;
+  project: string | null;
+}
+
+function getSourceChip(
+  source: NonNullable<Message["sources"]>[number],
+): SourceChip | null {
+  const id = source.id ?? "";
+  const project = source.project ?? "";
+  const title = PROJECT_TITLES.get(project);
+
+  // Project and story chunks open the project detail.
+  if (title) return { key: `project-${project}`, label: title, project };
+
+  if (source.category === "article" || id.startsWith("article-")) {
+    return { key: "writing", label: "Writing", project: null };
+  }
+  if (source.category === "career" || id.startsWith("career-")) {
+    return { key: "career", label: "Career", project: null };
+  }
+  if (id.startsWith("profile-")) {
+    const section = id.replace(/^profile-/, "").replace(/-\d+$/, "");
+    return { key: id, label: titleCase(section), project: null };
+  }
+  if (!id && !project) return null;
+  return { key: id || project, label: titleCase(project || id), project: null };
+}
+
 function SourceChips({
   sources,
 }: {
   sources: NonNullable<Message["sources"]>;
 }): React.ReactElement | null {
+  // One chip per topic: five chunks from one project used to render as
+  // "Codelens Codelens Codelens", and profile chunks as "Rates 1", "Rates 2".
   const seen = new Set<string>();
+  const items: SourceChip[] = [];
 
-  const items = sources.filter((source) => {
-    const key = `${source.category ?? ""}:${source.project ?? ""}:${source.id}`;
-
-    if (seen.has(key)) return false;
-    seen.add(key);
-
-    return Boolean(source.project || source.id);
-  });
+  for (const source of sources) {
+    const chip = getSourceChip(source);
+    if (!chip || seen.has(chip.label)) continue;
+    seen.add(chip.label);
+    items.push(chip);
+  }
 
   if (items.length === 0) return null;
 
-  const getLabel = (source: (typeof items)[number]): string => {
-    const value =
-      source.category === "project" && source.project
-        ? source.project
-        : source.id.replace(/^(project|article|story|profile)-/, "");
-
-    return value
-      .split("-")
-      .filter(Boolean)
-      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-      .join(" ");
-  };
-
   return (
     <div className="flex flex-wrap gap-1.5 mt-2">
-      {items.map((source) => {
-        const isProject =
-          source.category === "project" && Boolean(source.project);
-
-        const label = getLabel(source);
+      {items.map(({ key, label, project }) => {
+        const isProject = Boolean(project);
 
         return (
           <button
-            key={`${source.category ?? "source"}-${source.id}`}
+            key={key}
             type="button"
             onClick={() => {
-              if (isProject && source.project) {
-                openProjectDetail(source.project);
+              if (project) {
+                openProjectDetail(project);
               }
             }}
             disabled={!isProject}

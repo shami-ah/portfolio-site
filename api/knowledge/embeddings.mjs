@@ -1,6 +1,6 @@
 
 const DEFAULT_NVIDIA_BASE_URL = "https://integrate.api.nvidia.com/v1";
-const DEFAULT_NVIDIA_MODEL = "nvidia/nemotron-3-embed-1b";
+const DEFAULT_NVIDIA_MODEL = "nvidia/nemotron-3.5-embed-1b";
 
 const DEFAULT_GEMINI_MODEL = "gemini-embedding-001";
 const GEMINI_BASE_URL = "https://generativelanguage.googleapis.com/v1beta";
