@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import ReactDOM from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Minus, Calendar, FileText, ArrowRight } from "lucide-react";
+import { X, Calendar, FileText, ArrowRight } from "lucide-react";
 import { starters } from "@/lib/kb";
 import type { KbAction } from "@/lib/kb";
 import { openCvDrawer } from "@/components/cv-drawer";
@@ -512,9 +512,11 @@ export function ChatWidget(): React.ReactElement {
               initial="hidden"
               animate="visible"
               exit="exit"
-              className="w-full flex flex-col rounded-xl overflow-hidden card-gradient-border pointer-events-auto"
+              // The dock mount caps at 300px (mobile) / 400px with 8px padding and a 1px border
+              // on each side; staying inside it keeps the footer visible and
+              // avoids a second scrollbar around the panel.
+              className="w-full flex flex-col rounded-xl overflow-hidden card-gradient-border pointer-events-auto max-h-[min(282px,calc(100dvh_-_14rem))] md:max-h-[min(382px,calc(100dvh_-_12rem))]"
               style={{
-                maxHeight: "min(400px, calc(100vh - 12rem))",
                 boxShadow: "0 8px 32px rgba(0,0,0,0.3)",
               }}
             >
@@ -535,13 +537,10 @@ export function ChatWidget(): React.ReactElement {
                   </div>
                   <div className="min-w-0 text-left leading-tight">
                     <span className="block font-mono text-[13px] font-semibold text-foreground tracking-normal truncate">Ahtesham Agent</span>
-                    <p className="text-[10px] leading-4 font-mono text-muted/50 truncate">portfolio intelligence · scoped to his work</p>
+                    <p className="text-[10px] leading-4 font-mono text-muted/50 truncate">answers from his portfolio</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-1">
-                  <button type="button" onClick={() => setState("closed")} className="p-1.5 rounded-lg text-muted/40 hover:text-foreground/70 hover:bg-foreground/5 transition-colors" aria-label="Minimize chat">
-                    <Minus size={14} />
-                  </button>
                   <button type="button" onClick={() => setState("closed")} className="p-1.5 rounded-lg text-muted/40 hover:text-foreground/70 hover:bg-foreground/5 transition-colors" aria-label="Close chat">
                     <X size={14} />
                   </button>
@@ -641,8 +640,8 @@ export function ChatWidget(): React.ReactElement {
               )}
             </div>
 
-            <div className="relative z-10 shrink-0 border-t border-card-border/30 px-3 py-2 flex items-center justify-between">
-              <span className="text-caption font-mono text-muted/25">Ahtesham portfolio context</span>
+            <div className="relative z-10 shrink-0 border-t border-card-border/30 px-3 py-2 flex items-center justify-between gap-3">
+              <span className="text-caption font-mono text-muted/25 truncate">portfolio context</span>
               <span className="text-caption font-mono text-muted/25">{Math.min(msgCount, CHAT_MESSAGE_LIMIT)}/{CHAT_MESSAGE_LIMIT}</span>
             </div>
             </motion.div>
@@ -653,7 +652,36 @@ export function ChatWidget(): React.ReactElement {
 
   const agentMount = typeof document !== "undefined" ? document.getElementById("agent-focus-mount") : null;
   void mountRevision;
-  if (agentMount) return ReactDOM.createPortal(panel, agentMount);
+  // Mobile only: dim the page behind the open chat so hero text does not
+  // show through between the panel and the dock (dock is z-[100]).
+  const scrim =
+    typeof document !== "undefined"
+      ? ReactDOM.createPortal(
+          <AnimatePresence>
+            {state === "open" && (
+              <motion.div
+                key="chat-scrim"
+                aria-hidden="true"
+                onClick={() => setState("closed")}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.2 }}
+                className="fixed inset-0 z-[99] bg-background/70 backdrop-blur-sm md:hidden"
+              />
+            )}
+          </AnimatePresence>,
+          document.body,
+        )
+      : null;
+  if (agentMount) {
+    return (
+      <>
+        {scrim}
+        {ReactDOM.createPortal(panel, agentMount)}
+      </>
+    );
+  }
   return <></>;
 }
 
