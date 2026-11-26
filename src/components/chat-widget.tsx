@@ -291,6 +291,7 @@ export function ChatWidget(): React.ReactElement {
     ];
     return () => timers.forEach((t) => window.clearTimeout(t));
   }, [state]);
+  
   useEffect(() => {
     const chatBody = scrollRef.current;
     if (!chatBody) return;
