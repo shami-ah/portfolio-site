@@ -43,8 +43,6 @@ const ABOUT = {
 const WORD_MS = 2800;
 /** Portrait photo shown in the spotlight column. */
 const PHOTO_SRC = "/ahtesham.jpg";
-/** Share of the photo column on each side that is faded into the background, so text may sit over it. */
-const PHOTO_EDGE_FADE = 0.22;
 
 const ALL_TARGETS = ["title", "desc", "agent", "scroll"];
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
@@ -80,15 +78,16 @@ interface HeroGeometry {
 
 function heroGeometry(W: number, H: number, widestEm = WIDEST_WORD_EM_FALLBACK): HeroGeometry {
   const mob = W < 768;
-  const sw = mob ? W : Math.min(W * 0.46, H * 0.72);
+  // Desktop column is slimmer than a full-height portrait would be (object-cover crops the blurred
+  // background), which leaves room for the headline beside the photo instead of on top of it
+  const sw = mob ? W : Math.min(W * 0.4, H * 0.62);
   const sx = (W - sw) / 2;
-  // The photo's outer edges fade into the background, so text may reach into that faded strip
-  const bodyLeft = sx + sw * PHOTO_EDGE_FADE;
+  const bodyLeft = sx;
   const leftEdge = W >= 1024 ? 140 : Math.max(24, W * 0.05);
   // Text must end before the portrait column starts: no overlap at all
-  const room = bodyLeft - leftEdge - 32;
+  const room = bodyLeft - leftEdge - 24;
   const font = Math.min(112, room / widestEm);
-  const wide = !mob && font >= 36 && bodyLeft - W * 0.05 >= SIDE_PANEL_MIN_W + 16;
+  const wide = !mob && font >= 30 && bodyLeft - W * 0.05 >= SIDE_PANEL_MIN_W + 16;
   return { mob, sw, sx, leftEdge, font: wide ? font : Math.min(64, Math.max(40, W / 9)), wide };
 }
 
