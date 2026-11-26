@@ -83,7 +83,7 @@ function heroGeometry(W: number, H: number, widestEm = WIDEST_WORD_EM_FALLBACK):
   const sw = mob ? W : Math.min(W * 0.46, H * 0.72);
   const sx = (W - sw) / 2;
   // The photo's outer edges fade into the background, so text may reach into that faded strip
-  const bodyLeft = sx + sw * PHOTO_EDGE_FADE;
+  const bodyLeft = sx;
   const leftEdge = W >= 1024 ? 140 : Math.max(24, W * 0.05);
   // Text must end before the portrait column starts: no overlap at all
   const room = bodyLeft - leftEdge - 32;
