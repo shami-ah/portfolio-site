@@ -291,12 +291,12 @@ export function ChatWidget(): React.ReactElement {
     ];
     return () => timers.forEach((t) => window.clearTimeout(t));
   }, [state]);
-useEffect(() => {
-  const chatBody = scrollRef.current;
-  if (!chatBody) return;
+  useEffect(() => {
+    const chatBody = scrollRef.current;
+    if (!chatBody) return;
 
-  chatBody.scrollTop = chatBody.scrollHeight;
-}, [messages, isThinking, showFallbackChips]);
+    chatBody.scrollTop = chatBody.scrollHeight;
+  }, [messages, isThinking, showFallbackChips]);
 
   /* ── Streaming ── */
 
